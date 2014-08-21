@@ -1,0 +1,120 @@
+# Exported from Wings 3D 0.99.00b
+newmtl Canopy
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Canopy.jpg
+
+newmtl Canopy_Edges
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Canopy.jpg
+
+newmtl Fuse
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Fuse.jpg
+
+newmtl Fuse_Edges
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Fuse.jpg
+
+newmtl Horz_Stab
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Horizontal-Stab.jpg
+
+newmtl Horz_Stab_Edges
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Edges.jpg
+
+newmtl Nose_Weight
+Ns 100.000
+d 1.00000
+illum 2
+Kd 0.392157 0.392157 0.392157
+Ka 0.3 0.3 0.3
+Ks 1.00000 1.00000 1.00000
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+
+newmtl Tail
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Tail.jpg
+
+newmtl Tail_Edges
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Tail.jpg
+
+newmtl Wing_Bottom
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Wing-Bottom.jpg
+
+newmtl Wing_Edges
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Edges.jpg
+
+newmtl Wing_Top
+Ns 100.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.3 0.3 0.3
+Ks 0.00000e+0 0.00000e+0 0.00000e+0
+Ke 0.00000e+0 0.00000e+0 0.00000e+0
+map_Kd Wing-Top.jpg
+
