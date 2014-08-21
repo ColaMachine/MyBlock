@@ -25,8 +25,25 @@ public class DropControlCenter {
 				//System.out.println("是到滴了"+y);
 				//System.out.println("当前人物的y:"+human.Position.y+"检测到土壤:"+y);
 				human.mark=y-1;
+				if(human.mark==-2){
+					System.out.println("错了");
+				}
+				//System.out.println("mark :"+human.mark);
+			}else{
+				human.mark=y-3;
 			}
 			
+		}else if(human.stable){
+			int x = MathUtil.getNearOdd(human.Position.x );
+			int y = MathUtil.getNearOdd(human.Position.y);
+			int z = MathUtil.getNearOdd(human.Position.z );
+			if(!blockRepository.haveObject(x, y - 2, z)){
+				//System.out.println("是到滴了"+y);
+				//System.out.println("当前人物的y:"+human.Position.y+"检测到土壤:"+y);
+				human.drop();
+				human.mark=y-3;
+				//System.out.println("mark :"+human.mark);
+			}
 		}
 		
 		

@@ -11,12 +11,14 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.util.Dimension;
 import org.lwjgl.util.glu.*;
 
+import util.OpenglUtil;
+
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
+import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.repository.BlockRepository;
-
 import glapp.*;
 import glmodel.GLModel;
 import glmodel.GL_Matrix;
@@ -34,7 +36,6 @@ import glmodel.GL_Vector;
 public class MyBlockEngine extends GLApp {
 	// Handle for texture
 	int sphereTextureHandle = 0;
-	int groundTextureHandle = 0;
 	int humanTextureHandle = 0;
 	MouseControlCenter mouseControlCenter;
 	// Light position: if last value is 0, then this describes light direction.
@@ -58,7 +59,7 @@ public class MyBlockEngine extends GLApp {
 
 	// model of airplane and sphere displaylist for earth
 	// GLModel airplane;
-	int earth;
+	public int earth;
 
 	// shadow handler will draw a shadow on floor plane
 	// GLShadowOnPlane airplaneShadow;
@@ -67,10 +68,10 @@ public class MyBlockEngine extends GLApp {
 
 	FloatBuffer bbmatrix = GLApp.allocFloats(16);
 
-	private BlockRepository blockRepository = new BlockRepository();
-
-	private Human human = new Human();
-	private Human human2 = new Human();
+	public BlockRepository blockRepository = new BlockRepository(this);
+	BulletPhysics bulletPhysics;
+	private Human human ;
+	private Human human2 ;
 
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -93,6 +94,8 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
 	public void setup() {
+		human= new Human(blockRepository);
+		human2= new Human(blockRepository);
 		setPerspective();
 		setLight(GL11.GL_LIGHT1, new float[] { 1f, 1f, 1f, 1f }, new float[] {
 				0.5f, 0.5f, .53f, 1f }, new float[] { 1f, 1f, 1f, 1f },
@@ -106,6 +109,7 @@ public class MyBlockEngine extends GLApp {
 				new float[] { 0.0f, -10f, 0.0f, 0f }); // direction (pointing
 														// up)
 		dcc.blockRepository = blockRepository;
+		bulletPhysics= new BulletPhysics(blockRepository);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
@@ -116,18 +120,17 @@ public class MyBlockEngine extends GLApp {
 		// Create texture for spere
 		sphereTextureHandle = makeTexture("images/background.png");
 		humanTextureHandle = makeTexture("images/2000.png");
-		groundTextureHandle = makeTexture("images/background.png", true, true);
 
 		// set camera 1 position
-		camera1.setCamera(0, 4, 15, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(0, 2, 0, 0, 0, 1, 0, 1, 0);
+		camera1.setCamera(5, 4, 5, 0, 0f, -1, 0, 1, 0);
+		human.setHuman(5, 2, 5, 0, 0, -1, 0, 1, 0);
 
 		human2.setHuman(20, 2, 20, 0, 0, 1, 0, 1, 0);
 
 		human.startWalk();
 		
-		mouseControlCenter= new MouseControlCenter(human,camera1);
-		
+		mouseControlCenter= new MouseControlCenter(human,camera1,this);
+		mouseControlCenter.bulletPhysics=bulletPhysics;
 		// load the airplane model and make it a display list
 		// = new GLModel("models/JetFire/JetFire.obj");
 		// airplane.mesh.regenerateNormals();
@@ -137,9 +140,10 @@ public class MyBlockEngine extends GLApp {
 		// make a sphere display list
 		earth = beginDisplayList();
 		// 循环处理
-		Block block = new Block();
+		
 		for (int j = 1; j < 20; j += 2)
 			for (int i = 1; i < 20; i += 2) {
+				Block block = new Block();
 				block.setCenter(i, 1, j);
 				blockRepository.put(block);
 				block.renderCube();
@@ -148,6 +152,8 @@ public class MyBlockEngine extends GLApp {
 			// renderCube();
 		}
 		endDisplayList();
+		
+		
 		// make a shadow handler
 		// params:
 		// the light position,
@@ -198,20 +204,13 @@ public class MyBlockEngine extends GLApp {
 	
 		// 求得人物背后的点
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
-				GL_Vector.multiply(human.ViewDir, -10));
+			GL_Vector.multiply(human.ViewDir, -10));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
+		//camera1.MoveTo(human.Position.x, human.Position.y + 4, human.Position.z);
 		camera1.viewDir(human.ViewDir);
 		cam.render();
 
-		GL11.glPushMatrix();
-		{
-			GL11.glTranslatef(0f, -3f, 0f); // down a bit
-			GL11.glScalef(15f, .01f, 15f);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, groundTextureHandle);
-			renderCube();
-		}
-		GL11.glPopMatrix();
-
+		
 		
 
 		
@@ -223,7 +222,7 @@ public class MyBlockEngine extends GLApp {
 	
 //		print(30, viewportH - 140, "SPACE key switches cameras", 1);
 
-		//this.drawLine();
+		this.drawLine();
 	}
 
 	public void drawObjects() {
@@ -299,26 +298,31 @@ public class MyBlockEngine extends GLApp {
 	 * Add last mouse motion to the line, only if left mouse button is down.
 	 */
 	public void mouseDown(int x, int y) {
-		mouseControlCenter.mouseDown(x, y);
+		if(this.mouseButtonDown(0)){
+			mouseControlCenter.mouseLClick(x, y);
+		}
+		if(this.mouseButtonDown(1)){
+			mouseControlCenter.mouseRClick(x, y);
+		}
 
 	}
 
-	/*
 	
-
+	
 	
 
 	// 一个点记录射线方向
-	GL_Vector lineStart = new GL_Vector(0, 0, 0);
+	public GL_Vector lineStart = new GL_Vector(0, 0, 0);
 
 	// 一个点记录射线方向
 	GL_Vector mouseDir = new GL_Vector(0, 1, 0);
 	// 一个点记录射线结束点
 
-	GL_Vector mouseEnd = new GL_Vector(0, 5, 0);
+	public GL_Vector mouseEnd = new GL_Vector(0, 5, 0);
 
 	public void drawLine() {
 		
+	
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glLineWidth(12f);
 		GL11.glColor3f(1f, 1f, 1f);
@@ -329,5 +333,5 @@ public class MyBlockEngine extends GLApp {
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		
-	}*/
+	}
 }

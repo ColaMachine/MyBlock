@@ -21,7 +21,6 @@ import glmodel.GL_Vector;
 
 import cola.machine.game.myblocks.repository.BlockRepository;
 
-import com.bulletphysics.collision.dispatch.CollisionWorld;
 /**
  * Physics engine implementation using TeraBullet (a customised version of JBullet)
  *
@@ -29,7 +28,7 @@ import com.bulletphysics.collision.dispatch.CollisionWorld;
  */
 public class BulletPhysics  {
 
-	private BlockRepository blockRepository=null;
+	public BlockRepository blockRepository=null;
 
     public BulletPhysics(BlockRepository blockRepository) {
     	this.blockRepository=blockRepository;
@@ -45,26 +44,31 @@ public class BulletPhysics  {
         //计算出终点位置
 
     	//每次移动0.1
+    	int preIndex=-1;
+    	int index=0;
     	for(float x=0.1f;x<distance;x+=0.1){
-    		
+    		int _x = MathUtil.getNearOdd(from.x+x*to.x);
+    		int _y = MathUtil.getNearOdd(from.y+x*to.y);
+    		int _z = MathUtil.getNearOdd(from.z+x*to.z);
+    		index=_x*10000+_z*100+_y;
+    		if(index==preIndex)
+    			continue;
     		//去获得是否在一个物体之内
     		if(
-    				blockRepository.haveObject(from.x+x*to.x,from.y+x*to.y,from.z+x*to.z)
+    				blockRepository.haveObject(_x,_y,_z)
     		){
-    			
-    			int _x = MathUtil.getNearOdd(from.x+(x-1)*to.x );
-    			int _y = MathUtil.getNearOdd(from.y+(x-1)*to.y );
-    			int _z = MathUtil.getNearOdd(from.z+(x-1)*to.z );
-    			return new GL_Vector(_x,_y,_z);//返回撞击前的方块位置
+    			x-=0.1;
+    			return new GL_Vector(MathUtil.getNearOdd(from.x+x*to.x),
+    					MathUtil.getNearOdd(from.y+x*to.y),
+    					 MathUtil.getNearOdd(from.z+x*to.z));//返回撞击前的方块位置
         		
     		}
+    		preIndex=index;
     	}
     	return null;
     	
     }
-    //得到撞击到的是方块的哪个面
-    public void processClosest(CollisionWorld.ClosestRayResultWithUserDataCallback closest ){
-    	System.out.println(closest.userData.toString());
-    }
+   
+   
 
 }

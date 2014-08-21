@@ -12,13 +12,17 @@ import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import cola.machine.game.myblocks.engine.MyBlockEngine;
+import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
-
+import cola.machine.game.myblocks.physic.BulletPhysics;
 import util.MathUtil;
+import util.OpenglUtil;
 
 public class MouseControlCenter{
 	public Human human;
 	public GLCamera camera;
+	public MyBlockEngine engine;
 public Robot robot;
 	public float centerX=0;
 	public float centerY=0;
@@ -26,13 +30,14 @@ public Robot robot;
 	float prevMouseX = 0;
 	float prevMouseY = 0;
 	
-	public  MouseControlCenter(Human human ,GLCamera camera){
+	public  MouseControlCenter(Human human ,GLCamera camera,MyBlockEngine engine){
+		this.engine=engine;
 		this.human =human;
 		this.camera=camera;
 		centerX=Display.getX()+GLApp.displayWidth/2;
 		
 		centerY=Display.getY()+GLApp.displayWidth/2;
-		System.out.println("the center position : x"+centerX+" y "+centerY);
+		//System.out.println("the center position : x"+centerX+" y "+centerY);
 		try {
 			robot=new Robot();
 		} catch (AWTException e) {
@@ -90,9 +95,32 @@ public Robot robot;
 
 	}
 	
+	
+	public void mouseLClick(int x, int y){
+		/*GL_Vector from =camera.Position;*/
+		GL_Vector viewdir =OpenglUtil.getLookAtDirection(x, y);
+	/*
+		GL_Vector to = GL_Vector.add(camera.Position,
+					GL_Vector.multiply(viewdir,10));
+		this.engine.lineStart=from;
+		this.engine.mouseEnd=to;*/
+		
+		GL_Vector hitPoint=bulletPhysics.rayTrace(camera.Position,viewdir,20);
+		if(hitPoint!=null){
+			Block block =new Block((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+			bulletPhysics.blockRepository.put(block);
+			this.engine.blockRepository.reBuild();
+		}
+		
+	}
+	public void mouseRClick(int x, int y){
+		
+		
+	}
 	/**
 	 * Add last mouse motion to the line, only if left mouse button is down.
 	 */
+	
 	public void mouseDown(int x, int y) {/*
 		// add mouse motion to line if left button is down, and mouse has moved
 		// more than 10 pixels
@@ -122,6 +150,7 @@ public Robot robot;
 	 */
 	Point mousepoint;
 	public boolean canDetectMove=true;
+	public BulletPhysics bulletPhysics;
 	public void mouseMove(int x, int y) {
 		// add mouse motion to line if left button is down, and mouse has moved
 		// more than 10 pixels

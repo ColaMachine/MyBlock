@@ -8,7 +8,13 @@ import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-public class Human {
+import util.MathUtil;
+
+import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.AABB.AABB;
+import cola.machine.game.myblocks.repository.BlockRepository;
+
+public class Human extends AABB{
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
 	public GL_Vector RightVector;
@@ -27,9 +33,11 @@ public class Human {
 	public HumanLeg LLeg = new HumanLeg();
 	public HumanLeg RLeg = new HumanLeg();
 	public HumanBody body = new HumanBody();
-
+	BlockRepository blockRepository;
 	public boolean stable = true;
-
+	public Human(	BlockRepository blockRepository){
+		this.blockRepository=blockRepository;
+	}
 	public void setStable(boolean flag) {
 		this.stable = flag;
 	}
@@ -98,7 +106,15 @@ public class Human {
 	}
 
 	public void adjust(float posx, float posy, float posz) {
-
+		this.minX=posx-0.5f;
+		this.minY=posy;
+		this.minZ=posz-0.5f;
+		
+		this.maxX=posx+0.5f;
+		this.maxY=posy+4;
+		this.maxZ=posz+0.5f;
+		
+		
 		Position = new GL_Vector(posx, posy, posz);
 		//RightVector = GL_Vector.crossProduct(ViewDir, UpVector);
 
@@ -114,16 +130,17 @@ public class Human {
 
 	public void dropControl() {
 		if (!this.stable) {
-			long t = Sys.getTime() - this.lastTime;
+			long t = Sys.getTime() - this.lastTime;//运动的时间
 
-			s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;
+			s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//运动的距离
 			// this.Position.y+=s;
 			// System.out.println("time:"+t+" weiyi:"+s);
 			// GL11.glTranslated(0, s, 0);
-			this.Position.y = preY + s;
-
+			this.Position.y = preY + s;//对应y轴变动
+			//System.out.println("当前人的y坐标:"+this.Position.y);
 			if (this.Position.y <= mark) {
-				//.out.println("当前的y" + mark);
+				//
+		//System.out.println("当前的y" + mark);
 				this.Position.y = mark;
 				this.stable = true;
 				mark = 0;
@@ -143,10 +160,10 @@ public class Human {
 	public void render() {
 		adjust(this.Position.x, this.Position.y, this.Position.z);
 		GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
-		float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,1));
-		System.out.println("glRotatef angle :"+angle);
+		float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,-1));
+		//System.out.println("glRotatef angle :"+angle);
 		//System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
-		GL11.glRotatef(angle-180, 0, 1, 0);
+		GL11.glRotatef(angle, 0, 1, 0);
 		GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
 		this.walk();
 		this.dropControl();
@@ -163,9 +180,42 @@ public class Human {
 	}
 
 	public void move(float x, float y, float z) {
+		/*float preX= x;
+		float preY=y;
+		float preZ=z;*/
+		//得到前后左右的方块 以及当前方块18个方块
+		int _x = MathUtil.getNearOdd(x);
+		int _y = MathUtil.getNearOdd(y);
+		int _z = MathUtil.getNearOdd(z);
+		Block b;
+		for(int xi=-1;xi<=1;xi++){
+			for(int yi=-1;yi<=2;yi++){
+				for(int zi=-1;zi<=1;zi++){
+					
+					
+				/*	if(_x+xi*2==1 && _y+ yi*2==3 && _z+ zi*2==1){
+						System.out.println("daoz zh");
+					}*/
+					b=(Block)blockRepository.getObject(_x+xi*2,_y+ yi*2,_z+ zi*2);
+					if(b!=null && b.collision(this)){
+						System.out.println("碰到了");
+						return ;
+					}
+				}
+			}
+		}
 		this.Position.x = x;
 		this.Position.y = y;
 		this.Position.z = z;
+		
+	}
+	
+	public void move(GL_Vector vector) {
+		float x =vector.x;
+		float y =vector.y;
+		float z =vector.z;
+		this.move(x, y, z);
+		
 	}
 
 	/**
@@ -190,6 +240,7 @@ public class Human {
 		RightVector = GL_Vector.crossProduct(vd, UpVector);
 		// set the view direction
 		ViewDir = vd;
+		//System.out.println(ViewDir);
 		//ViewDir = WalkDir;
 		//RotatedY += Angle;
 		// System.out.println(RotatedY);
@@ -285,16 +336,16 @@ public class Human {
 	public void StrafeRight(float Distance) {
 		//if (this.stable) {
 			lastMoveTime = Sys.getTime();
-			Position = GL_Vector.add(Position, GL_Vector.multiply(RightVector,
-					Distance));
+			this.move( GL_Vector.add(Position, GL_Vector.multiply(RightVector,
+					Distance)));
 		//}
 	}
 
 	public void MoveForward(float Distance) {// System.out.printf("%f %f %f
 												// \r\n",ViewDir.x,ViewDir.y,ViewDir.z);
 		//if (this.stable) {
-			Position = GL_Vector.add(Position, GL_Vector.multiply(ViewDir,
-					Distance));
+		this.move( GL_Vector.add(Position, GL_Vector.multiplyWithoutY(ViewDir,
+					Distance)));
 			lastMoveTime = Sys.getTime();
 			// System.out.printf("position: %f %f %f viewdir: %f %f %f
 			// \r\n",Position.x,Position.y,Position.z,ViewDir.x,ViewDir.y,ViewDir.z);
@@ -330,9 +381,7 @@ public class Human {
 		RLeg.angle = -0;
 	}
 
-	public void drop() {
 
-	}
 	public void jumpHigh() {
 		
 		// 记录当前的时间
@@ -347,11 +396,20 @@ public class Human {
 		
 		// 记录当前的时间
 		if (this.stable) {
-			this.v=6.2f;
+			this.v=10.2f;
 			preY = (int) this.Position.y;
 			lastTime = Sys.getTime();
 			this.stable = false;
 		}
+	}
+	public void drop() {
+		
+		// 记录当前的时间
+this.stable=false;
+		this.v=0f;
+			preY = (int) this.Position.y;
+			lastTime = Sys.getTime();
+			
 	}
 
 
