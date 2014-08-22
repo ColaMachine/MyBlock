@@ -188,22 +188,34 @@ public class Human extends AABB{
 		int _y = MathUtil.getNearOdd(y);
 		int _z = MathUtil.getNearOdd(z);
 		Block b;
+		
+		
+		
+		//
+		if(blockRepository.haveObject(_x, _y, _z)){
+			return;
+		}/*
+		
 		for(int xi=-1;xi<=1;xi++){
 			for(int yi=-1;yi<=2;yi++){
 				for(int zi=-1;zi<=1;zi++){
 					
 					
-				/*	if(_x+xi*2==1 && _y+ yi*2==3 && _z+ zi*2==1){
+					if(_x+xi*2==1 && _y+ yi*2==3 && _z+ zi*2==1){
 						System.out.println("daoz zh");
-					}*/
+					}
 					b=(Block)blockRepository.getObject(_x+xi*2,_y+ yi*2,_z+ zi*2);
 					if(b!=null && b.collision(this)){
-						System.out.println("碰到了");
 						return ;
 					}
+					//碰到了之后可以后退
+					
 				}
 			}
 		}
+		*/
+		
+		
 		this.Position.x = x;
 		this.Position.y = y;
 		this.Position.z = z;
