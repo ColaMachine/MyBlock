@@ -1,6 +1,8 @@
 package cola.machine.game.myblocks.engine;
 
 import java.awt.Toolkit;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -11,8 +13,8 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.util.Dimension;
 import org.lwjgl.util.glu.*;
 
+import util.ImageUtil;
 import util.OpenglUtil;
-
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.model.Block;
@@ -122,8 +124,8 @@ public class MyBlockEngine extends GLApp {
 		humanTextureHandle = makeTexture("images/2000.png");
 
 		// set camera 1 position
-		camera1.setCamera(5, 4, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(5, 2, 5, 0, 0, -1, 0, 1, 0);
+		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
+		human.setHuman(5, 20, 5, 0, 0, -1, 0, 1, 0);
 
 		human2.setHuman(20, 2, 20, 0, 0, 1, 0, 1, 0);
 
@@ -138,7 +140,37 @@ public class MyBlockEngine extends GLApp {
 
 		// human.move(2, 12, 2);
 		// make a sphere display list
-		earth = beginDisplayList();
+		
+		try {
+			int[][] heights =ImageUtil.getGrayPicture("d:/graymap.png");
+			
+			earth = beginDisplayList();
+			// 循环处理
+			for (int i = 0; i < 50; i ++)
+				for (int j = 0; j < 50; j ++) {
+					int height=heights[i][j];
+for(int y=0;y<=height/10;y++){
+	Block block = new Block();
+	block.setCenter(2*i+1,y, 2*j+1);
+	blockRepository.put(block);
+	block.renderCube();	
+					}
+				
+				}
+			{
+				// renderCube();
+			}
+			endDisplayList();
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*earth = beginDisplayList();
 		// 循环处理
 		
 		for (int j = 1; j < 20; j += 2)
@@ -151,7 +183,7 @@ public class MyBlockEngine extends GLApp {
 		{
 			// renderCube();
 		}
-		endDisplayList();
+		endDisplayList();*/
 		
 		
 		// make a shadow handler
@@ -195,7 +227,7 @@ public class MyBlockEngine extends GLApp {
 		dcc.check(human);
 		
 		mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
-
+		//  cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);

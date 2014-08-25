@@ -73,6 +73,11 @@ public Robot robot;
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			human.MoveForward(human.camSpeedXZ * seconds);
 		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+			human.Position.y=	human.Position.y-1*seconds;
+			human.move(human.Position);
+		}
+
 		// tilt up
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
