@@ -54,8 +54,8 @@ public class BlockRepository {
 		
 		int i=0;
 
-		GL11.glDeleteLists(engine.earth, GL11.GL_COMPILE); // Start Building A List
-		engine.displayLists.clear();
+		//GL11.glDeleteLists(engine.earth, GL11.GL_COMPILE); // Start Building A List
+		//engine.displayLists.clear();
 	
 		
 		java.util.Iterator it = map.entrySet().iterator();

@@ -39,10 +39,11 @@ public class MyBlockEngine extends GLApp {
 	// Handle for texture
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
+	int skyTextureHandle = 0;
 	MouseControlCenter mouseControlCenter;
 	// Light position: if last value is 0, then this describes light direction.
 	// If 1, then light position.
-	float lightPosition[] = { -2f, 2f, 2f, 0f };
+	float lightPosition[] = { 5f, 10f, 5f, 0f };
 	// Camera position
 	float[] cameraPos = { 0f, 3f, 20f };
 
@@ -62,6 +63,7 @@ public class MyBlockEngine extends GLApp {
 	// model of airplane and sphere displaylist for earth
 	// GLModel airplane;
 	public int earth;
+	public int sky;
 
 	// shadow handler will draw a shadow on floor plane
 	// GLShadowOnPlane airplaneShadow;
@@ -99,16 +101,16 @@ public class MyBlockEngine extends GLApp {
 		human= new Human(blockRepository);
 		human2= new Human(blockRepository);
 		setPerspective();
-		setLight(GL11.GL_LIGHT1, new float[] { 1f, 1f, 1f, 1f }, new float[] {
-				0.5f, 0.5f, .53f, 1f }, new float[] { 1f, 1f, 1f, 1f },
+		setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new float[] {
+				1f, 1f, 1f, 1f }, new float[] { 1f,1f, 1f, 1f },
 				lightPosition);
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
-		setLight(GL11.GL_LIGHT2, new float[] { 0.15f, 0.4f, 0.1f, 1.0f }, // diffuse
+		setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, // diffuse
 																			// color
-				new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, // ambient
-				new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, // specular
-				new float[] { 0.0f, -10f, 0.0f, 0f }); // direction (pointing
+				new float[] { 1f, 1f, 1f, 1f }, // ambient
+				new float[] { 1f, 1f, 1f, 1f }, // specular
+				new float[] { 5f, 10f, 5f, 0f }); // direction (pointing
 														// up)
 		dcc.blockRepository = blockRepository;
 		bulletPhysics= new BulletPhysics(blockRepository);
@@ -122,12 +124,12 @@ public class MyBlockEngine extends GLApp {
 		// Create texture for spere
 		sphereTextureHandle = makeTexture("images/background.png");
 		humanTextureHandle = makeTexture("images/2000.png");
-
+		skyTextureHandle= makeTexture("images/sky180.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(5, 20, 5, 0, 0, -1, 0, 1, 0);
+		human.setHuman(5, 4, 5, 0, 0, -1, 0, 1, 0);
 
-		human2.setHuman(20, 2, 20, 0, 0, 1, 0, 1, 0);
+		human2.setHuman(4, 2, 20, 0, 0, 1, 0, 1, 0);
 
 		human.startWalk();
 		
@@ -141,7 +143,7 @@ public class MyBlockEngine extends GLApp {
 		// human.move(2, 12, 2);
 		// make a sphere display list
 		
-		try {
+		/*try {
 			int[][] heights =ImageUtil.getGrayPicture("d:/graymap.png");
 			
 			earth = beginDisplayList();
@@ -168,9 +170,9 @@ for(int y=0;y<=height/10;y++){
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
-		/*earth = beginDisplayList();
+		earth = beginDisplayList();
 		// 循环处理
 		
 		for (int j = 1; j < 20; j += 2)
@@ -183,9 +185,12 @@ for(int y=0;y<=height/10;y++){
 		{
 			// renderCube();
 		}
-		endDisplayList();*/
+		endDisplayList();
 		
-		
+		sky = beginDisplayList(); {
+        	renderSphere();
+        }
+        endDisplayList();
 		// make a shadow handler
 		// params:
 		// the light position,
@@ -285,6 +290,28 @@ for(int y=0;y<=height/10;y++){
 		}
 		GL11.glPopMatrix();
 		
+		
+		// draw the earth
+        GL11.glPushMatrix();
+        {  GL11.glTranslatef(this.cam.camera.Position.x, 4, this.cam.camera.Position.z);
+        
+            GL11.glScalef(20f, 15f,20f);          // scale up
+           GL11.glBindTexture(GL11.GL_TEXTURE_2D, skyTextureHandle);
+            
+            //GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glFrontFace(GL11.GL_CW);
+           // GL11.glDisable(GL11.GL_LIGHT1);
+            //GL11.glDisable(GL11.GL_LIGHT2);
+            //GL11.glColor4f(0,0,0,1);
+           // GL11.glCullFace(GL11.GL_BACK);
+           // GL11.glColor3f(0.835f,0.78125f, 0.94921875f);
+            callDisplayList(sky);
+            GL11.glFrontFace(GL11.GL_CCW);
+           // GL11.glEnable(GL11.GL_LIGHT1);
+            //GL11.glEnable(GL11.GL_LIGHT2);
+        }
+        GL11.glPopMatrix();
+        
 		//画第二个人
 		GL11.glPushMatrix();
 		{
