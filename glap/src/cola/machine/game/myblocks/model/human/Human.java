@@ -191,6 +191,14 @@ public class Human extends AABB{
 		/*if(blockRepository.haveObject(_x, _y, _z)){
 			return;
 		}*/
+		
+		
+		
+		//
+		if(blockRepository.haveObject(_x, _y, _z)){
+			return;
+		}/*
+		
 		for(int xi=-1;xi<=1;xi++){
 			for(int yi=-1;yi<=2;yi++){
 				for(int zi=-1;zi<=1;zi++){
@@ -204,9 +212,14 @@ public class Human extends AABB{
 						System.out.println("碰到了");
 						return ;
 					}
+					//碰到了之后可以后退
+					
 				}
 			}
 		}
+		*/
+		
+		
 		this.Position.x = x;
 		this.Position.y = y;
 		this.Position.z = z;

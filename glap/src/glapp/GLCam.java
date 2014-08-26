@@ -100,7 +100,7 @@ public class GLCam {
 		 }
 		 
 		 // additional motion
-		/* // Pan left
+		 // Pan left
 		 if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			 camera.StrafeRight(-camSpeedXZ*seconds);
 		 }
@@ -123,7 +123,7 @@ public class GLCam {
 		 // tilt right
 		 if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
 			 camera.RotateZ(-camSpeedR*seconds);
-		 }*/
+		 }
 	 }
 	 
 	 /**
