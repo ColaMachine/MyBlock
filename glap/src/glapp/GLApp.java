@@ -1686,6 +1686,7 @@ public class GLApp {
         GL11.glLight(GLLightHandle, GL11.GL_SPECULAR, ltSpecular); // color of the highlight
         GL11.glLight(GLLightHandle, GL11.GL_AMBIENT, ltAmbient);   // color of the reflected light
         GL11.glLight(GLLightHandle, GL11.GL_POSITION, ltPosition);
+
         GL11.glEnable(GLLightHandle);	// Enable the light (GL_LIGHT1 - 7)
         //GL11.glLightf(GLLightHandle, GL11.GL_QUADRATIC_ATTENUATION, .005F);    // how light beam drops off
     }

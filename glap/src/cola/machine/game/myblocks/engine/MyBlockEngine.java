@@ -8,6 +8,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import cola.machine.game.myblocks.model.liquid.Water;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.Dimension;
@@ -101,17 +102,23 @@ public class MyBlockEngine extends GLApp {
 		human= new Human(blockRepository);
 		human2= new Human(blockRepository);
 		setPerspective();
-		setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new float[] {
+		/*setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new float[] {
 				1f, 1f, 1f, 1f }, new float[] { 1f,1f, 1f, 1f },
-				lightPosition);
+				lightPosition);*/
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
-		setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, // diffuse
+		/*setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, // diffuse
 																			// color
 				new float[] { 1f, 1f, 1f, 1f }, // ambient
 				new float[] { 1f, 1f, 1f, 1f }, // specular
-				new float[] { 5f, 10f, 5f, 0f }); // direction (pointing
+				new float[] { 5f, 10f, 5f, 0f }); // direction (pointing*/
 														// up)
+
+        //set global light
+        FloatBuffer ltAmbient = allocFloats(new float[]{11.0f,11.0f,11.0f,1.0f});
+       // ltAmbient.flip();
+        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT,ltAmbient);
+        GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE,GL11.GL_FALSE);
 		dcc.blockRepository = blockRepository;
 		bulletPhysics= new BulletPhysics(blockRepository);
 		GL11.glEnable(GL11.GL_LIGHTING);
@@ -147,7 +154,7 @@ public class MyBlockEngine extends GLApp {
 			int[][] heights =ImageUtil.getGrayPicture("d:/graymap.png");
 			
 			earth = beginDisplayList();
-			// Ñ­»·´¦Àí
+			// Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			for (int i = 0; i < 50; i ++)
 				for (int j = 0; j < 50; j ++) {
 					int height=heights[i][j];
@@ -173,7 +180,7 @@ for(int y=0;y<=height/10;y++){
 		}*/
 		
 		earth = beginDisplayList();
-		// Ñ­»·´¦Àí
+		// Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		
 		for (int j = 1; j < 20; j += 2)
 			for (int i = 1; i < 20; i += 2) {
@@ -200,9 +207,10 @@ for(int y=0;y<=height/10;y++){
 		// the function that draws all objects that cast shadows
 		// airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]
 		// {0f,1f,0f,3f}, null, this, method(this,"drawObjects"));
-
+        water=new Water();
+        water.setCenter(2, 2, 2);
 	}
-
+    Water water ;
 	/**
 	 * set the field of view and view depth.
 	 */
@@ -239,7 +247,7 @@ for(int y=0;y<=height/10;y++){
 		GL11.glLoadIdentity();
 
 	
-		// ÇóµÃÈËÎï±³ºóµÄµã
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï±³ï¿½ï¿½Äµï¿½
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
 			GL_Vector.multiply(human.ViewDir, -10));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
@@ -254,12 +262,13 @@ for(int y=0;y<=height/10;y++){
 		drawObjects();
 
 		// Place the light. Light will move with the rest of the scene
-		setLightPosition(GL11.GL_LIGHT1, lightPosition);
+		//setLightPosition(GL11.GL_LIGHT1, lightPosition);
 
 	
 //		print(30, viewportH - 140, "SPACE key switches cameras", 1);
 
 		this.drawLine();
+        this.drawWater();
 	}
 
 	public void drawObjects() {
@@ -277,7 +286,7 @@ for(int y=0;y<=height/10;y++){
 		}
 		GL11.glPopMatrix();
 		
-		//»­µÚÒ»¸öÈË
+		//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 		GL11.glPushMatrix();
 		{
 			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
@@ -312,7 +321,7 @@ for(int y=0;y<=height/10;y++){
         }
         GL11.glPopMatrix();
         
-		//»­µÚ¶þ¸öÈË
+		//ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½
 		GL11.glPushMatrix();
 		{
 			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
@@ -370,12 +379,12 @@ for(int y=0;y<=height/10;y++){
 	
 	
 
-	// Ò»¸öµã¼ÇÂ¼ÉäÏß·½Ïò
+	// Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½
 	public GL_Vector lineStart = new GL_Vector(0, 0, 0);
 
-	// Ò»¸öµã¼ÇÂ¼ÉäÏß·½Ïò
+	// Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½
 	GL_Vector mouseDir = new GL_Vector(0, 1, 0);
-	// Ò»¸öµã¼ÇÂ¼ÉäÏß½áÊøµã
+	// Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½ï¿½
 
 	public GL_Vector mouseEnd = new GL_Vector(0, 5, 0);
 
@@ -393,4 +402,21 @@ for(int y=0;y<=height/10;y++){
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		
 	}
+
+    public void drawWater(){
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glTranslated(5, 2, 5);
+        GL11. glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
+        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+        water.renderCube();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11. glColor4f(1.0f, 1.0f, 1.0f,1f);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_LIGHTING);
+    }
+
 }
