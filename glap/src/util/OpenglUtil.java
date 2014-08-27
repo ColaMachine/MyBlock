@@ -44,9 +44,8 @@ public class OpenglUtil {
 				pickingRayBuffer.get(1), pickingRayBuffer.get(2));
 
 		return farVector.sub(nearVector).normalize();
-		/*
-		 * System.out.printf("%f %f %f \r\n" + "",
-		 * mouseDir.x,mouseDir.y,mouseDir.z);
-		 */
+
+
+
 	}
 }

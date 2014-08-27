@@ -302,22 +302,25 @@ for(int y=0;y<=height/10;y++){
 		
 		// draw the earth
         GL11.glPushMatrix();
-        {  GL11.glTranslatef(this.cam.camera.Position.x, 4, this.cam.camera.Position.z);
-        
-            GL11.glScalef(20f, 15f,20f);          // scale up
-           GL11.glBindTexture(GL11.GL_TEXTURE_2D, skyTextureHandle);
-            
-            //GL11.glDisable(GL11.GL_TEXTURE_2D);
+        {
+            GL11.glTranslatef(this.cam.camera.Position.x, 4, this.cam.camera.Position.z);
+           // GL11.glScalef(5f, 5f,5f);
+            GL11.glScalef(40f, 15f,40f);          // scale up
+          // GL11.glBindTexture(GL11.GL_TEXTURE_2D, skyTextureHandle);
+
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glFrontFace(GL11.GL_CW);
-           // GL11.glDisable(GL11.GL_LIGHT1);
-            //GL11.glDisable(GL11.GL_LIGHT2);
-            //GL11.glColor4f(0,0,0,1);
+           //GL11.glDisable(GL11.GL_LIGHT_MODEL_AMBIENT);
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
            // GL11.glCullFace(GL11.GL_BACK);
            // GL11.glColor3f(0.835f,0.78125f, 0.94921875f);
             callDisplayList(sky);
             GL11.glFrontFace(GL11.GL_CCW);
            // GL11.glEnable(GL11.GL_LIGHT1);
-            //GL11.glEnable(GL11.GL_LIGHT2);
+            GL11.glEnable(GL11.GL_LIGHTING);
+           // GL11.glEnable(GL11.GL_LIGHT_MODEL_AMBIENT);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
         GL11.glPopMatrix();
         
@@ -419,4 +422,19 @@ for(int y=0;y<=height/10;y++){
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
+    public void drawSky(){
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glTranslated(5, 2, 5);
+        GL11. glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
+        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+        water.renderCube();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11. glColor4f(1.0f, 1.0f, 1.0f,1f);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_LIGHTING);
+    }
 }

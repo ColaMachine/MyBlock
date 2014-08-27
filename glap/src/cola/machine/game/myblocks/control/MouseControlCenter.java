@@ -48,11 +48,13 @@ public Robot robot;
 	}
 	public void handleNavKeys(float seconds) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			human.RotateX(human.camSpeedXZ * seconds);
+			human.RotateX(-human.camSpeedXZ * seconds);
 		}
-		
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			human.RotateV(-human.camSpeedXZ * seconds);
+        if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+            human.RotateX(human.camSpeedXZ * seconds);
+        }
+		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+			human.RotateV(human.camSpeedR * seconds);
 		}
 		// Turn right
 		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
@@ -82,7 +84,7 @@ public Robot robot;
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 				human.jumpHigh();
-			//	System.out.println("Í¬Ê±°´ÏÂÁËw¼ü");
+			//	System.out.println("Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½");
 				human.jump();
 			// System.out.println("jump");
 		}
@@ -103,7 +105,13 @@ public Robot robot;
 	
 	public void mouseLClick(int x, int y){
 		/*GL_Vector from =camera.Position;*/
+        System.out.printf("mouse clikc at  %d %d \r\n ",
+               x,y);
 		GL_Vector viewdir =OpenglUtil.getLookAtDirection(x, y);
+                //this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
+
+//        System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
+//                viewdir.x,viewdir.y,viewdir.z);
 	/*
 		GL_Vector to = GL_Vector.add(camera.Position,
 					GL_Vector.multiply(viewdir,10));
@@ -160,10 +168,10 @@ public Robot robot;
 		// add mouse motion to line if left button is down, and mouse has moved
 		// more than 10 pixels
 		
-		//×ª¶¯ÉíÌå Í·  ÉãÏñ»ú¸úËæÍ·²¿
+		//×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Í·  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½
 		
 			// add a segment to the line
-			// /System.out.println("ÉíÌå×ª¶¯");
+			// /System.out.println("ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½");
 			// System.out.println(x-prevMouseX);
 //		if(!canDetectMove){
 //			if (MathUtil. distance(400, 300, x, y)< 10f){
@@ -176,13 +184,13 @@ public Robot robot;
 				) {	
 			//System.out.println("now mouse position x:"+x+" y :"+y);
 			
-			human.RotateV((float)(-(mousepoint.x - centerX)  *4*GLApp.getSecondsPerFrame()));
+			//human.RotateV((float)(-(mousepoint.x - centerX)  *4*GLApp.getSecondsPerFrame()));
 			// System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-			human.RotateX((float)(-(mousepoint.y - centerY) *4*GLApp.getSecondsPerFrame()));
+			//human.RotateX((float)(-(mousepoint.y - centerY) *4*GLApp.getSecondsPerFrame()));
 			
 			//robot.mouseMove(mousepoint.x-(x-400), mousepoint.y-(y-300));
 			//robot.mouseMove(Display.getX()+400, Display.getY()+300);
-			robot.mouseMove((int)centerX,(int)centerY);
+			//robot.mouseMove((int)centerX,(int)centerY);
 			//System.out.println("move to position x :"+(mousepoint.x-(x-400))+" y :"+(mousepoint.y-(y-300)));
 			
 			canDetectMove=false;
@@ -200,7 +208,7 @@ public Robot robot;
 		if (MathUtil. distance(prevMouseX, prevMouseY, x, y) > 10f
 				&& MathUtil. distance(prevMouseX, prevMouseY, x, y) < 20f) {
 			// add a segment to the line
-			// /System.out.println("ÉíÌå×ª¶¯");
+			// /System.out.println("ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½");
 			// System.out.println(x-prevMouseX);
 			human.RotateV(-(x - prevMouseX) / 5);
 			// System.out.printf("y distance: %d \r\n",(y-prevMouseY));
@@ -211,7 +219,7 @@ public Robot robot;
 			prevMouseX = x;
 			prevMouseY = y;
 
-			// ÒÆ¶¯¾µÍ·
+			// ï¿½Æ¶ï¿½ï¿½ï¿½Í·
 		} 
 	}
 	
@@ -219,7 +227,7 @@ public Robot robot;
 		if ( MathUtil.distance(prevMouseX, prevMouseY, x, y) > 10f
 				&& MathUtil.distance(prevMouseX, prevMouseY, x, y) < 20) {
 			// add a segment to the line
-			// System.out.println("Í·²¿×ª¶¯");
+			// System.out.println("Í·ï¿½ï¿½×ªï¿½ï¿½");
 			// System.out.println(x-prevMouseX);
 			human.ViewRotateV(-(x - prevMouseX) / 5);
 			// System.out.printf("y distance: %d \r\n",(y-prevMouseY));
@@ -230,7 +238,7 @@ public Robot robot;
 			prevMouseX = x;
 			prevMouseY = y;
 
-			// ÒÆ¶¯¾µÍ·
+			// ï¿½Æ¶ï¿½ï¿½ï¿½Í·
 		}
 	}
 	public void keyDown(int keycode) {

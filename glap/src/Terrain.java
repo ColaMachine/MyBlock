@@ -8,16 +8,16 @@ import javax.imageio.ImageIO;
 
 public class Terrain {
 	private String bmp_path="";
-	public static void main(String args[]){
-		//¸ù¾ÝÂ·¾¶´´½¨Î¬Í¼´óÐ¡´´½¨×é
+	public static void main(String args[]){/*
+		//ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¬Í¼ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		try {
-			File _file = new File("1.jpg"); //¶ÁÈëÎÄ¼þ
+			File _file = new File("1.jpg"); //ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 			BufferedImage bi=ImageIO.read(new File(""));
-			Image src = javax.imageio.ImageIO.read(_file); //¹¹ÔìImage¶ÔÏó
+			Image src = javax.imageio.ImageIO.read(_file); //ï¿½ï¿½ï¿½ï¿½Imageï¿½ï¿½ï¿½ï¿½
 
-			int width=src.getWidth(null); //µÃµ½Ô´Í¼¿í
+			int width=src.getWidth(null); //ï¿½Ãµï¿½Ô´Í¼ï¿½ï¿½
 
-			int height=src.getHeight(null); //µÃµ½Ô´Í¼³¤
+			int height=src.getHeight(null); //ï¿½Ãµï¿½Ô´Í¼ï¿½ï¿½
 			
 			float[][] heights  =  new float[width][height];
 			  byte lowest =(byte) 255;
@@ -29,7 +29,7 @@ public class Terrain {
 		                    lowest =heights[i][j] ;
 		                if( heights[i][j]  > hightest)
 		                    hightest = heights[i][j];
-		                //ÓÉÓÚÃ¿¸öÏñËØÊÇ24Î»£¬¶øÖ¸ÕëÊÇ8Î»£¬ËùÒÔ+3Ö¸ÏòÏÂÒ»¸öÏñËØ
+		                //ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½24Î»ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½8Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+3Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		               
 		            }
 		        }
@@ -44,18 +44,18 @@ public class Terrain {
 		        }
 		        
 		        heightMap.UnlockBits(data);
-		        //¼ÆËã¶¥µã£¬Ë÷Òý£¬Èý½ÇÐÎÊýÁ¿
+		        //ï¿½ï¿½ï¿½ã¶¥ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		        numVertices = heightMap.Width * heightMap.Height;
 		        numIndices = 6 * (heightMap.Width - 1) * (heightMap.Height - 1);
 		        numTriangles = 2 * (heightMap.Width - 1) * (heightMap.Height - 1);
-		        //´´½¨¶¥µãÊý×é
+		        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		        Vector3[] verts = new Vector3[numVertices];
 		        int[] index = new int[numIndices];
 		        int x = 0;
 		        int n = 0;
 		        float dx = terrainSize / (float) heightMap.Height;
 		        float dy = terrainSize / (float) heightMap.Width;
-		        //Ìî³ä¶¥µãÊý×é
+		        //ï¿½ï¿½ä¶¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		        for ( int i = 0; i < heightMap.Height; i ++)
 		        {
 		            for ( int j = 0; j < heightMap.Width; j ++)
@@ -63,7 +63,7 @@ public class Terrain {
 		                verts[i*heightMap.Width+j] = new Vector3((float)j*dx -terrainSize/2f,heights[j,i],(float)i*dy -terrainSize/2f);
 		            }
 		        }
-		        //Ìî³äË÷ÒýÊý×é
+		        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		        for ( int i = 0; i < heightMap.Width-1; i ++)
 		        {
 		            for ( int j = 0; j < heightMap.Height-1; j ++)
@@ -77,7 +77,7 @@ public class Terrain {
 		                index[n++] = x+heightMap.Width+1;
 		            }
 		        }
-		        //ÉèÖÃ¶¥µãÒÔ¼°Ë÷Òý»º³å
+		        //ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		        vb = new VertexBuffer(typeof(Vector3),numVertices,device,Usage.None,VertexFormats.Position,Pool.Default);
 		        vb.SetData(verts,0,0);
 		        ib = new IndexBuffer(typeof(int),numIndices,device,Usage.None,Pool.Default);
@@ -85,15 +85,15 @@ public class Terrain {
 		} catch (IOException e) {
 			// VIP Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	   public void DrawTerrain()
 	    {
-	        device.VertexFormat = VertexFormats.Position;
+	        /*device.VertexFormat = VertexFormats.Position;
 	        device.SetStreamSource(0,vb,0);
 	        device.Indices = ib;
 	        device.Transform.World = Matrix.Translation(0,0,0);
-	        device.DrawIndexedPrimitives(PrimitiveType.TriangleList,0,0,numVertices,0,numTriangles);
+	        device.DrawIndexedPrimitives(PrimitiveType.TriangleList,0,0,numVertices,0,numTriangles);*/
 	    }
 }

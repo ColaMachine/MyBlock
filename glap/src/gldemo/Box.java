@@ -81,7 +81,7 @@ public class Box {
     public void draw(){
         if(useShader)
             ARBShaderObjects.glUseProgramObjectARB(program);
-        
+
         GL11.glLoadIdentity();
         GL11.glTranslatef(0.0f, 0.0f, -10.0f);
         GL11.glColor3f(1.0f, 1.0f, 1.0f);//white
