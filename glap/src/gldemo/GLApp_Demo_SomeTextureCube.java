@@ -65,10 +65,10 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	FloatBuffer bbmatrix = GLApp.allocFloats(16);
 
-	private BlockRepository blockRepository = new BlockRepository();
+	private BlockRepository blockRepository = new BlockRepository(null);
 
-	private Human human = new Human();
-	private Human human2 = new Human();
+	private Human human = new Human(blockRepository);
+	private Human human2 = new Human(blockRepository);
 
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -125,7 +125,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 		human.startWalk();
 		
-		mouseControlCenter= new MouseControlCenter();
+		mouseControlCenter= new MouseControlCenter(human,cam.camera,null);
 		mouseControlCenter.centerX=this.displayWidth/2;
 		mouseControlCenter.centerY=this.displayHeight/2;
 		mouseControlCenter.human= human;
@@ -138,7 +138,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 		// human.move(2, 12, 2);
 		// make a sphere display list
 		earth = beginDisplayList();
-		// Ñ­»·´¦Àí
+		// Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Block block = new Block();
 		for (int j = 1; j < 20; j += 2)
 			for (int i = 1; i < 20; i += 2) {
@@ -198,7 +198,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 		GL11.glLoadIdentity();
 
 	
-		// ÇóµÃÈËÎï±³ºóµÄµã
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï±³ï¿½ï¿½Äµï¿½
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
 				GL_Vector.multiply(human.ViewDir, -10));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
@@ -243,7 +243,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 		}
 		GL11.glPopMatrix();
 		
-		//»­µÚÒ»¸öÈË
+		//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 		GL11.glPushMatrix();
 		{
 			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
@@ -256,7 +256,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 		}
 		GL11.glPopMatrix();
 		
-		//»­µÚ¶þ¸öÈË
+		//ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½
 		GL11.glPushMatrix();
 		{
 			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
@@ -310,12 +310,12 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	
 
-	// Ò»¸öµã¼ÇÂ¼ÉäÏß·½Ïò
+	// Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½
 	GL_Vector lineStart = new GL_Vector(0, 0, 0);
 
-	// Ò»¸öµã¼ÇÂ¼ÉäÏß·½Ïò
+	// Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½
 	GL_Vector mouseDir = new GL_Vector(0, 1, 0);
-	// Ò»¸öµã¼ÇÂ¼ÉäÏß½áÊøµã
+	// Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½ï¿½
 
 	GL_Vector mouseEnd = new GL_Vector(0, 5, 0);
 
