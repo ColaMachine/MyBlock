@@ -17,7 +17,6 @@ package org.terasology.registry;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.terasology.module.sandbox.API;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -71,7 +70,7 @@ public final class CoreRegistry {
      * @param <T>
      * @return The system fulfilling the given interface
      */
-    public static <T> T get(Class<T> type) {//class org.terasology.input.InputSystem
+    public static <T> T get(Class<T> type) {
         return type.cast(store.get(type));
     }
 
