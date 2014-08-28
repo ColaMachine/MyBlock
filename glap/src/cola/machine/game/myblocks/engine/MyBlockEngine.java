@@ -41,6 +41,7 @@ public class MyBlockEngine extends GLApp {
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
 	int skyTextureHandle = 0;
+	int crossTextureHandle=0;
 	MouseControlCenter mouseControlCenter;
 	// Light position: if last value is 0, then this describes light direction.
 	// If 1, then light position.
@@ -132,6 +133,7 @@ public class MyBlockEngine extends GLApp {
 		sphereTextureHandle = makeTexture("images/background.png");
 		humanTextureHandle = makeTexture("images/2000.png");
 		skyTextureHandle= makeTexture("images/sky180.png");
+		crossTextureHandle= makeTexture("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
 		human.setHuman(5, 4, 5, 0, 0, -1, 0, 1, 0);
@@ -269,6 +271,7 @@ for(int y=0;y<=height/10;y++){
 
 		this.drawLine();
         this.drawWater();
+        drawCross();
 	}
 
 	public void drawObjects() {
@@ -436,5 +439,54 @@ for(int y=0;y<=height/10;y++){
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_LIGHTING);
+    }
+    
+    public void drawCross(){
+    	print( 30, viewportH- 45, "Use arrow keys to navigate:");
+        print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
+        print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
+        print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
+        print( 30, viewportH-140, "SPACE key switches cameras", 1);
+
+		// preserve current GL settings
+		pushAttribOrtho();
+		// turn off lighting
+		GL11.glEnable(GL11.GL_LIGHTING);
+		// enable alpha blending, so character background is transparent
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		// enable the charset texture
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.crossTextureHandle);
+		// prepare to render in 2D
+		setOrthoOn();
+		// draw the text
+		GL11.glTranslatef(150, 150, 0);        // Position The Text (in pixel coords)
+		
+		
+		 GL11.glBegin(GL11.GL_QUADS);
+	        // Front Face
+	        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+	        GL11.glTexCoord2f(1/2,1/2); GL11.glVertex3f(-100.0f, -100.0f,  0);	// Bottom Left
+	        GL11.glTexCoord2f(1, 1/2); GL11.glVertex3f( 100.0f, -100.0f,  0);	// Bottom Right
+	        GL11.glTexCoord2f(1, 1); GL11.glVertex3f( 100.0f,  100.0f,  0);	// Top Right
+	        GL11.glTexCoord2f(1/2, 1); GL11.glVertex3f(-100.0f,  100.0f,  0);	// Top Left
+	        GL11.glEnd();
+		
+	        
+	        GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glLineWidth(12f);
+			GL11.glColor3f(1f, 1f, 1f);
+			GL11.glBegin(GL11.GL_LINES); // draw triangles
+			GL11.glVertex3f(0f, 0f,
+					0); // A1-A2
+			GL11.glVertex3f(10f,10f,0);
+			GL11.glEnd();
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			
+		// restore the original positions and views
+		setOrthoOff();
+		// restore previous settings
+		popAttrib();
     }
 }
