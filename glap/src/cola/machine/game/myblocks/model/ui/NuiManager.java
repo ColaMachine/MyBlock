@@ -1,5 +1,14 @@
 package cola.machine.game.myblocks.model.ui;
 
-public class NuiManager {
+import cola.machine.game.myblocks.model.ui.tool.ToolBarContainer;
 
+public class NuiManager {
+    ToolBarContainer toolbarcontainer;
+    public  NuiManager(){
+         toolbarcontainer = new ToolBarContainer();
+    }
+
+    public void render(){
+        toolbarcontainer.render();
+    }
 }

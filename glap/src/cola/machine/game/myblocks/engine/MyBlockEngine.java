@@ -1,5 +1,8 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.model.ui.NuiManager;
 import glapp.GLApp;
 import glapp.GLCam;
 import glapp.GLCamera;
@@ -18,6 +21,7 @@ import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.liquid.Water;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.repository.BlockRepository;
+import org.terasology.registry.CoreRegistry;
 
 /**
  * Run a bare-bones GLApp. Draws one white triangle centered on screen.
@@ -93,7 +97,7 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
 	public void setup() {
-		
+		this.initManagers();
 		human= new Human(blockRepository);
 		human2= new Human(blockRepository);
 		setPerspective();
@@ -259,7 +263,8 @@ for(int y=0;y<=height/10;y++){
 		//drawCross2(5,5,5);
 		
 		drawObjects();
-		drawCross(crossTextureHandle,1/12f+0.01f,10/12f,1/12f,1/12f,getWidth()/2-25, getHeight()/2-25,50f,50f);
+		//drawCross(crossTextureHandle,1/12f+0.01f,10/12f,1/12f,1/12f,getWidth()/2-25, getHeight()/2-25,50f,50f);
+        CoreRegistry.get(NuiManager.class).render();
 		//drawImageFullScreen(textureImg);
 		// Place the light. Light will move with the rest of the scene
 		//setLightPosition(GL11.GL_LIGHT1, lightPosition);
@@ -276,6 +281,7 @@ for(int y=0;y<=height/10;y++){
         print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
         print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
         print( 30, viewportH-140, "SPACE key switches cameras", 1);
+
 
         
 	}
@@ -447,72 +453,7 @@ for(int y=0;y<=height/10;y++){
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_LIGHTING);
     }
-    public void drawCross2(int x,int y,int z){
-    	GL11.glPushMatrix();
-		{// setOrthoOn();
-			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
-			// GL11.glScalef(1/4f, 1/4f, 1/4f); // scale up
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, crossTextureHandle);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-
-	        GL11.glBegin(GL11.GL_QUADS);
-	        // Front Face
-	        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
-	        GL11.glTexCoord2f(1/12f, 10/12f); GL11.glVertex3f(-1.0f+x, -1.0f+y,  1.0f+z);	// Bottom Left
-	        GL11.glTexCoord2f(2/12f, 10/12f); GL11.glVertex3f( 1.0f+x, -1.0f+y,  1.0f+z);	// Bottom Right
-	        GL11.glTexCoord2f(2/12f, 11/12f); GL11.glVertex3f( 1.0f+x,  1.0f+y,  1.0f+z);	// Top Right
-	        GL11.glTexCoord2f(1/12f, 11/12f); GL11.glVertex3f(-1.0f+x,  1.0f+y,  1.0f+z);	// Top Left
-	       GL11.glEnd();
-		
-			// setOrthoOff();
-		}
-		GL11.glPopMatrix();
-    }
-    
-
-    public void drawCross3( int textureHandle,float  minX,float minY,float wi,float hi,float x, float y, float w, float h){	// if image has no texture, convert the image to a texture
-    
-    	  GL11.glPushMatrix();
-    	  {// preserve settings
-	pushAttribOrtho();
-	// switch to 2D projection
-	setOrthoOn();
-	// tweak settings
-	GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
-	GL11.glColor4f(1,1,1,1);             // no color
-	GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
-	GL11.glDisable(GL11.GL_DEPTH_TEST);  // no depth test
-	GL11.glEnable(GL11.GL_BLEND);        // enable transparency
-	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	// activate the image texture
-	GL11.glBindTexture(GL11.GL_TEXTURE_2D,textureHandle);
-	GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-			GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-	// draw a textured quad
-	GL11.glBegin(GL11.GL_QUADS);
-	{
-		GL11.glTexCoord2f(1/12f, 10/12f);
-		GL11.glVertex3f(0f, 0f, 0f);         // Bottom Left
-
-		GL11.glTexCoord2f(2/12f, 10/12f);
-		GL11.glVertex3f(getWidth(), 0f, 0f);         // Bottom Right
-
-		GL11.glTexCoord2f(2/12f, 11/12f);
-		GL11.glVertex3f(getWidth(), getHeight(), 0f);   // Top Right
-
-		GL11.glTexCoord2f(1/12f, 11/12f);
-		GL11.glVertex3f(0f, getHeight(), 0f);       // Top left
-	}
-	GL11.glEnd();
-	// return to previous projection mode
-	setOrthoOff();
-	// return to previous settings
-	popAttrib();
-    	  }
-	GL11.glPopMatrix();
-    }
     public void drawCross( int textureHandle,float  minX,float minY,float wi,float hi,float x, float y, float w, float h){	// if image has no texture, convert the image to a texture
     	
     	// preserve settings
@@ -531,9 +472,9 @@ for(int y=0;y<=height/10;y++){
     	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     	// activate the image texture
         GL11.glBindTexture(GL11.GL_TEXTURE_2D,textureHandle);
-      
+
         // draw a textured quad
-     
+
         GL11.glBegin(GL11.GL_QUADS);
         {
         	  GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
@@ -545,14 +486,16 @@ for(int y=0;y<=height/10;y++){
 	        GL11.glVertex3f( (float)x+w, (float)y+h, (float)0);
 	        GL11.glTexCoord2f(minX, minY+hi);
 	        GL11.glVertex3f( (float)x, (float)y+h, (float)0);
-        	
+
 //            GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
 //	        GL11.glTexCoord2f(1/12f, 10/12f); GL11.glVertex3f(-1.0f+x, -1.0f+y, 0);	// Bottom Left
 //	        GL11.glTexCoord2f(2/12f, 10/12f); GL11.glVertex3f( 1.0f+x, -1.0f+y,  0);	// Bottom Right
 //	        GL11.glTexCoord2f(2/12f, 11/12f); GL11.glVertex3f( 1.0f+x,  1.0f+y, 0);	// Top Right
 //	        GL11.glTexCoord2f(1/12f, 11/12f); GL11.glVertex3f(-1.0f+x,  1.0f+y, 0);	// Top Left
         }
-        GL11.glEnd();
+
+
+
       setOrthoOff();
         // return to previous settings
        popAttrib();
@@ -597,7 +540,9 @@ for(int y=0;y<=height/10;y++){
 		
 	}
 	private void initManagers() {
-       
+       TextureManager textureManager= CoreRegistry.put(TextureManager.class,new TextureManager());
+        NuiManager nuiManager= CoreRegistry.put(NuiManager.class,new NuiManager());
+
         
         
     }
