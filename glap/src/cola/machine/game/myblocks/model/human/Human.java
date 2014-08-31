@@ -93,16 +93,16 @@ public class Human extends AABB{
 		RotatedX = RotatedY = RotatedZ = 0.0f; // TO DO: should set these to
 												// correct values
 
-		head.setHead(posx, posy + 3, posz, dirx, diry, dirz, upx, upy, upz);
-		LLeg.setHead(posx - 0.25f, posy + 1.5f, posz, dirx, diry, dirz, upx, upy,
+		head.setHead(0,  3, 0, dirx, diry, dirz, upx, upy, upz);
+		LLeg.setHead(0 - 0.25f, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy,
 				upz);
-		RLeg.setHead(posx + 0.25f, posy + 1.5f, posz, dirx, diry, dirz, upx, upy,
+		RLeg.setHead(0 + 0.25f, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy,
 				upz);
-		LHand.setHead(posx - 0.75f, posy + 2.75f, posz, dirx, diry, dirz, upx,
+		LHand.setHead(0 - 0.75f, 0 + 2.75f, 0, dirx, diry, dirz, upx,
 				upy, upz);
-		RHand.setHead(posx + 0.75f, posy + 2.75f, posz, dirx, diry, dirz, upx,
+		RHand.setHead(0 + 0.75f, 0 + 2.75f, 0, dirx, diry, dirz, upx,
 				upy, upz);
-		body.setHead(posx, posy + 1.5f, posz, dirx, diry, dirz, upx, upy, upz);
+		body.setHead(0, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy, upz);
 	}
 
 	public void adjust(float posx, float posy, float posz) {
@@ -118,29 +118,29 @@ public class Human extends AABB{
 		Position = new GL_Vector(posx, posy, posz);
 		//RightVector = GL_Vector.crossProduct(ViewDir, UpVector);
 
-		head.adjust(posx, posy + 3, posz);
+		/*head.adjust(posx, posy + 3, posz);
 		LLeg.adjust(posx - 0.25f, posy + 1.5f, posz);
 		RLeg.adjust(posx + 0.25f, posy + 1.5f, posz);
 		LHand.adjust(posx - 0.75f, posy + 2.75f, posz);
 		RHand.adjust(posx + 0.75f, posy + 2.75f, posz);
-		body.adjust(posx, posy + 1.5f, posz);
+		body.adjust(posx, posy + 1.5f, posz);*/
 	}
 
 	int preY = 0;
 
 	public void dropControl() {
 		if (!this.stable) {
-			long t = Sys.getTime() - this.lastTime;//ÔË¶¯µÄÊ±¼ä
+			long t = Sys.getTime() - this.lastTime;//ï¿½Ë¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 
-			s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//ÔË¶¯µÄ¾àÀë
+			s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//ï¿½Ë¶ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½
 			// this.Position.y+=s;
 			// System.out.println("time:"+t+" weiyi:"+s);
 			// GL11.glTranslated(0, s, 0);
-			this.Position.y = preY + s;//¶ÔÓ¦yÖá±ä¶¯
-			//System.out.println("µ±Ç°ÈËµÄy×ø±ê:"+this.Position.y);
+			this.Position.y = preY + s;//ï¿½ï¿½Ó¦yï¿½ï¿½ä¶¯
+			//System.out.println("ï¿½ï¿½Ç°ï¿½Ëµï¿½yï¿½ï¿½ï¿½:"+this.Position.y);
 			if (this.Position.y <= mark) {
 				//
-		//System.out.println("µ±Ç°µÄy" + mark);
+		//System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½y" + mark);
 				this.Position.y = mark;
 				this.stable = true;
 				mark = 0;
@@ -167,7 +167,7 @@ public class Human extends AABB{
 		GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
 		this.walk();
 		this.dropControl();
-		
+        GL11.glTranslatef(Position.x,Position.y,Position.z);
 		LLeg.render();
 
 		RLeg.render();
@@ -177,13 +177,36 @@ public class Human extends AABB{
 		RHand.render();
 		body.render();
 		head.render();
+        GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
 	}
+
+    public void renderInMirror() {
+       // adjust(this.Position.x, this.Position.y, this.Position.z);
+      //  GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
+        //float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,-1));
+        //System.out.println("glRotatef angle :"+angle);
+        //System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
+       // GL11.glRotatef(angle, 0, 1, 0);
+        //GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
+        //this.walk();
+       // this.dropControl();
+
+        LLeg.render();
+
+        RLeg.render();
+
+        LHand.render();
+
+        RHand.render();
+        body.render();
+        head.render();
+    }
 
 	public void move(float x, float y, float z) {
 		/*float preX= x;
 		float preY=y;
 		float preZ=z;*/
-		//µÃµ½Ç°ºó×óÓÒµÄ·½¿é ÒÔ¼°µ±Ç°·½¿é18¸ö·½¿é
+		//ï¿½Ãµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ÒµÄ·ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½18ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		int _x = MathUtil.getNearOdd(x);
 		int _y = MathUtil.getNearOdd(y);
 		int _z = MathUtil.getNearOdd(z);
@@ -209,10 +232,10 @@ public class Human extends AABB{
 					}
 					b=(Block)blockRepository.getObject(_x+xi*2,_y+ yi*2,_z+ zi*2);
 					if(b!=null && b.overlaps(this)){
-						System.out.println("Åöµ½ÁË");
+						System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 						return ;
 					}
-					//Åöµ½ÁËÖ®ºó¿ÉÒÔºóÍË
+					//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½
 					
 				}
 			}
@@ -343,7 +366,7 @@ public class Human extends AABB{
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 				this.jumpHigh();
-			//	System.out.println("Í¬Ê±°´ÏÂÁËw¼ü");
+			//	System.out.println("Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½");
 				this.jump();
 			// System.out.println("jump");
 		}
@@ -400,7 +423,7 @@ public class Human extends AABB{
 
 	public void jumpHigh() {
 		
-		// ¼ÇÂ¼µ±Ç°µÄÊ±¼ä
+		// ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
 		if (this.stable) {
 			this.v=12.6f;
 			preY = (int) this.Position.y;
@@ -410,7 +433,7 @@ public class Human extends AABB{
 	}
 	public void jump() {
 		
-		// ¼ÇÂ¼µ±Ç°µÄÊ±¼ä
+		// ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
 		if (this.stable) {
 			this.v=10.2f;
 			preY = (int) this.Position.y;
@@ -420,7 +443,7 @@ public class Human extends AABB{
 	}
 	public void drop() {
 		
-		// ¼ÇÂ¼µ±Ç°µÄÊ±¼ä
+		// ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
 this.stable=false;
 		this.v=0f;
 			preY = (int) this.Position.y;

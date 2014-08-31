@@ -63,8 +63,8 @@ public class HumanLeg {
 	public void render(){
 		 //GL11.glTranslatef(Position.x,Position.y,Position.z); // down a bit
 		
-		//н╩рфспа╫лво╣мЁ
-		//1╦ЖйгхкоЮ╤тсзйю╫Г╣двЬ╠Й
+		//н╩О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫о╣мЁ
+		//1О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 		//
 		/*
 		 * width:2
@@ -73,52 +73,52 @@ public class HumanLeg {
 		 * -------
 		 * 
 		 */
-		//охпЩв╙
-		//тын╩рф
+		//О©╫О©╫О©╫О©╫в╙
+		//О©╫О©╫н╩О©╫О©╫
 		GL11.glTranslatef(Position.x,Position.y,Position.z);
 		 GL11.glRotatef(angle,1, 0, 0);
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
         
         GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
-        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P1);	// Bottom Left г╟вСоб
-        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P2);	// Bottom Right г╟сроб
-        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P6);	// Top Right г╟срио
-        GL11.glTexCoord2f(0f, 3/8f); glVertex3fv(P5);	// Top Left	г╟вСио
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P1);	// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P2);	// Bottom Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P6);	// Top Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(0f, 3/8f); glVertex3fv(P5);	// Top Left	г╟О©╫О©╫О©╫О©╫
         // Back Face
         
         GL11.glNormal3f( 0.0f, 0.0f, -1.0f);
-        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P3);	// Bottom Left ╨Ссроб
-        GL11.glTexCoord2f(1/16f, 0f); glVertex3fv(P4);	// Bottom Right ╨СвСоб
-        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P8);	// Top Right ╨СвСио
-        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P7);	// Top Left ╨Ссрио
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P3);	// Bottom Left О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 0f); glVertex3fv(P4);	// Bottom Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P8);	// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P7);	// Top Left О©╫О©╫О©╫О©╫О©╫О©╫
        
         // Top Face
         GL11.glNormal3f( 0.0f, 1.0f, 0.0f);
       
-        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P5);	// Bottom Left г╟вСио
-        GL11.glTexCoord2f(2/16f, 3/8f); glVertex3fv(P6);	// Bottom Right г╟срио
-        GL11.glTexCoord2f(2/16f, 4/8f); glVertex3fv(P7);	// Top Right ╨Ссрио
-        GL11.glTexCoord2f(1/16f, 4/8f); glVertex3fv(P8);	// Top Left ╨СвСио
+        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P5);	// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(2/16f, 3/8f); glVertex3fv(P6);	// Bottom Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(2/16f, 4/8f); glVertex3fv(P7);	// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 4/8f); glVertex3fv(P8);	// Top Left О©╫О©╫О©╫О©╫О©╫О©╫
         // Bottom Face
         GL11.glNormal3f( 0.0f, -1.0f, 0.0f);
-        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P4);	// Top Right ╨СвСоб
-        GL11.glTexCoord2f(2/16f, 3/8f); glVertex3fv(P3);	// Top Left ╨Ссроб
-        GL11.glTexCoord2f(2/16f, 4/8f);glVertex3fv(P2);	// Bottom Left г╟сроб
-        GL11.glTexCoord2f(1/16f, 4/8f);glVertex3fv(P1);	// Bottom Right г╟вСоб
+        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P4);	// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(2/16f, 3/8f); glVertex3fv(P3);	// Top Left О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(2/16f, 4/8f);glVertex3fv(P2);	// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 4/8f);glVertex3fv(P1);	// Bottom Right г╟О©╫О©╫О©╫О©╫
         // Right face
         GL11.glNormal3f( 1.0f, 0.0f, 0.0f);
-        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P2);	// Bottom Left г╟сроб
-        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P3);	// Bottom Right ╨Ссроб
-        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P7);	// Top Right ╨Ссрио
-        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P6);	// Top Left г╟срио
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P2);	// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P3);	// Bottom Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P7);	// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P6);	// Top Left г╟О©╫О©╫О©╫О©╫
       
         // Left Face
         GL11.glNormal3f( -1.0f, 0.0f, 0.0f);
-        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P4);	// Bottom Left ╨СвСоб
-        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P1);	// Bottom Right г╟вСоб
-        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P5);	// Top Right г╟вСио
-        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P8);	// Top Leftг╟вСио
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P4);	// Bottom Left О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P1);	// Bottom Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P5);	// Top Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P8);	// Top Leftг╟О©╫О©╫О©╫О©╫
         GL11.glEnd();
         GL11.glRotatef(-angle,1, 0, 0);
     	GL11.glTranslatef(-Position.x,-Position.y,-Position.z);

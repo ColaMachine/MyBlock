@@ -5,6 +5,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 
+import cola.machine.game.myblocks.model.ui.bag.Bag;
 import glapp.GLApp;
 import glapp.GLCamera;
 import glmodel.GL_Vector;
@@ -16,6 +17,7 @@ import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.physic.BulletPhysics;
+import org.terasology.registry.CoreRegistry;
 import util.MathUtil;
 import util.OpenglUtil;
 
@@ -124,10 +126,10 @@ public Robot robot;
 			bulletPhysics.blockRepository.put(block);
 			this.engine.blockRepository.reBuild();
 		}
-		
+        CoreRegistry.get(Bag.class).click(x,y);
 	}
 	public void mouseRClick(int x, int y){
-		
+
 		
 	}
 	/**

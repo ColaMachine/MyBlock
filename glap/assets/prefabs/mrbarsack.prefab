@@ -1,0 +1,11 @@
+{
+    "parent" : "engine:iconItem",
+    "DisplayName" : {
+        "name" : "Mr Barsack's Axe"
+    },
+    "Item" : {
+        "icon" : "engine:items.Axe",
+        "renderWithIcon" : true,
+        "baseDamage" : 50
+    }
+}

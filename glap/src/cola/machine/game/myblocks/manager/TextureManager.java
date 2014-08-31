@@ -15,8 +15,17 @@ public class TextureManager {
 
     public static HashMap<String,TextureInfo> iconMap=new HashMap<String,TextureInfo>();
     public TextureManager(){
+        this.put("gui","glap/images/gui.png");
+        iconMap.put("cross",new TextureInfo("gui",1/12f+0.01f,10/12f,1/12f,1/12f,true));
         this.put("widgets","glap/assets/minecraft/textures/gui/widgets.png");
         iconMap.put("toolbar",new TextureInfo("widgets",0,469,362,43));
+
+        this.put("inventory","glap/assets/minecraft/textures/gui/container/inventory.png");
+        iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
+
+        this.put("human","glap/images/2000.png");
+        //iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
+
     }
     public void put(String name ,String textureImagePath){
         int textureHandle = 0;

@@ -73,7 +73,7 @@ public class MyBlockEngine extends GLApp {
 
 	public BlockRepository blockRepository = new BlockRepository(this);
 	BulletPhysics bulletPhysics;
-	private Human human ;
+	public Human human ;
 	private Human human2 ;
 
 	/**
@@ -97,9 +97,10 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
 	public void setup() {
+        human= new Human(blockRepository);
+        human2= new Human(blockRepository);
+        CoreRegistry.put(MyBlockEngine.class,this);
 		this.initManagers();
-		human= new Human(blockRepository);
-		human2= new Human(blockRepository);
 		setPerspective();
 		/*setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new float[] {
 				1f, 1f, 1f, 1f }, new float[] { 1f,1f, 1f, 1f },
@@ -263,8 +264,10 @@ for(int y=0;y<=height/10;y++){
 		//drawCross2(5,5,5);
 		
 		drawObjects();
-		//drawCross(crossTextureHandle,1/12f+0.01f,10/12f,1/12f,1/12f,getWidth()/2-25, getHeight()/2-25,50f,50f);
+
         CoreRegistry.get(NuiManager.class).render();
+
+       // drawCross(crossTextureHandle,1/12f+0.01f,10/12f,1/12f,1/12f,getWidth()/2-25, getHeight()/2-25,50f,50f);
 		//drawImageFullScreen(textureImg);
 		// Place the light. Light will move with the rest of the scene
 		//setLightPosition(GL11.GL_LIGHT1, lightPosition);
@@ -276,11 +279,11 @@ for(int y=0;y<=height/10;y++){
        this.drawWater();
     //  drawCross(crossTextureHandle,1/12,10/12,1/12,1/12,0, 0,50,50);
       
-		print( 30, viewportH- 45, "Use arrow keys to navigate:");
-        print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
-        print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
-        print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
-        print( 30, viewportH-140, "SPACE key switches cameras", 1);
+		//print( 30, viewportH- 45, "Use arrow keys to navigate:");
+        //print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
+       // print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
+       // print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
+      //  print( 30, viewportH-140, "SPACE key switches cameras", 1);
 
 
         
@@ -529,13 +532,18 @@ for(int y=0;y<=height/10;y++){
 		// TODO Auto-generated method stub
 		
 		 //暂时用默认的参数初始化manager 然后manager 放到corerepgistry里
-		//initConfig();
-		
-		//初始化参数
+		//
+
+        /* read config.cfg*/
+        initConfig();
+
 		 initManagers();
 		 
-		 //加载图元
-		// initAssets();
+		 //load assets
+//		 initAssets();
+//
+//          initOPFlow();
+//
 		
 		
 	}
@@ -545,6 +553,9 @@ for(int y=0;y<=height/10;y++){
 
         
         
+    }
+    public void initConfig(){
+        //
     }
 	
 }

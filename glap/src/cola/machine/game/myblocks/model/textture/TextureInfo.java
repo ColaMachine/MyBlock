@@ -24,4 +24,11 @@ public class TextureInfo extends RegionArea{
         textureHandle= img.textureHandle;
 
     }
+
+    public TextureInfo(String imgName,float minX,float minY,float width,float height,boolean flag){
+        GLImage img=TextureManager.getTextureHandle(imgName);
+        withWH(minX, minY, width, height);
+        textureHandle= img.textureHandle;
+
+    }
 }
