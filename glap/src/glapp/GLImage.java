@@ -4,10 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.*;
+
 import javax.imageio.*;
 
 /**
@@ -46,7 +48,13 @@ public class GLImage {
 			GLApp.msg("GLImage(String): loaded " + imgName + ", width=" + w + " height=" + h);
 		}
     }
-
+    public GLImage(URI uri)
+    {
+		BufferedImage img = loadJavaImage(uri);
+        if (makeGLImage(img,true,false)) {
+			GLApp.msg("GLImage(String): loaded " + uri + ", width=" + w + " height=" + h);
+		}
+    }
     /**
      * Load pixels from an image file.  Convert to RGBA format.
      * @param imgName
@@ -181,6 +189,16 @@ public class GLImage {
     	BufferedImage tmpi = null;
     	try {
     		tmpi = ImageIO.read(GLApp.getInputStream(imgName));
+    	}
+    	catch (Exception e) {
+    		GLApp.err("GLImage.loadJavaImage() exception: FAILED TO LOAD IMAGE " + e);
+    	}
+    	return tmpi;
+	}
+    public BufferedImage loadJavaImage(URI uri) {
+    	BufferedImage tmpi = null;
+    	try {
+    		tmpi = ImageIO.read(new File(uri));
     	}
     	catch (Exception e) {
     		GLApp.err("GLImage.loadJavaImage() exception: FAILED TO LOAD IMAGE " + e);

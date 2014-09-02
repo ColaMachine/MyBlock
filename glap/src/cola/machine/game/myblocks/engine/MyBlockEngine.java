@@ -21,6 +21,8 @@ import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.liquid.Water;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.repository.BlockRepository;
+
+import org.terasology.asset.AssetManager;
 import org.terasology.registry.CoreRegistry;
 
 /**
@@ -279,7 +281,7 @@ for(int y=0;y<=height/10;y++){
        this.drawWater();
     //  drawCross(crossTextureHandle,1/12,10/12,1/12,1/12,0, 0,50,50);
       
-		//print( 30, viewportH- 45, "Use arrow keys to navigate:");
+		print( 30, viewportH- 45, "Use arrow keys to navigate:");
         //print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
        // print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
        // print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
@@ -551,6 +553,7 @@ for(int y=0;y<=height/10;y++){
        TextureManager textureManager= CoreRegistry.put(TextureManager.class,new TextureManager());
         NuiManager nuiManager= CoreRegistry.put(NuiManager.class,new NuiManager());
 
+        //AssetManager assetManager = CoreRegistry.putPermanently(AssetManager.class, new AssetManager(moduleManager.getEnvironment()));
         
         
     }

@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.ui.bag;
 
 import cola.machine.game.myblocks.container.Slot;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
+import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.region.RegionArea;
@@ -16,9 +17,9 @@ import org.terasology.registry.CoreRegistry;
  */
 public class Bag extends RegionArea  {
     public Human human;
-    public Slot[] slots;
+    public Slot[] slots;//bag slot
     public TextureInfo textureInfo;
-    public ToolBarSlop[] toolBarSlops = new ToolBarSlop[10];
+    public ToolBarSlop[] toolBarSlots = new ToolBarSlop[10];//toobar slot
     RegionArea slotsRegion=new RegionArea();
     public int humanTextureHandle;
     public float slotsWidth=458;
@@ -46,17 +47,29 @@ public class Bag extends RegionArea  {
         slotWidth= slotsRegion.getWidth()/9;
         slotHeight=slotsRegion.getHeight()/3;
          /* 初始化 */
-        slots=new Slot[3*9];
+        slots=new Slot[3*9+9];
         for(int rowIndex=0;rowIndex<3;rowIndex++) {
             for (int colIndex = 0; colIndex < 9; colIndex++) {
-                Slot slot = new Slot(left+slotWidth * colIndex, bottom+slotHeight * rowIndex, slotWidth , slotHeight);
+                Slot slot = new Slot(left+slotWidth * colIndex+2, bottom+slotHeight * rowIndex+2, slotWidth -5, slotHeight-5);
                 slots[rowIndex * 9 + colIndex] = slot;
             }
         }
+        
+        for(int i=0;i<9;i++) {
+         
+                Slot slot = new Slot(left+slotWidth * i+2, bottom-55+2, slotWidth -5, slotHeight-5);
+                slots[3*9+  i] = slot;
+            }
+        slotsRegion.withWH(left,bottom-55,slotsWidth,slotsHeight+55);
         CoreRegistry.put(Bag.class,this);
+
+        this.putItem(0,new Item("apple_golden",10));
+        this.putItem(1,new Item("soil",10));
     }
 
-
+    public void putItem(int slotIndex , Item item){
+        slots[slotIndex].putItem(item);
+    }
     public void render() {
 
         GLApp.pushAttribOrtho();
@@ -87,6 +100,12 @@ public class Bag extends RegionArea  {
         GL11.glVertex3f(minX, maxY, (float)-10);
         GL11.glEnd();
 
+
+
+
+
+
+
         //画一个小人在框体里
         GL11.glPushMatrix();
         {
@@ -114,7 +133,7 @@ public class Bag extends RegionArea  {
         renderSlot();
 
 
-        GL11.glLineWidth(2f);
+       /* GL11.glLineWidth(2f);
         GL11.glColor3f(1f, 1f, 1f);
 
         GL11.glBegin(GL11.GL_QUADS);
@@ -122,10 +141,48 @@ public class Bag extends RegionArea  {
         GL11.glVertex2f(mouseX+10,mouseY-10);
         GL11.glVertex2f(mouseX+10,mouseY+10);
         GL11.glVertex2f(mouseX-10,mouseY+10);
-        GL11.glEnd();
+        GL11.glEnd();*/
 
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+
+        if(this.item!=null) {
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.item.textureInfo.textureHandle);
+            GL11.glBegin(GL11.GL_QUADS);
+            {
+                GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
+
+                GL11.glTexCoord2f(0,0);
+                GL11.glVertex2f(mouseX-slotWidth/2,mouseY-slotHeight/2);
+
+
+                GL11.glTexCoord2f(1, 0);
+                GL11.glVertex2f(mouseX + slotWidth / 2, mouseY - slotHeight / 2);
+
+                GL11.glTexCoord2f(1,1);
+                GL11.glVertex2f(mouseX + slotWidth / 2, mouseY + slotHeight / 2);
+
+                GL11.glTexCoord2f(0,1);
+                GL11.glVertex2f(mouseX - slotWidth / 2, mouseY + slotHeight / 2);
+
+            }
+            GL11.glEnd();
+
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, GLApp.fontTextureHandle);
+            //GLApp.print((int)minX,(int) minY,"11");
+            GL11.glDisable(GL11.GL_LIGHTING);
+            // enable alpha blending, so character background is transparent
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+            GL11.glTranslatef(mouseX + slotWidth / 2-20, mouseY - slotHeight / 2 , 0);        // Position The Text (in pixel coords)
+            for(int i=0; i<String.valueOf(this.item.count).length(); i++) {
+                GL11.glCallList(GLApp.fontListBase - 32 + String.valueOf(this.item.count).charAt(i));
+            }
+            // GL11.glTranslatef(-maxX,-minY , 0);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+        }
        /* GL11.glBegin(GL11.GL_QUADS);
       //  GL11.glRectf(200,200,300,300);
         GL11.glVertex3f(200, 200, (float)-10);
@@ -151,15 +208,28 @@ public class Bag extends RegionArea  {
     public void click(int x,int y){
         anySlotClicked(x, y);
         mouseX=x;mouseY=y;
+
+
     }
+    public void move(int x,int y){
+        mouseX=x;mouseY=y;
+    }
+    public Item item;
     public void anySlotClicked(float x,float y){
         if(slotsRegion.contain(x,y)){
             //count the num of slot
            // int rownum = (x-slotsRegion.minX)%sl
             for(int i=0;i<slots.length;i++){
                 if(slots[i].contain(x,y)){
-                    slots[i].choose();
-                    break;
+                    if(slots[i].item ==null &&  this.item!=null){
+                        slots[i].item=this.item;
+                        this.item=null;
+
+                    }else {
+                        this.item = slots[i].choose();
+                        slots[i].clear();
+
+                    } break;
                 }
             }
 

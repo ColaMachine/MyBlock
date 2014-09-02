@@ -8,15 +8,19 @@ public class NuiManager {
     Cross cross;
     Bag bag;
     public  NuiManager(){
-         toolbarcontainer = new ToolBarContainer();
+       
         cross=new Cross();
 
         bag=new Bag();
+        
+        toolbarcontainer = new ToolBarContainer();
     }
 
     public void render(){
-        toolbarcontainer.render();
+       
         cross.render();
         bag.render();
+        
+        toolbarcontainer.render();
     }
 }

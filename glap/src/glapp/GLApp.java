@@ -6,7 +6,9 @@ import java.util.regex.Pattern;
 import java.lang.reflect.Method;
 import java.nio.*;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
+
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.input.*;
@@ -1978,7 +1980,13 @@ public class GLApp {
         }
         return null;
     }
-
+    public static GLImage loadImage(URI uri) {
+        GLImage img = new GLImage(uri);
+        if (img.isLoaded()) {
+            return img;
+        }
+        return null;
+    }
     /**
      * Load an image from the given file and return a ByteBuffer containing ARGB pixels.<BR>
      * Can be used to create textures. <BR>
@@ -2814,8 +2822,8 @@ public class GLApp {
     //           destroyFont();   // cleanup
     //========================================================================
 
-    static int fontListBase = -1;           // Base Display List For The character set
-    static int fontTextureHandle = -1;      // Texture handle for character set image
+    public static int fontListBase = -1;           // Base Display List For The character set
+    public static int fontTextureHandle = -1;      // Texture handle for character set image
 
     /**
      * Build a character set from the given texture image.

@@ -198,7 +198,7 @@ public Robot robot;
 			canDetectMove=false;
 	//	System.out.println("move x distance:"+(-x + centerX)+" y distance:"+(y - centerY));
 		}
-
+        CoreRegistry.get(Bag.class).move(x,y);
 		
 	}
 	/**

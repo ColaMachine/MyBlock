@@ -4,38 +4,69 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.GLApp;
 import glapp.GLImage;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+
+import org.terasology.engine.paths.PathManager;
 
 /**
  * Created by luying on 14-8-28.
  */
 public class TextureManager {
-
+Path installPath;
     public static HashMap<String,GLImage> textureMap =new HashMap<String,GLImage>();
 
     public static HashMap<String,TextureInfo> iconMap=new HashMap<String,TextureInfo>();
     public TextureManager(){
-        this.put("gui","glap/images/gui.png");
+    	installPath =PathManager.getInstance().getInstallPath();
+        this.put("gui","images/gui.png");
         iconMap.put("cross",new TextureInfo("gui",1/12f+0.01f,10/12f,1/12f,1/12f,true));
-        this.put("widgets","glap/assets/minecraft/textures/gui/widgets.png");
+        this.put("widgets","assets/minecraft/textures/gui/widgets.png");
         iconMap.put("toolbar",new TextureInfo("widgets",0,469,362,43));
 
-        this.put("inventory","glap/assets/minecraft/textures/gui/container/inventory.png");
+        this.put("inventory","assets/minecraft/textures/gui/container/inventory.png");
         iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
 
-        this.put("human","glap/images/2000.png");
+        this.put("human","images/2000.png");
         //iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
 
+        this.put("apple_golden","assets/minecraft/textures/items/apple_golden.png");
+
+        iconMap.put("apple_golden",new TextureInfo("apple_golden"));
+        
+        this.put("terrain","assets/minecraft/textures/terrain.png");
+
+        iconMap.put("soil",new TextureInfo("terrain",2,15,1,1,16,16));
+        
+        iconMap.put("soil_side",new TextureInfo("terrain",3,15,1,1,16,16));
+        
+        iconMap.put("stone",new TextureInfo("terrain",1,15,1,1,16,16));
+        
+        iconMap.put("sand",new TextureInfo("terrain",2,14,1,1,16,16));
     }
     public void put(String name ,String textureImagePath){
         int textureHandle = 0;
-        GLImage textureImg = GLApp.loadImage(textureImagePath);
-        if (textureImg != null) {
-            textureImg.textureHandle = GLApp.makeTexture(textureImg);
-            GLApp.makeTextureMipMap(textureHandle,textureImg);
-        }
+        
+        GLImage textureImg;
+		try {
+			textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());
+			//ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
+			if (textureImg != null) {
+		            textureImg.textureHandle = GLApp.makeTexture(textureImg);
+		            GLApp.makeTextureMipMap(textureHandle,textureImg);
+		        }
 
-        textureMap.put(name, textureImg);
+		        textureMap.put(name, textureImg);
+		} catch (Exception  e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+      
     }
 
     public void preInit(){
