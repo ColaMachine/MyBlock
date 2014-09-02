@@ -33,6 +33,7 @@ public class Bag extends RegionArea  {
     public float bottom=174;
     public float mouseX;
     public float mouseY;
+    public boolean show=false;
 //    public float height=36;
 //    public float width=36;
 
@@ -46,7 +47,7 @@ public class Bag extends RegionArea  {
         slotsRegion.withWH(left,bottom,slotsWidth,slotsHeight);
         slotWidth= slotsRegion.getWidth()/9;
         slotHeight=slotsRegion.getHeight()/3;
-         /* 初始化 */
+         /* 鍒濆鍖�*/
         slots=new Slot[3*9+9];
         for(int rowIndex=0;rowIndex<3;rowIndex++) {
             for (int colIndex = 0; colIndex < 9; colIndex++) {
@@ -71,7 +72,7 @@ public class Bag extends RegionArea  {
         slots[slotIndex].putItem(item);
     }
     public void render() {
-
+if(!show)return;
         GLApp.pushAttribOrtho();
         // switch to 2D projection
         GLApp. setOrthoOn();
@@ -106,7 +107,7 @@ public class Bag extends RegionArea  {
 
 
 
-        //画一个小人在框体里
+        //鐢讳竴涓皬浜哄湪妗嗕綋閲�
         GL11.glPushMatrix();
         {
 
@@ -153,17 +154,17 @@ public class Bag extends RegionArea  {
             {
                 GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
 
-                GL11.glTexCoord2f(0,0);
+                GL11.glTexCoord2f( this.item.textureInfo.minX, this.item.textureInfo.minY);
                 GL11.glVertex2f(mouseX-slotWidth/2,mouseY-slotHeight/2);
 
 
-                GL11.glTexCoord2f(1, 0);
+                GL11.glTexCoord2f( this.item.textureInfo.maxX,this.item.textureInfo.minY);
                 GL11.glVertex2f(mouseX + slotWidth / 2, mouseY - slotHeight / 2);
 
-                GL11.glTexCoord2f(1,1);
+                GL11.glTexCoord2f( this.item.textureInfo.maxX,this.item.textureInfo.maxY);
                 GL11.glVertex2f(mouseX + slotWidth / 2, mouseY + slotHeight / 2);
 
-                GL11.glTexCoord2f(0,1);
+                GL11.glTexCoord2f( this.item.textureInfo.minX,this.item.textureInfo.maxY);
                 GL11.glVertex2f(mouseX - slotWidth / 2, mouseY + slotHeight / 2);
 
             }
@@ -236,4 +237,8 @@ public class Bag extends RegionArea  {
 
         }
     }
+    public void changeShow(){
+    	this.show=!this.show;
+    }
+   
 }

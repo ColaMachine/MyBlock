@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Robot;
 
 import cola.machine.game.myblocks.model.ui.bag.Bag;
+import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import glapp.GLApp;
 import glapp.GLCamera;
 import glmodel.GL_Vector;
@@ -17,7 +18,9 @@ import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.physic.BulletPhysics;
+
 import org.terasology.registry.CoreRegistry;
+
 import util.MathUtil;
 import util.OpenglUtil;
 
@@ -81,7 +84,37 @@ public Robot robot;
 			human.Position.y=	human.Position.y-1*seconds;
 			human.move(human.Position);
 		}
-
+		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+			CoreRegistry.get(ToolBar.class).keyDown(1);
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+			CoreRegistry.get(ToolBar.class).keyDown(2);
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+			System.out.println("seconds:"+seconds);
+			CoreRegistry.get(Bag.class).changeShow();
+		}
+if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+	CoreRegistry.get(ToolBar.class).keyDown(3);
+		}
+if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+	CoreRegistry.get(ToolBar.class).keyDown(4);
+}
+if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
+	CoreRegistry.get(ToolBar.class).keyDown(5);
+}
+if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
+	CoreRegistry.get(ToolBar.class).keyDown(6);
+}
+if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
+	CoreRegistry.get(ToolBar.class).keyDown(7);
+}
+if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+	CoreRegistry.get(ToolBar.class).keyDown(8);
+}
+if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+	CoreRegistry.get(ToolBar.class).keyDown(9);
+}
 		// tilt up
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))

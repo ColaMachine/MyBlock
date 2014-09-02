@@ -1,10 +1,10 @@
 package cola.machine.game.myblocks.model.ui;
 
 import cola.machine.game.myblocks.model.ui.bag.Bag;
-import cola.machine.game.myblocks.model.ui.tool.ToolBarContainer;
+import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 
 public class NuiManager {
-    ToolBarContainer toolbarcontainer;
+    ToolBar toolbarcontainer;
     Cross cross;
     Bag bag;
     public  NuiManager(){
@@ -13,7 +13,7 @@ public class NuiManager {
 
         bag=new Bag();
         
-        toolbarcontainer = new ToolBarContainer();
+        toolbarcontainer = new ToolBar();
     }
 
     public void render(){
