@@ -22,9 +22,13 @@ Path installPath;
 
     public static HashMap<String,TextureInfo> iconMap=new HashMap<String,TextureInfo>();
     public TextureManager(){
-    	installPath =PathManager.getInstance().getInstallPath();
-        this.put("gui","images/gui.png");
+   	installPath =PathManager.getInstance().getInstallPath();
+       this.put("gui","images/gui.png");
         iconMap.put("cross",new TextureInfo("gui",1/12f+0.01f,10/12f,1/12f,1/12f,true));
+        
+        iconMap.put("selectBox",new TextureInfo("gui",0,210,25,26));
+        
+        
         this.put("widgets","assets/minecraft/textures/gui/widgets.png");
         iconMap.put("toolbar",new TextureInfo("widgets",0,469,362,43));
 
