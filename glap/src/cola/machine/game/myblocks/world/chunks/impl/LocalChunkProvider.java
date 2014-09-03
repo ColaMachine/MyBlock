@@ -16,6 +16,10 @@
 
 package cola.machine.game.myblocks.world.chunks.impl;
 
+import cola.machine.game.myblocks.world.chunks.Region3i;
+import cola.machine.game.myblocks.world.chunks.TeraMath;
+import cola.machine.game.myblocks.world.chunks.Vector3i;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -30,46 +34,6 @@ import gnu.trove.procedure.TShortObjectProcedure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.Region3i;
-import org.terasology.math.Side;
-import org.terasology.math.TeraMath;
-import org.terasology.math.Vector3i;
-import org.terasology.monitoring.ChunkMonitor;
-import org.terasology.monitoring.PerformanceMonitor;
-import org.terasology.persistence.ChunkStore;
-import org.terasology.persistence.StorageManager;
-import org.terasology.utilities.concurrency.TaskMaster;
-import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.block.BeforeDeactivateBlocks;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.OnActivatedBlocks;
-import org.terasology.world.block.OnAddedBlocks;
-import org.terasology.world.chunks.ChunkBlockIterator;
-import org.terasology.world.chunks.ChunkConstants;
-import org.terasology.world.chunks.ChunkProvider;
-import org.terasology.world.chunks.ChunkRegionListener;
-import org.terasology.world.chunks.event.BeforeChunkUnload;
-import org.terasology.world.chunks.event.OnChunkGenerated;
-import org.terasology.world.chunks.event.OnChunkLoaded;
-import org.terasology.world.chunks.event.PurgeWorldEvent;
-import org.terasology.world.chunks.internal.ChunkImpl;
-import org.terasology.world.chunks.internal.ChunkRelevanceRegion;
-import org.terasology.world.chunks.internal.GeneratingChunkProvider;
-import org.terasology.world.chunks.internal.ReadyChunkInfo;
-import org.terasology.world.chunks.pipeline.AbstractChunkTask;
-import org.terasology.world.chunks.pipeline.ChunkGenerationPipeline;
-import org.terasology.world.chunks.pipeline.ChunkTask;
-import org.terasology.world.generator.WorldGenerator;
-import org.terasology.world.internal.ChunkViewCore;
-import org.terasology.world.internal.ChunkViewCoreImpl;
-import org.terasology.world.propagation.BatchPropagator;
-import org.terasology.world.propagation.light.InternalLightProcessor;
-import org.terasology.world.propagation.light.LightPropagationRules;
-import org.terasology.world.propagation.light.LightWorldView;
-import org.terasology.world.propagation.light.SunlightPropagationRules;
-import org.terasology.world.propagation.light.SunlightWorldView;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -84,7 +48,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * @author Immortius
  */
-public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvider {
+public class LocalChunkProvider implements ChunkProvider {
 
     // TODO: Dynamically calculate this
     private static final int CACHE_SIZE = (int) (1.5 * Runtime.getRuntime().maxMemory() / 1048576);
