@@ -43,7 +43,7 @@ Path installPath;
         iconMap.put("apple_golden",new TextureInfo("apple_golden"));
         
         this.put("terrain","assets/minecraft/textures/terrain.png");
-
+        iconMap.put("water",new TextureInfo("terrain",14,2,1,1,16,16));
         iconMap.put("soil",new TextureInfo("terrain",2,15,1,1,16,16));
         
         iconMap.put("soil_side",new TextureInfo("terrain",3,15,1,1,16,16));
