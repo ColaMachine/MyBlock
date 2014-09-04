@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.item;
 
+import cola.machine.game.myblocks.icon.Icon;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 
@@ -8,9 +9,9 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
  */
 public class Item {
     public String name;
-    String id;
-    String type;
-    String icon;
+    public  String id;
+    public String type;
+    public Icon icon;
     String render;
     public  int count;
     public ItemInfo itemInfo;

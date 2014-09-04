@@ -23,9 +23,9 @@ public class Cross extends RegionArea {
     public void render() {
 
 
-        GLApp.pushAttribOrtho();
+       // GLApp.pushAttribOrtho();
         // switch to 2D projection
-        GLApp. setOrthoOn();
+        //GLApp. setOrthoOn();
         // tweak settings
         GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
         GL11.glColor4f(1,1,1,1);             // no color
@@ -50,8 +50,8 @@ public class Cross extends RegionArea {
         GL11.glTexCoord2f(textureInfo.minX, textureInfo.maxY);
         GL11.glVertex3f(minX, maxY, (float) 0);
         GL11.glEnd();
-        GLApp.setOrthoOff();
+        //GLApp.setOrthoOff();
         // return to previous settings
-        GLApp. popAttrib();
+        //GLApp. popAttrib();
     }
 }

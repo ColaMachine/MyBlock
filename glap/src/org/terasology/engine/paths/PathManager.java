@@ -35,7 +35,7 @@ import java.util.List;
  */
 public final class PathManager {
     public static final String TERASOLOGY_FOLDER_NAME = "Terasology";
-    public static final Path LINUX_HOME_SUBPATH = Paths.get(".local", "share", "terasology");
+    public static final Path LINUX_HOME_SUBPATH =null; //Paths.get(".local", "share", "terasology");
 
     private static final String SAVED_GAMES_DIR = "saves";
     private static final String LOG_DIR = "logs";

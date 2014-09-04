@@ -22,7 +22,11 @@ Path installPath;
 
     public static HashMap<String,TextureInfo> iconMap=new HashMap<String,TextureInfo>();
     public TextureManager(){
-   	installPath =PathManager.getInstance().getInstallPath();
+   	//installPath =PathManager.getInstance().getInstallPath();
+   	
+   	
+    this.put("background","images/background.png");
+    iconMap.put("background",new TextureInfo("background"));
        this.put("gui","images/gui.png");
         iconMap.put("cross",new TextureInfo("gui",1/12f+0.01f,10/12f,1/12f,1/12f,true));
         
@@ -57,7 +61,7 @@ Path installPath;
         
         GLImage textureImg;
 		try {
-			textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());
+			textureImg = GLApp.loadImage(textureImagePath);//installPath.resolve(textureImagePath).toUri()
 			//ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
 			if (textureImg != null) {
 		            textureImg.textureHandle = GLApp.makeTexture(textureImg);

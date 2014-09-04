@@ -9,21 +9,25 @@ import glapp.GLCamera;
 import glapp.GLImage;
 import glmodel.GL_Vector;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import cola.machine.game.myblocks.block.Water;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.liquid.Water;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.repository.BlockRepository;
 
 import org.terasology.asset.AssetManager;
 import org.terasology.registry.CoreRegistry;
+
+import util.ImageUtil;
 
 /**
  * Run a bare-bones GLApp. Draws one white triangle centered on screen.
@@ -39,6 +43,7 @@ public class MyBlockEngine extends GLApp {
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
 	int skyTextureHandle = 0;
+	int waterTextureHandle=0;
 	int crossTextureHandle=0;
 	GLImage textureImg ;
 	MouseControlCenter mouseControlCenter;
@@ -65,7 +70,7 @@ public class MyBlockEngine extends GLApp {
 	// GLModel airplane;
 	public int earth;
 	public int sky;
-
+	public int waterDisplay;
 	// shadow handler will draw a shadow on floor plane
 	// GLShadowOnPlane airplaneShadow;
 
@@ -99,9 +104,13 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
 	public void setup() {
+	
+		
         human= new Human(blockRepository);
+        
         human2= new Human(blockRepository);
         CoreRegistry.put(MyBlockEngine.class,this);
+        CoreRegistry.put(Human.class,human);
 		this.initManagers();
 		setPerspective();
 		/*setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new float[] {
@@ -135,12 +144,13 @@ public class MyBlockEngine extends GLApp {
 		humanTextureHandle = makeTexture("images/2000.png");
 		skyTextureHandle= makeTexture("images/sky180.png");
 		crossTextureHandle= makeTexture("images/gui.png");
+		waterTextureHandle=TextureManager.getIcon("water").textureHandle;
 		 textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(5, 4, 5, 0, 0, -1, 0, 1, 0);
+		human.setHuman(25, 40, 25, 0, 0, -1, 0, 1, 0);
 
-		human2.setHuman(4, 2, 20, 0, 0, 1, 0, 1, 0);
+		human2.setHuman(10, 10, 10, 0, 0, 1, 0, 1, 0);
 
 		human.startWalk();
 		
@@ -154,7 +164,8 @@ public class MyBlockEngine extends GLApp {
 		// human.move(2, 12, 2);
 		// make a sphere display list
 		
-		/*try {
+		try {
+			//创建高度图
 			int[][] heights =ImageUtil.getGrayPicture("d:/graymap.png");
 			
 			earth = beginDisplayList();
@@ -164,10 +175,29 @@ public class MyBlockEngine extends GLApp {
 					int height=heights[i][j];
 for(int y=0;y<=height/10;y++){
 	Block block = new Block();
-	block.setCenter(2*i+1,y, 2*j+1);
+	block.setCenter(2*i+1,2*y+1, 2*j+1);
 	blockRepository.put(block);
 	block.renderCube();	
 					}
+
+				
+				}
+			{
+				// renderCube();
+			}
+			endDisplayList();
+			
+			waterDisplay = beginDisplayList();
+			for (int i = 0; i < 50; i ++)
+				for (int j = 0; j < 50; j ++) {
+					int height=heights[i][j];
+for(int y=height/10;y<=8;y++){
+	Water water = new Water();
+	water.setCenter(2*i+1,2*y+1, 2*j+1);
+	//blockRepository.put(block);
+	water.renderCube();	
+					}
+
 				
 				}
 			{
@@ -181,9 +211,9 @@ for(int y=0;y<=height/10;y++){
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
-		earth = beginDisplayList();
+		/*earth = beginDisplayList();
 		// ѭ������
 		
 		for (int j = 1; j < 20; j += 2)
@@ -193,13 +223,75 @@ for(int y=0;y<=height/10;y++){
 				blockRepository.put(block);
 				block.renderCube();
 			}
-		{
-			// renderCube();
-		}
-		endDisplayList();
 		
+		endDisplayList();*/
+		
+		/*waterDisplay = beginDisplayList();
+		for (int j = 1; j < 20; j += 2)
+			for (int i = 1; i < 20; i += 2) {
+				Water water = new Water();
+				water.setCenter(i, 3, j);
+				//blockRepository.put(Water);
+				water.renderCube();
+			}
+		
+		endDisplayList();*/
+		int sky_x=50;
+		int sky_y=50;
+		int sky_z=50;
 		sky = beginDisplayList(); {
-        	renderSphere();
+        	//renderSphere();
+
+			GL11.glBegin(GL11.GL_QUADS);
+			// Front Face
+			GL11.glNormal3f(0.0f, 0.0f,1.0f);
+		
+			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Right
+			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Left
+			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Top Left
+			GL11.glVertex3f(sky_x, sky_y, sky_z); // Top Right
+			
+			// Back Face
+			GL11.glNormal3f(0.0f, 0.0f, -1.0f);
+		
+			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Right
+			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Bottom Right
+			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Bottom Left
+			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Left
+			
+			// Top Face
+			GL11.glNormal3f(0.0f, 1.0f, 0.0f);
+		
+			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Bottom Left
+			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Left
+			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Right
+			GL11.glVertex3f(sky_x, sky_y, sky_z); // Bottom Right
+			
+			// Bottom Face
+			GL11.glNormal3f(0.0f, -1.0f, 0.0f);
+		
+			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Top Left
+			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Top Right
+			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Right
+			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Left
+			
+			// Right face
+			GL11.glNormal3f(1.0f, 0.0f, 0.0f);
+		
+			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Right
+			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Bottom Right
+			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Left
+			GL11.glVertex3f(sky_x, sky_y, sky_z); // Top Left
+			
+			// Left Face
+			GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
+			
+			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Right
+			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Bottom Left
+			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Left
+			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Top Right
+			
+			GL11.glEnd();
         }
         endDisplayList();
 		// make a shadow handler
@@ -211,10 +303,11 @@ for(int y=0;y<=height/10;y++){
 		// the function that draws all objects that cast shadows
 		// airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]
 		// {0f,1f,0f,3f}, null, this, method(this,"drawObjects"));
-        water=new Water();
-        water.setCenter(2, 2, 2);
+        //water=new Water();
+        //water.setCenter(2, 2, 2);	
+		//org.lwjgl.input.Keyboard.enableRepeatEvents(true);
 	}
-    Water water ;
+   Water water ;
 	/**
 	 * set the field of view and view depth.
 	 */
@@ -278,7 +371,7 @@ for(int y=0;y<=height/10;y++){
 //		print(30, viewportH - 140, "SPACE key switches cameras", 1);
 
 		//this.drawLine();
-       this.drawWater();
+     //  this.drawWater();
     //  drawCross(crossTextureHandle,1/12,10/12,1/12,1/12,0, 0,50,50);
       
 		print( 30, viewportH- 45, "Use arrow keys to navigate:");
@@ -306,6 +399,25 @@ for(int y=0;y<=height/10;y++){
 		}
 		GL11.glPopMatrix();
 		
+		GL11.glPushMatrix();
+		{// setOrthoOn();
+			
+		       GL11. glEnable(GL11.GL_BLEND);
+		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
+		     
+			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
+			// GL11.glScalef(1/4f, 1/4f, 1/4f); // scale up
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, waterTextureHandle);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+			callDisplayList(waterDisplay);
+			 GL11.glDisable(GL11.GL_BLEND);
+			// setOrthoOff();
+		}
+		GL11.glPopMatrix();
+		
+		
 		//����һ����
 		GL11.glPushMatrix();
 		{
@@ -325,18 +437,18 @@ for(int y=0;y<=height/10;y++){
         {
             GL11.glTranslatef(this.cam.camera.Position.x, 4, this.cam.camera.Position.z);
            // GL11.glScalef(5f, 5f,5f);
-            GL11.glScalef(40f, 15f,40f);          // scale up
+            //GL11.glScalef(40f, 15f,40f);          // scale up
           // GL11.glBindTexture(GL11.GL_TEXTURE_2D, skyTextureHandle);
 
             GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glFrontFace(GL11.GL_CW);
+         //  GL11.glFrontFace(GL11.GL_CW);
            //GL11.glDisable(GL11.GL_LIGHT_MODEL_AMBIENT);
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
            // GL11.glCullFace(GL11.GL_BACK);
            // GL11.glColor3f(0.835f,0.78125f, 0.94921875f);
             callDisplayList(sky);
-            GL11.glFrontFace(GL11.GL_CCW);
+          // GL11.glFrontFace(GL11.GL_CCW);
            // GL11.glEnable(GL11.GL_LIGHT1);
             GL11.glEnable(GL11.GL_LIGHTING);
            // GL11.glEnable(GL11.GL_LIGHT_MODEL_AMBIENT);
@@ -442,11 +554,28 @@ for(int y=0;y<=height/10;y++){
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_LIGHTING);
     }
+    
+
+    public void drawWater2(){
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glTranslated(5, 2, 5);
+        GL11. glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
+        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+        water.renderCube();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11. glColor4f(1.0f, 1.0f, 1.0f,1f);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_LIGHTING);
+    }
 
     public void drawSky(){
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glTranslated(5, 2, 5);
+        GL11.glTranslated(human.Position.x, human.Position.y, human.Position.z);
         GL11. glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
         GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);

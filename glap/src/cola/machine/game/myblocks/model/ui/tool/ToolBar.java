@@ -70,9 +70,9 @@ public class ToolBar extends RegionArea{
         // return to previous settings
         GLApp.popAttrib();*/
 
-       GLApp.pushAttribOrtho();
+      // GLApp.pushAttribOrtho();
         // switch to 2D projection
-        GLApp. setOrthoOn();
+      //  GLApp. setOrthoOn();
         // tweak settings
         GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
         GL11.glColor4f(1,1,1,1);             // no color
@@ -171,9 +171,9 @@ public class ToolBar extends RegionArea{
 		                GL11.glEnd();
 			}
 			
-        GLApp.setOrthoOff();
+     //   GLApp.setOrthoOff();
         // return to previous settings
-        GLApp. popAttrib();
+      // GLApp. popAttrib();
 	}
 	
 	 public void keyDown(int key){

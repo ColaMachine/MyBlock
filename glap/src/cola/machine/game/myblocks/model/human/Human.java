@@ -9,7 +9,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import util.MathUtil;
-
+import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.repository.BlockRepository;
@@ -33,6 +33,7 @@ public class Human extends AABB{
 	public HumanLeg LLeg = new HumanLeg();
 	public HumanLeg RLeg = new HumanLeg();
 	public HumanBody body = new HumanBody();
+	public Item item;
 	BlockRepository blockRepository;
 	public boolean stable = true;
 	public Human(	BlockRepository blockRepository){

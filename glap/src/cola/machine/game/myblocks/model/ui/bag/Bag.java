@@ -4,11 +4,13 @@ import cola.machine.game.myblocks.container.Slot;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.tool.ToolBarSlop;
 import glapp.GLApp;
+
 import org.lwjgl.opengl.GL11;
 import org.terasology.registry.CoreRegistry;
 
@@ -22,11 +24,12 @@ public class Bag extends RegionArea  {
     public ToolBarSlop[] toolBarSlots = new ToolBarSlop[10];//toobar slot
     RegionArea slotsRegion=new RegionArea();
     public int humanTextureHandle;
+    public int earthHandle;
     public float slotsWidth=458;
     public float slotsHeight=130;
     public float slotWidth;
     public float slotHeight;
-
+    public Block block;
     public int rowNum=3;
     public int colNum=9;
     public float left=121;
@@ -42,7 +45,9 @@ public class Bag extends RegionArea  {
         this.withWH(100,100,500,400);
         this.textureInfo= TextureManager.getIcon("bag");
         this.humanTextureHandle= TextureManager.getTextureHandle("human").textureHandle;
+        this.earthHandle= TextureManager.getTextureHandle("background").textureHandle;
         this.human= CoreRegistry.get(MyBlockEngine.class).human;
+        this.block= new Block(0,0,0);
         //slotsRegion=new RegionArea(left,bottom,slotsWidth,slotsHeight);
         slotsRegion.withWH(left,bottom,slotsWidth,slotsHeight);
         slotWidth= slotsRegion.getWidth()/9;
@@ -73,9 +78,9 @@ public class Bag extends RegionArea  {
     }
     public void render() {
 if(!show)return;
-        GLApp.pushAttribOrtho();
+       // GLApp.pushAttribOrtho();
         // switch to 2D projection
-        GLApp. setOrthoOn();
+       // GLApp. setOrthoOn();
         // tweak settings
         GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
         GL11.glColor4f(1,1,1,1);             // no color
@@ -122,7 +127,24 @@ if(!show)return;
 
         }
         GL11.glPopMatrix();
-
+        
+        GL11.glPushMatrix();
+        {
+        	
+            GL11.glTranslated( 240, 315, -21); // rotate around Y axis
+            //GL11.glTranslated( -human.Position.x,  -human.Position.y, -human.Position.z -21); // rotate around Y axis
+            //GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
+             GL11.glScalef(40f, 40f, 40f); // scale up
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            human.renderInMirror();
+            
+           // GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.earthHandle);
+           // block.renderCube();
+        }
+        GL11.glPopMatrix();
+        renderBlockTest();
 
         //renderSlot();
         //GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK,GL11.GL_LINE);
@@ -195,11 +217,31 @@ if(!show)return;
 
 
 
-        GLApp.setOrthoOff();
+      //  GLApp.setOrthoOff();
         // return to previous settings
-        GLApp. popAttrib();
+       // GLApp. popAttrib();
+        
+        
+       
     }
-
+    public void renderBlockTest(){
+    	GL11.glPushMatrix();
+		{
+			 GL11.glEnable(GL11.GL_TEXTURE_2D);
+    	GL11.glBindTexture(GL11.GL_TEXTURE_2D, TextureManager.getTextureHandle("background").textureHandle);
+		
+    	GL11.glRotated(45, 0, 1, 0);
+    	GL11.glRotated(30, 1, 0, 0);
+    	GL11.glScalef(30, 30, 30);
+    	GL11.glTranslated(200, 200, -40);
+    	
+    	
+           GL11.glEnd();
+    	GL11.glDisable(GL11.GL_TEXTURE_2D);
+		}GL11.glPopMatrix();
+    	
+    	
+    }
     public void renderSlot(){
         for(int i=0,length=slots.length;i<length;i++){
             slots[i].render();

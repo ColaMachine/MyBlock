@@ -28,6 +28,7 @@ public class MouseControlCenter{
 	public Human human;
 	public GLCamera camera;
 	public MyBlockEngine engine;
+	public double preKeyTime=0;
 public Robot robot;
 	public float centerX=0;
 	public float centerY=0;
@@ -52,6 +53,9 @@ public Robot robot;
 		}
 	}
 	public void handleNavKeys(float seconds) {
+		
+	
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			human.RotateX(-human.camSpeedXZ * seconds);
 		}
@@ -90,8 +94,15 @@ public Robot robot;
 		if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
 			CoreRegistry.get(ToolBar.class).keyDown(2);
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-			System.out.println("seconds:"+seconds);
+		if (Keyboard.isKeyDown(Keyboard.KEY_B) ) { 
+			double timenow=GLApp.getTimeInSeconds();
+			System.out.println("pretime:"+timenow+" time:"+timenow+" seconds:"+seconds);
+			
+			if((timenow-preKeyTime)<1){
+				return;
+			}
+			preKeyTime=timenow;
+			
 			CoreRegistry.get(Bag.class).changeShow();
 		}
 if (Keyboard.isKeyDown(Keyboard.KEY_3)) {

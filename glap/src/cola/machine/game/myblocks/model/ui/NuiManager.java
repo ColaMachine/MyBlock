@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui;
 
+import glapp.GLApp;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 
@@ -17,10 +18,16 @@ public class NuiManager {
     }
 
     public void render(){
-       
+    	   GLApp.pushAttribOrtho();
+           // switch to 2D projection
+           GLApp. setOrthoOn();
         cross.render();
         bag.render();
         
         toolbarcontainer.render();
+        
+          GLApp.setOrthoOff();
+        // return to previous settings
+       GLApp. popAttrib();
     }
 }
