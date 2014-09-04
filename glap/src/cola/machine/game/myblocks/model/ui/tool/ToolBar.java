@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.model.ui.tool;
 import java.util.HashMap;
 
 import cola.machine.game.myblocks.container.Slot;
+import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -178,5 +179,7 @@ public class ToolBar extends RegionArea{
 	
 	 public void keyDown(int key){
 	    	this.selectedIndex=key;
+	    	CoreRegistry.get(MyBlockEngine.class).currentObject=slots[27+key-1].item.name;
+	    	
 	    }
 }

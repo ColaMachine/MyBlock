@@ -16,9 +16,11 @@ import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import cola.machine.game.myblocks.block.Soil;
 import cola.machine.game.myblocks.block.Water;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.physic.BulletPhysics;
@@ -42,10 +44,11 @@ public class MyBlockEngine extends GLApp {
 	// Handle for texture
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
+	public String currentObject = "";
 	int skyTextureHandle = 0;
-	int waterTextureHandle=0;
-	int crossTextureHandle=0;
-	GLImage textureImg ;
+	int waterTextureHandle = 0;
+	int crossTextureHandle = 0;
+	GLImage textureImg;
 	MouseControlCenter mouseControlCenter;
 	// Light position: if last value is 0, then this describes light direction.
 	// If 1, then light position.
@@ -80,8 +83,8 @@ public class MyBlockEngine extends GLApp {
 
 	public BlockRepository blockRepository = new BlockRepository(this);
 	BulletPhysics bulletPhysics;
-	public Human human ;
-	private Human human2 ;
+	public Human human;
+	private Human human2;
 
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -104,34 +107,37 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
 	public void setup() {
-	
-		
-        human= new Human(blockRepository);
-        
-        human2= new Human(blockRepository);
-        CoreRegistry.put(MyBlockEngine.class,this);
-        CoreRegistry.put(Human.class,human);
+
+		human = new Human(blockRepository);
+
+		human2 = new Human(blockRepository);
+		CoreRegistry.put(MyBlockEngine.class, this);
+		CoreRegistry.put(Human.class, human);
 		this.initManagers();
 		setPerspective();
-		/*setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new float[] {
-				1f, 1f, 1f, 1f }, new float[] { 1f,1f, 1f, 1f },
-				lightPosition);*/
+		/*
+		 * setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new
+		 * float[] { 1f, 1f, 1f, 1f }, new float[] { 1f,1f, 1f, 1f },
+		 * lightPosition);
+		 */
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
-		/*setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, // diffuse
-																			// color
-				new float[] { 1f, 1f, 1f, 1f }, // ambient
-				new float[] { 1f, 1f, 1f, 1f }, // specular
-				new float[] { 5f, 10f, 5f, 0f }); // direction (pointing*/
-														// up)
+		/*
+		 * setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, //
+		 * diffuse // color new float[] { 1f, 1f, 1f, 1f }, // ambient new
+		 * float[] { 1f, 1f, 1f, 1f }, // specular new float[] { 5f, 10f, 5f, 0f
+		 * }); // direction (pointing
+		 */
+		// up)
 
-        //set global light
-        FloatBuffer ltAmbient = allocFloats(new float[]{11.0f,11.0f,11.0f,1.0f});
-       // ltAmbient.flip();
-        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT,ltAmbient);
-        GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE,GL11.GL_FALSE);
+		// set global light
+		FloatBuffer ltAmbient = allocFloats(new float[] { 11.0f, 11.0f, 11.0f,
+				1.0f });
+		// ltAmbient.flip();
+		GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, ltAmbient);
+		GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11.GL_FALSE);
 		dcc.blockRepository = blockRepository;
-		bulletPhysics= new BulletPhysics(blockRepository);
+		bulletPhysics = new BulletPhysics(blockRepository);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
@@ -142,10 +148,10 @@ public class MyBlockEngine extends GLApp {
 		// Create texture for spere
 		sphereTextureHandle = makeTexture("images/background.png");
 		humanTextureHandle = makeTexture("images/2000.png");
-		skyTextureHandle= makeTexture("images/sky180.png");
-		crossTextureHandle= makeTexture("images/gui.png");
-		waterTextureHandle=TextureManager.getIcon("water").textureHandle;
-		 textureImg = loadImage("images/gui.png");
+		skyTextureHandle = makeTexture("images/sky180.png");
+		crossTextureHandle = makeTexture("images/gui.png");
+		waterTextureHandle = TextureManager.getIcon("water").textureHandle;
+		textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
 		human.setHuman(25, 40, 25, 0, 0, -1, 0, 1, 0);
@@ -153,9 +159,9 @@ public class MyBlockEngine extends GLApp {
 		human2.setHuman(10, 10, 10, 0, 0, 1, 0, 1, 0);
 
 		human.startWalk();
-		
-		mouseControlCenter= new MouseControlCenter(human,camera1,this);
-		mouseControlCenter.bulletPhysics=bulletPhysics;
+
+		mouseControlCenter = new MouseControlCenter(human, camera1, this);
+		mouseControlCenter.bulletPhysics = bulletPhysics;
 		// load the airplane model and make it a display list
 		// = new GLModel("models/JetFire/JetFire.obj");
 		// airplane.mesh.regenerateNormals();
@@ -163,48 +169,47 @@ public class MyBlockEngine extends GLApp {
 
 		// human.move(2, 12, 2);
 		// make a sphere display list
-		
+
 		try {
-			//创建高度图
-			int[][] heights =ImageUtil.getGrayPicture("d:/graymap.png");
-			
-			earth = beginDisplayList();
+			// 创建高度图
+			int[][] heights = ImageUtil.getGrayPicture("images/gray.png");
+
+			// earth = beginDisplayList();
 			// ѭ������
-			for (int i = 0; i < 50; i ++)
-				for (int j = 0; j < 50; j ++) {
-					int height=heights[i][j];
-for(int y=0;y<=height/10;y++){
-	Block block = new Block();
-	block.setCenter(2*i+1,2*y+1, 2*j+1);
-	blockRepository.put(block);
-	block.renderCube();	
+			for (int i = 0; i < 50; i++)
+				for (int j = 0; j < 50; j++) {
+					int height = heights[i][j];
+					for (int y = 0; y <= height / 20; y++) {
+						Block soil = new BaseBlock("soil",2 * i + 1, 2 * y + 1, 2 * j + 1);
+						
+						
+						
+						
+						//block.setCenter(2 * i + 1, 2 * y + 1, 2 * j + 1);
+						blockRepository.put(soil);
+						//block.render();
 					}
 
-				
 				}
-			{
-				// renderCube();
-			}
-			endDisplayList();
+
+			// endDisplayList();
 			
-			waterDisplay = beginDisplayList();
-			for (int i = 0; i < 50; i ++)
-				for (int j = 0; j < 50; j ++) {
-					int height=heights[i][j];
-for(int y=height/10;y<=8;y++){
-	Water water = new Water();
-	water.setCenter(2*i+1,2*y+1, 2*j+1);
-	//blockRepository.put(block);
-	water.renderCube();	
+			//waterDisplay = beginDisplayList();
+			for (int i = 0; i < 50; i++)
+				for (int j = 0; j < 50; j++) {
+					int height = heights[i][j];
+					for (int y = height / 20; y <= 5; y++) {
+						Block block = new BaseBlock("water",2 * i + 1, 2 * y + 1, 2 * j + 1);
+						//water.setCenter(2 * i + 1, 2 * y + 1, 2 * j + 1);
+					 blockRepository.put(block);
+						//water.render();
 					}
 
-				
 				}
-			{
-				// renderCube();
-			}
-			endDisplayList();
-		
+			blockRepository.reBuild("soil");
+			blockRepository.reBuild("water");
+		//	endDisplayList();
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -212,88 +217,84 @@ for(int y=height/10;y<=8;y++){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*earth = beginDisplayList();
-		// ѭ������
-		
-		for (int j = 1; j < 20; j += 2)
-			for (int i = 1; i < 20; i += 2) {
-				Block block = new Block();
-				block.setCenter(i, 1, j);
-				blockRepository.put(block);
-				block.renderCube();
-			}
-		
-		endDisplayList();*/
-		
-		/*waterDisplay = beginDisplayList();
-		for (int j = 1; j < 20; j += 2)
-			for (int i = 1; i < 20; i += 2) {
-				Water water = new Water();
-				water.setCenter(i, 3, j);
-				//blockRepository.put(Water);
-				water.renderCube();
-			}
-		
-		endDisplayList();*/
-		int sky_x=50;
-		int sky_y=50;
-		int sky_z=50;
-		sky = beginDisplayList(); {
-        	//renderSphere();
+
+		/*
+		 * earth = beginDisplayList(); // ѭ������
+		 * 
+		 * for (int j = 1; j < 20; j += 2) for (int i = 1; i < 20; i += 2) {
+		 * Block block = new Block(); block.setCenter(i, 1, j);
+		 * blockRepository.put(block); block.renderCube(); }
+		 * 
+		 * endDisplayList();
+		 */
+
+		/*
+		 * waterDisplay = beginDisplayList(); for (int j = 1; j < 20; j += 2)
+		 * for (int i = 1; i < 20; i += 2) { Water water = new Water();
+		 * water.setCenter(i, 3, j); //blockRepository.put(Water);
+		 * water.renderCube(); }
+		 * 
+		 * endDisplayList();
+		 */
+		int sky_x = 50;
+		int sky_y = 50;
+		int sky_z = 50;
+		sky = beginDisplayList();
+		{
+			// renderSphere();
 
 			GL11.glBegin(GL11.GL_QUADS);
 			// Front Face
-			GL11.glNormal3f(0.0f, 0.0f,1.0f);
-		
+			GL11.glNormal3f(0.0f, 0.0f, 1.0f);
+
 			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Right
 			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Left
 			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Top Left
 			GL11.glVertex3f(sky_x, sky_y, sky_z); // Top Right
-			
+
 			// Back Face
 			GL11.glNormal3f(0.0f, 0.0f, -1.0f);
-		
+
 			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Right
 			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Bottom Right
 			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Bottom Left
 			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Left
-			
+
 			// Top Face
 			GL11.glNormal3f(0.0f, 1.0f, 0.0f);
-		
+
 			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Bottom Left
 			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Left
 			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Right
 			GL11.glVertex3f(sky_x, sky_y, sky_z); // Bottom Right
-			
+
 			// Bottom Face
 			GL11.glNormal3f(0.0f, -1.0f, 0.0f);
-		
+
 			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Top Left
 			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Top Right
 			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Right
 			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Left
-			
+
 			// Right face
 			GL11.glNormal3f(1.0f, 0.0f, 0.0f);
-		
+
 			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Right
 			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Bottom Right
 			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Left
 			GL11.glVertex3f(sky_x, sky_y, sky_z); // Top Left
-			
+
 			// Left Face
 			GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
-			
+
 			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Right
 			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Bottom Left
 			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Left
 			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Top Right
-			
+
 			GL11.glEnd();
-        }
-        endDisplayList();
+		}
+		endDisplayList();
 		// make a shadow handler
 		// params:
 		// the light position,
@@ -303,11 +304,13 @@ for(int y=height/10;y<=8;y++){
 		// the function that draws all objects that cast shadows
 		// airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]
 		// {0f,1f,0f,3f}, null, this, method(this,"drawObjects"));
-        //water=new Water();
-        //water.setCenter(2, 2, 2);	
-		//org.lwjgl.input.Keyboard.enableRepeatEvents(true);
+		// water=new Water();
+		// water.setCenter(2, 2, 2);
+		// org.lwjgl.input.Keyboard.enableRepeatEvents(true);
 	}
-   Water water ;
+
+	Water water;
+
 	/**
 	 * set the field of view and view depth.
 	 */
@@ -330,58 +333,74 @@ for(int y=height/10;y<=8;y++){
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 
-	
-
 	public void draw() {
-		
+
 		dcc.check(human);
-		
+
 		mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
-		//  cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
+		// cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 
-	
 		// ������ﱳ��ĵ�
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
-			GL_Vector.multiply(human.ViewDir, -10));
+				GL_Vector.multiply(human.ViewDir, -10));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
-		//camera1.MoveTo(human.Position.x, human.Position.y + 4, human.Position.z);
+		// camera1.MoveTo(human.Position.x, human.Position.y + 4,
+		// human.Position.z);
 		camera1.viewDir(human.ViewDir);
 		cam.render();
 
-		
-		
+		// this.drawImage(textureImg, 100, 100, 150, 150);
+		// drawCross2(5,5,5);
 
-	//	this.drawImage(textureImg, 100, 100, 150, 150);
-		//drawCross2(5,5,5);
-		
 		drawObjects();
 
-        CoreRegistry.get(NuiManager.class).render();
+		CoreRegistry.get(NuiManager.class).render();
 
-       // drawCross(crossTextureHandle,1/12f+0.01f,10/12f,1/12f,1/12f,getWidth()/2-25, getHeight()/2-25,50f,50f);
-		//drawImageFullScreen(textureImg);
+		// drawCross(crossTextureHandle,1/12f+0.01f,10/12f,1/12f,1/12f,getWidth()/2-25,
+		// getHeight()/2-25,50f,50f);
+		// drawImageFullScreen(textureImg);
 		// Place the light. Light will move with the rest of the scene
-		//setLightPosition(GL11.GL_LIGHT1, lightPosition);
+		// setLightPosition(GL11.GL_LIGHT1, lightPosition);
 
-	
-//		print(30, viewportH - 140, "SPACE key switches cameras", 1);
+		// print(30, viewportH - 140, "SPACE key switches cameras", 1);
 
-		//this.drawLine();
-     //  this.drawWater();
-    //  drawCross(crossTextureHandle,1/12,10/12,1/12,1/12,0, 0,50,50);
-      
-		print( 30, viewportH- 45, "Use arrow keys to navigate:");
-        //print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
-       // print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
-       // print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
-      //  print( 30, viewportH-140, "SPACE key switches cameras", 1);
+		// this.drawLine();
+		// this.drawWater();
+		// drawCross(crossTextureHandle,1/12,10/12,1/12,1/12,0, 0,50,50);
 
+		print(30, viewportH - 45, "Use arrow keys to navigate:");
+		// print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
+		// print( 30, viewportH-100,
+		// "Up-Down arrows move camera forward and back", 1);
+		// print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
+		// print( 30, viewportH-140, "SPACE key switches cameras", 1);
 
-        
+		drawAllBlock();
+
+	}
+
+	public void drawAllBlock() {
+
+		java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
+		while (it.hasNext()) {
+			java.util.Map.Entry entry = (java.util.Map.Entry) it.next();
+			int handleId = (Integer) entry.getValue();
+			GL11.glPushMatrix();
+			{
+				GL11.glBindTexture(
+						GL11.GL_TEXTURE_2D,
+						TextureManager.getIcon((String) entry.getKey()).textureHandle);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+						GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+				callDisplayList(handleId);
+			}
+			GL11.glPopMatrix();
+		}
+
 	}
 
 	public void drawObjects() {
@@ -398,13 +417,13 @@ for(int y=height/10;y<=8;y++){
 			// setOrthoOff();
 		}
 		GL11.glPopMatrix();
-		
+
 		GL11.glPushMatrix();
 		{// setOrthoOn();
-			
-		       GL11. glEnable(GL11.GL_BLEND);
-		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
-		     
+
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
 			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
 			// GL11.glScalef(1/4f, 1/4f, 1/4f); // scale up
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, waterTextureHandle);
@@ -412,13 +431,12 @@ for(int y=height/10;y<=8;y++){
 					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
 			callDisplayList(waterDisplay);
-			 GL11.glDisable(GL11.GL_BLEND);
+			GL11.glDisable(GL11.GL_BLEND);
 			// setOrthoOff();
 		}
 		GL11.glPopMatrix();
-		
-		
-		//����һ����
+
+		// ����һ����
 		GL11.glPushMatrix();
 		{
 			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
@@ -430,34 +448,34 @@ for(int y=height/10;y<=8;y++){
 
 		}
 		GL11.glPopMatrix();
-		
-		
-		// draw the earth
-        GL11.glPushMatrix();
-        {
-            GL11.glTranslatef(this.cam.camera.Position.x, 4, this.cam.camera.Position.z);
-           // GL11.glScalef(5f, 5f,5f);
-            //GL11.glScalef(40f, 15f,40f);          // scale up
-          // GL11.glBindTexture(GL11.GL_TEXTURE_2D, skyTextureHandle);
 
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-         //  GL11.glFrontFace(GL11.GL_CW);
-           //GL11.glDisable(GL11.GL_LIGHT_MODEL_AMBIENT);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-           // GL11.glCullFace(GL11.GL_BACK);
-           // GL11.glColor3f(0.835f,0.78125f, 0.94921875f);
-            callDisplayList(sky);
-          // GL11.glFrontFace(GL11.GL_CCW);
-           // GL11.glEnable(GL11.GL_LIGHT1);
-            GL11.glEnable(GL11.GL_LIGHTING);
-           // GL11.glEnable(GL11.GL_LIGHT_MODEL_AMBIENT);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-             
-        }
-        GL11.glPopMatrix();
-        
-		//���ڶ�����
+		// draw the earth
+		GL11.glPushMatrix();
+		{
+			GL11.glTranslatef(this.cam.camera.Position.x, 4,
+					this.cam.camera.Position.z);
+			// GL11.glScalef(5f, 5f,5f);
+			// GL11.glScalef(40f, 15f,40f); // scale up
+			// GL11.glBindTexture(GL11.GL_TEXTURE_2D, skyTextureHandle);
+
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			// GL11.glFrontFace(GL11.GL_CW);
+			// GL11.glDisable(GL11.GL_LIGHT_MODEL_AMBIENT);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+			// GL11.glCullFace(GL11.GL_BACK);
+			// GL11.glColor3f(0.835f,0.78125f, 0.94921875f);
+			callDisplayList(sky);
+			// GL11.glFrontFace(GL11.GL_CCW);
+			// GL11.glEnable(GL11.GL_LIGHT1);
+			GL11.glEnable(GL11.GL_LIGHTING);
+			// GL11.glEnable(GL11.GL_LIGHT_MODEL_AMBIENT);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+		}
+		GL11.glPopMatrix();
+
+		// ���ڶ�����
 		GL11.glPushMatrix();
 		{
 			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
@@ -465,23 +483,21 @@ for(int y=height/10;y<=8;y++){
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			//human2.render();
+			// human2.render();
 		}
 		GL11.glPopMatrix();
 	}
-
-	
 
 	public void keyDown(int keycode) {
 		/*
 		 * if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
 		 * camera1)? camera2 : camera1); }
 		 */
-		mouseControlCenter.keyDown( keycode);
+		mouseControlCenter.keyDown(keycode);
 	}
 
 	public void keyUp(int keycode) {
-		mouseControlCenter.keyUp( keycode);
+		mouseControlCenter.keyUp(keycode);
 	}
 
 	/**
@@ -502,18 +518,14 @@ for(int y=height/10;y<=8;y++){
 	 * Add last mouse motion to the line, only if left mouse button is down.
 	 */
 	public void mouseDown(int x, int y) {
-		if(this.mouseButtonDown(0)){
+		if (this.mouseButtonDown(0)) {
 			mouseControlCenter.mouseLClick(x, y);
 		}
-		if(this.mouseButtonDown(1)){
+		if (this.mouseButtonDown(1)) {
 			mouseControlCenter.mouseRClick(x, y);
 		}
 
 	}
-
-	
-	
-	
 
 	// һ�����¼���߷���
 	public GL_Vector lineStart = new GL_Vector(0, 0, 0);
@@ -525,169 +537,173 @@ for(int y=height/10;y<=8;y++){
 	public GL_Vector mouseEnd = new GL_Vector(0, 5, 0);
 
 	public void drawLine() {
-		
-	
+
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glLineWidth(12f);
 		GL11.glColor3f(1f, 1f, 1f);
 		GL11.glBegin(GL11.GL_LINES); // draw triangles
-		GL11.glVertex3f(lineStart.x, lineStart.y,
-				lineStart.z); // A1-A2
+		GL11.glVertex3f(lineStart.x, lineStart.y, lineStart.z); // A1-A2
 		GL11.glVertex3f(mouseEnd.x, mouseEnd.y, mouseEnd.z);
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		
+
 	}
 
-    public void drawWater(){
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glTranslated(5, 2, 5);
-        GL11. glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
-        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-        water.renderCube();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11. glColor4f(1.0f, 1.0f, 1.0f,1f);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
-    }
-    
+	public void drawWater() {
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glTranslated(5, 2, 5);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+		GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+		water.renderCube();
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1f);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_LIGHTING);
+	}
 
-    public void drawWater2(){
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glTranslated(5, 2, 5);
-        GL11. glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
-        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-        water.renderCube();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11. glColor4f(1.0f, 1.0f, 1.0f,1f);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
-    }
+	public void drawWater2() {
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glTranslated(5, 2, 5);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+		GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+		water.renderCube();
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1f);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_LIGHTING);
+	}
 
-    public void drawSky(){
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glTranslated(human.Position.x, human.Position.y, human.Position.z);
-        GL11. glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11. GL_ONE_MINUS_SRC_ALPHA);
-        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-        GL11. glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-        water.renderCube();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11. glColor4f(1.0f, 1.0f, 1.0f,1f);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
-    }
+	public void drawSky() {
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glTranslated(human.Position.x, human.Position.y, human.Position.z);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+		GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
+		water.renderCube();
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1f);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_LIGHTING);
+	}
 
-    public void drawCross( int textureHandle,float  minX,float minY,float wi,float hi,float x, float y, float w, float h){	// if image has no texture, convert the image to a texture
-    	
-    	// preserve settings
-    
-    	// set color to white
-        // activate the image texture
-    	pushAttribOrtho();
-    	// switch to 2D projection
-    	setOrthoOn();
-    	// tweak settings
-    	GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
-    	GL11.glColor4f(1,1,1,1);             // no color
-    	GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
-    	GL11.glDisable(GL11.GL_DEPTH_TEST);  // no depth test
-    	GL11.glEnable(GL11.GL_BLEND);        // enable transparency
-    	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    	// activate the image texture
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D,textureHandle);
+	public void drawCross(int textureHandle, float minX, float minY, float wi,
+			float hi, float x, float y, float w, float h) { // if image has no
+															// texture, convert
+															// the image to a
+															// texture
 
-        // draw a textured quad
+		// preserve settings
 
-        GL11.glBegin(GL11.GL_QUADS);
-        {
-        	  GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
-	        GL11.glTexCoord2f(minX, minY);
-	        GL11.glVertex3f( (float)x, (float)y, (float)0);
-	        GL11.glTexCoord2f(minX+wi, minY);
-	        GL11.glVertex3f( (float)x+w, (float)y, (float)0);
-	        GL11.glTexCoord2f(minX+wi, minY+hi);
-	        GL11.glVertex3f( (float)x+w, (float)y+h, (float)0);
-	        GL11.glTexCoord2f(minX, minY+hi);
-	        GL11.glVertex3f( (float)x, (float)y+h, (float)0);
+		// set color to white
+		// activate the image texture
+		pushAttribOrtho();
+		// switch to 2D projection
+		setOrthoOn();
+		// tweak settings
+		GL11.glEnable(GL11.GL_TEXTURE_2D); // be sure textures are on
+		GL11.glColor4f(1, 1, 1, 1); // no color
+		GL11.glDisable(GL11.GL_LIGHTING); // no lighting
+		GL11.glDisable(GL11.GL_DEPTH_TEST); // no depth test
+		GL11.glEnable(GL11.GL_BLEND); // enable transparency
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		// activate the image texture
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
 
-//            GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
-//	        GL11.glTexCoord2f(1/12f, 10/12f); GL11.glVertex3f(-1.0f+x, -1.0f+y, 0);	// Bottom Left
-//	        GL11.glTexCoord2f(2/12f, 10/12f); GL11.glVertex3f( 1.0f+x, -1.0f+y,  0);	// Bottom Right
-//	        GL11.glTexCoord2f(2/12f, 11/12f); GL11.glVertex3f( 1.0f+x,  1.0f+y, 0);	// Top Right
-//	        GL11.glTexCoord2f(1/12f, 11/12f); GL11.glVertex3f(-1.0f+x,  1.0f+y, 0);	// Top Left
-        }
+		// draw a textured quad
 
+		GL11.glBegin(GL11.GL_QUADS);
+		{
+			GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
+			GL11.glTexCoord2f(minX, minY);
+			GL11.glVertex3f((float) x, (float) y, (float) 0);
+			GL11.glTexCoord2f(minX + wi, minY);
+			GL11.glVertex3f((float) x + w, (float) y, (float) 0);
+			GL11.glTexCoord2f(minX + wi, minY + hi);
+			GL11.glVertex3f((float) x + w, (float) y + h, (float) 0);
+			GL11.glTexCoord2f(minX, minY + hi);
+			GL11.glVertex3f((float) x, (float) y + h, (float) 0);
 
+			// GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+			// GL11.glTexCoord2f(1/12f, 10/12f); GL11.glVertex3f(-1.0f+x,
+			// -1.0f+y, 0); // Bottom Left
+			// GL11.glTexCoord2f(2/12f, 10/12f); GL11.glVertex3f( 1.0f+x,
+			// -1.0f+y, 0); // Bottom Right
+			// GL11.glTexCoord2f(2/12f, 11/12f); GL11.glVertex3f( 1.0f+x,
+			// 1.0f+y, 0); // Top Right
+			// GL11.glTexCoord2f(1/12f, 11/12f); GL11.glVertex3f(-1.0f+x,
+			// 1.0f+y, 0); // Top Left
+		}
 
-      setOrthoOff();
-        // return to previous settings
-       popAttrib();
-    }
-    
-    public void drawUI(){
-    	  // activate the image texture
-    	pushAttribOrtho();
-    	// switch to 2D projection
-    	setOrthoOn();
-    	// tweak settings
-    	GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
-    	GL11.glColor4f(1,1,1,1);             // no color
-    	GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
-    	GL11.glDisable(GL11.GL_DEPTH_TEST);  // no depth test
-    	GL11.glEnable(GL11.GL_BLEND);        // enable transparency
-    	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    	// activate the image texture
-       
-      
-       
-        
-        //在这里进行各自的设置
-		
-	    setOrthoOff();
-        // return to previous settings
-       popAttrib();
-    }
+		setOrthoOff();
+		// return to previous settings
+		popAttrib();
+	}
+
+	public void drawUI() {
+		// activate the image texture
+		pushAttribOrtho();
+		// switch to 2D projection
+		setOrthoOn();
+		// tweak settings
+		GL11.glEnable(GL11.GL_TEXTURE_2D); // be sure textures are on
+		GL11.glColor4f(1, 1, 1, 1); // no color
+		GL11.glDisable(GL11.GL_LIGHTING); // no lighting
+		GL11.glDisable(GL11.GL_DEPTH_TEST); // no depth test
+		GL11.glEnable(GL11.GL_BLEND); // enable transparency
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		// activate the image texture
+
+		// 在这里进行各自的设置
+
+		setOrthoOff();
+		// return to previous settings
+		popAttrib();
+	}
 
 	public void initSelf() {
 		// TODO Auto-generated method stub
-		
-		 //暂时用默认的参数初始化manager 然后manager 放到corerepgistry里
+
+		// 暂时用默认的参数初始化manager 然后manager 放到corerepgistry里
 		//
 
-        /* read config.cfg*/
-        initConfig();
+		/* read config.cfg */
+		initConfig();
 
-		 initManagers();
-		 
-		 //load assets
-//		 initAssets();
-//
-//          initOPFlow();
-//
-		
-		
+		initManagers();
+
+		// load assets
+		// initAssets();
+		//
+		// initOPFlow();
+		//
+
 	}
-	private void initManagers() {
-       TextureManager textureManager= CoreRegistry.put(TextureManager.class,new TextureManager());
-        NuiManager nuiManager= CoreRegistry.put(NuiManager.class,new NuiManager());
 
-        //AssetManager assetManager = CoreRegistry.putPermanently(AssetManager.class, new AssetManager(moduleManager.getEnvironment()));
-        
-        
-    }
-    public void initConfig(){
-        //
-    }
-	
+	private void initManagers() {
+		TextureManager textureManager = CoreRegistry.put(TextureManager.class,
+				new TextureManager());
+		NuiManager nuiManager = CoreRegistry.put(NuiManager.class,
+				new NuiManager());
+
+		// AssetManager assetManager =
+		// CoreRegistry.putPermanently(AssetManager.class, new
+		// AssetManager(moduleManager.getEnvironment()));
+
+	}
+
+	public void initConfig() {
+		//
+	}
+
 }

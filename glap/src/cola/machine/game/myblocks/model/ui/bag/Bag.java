@@ -29,7 +29,7 @@ public class Bag extends RegionArea  {
     public float slotsHeight=130;
     public float slotWidth;
     public float slotHeight;
-    public Block block;
+   // public Block block;
     public int rowNum=3;
     public int colNum=9;
     public float left=121;
@@ -47,7 +47,7 @@ public class Bag extends RegionArea  {
         this.humanTextureHandle= TextureManager.getTextureHandle("human").textureHandle;
         this.earthHandle= TextureManager.getTextureHandle("background").textureHandle;
         this.human= CoreRegistry.get(MyBlockEngine.class).human;
-        this.block= new Block(0,0,0);
+        //this.block= new BaseBlock(0,0,0);
         //slotsRegion=new RegionArea(left,bottom,slotsWidth,slotsHeight);
         slotsRegion.withWH(left,bottom,slotsWidth,slotsHeight);
         slotWidth= slotsRegion.getWidth()/9;
@@ -71,6 +71,8 @@ public class Bag extends RegionArea  {
 
         this.putItem(0,new Item("apple_golden",10));
         this.putItem(1,new Item("soil",10));
+        this.putItem(2,new Item("glass",10));
+        this.putItem(3,new Item("wood",10));
     }
 
     public void putItem(int slotIndex , Item item){

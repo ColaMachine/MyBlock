@@ -14,7 +14,12 @@ import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import cola.machine.game.myblocks.block.Glass;
+import cola.machine.game.myblocks.block.Soil;
+import cola.machine.game.myblocks.block.Water;
+import cola.machine.game.myblocks.block.Wood;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.physic.BulletPhysics;
@@ -166,9 +171,20 @@ if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
 		
 		GL_Vector hitPoint=bulletPhysics.rayTrace(camera.Position,viewdir,20);
 		if(hitPoint!=null){
-			Block block =new Block((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
-			bulletPhysics.blockRepository.put(block);
-			this.engine.blockRepository.reBuild();
+			Block block=new BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+			/*if("wood".equals(engine.currentObject)){
+				block =new Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+			}else if("glass".equals(engine.currentObject)){
+				block =new Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+			}else if("soil".equals(engine.currentObject)){
+				block =new Soil((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+			}else if("water".equals(engine.currentObject)){
+				block =new Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+			}*/
+			if(block!=null){
+				bulletPhysics.blockRepository.put(block);
+				this.engine.blockRepository.reBuild();
+			}
 		}
         CoreRegistry.get(Bag.class).click(x,y);
 	}

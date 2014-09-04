@@ -6,9 +6,11 @@ import cola.machine.game.myblocks.model.Block;
 /**
  * Created by luying on 14-8-30.
  */
-public class Soil extends BaseBlock{
+public class Wood extends BaseBlock {
+        public Wood(int x, int y, int z) {
+        	//super(x,y,z);
+	}
 
-	public String name ="soil"; public Soil(int x, int y, int z) {
-    	super("soil",x,y,z);
-}
+		String name ="wood";
+        
 }
