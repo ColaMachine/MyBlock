@@ -183,7 +183,7 @@ if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
 			}*/
 			if(block!=null){
 				bulletPhysics.blockRepository.put(block);
-				this.engine.blockRepository.reBuild();
+				this.engine.blockRepository.reBuild(engine.currentObject);
 			}
 		}
         CoreRegistry.get(Bag.class).click(x,y);

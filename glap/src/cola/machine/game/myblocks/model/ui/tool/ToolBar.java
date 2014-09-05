@@ -179,7 +179,10 @@ public class ToolBar extends RegionArea{
 	
 	 public void keyDown(int key){
 	    	this.selectedIndex=key;
-	    	CoreRegistry.get(MyBlockEngine.class).currentObject=slots[27+key-1].item.name;
+	    	if(27+key<=slots.length&&slots[27+key-1].item!=null){
+	    		CoreRegistry.get(MyBlockEngine.class).currentObject=slots[27+key-1].item.name;
+	    	}
+	    	
 	    	
 	    }
 }

@@ -69,10 +69,12 @@ public class Bag extends RegionArea  {
         slotsRegion.withWH(left,bottom-55,slotsWidth,slotsHeight+55);
         CoreRegistry.put(Bag.class,this);
 
-        this.putItem(0,new Item("apple_golden",10));
-        this.putItem(1,new Item("soil",10));
-        this.putItem(2,new Item("glass",10));
-        this.putItem(3,new Item("wood",10));
+        this.putItem(27+0,new Item("apple_golden",10));
+        this.putItem(27+1,new Item("soil",10));
+        this.putItem(27+2,new Item("glass",10));
+        this.putItem(27+3,new Item("wood",10));
+        this.putItem(27+4,new Item("sand",10));
+        this.putItem(27+5,new Item("water",10));
     }
 
     public void putItem(int slotIndex , Item item){

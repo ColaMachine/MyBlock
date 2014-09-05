@@ -43,13 +43,16 @@ Path installPath;
         //iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
 
         this.put("apple_golden","assets/minecraft/textures/items/apple_golden.png");
+        
+        this.put("items","images/items.png");
 
+        
         iconMap.put("apple_golden",new TextureInfo("apple_golden"));
         
         this.put("terrain","assets/minecraft/textures/terrain.png");
         iconMap.put("water",new TextureInfo("terrain",14,2,1,1,16,16));
         
-        iconMap.put("glass",new TextureInfo("terrain",13,0,1,1,16,16));
+        iconMap.put("glass",new TextureInfo("terrain",1,12,1,1,16,16));
         
         iconMap.put("wood",new TextureInfo("terrain",4,15,1,1,16,16));
         
@@ -61,6 +64,8 @@ Path installPath;
         iconMap.put("stone",new TextureInfo("terrain",1,15,1,1,16,16));
         
         iconMap.put("sand",new TextureInfo("terrain",2,14,1,1,16,16));
+        
+        iconMap.put("gold_sword",new TextureInfo("items",4,10,1,1,16,16));
     }
     public void put(String name ,String textureImagePath){
         int textureHandle = 0;

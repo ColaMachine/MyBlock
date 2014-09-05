@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.item.weapons.Sword;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.NuiManager;
@@ -44,7 +45,7 @@ public class MyBlockEngine extends GLApp {
 	// Handle for texture
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
-	public String currentObject = "";
+	public String currentObject = "water";
 	int skyTextureHandle = 0;
 	int waterTextureHandle = 0;
 	int crossTextureHandle = 0;
@@ -101,7 +102,7 @@ public class MyBlockEngine extends GLApp {
 
 		demo.run(); // will call init(), render(), mouse functions
 	}
-
+Sword sword =new Sword("sword",1,10,1);
 	/**
 	 * Initialize the scene. Called by GLApp.run(). For now the default settings
 	 * will be fine, so no code here.
@@ -154,7 +155,7 @@ public class MyBlockEngine extends GLApp {
 		textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(25, 40, 25, 0, 0, -1, 0, 1, 0);
+		human.setHuman(1, 12, 1, 0, 0, -1, 0, 1, 0);
 
 		human2.setHuman(10, 10, 10, 0, 0, 1, 0, 1, 0);
 
@@ -181,43 +182,29 @@ public class MyBlockEngine extends GLApp {
 					int height = heights[i][j];
 					for (int y = 0; y <= height / 20; y++) {
 						Block soil = new BaseBlock("soil",2 * i + 1, 2 * y + 1, 2 * j + 1);
-						
-						
-						
-						
-						//block.setCenter(2 * i + 1, 2 * y + 1, 2 * j + 1);
 						blockRepository.put(soil);
-						//block.render();
 					}
-
 				}
-
-			// endDisplayList();
-			
-			//waterDisplay = beginDisplayList();
 			for (int i = 0; i < 50; i++)
 				for (int j = 0; j < 50; j++) {
 					int height = heights[i][j];
 					for (int y = height / 20; y <= 5; y++) {
 						Block block = new BaseBlock("water",2 * i + 1, 2 * y + 1, 2 * j + 1);
-						//water.setCenter(2 * i + 1, 2 * y + 1, 2 * j + 1);
 					 blockRepository.put(block);
-						//water.render();
 					}
-
 				}
 			blockRepository.reBuild("soil");
 			blockRepository.reBuild("water");
-		//	endDisplayList();
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		 soilTest = new BaseBlock("soil",1, 1,  1);
+		//blockRepository.put(soil);
+		//blockRepository.reBuild("soil");
 		/*
 		 * earth = beginDisplayList(); // ѭ������
 		 * 
@@ -308,7 +295,7 @@ public class MyBlockEngine extends GLApp {
 		// water.setCenter(2, 2, 2);
 		// org.lwjgl.input.Keyboard.enableRepeatEvents(true);
 	}
-
+	Block soilTest;
 	Water water;
 
 	/**
@@ -355,9 +342,12 @@ public class MyBlockEngine extends GLApp {
 
 		// this.drawImage(textureImg, 100, 100, 150, 150);
 		// drawCross2(5,5,5);
-
+		drawAllBlock();
 		drawObjects();
-
+		sword.x=(int )human.Position.x+1;
+		sword.y=(int )human.Position.y+2;
+		sword.z=(int )human.Position.z;
+		sword.render();
 		CoreRegistry.get(NuiManager.class).render();
 
 		// drawCross(crossTextureHandle,1/12f+0.01f,10/12f,1/12f,1/12f,getWidth()/2-25,
@@ -372,15 +362,20 @@ public class MyBlockEngine extends GLApp {
 		// this.drawWater();
 		// drawCross(crossTextureHandle,1/12,10/12,1/12,1/12,0, 0,50,50);
 
-		print(30, viewportH - 45, "Use arrow keys to navigate:");
+		print(30, viewportH - 45, "press key 0~9 choose the object");
+		print(30, viewportH - 60, "press key B open package");
+		print(30, viewportH - 75, "press key wasd qe walk and turn direction ");
+		print(30, viewportH - 90, "press space jump ");
+		print(30, viewportH - 105, "press up down look up down ");
+		print(30, viewportH - 120, "mouse click create block");
 		// print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
 		// print( 30, viewportH-100,
 		// "Up-Down arrows move camera forward and back", 1);
 		// print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
 		// print( 30, viewportH-140, "SPACE key switches cameras", 1);
 
-		drawAllBlock();
-
+		
+	//	drawAllBlockTest();
 	}
 
 	public void drawAllBlock() {
@@ -388,21 +383,40 @@ public class MyBlockEngine extends GLApp {
 		java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
 		while (it.hasNext()) {
 			java.util.Map.Entry entry = (java.util.Map.Entry) it.next();
-			int handleId = (Integer) entry.getValue();
+			int displayandleId = (Integer) entry.getValue();
 			GL11.glPushMatrix();
 			{
+				int texturehandleid= TextureManager.getIcon((String) entry.getKey()).textureHandle;
 				GL11.glBindTexture(
 						GL11.GL_TEXTURE_2D,
-						TextureManager.getIcon((String) entry.getKey()).textureHandle);
+						texturehandleid);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 						GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-				callDisplayList(handleId);
+				callDisplayList(displayandleId);
 			}
 			GL11.glPopMatrix();
 		}
 
 	}
+	public void drawAllBlockTest() {
 
+	
+//			java.util.Map.Entry entry = (java.util.Map.Entry) it.next();
+//			int handleId = (Integer) entry.getValue();
+//			GL11.glPushMatrix();
+//			int handleid= TextureManager.getIcon((String) entry.getKey()).textureHandle;
+				GL11.glBindTexture(
+						GL11.GL_TEXTURE_2D,
+						sphereTextureHandle);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+						GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+				soilTest.renderCube();
+
+			GL11.glPopMatrix();
+
+	}
+	
+	
 	public void drawObjects() {
 		// draw the earth
 		GL11.glPushMatrix();

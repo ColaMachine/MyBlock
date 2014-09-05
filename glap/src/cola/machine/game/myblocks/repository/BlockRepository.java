@@ -107,6 +107,7 @@ public class BlockRepository {
 		block.render();
 		//System.out.println("the existing block nums"+map.size());
 		} 
+		System.out.println("rebuild block : "+type+" count:"+i+"handle id:"+handleId);
 		engine. endDisplayList();
 		this.handleMap.put(type,handleId);
 		//System.out.println("redisplaylist :"+i);

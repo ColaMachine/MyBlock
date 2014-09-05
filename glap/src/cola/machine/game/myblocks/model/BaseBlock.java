@@ -32,7 +32,7 @@ public class BaseBlock extends AABB implements Block{
 	}
 		
 	
-	/*public void renderCube(){
+	public void renderCube(){
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
         GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
@@ -71,11 +71,12 @@ public class BaseBlock extends AABB implements Block{
         GL11.glTexCoord2f(1.0f, 1.0f); GL11.glVertex3f(-1.0f+x,  1.0f+y,  1.0f+z);	// Top Right
         GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(-1.0f+x,  1.0f+y, -1.0f+z);	// Top Left
         GL11.glEnd();
-	}*/
+	}
 	
 	public void render(){
 		 // Front Face
 		TextureInfo ti=TextureManager.getIcon(getName());
+	    GL11.glBegin(GL11.GL_QUADS);
 	        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
 	        GL11.glTexCoord2f(ti.minX,ti.minY); GL11.glVertex3f(-1.0f+x, -1.0f+y,  1.0f+z);	// Bottom Left
 	        GL11.glTexCoord2f(ti.maxX,ti.minY); GL11.glVertex3f( 1.0f+x, -1.0f+y,  1.0f+z);	// Bottom Right
@@ -88,6 +89,8 @@ public class BaseBlock extends AABB implements Block{
 	        GL11.glTexCoord2f(ti.maxX,ti.maxY); GL11.glVertex3f( 1.0f+x,  1.0f+y, -1.0f+z);	// Top Left
 	        GL11.glTexCoord2f(ti.minX,ti.maxY); GL11.glVertex3f( 1.0f+x, -1.0f+y, -1.0f+z);	// Bottom Left
 	       // Top Face
+	        
+	        
 	     // Top Face
 	        GL11.glNormal3f( 0.0f, 1.0f, 0.0f);
 	        GL11.glTexCoord2f(ti.minX,ti.minY); GL11.glVertex3f(-1.0f+x,  1.0f+y, -1.0f+z);	// Top Left
