@@ -11,6 +11,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import cola.machine.game.myblocks.Color;
+
 public class ImageUtil {
 	public static int[][] getGrayPicture(String filename) throws FileNotFoundException, IOException
 	{	
@@ -27,8 +29,8 @@ public class ImageUtil {
 			{
 				for(int j = originalImage.getMinY();j < imageHeight ;j++)
 				{
-//Í¼Æ¬µÄÏñËØµãÆäÊµÊÇ¸ö¾ØÕó£¬ÕâÀïÀûÓÃÁ½¸öforÑ­»·À´¶ÔÃ¿¸öÏñËØ½øÐÐ²Ù×÷
-					Object data = originalImage.getRaster().getDataElements(i, j, null);//»ñÈ¡¸ÃµãÏñËØ£¬²¢ÒÔobjectÀàÐÍ±íÊ¾
+//Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Êµï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½forÑ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
+					Object data = originalImage.getRaster().getDataElements(i, j, null);//ï¿½ï¿½È¡ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½Í±ï¿½Ê¾
 				
 					red = originalImage.getColorModel().getRed(data);
 					blue = originalImage.getColorModel().getBlue(data);
@@ -41,7 +43,65 @@ public class ImageUtil {
 		   
 	}
 	
-
+	public static Color[][] getGrayPicture(String filename,int minX,int minY,int maxX,int maxY) throws FileNotFoundException, IOException
+	{	
+		File file =new File(filename);
+		BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
+		originalImage.getColorModel();
+		System.out.println(originalImage.getColorModel());
+		
+		int green=0,red=0,blue=0,rgb;
+		int imageWidth = originalImage.getWidth();
+		int imageHeight = originalImage.getHeight();
+		Color[][] heights=new Color[maxX-minX ][maxY-minY ];
+		for(int i = minX;i < maxX ;i++)
+			{
+				for(int j = minY;j < maxX ;j++)
+				{
+//Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Êµï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½forÑ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
+					Object data = originalImage.getRaster().getDataElements(i, j, null);//ï¿½ï¿½È¡ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½Í±ï¿½Ê¾
+					
+					red = originalImage.getColorModel().getRed(data);
+					if(red!=0){
+					blue = originalImage.getColorModel().getBlue(data);
+					green = originalImage.getColorModel().getGreen(data);
+					heights[i-minX][j-minY]=new Color(red,blue,green);
+					}
+				}
+				
+			}
+		return heights;
+		   
+	}
+	
+	public static int[][] getColorPicture(String filename) throws FileNotFoundException, IOException
+	{	
+		File file =new File(filename);
+		BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
+		originalImage.getColorModel();
+		System.out.println(originalImage.getColorModel());
+		
+		int green=0,red=0,blue=0,rgb;
+		int imageWidth = originalImage.getWidth();
+		int imageHeight = originalImage.getHeight();
+		int[][] heights=new int[imageWidth][imageHeight];
+		for(int i = originalImage.getMinX();i < imageWidth ;i++)
+			{
+				for(int j = originalImage.getMinY();j < imageHeight ;j++)
+				{
+//Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Êµï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½forÑ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
+					Object data = originalImage.getRaster().getDataElements(i, j, null);//ï¿½ï¿½È¡ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½Í±ï¿½Ê¾
+				
+					red = originalImage.getColorModel().getRed(data);
+					blue = originalImage.getColorModel().getBlue(data);
+					green = originalImage.getColorModel().getGreen(data);
+					heights[i][j]=red;
+				}
+				
+			}
+		return heights;
+		   
+	}
 	public static void main(String args[]){
 		File file =new File("D:/graymap.png");
 		File file2 =new File("D:/graymap1.png");
@@ -72,8 +132,8 @@ public class ImageUtil {
 			{
 				for(int j = originalImage.getMinY();j < imageHeight ;j++)
 				{
-//Í¼Æ¬µÄÏñËØµãÆäÊµÊÇ¸ö¾ØÕó£¬ÕâÀïÀûÓÃÁ½¸öforÑ­»·À´¶ÔÃ¿¸öÏñËØ½øÐÐ²Ù×÷
-					Object data = originalImage.getRaster().getDataElements(i, j, null);//»ñÈ¡¸ÃµãÏñËØ£¬²¢ÒÔobjectÀàÐÍ±íÊ¾
+//Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Êµï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½forÑ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
+					Object data = originalImage.getRaster().getDataElements(i, j, null);//ï¿½ï¿½È¡ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½Í±ï¿½Ê¾
 				
 					red = originalImage.getColorModel().getRed(data);
 					blue = originalImage.getColorModel().getBlue(data);
@@ -82,14 +142,14 @@ public class ImageUtil {
 					green = red;
 					blue = green;
 /*
-ÕâÀï½«r¡¢g¡¢bÔÙ×ª»¯ÎªrgbÖµ£¬ÒòÎªbufferedImageÃ»ÓÐÌá¹©ÉèÖÃµ¥¸öÑÕÉ«µÄ·½·¨£¬Ö»ÄÜÉèÖÃrgb¡£rgb×î´óÎª8388608£¬µ±´óÓÚÕâ¸öÖµÊ±£¬Ó¦¼õÈ¥255*255*255¼´16777216
+ï¿½ï¿½ï¿½ï½«rï¿½ï¿½gï¿½ï¿½bï¿½ï¿½×ªï¿½ï¿½ÎªrgbÖµï¿½ï¿½ï¿½ï¿½ÎªbufferedImageÃ»ï¿½ï¿½ï¿½á¹©ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½rgbï¿½ï¿½rgbï¿½ï¿½ï¿½Îª8388608ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÊ±ï¿½ï¿½Ó¦ï¿½ï¿½È¥255*255*255ï¿½ï¿½16777216
 */
 					rgb = (red*256 + green)*256+blue;
 					if(rgb>8388608)
 					{
 						rgb = rgb - 16777216;
 					}
-//½«rgbÖµÐ´»ØÍ¼Æ¬
+//ï¿½ï¿½rgbÖµÐ´ï¿½ï¿½Í¼Æ¬
 					System.out.printf(" %d %d %d \r\n",red,blue,green);
 				}
 				

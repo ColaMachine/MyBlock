@@ -1,30 +1,13 @@
-/*
- * Copyright 2013 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 
 package cola.machine.game.myblocks.world.chunks;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.Vector3i;
-import org.terasology.world.internal.ChunkViewCore;
-import org.terasology.world.chunks.internal.ChunkImpl;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
-/**
- * @author Immortius
- */
+
 public interface ChunkProvider {
+	
+
 
     /**
      * A local view provides a
@@ -52,7 +35,7 @@ public interface ChunkProvider {
      *
      * @param entity
      */
-    void setWorldEntity(EntityRef entity);
+  //  void setWorldEntity(EntityRef entity);
 
     /**
      * Requests that a region around the given entity be maintained in near cache
@@ -60,7 +43,7 @@ public interface ChunkProvider {
      * @param entity
      * @param distance The region (in chunks) around the entity that should be near cached
      */
-    void addRelevanceEntity(EntityRef entity, int distance);
+    //void addRelevanceEntity(EntityRef entity, int distance);
 
     /**
      * Requests that a region around the given entity be maintained in near cache
@@ -69,7 +52,7 @@ public interface ChunkProvider {
      * @param distance The region (in chunks) around the entity that should be near cached
      * @param listener A listener to chunk region events
      */
-    void addRelevanceEntity(EntityRef entity, int distance, ChunkRegionListener listener);
+  //  void addRelevanceEntity(EntityRef entity, int distance, ChunkRegionListener listener);
 
     /**
      * Retrieves the ChunkRelevanceRegion object for the given entity
@@ -77,14 +60,14 @@ public interface ChunkProvider {
      * @param entity
      * @return The chunk relevance region, or null
      */
-    void updateRelevanceEntity(EntityRef entity, int distance);
+   // void updateRelevanceEntity(EntityRef entity, int distance);
 
     /**
      * Removes an entity from producing a caching region
      *
      * @param entity
      */
-    void removeRelevanceEntity(EntityRef entity);
+  //  void removeRelevanceEntity(EntityRef entity);
 
     /**
      * Updates the near cache based on the movement of the caching entities
@@ -124,4 +107,5 @@ public interface ChunkProvider {
      * Destroys all chunks and triggers their regeneration
      */
     void purgeChunks();
+
 }

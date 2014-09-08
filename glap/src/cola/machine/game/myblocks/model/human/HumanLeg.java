@@ -120,7 +120,9 @@ public class HumanLeg {
         GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P5);	// Top Right ǰ����
         GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P8);	// Top Leftǰ����
         GL11.glEnd();
-        GL11.glRotatef(-angle,1, 0, 0);
+        
+    	
+        
     	GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
 	}
 	

@@ -15,10 +15,8 @@
  */
 package cola.machine.game.myblocks.world.chunks;
 
-import org.terasology.math.Region3i;
-import org.terasology.math.Vector3i;
-import org.terasology.world.block.Block;
-import org.terasology.world.liquid.LiquidData;
+import cola.machine.game.myblocks.model.Block;
+
 
 /**
  * A chunk view is a way of accessing multiple chunks for modification in a performant manner.
@@ -118,7 +116,7 @@ public interface ChunkView {
      * @param pos
      * @return The state of liquid at the given position. This will be no liquid outside the view.
      */
-    LiquidData getLiquid(Vector3i pos);
+   // LiquidData getLiquid(Vector3i pos);
 
     /**
      * @param x
@@ -126,7 +124,7 @@ public interface ChunkView {
      * @param z
      * @return The state of liquid at the given position. This will be no liquid outside the view.
      */
-    LiquidData getLiquid(int x, int y, int z);
+   // LiquidData getLiquid(int x, int y, int z);
 
     /**
      * Sets the liquid state at the given position, if it is within the view
@@ -134,7 +132,7 @@ public interface ChunkView {
      * @param pos
      * @param newState
      */
-    void setLiquid(Vector3i pos, LiquidData newState);
+   // void setLiquid(Vector3i pos, LiquidData newState);
 
     /**
      * Sets the liquid state at the given position, if it is within the view
@@ -144,7 +142,7 @@ public interface ChunkView {
      * @param z
      * @param newState
      */
-    void setLiquid(int x, int y, int z, LiquidData newState);
+   // void setLiquid(int x, int y, int z, LiquidData newState);
 
     /**
      * Converts a coordinate from view-space to world space.

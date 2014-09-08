@@ -6,8 +6,13 @@ public interface  Block {
 	
 	public void render();
 	public void renderCube();
+	public void renderColor();
 	public void setCenter(int x,int y,int z);
 	public int getX();
 	public int getY();
 	public int getZ();
+	public int r();
+	public int b();
+	public int g();
+	public int getId();
 }

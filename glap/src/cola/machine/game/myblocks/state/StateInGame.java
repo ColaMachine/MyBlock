@@ -2,14 +2,10 @@ package cola.machine.game.myblocks.state;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.config.Config;
-import org.terasology.engine.subsystem.DisplayDevice;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.monitoring.PerformanceMonitor;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.opengl.DefaultRenderingProcess;
 
 import cola.machine.game.myblocks.model.ui.NuiManager;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 
 public class StateInGame {
 	  private static final Logger logger = LoggerFactory.getLogger(StateInGame.class);

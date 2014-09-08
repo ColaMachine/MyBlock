@@ -1,6 +1,10 @@
 package glapp;
 
+import javax.vecmath.Vector3f;
+
 import org.lwjgl.util.glu.*;
+
+import cola.machine.game.myblocks.rendering.cameras.Camera;
 import glmodel.GL_Vector;
 import glmodel.GL_Matrix;
 
@@ -25,7 +29,7 @@ import glmodel.GL_Matrix;
  *
  * jul13,2006: added move(x,y,z).  added ctor(pos,dir,up).
  */
-public class GLCamera {
+public class GLCamera implements Camera{
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
 	public GL_Vector RightVector;
@@ -216,9 +220,9 @@ public class GLCamera {
 		GLU.gluLookAt(Position.x, Position.y, Position.z,
 				ViewPoint.x, ViewPoint.y, ViewPoint.z,
 				UpVector.x, UpVector.y, UpVector.z);
-//		µÚÒ»×éeyex, eyey,eyez Ïà»úÔÚÊÀ½ç×ø±êµÄÎ»ÖÃ
-//		µÚ¶þ×écenterx,centery,centerz Ïà»ú¾µÍ·¶Ô×¼µÄÎïÌåÔÚÊÀ½ç×ø±êµÄÎ»ÖÃ
-//		µÚÈý×éupx,upy,upz Ïà»úÏòÉÏµÄ·½ÏòÔÚÊÀ½ç×ø±êÖÐµÄ·½Ïò
+//		ï¿½ï¿½Ò»ï¿½ï¿½eyex, eyey,eyez ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+//		ï¿½Ú¶ï¿½ï¿½ï¿½centerx,centery,centerz ï¿½ï¿½ï¿½Í·ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+//		ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½upx,upy,upz ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ·ï¿½ï¿½ï¿½
 
 		//System.out.println(Position.x + "," + Position.y + "," + Position.z + "  " + 
 		//		ViewDir.x + "," + ViewDir.y + "," + ViewDir.z + "  " + 
@@ -231,6 +235,11 @@ public class GLCamera {
 	 */
 	public GL_Vector getViewDir() {
 		return ViewDir;
+	}
+
+	@Override
+	public Vector3f getPosition() {
+		return new Vector3f(this.Position.x,this.Position.y,this.Position.z);
 	}
 	
 }

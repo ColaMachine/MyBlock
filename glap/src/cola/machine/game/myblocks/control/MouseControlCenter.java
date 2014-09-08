@@ -23,8 +23,9 @@ import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.physic.BulletPhysics;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
 
-import org.terasology.registry.CoreRegistry;
 
 import util.MathUtil;
 import util.OpenglUtil;
@@ -99,6 +100,9 @@ public Robot robot;
 		if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
 			CoreRegistry.get(ToolBar.class).keyDown(2);
 		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+			Switcher.PRINT_SWITCH=!Switcher.PRINT_SWITCH;
+		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_B) ) { 
 			double timenow=GLApp.getTimeInSeconds();
 			System.out.println("pretime:"+timenow+" time:"+timenow+" seconds:"+seconds);
@@ -154,7 +158,7 @@ if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
 	}
 	
 	
-	public void mouseLClick(int x, int y){
+	public void mouseLClick(int x, int y){  System.out.println("x:"+x+"y:"+y);
 		/*GL_Vector from =camera.Position;*/
         System.out.printf("mouse clikc at  %d %d \r\n ",
                x,y);

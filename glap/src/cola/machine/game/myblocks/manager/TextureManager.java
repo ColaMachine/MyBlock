@@ -1,17 +1,13 @@
 package cola.machine.game.myblocks.manager;
 
-import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.GLApp;
 import glapp.GLImage;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 
-import org.terasology.engine.paths.PathManager;
 
 /**
  * Created by luying on 14-8-28.
@@ -24,7 +20,8 @@ Path installPath;
     public TextureManager(){
    	//installPath =PathManager.getInstance().getInstallPath();
    	
-   	
+    	this.put("heightmap", "images/gray.png");
+    	 iconMap.put("heightmap",new TextureInfo("heightmap"));
     this.put("background","images/background.png");
     iconMap.put("background",new TextureInfo("background"));
        this.put("gui","images/gui.png");
@@ -51,7 +48,7 @@ Path installPath;
         
         this.put("terrain","assets/minecraft/textures/terrain.png");
         iconMap.put("water",new TextureInfo("terrain",14,2,1,1,16,16));
-        
+        iconMap.put("mantle",new TextureInfo("terrain",1,14,1,1,16,16));
         iconMap.put("glass",new TextureInfo("terrain",1,12,1,1,16,16));
         
         iconMap.put("wood",new TextureInfo("terrain",4,15,1,1,16,16));

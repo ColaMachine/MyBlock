@@ -1,16 +1,15 @@
 package cola.machine.game.myblocks.model.ui.tool;
 
-import java.util.HashMap;
+import glapp.GLApp;
+
+import org.lwjgl.opengl.GL11;
 
 import cola.machine.game.myblocks.container.Slot;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
-import glapp.GLApp;
-
-import org.lwjgl.opengl.GL11;
-import org.terasology.registry.CoreRegistry;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 
 public class ToolBarContainer extends RegionArea{
     public TextureInfo textureInfo;

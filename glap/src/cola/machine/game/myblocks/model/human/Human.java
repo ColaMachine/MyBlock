@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import util.MathUtil;
 import cola.machine.game.myblocks.item.Item;
+import cola.machine.game.myblocks.item.weapons.Sword;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.repository.BlockRepository;
@@ -38,7 +39,8 @@ public class Human extends AABB{
 	public boolean stable = true;
 	public Human(	BlockRepository blockRepository){
 		this.blockRepository=blockRepository;
-	}
+		//sword=new Sword(0,0,0);
+	}//Sword sword;
 	public void setStable(boolean flag) {
 		this.stable = flag;
 	}
@@ -93,7 +95,7 @@ public class Human extends AABB{
 		RightVector = GL_Vector.crossProduct(ViewDir, UpVector);
 		RotatedX = RotatedY = RotatedZ = 0.0f; // TO DO: should set these to
 												// correct values
-
+		
 		head.setHead(0,  3, 0, dirx, diry, dirz, upx, upy, upz);
 		LLeg.setHead(0 - 0.25f, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy,
 				upz);
@@ -160,24 +162,28 @@ public class Human extends AABB{
 
 	public void render() {
 		adjust(this.Position.x, this.Position.y, this.Position.z);
-		GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
+		//GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
 		float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,-1));
 		//System.out.println("glRotatef angle :"+angle);
 		//System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
-		GL11.glRotatef(angle, 0, 1, 0);
-		GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
+		
+	//	GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
 		this.walk();
 		this.dropControl();
         GL11.glTranslatef(Position.x,Position.y,Position.z);
+        
+        GL11.glRotatef(angle, 0, 1, 0);
 		LLeg.render();
 
 		RLeg.render();
-
+	
 		LHand.render();
 
 		RHand.render();
+		
 		body.render();
 		head.render();
+		GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
 	}
 
@@ -193,7 +199,6 @@ public class Human extends AABB{
        // this.dropControl();
 
         LLeg.render();
-
         RLeg.render();
 
         LHand.render();
@@ -433,7 +438,7 @@ public class Human extends AABB{
 		}
 	}
 	public void jump() {
-		
+		//this.Position.y+=1;
 		// ��¼��ǰ��ʱ��
 		if (this.stable) {
 			this.v=10.2f;

@@ -199,9 +199,11 @@ public class GLApp {
      * Called by the run() loop.  Handles animation and input for each frame.
      */
     public void handleEvents() {
+    	
         int mouseDX = Mouse.getDX();
         int mouseDY = Mouse.getDY();
         int mouseDW = Mouse.getDWheel();
+      
         // handle mouse motion
         if (mouseDX != 0 || mouseDY != 0 || mouseDW != 0) {
             cursorX += mouseDX;

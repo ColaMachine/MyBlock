@@ -16,9 +16,7 @@
 
 package cola.machine.game.myblocks.world.chunks;
 
-import org.terasology.config.Config;
 import org.terasology.module.sandbox.API;
-import org.terasology.registry.CoreRegistry;
 
 /**
  * @author Immortius
@@ -33,7 +31,7 @@ public final class ChunkConstants {
     public static final int POWER_X = TeraMath.sizeOfPower(SIZE_X);
     public static final int POWER_Y = TeraMath.sizeOfPower(SIZE_Y);
     public static final int POWER_Z = TeraMath.sizeOfPower(SIZE_Z);
-    public static final int VERTICAL_SEGMENTS = CoreRegistry.get(Config.class).getSystem().getVerticalChunkMeshSegments();
+    //public static final int VERTICAL_SEGMENTS = CoreRegistry.get(Config.class).getSystem().getVerticalChunkMeshSegments();
     public static final byte MAX_LIGHT = 0x0f;
 
     public static final Vector3i CHUNK_POWER = new Vector3i(POWER_X, POWER_Y, POWER_Z);

@@ -1,14 +1,13 @@
 package cola.machine.game.myblocks.container;
 
+import glapp.GLApp;
+
+import org.lwjgl.opengl.GL11;
+
 import cola.machine.game.myblocks.item.Item;
-import cola.machine.game.myblocks.item.ItemStack;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import glapp.GLApp;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
-import org.terasology.registry.CoreRegistry;
 
 /**
  * Created by luying on 14-8-29.

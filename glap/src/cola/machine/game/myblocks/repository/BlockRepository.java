@@ -10,6 +10,8 @@ import org.lwjgl.opengl.GL11;
 import cola.machine.game.myblocks.block.Water;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import util.MathUtil;
 
 public class BlockRepository {
@@ -18,10 +20,15 @@ public class BlockRepository {
 	public HashMap<String,Integer> handleMap=new HashMap();
 	public HashMap<Integer,Block> woodmap=new HashMap<Integer,Block> ();
 	public 	HashMap<String,HashMap<Integer,Block> > kindBlockMap=new HashMap<String,HashMap<Integer,Block> > ();
+	
+	public HashMap<Integer,Chunk> chunks=new HashMap<Integer,Chunk>(); 
+	
 	public BlockRepository(MyBlockEngine engine){
 		this .engine=engine; 
 	}
 	public void put(Block block){//System.out.println("the existing block nums"+map.size());
+		
+	
 		if(!haveObject(block.getX(),block.getY(),block.getZ()))
 		map.put(block.getX()*10000+block.getZ()*100+block.getY(),block);
 		if(kindBlockMap.get(block.getName())==null){

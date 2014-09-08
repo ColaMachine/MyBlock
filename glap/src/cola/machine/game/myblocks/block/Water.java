@@ -1,7 +1,6 @@
 package cola.machine.game.myblocks.block;
 
 import org.lwjgl.opengl.GL11;
-import org.terasology.registry.CoreRegistry;
 
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;

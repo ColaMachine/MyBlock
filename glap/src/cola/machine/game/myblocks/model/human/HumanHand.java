@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.human;
 
 import org.lwjgl.opengl.GL11;
 
+import cola.machine.game.myblocks.item.weapons.Sword;
 import glmodel.GL_Vector;
 
 public class HumanHand {
@@ -9,6 +10,7 @@ public class HumanHand {
 	private int height;
 	private int thick;
 	public float angle;
+	public Sword sword =new Sword(0,0,0);
 	public GL_Vector Position ;
 	public void setHead(float posx, float posy, float posz,
 			float dirx, float diry, float dirz,
@@ -56,45 +58,57 @@ public class HumanHand {
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
         GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
-        GL11.glTexCoord2f(13/16f, 3/8f); glVertex3fv(vertexs[0]);// Bottom Left г╟вСоб
-        GL11.glTexCoord2f(12/16f, 3/8f); glVertex3fv(vertexs[1]);// Bottom Right г╟сроб
-        GL11.glTexCoord2f(12/16f, 0f); glVertex3fv(vertexs[2]);// Top Right г╟срио
-        GL11.glTexCoord2f(13/16f, 0f); glVertex3fv(vertexs[3]);	// Top Left	г╟вСио
+        GL11.glTexCoord2f(13/16f, 3/8f); glVertex3fv(vertexs[0]);// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(12/16f, 3/8f); glVertex3fv(vertexs[1]);// Bottom Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(12/16f, 0f); glVertex3fv(vertexs[2]);// Top Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(13/16f, 0f); glVertex3fv(vertexs[3]);	// Top Left	г╟О©╫О©╫О©╫О©╫
         // Back Face
         
         GL11.glNormal3f( 0.0f, 0.0f, -1.0f);
-        GL11.glTexCoord2f(11/16f, 3/8f); glVertex3fv(vertexs[4]);// Bottom Left ╨Ссроб
-        GL11.glTexCoord2f(10/16f, 3/8f); glVertex3fv(vertexs[5]);// Bottom Right ╨СвСоб
-        GL11.glTexCoord2f(10/16f, 0f); glVertex3fv(vertexs[6]);	// Top Right ╨СвСио
-        GL11.glTexCoord2f(11/16f, 0f); glVertex3fv(vertexs[7]);	// Top Left ╨Ссрио
+        GL11.glTexCoord2f(11/16f, 3/8f); glVertex3fv(vertexs[4]);// Bottom Left О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(10/16f, 3/8f); glVertex3fv(vertexs[5]);// Bottom Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(10/16f, 0f); glVertex3fv(vertexs[6]);	// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(11/16f, 0f); glVertex3fv(vertexs[7]);	// Top Left О©╫О©╫О©╫О©╫О©╫О©╫
        
         // Top Face
         GL11.glNormal3f( 0.0f, 1.0f, 0.0f);
       
-        GL11.glTexCoord2f(11/16f, 3/8f); glVertex3fv(vertexs[8]);	// Bottom Left г╟вСио
-        GL11.glTexCoord2f(12/16f, 3/8f);glVertex3fv(vertexs[9]);	// Bottom Right г╟срио
-        GL11.glTexCoord2f(12/16f, 4/8f); glVertex3fv(vertexs[10]);// Top Right ╨Ссрио
-        GL11.glTexCoord2f(11/16f, 4/8f); glVertex3fv(vertexs[11]);// Top Left ╨СвСио
+        GL11.glTexCoord2f(11/16f, 3/8f); glVertex3fv(vertexs[8]);	// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(12/16f, 3/8f);glVertex3fv(vertexs[9]);	// Bottom Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(12/16f, 4/8f); glVertex3fv(vertexs[10]);// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(11/16f, 4/8f); glVertex3fv(vertexs[11]);// Top Left О©╫О©╫О©╫О©╫О©╫О©╫
         // Bottom Face
         GL11.glNormal3f( 0.0f, -1.0f, 0.0f);
-        GL11.glTexCoord2f(12/16f, 3/8f); glVertex3fv(vertexs[12]);	// Top Right ╨СвСоб
-        GL11.glTexCoord2f(13/16f, 3/8f);glVertex3fv(vertexs[13]);	// Top Left ╨Ссроб
-        GL11.glTexCoord2f(13/16f, 4/8f); glVertex3fv(vertexs[14]);// Bottom Left г╟сроб
-        GL11.glTexCoord2f(12/16f, 4/8f); glVertex3fv(vertexs[15]);	// Bottom Right г╟вСоб
+        GL11.glTexCoord2f(12/16f, 3/8f); glVertex3fv(vertexs[12]);	// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(13/16f, 3/8f);glVertex3fv(vertexs[13]);	// Top Left О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(13/16f, 4/8f); glVertex3fv(vertexs[14]);// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(12/16f, 4/8f); glVertex3fv(vertexs[15]);	// Bottom Right г╟О©╫О©╫О©╫О©╫
         // Right face
         GL11.glNormal3f( 1.0f, 0.0f, 0.0f);
-        GL11.glTexCoord2f(12/16f, 3/8f); glVertex3fv(vertexs[16]);	// Bottom Left г╟сроб
-        GL11.glTexCoord2f(11/16f, 3/8f); glVertex3fv(vertexs[17]);	// Bottom Right ╨Ссроб
-        GL11.glTexCoord2f(11/16f, 0f); glVertex3fv(vertexs[18]);	// Top Right ╨Ссрио
-        GL11.glTexCoord2f(12/16f, 0f); glVertex3fv(vertexs[19]);	// Top Left г╟срио
+        GL11.glTexCoord2f(12/16f, 3/8f); glVertex3fv(vertexs[16]);	// Bottom Left г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(11/16f, 3/8f); glVertex3fv(vertexs[17]);	// Bottom Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(11/16f, 0f); glVertex3fv(vertexs[18]);	// Top Right О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(12/16f, 0f); glVertex3fv(vertexs[19]);	// Top Left г╟О©╫О©╫О©╫О©╫
       
         // Left Face
         GL11.glNormal3f( -1.0f, 0.0f, 0.0f);
-        GL11.glTexCoord2f(14/16f, 3/8f); glVertex3fv(vertexs[20]);// Bottom Left ╨СвСоб
-        GL11.glTexCoord2f(13/16f, 3/8f); glVertex3fv(vertexs[21]);	// Bottom Right г╟вСоб
-        GL11.glTexCoord2f(13/16f,0f); glVertex3fv(vertexs[22]);	// Top Right г╟вСио
-        GL11.glTexCoord2f(14/16f, 0f); glVertex3fv(vertexs[23]);// Top Leftг╟вСио
+        GL11.glTexCoord2f(14/16f, 3/8f); glVertex3fv(vertexs[20]);// Bottom Left О©╫О©╫О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(13/16f, 3/8f); glVertex3fv(vertexs[21]);	// Bottom Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(13/16f,0f); glVertex3fv(vertexs[22]);	// Top Right г╟О©╫О©╫О©╫О©╫
+        GL11.glTexCoord2f(14/16f, 0f); glVertex3fv(vertexs[23]);// Top Leftг╟О©╫О©╫О©╫О©╫
         GL11.glEnd();
+        
+        
+      //Х╫╛Ф╓┘Е┬╟Г■╥Д╨╨Ф┴▀Е©┐Х©≥Д╦╙Д╫█Г╫╝
+      		// double dy =Math.cos(LHand.angle/Math.PI);
+      		 //double dz= Math.sin(LHand.angle/Math.PI);
+      		 GL11.glTranslated(0,-1,0);
+      		 
+      		 
+      		 sword.render();
+      		 GL11.glTranslated(0,1,0);
+      		 
+      		 
         GL11.glRotatef(-angle,1, 0, 0);
         GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
       //  GL11.glRotatef(-30,1, 0, 0);

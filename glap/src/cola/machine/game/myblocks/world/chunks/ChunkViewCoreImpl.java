@@ -19,6 +19,9 @@ package cola.machine.game.myblocks.world.chunks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+
 
 /**
  * @author Immortius
@@ -70,7 +73,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     @Override
     public Block getBlock(int blockX, int blockY, int blockZ) {
         if (!blockRegion.encompasses(blockX, blockY, blockZ)) {
-            return BlockManager.getAir();
+            return null;//BlockManager.getAir();
         }
 
         int chunkIndex = relChunkIndex(blockX, blockY, blockZ);
@@ -104,7 +107,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
         }
 
         int chunkIndex = relChunkIndex(blockX, blockY, blockZ);
-        return chunks[chunkIndex].getSunlight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize));
+        return 1;//chunks[chunkIndex].//getSunlight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize));
     }
 
     @Override
@@ -114,7 +117,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
         }
 
         int chunkIndex = relChunkIndex(blockX, blockY, blockZ);
-        return chunks[chunkIndex].getLight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize));
+        return 1;//chunks[chunkIndex].getLight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize));
     }
 
     @Override
@@ -134,8 +137,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
         }
     }
 
-    @Override
-    public LiquidData getLiquid(Vector3i pos) {
+  /*  public LiquidData getLiquid(Vector3i pos) {
         return getLiquid(pos.x, pos.y, pos.z);
     }
 
@@ -152,9 +154,9 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     @Override
     public void setLiquid(Vector3i pos, LiquidData newState) {
         setLiquid(pos.x, pos.y, pos.z, newState);
-    }
+    }*/
 
-    @Override
+  /*  @Override
     public void setLiquid(int x, int y, int z, LiquidData newState) {
         if (locked.get() && blockRegion.encompasses(x, y, z)) {
             int chunkIndex = relChunkIndex(x, y, z);
@@ -162,7 +164,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
         } else {
             throw new IllegalStateException("Attempted to modify liquid data though an unlocked view");
         }
-    }
+    }*/
 
     @Override
     public void setLight(Vector3i pos, byte light) {
@@ -173,7 +175,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     public void setLight(int blockX, int blockY, int blockZ, byte light) {
         if (locked.get() && blockRegion.encompasses(blockX, blockY, blockZ)) {
             int chunkIndex = relChunkIndex(blockX, blockY, blockZ);
-            chunks[chunkIndex].setLight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize), light);
+           // chunks[chunkIndex].setLight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize), light);
         } else if (!locked.get()) {
             throw new IllegalStateException("Attempted to modify light though an unlocked view");
         } else {
@@ -190,7 +192,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     public void setSunlight(int blockX, int blockY, int blockZ, byte light) {
         if (locked.get() && blockRegion.encompasses(blockX, blockY, blockZ)) {
             int chunkIndex = relChunkIndex(blockX, blockY, blockZ);
-            chunks[chunkIndex].setSunlight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize), light);
+           // chunks[chunkIndex].setSunlight(TeraMath.calcBlockPos(blockX, blockY, blockZ, chunkFilterSize), light);
         } else {
             throw new IllegalStateException("Attempted to modify sunlight though an unlocked view");
         }
@@ -199,7 +201,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     @Override
     public void setDirtyAround(Vector3i blockPos) {
         for (Vector3i pos : TeraMath.getChunkRegionAroundWorldPos(blockPos, 1)) {
-            chunks[pos.x + offset.x + chunkRegion.size().x * (pos.z + offset.z)].setDirty(true);
+        //    chunks[pos.x + offset.x + chunkRegion.size().x * (pos.z + offset.z)].setDirty(true);
         }
     }
 
@@ -214,7 +216,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
         Vector3i maxChunk = TeraMath.calcChunkPos(maxPos, chunkPower);
 
         for (Vector3i pos : Region3i.createFromMinMax(minChunk, maxChunk)) {
-            chunks[pos.x + offset.x + chunkRegion.size().x * (pos.z + offset.z)].setDirty(true);
+           // chunks[pos.x + offset.x + chunkRegion.size().x * (pos.z + offset.z)].setDirty(true);
         }
     }
 
@@ -222,7 +224,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     public void lock() {
         if (!locked.get()) {
             for (ChunkImpl chunk : chunks) {
-                chunk.lock();
+              //  chunk.lock();
             }
             locked.set(true);
         }
@@ -233,7 +235,7 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
         if (locked.get()) {
             locked.set(false);
             for (ChunkImpl chunk : chunks) {
-                chunk.unlock();
+               // chunk.unlock();
             }
         }
     }
@@ -246,9 +248,9 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     @Override
     public boolean isValidView() {
         for (ChunkImpl chunk : chunks) {
-            if (chunk.isDisposed()) {
-                return false;
-            }
+          //  if (chunk.isDisposed()) {
+               // return false;
+           // }
         }
         return true;
     }
@@ -275,4 +277,6 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
         return new Vector3i(localPos.x + (offset.x + chunkRegion.min().x) * ChunkConstants.SIZE_X, localPos.y,
                 localPos.z + (offset.z + chunkRegion.min().z) * ChunkConstants.SIZE_Z);
     }
+
+
 }
