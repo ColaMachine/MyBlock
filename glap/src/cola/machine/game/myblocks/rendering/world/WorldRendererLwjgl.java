@@ -1,7 +1,11 @@
 package cola.machine.game.myblocks.rendering.world;
 
+import glapp.GLApp;
 import glapp.GLCamera;
 
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -10,10 +14,17 @@ import javax.vecmath.Vector3f;
 
 import math.Rect2i;
 
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.cameras.Camera;
@@ -23,6 +34,7 @@ import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkBlockIterator;
 import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
 import com.google.common.collect.Lists;
@@ -47,17 +59,18 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		this.worldProvider = worldProvider;
 		this.localPlayerSystem = localPlayerSystem;
 		skysphere = new Skysphere(this);
+		this.setup();
 	}
 	public void updateVisibleQuads(){
 		
-		for(int i=0;i<chunksInProximity.size();i++){
+		/*for(int i=0;i<chunksInProximity.size();i++){
 			ChunkImpl chunk = chunksInProximity.get(i);
 			ChunkBlockIterator it = chunk.getBlockIterator();
 			if(it.next()){
 				Block block =it.getBlock();
-				
+				it.getBlockPos()
 			}
-		}
+		}*/
 		//Chunk chunk = chunkProvider.getChunk(this.getActiveCamera().getPosition());
 		//创建纹理数组
 		
@@ -65,6 +78,63 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		//创建法相数组
 		
 		//跟新自己
+	}
+	public void render(){
+		this.updateChunksInProximity(false);
+		GL11.glPushMatrix();
+		{	
+			
+		GL11.glBindTexture(
+				GL11.GL_TEXTURE_2D,
+				TextureManager.getIcon("soil").textureHandle);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+				GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		
+for(ChunkImpl chunk:chunksInProximity ){
+		GL11.glTranslated(chunk.getChunkWorldPosX(), 0, chunk.getChunkWorldPosZ());
+			GLApp.callDisplayList(chunk.displayId);
+			GL11.glTranslated(-chunk.getChunkWorldPosX(), 0, -chunk.getChunkWorldPosZ());
+		}
+		
+		
+		}GL11.glPopMatrix();
+		/*GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		
+		
+		// Bind to the VAO that has all the information about the vertices
+		GL30.glBindVertexArray(vaoId);
+		GL20.glEnableVertexAttribArray(0);
+		GL20.glEnableVertexAttribArray(1);
+		
+		// Bind to the index VBO that has all the information about the order of the vertices
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboiId);
+		
+		// Draw the vertices
+		GL11.glDrawElements(GL11.GL_TRIANGLES, indicesCount, GL11.GL_UNSIGNED_BYTE, 0);
+		
+		// Put everything back to default (deselect)
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+		GL20.glDisableVertexAttribArray(0);
+		GL20.glDisableVertexAttribArray(1);
+		GL30.glBindVertexArray(0);*/
+	
+	}
+	int vaoId,vbocId,vboId;
+	int displayId;
+	public void setup(){
+		this.updateChunksInProximity(true);
+		
+		/*
+ChunkImpl chunk=chunkProvider.getChunk(new Vector3i(1,1,1));
+displayId = GLApp.beginDisplayList();
+
+Block block =new BaseBlock("soil",1,1,1);
+//block.render();
+GL11.glBegin(GL11.GL_QUADS);
+		chunk.build();
+		GL11.glEnd();
+System.out.println(chunk.count);
+GLApp.endDisplayList();*/
 	}
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcCamChunkOffsetX();
@@ -99,7 +169,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	                          ChunkImpl c = chunkProvider.getChunk(x, 0, y);
 	                          if (c != null) {
 	                              chunksInProximity.remove(c);
-	                             // c.disposeMesh();
+	                              c.disposeMesh();
 	                          }
 	                      }
 	                  }
@@ -112,6 +182,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	                      if (c != null ) {
 	                          chunksInProximity.add(c);
 	                      } else {
+	                    	  chunkProvider.loadChunk(x, 0, y);
 	                          chunksCurrentlyPending = true;
 	                      }
 	                  }

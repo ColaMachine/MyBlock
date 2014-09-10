@@ -226,6 +226,6 @@ public class BaseBlock extends AABB implements Block{
 	@Override
 	public int getId() {
 		// VIP Auto-generated method stub
-		return 0;
+		return id;
 	}
 }

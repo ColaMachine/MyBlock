@@ -69,11 +69,15 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 				}else*/{
 					 chunk = new ChunkImpl(chunkPos);
                     generator.createChunk(chunk);
+                    chunk.build();
                     if (nearCache.putIfAbsent(chunkPos, chunk) != null) {
                         logger.warn("Chunk {} is already in the near cache", chunkPos);
                     }
+                   // chunk.build();
 				}
 			}
+		
+		
 	}
 	public Vector3i getPosition() {
 		// VIP Auto-generated method stub
@@ -112,6 +116,10 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 
 	  public ChunkImpl getChunk(Vector3i pos) {
 	        ChunkImpl chunk = nearCache.get(pos);
+	        if(chunk==null){
+	        	createOrLoadChunk(pos);
+	        	 chunk = nearCache.get(pos);
+	        }
 	            return chunk;
 	     
 	    }
@@ -156,8 +164,13 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 
 	@Override
 	public ChunkImpl getChunk(int x, int y, int z) {
-		// VIP Auto-generated method stub
-		return null;
+		  ChunkImpl chunk = nearCache.get(new Vector3i(x,y,z));
+	        if(chunk==null){
+	        	createOrLoadChunk(new Vector3i(x,y,z));
+	        	 chunk = nearCache.get(new Vector3i(x,y,z));
+	        }
+	            return chunk;
+	     
 	}
     
 

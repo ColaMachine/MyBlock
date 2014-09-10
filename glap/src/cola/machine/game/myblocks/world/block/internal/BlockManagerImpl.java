@@ -9,7 +9,7 @@ import cola.machine.game.myblocks.world.block.BlockManager;
 public class BlockManagerImpl extends BlockManager {
 	private HashMap<String,Block> registerBlockInfo=new HashMap();
 	public BlockManagerImpl(){
-		Block water=new BaseBlock("water",0);
+		Block water=new BaseBlock("water",6);
 		Block stone=new BaseBlock("stone",1);
 		Block soil =new BaseBlock("soil",2);
 		Block glass=new BaseBlock("glass",3);

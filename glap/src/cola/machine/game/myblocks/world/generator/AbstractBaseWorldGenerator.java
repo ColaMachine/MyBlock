@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.BasicHMTerrainGenerator;
+import cola.machine.game.myblocks.world.generator.ChunkGenerators.GrayTerrainGenerator;
+import cola.machine.game.myblocks.world.generator.ChunkGenerators.PerlinTerrainGenerator;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -65,8 +67,9 @@ public abstract class AbstractBaseWorldGenerator  implements WorldGenerator{
 
     @Override
     public void createChunk(final Chunk chunk) {
-    	BasicHMTerrainGenerator generator = new BasicHMTerrainGenerator();
-    	generator.setWorldSeed("123123");
+    	GrayTerrainGenerator generator = new GrayTerrainGenerator();
+    	//PerlinTerrainGenerator generator = new PerlinTerrainGenerator();
+    	generator.setWorldSeed("-3977122335882919370");
     	 generator.generateChunk(chunk);
        /* for (final FirstPassGenerator generator : firstPassGenerators) {
             generator.generateChunk(chunk);

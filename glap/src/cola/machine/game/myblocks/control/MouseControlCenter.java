@@ -94,6 +94,13 @@ public Robot robot;
 			human.Position.y=	human.Position.y-1*seconds;
 			human.move(human.Position);
 		}
+		double timenow=GLApp.getTimeInSeconds();
+		//System.out.println("pretime:"+timenow+" time:"+timenow+" seconds:"+seconds);
+		
+		if((timenow-preKeyTime)<0.2){
+			return;
+		}
+		preKeyTime=timenow;
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
 			CoreRegistry.get(ToolBar.class).keyDown(1);
 		}
@@ -103,14 +110,17 @@ public Robot robot;
 		if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
 			Switcher.PRINT_SWITCH=!Switcher.PRINT_SWITCH;
 		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_F4)) {
+			Switcher.IS_GOD=!Switcher.IS_GOD;
+		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_B) ) { 
-			double timenow=GLApp.getTimeInSeconds();
+		/*	double timenow=GLApp.getTimeInSeconds();
 			System.out.println("pretime:"+timenow+" time:"+timenow+" seconds:"+seconds);
 			
 			if((timenow-preKeyTime)<1){
 				return;
 			}
-			preKeyTime=timenow;
+			preKeyTime=timenow;*/
 			
 			CoreRegistry.get(Bag.class).changeShow();
 		}
@@ -137,6 +147,9 @@ if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
 }
 		// tilt up
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			
+			
+			
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 				human.jumpHigh();
 			//	System.out.println("ͬʱ������w��");

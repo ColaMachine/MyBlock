@@ -10,5 +10,7 @@ import cola.machine.game.myblocks.rendering.cameras.Camera;
 public interface WorldRenderer {
 	
 	   Camera getActiveCamera();
+
+	void render();
 	
 }

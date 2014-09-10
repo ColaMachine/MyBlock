@@ -14,6 +14,7 @@ import cola.machine.game.myblocks.item.weapons.Sword;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.repository.BlockRepository;
+import cola.machine.game.myblocks.switcher.Switcher;
 
 public class Human extends AABB{
 	static final float PIdiv180 = 0.0174532925f;
@@ -132,6 +133,7 @@ public class Human extends AABB{
 	int preY = 0;
 
 	public void dropControl() {
+		if(!Switcher.IS_GOD)
 		if (!this.stable) {
 			long t = Sys.getTime() - this.lastTime;//�˶���ʱ��
 
@@ -440,6 +442,9 @@ public class Human extends AABB{
 	public void jump() {
 		//this.Position.y+=1;
 		// ��¼��ǰ��ʱ��
+		if(Switcher.IS_GOD){
+			this.Position.y+=10;
+		}else
 		if (this.stable) {
 			this.v=10.2f;
 			preY = (int) this.Position.y;

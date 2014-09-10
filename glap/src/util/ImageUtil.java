@@ -42,7 +42,34 @@ public class ImageUtil {
 		return heights;
 		   
 	}
-	
+	public static float[][] getGrayPicturef(String filename) throws FileNotFoundException, IOException
+	{	
+		File file =new File(filename);
+		BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
+		originalImage.getColorModel();
+		System.out.println(originalImage.getColorModel());
+		
+		int green=0,red=0,blue=0,rgb;
+		int imageWidth = originalImage.getWidth();
+		int imageHeight = originalImage.getHeight();
+		float[][] heights=new float[imageWidth][imageHeight];
+		for(int i = originalImage.getMinX();i < imageWidth ;i++)
+			{
+				for(int j = originalImage.getMinY();j < imageHeight ;j++)
+				{
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+					Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+				
+					red = originalImage.getColorModel().getRed(data);
+					blue = originalImage.getColorModel().getBlue(data);
+					green = originalImage.getColorModel().getGreen(data);
+					heights[i][j]=red;
+				}
+				
+			}
+		return heights;
+		   
+	}
 	public static Color[][] getGrayPicture(String filename,int minX,int minY,int maxX,int maxY) throws FileNotFoundException, IOException
 	{	
 		File file =new File(filename);

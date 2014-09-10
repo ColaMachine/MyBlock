@@ -288,6 +288,7 @@ public class MyBlockEngine extends GLApp {
 		WorldGenerator worldGenerator =new HeightMapWorldGenerator();
 		 GeneratingChunkProvider chunkProvider =new LocalChunkProvider(storageManager,worldGenerator);
 		 chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
+		 
 		WorldProvider WorldProvider =new WorldProviderWrapper();
 	
 		worldRenderer=new WorldRendererLwjgl(WorldProvider,chunkProvider, new LocalPlayerSystem(),camera1);
@@ -339,7 +340,7 @@ public class MyBlockEngine extends GLApp {
 	}
 
 	public void drawAllBlock() {
-
+		worldRenderer.render();
 		java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
 		while (it.hasNext()) {
 			

@@ -13,7 +13,9 @@ public class HeightMapWorldGenerator  extends AbstractBaseWorldGenerator{
 
     @Override
     public void initialize() {
-        register(new BasicHMTerrainGenerator());
+    	
+    	  register(new PerlinTerrainGenerator());
+       // register(new BasicHMTerrainGenerator());
        /* register(new FloraGenerator());
         register(new LiquidsGenerator());
         register(new OreGenerator());
