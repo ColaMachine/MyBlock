@@ -154,6 +154,10 @@ GLApp.endDisplayList();*/
 	                        } else {
 	                        	logger.warn("chunk is null");
 	                          // chunkProvider.
+	                        	 chunkProvider.createOrLoadChunk(new Vector3i(x, 0,newChunkPosZ +z));
+		                          chunksCurrentlyPending = true;
+		                           c = chunkProvider.getChunk(x, 0, newChunkPosZ +z);
+		                          chunksInProximity.add(c);
 	                        }
 					  }
 				  }
@@ -166,10 +170,13 @@ GLApp.endDisplayList();*/
 	              for (Rect2i r : removeRects) {
 	                  for (int x = r.minX(); x <= r.maxX(); ++x) {
 	                      for (int y = r.minY(); y <= r.maxY(); ++y) {
+	                    	  System.out.printf("delete chunk  x:%d y:%d z:%d \n",x,0,y);
 	                          ChunkImpl c = chunkProvider.getChunk(x, 0, y);
 	                          if (c != null) {
 	                              chunksInProximity.remove(c);
 	                              c.disposeMesh();
+	                              chunkProvider.removeChunk(c);
+	                            
 	                          }
 	                      }
 	                  }
@@ -182,8 +189,10 @@ GLApp.endDisplayList();*/
 	                      if (c != null ) {
 	                          chunksInProximity.add(c);
 	                      } else {
-	                    	  chunkProvider.loadChunk(x, 0, y);
+	                    	  chunkProvider.createOrLoadChunk(new Vector3i(x, 0, y));
 	                          chunksCurrentlyPending = true;
+	                           c = chunkProvider.getChunk(x, 0, y);
+	                          chunksInProximity.add(c);
 	                      }
 	                  }
 	              }
@@ -202,7 +211,9 @@ GLApp.endDisplayList();*/
 	private int calcCamChunkOffsetX() {
 		return (int) (getActiveCamera().getPosition().x / ChunkConstants.SIZE_X);
 	}
-
+	public static void main(String args[]){
+		System.out.println((-31)/16);
+	}
 	/*public Camera getActiveCamera() {
 		return activeCamera;
 	}*/

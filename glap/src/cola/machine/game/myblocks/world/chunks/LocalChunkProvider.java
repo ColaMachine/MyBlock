@@ -57,6 +57,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
     	
     }
     public void createOrLoadChunk(Vector3i chunkPos){
+    	System.out.printf("加载或创建地图  x:%d y:%d z:%d \n",chunkPos.x,chunkPos.y,chunkPos.z);
 		ChunkImpl chunk=nearCache.get(chunkPos);
 		if(chunk == null){
 				/*if(storageManager.containsChunkStoreFor(chunkPos)){
@@ -116,10 +117,10 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 
 	  public ChunkImpl getChunk(Vector3i pos) {
 	        ChunkImpl chunk = nearCache.get(pos);
-	        if(chunk==null){
+	        /*if(chunk==null){
 	        	createOrLoadChunk(pos);
 	        	 chunk = nearCache.get(pos);
-	        }
+	        }*/
 	            return chunk;
 	     
 	    }
@@ -165,12 +166,24 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 	@Override
 	public ChunkImpl getChunk(int x, int y, int z) {
 		  ChunkImpl chunk = nearCache.get(new Vector3i(x,y,z));
-	        if(chunk==null){
+	        /*if(chunk==null){
 	        	createOrLoadChunk(new Vector3i(x,y,z));
 	        	 chunk = nearCache.get(new Vector3i(x,y,z));
-	        }
+	        }*/
 	            return chunk;
 	     
+	}
+
+	@Override
+	public void createOrLoadChunk(int x, int i, int y) {
+		// VIP Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeChunk(ChunkImpl c) {
+		this.nearCache.remove(c);
+		
 	}
     
 

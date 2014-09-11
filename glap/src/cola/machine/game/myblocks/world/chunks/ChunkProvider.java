@@ -108,4 +108,8 @@ public interface ChunkProvider {
      */
     void purgeChunks();
 
+	void createOrLoadChunk(int x, int i, int y);
+	 public void createOrLoadChunk(Vector3i chunkPos);
+
+	void removeChunk(ChunkImpl c);
 }

@@ -110,7 +110,7 @@ public class GrayTerrainGenerator implements FirstPassGenerator{
             	int _z= (chunk.getBlockWorldPosZ(z)+256)%256;
             	
             	float height = heightmap[_x][_z];
-				System.out.println("H:"+height);
+				//System.out.println("H:"+height);
             double interpolatedHeight= heightmap[_x][_z]*scaleFactor;
                 double threshold = Math.floor(interpolatedHeight);
                 for (int y = 0; y <= height / 20; y++) {

@@ -166,9 +166,9 @@ GL11.glBegin(GL11.GL_QUADS);
 		System.out.println(this.count);
 		GLApp.endDisplayList();
 	}
-	public IntBuffer vetices = BufferUtils.createIntBuffer(16*16*256*6*4);
+	public IntBuffer vetices = BufferUtils.createIntBuffer(14);
 	public int count = 0;
-	public IntBuffer normalizes = BufferUtils.createIntBuffer(16*16*256*6);
+	public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
 
 	public void addThisTop(int x, int y, int z) {
 		count++;
@@ -210,7 +210,9 @@ GL11.glBegin(GL11.GL_QUADS);
 		   GL11.glTexCoord2f(ti.maxX,ti.minY); GL11.glVertex3d(vetices.get(),vetices.get(), vetices.get());
 		   GL11.glTexCoord2f(ti.maxX,ti.maxY);GL11.glVertex3d(vetices.get(),vetices.get(), vetices.get());
 		   GL11.glTexCoord2f(ti.minX,ti.maxY);GL11.glVertex3d(vetices.get(),vetices.get(), vetices.get());
-		   vetices.flip();
+		  // vetices.flip();
+		   normalizes.position(0);
+		   vetices.position(0);
 	}
 	public void addThisBottom(int x, int y, int z) {
 		count++;
@@ -568,5 +570,12 @@ GL11.glBegin(GL11.GL_QUADS);
 	public ChunkBlockIterator getBlockIterator() {
 		return new ChunkBlockIteratorImpl(blockManager, getChunkWorldPos(),
 				blockData);
+	}
+	
+	public void disposeMesh(){
+		GL11.glDeleteLists(this.displayId,GL11.GL_COMPILE);
+		this.blockData=null;
+		
+		
 	}
 }
