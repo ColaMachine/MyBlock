@@ -1,16 +1,16 @@
 package util;
 
 public class MathUtil {
-	public static int getNearOdd(float num){//ÆæÊý
+	public static int getNearOdd(float num){//ï¿½ï¿½ï¿½ï¿½
 		int x=(int)Math.rint((double)num);
-		//ÅÐ¶ÏxÊÇÅ¼Êý»¹ÊÇÆæÊý 
-		//¶Ô2È¡Ä£
+		//ï¿½Ð¶ï¿½xï¿½ï¿½Å¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+		//ï¿½ï¿½2È¡Ä£
 		
 		if(x%2==1){
-			//ÊÇÆæÊý
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			return (int)x;
 		}else{
-			//ÊÇÅ¼Êý
+			//ï¿½ï¿½Å¼ï¿½ï¿½
 			if(x>num){
 				return x-1;
 				
@@ -21,16 +21,16 @@ public class MathUtil {
 		
 	}
 	
-public static int getNearEven(float num){//Å¼Êý
+public static int getNearEven(float num){//Å¼ï¿½ï¿½
 			int x=(int)Math.rint((double)num);
-			//ÅÐ¶ÏxÊÇÅ¼Êý»¹ÊÇÆæÊý 
-			//¶Ô2È¡Ä£
+			//ï¿½Ð¶ï¿½xï¿½ï¿½Å¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+			//ï¿½ï¿½2È¡Ä£
 			
 			if(x%2==0){
-				//ÊÇÆæÊý
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				return (int)x;
 			}else{
-				//ÊÇÅ¼Êý
+				//ï¿½ï¿½Å¼ï¿½ï¿½
 				if(x>num){
 					return x-1;
 				}else{
@@ -53,6 +53,20 @@ public static  float distance(float preX, float preY, float x, float y) {
 	return (float) Math.sqrt(diffX * diffX + diffY * diffY);
 }
 public static void main(String args[]){
-	System.out.println(getNearOdd(10f));
+	System.out.println(MathUtil.floor((float)(-10)/16));
+}
+
+public static int floor(float f) {
+	return (int)Math.floor(f);
+}
+public static int getBelongChunkInt(float f){
+	int g=(int)(f/16);
+	if(f<0)g-=1;
+	return g;
+}
+public static int getOffesetChunk(float f){
+	int g=floor(f)%16;
+	if( g<0)g+=16;
+	return g;
 }
 }

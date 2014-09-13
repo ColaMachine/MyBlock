@@ -70,7 +70,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 				}else*/{
 					 chunk = new ChunkImpl(chunkPos);
                     generator.createChunk(chunk);
-                    chunk.build();
+                 //   chunk.build();
                     if (nearCache.putIfAbsent(chunkPos, chunk) != null) {
                         logger.warn("Chunk {} is already in the near cache", chunkPos);
                     }

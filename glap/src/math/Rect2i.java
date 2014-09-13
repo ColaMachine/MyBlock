@@ -187,6 +187,12 @@ public class Rect2i {
      * @param b
      * @return A collection of rectangles that compose the difference of a - b. May be empty if a is completely encompassed by b.
      */
+    public static void main(String args[]){
+    	Rect2i a=new Rect2i(-7,-5,6,6);
+    	Rect2i b=new Rect2i(-6,-5,6,6);
+    	List list=difference(a,b);
+    	
+    }
     public static List<Rect2i> difference(Rect2i a, Rect2i b) {
         List<Rect2i> result = Lists.newArrayList();
         if (b.encompasses(a)) {
@@ -207,7 +213,7 @@ public class Rect2i {
             result.add(Rect2i.createFromMinAndMax(b.posX + b.w, Math.max(a.posY, b.posY), a.posX + a.w - 1, a.posY + a.h - 1));
         }
         if (a.maxY() > b.maxY()) {
-            result.add(Rect2i.createFromMinAndMax(Math.max(a.posX, b.posX), b.posY + b.h, Math.min(a.posX + a.w, b.posY + b.w) - 1, a.posY + a.h - 1));
+            result.add(Rect2i.createFromMinAndMax(Math.max(a.posX, b.posX), b.posY + b.h, Math.min(a.posX + a.w, b.posX + b.w) - 1, a.posY + a.h - 1));
         }
 
         return result;

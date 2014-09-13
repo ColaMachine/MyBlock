@@ -32,6 +32,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.WorldProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
@@ -175,12 +176,12 @@ public class MyBlockEngine extends GLApp {
 		mouseControlCenter = new MouseControlCenter(human, camera1, this);
 		mouseControlCenter.bulletPhysics = bulletPhysics;
 		
-		for (int i = 0; i < 50; i++)
+		/*for (int i = 0; i < 50; i++)
 			for (int j = 0; j < 50; j++) {
 					Block soil = new BaseBlock("soil",2 * i + 1, 2 * 0 + 1, 2 * j + 1);
 					blockRepository.put(soil);
 			}
-		blockRepository.reBuild("soil");
+		blockRepository.reBuild("soil");*/
 		/*try {
 			
 			//blockRepository.reBuild("color");
@@ -287,11 +288,11 @@ public class MyBlockEngine extends GLApp {
 		StorageManager storageManager =new StorageManagerInternal();
 		WorldGenerator worldGenerator =new HeightMapWorldGenerator();
 		 GeneratingChunkProvider chunkProvider =new LocalChunkProvider(storageManager,worldGenerator);
-		 chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
-		 
+		 //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
+		 CoreRegistry.put(ChunkProvider.class, chunkProvider);
 		WorldProvider WorldProvider =new WorldProviderWrapper();
 	
-		worldRenderer=new WorldRendererLwjgl(WorldProvider,chunkProvider, new LocalPlayerSystem(),camera1);
+		worldRenderer=new WorldRendererLwjgl(WorldProvider,chunkProvider, new LocalPlayerSystem(),camera1,human);
 	}
 
 	/**
@@ -331,6 +332,7 @@ public class MyBlockEngine extends GLApp {
 		//drawColorBlocks();
 		drawObjects();
 		drawSky();
+		drawLine();
 		//sword.y=human.Position.y+4;
 		//sword.render();
 		CoreRegistry.get(NuiManager.class).render();
@@ -341,7 +343,7 @@ public class MyBlockEngine extends GLApp {
 
 	public void drawAllBlock() {
 		worldRenderer.render();
-		java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
+		/*java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
 		while (it.hasNext()) {
 			
 			java.util.Map.Entry entry = (java.util.Map.Entry) it.next();
@@ -364,7 +366,7 @@ public class MyBlockEngine extends GLApp {
 			}
 			
 		}
-
+*/
 	}
 	/*
 	public void drawColorBlocks(){
@@ -522,5 +524,25 @@ public class MyBlockEngine extends GLApp {
 		print(30, viewportH - 120, "mouse click create block");
 		print(30,viewportH - 135, "fps:"+time.tick());
 	}
-
+		public GL_Vector lineStart = new GL_Vector(0, 0, 0);
+	
+		// һ����¼���߷���
+		public GL_Vector mouseDir = new GL_Vector(0, 1, 0);
+		// һ����¼���߽����
+	
+		public 	GL_Vector mouseEnd = new GL_Vector(0, 5, 0);
+	
+		public void drawLine() {
+			
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glLineWidth(12f);
+			GL11.glColor3f(1f, 1f, 1f);
+			GL11.glBegin(GL11.GL_LINES); // draw triangles
+			GL11.glVertex3f(lineStart.x, lineStart.y,
+					lineStart.z); // A1-A2
+			GL11.glVertex3f(mouseEnd.x, mouseEnd.y, mouseEnd.z);
+			GL11.glEnd();
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			
+		}
 }

@@ -443,7 +443,7 @@ public class Human extends AABB{
 		//this.Position.y+=1;
 		// ��¼��ǰ��ʱ��
 		if(Switcher.IS_GOD){
-			this.Position.y+=10;
+			this.Position.y+=2;
 		}else
 		if (this.stable) {
 			this.v=10.2f;

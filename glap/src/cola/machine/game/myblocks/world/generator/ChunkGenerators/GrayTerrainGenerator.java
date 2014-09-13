@@ -114,7 +114,7 @@ public class GrayTerrainGenerator implements FirstPassGenerator{
             double interpolatedHeight= heightmap[_x][_z]*scaleFactor;
                 double threshold = Math.floor(interpolatedHeight);
                 for (int y = 0; y <= height / 20; y++) {
-					 chunk.setBlock(x, y, z, mantle);
+					 chunk.setBlock(x, y, z, grass);
 				}
                
             }
