@@ -119,6 +119,9 @@ public class TeraDenseArray16Bit extends TeraDenseArray {
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         readExternalHeader(in);
         data = (short[]) in.readObject();
+        if(data==null||data.length<10){
+        	System.out.println("读取失败!");
+        }
     }
 
     public static class SerializationHandler extends TeraArray.BasicSerializationHandler<TeraDenseArray16Bit> {

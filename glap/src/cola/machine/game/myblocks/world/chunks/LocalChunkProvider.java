@@ -16,18 +16,26 @@
 
 package cola.machine.game.myblocks.world.chunks;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.persistence.ChunkStore;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
+import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
+import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
 
 import com.google.common.collect.Maps;
@@ -60,14 +68,35 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
     	System.out.printf("加载或创建地图  x:%d y:%d z:%d \n",chunkPos.x,chunkPos.y,chunkPos.z);
 		ChunkImpl chunk=nearCache.get(chunkPos);
 		if(chunk == null){
-				/*if(storageManager.containsChunkStoreFor(chunkPos)){
-					 ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
-					 chunk= chunkStore.getChunk();
+			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
+			
+			Path chunkPath = PathManager.getInstance().getHomePath()
+                      
+                        .resolve(fileName);
+				if(Files.isRegularFile(chunkPath)){
+					
+					ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
+						try {
+							  ObjectInputStream in=new ObjectInputStream(new FileInputStream(fileName));   
+							  
+					            //读取UserInfo对象并调用它的toString()方法   
+					           // TeraArray user=(TeraArray)(in.readObject());  
+							  TeraArray user= new TeraDenseArray16Bit(); 
+					            user.readExternal(in);
+							chunkImpl.blockData= user;
+							in.close();
+							//byte[] chunkData =Files.readAllBytes(chunkPath);
+						} catch (Exception e) {
+							// VIP Auto-generated catch block
+							e.printStackTrace();
+						}
+					// ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
+					// chunk= chunkStore.getChunk();
 					 
-					 if(nearCache.putIfAbsent(chunkPos, chunkStore.getChunk())!=null){
+					 if(nearCache.putIfAbsent(chunkPos, chunkImpl)!=null){
 						 logger.warn("Chunk {} is already in the near cache", chunkPos);
 					 }
-				}else*/{
+				}else{
 					 chunk = new ChunkImpl(chunkPos);
                     generator.createChunk(chunk);
                  //   chunk.build();
@@ -170,6 +199,9 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 	        	createOrLoadChunk(new Vector3i(x,y,z));
 	        	 chunk = nearCache.get(new Vector3i(x,y,z));
 	        }*/
+		  if(chunk!=null&& chunk.blockData==null){
+			  System.out.println("found the null blockdata chunk in nearCache 。solve it！！！");
+		  }
 	            return chunk;
 	     
 	}
@@ -182,8 +214,10 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 
 	@Override
 	public void removeChunk(ChunkImpl c) {
-		this.nearCache.remove(c);
-		
+		this.nearCache.remove(c.getPos());
+		if(nearCache.get(c.getPos())!=null){
+			System.out.println("删除失败!");
+		}
 	}
     
 
