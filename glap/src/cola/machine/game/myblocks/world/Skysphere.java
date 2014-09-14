@@ -84,8 +84,8 @@ public class Skysphere {
 
 	public void initDisplayList() {
 
-		int sky_x = 256;
-		int sky_y = 256;
+		int sky_x = 1024;
+		int sky_y = 1024;
 		int sky_z = 256;
 		{
 			// renderSphere();

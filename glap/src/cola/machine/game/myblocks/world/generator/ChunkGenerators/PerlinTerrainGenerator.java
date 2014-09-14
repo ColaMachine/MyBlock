@@ -114,7 +114,7 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
          */
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
-              //  WorldBiomeProvider.Biome type = biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x), chunk.getBlockWorldPosZ(z));
+                WorldBiomeProvider.Biome type = biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x), chunk.getBlockWorldPosZ(z));
                 int firstBlockHeight = -1;
 
                 for (int y = chunk.getChunkSizeY() - 1; y >= 0; y--) {
@@ -146,7 +146,7 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                         }
 
                         if (calcCaveDensity(chunk.getBlockWorldPosX(x), y, chunk.getBlockWorldPosZ(z)) > -0.7) {
-                           // generateOuterLayer(x, y, z, firstBlockHeight, chunk, type);
+                            generateOuterLayer(x, y, z, firstBlockHeight, chunk, type);
                         } else {
                            // chunk.setBlock(x, y, z, air);
                         }

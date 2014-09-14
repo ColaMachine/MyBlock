@@ -1,17 +1,14 @@
 package cola.machine.game.myblocks.world.generator;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cola.machine.game.myblocks.world.WorldBiomeProvider;
 import cola.machine.game.myblocks.world.chunks.Chunk;
-import cola.machine.game.myblocks.world.generator.ChunkGenerators.BasicHMTerrainGenerator;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.GrayTerrainGenerator;
-import cola.machine.game.myblocks.world.generator.ChunkGenerators.PerlinTerrainGenerator;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 
@@ -32,10 +29,10 @@ public abstract class AbstractBaseWorldGenerator  implements WorldGenerator{
    /* public final SimpleUri getUri() {
         return uri;
     }*/
-
+    public WorldBiomeProvider biomeProvider;
     public void setWorldSeed(final String seed) {
         worldSeed = seed;
-       // biomeProvider = new WorldBiomeProviderImpl(seed);
+        biomeProvider = new WorldBiomeProviderImpl(seed);
         for (final BaseChunkGenerator generator : firstPassGenerators) {
             setBiome(generator);
             generator.setWorldSeed(seed);
@@ -62,18 +59,18 @@ public abstract class AbstractBaseWorldGenerator  implements WorldGenerator{
     }
 
     private void setBiome(BaseChunkGenerator generator) {
-       // generator.setWorldBiomeProvider(biomeProvider);
+        generator.setWorldBiomeProvider(biomeProvider);
     }
 
     @Override
     public void createChunk(final Chunk chunk) {
-    	GrayTerrainGenerator generator = new GrayTerrainGenerator();
+    	//GrayTerrainGenerator generator = new GrayTerrainGenerator();
     	//PerlinTerrainGenerator generator = new PerlinTerrainGenerator();
-    	generator.setWorldSeed("-3977122335882919370");
-    	 generator.generateChunk(chunk);
-       /* for (final FirstPassGenerator generator : firstPassGenerators) {
+    	//generator.setWorldSeed("-3977122335882919370");
+    	// generator.generateChunk(chunk);
+       for (final FirstPassGenerator generator : firstPassGenerators) {
             generator.generateChunk(chunk);
-        }*/
+        }
     }
 
  /*   @Override

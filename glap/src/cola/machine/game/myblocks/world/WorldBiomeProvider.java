@@ -1,5 +1,3 @@
-package cola.machine.game.myblocks.world;
-
 /*
  * Copyright 2013 MovingBlocks
  *
@@ -16,6 +14,7 @@ package cola.machine.game.myblocks.world;
  * limitations under the License.
  */
 
+package cola.machine.game.myblocks.world;
 
 /**
  * @author Immortius
