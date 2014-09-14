@@ -1,9 +1,10 @@
 package cola.machine.game.myblocks.engine;
 
-import org.terasology.engine.paths.PathManager;
 
 import java.io.IOException;
 import java.util.Collection;
+
+import cola.machine.game.myblocks.engine.paths.PathManager;
 
 /**
  * Created by luying on 14-8-31.

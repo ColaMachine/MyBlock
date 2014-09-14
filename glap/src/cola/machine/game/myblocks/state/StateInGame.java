@@ -7,7 +7,7 @@ import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 
-public class StateInGame {
+public class StateInGame {/*
 	  private static final Logger logger = LoggerFactory.getLogger(StateInGame.class);
 	   private NuiManager nuiManager;
 	    private WorldRenderer worldRenderer;
@@ -48,7 +48,7 @@ public class StateInGame {
             worldRenderer.render();
 	       
 
-	        /* UI */
+	         UI 
 	        renderUserInterface();
 	    }
-}
+*/}

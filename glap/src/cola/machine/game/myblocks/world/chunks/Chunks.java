@@ -47,7 +47,7 @@ public final class Chunks {
 
     private final Map<String, TeraArrays.Entry> modDataEntries;
 
-    private final ChunkImpl.ProtobufHandler handler;
+    //private final ChunkImpl.ProtobufHandler handler;
 
     private Chunks() {
         final TeraArrays t = TeraArrays.getInstance();
@@ -58,7 +58,7 @@ public final class Chunks {
 
         modDataEntries = Maps.newHashMap();
 
-        handler = new ChunkImpl.ProtobufHandler();
+       // handler = new ChunkImpl.ProtobufHandler();
     }
 
     public TeraArrays.Entry getBlockDataEntry() {
@@ -85,14 +85,14 @@ public final class Chunks {
         modDataEntries.put(id, entry);
     }
 
-    public EntityData.ChunkStore encode(ChunkImpl chunk, boolean coreOnly) {
+    /*public EntityData.ChunkStore encode(ChunkImpl chunk, boolean coreOnly) {
         return handler.encode(chunk, coreOnly).build();
     }
 
     public ChunkImpl decode(EntityData.ChunkStore message) {
         return handler.decode(message);
     }
-
+*/
     public static Chunks getInstance() {
         return INSTANCE;
     }
