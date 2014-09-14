@@ -99,9 +99,9 @@ public class GrayTerrainGenerator implements FirstPassGenerator{
 
     public void generateChunk(Chunk chunk) {
    
-        double scaleFactor = 0.05;
+       // double scaleFactor = 0.05;
 
-        
+        double scaleFactor = 0.1 ;
 		
       
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
@@ -113,9 +113,39 @@ public class GrayTerrainGenerator implements FirstPassGenerator{
 				//System.out.println("H:"+height);
             double interpolatedHeight= heightmap[_x][_z]*scaleFactor;
                 double threshold = Math.floor(interpolatedHeight);
-                for (int y = 0; y <= height / 20; y++) {
+               /* for (int y = 0; y <= height *scaleFactor; y++) {
 					 chunk.setBlock(x, y, z, grass);
-				}
+					 
+					 
+					 
+				}*/
+                
+                for (int y = chunk.getChunkSizeY() - 1; y >= 0; y--) {
+                    if (y == 0) { // The very deepest layer of the world is an
+                        // indestructible mantle
+                        chunk.setBlock(x, y, z, mantle);
+                        break;
+                    } else if (y < threshold) {
+                        chunk.setBlock(x, y, z, stone);
+                    } else if (y == threshold) {
+                        if (y < chunk.getChunkSizeY() /30 + 1) {
+                            chunk.setBlock(x, y, z, sand);
+                        } else if (y < chunk.getChunkSizeY()/30 * 12) {
+                            chunk.setBlock(x, y, z, grass);
+                        } else {
+                            //chunk.setBlock(x, y, z, snow);
+                        }
+                    } else {
+                        if (y <= chunk.getChunkSizeY() / 30) { // Ocean
+                            chunk.setBlock(x, y, z, water);
+                           /* chunk.setLiquid(x, y, z, new LiquidData(LiquidType.WATER,
+                                    LiquidData.MAX_LIQUID_DEPTH));*/
+
+                        } else {
+                            //chunk.setBlock(x, y, z, air);
+                        }
+                    }
+                }
                
             }
         }

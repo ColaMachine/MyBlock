@@ -2,6 +2,10 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 
 import glapp.GLApp;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +67,7 @@ public class ChunkImpl implements Chunk {
 	@Override
 	public Vector3i getPos() {
 		// VIP Auto-generated method stub
-		return null;
+		return this.chunkPos;
 	}
 
 	@Override
@@ -78,7 +82,7 @@ public class ChunkImpl implements Chunk {
 		return null;
 	}
 
-	private TeraArray blockData;
+	public TeraArray blockData;
 
 	@Override
 	public Block setBlock(int x, int y, int z, Block block) {
@@ -92,7 +96,16 @@ public class ChunkImpl implements Chunk {
 	}
 
 	TextureInfo ti = TextureManager.getIcon("soil");
-
+	public boolean judeBlock(int selfType,int blockType){
+		if(selfType==6 && blockType==0){
+			return true;
+		}
+		if(selfType!=6 && (blockType==0|| blockType==6)){
+			return true;
+		}
+		
+		return false;
+	}
 	public void build() {
 
 		displayId = GLApp.beginDisplayList();
@@ -102,12 +115,17 @@ public class ChunkImpl implements Chunk {
 		for (int x = 0; x < this.getChunkSizeX(); x++) {
 			for (int z = 0; z < this.getChunkSizeZ(); z++) {
 				for (int y = 0; y < this.getChunkSizeY(); y++) {
-					int i = blockData.get(x, y, z);
+					int i =0;
+					try{
+					 i = blockData.get(x, y, z);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
 					currentBlockType = i;
 					if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
 						// 判断上面
 						if (y < this.getChunkSizeY() - 1) {
-							if (blockData.get(x, y + 1, z) == 0) {
+							if (judeBlock(i,blockData.get(x, y + 1, z) )) {
 								addThisTop(x, y, z);
 							} else {
 
@@ -118,7 +136,7 @@ public class ChunkImpl implements Chunk {
 
 						// 判断下面
 						if (y > 0) {
-							if (blockData.get(x, y - 1, z) == 0) {
+							if (judeBlock(i,blockData.get(x, y - 1, z) )) {
 								addThisBottom(x, y, z);
 							}
 						} else {
@@ -127,7 +145,7 @@ public class ChunkImpl implements Chunk {
 
 						// 判断左面
 						if (x > 0) {
-							if (blockData.get(x - 1, y, z) == 0) {
+							if (judeBlock(i,blockData.get(x - 1, y, z) )) {
 								addThisLeft(x, y, z);
 							}
 						} else {
@@ -138,7 +156,7 @@ public class ChunkImpl implements Chunk {
 						// 判断右面
 
 						if (x < this.getChunkSizeX() - 1) {
-							if (blockData.get(x + 1, y, z) == 0) {
+							if (judeBlock(i,blockData.get(x + 1, y, z))) {
 								addThisRight(x, y, z);
 							}
 						} else {// TODO
@@ -148,7 +166,7 @@ public class ChunkImpl implements Chunk {
 						// 前面
 
 						if (z < this.getChunkSizeZ() - 1) {
-							if (blockData.get(x, y, z + 1) == 0) {
+							if (judeBlock(i,blockData.get(x, y, z + 1) )) {
 								addThisFront(x, y, z);
 							}
 						} else {// TODO
@@ -158,7 +176,7 @@ public class ChunkImpl implements Chunk {
 						// 后面
 
 						if (z > 0) {
-							if (blockData.get(x, y, z - 1) == 0) {
+							if (judeBlock(i,blockData.get(x, y, z - 1) )) {
 								addThisBack(x, y, z);
 							}
 						} else {// TODO
@@ -215,12 +233,12 @@ public class ChunkImpl implements Chunk {
 	}
 
 	public void Draw() {// up down left right front back
-
+boolean flat =true;
 		switch (this.currentBlockType) {
 		case 1:
 			ti = TextureManager.getIcon("stone");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);
+					ti.textureHandle);DrawVetext();
 			break;
 		case 2:
 			if (faceIndex == 1) {
@@ -233,41 +251,36 @@ public class ChunkImpl implements Chunk {
 						ti.textureHandle);
 			} else {
 				ti = TextureManager.getIcon("grass_side");
-				
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 						ti.textureHandle);
-			}
+			}DrawVetext();
 			break;
 		case 3:
 			ti = TextureManager.getIcon("glass");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);
+					ti.textureHandle);DrawVetext();
 			break;
 		case 4:
 			ti = TextureManager.getIcon("sand");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);
+					ti.textureHandle);DrawVetext();
 			break;
 		case 5:
 			ti = TextureManager.getIcon("mantle");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);
+					ti.textureHandle);DrawVetext();
 			break;
 		case 6:
 			ti = TextureManager.getIcon("water");
 			if (faceIndex == 1) {
-				ti = TextureManager.getIcon("water");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-						ti.textureHandle);
+						ti.textureHandle);DrawVetext();
 			}
 			break;
 		case 7:
 			ti = TextureManager.getIcon("wood");
-			if (faceIndex == 1) {
-				ti = TextureManager.getIcon("wood");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-						ti.textureHandle);
-			}
+						ti.textureHandle);DrawVetext();
 			break;
 		default:
 			System.out.println("添纹理的时候 什么都没对应上");
@@ -275,6 +288,12 @@ public class ChunkImpl implements Chunk {
 		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 		// GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		// GL11.glBegin(GL11.GL_QUADS);
+		
+		// GL11.glEnd();
+		normalizes.position(0);
+		vetices.position(0);
+	}
+	public void DrawVetext(){
 		vetices.position(vetices.position() - 12);
 		normalizes.position(normalizes.position() - 3);
 		GL11.glNormal3f(normalizes.get(), normalizes.get(), normalizes.get());
@@ -288,9 +307,7 @@ public class ChunkImpl implements Chunk {
 		GL11.glTexCoord2f(ti.minX, ti.maxY);
 		GL11.glVertex3d(vetices.get(), vetices.get(), vetices.get());
 		// vetices.flip();
-		normalizes.position(0);
-		vetices.position(0);
-		// GL11.glEnd();
+		
 	}
 
 	public void addThisBottom(int x, int y, int z) {
@@ -602,7 +619,21 @@ public class ChunkImpl implements Chunk {
 			GL11.glDeleteLists(this.displayId, 1);
 			// this.displayId=0;
 			this.disposed = true;
-			// this.blockData=null;
+			
+			//保存数据
+			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
+			 try {
+				ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(fileName));
+				this.blockData.writeExternal(out);
+				out.close();
+			} catch (FileNotFoundException e) {
+				// VIP Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// VIP Auto-generated catch block
+				e.printStackTrace();
+			}
+			 this.blockData=null;
 		} else {
 			System.out.println("为什么要对没有初始化的chunkimpl取消");
 		}

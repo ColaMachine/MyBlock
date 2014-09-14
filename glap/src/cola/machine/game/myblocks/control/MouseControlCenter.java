@@ -101,19 +101,28 @@ public class MouseControlCenter {
 			CoreRegistry.get(ToolBar.class).keyDown(2);
 		}else
 		if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+			  double timenow=GLApp.getTimeInSeconds();
+			  
+			 if((timenow-preKeyTime)<500){ return; } preKeyTime=timenow;
+			 
+
 			Switcher.PRINT_SWITCH = !Switcher.PRINT_SWITCH;
 		}else
 		if (Keyboard.isKeyDown(Keyboard.KEY_F4)) {
+			  double timenow=GLApp.getTimeInSeconds();
+			  
+			 if((timenow-preKeyTime)<1){ return; }
+			 System.out.println("pretime:"
+					  +preKeyTime+" time:"+timenow+" seconds:"+seconds);
+			 preKeyTime=timenow;
 			Switcher.IS_GOD = !Switcher.IS_GOD;
 		}else
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-			/*
-			 * double timenow=GLApp.getTimeInSeconds();
-			 * System.out.println("pretime:"
-			 * +timenow+" time:"+timenow+" seconds:"+seconds);
-			 * 
-			 * if((timenow-preKeyTime)<1){ return; } preKeyTime=timenow;
-			 */
+			
+			  double timenow=GLApp.getTimeInSeconds();
+			  
+			 if((timenow-preKeyTime)<500){ return; } preKeyTime=timenow;
+			 
 
 			CoreRegistry.get(Bag.class).changeShow();
 		}else
@@ -140,7 +149,9 @@ public class MouseControlCenter {
 		}else
 		// tilt up
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-
+			  double timenow=GLApp.getTimeInSeconds();
+			  
+				 if((timenow-preKeyTime)<1){ return; } preKeyTime=timenow;
 			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 				human.jumpHigh();
 			// System.out.println("ͬʱ������w��");

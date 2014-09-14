@@ -29,6 +29,7 @@ import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.Skysphere;
 import cola.machine.game.myblocks.world.WorldProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
@@ -82,7 +83,6 @@ public class MyBlockEngine extends GLApp {
 	// model of airplane and sphere displaylist for earth
 	// GLModel airplane;
 	public int earth;
-	public int sky;
 	public int waterDisplay;
 	public Sword sword;
 	// shadow handler will draw a shadow on floor plane
@@ -96,7 +96,7 @@ public class MyBlockEngine extends GLApp {
 	BulletPhysics bulletPhysics;
 	public Human human;
 	private Human human2;
-
+	private Skysphere skysphere =new Skysphere();
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
 	 * input, calls render() in a loop.
@@ -213,65 +213,7 @@ public class MyBlockEngine extends GLApp {
 			e.printStackTrace();
 		}
 */
-		int sky_x = 50;
-		int sky_y = 50;
-		int sky_z = 50;
-		sky = beginDisplayList();
-		{
-			// renderSphere();
-
-			GL11.glBegin(GL11.GL_QUADS);
-			// Front Face
-			GL11.glNormal3f(0.0f, 0.0f, 1.0f);
-
-			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Right
-			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Left
-			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Top Left
-			GL11.glVertex3f(sky_x, sky_y, sky_z); // Top Right
-
-			// Back Face
-			GL11.glNormal3f(0.0f, 0.0f, -1.0f);
-
-			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Right
-			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Bottom Right
-			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Bottom Left
-			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Left
-
-			// Top Face
-			GL11.glNormal3f(0.0f, 1.0f, 0.0f);
-
-			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Bottom Left
-			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Left
-			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Right
-			GL11.glVertex3f(sky_x, sky_y, sky_z); // Bottom Right
-
-			// Bottom Face
-			GL11.glNormal3f(0.0f, -1.0f, 0.0f);
-
-			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Top Left
-			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Top Right
-			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Right
-			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Left
-
-			// Right face
-			GL11.glNormal3f(1.0f, 0.0f, 0.0f);
-
-			GL11.glVertex3f(sky_x, sky_y, -sky_z); // Top Right
-			GL11.glVertex3f(sky_x, -sky_y, -sky_z); // Bottom Right
-			GL11.glVertex3f(sky_x, -sky_y, sky_z); // Bottom Left
-			GL11.glVertex3f(sky_x, sky_y, sky_z); // Top Left
-
-			// Left Face
-			GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
-
-			GL11.glVertex3f(-sky_x, -sky_y, sky_z); // Bottom Right
-			GL11.glVertex3f(-sky_x, -sky_y, -sky_z); // Bottom Left
-			GL11.glVertex3f(-sky_x, sky_y, -sky_z); // Top Left
-			GL11.glVertex3f(-sky_x, sky_y, sky_z); // Top Right
-
-			GL11.glEnd();
-		}
-		endDisplayList();
+		
 		// make a shadow handler
 		// params:
 		// the light position,
@@ -330,8 +272,8 @@ public class MyBlockEngine extends GLApp {
 		cam.render();
 		drawAllBlock();
 		//drawColorBlocks();
+		skysphere.render();
 		drawObjects();
-		drawSky();
 		drawLine();
 		//sword.y=human.Position.y+4;
 		//sword.render();
@@ -394,22 +336,7 @@ public class MyBlockEngine extends GLApp {
 		GL11.glPopMatrix();
 	}*/
 	
-	public void drawSky(){
-		// draw the sky
-		GL11.glPushMatrix();
-		{
-			GL11.glTranslatef(this.cam.camera.Position.x, 4,
-					this.cam.camera.Position.z);
-
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glColor4f(0.5f, 0.5f, 1.0f, 0.4f);
-			callDisplayList(sky);
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-		}
-		GL11.glPopMatrix();
-	}
+	
 	public void drawObjects() {
 		GL11.glPushMatrix();
 		{

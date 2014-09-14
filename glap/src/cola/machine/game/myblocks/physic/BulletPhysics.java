@@ -63,7 +63,7 @@ public class BulletPhysics  {
     		//ȥ����Ƿ���һ������֮��
     		//ChunkImpl chunk = localChunkProvider.getChunk(new Vector3i(MathUtil.floor((float)_x/16),0,MathUtil.floor((float)_z/16)));
     		ChunkImpl chunk = localChunkProvider.getChunk(new Vector3i(MathUtil.getBelongChunkInt(from.x+x*to.x),0,MathUtil.getBelongChunkInt(from.z+x*to.z)));
-    		System.out.printf(" %d %d %d",_x,_y,_z);
+    		//System.out.printf(" %d %d %d",_x,_y,_z);
     		//先获取chunk 在获取block
 			//blockRepository.haveObject(_x,_y,_z)
 			
