@@ -67,8 +67,8 @@ public abstract class AbstractBaseWorldGenerator  implements WorldGenerator{
 
     @Override
     public void createChunk(final Chunk chunk) {
-    	GrayTerrainGenerator generator = new GrayTerrainGenerator();
-    	//PerlinTerrainGenerator generator = new PerlinTerrainGenerator();
+        //GrayTerrainGenerator generator = new GrayTerrainGenerator();
+    	PerlinTerrainGenerator generator = new PerlinTerrainGenerator();
     	generator.setWorldSeed("-3977122335882919370");
     	 generator.generateChunk(chunk);
        /* for (final FirstPassGenerator generator : firstPassGenerators) {

@@ -178,7 +178,7 @@ public class GLApp {
     }
 
     /**
-     * Called only once when app is first started, init() prepares the display,
+     * Called only once when app is first starteCglappd, init() prepares the display,
      * mouse and OpenGL context for use. Override init() only if you want to
      * substantially alter the app startup behavior.  Otherwise just override
      * initGL() to tweak the OpenGL context and setup() to load textures,
@@ -199,11 +199,13 @@ public class GLApp {
      * Called by the run() loop.  Handles animation and input for each frame.
      */
     public void handleEvents() {
-    	
-        int mouseDX = Mouse.getDX();
+    	cursorX=Mouse.getEventX();
+        cursorY=Mouse.getEventY();
+        int mouseDW = Mouse.getDWheel();
+        /*int mouseDX = Mouse.getDX();
         int mouseDY = Mouse.getDY();
         int mouseDW = Mouse.getDWheel();
-      
+        msg( " mouseDX=" + Mouse.getEventX()+ " mouseDY=" + Mouse.getEventY());
         // handle mouse motion
         if (mouseDX != 0 || mouseDY != 0 || mouseDW != 0) {
             cursorX += mouseDX;
@@ -221,8 +223,9 @@ public class GLApp {
                 cursorY = displayMode.getHeight();
             }
             mouseMove(cursorX,cursorY);
-            //msg("DX=" + mouseDX + " DY=" + mouseDY + " cursorX=" + cursorX);
-        }
+            //msg("DX=" + mouseDX + " DY=" + mouseDY + " cursorX=" + cursorX+ " cursorY=" + cursorY);
+        }*/
+        mouseMove(cursorX,cursorY);
         // handle mouse wheel event
         if (mouseDW != 0) {
         	mouseWheel(mouseDW);
@@ -2428,7 +2431,7 @@ public class GLApp {
      * @see setLineWidth()
      * @see drawRect()
      */
-    public static void drawRectZ(int x, int y, int z, float w, float h) {
+    public static void  drawRectZ(int x, int y, int z, float w, float h) {
     	// preserve current settings
     	GL11.glPushAttrib(GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT);
         // de-activate texture and light

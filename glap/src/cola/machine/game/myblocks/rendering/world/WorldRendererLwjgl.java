@@ -97,6 +97,10 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		}
 		GL11.glPushMatrix();
 		{
+           // GL11.glEnable(GL11.GL_DEPTH_TEST);
+           //  GL11.glDepthFunc(GL11.GL_LEQUAL);
+           GL11.glEnable(GL11.GL_BLEND);
+           // GL11.glBlendFunc( GL11.GL_SRC_ALPHA,  GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					TextureManager.getIcon("soil").textureHandle);
@@ -114,6 +118,17 @@ public class WorldRendererLwjgl implements WorldRenderer {
 				GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
 						-chunk.getChunkWorldPosZ());
 			}
+            for (ChunkImpl chunk : chunksInProximity) {
+                GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
+                        chunk.getChunkWorldPosZ());
+                GL11.glBegin(GL11.GL_QUADS);
+                chunk.renderAlpha();
+                GL11.glEnd();
+                GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
+                        -chunk.getChunkWorldPosZ());
+            }
+
+            GL11.glDisable(GL11.GL_BLEND);
 			
 		}
 		GL11.glPopMatrix();

@@ -1,5 +1,9 @@
 package cola.machine.game.myblocks.model.ui.bag;
 
+import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.Table;
+import cola.machine.game.myblocks.model.ui.html.Td;
+import cola.machine.game.myblocks.model.ui.html.Tr;
 import glapp.GLApp;
 
 import org.lwjgl.opengl.GL11;
@@ -13,6 +17,8 @@ import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.tool.ToolBarSlop;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+
+import javax.vecmath.Vector3f;
 
 /**
  * Created by luying on 14-8-29.
@@ -39,9 +45,30 @@ public class Bag extends RegionArea  {
     public boolean show=false;
 //    public float height=36;
 //    public float width=36;
-
+Div div;
     public Bag() {
+        div=new Div();
+        div.margin="0 auto";
+        div.width=400;
+        div.height=300;
+        div.border_width=1;
+        div.border_color=new Vector3f(1,1,1);
+        Table table =new Table();
+        table.cellspacing=1;
+        for(int i=0;i<5;i++){
+            Tr tr =new Tr();
+            table.addRow(tr);
+            for(int j=0;j<5;j++){
+                Td td=new Td();
 
+                td.border_width=1;
+                tr.border_color=new Vector3f(1,1,1);
+                tr.addCell(td);
+                //Div container=new Div();
+               // td.a
+            }
+        }
+        div.appendChild(table);
         this.withWH(100,100,500,400);
         this.textureInfo= TextureManager.getIcon("bag");
         this.humanTextureHandle= TextureManager.getTextureHandle("human").textureHandle;
@@ -82,6 +109,8 @@ public class Bag extends RegionArea  {
     }
     public void render() {
 if(!show)return;
+        div.render();
+
        // GLApp.pushAttribOrtho();
         // switch to 2D projection
        // GLApp. setOrthoOn();
@@ -91,7 +120,7 @@ if(!show)return;
         GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
         GL11.glDisable(GL11.GL_DEPTH_TEST);  // no depth test
         GL11.glEnable(GL11.GL_BLEND);        // enable transparency
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // activate the image texture
 
         // draw a textured quad

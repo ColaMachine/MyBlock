@@ -8,6 +8,7 @@ public class HumanHead {
 	private int widht;
 	private int height;
 	private int thick;
+    private float scale=1/2;
 	public GL_Vector Position ;
 	public void setHead(float posx, float posy, float posz,
 			float dirx, float diry, float dirz,

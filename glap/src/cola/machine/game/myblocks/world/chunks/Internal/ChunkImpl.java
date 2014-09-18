@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import glapp.GLApp;
 
 import java.io.FileNotFoundException;
@@ -7,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.IntBuffer;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class ChunkImpl implements Chunk {
 	int currentBlockType = 0;
 	int faceIndex = 0;
 	public int displayId = 0;
-
+    public int alphaDisplayId=0;
 	public ChunkImpl(Vector3i chunkPos) {
 		this(chunkPos.x, chunkPos.y, chunkPos.z);
 	}
@@ -96,16 +98,118 @@ public class ChunkImpl implements Chunk {
 	}
 
 	TextureInfo ti = TextureManager.getIcon("soil");
-	public boolean judeBlock(int selfType,int blockType){
-		if(selfType==6 && blockType==0){
+
+    /**
+     * 判断对方和自己 如果一个是alpha 一个是非透明的 就需要
+     * @param selfType
+     * @param blockType
+     * @return
+     */
+	public boolean needToPaint(int selfType,int blockType){
+		if((selfType==6||selfType==3) && blockType==0){
 			return true;
 		}
-		if(selfType!=6 && (blockType==0|| blockType==6)){
+		if(selfType!=6 && (blockType==0|| blockType==6|| blockType==3)){
 			return true;
 		}
 		
 		return false;
 	}
+    public boolean judgeAlpha(int type){
+        if(3==type|| 0==type|| 6==type){
+            return true;
+        }return false;
+    }
+
+    public void buildAlpha() {
+
+        alphaDisplayId = GLApp.beginDisplayList();
+
+        // block.render();
+
+        for (int x = 0; x < this.getChunkSizeX(); x++) {
+            for (int z = 0; z < this.getChunkSizeZ(); z++) {
+                for (int y = 0; y < this.getChunkSizeY(); y++) {
+                    int i =0;
+                    try{
+                        i = blockData.get(x, y, z);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    if(i!=6&&i!=3)
+                        continue;
+                    currentBlockType = i;
+
+
+                    if ( i>0) {// System.out.printf("%d %d %d /n\n",x,y,z);
+                        // 判断上面
+                        if (y < this.getChunkSizeY() - 1) {
+                            if (needToPaint(i,blockData.get(x, y + 1, z) )) {
+                                addThisTop(x, y, z);
+                            } else {
+
+                            }
+                        } else {
+                            addThisTop(x, y, z);
+                        }
+
+                        // 判断下面
+                        if (y > 0) {
+                            if (needToPaint(i,blockData.get(x, y - 1, z) )) {
+                                addThisBottom(x, y, z);
+                            }
+                        } else {
+                            addThisBottom(x, y, z);
+                        }
+
+                        // 判断左面
+                        if (x > 0) {
+                            if (needToPaint(i,blockData.get(x - 1, y, z) )) {
+                                addThisLeft(x, y, z);
+                            }
+                        } else {
+                            // TODO
+                            addThisLeft(x, y, z);
+                        }
+
+                        // 判断右面
+
+                        if (x < this.getChunkSizeX() - 1) {
+                            if (needToPaint(i,blockData.get(x + 1, y, z))) {
+                                addThisRight(x, y, z);
+                            }
+                        } else {// TODO
+                            addThisRight(x, y, z);
+                        }
+
+                        // 前面
+
+                        if (z < this.getChunkSizeZ() - 1) {
+                            if (needToPaint(i,blockData.get(x, y, z + 1) )) {
+                                addThisFront(x, y, z);
+                            }
+                        } else {// TODO
+                            addThisFront(x, y, z);
+                        }
+
+                        // 后面
+
+                        if (z > 0) {
+                            if (needToPaint(i,blockData.get(x, y, z - 1) )) {
+                                addThisBack(x, y, z);
+                            }
+                        } else {// TODO
+                            addThisBack(x, y, z);
+                        }
+
+                    }
+
+                }
+            }
+        }
+        //System.out.println(this.count);
+        GLApp.endDisplayList();
+    }
 	public void build() {
 
 		displayId = GLApp.beginDisplayList();
@@ -121,11 +225,14 @@ public class ChunkImpl implements Chunk {
 					}catch(Exception e){
 						e.printStackTrace();
 					}
+                    if(i==6||i==3)
+                        continue;
 					currentBlockType = i;
+
 					if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
 						// 判断上面
 						if (y < this.getChunkSizeY() - 1) {
-							if (judeBlock(i,blockData.get(x, y + 1, z) )) {
+							if (needToPaint(i,blockData.get(x, y + 1, z) )) {
 								addThisTop(x, y, z);
 							} else {
 
@@ -136,7 +243,7 @@ public class ChunkImpl implements Chunk {
 
 						// 判断下面
 						if (y > 0) {
-							if (judeBlock(i,blockData.get(x, y - 1, z) )) {
+							if (needToPaint(i,blockData.get(x, y - 1, z) )) {
 								addThisBottom(x, y, z);
 							}
 						} else {
@@ -145,7 +252,7 @@ public class ChunkImpl implements Chunk {
 
 						// 判断左面
 						if (x > 0) {
-							if (judeBlock(i,blockData.get(x - 1, y, z) )) {
+							if (needToPaint(i,blockData.get(x - 1, y, z) )) {
 								addThisLeft(x, y, z);
 							}
 						} else {
@@ -156,7 +263,7 @@ public class ChunkImpl implements Chunk {
 						// 判断右面
 
 						if (x < this.getChunkSizeX() - 1) {
-							if (judeBlock(i,blockData.get(x + 1, y, z))) {
+							if (needToPaint(i,blockData.get(x + 1, y, z))) {
 								addThisRight(x, y, z);
 							}
 						} else {// TODO
@@ -166,7 +273,7 @@ public class ChunkImpl implements Chunk {
 						// 前面
 
 						if (z < this.getChunkSizeZ() - 1) {
-							if (judeBlock(i,blockData.get(x, y, z + 1) )) {
+							if (needToPaint(i,blockData.get(x, y, z + 1) )) {
 								addThisFront(x, y, z);
 							}
 						} else {// TODO
@@ -176,7 +283,7 @@ public class ChunkImpl implements Chunk {
 						// 后面
 
 						if (z > 0) {
-							if (judeBlock(i,blockData.get(x, y, z - 1) )) {
+							if (needToPaint(i,blockData.get(x, y, z - 1) )) {
 								addThisBack(x, y, z);
 							}
 						} else {// TODO
@@ -188,7 +295,7 @@ public class ChunkImpl implements Chunk {
 				}
 			}
 		}
-		System.out.println(this.count);
+		//System.out.println(this.count);
 		GLApp.endDisplayList();
 	}
 
@@ -233,6 +340,7 @@ public class ChunkImpl implements Chunk {
 	}
 
 	public void Draw() {// up down left right front back
+
 boolean flat =true;
 		switch (this.currentBlockType) {
 		case 1:
@@ -260,6 +368,13 @@ boolean flat =true;
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
+            case 6:
+                ti = TextureManager.getIcon("water");
+                if (faceIndex == 1) {
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D,
+                            ti.textureHandle);DrawVetext();
+                }
+                break;
 		case 4:
 			ti = TextureManager.getIcon("sand");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
@@ -270,20 +385,14 @@ boolean flat =true;
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
-		case 6:
-			ti = TextureManager.getIcon("water");
-			if (faceIndex == 1) {
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-						ti.textureHandle);DrawVetext();
-			}
-			break;
+
 		case 7:
 			ti = TextureManager.getIcon("wood");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 						ti.textureHandle);DrawVetext();
 			break;
 		default:
-			System.out.println("添纹理的时候 什么都没对应上");
+			//System.out.println("添纹理的时候 什么都没对应上");
 		}
 		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 		// GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -617,16 +726,18 @@ boolean flat =true;
 		// if(this.displayId!=0){
 		if (!disposed) {
 			GL11.glDeleteLists(this.displayId, 1);
+            GL11.glDeleteLists(this.alphaDisplayId, 1);
 			// this.displayId=0;
 			this.disposed = true;
 			
 			//保存数据
 			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
 			 try {
-				ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(fileName));
-				this.blockData.writeExternal(out);
-				out.close();
-			} catch (FileNotFoundException e) {
+                 Path path = PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
+                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path.toFile()));
+                 this.blockData.writeExternal(out);
+                 out.close();
+             } catch (FileNotFoundException e) {
 				// VIP Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -642,7 +753,7 @@ boolean flat =true;
 	public void preRender() {
 		if (this.disposed) {
 			// if(this.displayId==0){
-			this.build();
+			this.build();this.buildAlpha();
 			this.disposed = false;
 		}
 		if (this.displayId == 0) {
@@ -661,4 +772,13 @@ boolean flat =true;
 			GLApp.callDisplayList(this.displayId);
 		}
 	}
+
+    public void renderAlpha(){
+        if (this.alphaDisplayId == 0) {
+            // int error =GL11.glGetError();
+            System.out.println("displayId should not be 0 in render");
+        } else {
+            GLApp.callDisplayList(this.alphaDisplayId);
+        }
+    }
 }

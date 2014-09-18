@@ -93,6 +93,10 @@ public class MouseControlCenter {
 			human.Position.y = human.Position.y - 1 * seconds;
 			human.move(human.Position);
 		}else
+        if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
+            human.Position.y = human.Position.y + 1 * seconds;
+            human.move(human.Position);
+        }else
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
 			CoreRegistry.get(ToolBar.class).keyDown(1);
@@ -120,10 +124,7 @@ public class MouseControlCenter {
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
 			
 			  double timenow=GLApp.getTimeInSeconds();
-			  
-			 if((timenow-preKeyTime)<500){ return; } preKeyTime=timenow;
-			 
-
+			 if((timenow-preKeyTime)<1){ return; } preKeyTime=timenow;
 			CoreRegistry.get(Bag.class).changeShow();
 		}else
 		if (Keyboard.isKeyDown(Keyboard.KEY_3)) {

@@ -70,14 +70,13 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 		if(chunk == null){
 			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
 			
-			Path chunkPath = PathManager.getInstance().getHomePath()
-                      
-                        .resolve(fileName);
+			Path chunkPath =
+                        PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
 				if(Files.isRegularFile(chunkPath)){
 					
 					ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
 						try {
-							  ObjectInputStream in=new ObjectInputStream(new FileInputStream(fileName));   
+							  ObjectInputStream in=new ObjectInputStream(new FileInputStream(chunkPath.toFile()));
 							  
 					            //读取UserInfo对象并调用它的toString()方法   
 					           // TeraArray user=(TeraArray)(in.readObject());  

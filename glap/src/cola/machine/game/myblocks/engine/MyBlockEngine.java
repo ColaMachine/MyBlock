@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.GLApp;
 import glapp.GLCam;
 import glapp.GLCamera;
@@ -120,8 +121,12 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
 	public void setup() {
-		
-	
+       GL11. glEnable(GL11.GL_POINT_SMOOTH);
+        GL11. glEnable( GL11. GL_LINE_SMOOTH);
+        GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
+        GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
+        //GL11.glEnable(GL11.GL_DEPTH_TEST);
+       // GL11.glDepthFunc(GL11.GL_LEQUAL);
 		human = new Human(blockRepository);
 		//sword=new Sword(0,0,0);
 		human2 = new Human(blockRepository);
@@ -159,12 +164,12 @@ public class MyBlockEngine extends GLApp {
 		GL11.glEnable(GL11.GL_AUTO_NORMAL);
 		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		// Create texture for spere
-		sphereTextureHandle = makeTexture("images/background.png");
-		humanTextureHandle = makeTexture("images/2000.png");
-		skyTextureHandle = makeTexture("images/sky180.png");
-		crossTextureHandle = makeTexture("images/gui.png");
-		waterTextureHandle = TextureManager.getIcon("water").textureHandle;
-		textureImg = loadImage("images/gui.png");
+		//sphereTextureHandle = makeTexture("images/background.png");
+		//humanTextureHandle = makeTexture("images/2000.png");
+		//skyTextureHandle = makeTexture("images/sky180.png");
+		//crossTextureHandle = makeTexture("images/gui.png");
+		//waterTextureHandle = TextureManager.getIcon("water").textureHandle;
+		//textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
 		human.setHuman(1, 12, 1, 0, 0, -1, 0, 1, 0);
@@ -264,7 +269,7 @@ public class MyBlockEngine extends GLApp {
 		GL11.glLoadIdentity();
 		
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
-				GL_Vector.multiply(human.ViewDir, -10));
+				GL_Vector.multiply(human.ViewDir, -1));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
 		// camera1.MoveTo(human.Position.x, human.Position.y + 4,
 		// human.Position.z);
@@ -273,7 +278,7 @@ public class MyBlockEngine extends GLApp {
 		drawAllBlock();
 		//drawColorBlocks();
 		skysphere.render();
-		drawObjects();
+		//drawObjects();
 		drawLine();
 		//sword.y=human.Position.y+4;
 		//sword.render();
@@ -338,29 +343,34 @@ public class MyBlockEngine extends GLApp {
 	
 	
 	public void drawObjects() {
-		GL11.glPushMatrix();
-		{
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			human.render();
+        TextureInfo ti = TextureManager.getIcon("human");
 
-		}
-		GL11.glPopMatrix();
 
-	
 
-		GL11.glPushMatrix();
-		{
-			// GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
-			// GL11.glScalef(1f, 1f, 1f); // scale up
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			 human2.render();
-		}
-		GL11.glPopMatrix();
-	}
+
+
+        GL11.glPushMatrix();
+        {
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            human.render();
+
+        }
+        GL11.glPopMatrix();
+
+
+        GL11.glPushMatrix();
+        {
+            // GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
+            // GL11.glScalef(1f, 1f, 1f); // scale up
+           // GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            human2.render();
+        }
+        GL11.glPopMatrix();
+    }
 
 	public void keyDown(int keycode) {
 		/*
@@ -392,6 +402,7 @@ public class MyBlockEngine extends GLApp {
 	 * Add last mouse motion to the line, only if left mouse button is down.
 	 */
 	public void mouseDown(int x, int y) {
+        msg("DX=" + x + " DY=" + y);
 		if (this.mouseButtonDown(0)) {
 			mouseControlCenter.mouseLClick(x, y);
 		}

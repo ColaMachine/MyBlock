@@ -10,8 +10,8 @@ public class RegionArea {
     public float minY = 0;
     public float maxX = 0;
     public float maxY = 0;
-    public float width=0;
-    public float height=0;
+   // public float width=0;
+    //public float height=0;
     public RegionArea(){
 
     }

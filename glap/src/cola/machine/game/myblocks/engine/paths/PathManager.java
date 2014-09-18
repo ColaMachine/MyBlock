@@ -58,6 +58,8 @@ public class PathManager {
         // We might be running from an IDE which can cause the installPath to be null. Try current working directory.
         if (installPath == null) {
             installPath = Paths.get("").toAbsolutePath();
+            if(installPath.resolve("glap").toFile().exists())
+                installPath=installPath.resolve("glap");
             System.out.println("installPath was null, running from IDE or headless server? Setting to: " + installPath);
             installPath = findNativesHome(installPath, 5);
             if (installPath == null) {

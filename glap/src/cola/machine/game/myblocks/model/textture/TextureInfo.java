@@ -42,12 +42,21 @@ public class TextureInfo extends RegionArea{
 
     }
 
-    public TextureInfo(String imgName, int x, int y, int width, int height, int w, int h) {
+    /*public TextureInfo(String imgName, int x, int y, int width, int height, int w, int h) {
     	 GLImage img=TextureManager.getTextureHandle(imgName);
          withWH((float)x/w, (float)y/h, (float)width/w, (float)height/h);
          textureHandle= img.textureHandle;
-	}
-
+	}*/
+    public TextureInfo(String imgName, float x, float y, float width, float height, float w, float h) {
+        GLImage img=TextureManager.getTextureHandle(imgName);
+        withWH((float)x/w, (float)y/h, (float)width/w, (float)height/h);
+        textureHandle= img.textureHandle;
+    }
+    public TextureInfo(String imgName, float x, float y, float width, float height, float w, float h,float offset) {
+        GLImage img=TextureManager.getTextureHandle(imgName);
+        withWH((x+offset)/w, (y+offset)/h, (width-offset)/w, (height-offset)/h);
+        textureHandle= img.textureHandle;
+    }
 	public void render(){
 
 

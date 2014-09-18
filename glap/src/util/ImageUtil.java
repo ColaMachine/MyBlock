@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import cola.machine.game.myblocks.Color;
+import cola.machine.game.myblocks.engine.paths.PathManager;
 
 public class ImageUtil {
 	public static int[][] getGrayPicture(String filename) throws FileNotFoundException, IOException
@@ -44,7 +45,7 @@ public class ImageUtil {
 	}
 	public static float[][] getGrayPicturef(String filename) throws FileNotFoundException, IOException
 	{	
-		File file =new File(filename);
+		File file =PathManager.getInstance().getHomePath().resolve(filename).toFile();
 		BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
 		originalImage.getColorModel();
 		System.out.println(originalImage.getColorModel());
@@ -71,8 +72,9 @@ public class ImageUtil {
 		   
 	}
 	public static Color[][] getGrayPicture(String filename,int minX,int minY,int maxX,int maxY) throws FileNotFoundException, IOException
-	{	
-		File file =new File(filename);
+	{
+        //ImageIO.read( ImageIO.read(PathManager.getInstance().getInstallPath().resolve(filename).toUri())));
+		File file =PathManager.getInstance().getInstallPath().resolve(filename).toFile();
 		BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
 		originalImage.getColorModel();
 		System.out.println(originalImage.getColorModel());
