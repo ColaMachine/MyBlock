@@ -174,7 +174,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcPlayerChunkOffsetX();
 		int newChunkPosZ = calcPlayerChunkOffsetZ();
-		int viewingDistance = 3;// config.getRendering().getViewDistance().getChunkDistance();
+		int viewingDistance =9;// config.getRendering().getViewDistance().getChunkDistance();
 
 		boolean chunksCurrentlyPending = false;
 

@@ -7,8 +7,8 @@ import java.util.List;
  * Created by luying on 14-9-16.
  */
 public class Table extends HtmlObject{
-    public float cellspacing;
-    public float cellpadding;
+    public float cellspacing=0;
+    public float cellpadding=0;
     //public List<Tr> rows=new ArrayList<Tr>();
     public void addRow(Tr tr){
         tr.rowIndex=childNodes.size();
@@ -18,9 +18,11 @@ public class Table extends HtmlObject{
         if(childNodes.size()>i){
             childNodes.remove(i);
         }
+        //TODO the left tr need to be re index
     }
 
     public void mouseDown(int x,int y){
 
     }
+
 }

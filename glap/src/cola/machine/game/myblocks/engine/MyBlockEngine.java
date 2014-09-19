@@ -40,6 +40,7 @@ import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.HeightMapWorldGenerator;
+import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 
 /**
@@ -233,7 +234,8 @@ public class MyBlockEngine extends GLApp {
 		// org.lwjgl.input.Keyboard.enableRepeatEvents(true);
 		
 		StorageManager storageManager =new StorageManagerInternal();
-		WorldGenerator worldGenerator =new HeightMapWorldGenerator();
+		PerlinWorldGenerator worldGenerator =new PerlinWorldGenerator();
+		worldGenerator.initialize();worldGenerator.setWorldSeed("123123123");
 		 GeneratingChunkProvider chunkProvider =new LocalChunkProvider(storageManager,worldGenerator);
 		 //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
 		 CoreRegistry.put(ChunkProvider.class, chunkProvider);
@@ -253,7 +255,7 @@ public class MyBlockEngine extends GLApp {
 		GLU.gluPerspective(50f, // zoom in or out of view
 				aspectRatio, // shape of viewport rectangle
 				.1f, // Min Z: how far from eye position does view start
-				500f); // max Z: how far from eye position does view extend
+				1024f); // max Z: how far from eye position does view extend
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 

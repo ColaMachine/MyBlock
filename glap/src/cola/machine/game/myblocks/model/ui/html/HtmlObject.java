@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.input.KeyEventReceiver;
+import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -14,7 +16,9 @@ import java.util.List;
  * Created by luying on 14-9-17.
  */
 public class HtmlObject extends RegionArea{
-   public HtmlObject parentNode;
+    public MouseEventReceiver mouseEventReceiver;
+    public KeyEventReceiver keyEventReceiver;
+    public HtmlObject parentNode;
     public List<HtmlObject> childNodes =new ArrayList<HtmlObject>();
     public String id;
     public String name;
