@@ -52,9 +52,128 @@ Div div;
         div.width=400;
         div.height=300;
         div.border_width=1;
-        div.border_color=new Vector3f(1,1,1);
-        Table table =new Table();
-        table.cellspacing=1;
+        div.background_image="bag";
+        TextureInfo batTexture= TextureManager.getIcon("bag");
+        div.width=batTexture.owidth;
+        div.height=batTexture.oheight;
+
+        div.border_color=new Vector3f(0,0,0);
+        //toolbar
+        {
+            Table table =new Table();
+            table.border_color=new Vector3f(0,0,0);
+            table.border_width=1;
+            table.left=14;
+            table.bottom=14;table.width=325;
+            table.height=39;
+            div.appendChild(table);
+            table.cellspacing=2;
+            table.cellpadding=1;
+            for(int i=0;i<1;i++){
+                Tr tr =new Tr();
+                table.addRow(tr);
+                for(int j=0;j<9;j++){
+                    Td td=new Td();
+
+                    td.border_width=1;
+                    td.border_color=new Vector3f(0,0,0);
+                    tr.addCell(td);
+                    //Div container=new Div();
+                    // td.a
+                }
+            }
+        }
+        //bag
+        {
+            Table table =new Table();
+            table.border_color=new Vector3f(0,0,0);
+            table.border_width=1;
+            table.left=14;
+            table.bottom=60;table.width=325;
+            table.height=111;
+            div.appendChild(table);
+            table.cellspacing=2;
+            table.cellpadding=1;
+            for(int i=0;i<3;i++){
+                Tr tr =new Tr();
+                table.addRow(tr);
+                for(int j=0;j<9;j++){
+                    Td td=new Td();
+
+                    td.border_width=1;
+                    td.border_color=new Vector3f(0,0,0);
+                    tr.addCell(td);
+                    //Div container=new Div();
+                    // td.a
+                }
+            }
+        }
+        //workspace
+        {
+            Table table =new Table();
+            table.border_color=new Vector3f(0,0,0);
+            table.border_width=1;
+            table.left=175;
+            table.bottom=213;table.width=72;
+            table.height=72;
+            div.appendChild(table);
+            table.cellspacing=2;
+            table.cellpadding=1;
+            for(int i=0;i<2;i++){
+                Tr tr =new Tr();
+                table.addRow(tr);
+                for(int j=0;j<2;j++){
+                    Td td=new Td();
+
+                    td.border_width=1;
+                    td.border_color=new Vector3f(0,0,0);
+                    tr.addCell(td);
+                    //Div container=new Div();
+                    // td.a
+                }
+            }
+        }
+        ////workspace2
+        {
+            Table table =new Table();
+            table.border_color=new Vector3f(0,0,0);
+            table.border_width=1;
+            table.left=287;
+            table.bottom=227;table.width=38;
+            table.height=38;
+            div.appendChild(table);
+            table.cellspacing=1;
+            table.cellpadding=1;
+            for(int i=0;i<1;i++){
+                Tr tr =new Tr();
+                table.addRow(tr);
+                for(int j=0;j<1;j++){
+                    Td td=new Td();
+
+                    td.border_width=1;
+                    td.border_color=new Vector3f(0,0,0);
+                    tr.addCell(td);
+                    //Div container=new Div();
+                    // td.a
+                }
+            }
+        }
+//person view
+        {
+            Div personDiv=new Div();
+            personDiv.left=50;
+            personDiv.bottom=176;
+            personDiv.width=108;
+            personDiv.height=144;
+            personDiv.border_color=new Vector3f(0,0,0);
+            personDiv.border_width=1;
+            div.appendChild(personDiv);
+
+        }
+        /*Table table =new Table();
+        div.appendChild(table);
+        table.cellspacing=5;
+        table.cellpadding=5;
         for(int i=0;i<5;i++){
             Tr tr =new Tr();
             table.addRow(tr);
@@ -62,13 +181,39 @@ Div div;
                 Td td=new Td();
 
                 td.border_width=1;
-                tr.border_color=new Vector3f(1,1,1);
+                td.border_color=new Vector3f(0,0,0);
                 tr.addCell(td);
                 //Div container=new Div();
                // td.a
             }
+        }*/
+
+//weapon
+        Div weaponDiv =new Div();
+        weaponDiv.border_width=1;
+        weaponDiv.border_color=new Vector3f(0,0,0);;
+        div.appendChild(weaponDiv);
+        weaponDiv.left=13;
+        weaponDiv.bottom=173;
+        weaponDiv.width=38;
+        weaponDiv.height=148;
+        Table weaponTable =new Table();
+        weaponDiv.appendChild(weaponTable);
+        weaponTable.cellpadding=2;
+        weaponTable.cellspacing=2;
+        for(int i=0;i<4;i++){
+
+            Tr w_tr=new Tr();
+            w_tr.rowIndex=i;
+            Td w_td =new Td();
+            w_td.columnIndex=0;
+            w_td.border_color=new Vector3f(0,0,0);
+            w_td.border_width=1;
+            w_tr.addCell(w_td);
+            weaponTable.addRow(w_tr);
+
         }
-        div.appendChild(table);
+        div.refresh();
         this.withWH(100,100,500,400);
         this.textureInfo= TextureManager.getIcon("bag");
         this.humanTextureHandle= TextureManager.getTextureHandle("human").textureHandle;
@@ -109,7 +254,7 @@ Div div;
     }
     public void render() {
 if(!show)return;
-        div.render();
+
 
        // GLApp.pushAttribOrtho();
         // switch to 2D projection
@@ -253,8 +398,8 @@ if(!show)return;
       //  GLApp.setOrthoOff();
         // return to previous settings
        // GLApp. popAttrib();
-        
-        
+
+        div.render();
        
     }
     public void renderBlockTest(){

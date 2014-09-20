@@ -20,8 +20,19 @@ public class TextureInfo extends RegionArea{
 		this.maxX=maxX;
 		this.maxY=maxY;
 	}
-
+public float x1;
+    public float y1;
+    public float owidth;
+    public float oheight;
+    public float x2;
+    public float y2;
     public TextureInfo(String imgName,float minX,float minY,float width,float height){
+        this.x1=minX;
+        this.y1=minY;
+        this.owidth=width;
+        this.oheight=height;
+        this.x2=x1+owidth;
+        this.y2=y2+oheight;
         GLImage img=TextureManager.getTextureHandle(imgName);
         withWH(minX/img.w, minY/img.h, width/img.w, height/img.h);
         textureHandle= img.textureHandle;

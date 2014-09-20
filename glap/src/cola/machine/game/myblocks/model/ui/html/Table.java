@@ -12,17 +12,16 @@ public class Table extends HtmlObject{
     //public List<Tr> rows=new ArrayList<Tr>();
     public void addRow(Tr tr){
         tr.rowIndex=childNodes.size();
-        childNodes.add(tr);
+        this.appendChild(tr);
     }
     public void deleteRow(int i){
         if(childNodes.size()>i){
-            childNodes.remove(i);
+            this.removeChild(i);
+           // childNodes.remove(i);
         }
         //TODO the left tr need to be re index
     }
 
-    public void mouseDown(int x,int y){
 
-    }
 
 }

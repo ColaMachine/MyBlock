@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.input.KeyEventReceiver;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -7,6 +8,8 @@ import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.GLApp;
 import org.lwjgl.opengl.GL11;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.List;
  * Created by luying on 14-9-17.
  */
 public class HtmlObject extends RegionArea{
+    private static final Logger logger = LoggerFactory.getLogger(HtmlObject.class);
     public MouseEventReceiver mouseEventReceiver;
     public KeyEventReceiver keyEventReceiver;
     public HtmlObject parentNode;
@@ -39,36 +43,78 @@ public class HtmlObject extends RegionArea{
 
     }
     public void appendChild(HtmlObject htmlObject){
-        childNodes.add(htmlObject);
+        childNodes.add(htmlObject);htmlObject.parentNode=this;
+    }
+    public void removeChild(){
+        if(this.childNodes!=null && this.childNodes.size()>0)
+        this.childNodes.remove(this.childNodes.size()-1);
+
+    }
+
+    public void removeChild(int i){
+        if(this.childNodes!=null && this.childNodes.size()>i-1)
+            this.childNodes.remove(i);
+
     }
     public float getWidth (){
-        if(width!=-1){
+        if(width>0){
             return width;
         }else{
-            width=parentNode.getWidth();
+            width=parentNode.getWidth();///this.parentNode.childNodes.size() because of tr's width  may be the whole with of table
             return width;
         }
     }
     public float getHeight(){
-        return  height;
+        if(this.height>0){
+            return  height;
+        }else{
+            return this.parentNode. getHeight();
+        }
+
 
     }
     public float getLeft(){
+        /*if(this.left>0)
         return left;
+        else
+        {
+            if(this.parentNode!=null)
+                return this.parentNode.getLeft();
+            else
+                return 0;
+        }*/
+        if(this.parentNode!=null)
+            return this.parentNode.getLeft()+this.left;
+        else{
+            return this.left;
+        }
     }
     public float getBottom(){
-        return this.bottom;
+        if(this.parentNode!=null)
+        return this.parentNode.getBottom()+this.bottom;
+        else{
+            return this.bottom;
+        }
     }
 
     public void reSize(){
         this.width=this.getWidth();
 
     }
-    public void render(){
-        if(this.border_width>0){
-            GL11.glColor3f(this.border_color.x,this.border_color.y,this.border_color.z);
-            GLApp.drawRect((int)this.getBottom(),(int)this.getLeft(),this.getWidth(),this.getHeight());
+    public void refresh(){
+        this.minX=this.getLeft();
+        this.minY=this.getBottom();
+        this.maxX=this.minX+this.getWidth();
+        this.maxY=this.minY+this.getHeight();
+        if(this.maxX==0){
+            logger.error("maxX can't not be 0");
+            System.exit(0);
         }
+        for(int i=0;i<this.childNodes.size();i++){
+            this.childNodes.get(i).refresh();
+        }
+    }
+    public void render(){
         if(this.background_image!=null){
             TextureInfo textureInfo = TextureManager.getIcon(this.background_image);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
@@ -87,8 +133,20 @@ public class HtmlObject extends RegionArea{
             GL11.glVertex3f(minX, maxY, (float)-10);
             GL11.glEnd();
         }
-        for(int i=0;i<this.childNodes.size();i++){
-            this.childNodes.get(i).render();
+        if(this.border_width>0){
+            GL11.glLineWidth(this.border_width);
+            GL11.glColor3f(this.border_color.x,this.border_color.y,this.border_color.z);
+            GLApp.drawRect((int)this.minX,(int)this.minY,this.maxX-this.minX,this.maxY-this.minY);
+
         }
+        for(HtmlObject htmlObject:this.childNodes){
+            htmlObject.render();
+        }
+
+      /*  for(int i=0;i<this.childNodes.size();i++){
+            this.childNodes.get(i).render();
+        }*/
+
+
     }
 }
