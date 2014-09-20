@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model.ui.bag;
 
 import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Table;
 import cola.machine.game.myblocks.model.ui.html.Td;
 import cola.machine.game.myblocks.model.ui.html.Tr;
@@ -10,6 +11,8 @@ import org.lwjgl.opengl.GL11;
 
 import cola.machine.game.myblocks.container.Slot;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
+import cola.machine.game.myblocks.input.BagMouseEventReceiver;
+import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
@@ -84,6 +87,7 @@ Div div;
             }
         }
         //bag
+        MouseEventReceiver mouseEventReceiver=new BagMouseEventReceiver();
         {
             Table table =new Table();
             table.border_color=new Vector3f(0,0,0);
@@ -99,7 +103,7 @@ Div div;
                 table.addRow(tr);
                 for(int j=0;j<9;j++){
                     Td td=new Td();
-
+                    td.mouseEventReceiver=mouseEventReceiver;
                     td.border_width=1;
                     td.border_color=new Vector3f(0,0,0);
                     tr.addCell(td);
@@ -322,7 +326,7 @@ if(!show)return;
            // block.renderCube();
         }
         GL11.glPopMatrix();
-        renderBlockTest();
+        //renderBlockTest();
 
         //renderSlot();
         //GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK,GL11.GL_LINE);
@@ -429,14 +433,18 @@ if(!show)return;
     public void click(int x,int y){
         anySlotClicked(x, y);
         mouseX=x;mouseY=y;
-
+        anyHtmlClicked();
 
     }
     public void move(int x,int y){
         mouseX=x;mouseY=y;
     }
-    public Item item;
+    public static Item item;
+    public void anyHtmlClicked(){
+    	
+    }
     public void anySlotClicked(float x,float y){
+    	div.onClick(x, y);
         if(slotsRegion.contain(x,y)){
             //count the num of slot
            // int rownum = (x-slotsRegion.minX)%sl
