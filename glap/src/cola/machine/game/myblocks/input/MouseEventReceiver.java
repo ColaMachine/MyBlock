@@ -17,7 +17,7 @@ public interface MouseEventReceiver {
     	
     }*/
     public void mouseMove(int x,int y );
-    public void mouseClick(int x,int y,HtmlObject htmlObject);
+    public void mouseClick(float x,float y,HtmlObject htmlObject);
     public void mouseMoveHandle(int x,int y);
     public void mouseRCLickHandle(int x,int y);
     public void mouseLCLickHandle(int x,int y);

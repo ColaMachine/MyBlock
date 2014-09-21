@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model.ui.bag;
 
 import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Table;
 import cola.machine.game.myblocks.model.ui.html.Td;
@@ -51,6 +52,7 @@ public class Bag extends RegionArea  {
 Div div;
     public Bag() {
         div=new Div();
+        Document.appendChild(div);
         div.margin="0 auto";
         div.width=400;
         div.height=300;
@@ -107,6 +109,7 @@ Div div;
                     td.border_width=1;
                     td.border_color=new Vector3f(0,0,0);
                     tr.addCell(td);
+                    td.id="bag_grid_"+tr.rowIndex+td.columnIndex;
                     //Div container=new Div();
                     // td.a
                 }
@@ -245,15 +248,23 @@ Div div;
         slotsRegion.withWH(left,bottom-55,slotsWidth,slotsHeight+55);
         CoreRegistry.put(Bag.class,this);
 
-        this.putItem(27+0,new Item("apple_golden",10));
-        this.putItem(27+1,new Item("soil",10));
-        this.putItem(27+2,new Item("glass",10));
-        this.putItem(27+3,new Item("wood",10));
-        this.putItem(27+4,new Item("sand",10));
-        this.putItem(27+5,new Item("water",10));
+        this.putItem(0,new Item("apple_golden",10));
+        this.putItem(1,new Item("soil",10));
+        this.putItem(2,new Item("glass",10));
+        this.putItem(3,new Item("wood",10));
+        this.putItem(4,new Item("sand",10));
+        this.putItem(5,new Item("water",10));
     }
 
     public void putItem(int slotIndex , Item item){
+    	int rowIndex=slotIndex/9;
+    	int columnIndex=slotIndex%9;
+    	
+    	//find the html element and put the 
+    	//create element div and set the 
+    	Div div =new Div();
+    	div.background_image=item.name;
+    	Document.getElementById("*")
         slots[slotIndex].putItem(item);
     }
     public void render() {
@@ -445,7 +456,7 @@ if(!show)return;
     }
     public void anySlotClicked(float x,float y){
     	div.onClick(x, y);
-        if(slotsRegion.contain(x,y)){
+       /* if(slotsRegion.contain(x,y)){
             //count the num of slot
            // int rownum = (x-slotsRegion.minX)%sl
             for(int i=0;i<slots.length;i++){
@@ -463,7 +474,7 @@ if(!show)return;
             }
 
 
-        }
+        }*/
     }
     public void changeShow(){
     	this.show=!this.show;

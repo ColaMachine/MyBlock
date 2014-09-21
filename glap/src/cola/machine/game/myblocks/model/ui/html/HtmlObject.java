@@ -151,6 +151,7 @@ public class HtmlObject extends RegionArea{
     }
     public void onClick(float x,float y){
     	if(this.contain(x, y)&& this.mouseEventReceiver!=null){
+    		this.mouseEventReceiver.mouseClick(x, y, this);
     		for(HtmlObject htmlObject:this.childNodes){
     			htmlObject.onClick(x, y);
     		}
