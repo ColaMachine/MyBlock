@@ -23,25 +23,39 @@ public class BagMouseEventReceiver implements MouseEventReceiver{
 
     }
     public void mouseClick(float x,float y,HtmlObject htmlObject){
-        if(Keyboard.isKeyDown(0)){
+        if(true){//Keyboard.isKeyDown(0)
         	//if this has item  and mouse hasn't then current choose this item
         	
         	if(Document.var("currentchoose")==null ){
-        		if(htmlObject.childNodes!=null ){
+        		if(htmlObject.childNodes!=null && htmlObject.childNodes.size()>0){
+                    HtmlObject temp = htmlObject.childNodes.get(0);
+                    Document.getElementById("bag").appendChild(temp);
             		Document.var("currentchoose", htmlObject.childNodes.get(0));
+                    htmlObject.childNodes.clear();
+                    temp.width=temp.maxX-temp.minX;
+                    temp.height=temp.maxY-temp.minY;
+                    temp.left=temp.minX;
+                    temp.bottom=temp.minY;
             	}
         	}else 
         	{
-        		if(htmlObject.childNodes!=null ){
+        		if(htmlObject.childNodes!=null && htmlObject.childNodes.size()>0){
         			HtmlObject temp= htmlObject.childNodes.get(0);
         			htmlObject.childNodes.remove(0);
         			htmlObject.childNodes.add((HtmlObject)Document.var("currentchoose"));
             		Document.var("currentchoose",temp);
             	}else{
-            	
-        			htmlObject.childNodes.add((HtmlObject)Document.var("currentchoose"));
+            	    //parent remove this one this
+                    HtmlObject temp = (HtmlObject)Document.var("currentchoose");
+                    temp.parentNode.removeChild(temp);
+        			htmlObject.appendChild(temp);
             		Document.var("currentchoose",null);
+                    temp.width=-1;
+                    temp.height=-1;
+                    temp.left=-1;
+                    temp.bottom=-1;
             	}
+                Document.getElementById("bag").refresh();
         	}
         }
     }

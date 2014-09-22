@@ -14,15 +14,25 @@ public class Document {
 		elements.remove(htmlObject);
 	}
 	public static HtmlObject getElementById(String id){
+
+
 		for(HtmlObject htmlObject : elements){
-			if(id.equals(htmlObject.id)){
+
+
+            /*if(id.equals(htmlObject.id)){
 				return htmlObject;
-			}
+			}else {*/
+                HtmlObject childObject =htmlObject.getElementById(id);
+                if(childObject!=null){
+                    return childObject;
+               }
+           /* }*/
+
 		}
 		return null;
 	}
 	public static  Object var(String name){
-		return (String)variables.get(name);
+		return variables.get(name);
 	}
 	public static void var(String name,Object value){
 		 variables.put(name, value);

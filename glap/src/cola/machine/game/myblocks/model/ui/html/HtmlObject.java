@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model.ui.html;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.input.Event;
 import cola.machine.game.myblocks.input.KeyEventReceiver;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -50,6 +51,9 @@ public class HtmlObject extends RegionArea{
         this.childNodes.remove(this.childNodes.size()-1);
 
     }
+    public void removeChild(HtmlObject htmlObject){
+        this.childNodes.remove(htmlObject);
+    }
 
     public void removeChild(int i){
         if(this.childNodes!=null && this.childNodes.size()>i-1)
@@ -74,6 +78,9 @@ public class HtmlObject extends RegionArea{
 
     }
     public float getLeft(){
+        //if set the left
+        //then the left = left + parent.minx
+        ///else judge the
         /*if(this.left>0)
         return left;
         else
@@ -89,18 +96,15 @@ public class HtmlObject extends RegionArea{
             return this.left;
         }
     }
+
     public float getBottom(){
         if(this.parentNode!=null)
-        return this.parentNode.getBottom()+this.bottom;
+            return this.parentNode.getBottom()+this.bottom;
         else{
             return this.bottom;
         }
     }
 
-    public void reSize(){
-        this.width=this.getWidth();
-
-    }
     public void refresh(){
         this.minX=this.getLeft();
         this.minY=this.getBottom();
@@ -117,6 +121,7 @@ public class HtmlObject extends RegionArea{
     public void render(){
         if(this.background_image!=null){
             TextureInfo textureInfo = TextureManager.getIcon(this.background_image);
+            GL11.glClear(GL11.GL_COLOR);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
 
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
@@ -124,21 +129,24 @@ public class HtmlObject extends RegionArea{
 
             GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
             GL11.glTexCoord2f(textureInfo.minX, textureInfo.minY);
-            GL11.glVertex3f(this.getLeft(), this.getBottom(), (float)-10);
+          //  GL11.glVertex3f(this.getLeft(), this.getBottom(), (float)-10);
+            GL11.glVertex3f(minX, minY, (float)-10);
             GL11.glTexCoord2f(textureInfo.maxX, textureInfo.minY);
-            GL11.glVertex3f(this.getLeft()+this.getWidth(), this.getBottom(), (float)-10);
+            //GL11.glVertex3f(this.getLeft()+this.getWidth(), this.getBottom(), (float)-10);
+            GL11.glVertex3f(maxX, minY, (float)-10);
             GL11.glTexCoord2f(textureInfo.maxX, textureInfo.maxY);
             GL11.glVertex3f(maxX, maxY, (float)-10);
             GL11.glTexCoord2f(textureInfo.minX, textureInfo.maxY);
             GL11.glVertex3f(minX, maxY, (float)-10);
             GL11.glEnd();
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
         }
-        if(this.border_width>0){
+        /*if(this.border_width>0){
             GL11.glLineWidth(this.border_width);
             GL11.glColor3f(this.border_color.x,this.border_color.y,this.border_color.z);
             GLApp.drawRect((int)this.minX,(int)this.minY,this.maxX-this.minX,this.maxY-this.minY);
 
-        }
+        }*/
         for(HtmlObject htmlObject:this.childNodes){
             htmlObject.render();
         }
@@ -149,12 +157,40 @@ public class HtmlObject extends RegionArea{
 
 
     }
-    public void onClick(float x,float y){
-    	if(this.contain(x, y)&& this.mouseEventReceiver!=null){
-    		this.mouseEventReceiver.mouseClick(x, y, this);
-    		for(HtmlObject htmlObject:this.childNodes){
-    			htmlObject.onClick(x, y);
-    		}
+
+
+    public HtmlObject getElementById(String id){
+        if(id.equals(this.id)){
+            return this;
+        }
+        for(HtmlObject htmlObject:this.childNodes){
+            HtmlObject childObject = htmlObject.getElementById(id);
+
+            if(childObject!=null){
+                return childObject;
+            }
+        }
+        return null;
+    }
+    public void onClick(Event event){
+        if(event.cancelBubble)
+            return;
+    	if(this.contain(event.x, event.y)){
+            if(this.mouseEventReceiver!=null) {//System.out.println("the clicked element id:"+this.id);
+                this.mouseEventReceiver.mouseClick(event.x, event.y, this);
+                event.cancelBubble=true;
+                return;
+            }else
+    		/*for(HtmlObject htmlObject:this.childNodes){
+    			htmlObject.onClick(event);
+    		}*/
+            for(int i=childNodes.size()-1;i>-1;i--){
+                try {
+                    childNodes.get(i).onClick(event);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
     	}
     }
 }

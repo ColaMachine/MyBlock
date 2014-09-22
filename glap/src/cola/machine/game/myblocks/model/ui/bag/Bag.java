@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.bag;
 
+import cola.machine.game.myblocks.input.Event;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
@@ -51,7 +52,9 @@ public class Bag extends RegionArea  {
 //    public float width=36;
 Div div;
     public Bag() {
+        MouseEventReceiver mouseEventReceiver=new BagMouseEventReceiver();
         div=new Div();
+        div.id="bag";
         Document.appendChild(div);
         div.margin="0 auto";
         div.width=400;
@@ -82,6 +85,7 @@ Div div;
 
                     td.border_width=1;
                     td.border_color=new Vector3f(0,0,0);
+                    td.mouseEventReceiver=mouseEventReceiver;
                     tr.addCell(td);
                     //Div container=new Div();
                     // td.a
@@ -89,7 +93,7 @@ Div div;
             }
         }
         //bag
-        MouseEventReceiver mouseEventReceiver=new BagMouseEventReceiver();
+
         {
             Table table =new Table();
             table.border_color=new Vector3f(0,0,0);
@@ -109,7 +113,8 @@ Div div;
                     td.border_width=1;
                     td.border_color=new Vector3f(0,0,0);
                     tr.addCell(td);
-                    td.id="bag_grid_"+tr.rowIndex+td.columnIndex;
+                    td.id="bag_"+tr.rowIndex+"_"+td.columnIndex;
+                    System.out.println(td.id);
                     //Div container=new Div();
                     // td.a
                 }
@@ -135,6 +140,7 @@ Div div;
                     td.border_width=1;
                     td.border_color=new Vector3f(0,0,0);
                     tr.addCell(td);
+                    td.mouseEventReceiver=mouseEventReceiver;
                     //Div container=new Div();
                     // td.a
                 }
@@ -159,6 +165,7 @@ Div div;
 
                     td.border_width=1;
                     td.border_color=new Vector3f(0,0,0);
+                    td.mouseEventReceiver=mouseEventReceiver;
                     tr.addCell(td);
                     //Div container=new Div();
                     // td.a
@@ -217,10 +224,11 @@ Div div;
             w_td.border_color=new Vector3f(0,0,0);
             w_td.border_width=1;
             w_tr.addCell(w_td);
+            w_td.mouseEventReceiver=mouseEventReceiver;
             weaponTable.addRow(w_tr);
 
         }
-        div.refresh();
+
         this.withWH(100,100,500,400);
         this.textureInfo= TextureManager.getIcon("bag");
         this.humanTextureHandle= TextureManager.getTextureHandle("human").textureHandle;
@@ -253,7 +261,7 @@ Div div;
         this.putItem(2,new Item("glass",10));
         this.putItem(3,new Item("wood",10));
         this.putItem(4,new Item("sand",10));
-        this.putItem(5,new Item("water",10));
+        this.putItem(5,new Item("water",10)); div.refresh();
     }
 
     public void putItem(int slotIndex , Item item){
@@ -264,7 +272,10 @@ Div div;
     	//create element div and set the 
     	Div div =new Div();
     	div.background_image=item.name;
-    	Document.getElementById("*")
+        div.border_width=1;
+        div.border_color=new Vector3f(0,0,0);
+    	HtmlObject object=Document.getElementById("bag_"+rowIndex+"_"+columnIndex);
+        object.appendChild(div);
         slots[slotIndex].putItem(item);
     }
     public void render() {
@@ -442,20 +453,40 @@ if(!show)return;
     }
 
     public void click(int x,int y){
-        anySlotClicked(x, y);
+        Event event =new Event();
+        event.x=x;
+        event.y=y;
+
+        anySlotClicked(event);
         mouseX=x;mouseY=y;
         anyHtmlClicked();
 
     }
     public void move(int x,int y){
         mouseX=x;mouseY=y;
+        HtmlObject currentChoose=(HtmlObject)Document.var("currentchoose");
+        if(currentChoose!=null){
+          // float width= currentChoose.maxX-currentChoose.minX;
+            //float height= currentChoose.maxY-currentChoose.minY;
+            currentChoose.minX=x-currentChoose.width/2;
+            currentChoose.maxX=x+currentChoose.width/2;
+
+            currentChoose.minY=y-currentChoose.height/2;
+            currentChoose.maxY=y+currentChoose.height/2;
+//            currentChoose.minX=x-40/2;
+//            currentChoose.maxX=x+40/2;
+            currentChoose.left=x-40/2;
+//            currentChoose.minY=y-40/2;
+//            currentChoose.maxY=y+40/2;
+           currentChoose.bottom=y-40/2;
+        }
     }
     public static Item item;
     public void anyHtmlClicked(){
     	
     }
-    public void anySlotClicked(float x,float y){
-    	div.onClick(x, y);
+    public void anySlotClicked(Event event){
+    	div.onClick(event);
        /* if(slotsRegion.contain(x,y)){
             //count the num of slot
            // int rownum = (x-slotsRegion.minX)%sl

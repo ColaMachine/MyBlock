@@ -22,5 +22,16 @@ public class Td extends HtmlObject {
         this.minY=this.parentNode.minY;
         this.maxX=minX+getWidth();
         this.maxY=this.parentNode.maxY;
+        for(int i=0;i<this.childNodes.size();i++){
+            this.childNodes.get(i).refresh();
+        }
+    }
+
+    public float getLeft(){
+        return this.minX;
+    }
+
+    public float getBottom(){
+       return this.minY;
     }
 }
