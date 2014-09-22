@@ -52,7 +52,8 @@ public class Bag extends RegionArea  {
 //    public float width=36;
 Div div;
     public Bag() {
-        MouseEventReceiver mouseEventReceiver=new BagMouseEventReceiver();
+    	BagMouseEventReceiver mouseEventReceiver=new BagMouseEventReceiver();
+    	mouseEventReceiver.bag=this;
         div=new Div();
         div.id="bag";
         Document.appendChild(div);
@@ -281,7 +282,7 @@ Div div;
     public void render() {
 if(!show)return;
 
-
+/*
        // GLApp.pushAttribOrtho();
         // switch to 2D projection
        // GLApp. setOrthoOn();
@@ -360,7 +361,7 @@ if(!show)return;
         renderSlot();
 
 
-       /* GL11.glLineWidth(2f);
+        GL11.glLineWidth(2f);
         GL11.glColor3f(1f, 1f, 1f);
 
         GL11.glBegin(GL11.GL_QUADS);
@@ -368,7 +369,7 @@ if(!show)return;
         GL11.glVertex2f(mouseX+10,mouseY-10);
         GL11.glVertex2f(mouseX+10,mouseY+10);
         GL11.glVertex2f(mouseX-10,mouseY+10);
-        GL11.glEnd();*/
+        GL11.glEnd();
 
 
 
@@ -410,25 +411,25 @@ if(!show)return;
             // GL11.glTranslatef(-maxX,-minY , 0);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
         }
-       /* GL11.glBegin(GL11.GL_QUADS);
+        GL11.glBegin(GL11.GL_QUADS);
       //  GL11.glRectf(200,200,300,300);
         GL11.glVertex3f(200, 200, (float)-10);
         GL11.glVertex3f(300, 200, (float)-10);
         GL11.glVertex3f(300, 300, (float)-10);
         GL11.glVertex3f(200, 300, (float)-10);
         // GL11.glRectf(200,200,400,400);
-        GL11.glEnd();*/
+        GL11.glEnd();
 
 
 
       //  GLApp.setOrthoOff();
         // return to previous settings
        // GLApp. popAttrib();
-
+*/
         div.render();
        
     }
-    public void renderBlockTest(){
+    public void renderBlockTest(){/*
     	GL11.glPushMatrix();
 		{
 			 GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -443,13 +444,13 @@ if(!show)return;
            GL11.glEnd();
     	GL11.glDisable(GL11.GL_TEXTURE_2D);
 		}GL11.glPopMatrix();
-    	
+    	*/
     	
     }
     public void renderSlot(){
-        for(int i=0,length=slots.length;i<length;i++){
+       /* for(int i=0,length=slots.length;i<length;i++){
             slots[i].render();
-        }
+        }*/
     }
 
     public void click(int x,int y){
