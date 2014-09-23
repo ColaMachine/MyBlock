@@ -106,6 +106,25 @@ public class HtmlObject extends RegionArea{
     }
 
     public void refresh(){
+    	
+    	/*if (this.parentNode == null) {
+			this.minX = this.left;
+			this.maxX = this.minX + this.width;
+			this.minY = this.bottom;
+			this.maxY = this.minY + this.height;
+
+		} else {
+			// if the parentnode has only one child
+			// if(this.parentNode.childNodes.size()==1){
+			this.minX = this.parentNode.minX + this.left;
+			this.maxX = this.minX + this.width;
+			this.minY = this.parentNode.minY + this.bottom;
+			this.maxY = this.minY + this.height;
+			// }else{
+			// logger.error("the parentnode has child :"+this.parentNode.childNodes.size());
+			// System.exit(0);
+			// }
+		}*/
         this.minX=this.getLeft();
         this.minY=this.getBottom();
         this.maxX=this.minX+this.getWidth();
@@ -120,6 +139,9 @@ public class HtmlObject extends RegionArea{
     }
     public void render(){
         if(this.background_image!=null){
+        	if(this.background_image.equals("toolbar")){
+        		System.out.println("toolbar render");
+        	}
             TextureInfo textureInfo = TextureManager.getIcon(this.background_image);
             GL11.glClear(GL11.GL_COLOR);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
@@ -141,7 +163,7 @@ public class HtmlObject extends RegionArea{
             GL11.glEnd();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
         }
-        /*if(this.border_width>0){
+      /* if(this.border_width>0){
             GL11.glLineWidth(this.border_width);
             GL11.glColor3f(this.border_color.x,this.border_color.y,this.border_color.z);
             GLApp.drawRect((int)this.minX,(int)this.minY,this.maxX-this.minX,this.maxY-this.minY);

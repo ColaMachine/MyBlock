@@ -15,6 +15,7 @@ import cola.machine.game.myblocks.container.Slot;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.input.BagMouseEventReceiver;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
+import cola.machine.game.myblocks.input.ToolbarMouseEventReceiver;
 import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
@@ -52,6 +53,8 @@ public class Bag extends RegionArea  {
 //    public float width=36;
 Div div;
     public Bag() {
+    	ToolbarMouseEventReceiver toobarEventreceiver= new ToolbarMouseEventReceiver();
+    	toobarEventreceiver.bag=this;
     	BagMouseEventReceiver mouseEventReceiver=new BagMouseEventReceiver();
     	mouseEventReceiver.bag=this;
         div=new Div();
@@ -83,10 +86,10 @@ Div div;
                 table.addRow(tr);
                 for(int j=0;j<9;j++){
                     Td td=new Td();
-
+                    td.id="bag_toolbar_"+tr.rowIndex+"_"+td.columnIndex;
                     td.border_width=1;
                     td.border_color=new Vector3f(0,0,0);
-                    td.mouseEventReceiver=mouseEventReceiver;
+                    td.mouseEventReceiver=toobarEventreceiver;
                     tr.addCell(td);
                     //Div container=new Div();
                     // td.a

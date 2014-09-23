@@ -13,6 +13,7 @@ import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.Table;
 import cola.machine.game.myblocks.model.ui.html.Td;
 import cola.machine.game.myblocks.model.ui.html.Tr;
@@ -26,17 +27,27 @@ public class ToolBar extends RegionArea {
 	Div div;
 	public ToolBar() {
 		 div=new Div();
-		 div.background_image="";
+		 div.left=200;
+		 div.bottom=0;
+		 div.width=362;
+		 div.height=43;
+		 
+		Document.appendChild(div);
+		 div.background_image="toolbar";
+		 Div select_div=new Div();
+		 select_div.id="selectBox";
+		 select_div.background_image="selectBox";
+		 div.appendChild(div);
 		 {
 	            Table table =new Table();
-	            table.border_color=new Vector3f(0,0,0);
+	            table.border_color=new Vector3f(1,1,1);
 	            table.border_width=1;
-	            table.left=14;
-	            table.bottom=60;table.width=325;
-	            table.height=111;
+//	            table.left=0;
+//	            table.bottom=0;table.width=365;
+//	            table.height=43;
 	            div.appendChild(table);
-	            table.cellspacing=2;
-	            table.cellpadding=1;
+	          //  table.cellspacing=2;
+	          //  table.cellpadding=1;
 	            for(int i=0;i<1;i++){
 	                Tr tr =new Tr();
 	                table.addRow(tr);
@@ -44,9 +55,9 @@ public class ToolBar extends RegionArea {
 	                    Td td=new Td();
 	                  
 	                    td.border_width=1;
-	                    td.border_color=new Vector3f(0,0,0);
+	                    td.border_color=new Vector3f(1,1,1);
 	                    tr.addCell(td);
-	                    td.id="bag_"+tr.rowIndex+"_"+td.columnIndex;
+	                    td.id="toolbar_"+tr.rowIndex+"_"+td.columnIndex;
 	                    System.out.println(td.id);
 	                    //Div container=new Div();
 	                    // td.a
@@ -55,9 +66,12 @@ public class ToolBar extends RegionArea {
 	        }
 		Bag bag = CoreRegistry.get(Bag.class);
 		slots = bag.slots;
-		this.withWH(200, 0, 362, 43);
-		this.textureInfo = TextureManager.getIcon("toolbar");
-
+//		this.withWH(200, 0, 362, 43);
+//		this.textureInfo = TextureManager.getIcon("toolbar");
+		div.refresh();
+		//Document.getElementById("toolbar_0_0").background_image="selectBox";
+		
+		Document.getElementById("selectBox").background_image="selectBox";
 		/*
 		 * float step = (maxX - minX) / 10f; for (int i = 0; i < 10; i++) {
 		 * ToolBarSlop slop = new ToolBarSlop(i, minX + i * step, 0, minX + (i +
@@ -69,8 +83,10 @@ public class ToolBar extends RegionArea {
 		 */
 		CoreRegistry.put(ToolBar.class, this);
 	}
-
-	public void render() {
+	public void render(){
+		div.render();
+	}
+	public void renderOld() {
 
 		/*
 		 * GLApp. pushAttribOrtho(); // switch to 2D projection GLApp.
@@ -215,10 +231,14 @@ public class ToolBar extends RegionArea {
 	}
 
 	public void keyDown(int key) {
-		this.selectedIndex = key;
-		if (27 + key <= slots.length && slots[27 + key - 1].item != null) {
-			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[27 + key - 1].item.name;
+		Document.getElementById("toolbar_0_"+this.selectedIndex).background_image=null;
+		
+		this.selectedIndex = key-1;
+		if ( key <= slots.length && slots[selectedIndex].item != null) {
+			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[selectedIndex].item.name;
 		}
-
+		
+		Document.getElementById("toolbar_0_"+selectedIndex).background_image="selectBox";
+		
 	}
 }

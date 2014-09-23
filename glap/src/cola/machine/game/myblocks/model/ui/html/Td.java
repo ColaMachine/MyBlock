@@ -18,6 +18,16 @@ public class Td extends HtmlObject {
         return this.parentNode.maxY-this.parentNode.minY;
     }
     public void refresh(){
+	/*	float the_width = (parentNode.maxX - parentNode.minX - ((Table) parentNode.parentNode).cellspacing
+				* (parentNode.childNodes.size() - 1))
+				/ parentNode.childNodes.size();
+		this.minX = this.parentNode.minX + columnIndex
+				* (((Table) parentNode.parentNode).cellspacing + the_width);
+		this.minY = this.parentNode.minY;
+		// this.maxX=minX+getWidth();
+		this.maxX = minX + the_width;
+		this.maxY = this.parentNode.maxY;
+		*/
         this.minX=this.parentNode.minX+columnIndex*(((Table)parentNode.parentNode).cellspacing+getWidth());
         this.minY=this.parentNode.minY;
         this.maxX=minX+getWidth();
