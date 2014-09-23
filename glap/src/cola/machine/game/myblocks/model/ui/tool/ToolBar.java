@@ -25,8 +25,10 @@ public class ToolBar extends RegionArea {
 	public Slot[] slots;
 	public int selectedIndex = 0;
 	Div div;
+	Div select_div;
 	public ToolBar() {
 		 div=new Div();
+		 div.id="toolbar";
 		 div.left=200;
 		 div.bottom=0;
 		 div.width=362;
@@ -34,22 +36,24 @@ public class ToolBar extends RegionArea {
 		 
 		Document.appendChild(div);
 		 div.background_image="toolbar";
-		 Div select_div=new Div();
+		 select_div=new Div();
 		 select_div.id="selectBox";
 		 select_div.background_image="selectBox";
-		 div.appendChild(div);
+		 select_div.width=40;
+		 select_div.height=40;
+		 
 		 {
-	            Table table =new Table();
+	            Table table =new Table();table.id="toolbar_table";
 	            table.border_color=new Vector3f(1,1,1);
 	            table.border_width=1;
 //	            table.left=0;
 //	            table.bottom=0;table.width=365;
 //	            table.height=43;
 	            div.appendChild(table);
-	          //  table.cellspacing=2;
-	          //  table.cellpadding=1;
+	            table.cellspacing=14;
+	            table.cellpadding=7;
 	            for(int i=0;i<1;i++){
-	                Tr tr =new Tr();
+	                Tr tr =new Tr();tr.id="toolbar_table_tr_"+i;
 	                table.addRow(tr);
 	                for(int j=0;j<9;j++){
 	                    Td td=new Td();
@@ -64,6 +68,7 @@ public class ToolBar extends RegionArea {
 	                }
 	            }
 	        }
+		 div.appendChild(select_div);
 		Bag bag = CoreRegistry.get(Bag.class);
 		slots = bag.slots;
 //		this.withWH(200, 0, 362, 43);
@@ -71,7 +76,8 @@ public class ToolBar extends RegionArea {
 		div.refresh();
 		//Document.getElementById("toolbar_0_0").background_image="selectBox";
 		
-		Document.getElementById("selectBox").background_image="selectBox";
+		//Document.getElementById("selectBox").background_image="selectBox";
+		
 		/*
 		 * float step = (maxX - minX) / 10f; for (int i = 0; i < 10; i++) {
 		 * ToolBarSlop slop = new ToolBarSlop(i, minX + i * step, 0, minX + (i +
@@ -231,14 +237,15 @@ public class ToolBar extends RegionArea {
 	}
 
 	public void keyDown(int key) {
-		Document.getElementById("toolbar_0_"+this.selectedIndex).background_image=null;
+		//Document.getElementById("toolbar_0_"+this.selectedIndex).background_image=null;
 		
 		this.selectedIndex = key-1;
 		if ( key <= slots.length && slots[selectedIndex].item != null) {
 			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[selectedIndex].item.name;
 		}
-		
-		Document.getElementById("toolbar_0_"+selectedIndex).background_image="selectBox";
+		select_div.left=(div.maxX-div.minX )*selectedIndex/9;
+		select_div.refresh();
+		//Document.getElementById("toolbar_0_"+selectedIndex).background_image="selectBox";
 		
 	}
 }

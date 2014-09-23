@@ -77,7 +77,7 @@ public class BagMouseEventReceiver implements MouseEventReceiver{
                     int rowIndex=((Tr)htmlObject.parentNode).rowIndex;
                     int soltIndex=rowIndex*9+columnId;
                    
-                    
+                    temp.refresh();
                    
                     bag.slots[soltIndex].item=bag.item;bag.item=null;
             	}

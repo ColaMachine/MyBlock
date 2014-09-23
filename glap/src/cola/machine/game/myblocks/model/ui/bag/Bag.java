@@ -208,6 +208,7 @@ Div div;
 
 //weapon
         Div weaponDiv =new Div();
+        weaponDiv.id="weaponDiv";
         weaponDiv.border_width=1;
         weaponDiv.border_color=new Vector3f(0,0,0);;
         div.appendChild(weaponDiv);
@@ -265,7 +266,8 @@ Div div;
         this.putItem(2,new Item("glass",10));
         this.putItem(3,new Item("wood",10));
         this.putItem(4,new Item("sand",10));
-        this.putItem(5,new Item("water",10)); div.refresh();
+        this.putItem(5,new Item("water",10)); 
+        div.refresh();
     }
 
     public void putItem(int slotIndex , Item item){

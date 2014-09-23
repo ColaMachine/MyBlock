@@ -134,14 +134,15 @@ public class HtmlObject extends RegionArea{
             System.exit(0);
         }
         for(int i=0;i<this.childNodes.size();i++){
+        	//System.out.println("2div id:"+id);
             this.childNodes.get(i).refresh();
         }
     }
     public void render(){
         if(this.background_image!=null){
-        	if(this.background_image.equals("toolbar")){
+        	/*if(this.background_image.equals("toolbar")){
         		System.out.println("toolbar render");
-        	}
+        	}*/
             TextureInfo textureInfo = TextureManager.getIcon(this.background_image);
             GL11.glClear(GL11.GL_COLOR);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);

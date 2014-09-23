@@ -6,6 +6,7 @@ package cola.machine.game.myblocks.model.ui.html;
 public class Div extends HtmlObject{
 
     public void refresh(){
+    	//System.out.println("DIV id:"+id);
         if(this.width==0){
             this.minX=this.parentNode.minX;
             this.minY=this.parentNode.minY;
