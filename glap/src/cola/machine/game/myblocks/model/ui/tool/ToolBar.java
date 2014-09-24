@@ -40,17 +40,19 @@ public class ToolBar extends RegionArea {
 		 select_div.id="selectBox";
 		 select_div.background_image="selectBox";
 		 select_div.width=40;
+		 select_div.border_color=new Vector3f(0,0,0);
+		 select_div.border_width=1;
 		 select_div.height=40;
 		 
 		 {
 	            Table table =new Table();table.id="toolbar_table";
-	            table.border_color=new Vector3f(1,1,1);
+	            table.border_color=new Vector3f(0,0,0);
 	            table.border_width=1;
 //	            table.left=0;
 //	            table.bottom=0;table.width=365;
 //	            table.height=43;
 	            div.appendChild(table);
-	            table.cellspacing=14;
+	            table.cellspacing=10;
 	            table.cellpadding=7;
 	            for(int i=0;i<1;i++){
 	                Tr tr =new Tr();tr.id="toolbar_table_tr_"+i;
@@ -59,7 +61,7 @@ public class ToolBar extends RegionArea {
 	                    Td td=new Td();
 	                  
 	                    td.border_width=1;
-	                    td.border_color=new Vector3f(1,1,1);
+	                    td.border_color=new Vector3f(0,0,0);
 	                    tr.addCell(td);
 	                    td.id="toolbar_"+tr.rowIndex+"_"+td.columnIndex;
 	                    System.out.println(td.id);

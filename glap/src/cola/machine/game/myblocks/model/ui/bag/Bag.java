@@ -79,8 +79,8 @@ Div div;
             table.bottom=14;table.width=325;
             table.height=39;
             div.appendChild(table);
-            table.cellspacing=2;
-            table.cellpadding=1;
+            table.cellspacing=5;
+            table.cellpadding=5;
             for(int i=0;i<1;i++){
                 Tr tr =new Tr();
                 table.addRow(tr);
@@ -106,8 +106,8 @@ Div div;
             table.bottom=60;table.width=325;
             table.height=111;
             div.appendChild(table);
-            table.cellspacing=2;
-            table.cellpadding=1;
+            table.cellspacing=5;
+            table.cellpadding=5;
             for(int i=0;i<3;i++){
                 Tr tr =new Tr();
                 table.addRow(tr);
@@ -133,8 +133,8 @@ Div div;
             table.bottom=213;table.width=72;
             table.height=72;
             div.appendChild(table);
-            table.cellspacing=2;
-            table.cellpadding=1;
+            table.cellspacing=5;
+            table.cellpadding=5;
             for(int i=0;i<2;i++){
                 Tr tr =new Tr();
                 table.addRow(tr);
@@ -159,8 +159,8 @@ Div div;
             table.bottom=227;table.width=38;
             table.height=38;
             div.appendChild(table);
-            table.cellspacing=1;
-            table.cellpadding=1;
+            table.cellspacing=5;
+            table.cellpadding=5;
             for(int i=0;i<1;i++){
                 Tr tr =new Tr();
                 table.addRow(tr);
@@ -218,8 +218,8 @@ Div div;
         weaponDiv.height=148;
         Table weaponTable =new Table();
         weaponDiv.appendChild(weaponTable);
-        weaponTable.cellpadding=2;
-        weaponTable.cellspacing=2;
+        weaponTable.cellpadding=5;
+        weaponTable.cellspacing=5;
         for(int i=0;i<4;i++){
 
             Tr w_tr=new Tr();

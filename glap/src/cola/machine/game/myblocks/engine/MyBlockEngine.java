@@ -97,7 +97,7 @@ public class MyBlockEngine extends GLApp {
 	public BlockRepository blockRepository = new BlockRepository(this);
 	BulletPhysics bulletPhysics;
 	public Human human;
-	private Human human2;
+//	private Human human2;
 	private Skysphere skysphere =new Skysphere();
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -130,7 +130,7 @@ public class MyBlockEngine extends GLApp {
        // GL11.glDepthFunc(GL11.GL_LEQUAL);
 		human = new Human(blockRepository);
 		//sword=new Sword(0,0,0);
-		human2 = new Human(blockRepository);
+		//human2 = new Human(blockRepository);
 		CoreRegistry.put(MyBlockEngine.class, this);
 		CoreRegistry.put(Human.class, human);
 		this.initManagers();
@@ -173,9 +173,9 @@ public class MyBlockEngine extends GLApp {
 		//textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(1, 12, 1, 0, 0, -1, 0, 1, 0);
+		human.setHuman(1, 50, 1, 0, 0, -1, 0, 1, 0);
 
-		human2.setHuman(10, 3, 10, 0, 0, 1, 0, 1, 0);
+		//human2.setHuman(10, 3, 10, 0, 0, 1, 0, 1, 0);
 
 		human.startWalk();
 
@@ -362,7 +362,7 @@ public class MyBlockEngine extends GLApp {
         GL11.glPopMatrix();
 
 
-        GL11.glPushMatrix();
+      /*  GL11.glPushMatrix();
         {
             // GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
             // GL11.glScalef(1f, 1f, 1f); // scale up
@@ -371,7 +371,7 @@ public class MyBlockEngine extends GLApp {
                     GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
             human2.render();
         }
-        GL11.glPopMatrix();
+        GL11.glPopMatrix();*/
     }
 
 	public void keyDown(int keycode) {

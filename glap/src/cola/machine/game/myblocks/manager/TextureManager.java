@@ -36,7 +36,7 @@ Path installPath;
        this.put("gui","images/gui.png");
         iconMap.put("cross",new TextureInfo("gui",1/12f+0.01f,10/12f,1/12f,1/12f,true));
         
-        iconMap.put("selectBox",new TextureInfo("gui",0,210,25,26));
+        iconMap.put("selectBox",new TextureInfo("gui",0,210,23,23));
         
         
         this.put("widgets","assets/minecraft/textures/gui/widgets.png");

@@ -22,9 +22,10 @@ public class NuiManager {
            // switch to 2D projection
            GLApp. setOrthoOn();
         cross.render();
+        toolbarcontainer.render();
         bag.render();
         
-        toolbarcontainer.render();
+   
         
           GLApp.setOrthoOff();
         // return to previous settings

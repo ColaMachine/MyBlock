@@ -144,7 +144,8 @@ public class HtmlObject extends RegionArea{
         		System.out.println("toolbar render");
         	}*/
             TextureInfo textureInfo = TextureManager.getIcon(this.background_image);
-            GL11.glClear(GL11.GL_COLOR);
+            GL11.glColor3f(1, 1, 1);
+           // GL11.glClear(GL11.GL_COLOR);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
 
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
@@ -164,12 +165,12 @@ public class HtmlObject extends RegionArea{
             GL11.glEnd();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
         }
-      /* if(this.border_width>0){
+      if(this.border_width>0){
             GL11.glLineWidth(this.border_width);
             GL11.glColor3f(this.border_color.x,this.border_color.y,this.border_color.z);
             GLApp.drawRect((int)this.minX,(int)this.minY,this.maxX-this.minX,this.maxY-this.minY);
 
-        }*/
+        }
         for(HtmlObject htmlObject:this.childNodes){
             htmlObject.render();
         }

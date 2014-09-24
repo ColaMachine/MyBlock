@@ -271,17 +271,21 @@ public class MouseControlCenter {
 		if (MathUtil.distance(centerX, centerY, mousepoint.x, mousepoint.y) > 10f) {
 			// System.out.println("now mouse position x:"+x+" y :"+y);
 
-			// human.RotateV((float)(-(mousepoint.x - centerX)
-			// *4*GLApp.getSecondsPerFrame()));
-			// System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-			// human.RotateX((float)(-(mousepoint.y - centerY)
-			// *4*GLApp.getSecondsPerFrame()));
+			
+			if(CoreRegistry.get(Bag.class).show==false){
+				human.RotateV((float)(-(mousepoint.x - centerX)
+						 *4*GLApp.getSecondsPerFrame()));
+						// System.out.printf("y distance: %d \r\n",(y-prevMouseY));
+						 human.RotateX((float)(-(mousepoint.y - centerY)
+						 *4*GLApp.getSecondsPerFrame()));
 
-			// robot.mouseMove(mousepoint.x-(x-400), mousepoint.y-(y-300));
-			// robot.mouseMove(Display.getX()+400, Display.getY()+300);
-			// robot.mouseMove((int)centerX,(int)centerY);
-			// System.out.println("move to position x :"+(mousepoint.x-(x-400))+" y :"+(mousepoint.y-(y-300)));
+						//robot.mouseMove(mousepoint.x-(x-400), mousepoint.y-(y-300));
+						// robot.mouseMove(Display.getX()+400, Display.getY()+300);
+						 robot.mouseMove((int)centerX,(int)centerY);
+						// System.out.println("move to position x :"+(mousepoint.x-(x-400))+" y :"+(mousepoint.y-(y-300)));
 
+			}
+			
 			canDetectMove = false;
 			// System.out.println("move x distance:"+(-x +
 			// centerX)+" y distance:"+(y - centerY));
