@@ -142,12 +142,19 @@ public class MyBlockEngine extends GLApp {
 		 */
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
-		/*
-		 * setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, //
-		 * diffuse // color new float[] { 1f, 1f, 1f, 1f }, // ambient new
-		 * float[] { 1f, 1f, 1f, 1f }, // specular new float[] { 5f, 10f, 5f, 0f
-		 * }); // direction (pointing
-		 */
+//        setLight( GL11.GL_LIGHT1,
+//        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
+//        		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
+//        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
+//        		new float[]{2,50,1,1} );                         // position
+        
+//		 setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, // diffuse // color 
+//		  new float[] { 10f, 10f, 10f, 1f }, // ambient
+//		  new  float[] { 11f, 11f, 11f, 1f }, // specular 
+//		  new float[] { 1,0,0, 1f
+//		  }); // direction (pointing
+//		 setLightPosition( GL11.GL_LIGHT2, new float[]{-22,50,1,1} );
+
 		// up)
 
 		// set global light
@@ -156,13 +163,16 @@ public class MyBlockEngine extends GLApp {
 		// ltAmbient.flip();
 		GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, ltAmbient);
 		GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11.GL_FALSE);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_AUTO_NORMAL);
+		
 		dcc.blockRepository = blockRepository;
 		bulletPhysics = new BulletPhysics(blockRepository);
-		GL11.glEnable(GL11.GL_LIGHTING);
+		
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 		// Enable alpha transparency (so text will have transparent background)
-		GL11.glEnable(GL11.GL_AUTO_NORMAL);
+		
 		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		// Create texture for spere
 		//sphereTextureHandle = makeTexture("images/background.png");
@@ -173,7 +183,7 @@ public class MyBlockEngine extends GLApp {
 		//textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(1, 50, 1, 0, 0, -1, 0, 1, 0);
+		human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
 		//human2.setHuman(10, 3, 10, 0, 0, 1, 0, 1, 0);
 
@@ -279,7 +289,7 @@ public class MyBlockEngine extends GLApp {
 		cam.render();
 		drawAllBlock();
 		//drawColorBlocks();
-		skysphere.render();
+		//skysphere.render();
 		//drawObjects();
 		drawLine();
 		//sword.y=human.Position.y+4;

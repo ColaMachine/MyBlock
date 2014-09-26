@@ -5,53 +5,51 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 import static org.lwjgl.opengl.GL11.glEndList;
 import static org.lwjgl.opengl.GL11.glGenLists;
 import static org.lwjgl.opengl.GL11.glNewList;
+import glapp.GLApp;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 
 public class Skysphere {
 	public Skysphere() {
 	}
+
 	private static int displayListSphere = -1;
-	private  WorldRenderer parentWorldRenderer;
+	private WorldRenderer parentWorldRenderer;
 
 	public Skysphere(WorldRenderer parent) {
 		parentWorldRenderer = parent;
 	}
-	   public void render() {
-	        glDepthMask(false);
 
-	       /* if (false) {
-	            glCullFace(GL_BACK);
-	        } else {
-	            glCullFace(GL_FRONT);
-	        }*/
+	public void render() {
+		glDepthMask(false);
 
-//	        Material shader = Assets.getMaterial("engine:prog.sky");
-//	        shader.enable();
+		/*
+		 * if (false) { glCullFace(GL_BACK); } else { glCullFace(GL_FRONT); }
+		 */
 
-	        // Draw the skysphere
-	       // drawSkysphere();
-	        drawSkyCube();
-	     /*   if (false) {
-	            glCullFace(GL_FRONT);
-	        } else {
-	            glCullFace(GL_BACK);
-	        }*/
+		// Material shader = Assets.getMaterial("engine:prog.sky");
+		// shader.enable();
 
-	        glDepthMask(true);
-	    }
-	
-	public  void drawSkysphere() {
-	GL11.glDisable(GL11.GL_TEXTURE_2D);
-	
+		// Draw the skysphere
+		drawSkysphere();drawSun();
+		// drawSkyCube();
+		/*
+		 * if (false) { glCullFace(GL_FRONT); } else { glCullFace(GL_BACK); }
+		 */
+
+		glDepthMask(true);
+	}
+
+	public void drawSkysphere() {
 		if (displayListSphere == -1) {
 			displayListSphere = glGenLists(1);
 
 			Sphere sphere = new Sphere();
-			//sphere.setTextureFlag(true);
+			// sphere.setTextureFlag(true);
 
 			glNewList(displayListSphere, GL11.GL_COMPILE);
 
@@ -59,21 +57,111 @@ public class Skysphere {
 
 			glEndList();
 		}
-		
+		GL11.glCullFace(GL11.GL_FRONT);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glColor4f(0.63f, 0.80f, 0.91f, 1.0f);
 		glCallList(displayListSphere);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glCullFace(GL11.GL_BACK);
 	}
 
+	public void drawSunbak() {
+		//计算半径
+		double x= Math.sin(30*Math.PI/180)*100;
+		double y = Math.cos(30*Math.PI/180)*50;
+	 //GL11.glTranslated(1, 50, 0);
+	
+		 GL11.glTranslated(x, y, 0);
+		 GL11.glRotated(30, 0, 0, 1);
+		 GL11.glColor3f(1,1,1);
+		 GL11.glEnable(GL11.GL_TEXTURE_2D);
+		 GL11.glBindTexture(GL11.GL_TEXTURE_2D, TextureManager.getIcon("sun").textureHandle);
+		 GL11.glBegin(GL11.GL_QUADS);
+	        // Front Face
+	        
+	        GL11.glNormal3f( -1.0f, 0.0f, 0.0f);
+	        GL11.glTexCoord2f(0.0f, 0.0f); GL11.glVertex3f(0f, -10.0f, -10.0f);	// Bottom Left
+	        GL11.glTexCoord2f(1.0f, 0.0f); GL11.glVertex3f(0.0f, -10.0f,  10.0f);	// Bottom Right
+	        GL11.glTexCoord2f(1.0f, 1.0f); GL11.glVertex3f(0.0f,  10.0f,  10.0f);	// Top Right
+	        GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(0.0f,  10.0f, -10.0f);	// Top Left
+	        
+	        GL11.glEnd();
+	        GL11.glRotated(-30, 0, 0, 1);
+	        GL11.glTranslated(-x, -y, 0);
+	        //GL11.glTranslated(-1, -50, 0);
+	}
+
+	public void drawSun() {
+
+		// 计算半径
+		double x = Math.sin(30 * Math.PI / 180) * 100;
+		double y = Math.cos(30 * Math.PI / 180) * 50;
+		// GL11.glBlendFunc( GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glTranslated(1, 50, 1);
+		GL11.glColor4f(1.0f, 0.5f, 0.5f, 0.3f);
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D,
+				TextureManager.getIcon("sun").textureHandle);
+		
+		GL11.glBegin(GL11.GL_QUADS);
+		// Front Face
+		GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
+		GL11.glTexCoord2f(0.0f, 0.0f);
+		GL11.glVertex3f(0f, -10.0f, -10.0f); // Bottom Left
+		GL11.glTexCoord2f(1.0f, 0.0f);
+		GL11.glVertex3f(0.0f, -10.0f, 10.0f); // Bottom Right
+		GL11.glTexCoord2f(1.0f, 1.0f);
+		GL11.glVertex3f(0.0f, 10.0f, 10.0f); // Top Right
+		GL11.glTexCoord2f(0.0f, 1.0f);
+		GL11.glVertex3f(0.0f, 10.0f, -10.0f); // Top Left
+		GL11.glEnd();
+		
+		
+		GL11.glTranslated(-1, -50, 1);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glColor4f(1.0f, 1f, 1f, 1f);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	}
+public void drawSunTest() {
+		
+		//计算半径
+		GL11.glBlendFunc( GL11.GL_SRC_ALPHA,  GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_BLEND);
+	 GL11.glTranslated(1, 50,1);
+	 GL11.glColor4f(1.0f, 0.0f, 0.0f, 0.3f);  
+
+
+
+	        // Front Face
+	        
+		 GLApp.drawRect(-10, -10, 10, 10);
+	      /*  GL11.glNormal3f( -1.0f, 0.0f, 0.0f);
+	        GL11.glTexCoord2f(0.0f, 0.0f); GL11.glVertex3f(0f, -10.0f, -10.0f);	// Bottom Left
+	        GL11.glTexCoord2f(1.0f, 0.0f); GL11.glVertex3f(0.0f, -10.0f,  10.0f);	// Bottom Right
+	        GL11.glTexCoord2f(1.0f, 1.0f); GL11.glVertex3f(0.0f,  10.0f,  10.0f);	// Top Right
+	        GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(0.0f,  10.0f, -10.0f);	// Top Left
+	        */
+	       GL11.glTranslated(-1, -50, 1);
+	}
 	public void drawSkyCube() {
 		// draw the sky
 		if (displayListSphere == -1) {
 			displayListSphere = glGenLists(1);
-
 			glNewList(displayListSphere, GL11.GL_COMPILE);
 			initDisplayList();
 			glEndList();
 		}
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		
+
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glColor4f(0.63f, 0.80f, 0.91f, 1.0f);
 		glCallList(displayListSphere);

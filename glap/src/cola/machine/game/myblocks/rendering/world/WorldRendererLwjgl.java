@@ -104,8 +104,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					TextureManager.getIcon("soil").textureHandle);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+//			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+//					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 			
 			
 		
@@ -152,7 +152,9 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		 * GL20.glDisableVertexAttribArray(0);
 		 * GL20.glDisableVertexAttribArray(1); GL30.glBindVertexArray(0);
 		 */
-
+		//GL11.glTranslated(player.Position.x, player.Position.y, player.Position.z);
+		skysphere.render();
+		//GL11.glTranslated(-player.Position.x,- player.Position.y, -player.Position.z);
 	}
 
 	int vaoId, vbocId, vboId;

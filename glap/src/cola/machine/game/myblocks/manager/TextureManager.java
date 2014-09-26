@@ -41,6 +41,9 @@ Path installPath;
         
         this.put("widgets","assets/minecraft/textures/gui/widgets.png");
         iconMap.put("toolbar",new TextureInfo("widgets",0,469,362,43));
+        
+        this.put("sun","assets/minecraft/textures/environment/sun.png");
+        iconMap.put("sun",new TextureInfo("sun"));
 
         this.put("inventory","assets/minecraft/textures/gui/container/inventory.png");
         iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
