@@ -104,7 +104,10 @@ public class GLApp_DemoCamera extends GLApp {
         camera1.setCamera(0,4,15, 0,-.3f,-1, 0,1,0);
 
         // load the airplane model and make it a display list
-        airplane = new GLModel("models/JetFire/JetFire.obj");
+       // airplane = new GLModel("models/boat/botrbsm1.obj");
+        //airplane = new GLModel("models/ship/ST_MARIA.3DS");
+      //  airplane = new GLModel("models/1/REALE_L.3DS");
+        airplane = new GLModel("models/2/32_obj.obj");
         airplane.mesh.regenerateNormals();
         airplane.makeDisplayList();
 
@@ -208,11 +211,12 @@ public class GLApp_DemoCamera extends GLApp {
         GL11.glPushMatrix();
         {
         	// place plane at orbit point, and orient it toward origin
-        	billboardPoint(airplanePos, ORIGIN, UP);
+        	//billboardPoint(airplanePos, ORIGIN, UP);
         	// turn plane toward direction of motion
-            GL11.glRotatef(-90, 0, 1, 0);
+          //  GL11.glRotatef(-90, 0, 1, 0);
             // make it big
-            GL11.glScalef(4f, 4f, 4f);
+           GL11.glScalef(0.1f, 0.1f, 0.1f);
+           GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
         	airplane.render();
         	// reset material, since model.render() will alter current material settings
             setMaterial( new float[] {.8f, .8f, .7f, 1f}, .4f);
@@ -220,14 +224,14 @@ public class GLApp_DemoCamera extends GLApp {
         GL11.glPopMatrix();
 
     	// draw the earth
-        GL11.glPushMatrix();
+      /*  GL11.glPushMatrix();
         {
             GL11.glRotatef(rotation, 0, 1, 0);  // rotate around Y axis
             GL11.glScalef(2f, 2f, 2f);          // scale up
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
             callDisplayList(earth);
         }
-        GL11.glPopMatrix();
+        GL11.glPopMatrix();*/
     }
 
 	/**

@@ -5,6 +5,7 @@ import glapp.GLApp;
 import glapp.GLCam;
 import glapp.GLCamera;
 import glapp.GLImage;
+import glmodel.GLModel;
 import glmodel.GL_Vector;
 
 import java.nio.FloatBuffer;
@@ -54,6 +55,11 @@ import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
  */
 public class MyBlockEngine extends GLApp {
 	// Handle for texture
+	
+	
+
+      
+      
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
 	public String currentObject = "water";
@@ -122,10 +128,14 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
 	public void setup() {
-       GL11. glEnable(GL11.GL_POINT_SMOOTH);
-        GL11. glEnable( GL11. GL_LINE_SMOOTH);
-        GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
-        GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
+		
+		  boat = new GLModel("models/boat/botrbsm1.obj");
+		  boat.mesh.regenerateNormals();
+		  boat.makeDisplayList();
+     //  GL11. glEnable(GL11.GL_POINT_SMOOTH);
+      //  GL11. glEnable( GL11. GL_LINE_SMOOTH);
+      //  GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
+      //  GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
         //GL11.glEnable(GL11.GL_DEPTH_TEST);
        // GL11.glDepthFunc(GL11.GL_LEQUAL);
 		human = new Human(blockRepository);
@@ -142,12 +152,17 @@ public class MyBlockEngine extends GLApp {
 		 */
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
-//        setLight( GL11.GL_LIGHT1,
-//        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
-//        		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
-//        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
-//        		new float[]{2,50,1,1} );                         // position
-        
+        setLight( GL11.GL_LIGHT1,
+        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
+        		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
+        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
+        		new float[]{2,50,1,1} );                         // position
+      /*  setLight( GL11.GL_LIGHT2,
+        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
+        		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
+        		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
+        		new float[]{-25,32,10,1} );                         // position
+*/        
 //		 setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, // diffuse // color 
 //		  new float[] { 10f, 10f, 10f, 1f }, // ambient
 //		  new  float[] { 11f, 11f, 11f, 1f }, // specular 
@@ -158,14 +173,14 @@ public class MyBlockEngine extends GLApp {
 		// up)
 
 		// set global light
-		FloatBuffer ltAmbient = allocFloats(new float[] { 11.0f, 11.0f, 11.0f,
+		FloatBuffer ltAmbient = allocFloats(new float[] { 3.0f, 3.0f, 3.0f,
 				1.0f });
 		// ltAmbient.flip();
 		GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, ltAmbient);
 		GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11.GL_FALSE);
-		GL11.glEnable(GL11.GL_LIGHTING);
+//		
 		GL11.glEnable(GL11.GL_AUTO_NORMAL);
-		
+		GL11.glEnable(GL11.GL_LIGHTING);
 		dcc.blockRepository = blockRepository;
 		bulletPhysics = new BulletPhysics(blockRepository);
 		
@@ -183,7 +198,8 @@ public class MyBlockEngine extends GLApp {
 		//textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
+		human.setHuman(1, 50, 1, 0, 0, -1, 0, 1, 0);
+		//human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
 		//human2.setHuman(10, 3, 10, 0, 0, 1, 0, 1, 0);
 
@@ -291,6 +307,7 @@ public class MyBlockEngine extends GLApp {
 		//drawColorBlocks();
 		//skysphere.render();
 		//drawObjects();
+		drawShip();
 		drawLine();
 		//sword.y=human.Position.y+4;
 		//sword.render();
@@ -353,7 +370,26 @@ public class MyBlockEngine extends GLApp {
 		GL11.glPopMatrix();
 	}*/
 	
-	
+	  GLModel boat;
+	public void drawShip() {
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+	 GL11.glPushMatrix();
+     {
+     	// place plane at orbit point, and orient it toward origin
+     	//billboardPoint(airplanePos, ORIGIN, UP);
+     	// turn plane toward direction of motion
+       //  GL11.glRotatef(-90, 0, 1, 0);
+         // make it big
+    	 GL11.glTranslatef(-10, 35, 5);
+        GL11.glScalef(0.01f, 0.01f, 0.01f);
+       // GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
+     	boat.render();
+     	// reset material, since model.render() will alter current material settings
+         setMaterial( new float[] {.8f, .8f, .7f, 1f}, .4f);
+     }
+     GL11.glPopMatrix();
+     GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
 	public void drawObjects() {
         TextureInfo ti = TextureManager.getIcon("human");
 
