@@ -143,7 +143,7 @@ public class HtmlObject extends RegionArea{
         	/*if(this.background_image.equals("toolbar")){
         		System.out.println("toolbar render");
         	}*/
-            TextureInfo textureInfo = TextureManager.getIcon(this.background_image);
+            TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
             GL11.glColor3f(1, 1, 1);
            // GL11.glClear(GL11.GL_COLOR);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);

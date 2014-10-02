@@ -7,6 +7,7 @@ import java.awt.Robot;
 
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
+import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import glapp.GLApp;
 import glapp.GLCamera;
 import glmodel.GL_Vector;
@@ -120,6 +121,7 @@ public class MouseControlCenter {
 					  +preKeyTime+" time:"+timenow+" seconds:"+seconds);
 			 preKeyTime=timenow;
 			Switcher.IS_GOD = !Switcher.IS_GOD;
+                System.out.println("god mode:"+Switcher.IS_GOD);
 		}else
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
 			
@@ -148,6 +150,23 @@ public class MouseControlCenter {
 		if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
 			CoreRegistry.get(ToolBar.class).keyDown(9);
 		}else
+        if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+            double timenow=GLApp.getTimeInSeconds();
+            if((timenow-preKeyTime)<1){ return; } preKeyTime=timenow;
+            Switcher.CAMERA_2_PLAYER++;
+            if( Switcher.CAMERA_2_PLAYER>0){
+                Switcher.CAMERA_2_PLAYER=0;
+            }
+        }else
+        if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+            double timenow=GLApp.getTimeInSeconds();
+            if((timenow-preKeyTime)<1){ return; } preKeyTime=timenow;
+            Switcher.CAMERA_2_PLAYER--;
+            if( Switcher.CAMERA_2_PLAYER<-10){
+                Switcher.CAMERA_2_PLAYER=-10;
+            }
+
+        }else
 		// tilt up
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			  double timenow=GLApp.getTimeInSeconds();

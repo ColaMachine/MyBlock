@@ -48,7 +48,16 @@ public class GL_Vector
 		y = v.y;
 		z = v.z;
 	}
-	
+	public void copy(GL_Vector v){
+        x=v.x;
+        y=v.y;
+        z=v.z;
+    }
+    public void set(float x,float y,float z){
+        this.x=x;
+        this.y=y;
+        this.z=z;
+    }
 	/**
 	 * Create a vector from point1 to point2
 	 */
@@ -389,6 +398,7 @@ public class GL_Vector
 		A.y=B.y;
 		A.z=B.z;
 	}
+
 
 	public static GL_Vector multiplyWithoutY(GL_Vector v, float r) {
 		return new GL_Vector(v.x*r, 0, v.z*r);

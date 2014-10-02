@@ -23,6 +23,7 @@ public class HumanLeg {
 	 * P1 P2
 	 * (-0.25,-4,0.25) (0.25,-4,0.25)
 	 */
+
 	GL_Vector P1=new GL_Vector(-0.25f,-1.5f,0.25f);
 	GL_Vector P2=new GL_Vector(0.25f,-1.5f,0.25f);
 	GL_Vector P3=new GL_Vector(0.25f,-1.5f,-0.25f);

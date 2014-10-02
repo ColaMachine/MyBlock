@@ -17,71 +17,83 @@ import javax.imageio.ImageIO;
  * Created by luying on 14-8-28.
  */
 public class TextureManager {
-Path installPath;
-    public static HashMap<String,GLImage> textureMap =new HashMap<String,GLImage>();
+    Path installPath;
+    public static HashMap<String, GLImage> imageMap = new HashMap<String, GLImage>();
 
-    public static HashMap<String,TextureInfo> iconMap=new HashMap<String,TextureInfo>();
-    public TextureManager(){
-   	installPath = PathManager.getInstance().getInstallPath();
-   	this.put("grass_top", "assets/blockTiles/plant/Grass.png");
-    this.put(
-            "human","images/2000.png"
-    );
-        iconMap.put("human",new TextureInfo("human"));
-    	this.put("heightmap", "images/gray.png");
-    	 iconMap.put("heightmap",new TextureInfo("heightmap"));
-    this.put("background","images/background.png");
-    
-    iconMap.put("background",new TextureInfo("background"));
-       this.put("gui","images/gui.png");
-        iconMap.put("cross",new TextureInfo("gui",1/12f+0.01f,10/12f,1/12f,1/12f,true));
-        
-        iconMap.put("selectBox",new TextureInfo("gui",0,210,23,23));
-        
-        
-        this.put("widgets","assets/minecraft/textures/gui/widgets.png");
-        iconMap.put("toolbar",new TextureInfo("widgets",0,469,362,43));
-        
-        this.put("sun","assets/minecraft/textures/environment/sun.png");
-        iconMap.put("sun",new TextureInfo("sun"));
+    public static HashMap<String, TextureInfo> textureMap = new HashMap<String, TextureInfo>();
 
-        this.put("inventory","assets/minecraft/textures/gui/container/inventory.png");
-        iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
+    public TextureManager() {
+        installPath = PathManager.getInstance().getInstallPath();
+        this.put("grass_top", "assets/blockTiles/plant/Grass.png");
+        this.put(
+                "human", "images/char.png"
+        );
+        textureMap.put("human", new TextureInfo("human"));
+        this.put("heightmap", "images/gray.png");
+        textureMap.put("heightmap", new TextureInfo("heightmap"));
+        this.put("background", "images/background.png");
 
-        this.put("human","images/2000.png");
-        //iconMap.put("bag",new TextureInfo("inventory",0,179,352,332));
+        textureMap.put("background", new TextureInfo("background"));
+        this.put("gui", "images/gui.png");
+        textureMap.put("cross", new TextureInfo("gui", 1 / 12f + 0.01f, 10 / 12f, 1 / 12f, 1 / 12f, true));
 
-        this.put("apple_golden","assets/minecraft/textures/items/apple_golden.png");
-        
-        this.put("items","images/items.png");
+        textureMap.put("selectBox", new TextureInfo("gui", 0, 210, 23, 23));
 
-        
-        iconMap.put("apple_golden",new TextureInfo("apple_golden"));
-        
-        this.put("terrain","assets/minecraft/textures/terrain.png");
-        iconMap.put("water",new TextureInfo("terrain",14,2,1,1,16,16));
-        iconMap.put("grass_top",new TextureInfo("terrain",8,5,0.8f,0.8f,16,16));
-        iconMap.put("mantle",new TextureInfo("terrain",1,14,1,1,16,16,0.1f));
-        iconMap.put("glass",new TextureInfo("terrain",1,12,1,1,16,16));
-        
-        iconMap.put("wood",new TextureInfo("terrain",4,15,1,1,16,16,0.1f));
-        
-        
-        iconMap.put("soil",new TextureInfo("terrain",2,15,1,1,16,16,0.1f));
-        
-        iconMap.put("soil_side",new TextureInfo("terrain",3,15,1,1,16,16,0.1f));
-        
-        iconMap.put("stone",new TextureInfo("terrain",1,15,1,1,16,16,0.1f));
-        
-        iconMap.put("sand",new TextureInfo("terrain",2,14,1,1,16,16,0.1f));
-        iconMap.put("grass_side",new TextureInfo("terrain",3,15,1,1,16,16));
-        iconMap.put("gold_sword",new TextureInfo("items",4,10,1,1,16,16));
+
+        this.put("widgets", "assets/minecraft/textures/gui/widgets.png");
+        textureMap.put("toolbar", new TextureInfo("widgets", 0, 469, 362, 43));
+
+        this.put("night", "images/night.jpg");
+        textureMap.put("night", new TextureInfo("night"));
+
+        //this.put("most","images/fewest.tif");
+        //textureMap.put("most",new TextureInfo("most"));
+        this.put("sun", "assets/minecraft/textures/environment/sun.png");
+        textureMap.put("sun", new TextureInfo("sun"));
+
+        this.put("inventory", "assets/minecraft/textures/gui/container/inventory.png");
+        textureMap.put("bag", new TextureInfo("inventory", 0, 179, 352, 332));
+
+        this.put("human", "images/2000.png");
+        //textureMap.put("bag",new TextureInfo("inventory",0,179,352,332));
+
+        this.put("apple_golden", "assets/minecraft/textures/items/apple_golden.png");
+
+        this.put("items", "images/items.png");
+
+
+        textureMap.put("apple_golden", new TextureInfo("apple_golden"));
+
+        this.put("terrain", "assets/minecraft/textures/terrain.png");
+        textureMap.put("water", new TextureInfo("terrain", 14, 2, 1, 1, 16, 16));
+
+        this.put("background", "images/IMG_4034.jpg");
+        textureMap.put("background", new TextureInfo("background"));
+
+
+        textureMap.put("grass_top", new TextureInfo("terrain", 8, 5, 0.8f, 0.8f, 16, 16));
+        textureMap.put("mantle", new TextureInfo("terrain", 1, 14, 1, 1, 16, 16));
+        textureMap.put("glass", new TextureInfo("terrain", 1, 12, 1, 1, 16, 16));
+
+        textureMap.put("wood", new TextureInfo("terrain", 4, 15, 1, 1, 16, 16));
+
+
+        textureMap.put("soil", new TextureInfo("terrain", 2, 15, 1, 1, 16, 16));
+
+        textureMap.put("soil_side", new TextureInfo("terrain", 3, 15, 1, 1, 16, 16));
+
+        textureMap.put("stone", new TextureInfo("terrain", 1, 15, 1, 1, 16, 16));
+
+        textureMap.put("sand", new TextureInfo("terrain", 2, 14, 1, 1, 16, 16));
+        textureMap.put("grass_side", new TextureInfo("terrain", 3, 15, 1, 1, 16, 16));
+        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
     }
-    public void put(String name ,String textureImagePath){
+
+    public void put(String name, String textureImagePath) {
         int textureHandle = 0;
-        
+
         GLImage textureImg;
-		try {
+        try {
             textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
@@ -89,22 +101,24 @@ Path installPath;
                 GLApp.makeTextureMipMap(textureHandle, textureImg);
             }
 
-            textureMap.put(name, textureImg);
-        } catch (Exception  e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-      
-    }
-
-    public void preInit(){
+            imageMap.put(name, textureImg);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.exit(0);
+        }
 
     }
-    public static TextureInfo getIcon(String name){
-        return iconMap.get(name);
+
+    public void preInit() {
+
     }
-    public static GLImage getTextureHandle(String name){
+
+    public static TextureInfo getTextureInfo(String name) {
         return textureMap.get(name);
+    }
+
+    public static GLImage getImage(String name) {
+        return imageMap.get(name);
     }
 }

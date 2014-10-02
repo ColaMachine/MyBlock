@@ -39,7 +39,11 @@ public class Skysphere {
 		// shader.enable();
 
 		// Draw the skysphere
-		drawSkysphere();drawSun();
+
+        drawSkysphereTexture();
+
+		//drawSkysphere();
+		drawSun();
 		// drawSkyCube();
 		/*
 		 * if (false) { glCullFace(GL_FRONT); } else { glCullFace(GL_BACK); }
@@ -61,6 +65,7 @@ public class Skysphere {
 
 			glEndList();
 		}
+
 		GL11.glCullFace(GL11.GL_FRONT);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -69,9 +74,43 @@ public class Skysphere {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glCullFace(GL11.GL_BACK);
 	}
-	
-	
-	public void drawSun() {
+
+    public void drawSkysphereTexture() {
+        if (displayListSphere == -1) {
+            displayListSphere = glGenLists(1);
+
+            //Sphere sphere = new Sphere();
+            // sphere.setTextureFlag(true);
+
+            glNewList(displayListSphere, GL11.GL_COMPILE);
+
+            //sphere.draw(2, 2, 2);
+
+            GLApp.renderSphere();
+
+            glEndList();
+        }
+
+
+
+        GL11.glPushMatrix();
+        { GL11.glCullFace(GL11.GL_FRONT);
+            GL11.glTranslated(1,32,1);
+            GL11.glScalef(100f, 50f, 100f);          // scale up
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, TextureManager.getTextureInfo("night").textureHandle);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            glCallList(displayListSphere);
+
+            GL11.glTranslated(-1,-32,-1);
+            GL11.glCullFace(GL11.GL_BACK);
+        }
+        GL11.glPopMatrix();
+
+       // GL11.glCullFace(GL11.GL_BACK);
+    }
+
+    public void drawSun() {
 		//计算半径
 		double y= Math.sin(30*Math.PI/180)*50+32;
 		double  x= Math.cos(30*Math.PI/180)*50;
@@ -85,7 +124,7 @@ public class Skysphere {
 		
 		 GL11.glEnable(GL11.GL_TEXTURE_2D);
 		 GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					TextureManager.getIcon("sun").textureHandle);
+					TextureManager.getTextureInfo("sun").textureHandle);
 		 GL11.glEnable(GL11.GL_BLEND);		
 		 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 	        // Front Face
@@ -128,7 +167,7 @@ public class Skysphere {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-				TextureManager.getIcon("sun").textureHandle);
+				TextureManager.getTextureInfo("sun").textureHandle);
 		
 		GL11.glBegin(GL11.GL_QUADS);
 		// Front Face

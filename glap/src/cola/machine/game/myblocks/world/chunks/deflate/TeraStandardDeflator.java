@@ -22,7 +22,7 @@ import cola.machine.game.myblocks.world.chunks.blockdata.*;
 /**
  * TeraStandardDeflator implements a simple deflation algorithm for 4, 8 and 16-bit dense and sparse arrays.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
+ *
  * @note Currently it is optimized for chunks of size 16x256x16 blocks.
  * @todo Implement deflation for sparse arrays.
  */

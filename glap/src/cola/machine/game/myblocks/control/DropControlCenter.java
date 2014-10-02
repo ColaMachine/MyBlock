@@ -1,6 +1,8 @@
 package cola.machine.game.myblocks.control;
 
+import check.CrashCheck;
 import cola.machine.game.myblocks.model.human.Human;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import util.MathUtil;
 
@@ -11,37 +13,38 @@ public class DropControlCenter {
 	 * don't use at every frame ,it's cost much time
 	 */
 	public void check(Human human){
-		// È¡µÃµ±Ç°µÄhuman×ø±ê
+		// È¡ï¿½Ãµï¿½Ç°ï¿½ï¿½humanï¿½ï¿½ï¿½
 
-		// È¡µÃÀëËû×î½üµÄ Å¼Êý×ø±ê
+		// È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¼ï¿½ï¿½ï¿½ï¿½ï¿½
 		
-		//È¡µÃÀëËû×î½üµÄÆæÊý×ø±ê
+		//È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(!human.stable){
-			//System.out.println("µ±Ç°ÈËÎïµÄy:"+human.Position.y);
-			int x = MathUtil.getNearOdd(human.Position.x );
-			int y = MathUtil.getNearOdd(human.Position.y);
-			int z = MathUtil.getNearOdd(human.Position.z );
-			if(blockRepository.haveObject(x, y - 2, z)){
-				//System.out.println("ÊÇµ½µÎÁË"+y);
-				//System.out.println("µ±Ç°ÈËÎïµÄy:"+human.Position.y+"¼ì²âµ½ÍÁÈÀ:"+y);
-				human.mark=y-1;
-				if(human.mark==-2){
-					System.out.println("´íÁË");
+			//System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½y:"+human.Position.y);
+//			int x = MathUtil.getNearOdd(human.Position.x );
+//			int y = MathUtil.getNearOdd(human.Position.y);
+//			int z = MathUtil.getNearOdd(human.Position.z );
+
+			if(CoreRegistry.get(CrashCheck.class).haveBlock2()){
+				//System.out.println("ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½"+y);
+				//System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½y:"+human.Position.y+"ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ï¿½:"+y);
+				human.mark=(int)human.Position.y;
+				if(human.mark<=0){
+					System.out.println("get the underground");
 				}
 				//System.out.println("mark :"+human.mark);
 			}else{
-				human.mark=y-3;
+				human.mark=(int)human.Position.y-1;
 			}
 			
 		}else if(human.stable){
-			int x = MathUtil.getNearOdd(human.Position.x );
-			int y = MathUtil.getNearOdd(human.Position.y);
-			int z = MathUtil.getNearOdd(human.Position.z );
-			if(!blockRepository.haveObject(x, y - 2, z)){
-				//System.out.println("ÊÇµ½µÎÁË"+y);
-				//System.out.println("µ±Ç°ÈËÎïµÄy:"+human.Position.y+"¼ì²âµ½ÍÁÈÀ:"+y);
+//			int x = MathUtil.getNearOdd(human.Position.x );
+//			int y = MathUtil.getNearOdd(human.Position.y);
+//			int z = MathUtil.getNearOdd(human.Position.z );
+			if(!CoreRegistry.get(CrashCheck.class).haveBlock2()){
+				System.out.println("check the human hasn't under block  begin to drop");
+				//System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½y:"+human.Position.y+"ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ï¿½:"+y);
 				human.drop();
-				human.mark=y-3;
+				human.mark=(int)human.Position.y-1;
 				//System.out.println("mark :"+human.mark);
 			}
 		}

@@ -39,7 +39,6 @@ import static com.google.common.base.Preconditions.checkState;
  * <p/>
  * Alternative TeraArray implementations can be registered through the method {@code TeraArrays.register(TeraArray.Factory, ChunksProtobuf.Type)}.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
  * @todo Future optimization: Implement some caching/cycling mechanism to avoid unnecessary ByteBuffer allocations.
  */
 @SuppressWarnings("rawtypes")

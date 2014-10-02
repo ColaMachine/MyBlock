@@ -44,7 +44,7 @@ public class Slot extends RegionArea{
         	GL11.glPushMatrix();
 
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            TextureInfo ti = TextureManager.getIcon(item.name);
+            TextureInfo ti = TextureManager.getTextureInfo(item.name);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D,ti.textureHandle);
 
             GL11.glBegin(GL11.GL_QUADS);

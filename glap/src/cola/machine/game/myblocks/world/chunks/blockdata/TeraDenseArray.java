@@ -23,7 +23,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * TeraDenseArray is the base class used to implement dense arrays.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
  */
 public abstract class TeraDenseArray extends TeraArray {
 

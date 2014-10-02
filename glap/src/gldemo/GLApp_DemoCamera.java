@@ -95,7 +95,7 @@ public class GLApp_DemoCamera extends GLApp {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         // Create texture for spere
-        sphereTextureHandle = makeTexture("images/earth.gif");
+        sphereTextureHandle = makeTexture("glap/images/night.jpg");
 
         // Create texture for ground plane
         groundTextureHandle = makeTexture("images/grass_1_512.jpg",true,true);
@@ -224,14 +224,14 @@ public class GLApp_DemoCamera extends GLApp {
         GL11.glPopMatrix();
 
     	// draw the earth
-      /*  GL11.glPushMatrix();
+        GL11.glPushMatrix();
         {
             GL11.glRotatef(rotation, 0, 1, 0);  // rotate around Y axis
             GL11.glScalef(2f, 2f, 2f);          // scale up
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
             callDisplayList(earth);
         }
-        GL11.glPopMatrix();*/
+        GL11.glPopMatrix();
     }
 
 	/**

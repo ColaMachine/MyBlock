@@ -1172,8 +1172,8 @@ public class GLApp {
         // set texture parameters
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR); //GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); //GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); //GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST); //GL11.GL_NEAREST);
 
         // make texture "anisotropic" so it will minify more gracefully
     	if (anisotropic && extensionExists("GL_EXT_texture_filter_anisotropic")) {
@@ -1262,6 +1262,8 @@ public class GLApp {
     		if (ret != 0) {
     			err("GLApp.makeTextureMipMap(): Error occured while building mip map, ret=" + ret + " error=" + GLU.gluErrorString(ret) );
     		}
+//            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+//                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
     		// Assign the mip map levels and texture info
     		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
     		GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
@@ -2931,7 +2933,7 @@ public class GLApp {
     {
     	// if font is not initiallized, try loading default font
     	if (fontListBase == -1 || fontTextureHandle == -1) {
-    		if (!buildFont("images/font_tahoma.png", 12)) {
+    		if (!buildFont("glap/images/font_tahoma.png", 12)) {
     			err("GLApp.print(): character set has not been created -- see buildFont()");
     			return;
     		}

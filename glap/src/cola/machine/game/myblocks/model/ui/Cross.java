@@ -15,7 +15,7 @@ public class Cross extends RegionArea {
 
     public Cross() {
         this.withWH(GLApp.getWidth()/2-25, GLApp.getHeight()/2-25,50f,50f);
-        this.textureInfo= TextureManager.getIcon("cross");
+        this.textureInfo= TextureManager.getTextureInfo("cross");
 
 
     }

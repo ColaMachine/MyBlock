@@ -74,7 +74,7 @@ public class ToolBar extends RegionArea {
 		Bag bag = CoreRegistry.get(Bag.class);
 		slots = bag.slots;
 //		this.withWH(200, 0, 362, 43);
-//		this.textureInfo = TextureManager.getIcon("toolbar");
+//		this.textureInfo = TextureManager.getImage("toolbar");
 		div.refresh();
 		//Document.getElementById("toolbar_0_0").background_image="selectBox";
 		
@@ -159,7 +159,7 @@ public class ToolBar extends RegionArea {
 
 				// GL11.glEnable(GL11.GL_TEXTURE_2D);
 				TextureInfo ti = TextureManager
-						.getIcon(slots[27 + i].item.name);
+						.getTextureInfo(slots[27 + i].item.name);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
 
 				GL11.glBegin(GL11.GL_QUADS);
@@ -206,7 +206,7 @@ public class ToolBar extends RegionArea {
 		}
 
 		if (this.selectedIndex > 0) {
-			TextureInfo ti = TextureManager.getIcon("selectBox");
+			TextureInfo ti = TextureManager.getTextureInfo("selectBox");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
 
 			GL11.glBegin(GL11.GL_QUADS);

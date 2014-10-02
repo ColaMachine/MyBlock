@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Configuration {
 	
-	private static String xPath="E:\\¿¼ÇÚ²âÊÔ\\conf.txt";
+	private static String xPath="E:\\ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½\\conf.txt";
 	private static ArrayList<String> Dos;
 	private static boolean terminated=true;
 	public static void init(){
@@ -36,6 +36,8 @@ public class Configuration {
 	public static boolean isTerminated() {
 		return terminated;
 	}
+
+   // public float
 	public static void setTerminated(boolean terminated) {
 		Configuration.terminated = terminated;
 	}

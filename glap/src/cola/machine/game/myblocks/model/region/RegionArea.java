@@ -51,7 +51,7 @@ public class RegionArea {
         GL11.glVertex3f(maxX, maxY, 0);
         GL11.glVertex3f(minX    , maxY,0);
 
-GL11.glEnd();
+        GL11.glEnd();
 
     }
     public boolean contain(float x,float y){

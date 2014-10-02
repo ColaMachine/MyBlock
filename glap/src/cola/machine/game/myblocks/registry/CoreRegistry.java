@@ -23,12 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Registry giving access to major singleton systems, via the interface they fulfil.
- *
- * @author Immortius <immortius@gmail.com>
- */
-@API
+
 public final class CoreRegistry {
     private static Map<Class<? extends Object>, Object> store = Maps.newConcurrentMap();
     private static Set<Class<? extends Object>> permStore = Sets.newSetFromMap(Maps.<Class<? extends Object>, Boolean>newConcurrentMap());

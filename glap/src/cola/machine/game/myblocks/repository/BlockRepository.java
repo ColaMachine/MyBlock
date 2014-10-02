@@ -38,6 +38,8 @@ public class BlockRepository {
 		kindBlockMap.get(block.getName()).put(block.getX()*10000+block.getZ()*100+block.getY(),block);
 	}
 	public boolean haveObject(int x,int y,int z){
+        //changetojudge from chunkimpl
+
 		if(y<=0)
 			return true;
 		return map.get(x*10000+z*100+y)!=null;

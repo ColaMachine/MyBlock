@@ -22,7 +22,7 @@ import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 /**
  * TeraDeflator is the abstract base class used to implement chunk deflation.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
+ *
  */
 public abstract class TeraDeflator {
 

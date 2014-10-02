@@ -22,7 +22,7 @@ import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 /**
  * TeraNullDeflator performs no deflation at all. It just returns the passed array.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
+ *
  */
 public class TeraNullDeflator extends TeraDeflator {
 

@@ -33,7 +33,7 @@ import java.util.Map;
  * <p/>
  * Mods can register chunk data extensions through the method {@code Chunks.register(String, TeraArrays.Entry)}.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
+ *
  */
 // TODO: Finish support for chunk data extensions.
 public final class Chunks {

@@ -27,7 +27,7 @@ import java.nio.ByteBuffer;
 /**
  * TeraSparseArrayByte is the base class used to implement sparse arrays with elements of size 4 bit or 8 bit.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
+ *
  */
 public abstract class TeraSparseArrayByte extends TeraSparseArray {
 

@@ -25,7 +25,6 @@ import com.google.common.base.Preconditions;
  * TeraDenseArray4Bit implements a dense array with elements of 4 bit size.
  * Its elements are in the range 0 - 15 and it increases memory efficiency by storing two elements per byte.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
  */
 public final class TeraDenseArray4Bit extends TeraDenseArrayByte {
 

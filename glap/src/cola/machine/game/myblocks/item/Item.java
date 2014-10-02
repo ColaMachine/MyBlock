@@ -23,7 +23,7 @@ public class Item {
 
     public Item(String name ,int count){
         this.name=name;
-        this.textureInfo= TextureManager.getIcon(name);
+        this.textureInfo= TextureManager.getTextureInfo(name);
         this.count=count;
     }
 }

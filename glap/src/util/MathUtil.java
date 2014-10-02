@@ -1,5 +1,7 @@
 package util;
 
+import cola.machine.game.myblocks.world.chunks.Vector3i;
+
 public class MathUtil {
 	public static int getNearOdd(float num){//����
 		int x=(int)Math.rint((double)num);
@@ -53,7 +55,7 @@ public static  float distance(float preX, float preY, float x, float y) {
 	return (float) Math.sqrt(diffX * diffX + diffY * diffY);
 }
 public static void main(String args[]){
-	System.out.println(MathUtil.floor((float)(-10)/16));
+	System.out.println(getBelongChunkInt(1.0f));
 }
 
 public static int floor(float f) {
@@ -69,4 +71,13 @@ public static int getOffesetChunk(float f){
 	if( g<0)g+=16;
 	return g;
 }
+    public static int getChunkX(float x){
+       return  (int)(x/16);
+    }
+    public static int getChunkY(float y){
+        return  (int)(y/16);
+    }
+    public static int getChunkZ(float z){
+        return  (int)(z/16);
+    }
 }

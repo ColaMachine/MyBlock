@@ -65,7 +65,7 @@ Div div;
         div.height=300;
         div.border_width=1;
         div.background_image="bag";
-        TextureInfo batTexture= TextureManager.getIcon("bag");
+        TextureInfo batTexture= TextureManager.getTextureInfo("bag");
         div.width=batTexture.owidth;
         div.height=batTexture.oheight;
 
@@ -235,9 +235,9 @@ Div div;
         }
 
         this.withWH(100,100,500,400);
-        this.textureInfo= TextureManager.getIcon("bag");
-        this.humanTextureHandle= TextureManager.getTextureHandle("human").textureHandle;
-        this.earthHandle= TextureManager.getTextureHandle("background").textureHandle;
+        this.textureInfo= TextureManager.getTextureInfo("bag");
+        this.humanTextureHandle= TextureManager.getImage("human").textureHandle;
+        this.earthHandle= TextureManager.getImage("background").textureHandle;
         this.human= CoreRegistry.get(MyBlockEngine.class).human;
         //this.block= new BaseBlock(0,0,0);
         //slotsRegion=new RegionArea(left,bottom,slotsWidth,slotsHeight);
@@ -438,7 +438,7 @@ if(!show)return;
     	GL11.glPushMatrix();
 		{
 			 GL11.glEnable(GL11.GL_TEXTURE_2D);
-    	GL11.glBindTexture(GL11.GL_TEXTURE_2D, TextureManager.getTextureHandle("background").textureHandle);
+    	GL11.glBindTexture(GL11.GL_TEXTURE_2D, TextureManager.getImage("background").textureHandle);
 		
     	GL11.glRotated(45, 0, 1, 0);
     	GL11.glRotated(30, 1, 0, 0);

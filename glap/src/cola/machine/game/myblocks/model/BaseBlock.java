@@ -100,7 +100,7 @@ public class BaseBlock extends AABB implements Block{
 	
 	public void render(){
 		 // Front Face
-		TextureInfo ti=TextureManager.getIcon(getName());
+		TextureInfo ti=TextureManager.getTextureInfo(getName());
 	    GL11.glBegin(GL11.GL_QUADS);
 	        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
 	        GL11.glTexCoord2f(ti.minX,ti.minY); GL11.glVertex3f(-1.0f+x, -1.0f+y,  1.0f+z);	// Bottom Left
@@ -145,7 +145,7 @@ public class BaseBlock extends AABB implements Block{
 	
 	public void renderColor(){
 		 // Front Face
-		TextureInfo ti=TextureManager.getIcon(getName());
+		TextureInfo ti=TextureManager.getTextureInfo(getName());
 	    GL11.glBegin(GL11.GL_QUADS);
 	        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
 	        GL11.glVertex3f(-1.0f+x, -1.0f+y,  1.0f+z);	// Bottom Left

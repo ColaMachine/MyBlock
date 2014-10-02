@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.rendering.world;
 
+import check.CrashCheck;
 import glapp.GLApp;
 import glapp.GLCamera;
 
@@ -12,6 +13,7 @@ import java.util.PriorityQueue;
 
 import javax.vecmath.Vector3f;
 
+import glmodel.GL_Vector;
 import math.Rect2i;
 
 import org.lwjgl.BufferUtils;
@@ -39,6 +41,7 @@ import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
 import com.google.common.collect.Lists;
+import util.MathUtil;
 
 public class WorldRendererLwjgl implements WorldRenderer {
 
@@ -66,6 +69,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		this.worldProvider = worldProvider;
 		this.localPlayerSystem = localPlayerSystem;
 		skysphere = new Skysphere(this);
+        CoreRegistry.put(CrashCheck.class,new CrashCheck(player,chunksInProximity));
 		this.player = player;
 		this.setup();
 	}
@@ -87,8 +91,10 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 		// 跟新自己
 	}
-
+    private IntBuffer TextureIDBuffer = BufferUtils.createIntBuffer(1);
 	public void render() {
+       // if(true)return;
+
 		this.updateChunksInProximity(false);
 		for (ChunkImpl chunk : chunksInProximity) {
 			
@@ -103,13 +109,13 @@ public class WorldRendererLwjgl implements WorldRenderer {
            // GL11.glBlendFunc( GL11.GL_SRC_ALPHA,  GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					TextureManager.getIcon("soil").textureHandle);
-//			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-//					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			
-			
-		
-			for (ChunkImpl chunk : chunksInProximity) {
+					TextureManager.getTextureInfo("soil").textureHandle);
+
+
+
+
+
+            for (ChunkImpl chunk : chunksInProximity) {
 				GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
 						chunk.getChunkWorldPosZ());
 				GL11.glBegin(GL11.GL_QUADS);
@@ -176,7 +182,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcPlayerChunkOffsetX();
 		int newChunkPosZ = calcPlayerChunkOffsetZ();
-		int viewingDistance =9;// config.getRendering().getViewDistance().getChunkDistance();
+		int viewingDistance =3;// config.getRendering().getViewDistance().getChunkDistance();
 
 		boolean chunksCurrentlyPending = false;
 

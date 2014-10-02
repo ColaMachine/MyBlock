@@ -19,7 +19,7 @@ public class ToolBarContainer extends RegionArea{
 		Bag bag=CoreRegistry.get(Bag.class);
 		slots=bag.slots;
         this.withWH(200,0,362,43);
-        this.textureInfo= TextureManager.getIcon("toolbar");
+        this.textureInfo= TextureManager.getTextureInfo("toolbar");
 
         /*
 		float step = (maxX - minX) / 10f;
@@ -106,7 +106,7 @@ public class ToolBarContainer extends RegionArea{
 				        	GL11.glPushMatrix();
 
 				           // GL11.glEnable(GL11.GL_TEXTURE_2D);
-				            TextureInfo ti = TextureManager.getIcon(slots[27+i].item.name);
+				            TextureInfo ti = TextureManager.getTextureInfo(slots[27+i].item.name);
 				            GL11.glBindTexture(GL11.GL_TEXTURE_2D,ti.textureHandle);
 
 				            GL11.glBegin(GL11.GL_QUADS);

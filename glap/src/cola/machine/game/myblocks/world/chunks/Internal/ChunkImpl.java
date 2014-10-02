@@ -97,7 +97,7 @@ public class ChunkImpl implements Chunk {
 		return blockManager.getBlock((short) oldValue);
 	}
 
-	TextureInfo ti = TextureManager.getIcon("soil");
+	TextureInfo ti = TextureManager.getTextureInfo("soil");
 
     /**
      * 判断对方和自己 如果一个是alpha 一个是非透明的 就需要
@@ -344,50 +344,50 @@ public class ChunkImpl implements Chunk {
 boolean flat =true;
 		switch (this.currentBlockType) {
 		case 1:
-			ti = TextureManager.getIcon("stone");
+			ti = TextureManager.getTextureInfo("stone");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
 		case 2:
 			if (faceIndex == 1) {
-				ti = TextureManager.getIcon("grass_top");
+				ti = TextureManager.getTextureInfo("grass_top");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 						ti.textureHandle);
 			} else if (faceIndex == 2) {
-				ti = TextureManager.getIcon("soil");
+				ti = TextureManager.getTextureInfo("soil");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 						ti.textureHandle);
 			} else {
-				ti = TextureManager.getIcon("grass_side");
+				ti = TextureManager.getTextureInfo("grass_side");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 						ti.textureHandle);
 			}DrawVetext();
 			break;
 		case 3:
-			ti = TextureManager.getIcon("glass");
+			ti = TextureManager.getTextureInfo("glass");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
             case 6:
-                ti = TextureManager.getIcon("water");
+                ti = TextureManager.getTextureInfo("water");
                 if (faceIndex == 1) {
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D,
                             ti.textureHandle);DrawVetext();
                 }
                 break;
 		case 4:
-			ti = TextureManager.getIcon("sand");
+			ti = TextureManager.getTextureInfo("sand");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
 		case 5:
-			ti = TextureManager.getIcon("mantle");
+			ti = TextureManager.getTextureInfo("mantle");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
 
 		case 7:
-			ti = TextureManager.getIcon("wood");
+			ti = TextureManager.getTextureInfo("wood");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 						ti.textureHandle);DrawVetext();
 			break;
@@ -716,6 +716,10 @@ boolean flat =true;
 	}
 
 	public int getBlockData(int x, int y, int z) {
+        if(x<0||y<0||z<0){
+            GLApp.msg("ChunkImpl  getBlockData error");
+            System.exit(0);
+        }
 		return blockData.get(x, y, z);
 	}
 

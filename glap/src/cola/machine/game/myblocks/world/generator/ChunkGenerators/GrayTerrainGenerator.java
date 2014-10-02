@@ -49,7 +49,7 @@ public class GrayTerrainGenerator implements FirstPassGenerator{
 			return;
 		}
 		logger.info("Reading height map..");
-		GLImage image = TextureManager.getTextureHandle("heightmap");
+		GLImage image = TextureManager.getImage("heightmap");
 		
 		ByteBuffer bb =image.getPixelBytes();
 	    IntBuffer intBuf = bb.asIntBuffer();

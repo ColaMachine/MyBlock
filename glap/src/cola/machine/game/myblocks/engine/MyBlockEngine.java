@@ -55,11 +55,7 @@ import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
  */
 public class MyBlockEngine extends GLApp {
 	// Handle for texture
-	
-	
 
-      
-      
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
 	public String currentObject = "water";
@@ -103,7 +99,7 @@ public class MyBlockEngine extends GLApp {
 	public BlockRepository blockRepository = new BlockRepository(this);
 	BulletPhysics bulletPhysics;
 	public Human human;
-//	private Human human2;
+	private Human human2 ;
 	private Skysphere skysphere =new Skysphere();
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -129,7 +125,7 @@ public class MyBlockEngine extends GLApp {
 	 */
 	public void setup() {
 		
-		  boat = new GLModel("models/boat/botrbsm1.obj");
+		  boat = new GLModel("glap/models/boat/botrbsm1.obj");
 		  boat.mesh.regenerateNormals();
 		  boat.makeDisplayList();
      //  GL11. glEnable(GL11.GL_POINT_SMOOTH);
@@ -140,7 +136,7 @@ public class MyBlockEngine extends GLApp {
        // GL11.glDepthFunc(GL11.GL_LEQUAL);
 		human = new Human(blockRepository);
 		//sword=new Sword(0,0,0);
-		//human2 = new Human(blockRepository);
+		human2 = new Human(blockRepository);
 		CoreRegistry.put(MyBlockEngine.class, this);
 		CoreRegistry.put(Human.class, human);
 		this.initManagers();
@@ -201,7 +197,7 @@ public class MyBlockEngine extends GLApp {
 		human.setHuman(1, 50, 1, 0, 0, -1, 0, 1, 0);
 		//human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
-		//human2.setHuman(10, 3, 10, 0, 0, 1, 0, 1, 0);
+		human2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
 
 		human.startWalk();
 
@@ -297,8 +293,8 @@ public class MyBlockEngine extends GLApp {
 		GL11.glLoadIdentity();
 		
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
-				GL_Vector.multiply(human.ViewDir, -1));
-		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
+				GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_2_PLAYER));
+		camera1.MoveTo(camera_pos.x, camera_pos.y + 1, camera_pos.z);
 		// camera1.MoveTo(human.Position.x, human.Position.y + 4,
 		// human.Position.z);
 		camera1.viewDir(human.ViewDir);
@@ -306,8 +302,8 @@ public class MyBlockEngine extends GLApp {
 		drawAllBlock();
 		//drawColorBlocks();
 		//skysphere.render();
-		//drawObjects();
-		drawShip();
+		drawObjects();
+		//drawShip();
 		drawLine();
 		//sword.y=human.Position.y+4;
 		//sword.render();
@@ -391,33 +387,49 @@ public class MyBlockEngine extends GLApp {
      GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	public void drawObjects() {
-        TextureInfo ti = TextureManager.getIcon("human");
 
 
 
+        /*TextureInfo ti = TextureManager.getTextureInfo("background");
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); //GL11.GL_NEAREST);
 
 
-        GL11.glPushMatrix();
+        // Front Face
+        GL11.glTranslated(1,10,1);
+        GL11.glScaled(1,1,1);
+        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+        int _x=8;
+        int _y=8;
+        int _z=1;
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(0.0f, 0.0f); GL11.glVertex3f(0-_x, 0-_y,  _z);	// Bottom Left
+        GL11.glTexCoord2f(1.0f, 0.0f); GL11.glVertex3f( _x, 0-_y,  _z);	// Bottom Right
+        GL11.glTexCoord2f(1.0f, 1.0f); GL11.glVertex3f( _x,  _y,  _z);	// Top Right
+        GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(0-_x,  _y,  _z);	// Top Left
+        GL11.glEnd();*/
+        TextureInfo ti = TextureManager.getTextureInfo("human");
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+          GL11.glPushMatrix();
         {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-            human.render();
+            if(Switcher.CAMERA_2_PLAYER<-2){
+                human.render();
+            }else
+            human.renderPart();
 
         }
         GL11.glPopMatrix();
+/*GL11.glTranslated(1,-5,1);
+        GL11.glRotated(30,1,0,0);
+        GL11.glScaled(1,1,1);*/
 
-
-      /*  GL11.glPushMatrix();
+        GL11.glPushMatrix();
         {
-            // GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
-            // GL11.glScalef(1f, 1f, 1f); // scale up
-           // GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
             human2.render();
         }
-        GL11.glPopMatrix();*/
+        GL11.glPopMatrix();
     }
 
 	public void keyDown(int keycode) {

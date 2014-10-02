@@ -19,7 +19,6 @@ package cola.machine.game.myblocks.world.chunks.blockdata;
 /**
  * TeraArrayUtils contains some methods used in some TeraArray implementations.
  *
- * @author Manuel Brotz <manu.brotz@gmx.ch>
  */
 public final class TeraArrayUtils {
 

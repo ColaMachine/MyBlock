@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.model.human;
 
+import check.CrashCheck;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -23,6 +25,7 @@ public class Human extends AABB{
 	public GL_Vector UpVector;
 	public GL_Vector WalkDir;
 	public GL_Vector Position;
+    public GL_Vector oldPosition=new GL_Vector();
 	public float RotatedX, RotatedY, RotatedZ;
 	public float camSpeedR = 50; // degrees per second
 	public float camSpeedXZ = 5; // units per second
@@ -175,6 +178,7 @@ public class Human extends AABB{
         GL11.glTranslatef(Position.x,Position.y,Position.z);
         
         GL11.glRotatef(angle, 0, 1, 0);
+        GL11.glScalef(0.5f,0.5f,0.5f);
 		LLeg.render();
 
 		RLeg.render();
@@ -185,9 +189,39 @@ public class Human extends AABB{
 		
 		body.render();
 		head.render();
+        GL11.glScalef(2,2,2);
 		GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
 	}
+
+
+    public void renderPart() {
+        adjust(this.Position.x, this.Position.y, this.Position.z);
+        //GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
+        float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,-1));
+        //System.out.println("glRotatef angle :"+angle);
+        //System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
+
+        //	GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
+        this.walk();
+        this.dropControl();
+        GL11.glTranslatef(Position.x,Position.y,Position.z);
+
+        GL11.glRotatef(angle, 0, 1, 0);
+
+//        LLeg.render();
+//
+//        RLeg.render();
+//
+         LHand.render();
+//
+        //RHand.render();
+//
+//        body.render();
+//        head.render();
+        GL11.glRotatef(-angle, 0, 1, 0);
+        GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
+    }
 
     public void renderInMirror() {
        // adjust(this.Position.x, this.Position.y, this.Position.z);
@@ -211,52 +245,18 @@ public class Human extends AABB{
     }
 
 	public void move(float x, float y, float z) {
-		/*float preX= x;
-		float preY=y;
-		float preZ=z;*/
-		//�õ�ǰ�����ҵķ��� �Լ���ǰ����18������
-		int _x = MathUtil.getNearOdd(x);
-		int _y = MathUtil.getNearOdd(y);
-		int _z = MathUtil.getNearOdd(z);
-		Block b;
-		/*if(blockRepository.haveObject(_x, _y, _z)){
-			return;
-		}*/
-		
-		
-		
-		//
-		if(blockRepository.haveObject(_x, _y, _z)){
-			return;
-		}/*
-		
-		for(int xi=-1;xi<=1;xi++){
-			for(int yi=-1;yi<=2;yi++){
-				for(int zi=-1;zi<=1;zi++){
-					
-					
-					if(_x+xi*2==1 && _y+ yi*2==3 && _z+ zi*2==1){
-						System.out.println("daoz zh");
-					}
-					b=(Block)blockRepository.getObject(_x+xi*2,_y+ yi*2,_z+ zi*2);
-					if(b!=null && b.overlaps(this)){
-						System.out.println("������");
-						return ;
-					}
-					//������֮����Ժ���
-					
-				}
-			}
-		}
-		*/
-		
-		
-		this.Position.x = x;
-		this.Position.y = y;
-		this.Position.z = z;
-		
+        if(GL_Vector.length(GL_Vector.sub(oldPosition,Position))>0.1){
+            this.oldPosition.copy(this.Position);
+        }
+
+
+		this.Position.set(x,y,z);
+       if(CoreRegistry.get(CrashCheck.class).check()){
+           this.Position.copy(oldPosition);
+       }
+        //this.stable=false;
 	}
-	
+	public boolean needJudgeCrash=false;
 	public void move(GL_Vector vector) {
 		float x =vector.x;
 		float y =vector.y;
@@ -265,6 +265,10 @@ public class Human extends AABB{
 		
 	}
 
+    public void moveOld(){
+        this.Position=oldPosition;
+        //make some adjust for float not Precision
+    }
 	/**
 	 * Rotate the camera around the absolute vertical axis (0,1,0), NOT around
 	 * the cameras Y axis. This simulates a person looking up or down and
