@@ -26,4 +26,7 @@ public class Item {
         this.textureInfo= TextureManager.getTextureInfo(name);
         this.count=count;
     }
+    public void render(){
+        
+    }
 }

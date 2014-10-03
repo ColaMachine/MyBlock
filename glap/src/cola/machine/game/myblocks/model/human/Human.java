@@ -31,6 +31,8 @@ public class Human extends AABB{
 	public float camSpeedXZ = 5; // units per second
 	public float camSpeedY = 10; // units per second
 
+
+
 	int height = 2;
 	public HumanHead head = new HumanHead();
 	public HumanHand LHand = new HumanHand();
@@ -110,6 +112,9 @@ public class Human extends AABB{
 		RHand.setHead(0 + 0.75f, 0 + 2.75f, 0, dirx, diry, dirz, upx,
 				upy, upz);
 		body.setHead(0, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy, upz);
+        if(item!=null){
+            item.render();
+        }
 	}
 
 	public void adjust(float posx, float posy, float posz) {

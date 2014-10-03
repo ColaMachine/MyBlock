@@ -294,7 +294,7 @@ public class MyBlockEngine extends GLApp {
 		
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
 				GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_2_PLAYER));
-		camera1.MoveTo(camera_pos.x, camera_pos.y + 1, camera_pos.z);
+		camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
 		// camera1.MoveTo(human.Position.x, human.Position.y + 4,
 		// human.Position.z);
 		camera1.viewDir(human.ViewDir);
