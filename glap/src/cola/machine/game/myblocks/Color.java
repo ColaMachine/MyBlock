@@ -16,7 +16,6 @@
 package cola.machine.game.myblocks;
 
 import com.google.common.base.Preconditions;
-import org.terasology.module.sandbox.API;
 
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
@@ -40,7 +39,6 @@ import java.util.Objects;
  *
  * @author Immortius
  */
-@API
 public class Color {
 
     public static final Color BLACK = new Color(0x000000FF);

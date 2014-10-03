@@ -67,8 +67,7 @@ public class TextureManager {
         this.put("terrain", "assets/minecraft/textures/terrain.png");
         textureMap.put("water", new TextureInfo("terrain", 14, 2, 1, 1, 16, 16));
 
-        this.put("background", "images/IMG_4034.jpg");
-        textureMap.put("background", new TextureInfo("background"));
+       
 
 
         textureMap.put("grass_top", new TextureInfo("terrain", 8, 5, 0.8f, 0.8f, 16, 16));

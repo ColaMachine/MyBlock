@@ -15,14 +15,12 @@
  */
 package cola.machine.game.myblocks.world.generator.ChunkGenerators;
 
-import org.terasology.module.sandbox.API;
 
 /**
  * Random number generator based on the Xorshift generator by George Marsaglia.
  *
  * @author Benjamin Glatzel <benjamin.glatzel@me.com>
  */
-@API
 public class FastRandom extends Random {
 
     private long seed = System.currentTimeMillis();

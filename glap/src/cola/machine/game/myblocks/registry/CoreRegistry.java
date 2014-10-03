@@ -17,7 +17,6 @@ package cola.machine.game.myblocks.registry;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.terasology.module.sandbox.API;
 
 import java.util.Iterator;
 import java.util.Map;

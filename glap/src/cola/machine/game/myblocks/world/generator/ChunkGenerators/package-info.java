@@ -14,6 +14,5 @@
  * limitations under the License.
  */
 
-@API package cola.machine.game.myblocks.world.generator.ChunkGenerators;
+ package cola.machine.game.myblocks.world.generator.ChunkGenerators;
 
-import org.terasology.module.sandbox.API;

@@ -16,12 +16,10 @@
 
 package cola.machine.game.myblocks.world.chunks;
 
-import org.terasology.module.sandbox.API;
 
 /**
  * @author Immortius
  */
-@API
 public final class ChunkConstants {
     public static final int SIZE_X = 16;
     public static final int SIZE_Y = 128;
