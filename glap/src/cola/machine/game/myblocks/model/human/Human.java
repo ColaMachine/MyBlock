@@ -35,8 +35,9 @@ public class Human extends AABB{
 
 	int height = 2;
 	public HumanHead head = new HumanHead();
-	public HumanHand LHand = new HumanHand();
-	public HumanHand RHand = new HumanHand();
+	public HumanHand LHand = new HumanHand(true);
+	public HumanHand RHand = new HumanHand(false);
+
 	public HumanLeg LLeg = new HumanLeg();
 	public HumanLeg RLeg = new HumanLeg();
 	public HumanBody body = new HumanBody();
@@ -45,6 +46,9 @@ public class Human extends AABB{
 	public boolean stable = true;
 	public Human(	BlockRepository blockRepository){
 		this.blockRepository=blockRepository;
+
+        RHand.human= this;
+        LHand.human= this;
 		//sword=new Sword(0,0,0);
 	}//Sword sword;
 	public void setStable(boolean flag) {
@@ -112,9 +116,7 @@ public class Human extends AABB{
 		RHand.setHead(0 + 0.75f, 0 + 2.75f, 0, dirx, diry, dirz, upx,
 				upy, upz);
 		body.setHead(0, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy, upz);
-        if(item!=null){
-            item.render();
-        }
+
 	}
 
 	public void adjust(float posx, float posy, float posz) {
@@ -188,12 +190,15 @@ public class Human extends AABB{
 
 		RLeg.render();
 	
-		LHand.render();
 
-		RHand.render();
 		
 		body.render();
 		head.render();
+
+
+        RHand.render();
+
+        LHand.render();
         GL11.glScalef(2,2,2);
 		GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-Position.x,-Position.y,-Position.z);

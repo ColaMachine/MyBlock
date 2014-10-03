@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.ui.tool;
 
 import javax.vecmath.Vector3f;
 
+import cola.machine.game.myblocks.model.human.Human;
 import glapp.GLApp;
 
 import org.lwjgl.opengl.GL11;
@@ -244,7 +245,8 @@ public class ToolBar extends RegionArea {
 		this.selectedIndex = key-1;
 		if ( key <= slots.length && slots[selectedIndex].item != null) {
 			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[selectedIndex].item.name;
-		}
+            CoreRegistry.get(Human.class).item=slots[selectedIndex].item;
+        }
 		select_div.left=(div.maxX-div.minX )*selectedIndex/9;
 		select_div.refresh();
 		//Document.getElementById("toolbar_0_"+selectedIndex).background_image="selectBox";

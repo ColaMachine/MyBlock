@@ -6,12 +6,17 @@ import cola.machine.game.myblocks.item.weapons.Sword;
 import glmodel.GL_Vector;
 
 public class HumanHand {
+    public Human human;
 	private int widht;
 	private int height;
 	private int thick;
 	public float angle;
 	public Sword sword =new Sword(0,0,0);
 	public GL_Vector Position ;
+    public boolean isMainHand=false;
+    public HumanHand(boolean flag){
+        isMainHand=flag;
+    }
 	public void setHead(float posx, float posy, float posz,
 			float dirx, float diry, float dirz,
 			float upx, float upy, float upz)
@@ -102,11 +107,14 @@ public class HumanHand {
       //转椅到男人手心这个位置
       		// double dy =Math.cos(LHand.angle/Math.PI);
       		 //double dz= Math.sin(LHand.angle/Math.PI);
-      		 GL11.glTranslated(0,-1,0);
-      		 
-      		 
-      		 sword.render();
-      		 GL11.glTranslated(0,1,0);
+        if(this.isMainHand && human.item!=null){
+            GL11.glTranslated(0,-1,1);
+
+            human.item.render();
+            //sword.render();
+            GL11.glTranslated(0,1,-1);
+        }
+
       		 
       		 
         GL11.glRotatef(-angle,1, 0, 0);
