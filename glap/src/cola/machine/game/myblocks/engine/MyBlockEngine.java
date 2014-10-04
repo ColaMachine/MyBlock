@@ -307,6 +307,14 @@ public class MyBlockEngine extends GLApp {
 		drawLine();
 		//sword.y=human.Position.y+4;
 		//sword.render();
+
+        print( 30, viewportH- 45, "Use arrow keys to navigate:");
+        print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
+        print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
+        print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
+        print( 30, viewportH-140, "SPACE key switches cameras", 1);
+
+
 		CoreRegistry.get(NuiManager.class).render();
 		if(Switcher.PRINT_SWITCH)
 			printText();

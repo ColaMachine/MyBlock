@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Table;
 import cola.machine.game.myblocks.model.ui.html.Td;
 import cola.machine.game.myblocks.model.ui.html.Tr;
+import cola.machine.game.myblocks.switcher.Switcher;
 import glapp.GLApp;
 
 import org.lwjgl.opengl.GL11;
@@ -41,6 +42,7 @@ public class Bag extends RegionArea  {
     public float slotsHeight=130;
     public float slotWidth;
     public float slotHeight;
+    Div personDiv;
    // public Block block;
     public int rowNum=3;
     public int colNum=9;
@@ -63,6 +65,8 @@ Div div;
         div.margin="0 auto";
         div.width=400;
         div.height=300;
+        div.left=100;
+        div.bottom=100;
         div.border_width=1;
         div.background_image="bag";
         TextureInfo batTexture= TextureManager.getTextureInfo("bag");
@@ -178,7 +182,7 @@ Div div;
         }
 //person view
         {
-            Div personDiv=new Div();
+             personDiv=new Div();
             personDiv.left=50;
             personDiv.bottom=176;
             personDiv.width=108;
@@ -236,7 +240,7 @@ Div div;
 
         this.withWH(100,100,500,400);
         this.textureInfo= TextureManager.getTextureInfo("bag");
-        this.humanTextureHandle= TextureManager.getImage("human").textureHandle;
+        this.humanTextureHandle= TextureManager.getTextureInfo("human").textureHandle;
         this.earthHandle= TextureManager.getImage("background").textureHandle;
         this.human= CoreRegistry.get(MyBlockEngine.class).human;
         //this.block= new BaseBlock(0,0,0);
@@ -287,7 +291,7 @@ Div div;
     public void render() {
 if(!show)return;
 
-/*
+        div.render();
        // GLApp.pushAttribOrtho();
         // switch to 2D projection
        // GLApp. setOrthoOn();
@@ -301,7 +305,7 @@ if(!show)return;
         // activate the image texture
 
         // draw a textured quad
-
+/*
        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
         GL11.glBegin(GL11.GL_QUADS);
 
@@ -314,7 +318,7 @@ if(!show)return;
         GL11.glVertex3f(maxX, maxY, (float)-10);
         GL11.glTexCoord2f(textureInfo.minX, textureInfo.maxY);
         GL11.glVertex3f(minX, maxY, (float)-10);
-        GL11.glEnd();
+        GL11.glEnd();*/
 
 
 
@@ -326,19 +330,17 @@ if(!show)return;
         GL11.glPushMatrix();
         {
 
-            GL11.glTranslated( 240, 315, -21); // rotate around Y axis
+            GL11.glTranslated( personDiv.getLeft()+personDiv.width/2, personDiv.getBottom(), -1); // rotate around Y axis
             //GL11.glTranslated( -human.Position.x,  -human.Position.y, -human.Position.z -21); // rotate around Y axis
             //GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
              GL11.glScalef(40f, 40f, 40f); // scale up
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
             human.renderInMirror();
 
         }
         GL11.glPopMatrix();
         
-        GL11.glPushMatrix();
+        /*   GL11.glPushMatrix();
         {
         	
             GL11.glTranslated( 240, 315, -21); // rotate around Y axis
@@ -354,12 +356,15 @@ if(!show)return;
            // block.renderCube();
         }
         GL11.glPopMatrix();
+        */
+
         //renderBlockTest();
 
         //renderSlot();
         //GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK,GL11.GL_LINE);
 
 
+/*
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
@@ -426,12 +431,13 @@ if(!show)return;
         GL11.glEnd();
 
 
+*/
 
       //  GLApp.setOrthoOff();
         // return to previous settings
        // GLApp. popAttrib();
-*/
-        div.render();
+
+
        
     }
     public void renderBlockTest(){/*
@@ -515,6 +521,15 @@ if(!show)return;
     }
     public void changeShow(){
     	this.show=!this.show;
+
+        if(show) {
+            div.display = "";
+            Switcher.MOUSE_AUTO_CENTER=false;
+        }else {
+            div.display = "none";
+            Switcher.MOUSE_AUTO_CENTER=true;
+        }
+
     }
    
 }

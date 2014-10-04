@@ -248,9 +248,9 @@ public class GLApp {
         // Handle key hits
         while ( Keyboard.next() )  {
         	// check for exit key
-            if (Keyboard.getEventKey() == finishedKey) {
+           /* if (Keyboard.getEventKey() == finishedKey) {
                 finished = true;
-            }
+            }*/
             // pass key event to handler
             if (Keyboard.getEventKeyState()) {    // key was just pressed, trigger keyDown()
                 keyDown(Keyboard.getEventKey());

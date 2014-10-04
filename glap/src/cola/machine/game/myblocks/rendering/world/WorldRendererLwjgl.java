@@ -70,6 +70,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		this.localPlayerSystem = localPlayerSystem;
 		skysphere = new Skysphere(this);
         CoreRegistry.put(CrashCheck.class,new CrashCheck(player,chunksInProximity));
+        CoreRegistry.put(WorldRendererLwjgl.class,this);
 		this.player = player;
 		this.setup();
 	}
@@ -351,4 +352,12 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		}
 
 	}
+    public void save(){
+        for(int i=0;i<chunksInProximity.size();i++){
+            ChunkImpl chunk =chunksInProximity.get(i);
+            if(chunk!=null){
+                chunk.save();
+            }
+        }
+    }
 }

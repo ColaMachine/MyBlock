@@ -7,12 +7,14 @@ import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.switcher.Switcher;
 import glapp.GLApp;
 import org.lwjgl.opengl.GL11;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +28,10 @@ public class HtmlObject extends RegionArea{
     public HtmlObject parentNode;
     public List<HtmlObject> childNodes =new ArrayList<HtmlObject>();
     public String id;
+    public String innerText;
     public String name;
     public float left;
+    public Vector4f background_color;
     public float bottom;
     public float width;
     public float height;
@@ -139,6 +143,7 @@ public class HtmlObject extends RegionArea{
         }
     }
     public void render(){
+        if("none".equals(display))return;
         if(this.background_image!=null){
         	/*if(this.background_image.equals("toolbar")){
         		System.out.println("toolbar render");
@@ -164,6 +169,31 @@ public class HtmlObject extends RegionArea{
             GL11.glVertex3f(minX, maxY, (float)-10);
             GL11.glEnd();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
+        }else if(this.background_color!=null){
+            // turn off light
+            //set color
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glColor4f(this.background_color.x,background_color.y,background_color.z,background_color.w);
+            //GL11.glColor4f(1f,0f,0f,0.8f);
+            //GL11.glDisable(GL11.GL_LIGHT0);
+            GL11.glEnable(GL11.GL_BLEND); // 打开混合
+            GL11.glDisable(GL11.GL_DEPTH_TEST); // 关闭深度测试
+            //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // 基于源象素alpha通道值的半透明混合函数
+
+            GL11.glBegin(GL11.GL_QUADS);
+
+            //GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
+            GL11.glVertex3f(minX, minY, (float) -10);
+            GL11.glVertex3f(maxX, minY, (float) -10);
+            GL11.glVertex3f(maxX, maxY, (float) -10);
+            GL11.glVertex3f(minX, maxY, (float) -10);
+            GL11.glEnd();
+            GL11.glEnable(GL11.GL_LIGHT0);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+        }
+        if(this.innerText!=null &&! innerText.equals("")){
+            GL11.glColor4f(1, 1, 1, 1);
+            GLApp.print((int)minX,(int)minY,this.innerText);
         }
       if(this.border_width>0){
             GL11.glLineWidth(this.border_width);
@@ -197,12 +227,16 @@ public class HtmlObject extends RegionArea{
         return null;
     }
     public void onClick(Event event){
+        if("none".equals(this.display))
+            return;
         if(event.cancelBubble)
             return;
     	if(this.contain(event.x, event.y)){
             if(this.mouseEventReceiver!=null) {//System.out.println("the clicked element id:"+this.id);
                 this.mouseEventReceiver.mouseClick(event.x, event.y, this);
                 event.cancelBubble=true;
+                Switcher.MOUSE_CANCELBUBLE=true;
+
                 return;
             }else
     		/*for(HtmlObject htmlObject:this.childNodes){

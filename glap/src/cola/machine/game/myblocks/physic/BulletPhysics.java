@@ -61,6 +61,7 @@ public class BulletPhysics  {
     				Block block=new BaseBlock("water",0);
     				chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z),block);
     				chunk.build();
+                    chunk.buildAlpha();
     				return null;
     			}
     			x-=0.1;
@@ -79,6 +80,7 @@ public class BulletPhysics  {
 //    					MathUtil.floor(from.z+x*to.z)%16, block);
     			//重新更新
     			_chunk.build();
+                _chunk.buildAlpha();
     			return new GL_Vector(MathUtil.floor(from.x+x*to.x),
     					MathUtil.floor(from.y+x*to.y),
     					MathUtil.floor(from.z+x*to.z));//����ײ��ǰ�ķ���λ��

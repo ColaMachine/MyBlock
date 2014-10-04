@@ -247,11 +247,13 @@ public class Human extends AABB{
         LLeg.render();
         RLeg.render();
 
-        LHand.render();
-
-        RHand.render();
         body.render();
         head.render();
+
+
+        RHand.render();
+
+        LHand.render();
     }
 
 	public void move(float x, float y, float z) {

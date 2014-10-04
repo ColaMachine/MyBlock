@@ -785,4 +785,20 @@ boolean flat =true;
             GLApp.callDisplayList(this.alphaDisplayId);
         }
     }
+    public void save(){
+        //保存数据
+        String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
+        try {
+            Path path = PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path.toFile()));
+            this.blockData.writeExternal(out);
+            out.close();
+        } catch (FileNotFoundException e) {
+            // VIP Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // VIP Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

@@ -5,6 +5,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 
+import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import com.sun.org.apache.bcel.internal.generic.SWITCH;
@@ -177,7 +178,15 @@ public class MouseControlCenter {
 			// System.out.println("ͬʱ������w��");
 			human.jump();
 			// System.out.println("jump");
-		}
+		}else
+        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+            {
+                double timenow=GLApp.getTimeInSeconds();
+
+                if((timenow-preKeyTime)<1){ return; } preKeyTime=timenow;
+                CoreRegistry.get(PauseMenu.class).show();
+            }
+        }
 	}
 
 	/**
@@ -193,6 +202,17 @@ public class MouseControlCenter {
 	}
 
 	public void mouseLClick(int x, int y) {
+        Switcher.MOUSE_CANCELBUBLE=false;
+
+
+            CoreRegistry.get(Bag.class).click(x, y);
+
+        if(Switcher.MOUSE_CANCELBUBLE)
+            return;
+        CoreRegistry.get(PauseMenu.class).click(x, y);
+        if(Switcher.MOUSE_CANCELBUBLE)
+            return;
+
 		System.out.println("x:" + x + "y:" + y);
 		/* GL_Vector from =camera.Position; */
 		System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
@@ -229,7 +249,8 @@ public class MouseControlCenter {
 			 */
 
 		}
-		CoreRegistry.get(Bag.class).click(x, y);
+		//CoreRegistry.get(Bag.class).click(x, y);
+       // CoreRegistry.get(PauseMenu.class).click(x, y);
 	}
 
 	public void mouseRClick(int x, int y) {
@@ -330,7 +351,7 @@ public class MouseControlCenter {
 			// System.out.println("now mouse position x:"+x+" y :"+y);
 
 			
-			if(CoreRegistry.get(Bag.class).show==false){
+			if(Switcher.MOUSE_AUTO_CENTER){
 				human.RotateV((float)(-(mousepoint.x - centerX)
 						 *4*GLApp.getSecondsPerFrame()));
 						// System.out.printf("y distance: %d \r\n",(y-prevMouseY));
