@@ -11,7 +11,7 @@ public class NuiManager {
     Bag bag;
     PauseMenu PauseMenu;
     public  NuiManager(){
-       
+
         cross=new Cross();
 
         bag=new Bag();
@@ -20,6 +20,7 @@ public class NuiManager {
     }
 
     public void render(){
+        GLApp.setFog(false);
     	   GLApp.pushAttribOrtho();
            // switch to 2D projection
            GLApp. setOrthoOn();
@@ -28,9 +29,11 @@ public class NuiManager {
         bag.render();
 
         PauseMenu.render();
-        
+
           GLApp.setOrthoOff();
         // return to previous settings
        GLApp. popAttrib();
+
+        GLApp.setFog(true);
     }
 }

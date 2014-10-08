@@ -32,6 +32,11 @@ public class Human extends AABB{
 	public float camSpeedY = 10; // units per second
 
 
+    public byte armor_head=0;
+    public byte armor_leg=0;
+    public byte armor_foot=0;
+    public byte armor_body=0;
+    public byte armor_hand=0;
 
 	int height = 2;
 	public HumanHead head = new HumanHead();

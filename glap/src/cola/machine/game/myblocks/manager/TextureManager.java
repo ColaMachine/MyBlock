@@ -67,8 +67,8 @@ public class TextureManager {
         this.put("terrain", "assets/minecraft/textures/terrain.png");
         textureMap.put("water", new TextureInfo("terrain", 14, 2, 1, 1, 16, 16));
 
-       
-
+       this.put("gold_armor","assets/minecraft/textures/models/armor/gold_layer_2.png");
+        textureMap.put("gold_armor", new TextureInfo("gold_armor"));
 
         textureMap.put("grass_top", new TextureInfo("terrain", 8, 5, 0.8f, 0.8f, 16, 16));
         textureMap.put("mantle", new TextureInfo("terrain", 1, 14, 1, 1, 16, 16));
@@ -86,6 +86,25 @@ public class TextureManager {
         textureMap.put("sand", new TextureInfo("terrain", 2, 14, 1, 1, 16, 16));
         textureMap.put("grass_side", new TextureInfo("terrain", 3, 15, 1, 1, 16, 16));
         textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
+
+        textureMap.put("borken_0", new TextureInfo("terrain", 0, 0, 1, 1, 16, 16));
+        textureMap.put("borken_1", new TextureInfo("terrain", 1, 0, 1, 1, 16, 16));
+        textureMap.put("borken_2", new TextureInfo("terrain", 2, 0, 1, 1, 16, 16));
+        textureMap.put("borken_3", new TextureInfo("terrain", 3, 0, 1, 1, 16, 16));
+        textureMap.put("borken_4", new TextureInfo("terrain", 4, 0, 1, 1, 16, 16));
+        textureMap.put("borken_5", new TextureInfo("terrain", 5, 0, 1, 1, 16, 16));
+        textureMap.put("borken_6", new TextureInfo("terrain", 6, 0, 1, 1, 16, 16));
+        textureMap.put("borken_7", new TextureInfo("terrain", 7, 0, 1, 1, 16, 16));
+        textureMap.put("borken_8", new TextureInfo("terrain", 8, 0, 1, 1, 16, 16));
+        textureMap.put("borken_9", new TextureInfo("terrain", 9, 0, 1, 1, 16, 16));
+        textureMap.put("borken_10", new TextureInfo("terrain", 10, 0, 1, 1, 16, 16));
+
+//        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
+//        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
+//        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
+//        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
+//        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
+
     }
 
     public void put(String name, String textureImagePath) {

@@ -8,6 +8,7 @@ import glapp.GLImage;
 import glmodel.GLModel;
 import glmodel.GL_Vector;
 
+import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
@@ -43,6 +44,7 @@ import cola.machine.game.myblocks.world.generator.WorldGenerator;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.HeightMapWorldGenerator;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
+import util.MathUtil;
 
 /**
  * Run a bare-bones GLApp. Draws one white triangle centered on screen.
@@ -55,7 +57,6 @@ import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
  */
 public class MyBlockEngine extends GLApp {
 	// Handle for texture
-
 	int sphereTextureHandle = 0;
 	int humanTextureHandle = 0;
 	public String currentObject = "water";
@@ -123,7 +124,8 @@ public class MyBlockEngine extends GLApp {
 	 * Initialize the scene. Called by GLApp.run(). For now the default settings
 	 * will be fine, so no code here.
 	 */
-	public void setup() {
+    int handleId;
+    public void setup() {
 		
 		  boat = new GLModel("glap/models/boat/botrbsm1.obj");
 		  boat.mesh.regenerateNormals();
@@ -148,6 +150,8 @@ public class MyBlockEngine extends GLApp {
 		 */
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
+        //setFog(true);
+        setFog(new float[]{1f,1f,1f,0.2f},0.008f);
         setLight( GL11.GL_LIGHT1,
         		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
         		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
@@ -203,7 +207,161 @@ public class MyBlockEngine extends GLApp {
 
 		mouseControlCenter = new MouseControlCenter(human, camera1, this);
 		mouseControlCenter.bulletPhysics = bulletPhysics;
-		
+
+
+         handleId = beginDisplayList();
+        GL11.glPointSize(5);
+        GL11.glBegin(GL11.GL_TRIANGLES);
+        double x;
+        double y;
+        int acc=100;
+        double yrange=3;
+        double xrange=3;
+        //正面数组
+        //正面数组
+        //侧面数组
+        double[] arr = new double[4*((int)(xrange*acc))*((int)(yrange*acc))+100];
+        double[] arr2 = new double[4*((int)(xrange*acc))*((int)(yrange*acc))+100];
+        for(x=-xrange;x<=xrange;x+=1.0/acc){
+            for(y=-yrange;y<=yrange;y+=1.0/acc){
+                double[] result= MathUtil.result(x,y);
+                if(result!=null ){
+                    int index =(int)(((x+xrange)*2*yrange*acc+y+yrange)*acc);
+                    arr[index]=result[0];
+                    arr2[index]=result[1];
+                    //arr[index]=result[0];
+//System.out.println("heart:" + result[0]);
+                   //GL11. glVertex3f((float)x,(float)result[0],(float)y);
+
+                 //  GL11. glVertex3f((float)x,(float)result[1],(float)y);
+
+
+                }
+            }
+        }
+
+       /* for(x=-30;x<=30;x++){
+            for(y=000;y<=300;y++){
+                double[] result= MathUtil.result((double)x/10,(double)y/100);
+                if(result!=null ){
+                    int index =(x+30)*70+y/10+30;
+                    arr[index]=result[0];
+                    arr2[index]=result[1];
+                    //arr[index]=result[0];
+//System.out.println("heart:" + result[0]);
+                    GL11. glVertex3f((float)x/10,(float)result[0],(float)y/100);
+
+                    GL11. glVertex3f((float)x/10,(float)result[1],(float)y/100);
+
+
+                }
+            }
+        }*/
+
+       /* for(x=-30;x<=30;x++){
+            for(y=-30;y<=30;y++){
+                double[] result= MathUtil.y12((double)x/10,(double)y/10);
+                if(result!=null && result[0]!=0){
+                    //int index =(x+30)*70+y+30;
+                  //  arr[index]=result[0];
+                  //  arr2[index]=result[1];
+                    //arr[index]=result[0];
+System.out.println("heart:" + result[1]);
+                     GL11. glVertex3f((float)result[1],(float)x,(float)y);
+
+                    //  GL11. glVertex3f((float)x,(float)y,(float)result[1]);
+
+
+                }
+            }
+        }*/
+
+
+
+        for( x=-xrange;x<xrange-1.0/acc;x+=1.0/acc){
+            for( y=-yrange;y<yrange-1.0/acc;y+=1.0/acc){
+                int index =(int)(((x+xrange)*2*yrange*acc+(y+yrange))*acc);
+                //System.out.println(index);
+                double result=0;
+                try {
+                     result = arr[index];
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(result!=0 ){
+                    if(x<xrange-2.0/acc&& y<yrange-2.0/acc){
+                        try {
+                     double   right_down = arr[(int)(((x+xrange +1.0/acc)*2*yrange*acc+(y+yrange))*acc)];
+
+                          double right_up = arr[(int) (((x + xrange + 1.0 / acc) * 2 * yrange * acc + (y + yrange + 1.0 / acc)) * acc)];
+
+                        double up =arr[(int)(((x+xrange )*2*yrange*acc+(y+yrange+1.0/acc))*acc)];
+
+                       /* double left =arr[(x+30-1)*60+(y+30)];
+                        if(left==0){
+                            System.out.println();
+                        }
+
+
+                        if(right_down==0){
+                            //去downstart 找
+                            double down= arr2[(x+30)*70+(y+30)+70];
+                            //if the edge可以判断出来的 如果 东南西北四个方向没有延展 就说明是边缘了
+                           if(down==0|| up==0|| left==0 || right_down==0){
+
+                           }
+
+                        }*/
+                        if(right_down!=0 && right_up!=0 && up!=0) {//如果没有的话就要去对立面找一下
+
+
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,(float)right_down);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)(y+1.0/acc),(float)right_up);
+
+
+
+                            GL11. glVertex3f((float)x,(float)y,(float)result);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,(float)right_down);
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),(float)up);
+
+                        }
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+
+//System.out.println("heart:" + result[0]);
+                    // GL11. glVertex3f((float)x,(float)y,(float)result[0]);
+                    //  GL11. glVertex3f((float)x,(float)y,(float)result[1]);
+                }
+                 result=arr2[index] ;
+                if(result!=0 ){
+                    if(x<xrange-2.0/acc&& y<yrange-2.0/acc){
+                        double   right_down = arr2[(int)(((x+xrange +1.0/acc)*2*yrange*acc+(y+yrange))*acc)];
+                        double   right_up = arr2[(int)(((x+xrange +1.0/acc)*2*yrange*acc+(y+yrange+1.0/acc))*acc)];
+                        double up =arr2[(int)(((x+xrange )*2*yrange*acc+(y+yrange+1.0/acc))*acc)];
+                        if(right_down!=0 && right_up!=0 && up!=0) {
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)(y+1.0/acc),(float)right_up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,(float)right_down);
+
+                            GL11. glVertex3f((float)x,(float)y,(float)result);
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,(float)right_down);
+                        }
+                    }
+//System.out.println("heart:" + result[0]);
+                    // GL11. glVertex3f((float)x,(float)y,(float)result[0]);
+
+                    //  GL11. glVertex3f((float)x,(float)y,(float)result[1]);
+                }
+            }
+        }
+        //blockRepository.reBuild("soil");
+       GL11. glEnd();
+        GLApp.endDisplayList();
 		/*for (int i = 0; i < 50; i++)
 			for (int j = 0; j < 50; j++) {
 					Block soil = new BaseBlock("soil",2 * i + 1, 2 * 0 + 1, 2 * j + 1);
@@ -291,16 +449,26 @@ public class MyBlockEngine extends GLApp {
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
-		
+
+
 		GL_Vector camera_pos = GL_Vector.add(human.Position,
-				GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_2_PLAYER));
+				GL_Vector.multiply(human.ViewDir,Switcher.CAMERA_MODEL==2? Switcher.CAMERA_2_PLAYER:(-1*Switcher.CAMERA_2_PLAYER)));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
 		// camera1.MoveTo(human.Position.x, human.Position.y + 4,
 		// human.Position.z);
-		camera1.viewDir(human.ViewDir);
+
+
+
+        if(Switcher.CAMERA_MODEL==2){
+           // camera1.ViewDir.reverse();
+             camera1.ViewDir=new GL_Vector(human.ViewDir.x*-1,human.ViewDir.y*-1,human.ViewDir.z*-1);
+        }else{
+
+            camera1.viewDir(human.ViewDir);
+        }
 		cam.render();
 		drawAllBlock();
-		//drawColorBlocks();
+		drawColorBlocks();
 		//skysphere.render();
 		drawObjects();
 		//drawShip();
@@ -322,7 +490,7 @@ public class MyBlockEngine extends GLApp {
 	}
 
 	public void drawAllBlock() {
-		worldRenderer.render();
+	    worldRenderer.render();
 		/*java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
 		while (it.hasNext()) {
 			
@@ -333,21 +501,57 @@ public class MyBlockEngine extends GLApp {
 			int displayandleId = (Integer) entry.getValue();
 			GL11.glPushMatrix();
 			{	
+				GL11.glTranslated(0,30,0);
 				
-				
-				int texturehandleid= TextureManager.getIcon((String) entry.getKey()).textureHandle;
+				int texturehandleid=1;// TextureManager.getImage((String) entry.getKey()).textureHandle;
 				GL11.glBindTexture(
 						GL11.GL_TEXTURE_2D,
 						texturehandleid);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-						GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+				//GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+				//		GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 				callDisplayList(displayandleId);
+                GL11.glTranslated(0,-30,0);
 			}GL11.glPopMatrix();
 			}
 			
-		}
-*/
+		}*/
+
 	}
+
+
+
+	public void drawColorBlocks(){
+//先缩小
+
+		GL11.glPushMatrix();
+
+       // GL11.glTranslatef(1,30,1);
+        GL11.glTranslatef(
+            human.Position.x-1,human.Position.y+4,human.Position.z-1
+        );
+		//GL11.glScalef(0.1f, 0.1f, 0.1f);
+		//GL11.glRotated(90, 1, 0, 0);
+
+
+
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_LIGHTING);
+
+        GL11.glPointSize(4);
+		GL11.glColor4f(1f, 0f,0f,1f);
+       //GL11.glCullFace(GL11.GL_FRONT);
+        callDisplayList(handleId);
+       GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+//        GL11.glTranslatef(1,-30,1);
+
+        GL11.glTranslatef(
+                -human.Position.x+1,-human.Position.y-4,-human.Position.z+1
+        );
+		GL11.glPopMatrix();
+	}
+
+
 	/*
 	public void drawColorBlocks(){
 //先缩小
@@ -421,10 +625,22 @@ public class MyBlockEngine extends GLApp {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
           GL11.glPushMatrix();
         {
-            if(Switcher.CAMERA_2_PLAYER<-2){
+            if(Switcher.CAMERA_2_PLAYER<-2|| Switcher.CAMERA_2_PLAYER>2){
                 human.render();
             }else
             human.renderPart();
+
+        }
+        GL11.glPopMatrix();
+
+         ti = TextureManager.getTextureInfo("gold_armor");
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+        GL11.glPushMatrix();
+        {
+            if(Switcher.CAMERA_2_PLAYER<-2){
+                human.render();
+            }else
+                human.renderPart();
 
         }
         GL11.glPopMatrix();
@@ -551,4 +767,6 @@ public class MyBlockEngine extends GLApp {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			
 		}
+
+
 }
