@@ -1,11 +1,11 @@
-package cola.machine.game.myblocks.engine;
+/*
+package gldemo;
 
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.*;
 import glmodel.GLModel;
 import glmodel.GL_Vector;
 
-import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
@@ -17,8 +17,6 @@ import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.item.weapons.Sword;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -35,14 +33,12 @@ import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
-import cola.machine.game.myblocks.world.generator.WorldGenerator;
-import cola.machine.game.myblocks.world.generator.ChunkGenerators.HeightMapWorldGenerator;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import util.MathUtil;
 
+*/
 /**
  * Run a bare-bones GLApp. Draws one white triangle centered on screen.
  * <P>
@@ -51,8 +47,9 @@ import util.MathUtil;
  * that calls draw().
  * <P>
  * napier at potatoland dot org
- */
-public class MyBlockEngine extends GLApp {
+ *//*
+
+public class demo_shadow extends GLApp {
 	// Handle for texture
 	int sphereTextureHandle = 0;int groundTextureHandle=0;
 	int humanTextureHandle = 0;
@@ -100,16 +97,18 @@ public class MyBlockEngine extends GLApp {
 	public Human human;
 	private Human human2 ;
 	private Skysphere skysphere =new Skysphere();
-	/**
+	*/
+/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
 	 * input, calls render() in a loop.
-	 */
+	 *//*
+
 	
 	WorldRenderer worldRenderer ;
 	public static void main(String args[]) {
 
 		// create the app
-		MyBlockEngine demo = new MyBlockEngine();
+		demo_shadow demo = new demo_shadow();
 		demo.VSyncEnabled = true;
 		demo.fullScreen = false;
 		demo.displayWidth = 800;
@@ -118,10 +117,12 @@ public class MyBlockEngine extends GLApp {
 		demo.run(); // will call init(), render(), mouse functions
 	}
 
-	/**
+	*/
+/**
 	 * Initialize the scene. Called by GLApp.run(). For now the default settings
 	 * will be fine, so no code here.
-	 */
+	 *//*
+
     int handleId; GLShadowOnPlane airplaneShadow;
     public void setup() {
         airplaneShadow = new GLShadowOnPlane(lightPosition, new float[] {0f,1f,0f,3f}, null, this, method(this,"drawObjects"));
@@ -138,26 +139,30 @@ public class MyBlockEngine extends GLApp {
 		human = new Human(blockRepository);
 		//sword=new Sword(0,0,0);
 		human2 = new Human(blockRepository);
-		CoreRegistry.put(MyBlockEngine.class, this);
+		CoreRegistry.put(demo_shadow.class, this);
 		CoreRegistry.put(Human.class, human);
 		this.initManagers();
 		setPerspective();
-		/*
+		*/
+/*
 		 * setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new
 		 * float[] { 1f, 1f, 1f, 1f }, new float[] { 1f,1f, 1f, 1f },
 		 * lightPosition);
-		 */
+		 *//*
+
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
         //setFog(true);
         setFog(new float[]{1f,1f,1f,0.2f},0.008f);
-       /* setLight( GL11.GL_LIGHT1,
+       */
+/* setLight( GL11.GL_LIGHT1,
         		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
         		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
         		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
         		new float[]{-5,35,1,1} );
 
-*/
+*//*
+
         		                      // position
         // Create a light (diffuse light, ambient light, position)
         setLight( GL11.GL_LIGHT1,
@@ -180,12 +185,14 @@ public class MyBlockEngine extends GLApp {
         // Enable alpha transparency (so text will have transparent background)
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      /*  setLight( GL11.GL_LIGHT2,
+      */
+/*  setLight( GL11.GL_LIGHT2,
         		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
         		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
         		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
         		new float[]{-25,32,10,1} );                         // position
-*/        
+*//*
+
 //		 setLight(GL11.GL_LIGHT2, new float[] { 100f, 100f, 100f, 1.0f}, // diffuse // color
 //		  new float[] { 1f, 1f, 1f, 1f }, // ambient
 //		  new  float[] { 1f, 1f, 1f, 1f }, // specular
@@ -219,7 +226,7 @@ public class MyBlockEngine extends GLApp {
 		//textureImg = loadImage("images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(1, 34, 5, 0, 0, -1, 0, 1, 0);
+		human.setHuman(1, 1, 5, 0, 0, -1, 0, 1, 0);
 		//human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
 		human2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
@@ -372,14 +379,16 @@ public class MyBlockEngine extends GLApp {
                         if(right_up==-1)right_up=0;
                         if(up==-1)up=0;
 
-                        if(right_down!=0 && right_up!=0 && up!=0) {/*
+                        if(right_down!=0 && right_up!=0 && up!=0) {*/
+/*
                             GL11. glVertex3f((float)x,(float)(y+1.0/acc),-(float)up);
                             GL11. glVertex3f((float)(x+1.0/acc),(float)(y+1.0/acc),-(float)right_up);
                             GL11. glVertex3f((float)(x+1.0/acc),(float)y,-(float)right_down);
 
                             GL11. glVertex3f((float)x,(float)y,(float)result);
                             GL11. glVertex3f((float)x,(float)(y+1.0/acc),-(float)up);
-                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,-(float)right_down);*/
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,-(float)right_down);*//*
+
                         }
                     }
                     //System.out.println("heart:" + result[0]);
@@ -424,9 +433,11 @@ public class MyBlockEngine extends GLApp {
 		worldRenderer=new WorldRendererLwjgl(WorldProvider,chunkProvider, new LocalPlayerSystem(),camera1,human);
 	}
 
-	/**
+	*/
+/**
 	 * set the field of view and view depth.
-	 */
+	 *//*
+
 	public static void setPerspective() {
 		// select projection matrix (controls perspective)
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -441,8 +452,8 @@ public class MyBlockEngine extends GLApp {
 
 	public void draw() {
 
-        if(Math.random()>0.5) {
-            dcc.check(human);}
+        //if(Math.random()>0.5) {
+            //dcc.check(human);
 
             mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
             // cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
@@ -471,8 +482,8 @@ public class MyBlockEngine extends GLApp {
             if(Switcher.PRINT_SWITCH)
                 printText();
         //}
-		drawAllBlock();
-		drawColorBlocks();
+		//drawAllBlock();
+		//drawColorBlocks();
         try {
             Thread.sleep(100);
         }catch (Exception e){
@@ -482,14 +493,14 @@ public class MyBlockEngine extends GLApp {
 		//skysphere.render();
 
         // draw the ground plane
-       /* GL11.glPushMatrix();
+        GL11.glPushMatrix();
         {
            // GL11.glTranslatef(4f, 33f, 1f); // down a bit
             GL11.glScalef(15f, .01f, 15f);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, groundTextureHandle);
             renderCube();
         }
-        GL11.glPopMatrix();*/
+        GL11.glPopMatrix();
 
         airplaneShadow.drawShadow();
 		drawObjects();
@@ -498,11 +509,13 @@ public class MyBlockEngine extends GLApp {
 		//sword.y=human.Position.y+4;
 		//sword.render();
 
-      /*  print( 30, viewportH- 45, "Use arrow keys to navigate:");
+      */
+/*  print( 30, viewportH- 45, "Use arrow keys to navigate:");
         print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
         print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
         print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
-        print( 30, viewportH-140, "SPACE key switches cameras", 1);*/
+        print( 30, viewportH-140, "SPACE key switches cameras", 1);*//*
+
 
 
         CoreRegistry.get(NuiManager.class).render();
@@ -511,7 +524,8 @@ public class MyBlockEngine extends GLApp {
 
 	public void drawAllBlock() {
 	    worldRenderer.render();
-		/*java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
+		*/
+/*java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
 		while (it.hasNext()) {
 			
 			java.util.Map.Entry entry = (java.util.Map.Entry) it.next();
@@ -534,7 +548,8 @@ public class MyBlockEngine extends GLApp {
 			}GL11.glPopMatrix();
 			}
 			
-		}*/
+		}*//*
+
 
 	}
 
@@ -572,7 +587,8 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 	}
 
 
-	/*
+	*/
+/*
 	public void drawColorBlocks(){
 //先缩小
 	
@@ -596,7 +612,8 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 		} GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
-	}*/
+	}*//*
+
 	
 	  GLModel boat;
 	public void drawShip() {
@@ -629,7 +646,8 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
             callDisplayList(earth);
         }
         GL11.glPopMatrix();
-        /*TextureInfo ti = TextureManager.getTextureInfo("background");
+        */
+/*TextureInfo ti = TextureManager.getTextureInfo("background");
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); //GL11.GL_NEAREST);
@@ -647,7 +665,8 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
         GL11.glTexCoord2f(1.0f, 0.0f); GL11.glVertex3f( _x, 0-_y,  _z);	// Bottom Right
         GL11.glTexCoord2f(1.0f, 1.0f); GL11.glVertex3f( _x,  _y,  _z);	// Top Right
         GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(0-_x,  _y,  _z);	// Top Left
-        GL11.glEnd();*/
+        GL11.glEnd();*//*
+
         TextureInfo ti = TextureManager.getTextureInfo("human");
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
           GL11.glPushMatrix();
@@ -659,6 +678,7 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 
         }
         GL11.glPopMatrix();
+*/
 /*
          ti = TextureManager.getTextureInfo("gold_armor");
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
@@ -670,24 +690,31 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
                 human.renderPart();
 
         }
-        GL11.glPopMatrix();*/
+        GL11.glPopMatrix();*//*
+
+*/
 /*GL11.glTranslated(1,-5,1);
         GL11.glRotated(30,1,0,0);
-        GL11.glScaled(1,1,1);*/
+        GL11.glScaled(1,1,1);*//*
 
-       /* GL11.glPushMatrix();
+
+       */
+/* GL11.glPushMatrix();
         {
 
             human2.render();
         }
-        GL11.glPopMatrix();*/
+        GL11.glPopMatrix();*//*
+
     }
 
 	public void keyDown(int keycode) {
-		/*
+		*/
+/*
 		 * if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
 		 * camera1)? camera2 : camera1); }
-		 */
+		 *//*
+
 		mouseControlCenter.keyDown(keycode);
 	}
 
@@ -695,23 +722,29 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 		mouseControlCenter.keyUp(keycode);
 	}
 
-	/**
+	*/
+/**
 	 * Add last mouse motion to the line, only if left mouse button is down.
-	 */
+	 *//*
+
 	public void mouseMove(int x, int y) {
 		mouseControlCenter.mouseMove(x, y);
 	}
 
-	/**
+	*/
+/**
 	 * Add last mouse motion to the line, only if left mouse button is down.
-	 */
+	 *//*
+
 	public void mouseUp(int x, int y) {
 		mouseControlCenter.mouseUp(x, y);
 	}
 
-	/**
+	*/
+/**
 	 * Add last mouse motion to the line, only if left mouse button is down.
-	 */
+	 *//*
+
 	public void mouseDown(int x, int y) {
         msg("DX=" + x + " DY=" + y);
 		if (this.mouseButtonDown(0)) {
@@ -733,7 +766,9 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 		// 暂时用默认的参数初始化manager 然后manager 放到corerepgistry里
 		//
 
-		/* read config.cfg */
+		*/
+/* read config.cfg *//*
+
 		initConfig();
 
 		initManagers();
@@ -797,3 +832,4 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 
 
 }
+*/

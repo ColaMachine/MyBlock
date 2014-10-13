@@ -25,7 +25,7 @@ public class Skysphere {
 		double _y= Math.sin(30*Math.PI/180)*50+32;
 		double  _x= Math.cos(30*Math.PI/180)*50;
 		
-		GLApp.setLightPosition(GL11.GL_LIGHT1, new float[]{(float)_x,(float)_y,0,1});
+		//GLApp.setLightPosition(GL11.GL_LIGHT1, new float[]{(float)_x,(float)_y,0,1});
 	}
 
 	public void render() {
