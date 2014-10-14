@@ -29,27 +29,27 @@ public class Skysphere {
 	}
 
 	public void render() {
-		glDepthMask(false);
-
-		/*
-		 * if (false) { glCullFace(GL_BACK); } else { glCullFace(GL_FRONT); }
-		 */
-
-		// Material shader = Assets.getMaterial("engine:prog.sky");
-		// shader.enable();
-
-		// Draw the skysphere
-
-        drawSkysphereTexture();
-
-		//drawSkysphere();
-		drawSun();
-		// drawSkyCube();
-		/*
-		 * if (false) { glCullFace(GL_FRONT); } else { glCullFace(GL_BACK); }
-		 */
-
-		glDepthMask(true);
+//		glDepthMask(false);
+//
+//		/*
+//		 * if (false) { glCullFace(GL_BACK); } else { glCullFace(GL_FRONT); }
+//		 */
+//
+//		// Material shader = Assets.getMaterial("engine:prog.sky");
+//		// shader.enable();
+//
+//		// Draw the skysphere
+//
+//        //drawSkysphereTexture();
+//
+//		drawSkysphere();
+//		drawSun();
+//		// drawSkyCube();
+//		/*
+//		 * if (false) { glCullFace(GL_FRONT); } else { glCullFace(GL_BACK); }
+//		 */
+//
+//		glDepthMask(true);
 	}
 
 	public void drawSkysphere() {

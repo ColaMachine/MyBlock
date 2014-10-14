@@ -272,6 +272,7 @@ Div div;
         this.putItem(4,new Item("sand",10));
         this.putItem(5,new Item("water",10)); 
         div.refresh();
+        this.human=CoreRegistry.get(Human.class);
     }
 
     public void putItem(int slotIndex , Item item){

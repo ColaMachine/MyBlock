@@ -69,7 +69,11 @@ public class TextureManager {
 
        this.put("gold_armor","assets/minecraft/textures/models/armor/gold_layer_2.png");
         textureMap.put("gold_armor", new TextureInfo("gold_armor"));
-
+      
+        this.put("particle","images/Particle.bmp");
+        textureMap.put("particle", new TextureInfo("particle"));
+      
+       
         textureMap.put("grass_top", new TextureInfo("terrain", 8, 5, 0.8f, 0.8f, 16, 16));
         textureMap.put("mantle", new TextureInfo("terrain", 1, 14, 1, 1, 16, 16));
         textureMap.put("glass", new TextureInfo("terrain", 1, 12, 1, 1, 16, 16));

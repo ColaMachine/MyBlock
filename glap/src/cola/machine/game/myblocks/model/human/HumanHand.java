@@ -11,7 +11,7 @@ public class HumanHand {
 	private int height;
 	private int thick;
 	public float angle;
-	public Sword sword =new Sword(0,0,0);
+	//public Sword sword =new Sword(0,0,0);
 	public GL_Vector Position ;
     public boolean isMainHand=false;
     public HumanHand(boolean flag){

@@ -1,7 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
 import com.google.common.base.Charsets;
-import javafx.scene.shape.Path;
 
 import java.nio.charset.Charset;
 

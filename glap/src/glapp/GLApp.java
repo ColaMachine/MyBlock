@@ -2933,7 +2933,7 @@ public class GLApp {
     {
     	// if font is not initiallized, try loading default font
     	if (fontListBase == -1 || fontTextureHandle == -1) {
-    		if (!buildFont("glap/images/font_tahoma.png", 12)) {
+    		if (!buildFont("images/font_tahoma.png", 12)) {
     			err("GLApp.print(): character set has not been created -- see buildFont()");
     			return;
     		}

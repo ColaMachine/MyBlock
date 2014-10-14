@@ -16,7 +16,6 @@ import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.item.weapons.Sword;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
-import cola.machine.game.myblocks.magicbean.fireworks.Firework;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
@@ -53,7 +52,7 @@ import util.MathUtil;
  * <P>
  * napier at potatoland dot org
  */
-public class MyBlockEngine extends GLApp {
+public class AnimationEngine extends MyBlockEngine {
 	// Handle for texture
 	int sphereTextureHandle = 0;int groundTextureHandle=0;
 	int humanTextureHandle = 0;
@@ -110,7 +109,7 @@ public class MyBlockEngine extends GLApp {
 	public static void main(String args[]) {
 
 		// create the app
-		MyBlockEngine demo = new MyBlockEngine();
+		AnimationEngine demo = new AnimationEngine();
 		demo.VSyncEnabled = true;
 		demo.fullScreen = false;
 		demo.displayWidth = 800;
@@ -124,10 +123,10 @@ public class MyBlockEngine extends GLApp {
 	 * will be fine, so no code here.
 	 */
     int handleId; GLShadowOnPlane airplaneShadow;
-    public void setup() {makeTexture("images/Particle.bmp", true, true);
+    public void setup() {
         airplaneShadow = new GLShadowOnPlane(lightPosition, new float[] {0f,1f,0f,3f}, null, this, method(this,"drawObjects"));
-		  boat = new GLModel("glap/models/boat/botrbsm1.obj");
-        groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg",true,true);
+		  boat = new GLModel("models/boat/botrbsm1.obj");
+        groundTextureHandle = makeTexture("images/grass_1_512.jpg",true,true);
 		  boat.mesh.regenerateNormals();
 		  boat.makeDisplayList();
      //  GL11. glEnable(GL11.GL_POINT_SMOOTH);
@@ -151,7 +150,7 @@ public class MyBlockEngine extends GLApp {
 		// Create a directional light (light green, to simulate reflection off
 		// grass)
         //setFog(true);
-       //setFog(new float[]{1f,1f,1f,0.2f},0.008f);
+        setFog(new float[]{1f,1f,1f,0.2f},0.008f);
        /* setLight( GL11.GL_LIGHT1,
         		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
         		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
@@ -231,7 +230,171 @@ public class MyBlockEngine extends GLApp {
 		mouseControlCenter.bulletPhysics = bulletPhysics;
 
 
-      
+         handleId = beginDisplayList();
+        GL11.glPointSize(5);
+
+        double x;
+        double y;
+        int acc=10;
+        double yrange=3;
+        double xrange=3;
+        //正面数组
+        //正面数组
+        //侧面数组
+        double[] arr = new double[2*((int)((2*xrange+1)*acc))*((int)(yrange*acc))];
+        //double[] arr2 = new double[4*((int)(xrange*acc))*((int)(yrange*acc))+100];
+      //  GL11.glBegin(GL11.GL_POINTS);
+        for(x=-xrange;x<=xrange;x+=1.0/acc){
+            for(y=-yrange;y<=yrange;y+=1.0/acc){
+                double[] result= MathUtil.shengjin(x,y);
+                int index =(int)(((x+xrange)*2*yrange*acc+y+yrange)*acc);
+                if(result!=null ){
+
+                    arr[index]=result[0];
+                    //arr2[index]=-result[0];
+                    //arr[index]=result[0];
+                    //System.out.println("heart:" + result[0]);
+                    //GL11. glVertex3f((float)x,(float)result[0],(float)y);
+                    //GL11. glVertex3f((float)x,-(float)result[0],(float)y);
+
+                   // GL11. glVertex3f((float)x,(float)y,(float)result[0]);
+                  //  GL11. glVertex3f((float)x,(float)y,-(float)result[0]);
+                    // GL11. glVertex3f((float)x,(float)result[1],(float)y);
+                    //  GL11. glVertex3f((float)x,(float)result[2],(float)y);
+                    //  GL11. glVertex3f((float)x,(float)result[1],(float)y);
+                }else{
+                    arr[index]=-1;
+                }
+            }
+        }
+        // Create texture for spere
+        sphereTextureHandle = makeTexture("images/earth.gif");
+       // GL11.glEnd();
+        GL11.glBegin(GL11.GL_TRIANGLES);
+        for( x=-xrange;x<xrange-1.0/acc;x+=1.0/acc){
+            for( y=-yrange;y<yrange-1.0/acc;y+=1.0/acc){
+                int index =(int)(((x+xrange)*2*yrange*acc+(y+yrange))*acc);
+                //System.out.println(index);
+                double result=0;
+                try {
+                    result = arr[index];
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+               // if(result!=-1 &&result<=0)
+                if(result >=0 && result <=1 ){
+                    if(result >=0 ){
+
+                    }else{
+                        System.out.println("123:"+Double.isNaN(result));
+                    }
+                    if(x<xrange-1.0/acc&& y<yrange){
+                        try {
+                        double right = arr[(int)(((x+xrange +1.0/acc)*2*yrange*acc+(y+yrange))*acc)];
+
+                        double right_up = arr[(int) (((x + xrange + 1.0 / acc) * 2 * yrange * acc + (y + yrange + 1.0 / acc)) * acc)];
+
+                        double up =arr[(int)(((x+xrange )*2*yrange*acc+(y+yrange+1.0/acc))*acc)];
+
+                            if(x+xrange>0){
+                                double left=arr[(int)(((x+xrange -1.0/acc)*2*yrange*acc+(y+yrange))*acc)];
+                                double left_up=arr[(int)(((x+xrange -1.0/acc)*2*yrange*acc+(y+yrange+1.0/acc))*acc)];
+
+                                //double right_down=arr[(int)(((x+xrange +1.0/acc)*2*yrange*acc+(y+yrange-1.0/acc))*acc)];
+                               // double down=arr[(int)(((x+xrange )*2*yrange*acc+(y+yrange-1.0/acc))*acc)];
+                                if((left==-1|| left_up ==-1)&&up!=-1){
+                                    //System.out.println(result);
+                                    GL11. glVertex3f((float)x,(float)(y),-(float)result);
+                                    GL11. glVertex3f((float)(x),(float)y,(float)result);
+                                    GL11. glVertex3f((float)(x),(float)(y+1.0/acc),(float)up);
+
+                                    GL11. glVertex3f((float)(x),(float)(y+1.0/acc),(float)up>=1?0:(float)up);
+                                    GL11. glVertex3f((float)(x),(float)(y+1.0/acc),-(float)up);
+                                    GL11. glVertex3f((float)x,(float)(y),-(float)result);
+                                }
+                                if((up==-1|| right_up==-1)&&right!=-1){
+                                    //System.out.println(result);
+                                    GL11. glVertex3f((float)x,(float)(y),-(float)result);
+                                    GL11. glVertex3f((float)(x),(float)y,(float)result);
+                                    GL11. glVertex3f((float)(x+1.0/acc),(float)(y),(float)right);
+
+                                    GL11. glVertex3f((float)(x+1.0/acc),(float)(y),(float)right);
+                                    GL11. glVertex3f((float)(x+1.0/acc),(float)(y),-(float)right);
+                                    GL11. glVertex3f((float)x,(float)(y),-(float)result);
+                                }
+
+                                if((right==-1||right_up==-1)&&up!=-1){
+                                    //System.out.println(result);
+                                    GL11. glVertex3f((float)x,(float)(y),(float)result);
+                                    GL11. glVertex3f((float)(x),(float)y,-(float)result);
+                                    GL11. glVertex3f((float)(x),(float)(y+1.0/acc),-(float)up);
+
+                                    GL11. glVertex3f((float)(x),(float)(y+1.0/acc),-(float)up);
+                                    GL11. glVertex3f((float)(x),(float)(y+1.0/acc),(float)up);
+                                    GL11. glVertex3f((float)x,(float)(y),(float)result);
+                                }
+                            }
+
+                        if(right==-1)right=0;
+                            if(right_up==-1)right_up=0;
+                            if(up==-1)up=0;
+                        if(right!=0 && right_up!=0 && up!=0) {//如果没有的话就要去对立面找一下
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,(float)right);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)(y+1.0/acc),(float)right_up);
+
+                            GL11. glVertex3f((float)x,(float)y,(float)result);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,(float)right);
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),(float)up);
+
+
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),-(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)(y+1.0/acc),-(float)right_up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,-(float)right);
+
+                            GL11. glVertex3f((float)x,(float)y,-(float)result);
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),-(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,-(float)right);
+                        }
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+               result=-result ;
+                if(result!=0 ){
+                    if(x<xrange-1.0/acc&& y<yrange){
+                        double   right_down = arr[(int)(((x+xrange +1.0/acc)*2*yrange*acc+(y+yrange))*acc)];
+                        double   right_up = arr[(int)(((x+xrange +1.0/acc)*2*yrange*acc+(y+yrange+1.0/acc))*acc)];
+                        double up =arr[(int)(((x+xrange )*2*yrange*acc+(y+yrange+1.0/acc))*acc)];
+
+                        if(right_down==-1)right_down=0;
+                        if(right_up==-1)right_up=0;
+                        if(up==-1)up=0;
+
+                        if(right_down!=0 && right_up!=0 && up!=0) {/*
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),-(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)(y+1.0/acc),-(float)right_up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,-(float)right_down);
+
+                            GL11. glVertex3f((float)x,(float)y,(float)result);
+                            GL11. glVertex3f((float)x,(float)(y+1.0/acc),-(float)up);
+                            GL11. glVertex3f((float)(x+1.0/acc),(float)y,-(float)right_down);*/
+                        }
+                    }
+                    //System.out.println("heart:" + result[0]);
+                    // GL11. glVertex3f((float)x,(float)y,(float)result[0]);
+                    //  GL11. glVertex3f((float)x,(float)y,(float)result[1]);
+                }
+
+
+            }
+        }
+
+
+        //blockRepository.reBuild("soil");
+       GL11. glEnd();
+        GLApp.endDisplayList();
 
 		
 		// make a shadow handler
@@ -254,7 +417,10 @@ public class MyBlockEngine extends GLApp {
 		 //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
 		 CoreRegistry.put(ChunkProvider.class, chunkProvider);
 		WorldProvider WorldProvider =new WorldProviderWrapper();
-      
+        earth = beginDisplayList(); {
+            renderSphere();
+        }
+        endDisplayList();
 		worldRenderer=new WorldRendererLwjgl(WorldProvider,chunkProvider, new LocalPlayerSystem(),camera1,human);
 	}
 
@@ -272,10 +438,9 @@ public class MyBlockEngine extends GLApp {
 				1024f); // max Z: how far from eye position does view extend
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
-	
-	Firework firework = new Firework();
+
 	public void draw() {
-		if (!Switcher.IS_GOD)
+
         if(Math.random()>0.5) {
             dcc.check(human);}
 
@@ -306,14 +471,14 @@ public class MyBlockEngine extends GLApp {
             if(Switcher.PRINT_SWITCH)
                 printText();
         //}
-		//drawAllBlock();
-		//drawColorBlocks();
+		drawAllBlock();
+		drawColorBlocks();
         try {
             Thread.sleep(100);
         }catch (Exception e){
             e.printStackTrace();
         }
-mainDraw();
+
 		//skysphere.render();
 
         // draw the ground plane
@@ -326,8 +491,8 @@ mainDraw();
         }
         GL11.glPopMatrix();*/
 
-       // airplaneShadow.drawShadow();
-		//drawObjects();
+        airplaneShadow.drawShadow();
+		drawObjects();
 		//drawShip();
 		//drawLine();
 		//sword.y=human.Position.y+4;
@@ -340,7 +505,7 @@ mainDraw();
         print( 30, viewportH-140, "SPACE key switches cameras", 1);*/
 
 
-        //CoreRegistry.get(NuiManager.class).render();
+        CoreRegistry.get(NuiManager.class).render();
 		
 	}
 
@@ -629,44 +794,6 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			
 		}
-		public void mainDraw() {
-	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		worldRenderer.render();
-	TextureInfo ti = TextureManager.getTextureInfo("human");
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
-		GL11.glPushMatrix();
-		{
-			if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
-				human.render();
-			} else
-				human.renderPart();
 
-		}
-		GL11.glPopMatrix();
-		/*
-		 * ti = TextureManager.getTextureInfo("gold_armor");
-		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
-		 * GL11.glPushMatrix(); { if(Switcher.CAMERA_2_PLAYER<-2){
-		 * human.render(); }else human.renderPart();
-		 * 
-		 * } GL11.glPopMatrix();
-		 */
-		/*
-		 * GL11.glTranslated(1,-5,1); GL11.glRotated(30,1,0,0);
-		 * GL11.glScaled(1,1,1);
-		 */
-
-		/*
-		 * GL11.glPushMatrix(); {
-		 * 
-		 * human2.render(); } GL11.glPopMatrix();
-		 */
-		firework.render();
-		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-		CoreRegistry.get(NuiManager.class).render();
-		
-        //
-		
-	}
 
 }

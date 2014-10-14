@@ -268,6 +268,7 @@ public class Human extends AABB{
 
 
 		this.Position.set(x,y,z);
+		if(!Switcher.IS_GOD)
        if(CoreRegistry.get(CrashCheck.class).check()){
            this.Position.copy(oldPosition);
        }
