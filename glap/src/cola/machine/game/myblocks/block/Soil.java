@@ -1,14 +1,26 @@
 package cola.machine.game.myblocks.block;
 
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 
 /**
  * Created by luying on 14-8-30.
  */
-public class Soil extends BaseBlock{
+public class Soil extends cola.machine.game.myblocks.block.Block{
 
-	public String name ="soil"; public Soil(int x, int y, int z) {
-    	super("soil",x,y,z);
-}
+    public Soil(){
+        this.setId((short)0);
+        this.setName("soil");
+        this.setDisplayName("土");
+        this.setHardness(3);
+        idbuffer;
+        normalisebuffer;
+        coordbuffer;
+
+        BlockApperance blockApperance=new BlockApperance();
+        blockApperance.setAllSide(TextureManager.getTextureInfo("soil"));
+
+    }
+
 }

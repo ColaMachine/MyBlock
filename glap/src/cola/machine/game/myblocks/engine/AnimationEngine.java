@@ -441,8 +441,8 @@ public class AnimationEngine extends MyBlockEngine {
 
 	public void draw() {
 
-        if(Math.random()>0.5) {
-            dcc.check(human);}
+       // if(Math.random()>0.5) {
+         //   dcc.check(human);}
 
             mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
             // cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
@@ -471,8 +471,8 @@ public class AnimationEngine extends MyBlockEngine {
             if(Switcher.PRINT_SWITCH)
                 printText();
         //}
-		drawAllBlock();
-		drawColorBlocks();
+	//	drawAllBlock();
+	//	drawColorBlocks();
         try {
             Thread.sleep(100);
         }catch (Exception e){
@@ -491,8 +491,8 @@ public class AnimationEngine extends MyBlockEngine {
         }
         GL11.glPopMatrix();*/
 
-        airplaneShadow.drawShadow();
-		drawObjects();
+       // airplaneShadow.drawShadow();
+		//drawObjects();
 		//drawShip();
 		//drawLine();
 		//sword.y=human.Position.y+4;
@@ -505,7 +505,7 @@ public class AnimationEngine extends MyBlockEngine {
         print( 30, viewportH-140, "SPACE key switches cameras", 1);*/
 
 
-        CoreRegistry.get(NuiManager.class).render();
+       // CoreRegistry.get(NuiManager.class).render();
 		
 	}
 

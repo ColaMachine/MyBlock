@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import glapp.GLApp;
 import glapp.GLCamera;
 
@@ -41,11 +42,16 @@ import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.google.common.collect.Lists;
 import util.MathUtil;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+
 public class WorldRendererLwjgl implements WorldRenderer {
     DoubleBuffer eqr ;
 	private static final Logger logger = LoggerFactory
 			.getLogger(WorldRendererLwjgl.class);
 	private final Skysphere skysphere;
+    private static final int SHADOW_FRUSTUM_BOUNDS = 500;
 	private ChunkProvider chunkProvider;
     int groundTextureHandle = 0;
 	private WorldProvider worldProvider;
@@ -59,6 +65,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
 			.newArrayListWithCapacity(MAX_CHUNKS);
 	private final PriorityQueue<ChunkImpl> renderQueueChunksOpaque = new PriorityQueue<>(
 			256, new ChunkFrontToBackComparator());
+    /* SHADOW MAPPING */
+    private Camera lightCamera = new OrthographicCamera(-SHADOW_FRUSTUM_BOUNDS, SHADOW_FRUSTUM_BOUNDS, SHADOW_FRUSTUM_BOUNDS, -SHADOW_FRUSTUM_BOUNDS);
 
 	public WorldRendererLwjgl(WorldProvider worldProvider,
 			ChunkProvider chunkProvider, LocalPlayerSystem localPlayerSystem,
@@ -96,6 +104,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		// 跟新自己
 	}
     private IntBuffer TextureIDBuffer = BufferUtils.createIntBuffer(1);
+
 	public void render() {
        // if(true)return;
         this.updateChunksInProximity(false);
@@ -405,5 +414,33 @@ public class WorldRendererLwjgl implements WorldRenderer {
                 chunk.save();
             }
         }
+    }
+
+
+    private void renderShadowMap(Camera camera) {
+
+        glDisable(GL_CULL_FACE);
+
+        camera.lookThrough();
+
+        while (renderQueueChunksOpaqueShadow.size() > 0) {
+            renderChunk(renderQueueChunksOpaqueShadow.poll(), ChunkMesh.RenderPhase.OPAQUE, camera, ChunkRenderMode.SHADOW_MAP);
+        }
+
+        for (RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
+            renderer.renderShadows();
+        }
+
+        glEnable(GL_CULL_FACE);
+
+    }
+    public void lookThrough() {
+        loadProjectionMatrix();
+        glMatrixMode(GL_PROJECTION);
+        GL11.glLoadMatrix(MatrixUtils.matrixToFloatBuffer(getProjectionMatrix()));
+        glMatrixMode(GL11.GL_MODELVIEW);
+        loadModelViewMatrix();
+        glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadMatrix(MatrixUtils.matrixToFloatBuffer(   viewMatrixReflectedLeftEye;));
     }
 }

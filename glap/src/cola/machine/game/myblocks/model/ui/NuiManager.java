@@ -20,7 +20,7 @@ public class NuiManager {
     }
 
     public void render(){
-        GLApp.setFog(false);
+       // GLApp.setFog(false);
     	   GLApp.pushAttribOrtho();
            // switch to 2D projection
            GLApp. setOrthoOn();
@@ -34,6 +34,6 @@ public class NuiManager {
         // return to previous settings
        GLApp. popAttrib();
 
-        GLApp.setFog(true);
+       // GLApp.setFog(true);
     }
 }
