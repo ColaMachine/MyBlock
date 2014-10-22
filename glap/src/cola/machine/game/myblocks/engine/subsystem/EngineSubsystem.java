@@ -16,5 +16,5 @@ public interface EngineSubsystem {
 	
 	void dispose();
 	
-	void registerSystems(ComponentSystemManager componentSystemManager);
+	//void registerSystems(ComponentSystemManager componentSystemManager);
 }

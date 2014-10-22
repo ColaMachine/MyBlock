@@ -5,17 +5,10 @@ import glapp.*;
 import glmodel.GLModel;
 import glmodel.GL_Vector;
 
-import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
-import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-import org.terasology.engine.subsystem.EngineSubsystem;
-import org.terasology.engine.subsystem.lwjgl.LwjglAudio;
-import org.terasology.engine.subsystem.lwjgl.LwjglGraphics;
-import org.terasology.engine.subsystem.lwjgl.LwjglInput;
-import org.terasology.engine.subsystem.lwjgl.LwjglTimer;
 
 import com.google.common.collect.Lists;
 
@@ -26,8 +19,6 @@ import cola.machine.game.myblocks.item.weapons.Sword;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.magicbean.fireworks.Firework;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -45,13 +36,9 @@ import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
-import cola.machine.game.myblocks.world.generator.WorldGenerator;
-import cola.machine.game.myblocks.world.generator.ChunkGenerators.HeightMapWorldGenerator;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
-import util.MathUtil;
 
 /**
  * Run a bare-bones GLApp. Draws one white triangle centered on screen.
@@ -135,15 +122,15 @@ public class MyBlockEngine extends GLApp {
      * will be fine, so no code here.
      */
     int handleId;
-    GLShadowOnPlane airplaneShadow;
+   // GLShadowOnPlane airplaneShadow;
 
     public void setup() {
-        makeTexture("images/Particle.bmp", true, true);
-        airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
-        boat = new GLModel("glap/models/boat/botrbsm1.obj");
-        groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg", true, true);
-        boat.mesh.regenerateNormals();
-        boat.makeDisplayList();
+       // makeTexture("images/Particle.bmp", true, true);
+       // airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
+       // boat = new GLModel("glap/models/boat/botrbsm1.obj");
+      //  groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg", true, true);
+      //  boat.mesh.regenerateNormals();
+      //  boat.makeDisplayList();
         //  GL11. glEnable(GL11.GL_POINT_SMOOTH);
         //  GL11. glEnable( GL11. GL_LINE_SMOOTH);
         //  GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
@@ -152,16 +139,16 @@ public class MyBlockEngine extends GLApp {
         // GL11.glDepthFunc(GL11.GL_LEQUAL);
         human = new Human(blockRepository);
         //sword=new Sword(0,0,0);
-        human2 = new Human(blockRepository);
+        //human2 = new Human(blockRepository);
         CoreRegistry.put(MyBlockEngine.class, this);
         CoreRegistry.put(Human.class, human);
         this.initManagers();
-        Collection<EngineSubsystem> subsystemList;
+       /* Collection<EngineSubsystem> subsystemList;
         subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(), new LwjglTimer(), new LwjglAudio(), new LwjglInput());
         
         for (EngineSubsystem subsystem : getSubsystems()) {
             subsystem.postInitialise(config);
-        }
+        }*/
         setPerspective();
         /*
 		 * setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new
@@ -243,7 +230,7 @@ public class MyBlockEngine extends GLApp {
         human.setHuman(1, 34, 5, 0, 0, -1, 0, 1, 0);
         //human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
-        human2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
+//        human2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
 
         human.startWalk();
 
@@ -333,7 +320,7 @@ public class MyBlockEngine extends GLApp {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       // mainDraw();
+        mainDraw();
         //skysphere.render();
 
         // draw the ground plane
@@ -451,7 +438,7 @@ public class MyBlockEngine extends GLApp {
 		GL11.glPopMatrix();
 	}*/
 
-    GLModel boat;
+  //  GLModel boat;
 
     public void drawShip() {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -465,7 +452,7 @@ public class MyBlockEngine extends GLApp {
             GL11.glTranslatef(-10, 35, 5);
             GL11.glScalef(0.01f, 0.01f, 0.01f);
             // GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
-            boat.render();
+            //boat.render();
             // reset material, since model.render() will alter current material settings
             setMaterial(new float[]{.8f, .8f, .7f, 1f}, .4f);
         }
@@ -599,7 +586,7 @@ public class MyBlockEngine extends GLApp {
     }
 
     private void initManagers() {
-        ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
+       // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
         TextureManager textureManager = CoreRegistry.put(TextureManager.class,

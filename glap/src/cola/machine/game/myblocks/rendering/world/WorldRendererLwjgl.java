@@ -443,4 +443,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
         glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadMatrix(MatrixUtils.matrixToFloatBuffer(   viewMatrixReflectedLeftEye;));
     }*/
+
+    public void renderWorld(Camera camera){
+
+    }
 }
