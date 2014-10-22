@@ -7,9 +7,17 @@ import glmodel.GL_Vector;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
+import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.terasology.engine.subsystem.EngineSubsystem;
+import org.terasology.engine.subsystem.lwjgl.LwjglAudio;
+import org.terasology.engine.subsystem.lwjgl.LwjglGraphics;
+import org.terasology.engine.subsystem.lwjgl.LwjglInput;
+import org.terasology.engine.subsystem.lwjgl.LwjglTimer;
+
+import com.google.common.collect.Lists;
 
 import time.Time;
 import cola.machine.game.myblocks.control.DropControlCenter;
@@ -29,6 +37,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
 import cola.machine.game.myblocks.repository.BlockRepository;
+import cola.machine.game.myblocks.resource.ResourceManager;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.Skysphere;
 import cola.machine.game.myblocks.world.WorldProvider;
@@ -147,6 +156,12 @@ public class MyBlockEngine extends GLApp {
         CoreRegistry.put(MyBlockEngine.class, this);
         CoreRegistry.put(Human.class, human);
         this.initManagers();
+        Collection<EngineSubsystem> subsystemList;
+        subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(), new LwjglTimer(), new LwjglAudio(), new LwjglInput());
+        
+        for (EngineSubsystem subsystem : getSubsystems()) {
+            subsystem.postInitialise(config);
+        }
         setPerspective();
         /*
 		 * setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new
@@ -584,7 +599,7 @@ public class MyBlockEngine extends GLApp {
     }
 
     private void initManagers() {
-        //AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManager());
+        ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
         TextureManager textureManager = CoreRegistry.put(TextureManager.class,

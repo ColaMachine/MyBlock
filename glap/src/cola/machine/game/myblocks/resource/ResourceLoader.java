@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.resource;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -7,5 +8,5 @@ import java.io.InputStream;
  */
 public interface ResourceLoader<T extends ResourceData> {
 
-    T load(ResourceType type,InputStream inputStream);
+    T load(ResourceType type,InputStream inputStream)throws IOException;
 }

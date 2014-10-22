@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.model.AABB;
 
+import javax.vecmath.Vector3f;
+
 
 public class AABB {
     public float minX, minY, minZ, maxX, maxY, maxZ;
@@ -89,4 +91,5 @@ public class AABB {
 			return false;
 		}*/
     }
+  
 }

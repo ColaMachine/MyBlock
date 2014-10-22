@@ -29,7 +29,7 @@ import glmodel.GL_Matrix;
  *
  * jul13,2006: added move(x,y,z).  added ctor(pos,dir,up).
  */
-public class GLCamera implements Camera{
+public class GLCamera {
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
 	public GL_Vector RightVector;
@@ -237,9 +237,5 @@ public class GLCamera implements Camera{
 		return ViewDir;
 	}
 
-	@Override
-	public Vector3f getPosition() {
-		return new Vector3f(this.Position.x,this.Position.y,this.Position.z);
-	}
 	
 }

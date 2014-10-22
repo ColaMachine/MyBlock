@@ -14,12 +14,9 @@ public class Soil extends cola.machine.game.myblocks.block.Block{
         this.setName("soil");
         this.setDisplayName("土");
         this.setHardness(3);
-        idbuffer;
-        normalisebuffer;
-        coordbuffer;
-
+      
         BlockApperance blockApperance=new BlockApperance();
-        blockApperance.setAllSide(TextureManager.getTextureInfo("soil"));
+       // blockApperance.setAllSide(TextureManager.getTextureInfo("soil"));
 
     }
 

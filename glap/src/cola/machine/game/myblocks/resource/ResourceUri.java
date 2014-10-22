@@ -15,4 +15,20 @@ public class ResourceUri {
         this.moduleName=moduleName;
         this.resourceName=resourceName;
     }
+
+	public ResourceType getResourceType() {
+		return type;
+	}
+
+	public ResourceType getType() {
+		return type;
+	}
+
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
 }

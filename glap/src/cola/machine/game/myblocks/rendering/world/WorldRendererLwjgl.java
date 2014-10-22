@@ -75,7 +75,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
                 ByteBuffer.allocateDirect(4 * GLApp.SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
         eqr.put(0.0f).put(35.0f).put(0.0f).put(0.0f);
 
-        this.activeCamera = camera1;
+        //this.activeCamera = camera1;
 		this.chunkProvider = chunkProvider;
 		this.worldProvider = worldProvider;
 		this.localPlayerSystem = localPlayerSystem;
@@ -417,7 +417,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
     }
 
 
-    private void renderShadowMap(Camera camera) {
+   /* private void renderShadowMap(Camera camera) {
 
         glDisable(GL_CULL_FACE);
 
@@ -433,8 +433,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
         glEnable(GL_CULL_FACE);
 
-    }
-    public void lookThrough() {
+    }*/
+   /* public void lookThrough() {
         loadProjectionMatrix();
         glMatrixMode(GL_PROJECTION);
         GL11.glLoadMatrix(MatrixUtils.matrixToFloatBuffer(getProjectionMatrix()));
@@ -442,5 +442,5 @@ public class WorldRendererLwjgl implements WorldRenderer {
         loadModelViewMatrix();
         glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadMatrix(MatrixUtils.matrixToFloatBuffer(   viewMatrixReflectedLeftEye;));
-    }
+    }*/
 }

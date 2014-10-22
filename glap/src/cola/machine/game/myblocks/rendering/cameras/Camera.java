@@ -22,6 +22,8 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
+import math.MatrixUtils;
+
 /**
  * Provides global access to fonts.
  *
@@ -44,7 +46,7 @@ public abstract class Camera {
     // TODO: This is too large, but many properties have to be adjusted if it changes
     protected float zFar = 5000.0f;
 
-    protected float targetFov = CoreRegistry.get(Config.class).getRendering().getFieldOfView();
+    protected float targetFov = 90;
     protected float activeFov = targetFov / 4f;
 
     /* VIEW FRUSTUM */
@@ -131,11 +133,11 @@ public abstract class Camera {
     }
 
     public void extendFov(float fov) {
-        targetFov = CoreRegistry.get(Config.class).getRendering().getFieldOfView() + fov;
+        targetFov = 90 + fov;
     }
 
     public void resetFov() {
-        targetFov = CoreRegistry.get(Config.class).getRendering().getFieldOfView();
+        targetFov = 90;
     }
 
     public void setReflected(boolean reflected) {
