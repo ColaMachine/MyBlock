@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.engine.subsystem.lwjgl;
 
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.modes.GameState;
+import cola.machine.game.myblocks.engine.subsystem.RenderingSubsystemFactory;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 /**
@@ -14,7 +15,8 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
     public void preInitialise() {
         super.preInitialise();
     }
-
+    
+    private GLBufferPool bufferPool =new GLBufferPool(false);
     @Override
     public void postInitialise(Config config) {
         CoreRegistry.putPermanently(RenderingSubsystemFactory.class, new LwjglRenderingSubsystemFactory(bufferPool));
