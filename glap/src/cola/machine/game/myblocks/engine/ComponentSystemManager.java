@@ -8,7 +8,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import com.google.common.collect.Lists;
 
-public class ComponentSystemManager {/*
+public class ComponentSystemManager {
 	private static final Logger logger =LoggerFactory.getLogger(ComponentSystemManager.class);
 
 	private Map<String,ComponentSystem> namedLookup=Maps.newHashMap();
@@ -41,5 +41,5 @@ public class ComponentSystemManager {/*
 		}
 
 		for(Module module : environment.getModuleOrderedByDependecies)
-	}*/
+	}
 }

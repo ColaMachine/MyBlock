@@ -4,8 +4,13 @@ package cola.machine.game.myblocks.block;
  * Created by luying on 14-10-17.
  */
 public class Block {
+
+
+    private short cid;//child id
    private short id;
     private String name;
+
+
     private String displayName;
     private boolean targetable;
     private float hardness;
@@ -14,6 +19,36 @@ public class Block {
     private boolean transparent;
     private boolean replaceable;
 
+
+
+    String topTexture="";
+    String bottomTexture="";
+    String leftTexture ="";
+    String rightTexture="";
+    String frontTexture="" ;
+
+    public String getTopTexture() {
+        return topTexture;
+    }
+
+    public void setTopTexture(String topTexture) {
+        this.topTexture = topTexture;
+    }
+
+    public void setAllSideTexture(String text){
+        this.frontTexture=this.backTexture=this.topTexture=this.bottomTexture=
+                this.leftTexture=this.rightTexture=text;
+    }
+
+    String backTexture="";
+
+    public String getBottomTexture() {
+        return bottomTexture;
+    }
+
+    public void setBottomTexture(String bottomTexture) {
+        this.bottomTexture = bottomTexture;
+    }
 
     public boolean isTargetable() {
         return targetable;
@@ -103,6 +138,13 @@ public class Block {
     //some block has it's own rotation
     //难道所有的
 
+    public short getCid() {
+        return cid;
+    }
+
+    public void setCid(short cid) {
+        this.cid = cid;
+    }
 
 
 }

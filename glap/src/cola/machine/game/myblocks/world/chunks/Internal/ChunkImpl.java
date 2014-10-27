@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
+import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import glapp.GLApp;
 
@@ -338,17 +339,18 @@ public class ChunkImpl implements Chunk {
 		vetices1.position(vetices1.position() - 1);
 		System.out.println(vetices1.get());
 	}
-
+BlockDefManager blockDefManager;
 	public void Draw() {// up down left right front back
 
 boolean flat =true;
+        //blockDefManager.getBlockById()
 		switch (this.currentBlockType) {
-		case 1:
+        case 1:
 			ti = TextureManager.getTextureInfo("stone");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
-		case 2:
+		case 3:
 			if (faceIndex == 1) {
 				ti = TextureManager.getTextureInfo("grass_top");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
@@ -363,30 +365,30 @@ boolean flat =true;
 						ti.textureHandle);
 			}DrawVetext();
 			break;
-		case 3:
+		case 20:
 			ti = TextureManager.getTextureInfo("glass");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
-            case 6:
+        case 8:
                 ti = TextureManager.getTextureInfo("water");
                 if (faceIndex == 1) {
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D,
                             ti.textureHandle);DrawVetext();
                 }
                 break;
-		case 4:
+		case 12:
 			ti = TextureManager.getTextureInfo("sand");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
-		case 5:
+		case 7:
 			ti = TextureManager.getTextureInfo("mantle");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 					ti.textureHandle);DrawVetext();
 			break;
 
-		case 7:
+		case 5:
 			ti = TextureManager.getTextureInfo("wood");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 						ti.textureHandle);DrawVetext();
@@ -785,6 +787,12 @@ boolean flat =true;
             GLApp.callDisplayList(this.alphaDisplayId);
         }
     }
+
+
+
+
+
+
     public void save(){
         //保存数据
         String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";

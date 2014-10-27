@@ -3,15 +3,15 @@ package cola.machine.game.myblocks.block;
 /**
  * Created by luying on 14-10-18.
  */
-public class Stone extends Block{
-    public Stone(){
+public class Bedrock extends Block{
+    public Bedrock(){
         super();
-        setId((short)1);
-        setName("stone");
-        setDisplayName("石头");
+        setId((short)7);
+        setName("mantle");
+        setDisplayName("基岩");
         setTargetable(true);
-        this.setHardness(0);
-        setAllSideTexture("stone");
+        this.setHardness(5);
+        setAllSideTexture("mantle");
         setLiquid(false);
         setPassable(false);
         setTransparent(true);

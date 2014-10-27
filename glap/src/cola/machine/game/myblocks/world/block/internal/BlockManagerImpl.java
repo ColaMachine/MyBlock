@@ -11,12 +11,12 @@ public class BlockManagerImpl extends BlockManager {
 	public BlockManagerImpl(){
 	
 		Block stone=new BaseBlock("stone",1);
-		Block soil =new BaseBlock("soil",2);
-		Block glass=new BaseBlock("glass",3);
-		Block sand=new BaseBlock("sand",4);
-		Block mantle=new BaseBlock("mantle",5);
-		Block water=new BaseBlock("water",6);
-		Block wood=new BaseBlock("wood",7);
+		Block soil =new BaseBlock("soil",3);
+		Block glass=new BaseBlock("glass",20);
+		Block sand=new BaseBlock("sand",12);
+		Block mantle=new BaseBlock("mantle",7);
+		Block water=new BaseBlock("water",8);
+		Block wood=new BaseBlock("wood",5);
 		registerBlockInfo.put("water", water);
 		registerBlockInfo.put("stone", stone);
 		registerBlockInfo.put("soil", soil);

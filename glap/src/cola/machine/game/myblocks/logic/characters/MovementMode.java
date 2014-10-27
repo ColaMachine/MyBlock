@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Benjamin Glatzel <benjamin.glatzel@me.com>
+ * Copyright 2013 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-water。
+
+package cola.machine.game.myblocks.logic.characters;
+
 /**
- * Water is like Lava, just a tad less hot
+ * @author Immortius
  */
-{
-    "liquid" : true,
-    "water" : true,
-    "shape" : "engine:TrimmedLoweredCube",
-    "hardness" : 0,
-    "attachmentAllowed" : false,
-    "translucent" : true,
-    "targetable" : false,
-    "penetrable" : true,
-    "shadowCasting" : true,
-    "replacementAllowed" : true,
-    "tint" : [0.1, 0.2, 0.2],
-    "entity" : {
-        "prefab" : "water"
-    }
+public enum MovementMode {
+    WALKING,
+    CLIMBING,
+    SWIMMING,
+    GHOSTING,
+    NONE
 }

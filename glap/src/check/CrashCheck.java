@@ -1,6 +1,7 @@
 package check;
 
 import cola.machine.game.myblocks.model.human.Human;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.GLApp;
 import util.MathUtil;
@@ -82,14 +83,14 @@ public class CrashCheck {
         //if all block checked is air then needjdegecrash is false
     return false;
     }
-    public boolean haveBlock2(){
-
+    public boolean haveBlock2(){//检测当前人的宽度和厚度 还有高度带入公式用来判断是否有碰撞
+        boolean isswim=false;
         float plr_pos_x=player.Position.x;
         float plr_pos_y=player.Position.y;
         float plr_pos_z=player.Position.z;
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {
 
-            for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {
+            for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//厚度的大小
                 ChunkImpl chunk_corner = null;
                 int chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_pos_x);
                 int chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_pos_z);
@@ -117,7 +118,16 @@ public class CrashCheck {
                     int k = chunk_corner.getBlockData(blockX,
                             blockY, blockZ
                     );
-                    if (k > 0) {
+
+
+                    if (k==8 && !isswim ){
+                       CoreRegistry.get(Human.class).swim=true;
+                      // System.out.println("swim");
+                    }else{
+                       // CoreRegistry.get(Human.class).swim=false;
+                       // System.out.println("unswim");
+                    }
+                    if (k > 0&& k!=8) {//不为水的话
                         //means it is crashed
 //                        System.out.println("warning crashed");
 //                        player.moveOld();
@@ -141,7 +151,7 @@ public class CrashCheck {
                 }
             }
         }
-        //if all block checked is air then needjdegecrash is false
+        //if all block checked is air then needjudgecrash is false
         return false;
     }
     public boolean haveBlock(float x,float y,float z){

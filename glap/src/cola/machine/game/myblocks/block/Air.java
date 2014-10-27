@@ -16,7 +16,6 @@ public class Air extends Block {
            setLiquid(false);
            setPassable(true);
            setTransparent(true);
-           setPassable(true);
            setReplaceable(true);
        }
 

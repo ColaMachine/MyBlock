@@ -1,11 +1,14 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.*;
 import glmodel.GLModel;
 import glmodel.GL_Vector;
 
 import java.nio.FloatBuffer;
+import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -106,15 +109,25 @@ public class MyBlockEngine extends GLApp {
     WorldRenderer worldRenderer;
 
     public static void main(String args[]) {
+        try {
+            PathManager.getInstance().useDefaultHomePath();
 
-        // create the app
-        MyBlockEngine demo = new MyBlockEngine();
-        demo.VSyncEnabled = true;
-        demo.fullScreen = false;
-        demo.displayWidth = 800;
-        demo.displayHeight = 600;
 
-        demo.run(); // will call init(), render(), mouse functions
+            Collection<EngineSubsystem> subsystemList;
+
+            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(), new LwjglTimer(), new LwjglAudio(), new LwjglInput());
+
+            // create the app
+            MyBlockEngine demo = new MyBlockEngine();
+            demo.VSyncEnabled = true;
+            demo.fullScreen = false;
+            demo.displayWidth = 800;
+            demo.displayHeight = 600;
+
+            demo.run(); // will call init(), render(), mouse functions
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -125,6 +138,8 @@ public class MyBlockEngine extends GLApp {
    // GLShadowOnPlane airplaneShadow;
 
     public void setup() {
+
+
        // makeTexture("images/Particle.bmp", true, true);
        // airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
        // boat = new GLModel("glap/models/boat/botrbsm1.obj");

@@ -1,16 +1,22 @@
 package cola.machine.game.myblocks.block;
 
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
 
 /**
  * Created by luying on 14-8-30.
  */
-public class Wood extends BaseBlock {
-        public Wood(int x, int y, int z) {
-        	//super(x,y,z);
-	}
+public class Wood extends Block {
+    public Wood(){
+        super();
+        setId((short)1);
+        setName("wood");
+        setDisplayName("木头");
+        setTargetable(true);
+        this.setHardness(3);
 
-		String name ="wood";
+        setLiquid(false);
+        setPassable(false);
+        setTransparent(false);
+        setReplaceable(false);
+    }
         
 }

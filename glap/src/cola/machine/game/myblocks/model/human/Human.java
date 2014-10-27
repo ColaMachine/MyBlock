@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
@@ -18,6 +19,8 @@ import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import cola.machine.game.myblocks.switcher.Switcher;
 
+import javax.vecmath.Vector3f;
+
 public class Human extends AABB{
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
@@ -31,6 +34,7 @@ public class Human extends AABB{
 	public float camSpeedXZ = 5; // units per second
 	public float camSpeedY = 10; // units per second
 
+    public MovementMode movementMode=MovementMode.NONE;
 
     public byte armor_head=0;
     public byte armor_leg=0;
@@ -84,6 +88,7 @@ public class Human extends AABB{
 		}
 	}
 
+    //判断人的当前状态 是在固体block上还是在液体block上 还是在液体中 还是在空气中
 	public void setHuman(float posx, float posy, float posz, float dirx,
 			float diry, float dirz, float upx, float upy, float upz) {
 		if (upx == 0 && upy == 0 && upz == 0) {
@@ -147,6 +152,19 @@ public class Human extends AABB{
 
 	int preY = 0;
 
+    public static void main(String args[]){
+
+        System.out.println(16>>4);
+    }
+
+    //走路的判断过程  先判断 当前状态 然后再走动
+
+    public boolean judge;
+    public MovementMode mode = MovementMode.WALKING;
+
+    public void update(){
+
+    }
 	public void dropControl() {
 		if(!Switcher.IS_GOD)
 		if (!this.stable) {
@@ -170,12 +188,12 @@ public class Human extends AABB{
 		}
 	}
 
-	public static void main(String args[]) {
-		long t = 1024;
-		float v = 10;
-		float s = v * t / 1000 - 0.5f * (9.8f) * t * t / 1000000;
-		// System.out.println("time: weiyi:"+(s));
-	}
+//	public static void main(String args[]) {
+//		long t = 1024;
+//		float v = 10;
+//		float s = v * t / 1000 - 0.5f * (9.8f) * t * t / 1000000;
+//		// System.out.println("time: weiyi:"+(s));
+//	}
 
 	public void render() {
 		adjust(this.Position.x, this.Position.y, this.Position.z);
@@ -484,5 +502,13 @@ this.stable=false;
 			
 	}
 
+    public  Vector3f  velocity=new Vector3f();
+    public void update(){
+        //计算当前的速度
+
+        if(){
+
+        }
+    }
 
 }
