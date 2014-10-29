@@ -51,7 +51,14 @@ public class RenderingConfig {
     private int shadowMapResolution =1024;
     private boolean normalMapping ;
     private boolean parallaxMapping;
-
+    private boolean dynamicShadowsPcfFiltering;
+    private boolean renderNearest =true;
+    private int particleEffectLimit=10;
+    private int meshLimit=400;
+    private boolean inscattering =true;
+    private boolean localReflections;
+    private boolean vSync;
+    private PerspectiveCameraSettings cameraSettings = new PerspectiveCameraSettings(CameraSetting.NORMAL);
 
 	  private ViewDistance viewDistance = ViewDistance.MODERATE;
 	  
