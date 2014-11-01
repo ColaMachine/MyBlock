@@ -2,6 +2,9 @@ package cola.machine.game.myblocks.engine;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
+import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
+import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglInput;
+import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglTimer;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.*;
 import glmodel.GLModel;

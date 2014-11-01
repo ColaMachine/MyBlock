@@ -4,13 +4,15 @@ import com.google.common.base.Charsets;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.terasology.naming.Name;
 
 /**
  * Created by luying on 14-10-5.
  */
 public class Constants {
 
-	public static final String ASSETS_SUBDIRECTORY ="assets";/*
     public static final String ENTITY_DATA_FILE="entity.dat";
     public static final int DEFAULT_PORT=25777;//server port
     public static final String WORLD_DATA_FILE="world.dat";
@@ -21,10 +23,10 @@ public class Constants {
     public static final String ASSETS_SUBDIRECTORY="assets";
     public static final String OVERRIDES_SUBDIRECTORY="overrides";
     public static final String DELTAS_SUBDIRECTORY="overrides";
-    public static final Path MODULE_INFO_FILENAME= Path.get("module.txt");
+    public static final Path MODULE_INFO_FILENAME= Paths.get("module.txt");
 
     private Constants(){
 
     }
-*/
+
 }

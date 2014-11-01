@@ -1,11 +1,14 @@
 package cola.machine.game.myblocks.config;
 
+import cola.machine.game.myblocks.rendering.cameras.PerspectiveCameraSettings;
+import cola.machine.game.myblocks.rendering.nui.layers.mainMenu.videoSettings.CameraSetting;
 import cola.machine.game.myblocks.rendering.world.ViewDistance;
+
 import org.lwjgl.opengl.PixelFormat;
 
 
 public class RenderingConfig {
-
+	
     private PixelFormat pixelFormat = new PixelFormat().withDepthBits(24);
 
     private int windowPoxX = -1;
@@ -51,6 +54,7 @@ public class RenderingConfig {
     private int shadowMapResolution =1024;
     private boolean normalMapping ;
     private boolean parallaxMapping;
+<<<<<<< Updated upstream
     private boolean dynamicShadowsPcfFiltering;
     private boolean renderNearest =true;
     private int particleEffectLimit=10;
@@ -62,6 +66,22 @@ public class RenderingConfig {
 
 	  private ViewDistance viewDistance = ViewDistance.MODERATE;
 	  
+=======
+    
+    private boolean dynamicShadowsPcfFiltering;
+    private boolean cloudShadows = true;
+    private boolean renderNearest = true;
+    private int particleEffectLimit =10;
+    private int meshLimit=400;
+    private boolean inscattering =true;
+    private boolean localreflections;
+    private boolean vSync;
+    
+    private PerspectiveCameraSettings cameraSettings =new PerspectiveCameraSettings(CameraSetting.NORMAL);
+	 
+    private RenderingDebugConfig debug =new RenderingDebugConfig();
+    
+>>>>>>> Stashed changes
 	  public ViewDistance getViewDistance() {
 	        return viewDistance;
 	    }

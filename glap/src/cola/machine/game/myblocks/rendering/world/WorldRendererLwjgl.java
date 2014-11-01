@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cola.machine.game.myblocks.engine.subsystem.lwjgl.GLBufferPool;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
@@ -40,14 +41,12 @@ import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
 import com.google.common.collect.Lists;
-import util.MathUtil;
 
+import util.MathUtil;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
 
 public class WorldRendererLwjgl implements WorldRenderer {
-    DoubleBuffer eqr ;
+    //DoubleBuffer eqr ;
 	private static final Logger logger = LoggerFactory
 			.getLogger(WorldRendererLwjgl.class);
 	private final Skysphere skysphere;
@@ -70,15 +69,16 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 	public WorldRendererLwjgl(WorldProvider worldProvider,
 			ChunkProvider chunkProvider, LocalPlayerSystem localPlayerSystem,
-			GLCamera camera1, Human player) {
-        eqr=
-                ByteBuffer.allocateDirect(4 * GLApp.SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
-        eqr.put(0.0f).put(35.0f).put(0.0f).put(0.0f);
+			GLBufferPool bufferPool) {
+       // eqr=
+            //    ByteBuffer.allocateDirect(4 * GLApp.SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+        //eqr.put(0.0f).put(35.0f).put(0.0f).put(0.0f);
 
         //this.activeCamera = camera1;
 		this.chunkProvider = chunkProvider;
 		this.worldProvider = worldProvider;
 		this.localPlayerSystem = localPlayerSystem;
+		
 		skysphere = new Skysphere(this);
         CoreRegistry.put(CrashCheck.class,new CrashCheck(player,chunksInProximity));
         CoreRegistry.put(WorldRendererLwjgl.class,this);
