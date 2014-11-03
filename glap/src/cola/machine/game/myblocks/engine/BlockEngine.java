@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
@@ -10,15 +11,27 @@ import glapp.*;
 import glmodel.GLModel;
 import glmodel.GL_Vector;
 
+import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.crashreporter.CrashReporter;
+import org.terasology.engine.modes.StateMainMenu;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 
 import time.Time;
+import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.item.weapons.Sword;
@@ -55,81 +68,72 @@ import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
  * <p/>
  * napier at potatoland dot org
  */
-public class MyBlockEngine extends GLApp {
-    // Handle for texture
-    int sphereTextureHandle = 0;
-    int groundTextureHandle = 0;
-    int humanTextureHandle = 0;
-    public String currentObject = "water";
-    int skyTextureHandle = 0;
-    int waterTextureHandle = 0;
-    int crossTextureHandle = 0;
-    GLImage textureImg;
-    Time time = new Time();
-    MouseControlCenter mouseControlCenter;
-    // Light position: if last value is 0, then this describes light direction.
-    // If 1, then light position.
-    //float lightPosition[] = { 5f, 45f, 5f, 0f };
-    float lightPosition[] = {-2f, 36f, 2f, 0f};
-    // Camera position
-    float[] cameraPos = {0f, 3f, 20f};
-
-    // two cameras and a cam to move them around scene
-    GLCamera camera1 = new GLCamera();
-    GLCamera camera2 = new GLCamera();
-    GLCam cam = new GLCam(camera1);
-    DropControlCenter dcc = new DropControlCenter();
-
-    // vectors used to orient airplane motion
-    GL_Vector UP = new GL_Vector(0, 1, 0);
-    GL_Vector ORIGIN = new GL_Vector(0, 0, 0);
-
-    // for earth rotation
-    float degrees = 0;
-
-    // model of airplane and sphere displaylist for earth
-    // GLModel airplane;
-    public int earth;
-    public int waterDisplay;
-    public Sword sword;
-    // shadow handler will draw a shadow on floor plane
-    // GLShadowOnPlane airplaneShadow;
-
-    public GL_Vector airplanePos;
-
-    FloatBuffer bbmatrix = GLApp.allocFloats(16);
-
-    public BlockRepository blockRepository = new BlockRepository(this);
-    BulletPhysics bulletPhysics;
-    public Human human;
-    private Human human2;
-    private Skysphere skysphere = new Skysphere();
-    /**
-     * Start the application. run() calls setup(), handles mouse and keyboard
-     * input, calls render() in a loop.
-     */
-
-    WorldRenderer worldRenderer;
-
+public class BlockEngine implements GameEngine{
+   private static final Logger logger =LoggerFactory.getLogger(BlockEngine.class);
+	
+   private GameState currentState;
+   private boolean initialised;
+   private boolean running;
+   private boolean disposed;
+   private GameState pendingState;
+   
+   private Config config;
+   private EngineTime time ;
+   private final TaskMaster<Task> commonThreadPool=TaskMaster.createFIFOTaskMaster("common",16);
+  private boolean hibernationAllowed;
+  
+  private boolean gameFocused =true;
+  private Set<StateChangeSubscriber> stateChangeSubscribers =Sets.newLinkedHashSet();
+   private Deque<EngineSubsystem> subsystems;
+	public BlockEngine(Collection<EngineSubsystem> subsystems){
+		this.subsystems=Queues.newArrayDeque(subsystems);
+	}
+	
+	public Iterable<EngineSubsystem> getSubsystems(){
+		return subsystems;
+	}
+	public void 
     public static void main(String args[]) {
+    	boolean crashReportEnabled =true;
         try {
             PathManager.getInstance().useDefaultHomePath();
 
-
             Collection<EngineSubsystem> subsystemList;
 
-            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(), new LwjglTimer(), new LwjglAudio(), new LwjglInput());
+            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
 
             // create the app
-            MyBlockEngine demo = new MyBlockEngine();
-            demo.VSyncEnabled = true;
-            demo.fullScreen = false;
-            demo.displayWidth = 800;
-            demo.displayHeight = 600;
+            BlockEngine demo = new BlockEngine(subsystemList);
 
-            demo.run(); // will call init(), render(), mouse functions
-        }catch(Exception e){
+          try{
+        	  demo.init();
+        	  engine.run(new StateMainMenu());
+          }finally {
+              try {
+                  engine.dispose();
+              } catch (Exception e) {
+                  // Just log this one to System.err because we don't want it 
+                  // to replace the one that came first (thrown above).
+                  e.printStackTrace();
+              }
+          }
+        }catch(RuntimeException | IOException e){
+        	Path logPath=Paths.get(".");
+        	try{
+        		Path gameLogPath = PathManager.getInstance().getLogPath();
+        		if(gameLogPath!=null){
+        			logPath =gameLogPath;
+        		}
+        	}catch (Exception eat){
+        		
+        	}
+        	if(crashReportEnabled){
+        		Path logFile =logPath.resolve("game.log");
+        		
+        		CrashReporter.report(e, logFile);
+        	}
             e.printStackTrace();
+            System.exit(0);
         }
     }
 
@@ -158,7 +162,7 @@ public class MyBlockEngine extends GLApp {
         human = new Human(blockRepository);
         //sword=new Sword(0,0,0);
         //human2 = new Human(blockRepository);
-        CoreRegistry.put(MyBlockEngine.class, this);
+        CoreRegistry.put(BlockEngine.class, this);
         CoreRegistry.put(Human.class, human);
         this.initManagers();
         Collection<EngineSubsystem> subsystemList;
@@ -694,5 +698,93 @@ public class MyBlockEngine extends GLApp {
         //
 
     }
+	@Override
+	public void init() {
+		if(initialised){
+			return;
+		}
+		
+	}
+	@Override
+	public void run(GameState initialState) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void shutdown() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public boolean siRunning() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean isDisposed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public GameState getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void changeState(GameState newState) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void submitTask(String name, Runnable task) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public boolean isHibernationAllowed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void setHibernationAlllowed(boolean allowed) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public boolean hasFocus() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean hasMouseFocus() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void setFocus(boolean focused) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void subscribeToStateChange(StateChangeSubscriber subscriber) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void unsubscribeToStateChange(StateChangeSubscriber subscriber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isRunning() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

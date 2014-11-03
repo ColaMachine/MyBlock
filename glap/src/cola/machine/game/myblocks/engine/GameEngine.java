@@ -11,7 +11,7 @@ public interface GameEngine {
 	
 	void dispose();
 	
-	boolean siRunning();
+	boolean isRunning();
 	
 	boolean isDisposed();
 	
