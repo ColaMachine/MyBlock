@@ -503,12 +503,6 @@ this.stable=false;
 	}
 
     public  Vector3f  velocity=new Vector3f();
-    public void update(){
-        //计算当前的速度
 
-        if(){
-
-        }
-    }
 
 }

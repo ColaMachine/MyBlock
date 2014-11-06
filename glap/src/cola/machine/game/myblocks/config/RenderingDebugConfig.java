@@ -88,7 +88,7 @@ public class RenderingDebugConfig {
 		this.firstPersonElementsHidden = firstPersonElementsHidden;
 	}
 	
-	public String toString(){
-		return Config.createGson.toJsonTree(this).toString();
-	}
+//	public String toString(){
+//		return Config.createGson.toJsonTree(this).toString();
+//	}
 }

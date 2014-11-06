@@ -118,7 +118,7 @@ public class MyBlockEngine extends GLApp {
 
             Collection<EngineSubsystem> subsystemList;
 
-            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(), new LwjglTimer(), new LwjglAudio(), new LwjglInput());
+            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
 
             // create the app
             MyBlockEngine demo = new MyBlockEngine();
@@ -278,7 +278,7 @@ public class MyBlockEngine extends GLApp {
         CoreRegistry.put(ChunkProvider.class, chunkProvider);
         WorldProvider WorldProvider = new WorldProviderWrapper();
 
-        worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), camera1, human);
+        worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null);
     }
 
     /**

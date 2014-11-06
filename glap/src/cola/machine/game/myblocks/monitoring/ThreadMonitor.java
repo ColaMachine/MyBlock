@@ -60,9 +60,9 @@ public final class ThreadMonitor {
     private static SingleThreadMonitor getMonitor() {//单线程
         SingleThreadMonitor monitor = THREAD_INFO_BY_ID.get(Thread.currentThread());//得到当前线程的监控
         if (monitor == null) {//如果是空的
-            monitor = new SingleThreadMonitorImpl(Thread.currentThread());//新建一个
+            //monitor = new SingleThreadMonitorImpl(Thread.currentThread());//新建一个
             THREAD_INFO_BY_ID.put(Thread.currentThread(), monitor);//塞入THREAD_INFO_BY_IDmap
-            EVENT_BUS.post(new ThreadMonitorEvent(monitor, ThreadMonitorEvent.Type.MonitorAdded));//事件总线post 当前监控 触发monitoradded事件
+           // EVENT_BUS.post(new ThreadMonitorEvent(monitor, ThreadMonitorEvent.Type.MonitorAdded));//事件总线post 当前监控 触发monitoradded事件
         }
         return monitor;
     }

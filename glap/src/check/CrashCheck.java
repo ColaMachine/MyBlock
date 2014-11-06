@@ -121,7 +121,7 @@ public class CrashCheck {
 
 
                     if (k==8 && !isswim ){
-                       CoreRegistry.get(Human.class).swim=true;
+                      // CoreRegistry.get(Human.class).swim=true;
                       // System.out.println("swim");
                     }else{
                        // CoreRegistry.get(Human.class).swim=false;

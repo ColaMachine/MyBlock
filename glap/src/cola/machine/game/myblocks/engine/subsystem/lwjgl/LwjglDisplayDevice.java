@@ -8,6 +8,8 @@ import org.lwjgl.opengl.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.lwjgl.opengl.GL11.glViewport;
+
 /**
  * Created by luying on 14/10/27.
  */
@@ -42,11 +44,13 @@ public class LwjglDisplayDevice implements DisplayDevice {
                 Display.setDisplayMode(config.getRendering().getDisplayMode());
             }
 
-        }catch(){
-
-        } catch (LWJGLException e) {
-            e.printStackTrace();
+        }catch(LWJGLException e){
+            throw new RuntimeException("Can not initialize graphics device.", e);
         }
+        if(resize){
+            glViewport(0, 0, Display.getWidth(), Display.getHeight());
+        }
+
     }
 
     @Override

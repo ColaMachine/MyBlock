@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 
 public class ComponentSystemManager {
 	private static final Logger logger =LoggerFactory.getLogger(ComponentSystemManager.class);
-
+/*
 	private Map<String,ComponentSystem> namedLookup=Maps.newHashMap();
 	private List<UpdateSubscriberSystem> updateSubscribers=Lists.newArrayList();
 	private List<RenderSystem> renderSubscribers=Lists.newArrayList();
@@ -41,5 +41,5 @@ public class ComponentSystemManager {
 		}
 
 		for(Module module : environment.getModuleOrderedByDependecies)
-	}
+	}*/
 }

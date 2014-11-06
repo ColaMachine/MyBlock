@@ -2,9 +2,10 @@ package cola.machine.game.myblocks.resource.data;
 
 import java.awt.image.BufferedImage;
 
+import cola.machine.game.myblocks.asset.AssetData;
 import cola.machine.game.myblocks.resource.ResourceData;
 
-public class TileData implements ResourceData{
+public class TileData implements AssetData {
 
     private BufferedImage image;
 

@@ -421,7 +421,7 @@ public class AnimationEngine extends MyBlockEngine {
             renderSphere();
         }
         endDisplayList();
-		worldRenderer=new WorldRendererLwjgl(WorldProvider,chunkProvider, new LocalPlayerSystem(),camera1,human);
+		//worldRenderer=new WorldRendererLwjgl(WorldProvider,chunkProvider, new LocalPlayerSystem(),camera1,human);
 	}
 
 	/**

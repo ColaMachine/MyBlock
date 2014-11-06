@@ -17,6 +17,8 @@
 package cola.machine.game.myblocks.config;
 
 
+import cola.machine.game.myblocks.Color;
+
 /**
  * @author Immortius
  */
@@ -35,7 +37,7 @@ public class PlayerConfig {
     public Color getColor() {
         return color;
     }
-    
+
     public void setColor(Color color) {
         this.color = color;
     }

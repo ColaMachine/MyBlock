@@ -32,7 +32,7 @@ public abstract class BaseLwjglSubsystem implements EngineSubsystem {
         if(LWJGLUtil.DEBUG){
             try {
                 System.setOut(new PrintStream(System.out, false, Charsets.UTF_8.name()) {
-                    private static Logger logger = LoggerFactory.getLogger("org.lwjgl");
+                    private  Logger logger = LoggerFactory.getLogger("org.lwjgl");
 
 
                     public void print(final String msg){
