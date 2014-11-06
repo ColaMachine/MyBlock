@@ -1,9 +1,9 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
 
+import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.ChunkViewCore;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
 
 public interface GeneratingChunkProvider extends ChunkProvider{

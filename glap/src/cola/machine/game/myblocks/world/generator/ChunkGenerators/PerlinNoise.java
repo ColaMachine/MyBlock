@@ -15,7 +15,8 @@
  */
 package cola.machine.game.myblocks.world.generator.ChunkGenerators;
 
-import cola.machine.game.myblocks.world.chunks.TeraMath;
+import cola.machine.game.myblocks.math.TeraMath;
+
 
 
 /**

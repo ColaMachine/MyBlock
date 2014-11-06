@@ -16,10 +16,11 @@
 
 package cola.machine.game.myblocks.asset.sources;
 
-import org.terasology.asset.AssetSource;
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
 import org.terasology.naming.Name;
+
+import cola.machine.game.myblocks.asset.AssetSource;
+import cola.machine.game.myblocks.asset.AssetType;
+import cola.machine.game.myblocks.asset.AssetUri;
 
 import java.net.URL;
 import java.nio.file.Files;
@@ -73,33 +74,41 @@ public class ClasspathSource implements AssetSource {
         return source.getSourceId();
     }
 
-    @Override
-    public List<URL> get(AssetUri uri) {
-        return source.get(uri);
-    }
+	@Override
+	public List<URL> get(AssetUri uri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public Iterable<AssetUri> list() {
-        return source.list();
-    }
+	@Override
+	public Iterable<AssetUri> list() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public Iterable<AssetUri> list(AssetType type) {
-        return source.list(type);
-    }
+	@Override
+	public Iterable<AssetUri> list(AssetType type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<URL> getOverride(AssetUri uri) {
-        return source.getOverride(uri);
-    }
+	@Override
+	public List<URL> getOverride(AssetUri uri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public Iterable<AssetUri> listOverrides() {
-        return source.listOverrides();
-    }
+	@Override
+	public Iterable<AssetUri> listOverrides() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public Collection<URL> getDelta(AssetUri uri) {
-        return source.getDelta(uri);
-    }
+	@Override
+	public Collection<URL> getDelta(AssetUri uri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+   
 }

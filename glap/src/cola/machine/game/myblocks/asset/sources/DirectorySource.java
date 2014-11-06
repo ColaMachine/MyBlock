@@ -18,8 +18,9 @@ package cola.machine.game.myblocks.asset.sources;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.asset.AssetUri;
 import org.terasology.naming.Name;
+
+import cola.machine.game.myblocks.asset.AssetUri;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

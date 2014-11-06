@@ -20,7 +20,6 @@ import cola.machine.game.myblocks.entitySystem.prefab.Prefab;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.rendering.assets.texture.TextureRegion;
-import com.sun.prism.ps.Shader;
 import org.terasology.naming.Name;
 
 import java.util.List;
@@ -118,18 +117,18 @@ public final class Assets {
      * @param simpleUri The two-part uri for asset ("module:assetName")
      * @return The requested texture, or null if it doesn't exist
      */
-    public static Texture getTexture(String simpleUri) {
-        return get(AssetType.TEXTURE, simpleUri, Texture.class);
-    }
-
-    /**
-     * @param module
-     * @param assetName
-     * @return The requested texture, or null if it doesn't exist
-     */
-    public static Texture getTexture(String module, String assetName) {
-        return get(new AssetUri(AssetType.TEXTURE, module, assetName), Texture.class);
-    }
+//    public static Texture getTexture(String simpleUri) {
+//        return get(AssetType.TEXTURE, simpleUri, Texture.class);
+//    }
+//
+//    /**
+//     * @param module
+//     * @param assetName
+//     * @return The requested texture, or null if it doesn't exist
+//     */
+//    public static Texture getTexture(String module, String assetName) {
+//        return get(new AssetUri(AssetType.TEXTURE, module, assetName), Texture.class);
+//    }
 
 //    /**
 //     * @param module

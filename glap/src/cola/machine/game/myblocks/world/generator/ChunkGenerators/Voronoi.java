@@ -18,7 +18,9 @@ package cola.machine.game.myblocks.world.generator.ChunkGenerators;
 
 import javax.vecmath.Vector2f;
 
-import cola.machine.game.myblocks.world.chunks.TeraMath;
+
+
+import cola.machine.game.myblocks.math.TeraMath;
 
 import java.util.Random;
 

@@ -3,8 +3,10 @@ package cola.machine.game.myblocks.engine.subsystem.lwjgl;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.subsystem.DisplayDevice;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +43,7 @@ public class LwjglDisplayDevice implements DisplayDevice {
                 Display.setFullscreen(true);
             }else{
                 Config config = CoreRegistry.get(Config.class);
-                Display.setDisplayMode(config.getRendering().getDisplayMode());
+                Display.setDisplayMode(new  DisplayMode(800, 600));
             }
 
         }catch(LWJGLException e){

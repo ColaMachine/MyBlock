@@ -18,6 +18,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -26,8 +28,6 @@ import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkBlockIterator;
 import cola.machine.game.myblocks.world.chunks.ChunkConstants;
-import cola.machine.game.myblocks.world.chunks.Region3i;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 

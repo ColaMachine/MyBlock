@@ -13,31 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cola.machine.game.myblocks.world.chunks;
 
-import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
-
+package cola.machine.game.myblocks.input;
 
 /**
+ * The description of an input, whether key, mouse button or mouse wheel.
+ * Immutable.
+ *
  * @author Immortius
  */
-public interface ChunkBlockIterator {
+public interface Input {
 
-    /**
-     * Updates the iterator to the next block
-     *
-     * @return True if a new block was found,
-     */
-    boolean next();
+    InputType getType();
 
-    /**
-     * @return the current block
-     */
-    Block getBlock();
+    int getId();
 
-    /**
-     * @return The world coords of the current block
-     */
-    Vector3i getBlockPos();
+    String getName();
+
+    String getDisplayName();
 }

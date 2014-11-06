@@ -13,9 +13,10 @@ import org.slf4j.LoggerFactory;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.persistence.ChunkStore;
 import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 import com.google.common.collect.Maps;
 
 public class ChunkStoreInternal implements ChunkStore {

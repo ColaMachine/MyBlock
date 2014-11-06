@@ -1,17 +1,28 @@
+/*
+ * Copyright 2014 MovingBlocks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cola.machine.game.myblocks.config;
 
-import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.rendering.cameras.PerspectiveCameraSettings;
-import cola.machine.game.myblocks.rendering.nui.layers.mainMenu.videoSettings.CameraSetting;
-import cola.machine.game.myblocks.rendering.world.ViewDistance;
-
-import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
-
+/**
+ * @author Immortius
+ */
 public class RenderingConfig {
-
     private PixelFormat pixelFormat = new PixelFormat().withDepthBits(24);
     private int windowPosX = -1;
     private int windowPosY = -1;
@@ -114,7 +125,7 @@ public class RenderingConfig {
         return viewDistance;
     }
 
-    /*public void setViewDistance(ViewDistance viewDistance) {
+    public void setViewDistance(ViewDistance viewDistance) {
         this.viewDistance = viewDistance;
 
         // TODO: Remove this, switch to a property change listener
@@ -126,7 +137,7 @@ public class RenderingConfig {
         if (worldRenderer != null) {
             worldRenderer.changeViewDistance(viewDistance);
         }
-    }*/
+    }
 
     public boolean isFlickeringLight() {
         return flickeringLight;
@@ -388,5 +399,6 @@ public class RenderingConfig {
     public String toString() {
         return Config.createGson().toJsonTree(this).toString();
     }
+
 
 }

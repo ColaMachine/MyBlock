@@ -37,9 +37,10 @@ import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkBlockIterator;
 import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 import com.google.common.collect.Lists;
 
 import util.MathUtil;

@@ -16,9 +16,10 @@
 
 package cola.machine.game.myblocks.math;
 
-import org.terasology.world.chunks.ChunkConstants;
 
 import javax.vecmath.Vector3f;
+
+import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 
 /**
  * Collection of math functions.

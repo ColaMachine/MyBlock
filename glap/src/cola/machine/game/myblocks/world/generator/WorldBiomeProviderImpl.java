@@ -16,9 +16,9 @@
 
 package cola.machine.game.myblocks.world.generator;
 
+import cola.machine.game.myblocks.math.TeraMath;
 import cola.machine.game.myblocks.world.WorldBiomeProvider;
 import cola.machine.game.myblocks.world.WorldBiomeProvider.Biome;
-import cola.machine.game.myblocks.world.chunks.TeraMath;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.BrownianNoise3D;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.Noise3D;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.PerlinNoise;

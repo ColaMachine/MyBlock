@@ -15,6 +15,7 @@ import glmodel.GL_Vector;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -101,7 +102,7 @@ public class BlockEngine implements GameEngine{
 
             Collection<EngineSubsystem> subsystemList;
 
-            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
+            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglInput());
 
             // create the app
             BlockEngine engine = new BlockEngine(subsystemList);
@@ -141,7 +142,14 @@ public class BlockEngine implements GameEngine{
 
     @Override
     public void init() {
-
+    	 initConfig();//初始化配置
+    	 for(EngineSubsystem subsystem:subsystems){
+    		 subsystem.preInitialise();//预先初始化各种设备
+    	 }
+    	 
+    	 for(EngineSubsystem subsystem:subsystems){
+    		 subsystem.postInitialise(config);//预先初始化各种设备
+    	 }
     }
 
     @Override
@@ -218,4 +226,27 @@ public class BlockEngine implements GameEngine{
     public void unsubscribeToStateChange(StateChangeSubscriber subscriber) {
 
     }
+    
+
+    private void initConfig() {
+    	
+    	 config = new Config();
+       /* if (Files.isRegularFile(Config.getConfigFile())) {
+            try {
+                config = Config.load(Config.getConfigFile());//加载配置文件
+            } catch (IOException e) {
+                logger.error("Failed to load config", e);
+               
+            }
+        } else {
+            config = new Config();
+        }*/
+       /* if (!config.getDefaultModSelection().hasModule(Constants.CORE_MODULE)) {
+            config.getDefaultModSelection().addModule(Constants.CORE_MODULE);
+        }*/
+       
+        //logger.info("Video Settings: " + config.getRendering().toString());
+        CoreRegistry.putPermanently(Config.class, config);
+    }
+
 }

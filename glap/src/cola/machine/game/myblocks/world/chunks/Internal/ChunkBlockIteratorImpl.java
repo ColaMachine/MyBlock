@@ -15,10 +15,10 @@
  */
 package cola.machine.game.myblocks.world.chunks.Internal;
 
+import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.ChunkBlockIterator;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 
 

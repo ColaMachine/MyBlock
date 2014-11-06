@@ -1,9 +1,13 @@
 package cola.machine.game.myblocks.persistence;
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
+
 import org.terasology.module.Module;
 import org.terasology.naming.Name;
 
+import cola.machine.game.myblocks.engine.modules.ModuleManager;
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 /**
  * Created by luying on 14/11/5.
  */

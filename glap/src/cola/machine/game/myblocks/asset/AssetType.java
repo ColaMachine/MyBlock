@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Lucas Jenss <public@x3ro.de>
  */
 public enum AssetType {
-//    PREFAB("prefab", "prefabs", "prefab", new PrefabLoader(), true),
+   PREFAB("prefab", "prefabs", "prefab", null, true),
 //    SOUND("sound", "sounds", "ogg", new OggSoundLoader(), false),
 //    MUSIC("music", "music", "ogg", new OggStreamingSoundLoader(), false),
 //    SHAPE("shape", "shapes", "shape", new JsonBlockShapeLoader(), false),

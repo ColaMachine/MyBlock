@@ -16,7 +16,8 @@
 
 package math;
 
-import cola.machine.game.myblocks.world.chunks.TeraMath;
+
+import cola.machine.game.myblocks.math.TeraMath;
 
 import com.google.common.base.Preconditions;
 

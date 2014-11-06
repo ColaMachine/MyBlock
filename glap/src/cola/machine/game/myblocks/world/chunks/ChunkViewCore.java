@@ -3,6 +3,8 @@
 package cola.machine.game.myblocks.world.chunks;
 
 
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 public interface ChunkViewCore extends ChunkView {
 
     /**

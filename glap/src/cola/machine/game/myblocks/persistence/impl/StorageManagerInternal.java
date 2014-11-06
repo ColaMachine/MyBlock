@@ -3,8 +3,9 @@ package cola.machine.game.myblocks.persistence.impl;
 
 import cola.machine.game.myblocks.persistence.ChunkStore;
 import cola.machine.game.myblocks.persistence.StorageManager;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 public class StorageManagerInternal implements StorageManager{
 	@Override
 	public ChunkStore loadChunkStore(Vector3i chunkPos) {

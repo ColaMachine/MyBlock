@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.block;
 
-import cola.machine.game.myblocks.world.chunks.Vector3i;
+import cola.machine.game.myblocks.math.Vector3i;
+
 
 /**
  * Created by luying on 14-10-17.

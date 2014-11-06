@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,31 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cola.machine.game.myblocks.world.chunks;
-
-import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
-
+package cola.machine.game.myblocks.entitySystem.system;
 
 /**
  * @author Immortius
  */
-public interface ChunkBlockIterator {
+public abstract class BaseComponentSystem implements ComponentSystem {
 
-    /**
-     * Updates the iterator to the next block
-     *
-     * @return True if a new block was found,
-     */
-    boolean next();
+    @Override
+    public void initialise() {
+    }
 
-    /**
-     * @return the current block
-     */
-    Block getBlock();
+    @Override
+    public void preBegin() {
+    }
 
-    /**
-     * @return The world coords of the current block
-     */
-    Vector3i getBlockPos();
+    @Override
+    public void postBegin() {
+    }
+
+    @Override
+    public void preSave() {
+    }
+
+    @Override
+    public void postSave() {
+    }
+
+    @Override
+    public void shutdown() {
+    }
 }

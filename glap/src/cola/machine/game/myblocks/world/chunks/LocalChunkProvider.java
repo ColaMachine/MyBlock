@@ -2,6 +2,8 @@
 
 package cola.machine.game.myblocks.world.chunks;
 
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;

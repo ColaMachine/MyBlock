@@ -11,9 +11,10 @@ import cola.machine.game.myblocks.repository.BlockRepository;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector3i;
 public class BulletPhysics  {
 
 	public BlockRepository blockRepository=null;

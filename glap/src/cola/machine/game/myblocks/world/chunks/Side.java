@@ -15,9 +15,14 @@
  */
 package cola.machine.game.myblocks.world.chunks;
 
+import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.TeraMath;
+import cola.machine.game.myblocks.math.Vector3i;
+
 import com.google.common.collect.Maps;
 
 import javax.vecmath.Vector3f;
+
 import java.util.EnumMap;
 
 /**

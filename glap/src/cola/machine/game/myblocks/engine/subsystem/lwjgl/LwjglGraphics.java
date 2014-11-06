@@ -7,21 +7,23 @@ import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.subsystem.DisplayDevice;
 import cola.machine.game.myblocks.engine.subsystem.RenderingSubsystemFactory;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.PixelFormat;
 import org.newdawn.slick.opengl.ImageIOImageData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_LEQUAL;
 
 /**
  * Created by luying on 14/10/27.
@@ -68,8 +70,8 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
     @Override
     public void shutdown(Config config) {
         if (!Display.isFullscreen() && Display.isVisible()) {
-            config.getRendering().setWindowPosX(Display.getX());
-            config.getRendering().setWindowPosY(Display.getY());
+            //config.getRendering().setWindowPosX(Display.getX());
+           // config.getRendering().setWindowPosY(Display.getY());
         }
     }
 
@@ -80,10 +82,10 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
 
     private void initDisplay(Config config, LwjglDisplayDevice lwjglDisplay) {
         try {
-            lwjglDisplay.setFullscreen(config.getRendering().isFullscreen(), false);// 不能调整大小
+            lwjglDisplay.setFullscreen(false, false);// 不能调整大小
 
-            RenderingConfig rc = config.getRendering();
-            Display.setLocation(rc.getWindowPosX(), rc.getWindowPosY());
+           // RenderingConfig rc = config.getRendering();
+            Display.setLocation(0, 0);
             Display.setTitle("Terasology" + " | " + "Pre Alpha");
             try {
 
@@ -104,8 +106,8 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
             } catch (IOException | IllegalArgumentException e) {
                 logger.warn("Could not set icon", e);
             }
-            Display.create(rc.getPixelFormat());
-            Display.setVSyncEnabled(rc.isVSync());//确定是否垂直同步
+            Display.create( new PixelFormat().withDepthBits(24));
+            Display.setVSyncEnabled(false);//确定是否垂直同步
         } catch (LWJGLException e) {
             throw new RuntimeException("Can not initialize graphics device.", e);
         }
