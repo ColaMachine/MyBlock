@@ -15,16 +15,11 @@
  */
 package cola.machine.game.myblocks.logic.behavior.nui;
 
-import org.lwjgl.input.Keyboard;
-import org.terasology.input.BindButtonEvent;
-import org.terasology.input.DefaultBinding;
-import org.terasology.input.InputType;
-import org.terasology.input.RegisterBindButton;
 
 /**
  * @author synopia
  */
-@RegisterBindButton(id = "behavior_editor", description = "Toggle Behavior editor")
-@DefaultBinding(type = InputType.KEY, id = Keyboard.KEY_F5)
-public class BTEditorButton extends BindButtonEvent {
+//@RegisterBindButton(id = "behavior_editor", description = "Toggle Behavior editor")
+//@DefaultBinding(type = InputType.KEY, id = Keyboard.KEY_F5)
+public class BTEditorButton {//extends BindButtonEvent {
 }

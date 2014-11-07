@@ -16,12 +16,12 @@
 
 package cola.machine.game.myblocks.config;
 
+import cola.machine.game.myblocks.engine.Constants;
 import com.google.common.collect.Lists;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.terasology.engine.TerasologyConstants;
 
 /**
  * @author Immortius
@@ -32,7 +32,7 @@ public class NetworkConfig implements Iterable<ServerInfo> {
     private int upstreamBandwidth = 1024;
     
     // the port that is used for hosting
-    private int serverPort = TerasologyConstants.DEFAULT_PORT;
+    private int serverPort = Constants.DEFAULT_PORT;
 
     public void clear() {
         servers.clear();

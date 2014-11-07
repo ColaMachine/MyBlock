@@ -18,10 +18,6 @@ package cola.machine.game.myblocks.entitySystem.prefab.internal;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import org.terasology.asset.AssetUri;
-import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabData;
 
 import java.util.List;
 import java.util.Map;
@@ -29,76 +25,77 @@ import java.util.Map;
 /**
  * @author Immortius <immortius@gmail.com>
  */
-public class PojoPrefab extends Prefab {
-
-    private Prefab parent;
-    private Map<Class<? extends Component>, Component> componentMap;
-    private List<Prefab> children = Lists.newArrayList();
-    private boolean persisted;
-    private boolean alwaysRelevant = true;
-
-    public PojoPrefab(AssetUri uri, PrefabData data) {
-        super(uri);
-        reload(data);
-    }
-
-    @Override
-    public Prefab getParent() {
-        return parent;
-    }
-
-    @Override
-    public List<Prefab> getChildren() {
-        return ImmutableList.copyOf(children);
-    }
-
-    @Override
-    public boolean isPersisted() {
-        return persisted;
-    }
-
-    @Override
-    public boolean isAlwaysRelevant() {
-        return alwaysRelevant;
-    }
-
-    @Override
-    public boolean exists() {
-        return true;
-    }
-
-    @Override
-    public boolean hasComponent(Class<? extends Component> component) {
-        return componentMap.containsKey(component);
-    }
-
-    @Override
-    public <T extends Component> T getComponent(Class<T> componentClass) {
-        return componentClass.cast(componentMap.get(componentClass));
-    }
-
-    @Override
-    public Iterable<Component> iterateComponents() {
-        return ImmutableList.copyOf(componentMap.values());
-    }
-
-    @Override
-    public void dispose() {
-    }
-
-    @Override
-    public void reload(PrefabData data) {
-        this.componentMap = ImmutableMap.copyOf(data.getComponents());
-        this.persisted = data.isPersisted();
-        this.alwaysRelevant = data.isAlwaysRelevant();
-        this.parent = data.getParent();
-        if (parent != null && parent instanceof PojoPrefab) {
-            ((PojoPrefab) parent).children.add(this);
-        }
-    }
-
-    @Override
-    public boolean isDisposed() {
-        return false;
-    }
+public class PojoPrefab {
+//        extends Prefab {
+//
+//    private Prefab parent;
+//    private Map<Class<? extends Component>, Component> componentMap;
+//    private List<Prefab> children = Lists.newArrayList();
+//    private boolean persisted;
+//    private boolean alwaysRelevant = true;
+//
+//    public PojoPrefab(AssetUri uri, PrefabData data) {
+//        super(uri);
+//        reload(data);
+//    }
+//
+//    @Override
+//    public Prefab getParent() {
+//        return parent;
+//    }
+//
+//    @Override
+//    public List<Prefab> getChildren() {
+//        return ImmutableList.copyOf(children);
+//    }
+//
+//    @Override
+//    public boolean isPersisted() {
+//        return persisted;
+//    }
+//
+//    @Override
+//    public boolean isAlwaysRelevant() {
+//        return alwaysRelevant;
+//    }
+//
+//    @Override
+//    public boolean exists() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean hasComponent(Class<? extends Component> component) {
+//        return componentMap.containsKey(component);
+//    }
+//
+//    @Override
+//    public <T extends Component> T getComponent(Class<T> componentClass) {
+//        return componentClass.cast(componentMap.get(componentClass));
+//    }
+//
+//    @Override
+//    public Iterable<Component> iterateComponents() {
+//        return ImmutableList.copyOf(componentMap.values());
+//    }
+//
+//    @Override
+//    public void dispose() {
+//    }
+//
+//    @Override
+//    public void reload(PrefabData data) {
+//        this.componentMap = ImmutableMap.copyOf(data.getComponents());
+//        this.persisted = data.isPersisted();
+//        this.alwaysRelevant = data.isAlwaysRelevant();
+//        this.parent = data.getParent();
+//        if (parent != null && parent instanceof PojoPrefab) {
+//            ((PojoPrefab) parent).children.add(this);
+//        }
+//    }
+//
+//    @Override
+//    public boolean isDisposed() {
+//        return false;
+//    }
 }

@@ -15,15 +15,9 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
+import cola.machine.game.myblocks.entitySystem.Component;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.google.common.collect.Maps;
-import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.metadata.ComponentMetadata;
-import org.terasology.entitySystem.metadata.EntitySystemLibrary;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.module.sandbox.API;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.logic.SkeletalMeshComponent;
 
 import java.util.Map;
 
@@ -35,8 +29,7 @@ import java.util.Map;
  *
  * @author synopia
  */
-@API
-public class Actor {
+public class Actor {/*
     private final EntityRef minion;
     private final Map<String, Object> blackboard;
 
@@ -96,5 +89,5 @@ public class Actor {
 
     public EntityRef minion() {
         return minion;
-    }
+    }*/
 }

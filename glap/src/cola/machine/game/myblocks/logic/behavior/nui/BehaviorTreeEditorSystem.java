@@ -15,31 +15,24 @@
  */
 package cola.machine.game.myblocks.logic.behavior.nui;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.input.ButtonState;
-import org.terasology.network.ClientComponent;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.NUIManager;
 
 /**
  * Opens the bt editor screen.
  *
  * @author synopia
  */
-@RegisterSystem
-public class BehaviorTreeEditorSystem extends BaseComponentSystem {
-
-    @In
-    private NUIManager nuiManager;
-
-    @ReceiveEvent(components = ClientComponent.class)
-    public void onToggleConsole(BTEditorButton event, EntityRef entity) {
-        if (event.getState() == ButtonState.DOWN) {
-            nuiManager.toggleScreen("engine:behaviorEditorScreen");
-            event.consume();
-        }
-    }
+//@RegisterSystem
+public class BehaviorTreeEditorSystem{
+//        extends BaseComponentSystem {
+//
+//    @In
+//    private NUIManager nuiManager;
+//
+//    @ReceiveEvent(components = ClientComponent.class)
+//    public void onToggleConsole(BTEditorButton event, EntityRef entity) {
+//        if (event.getState() == ButtonState.DOWN) {
+//            nuiManager.toggleScreen("engine:behaviorEditorScreen");
+//            event.consume();
+//        }
+//    }
 }

@@ -125,6 +125,7 @@ public class RenderingDebugConfig {
 
     @Override
     public String toString() {
+        //return "";
         return Config.createGson().toJsonTree(this).toString();
     }
 }

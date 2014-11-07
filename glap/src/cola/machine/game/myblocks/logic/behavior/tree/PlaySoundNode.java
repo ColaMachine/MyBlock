@@ -15,14 +15,6 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.asset.AssetManager;
-import org.terasology.asset.AssetUri;
-import org.terasology.audio.AudioEndListener;
-import org.terasology.audio.AudioManager;
-import org.terasology.audio.StaticSound;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.properties.OneOf;
-import org.terasology.rendering.nui.properties.Range;
 
 import javax.vecmath.Vector3f;
 
@@ -35,70 +27,70 @@ import javax.vecmath.Vector3f;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-public class PlaySoundNode extends Node {
-    @OneOf.Provider(name = "sounds")
-    private AssetUri sound;
-    @Range(min = 0, max = 1)
-    private float volume;
-
-    @Override
-    public Task createTask() {
-        return new PlaySoundTask(this);
-    }
-
-    public static class PlaySoundTask extends Task implements AudioEndListener {
-        @In
-        private AudioManager audioManager;
-        @In
-        private AssetManager assetManager;
-        private boolean playing;
-        private boolean finished;
-
-        public PlaySoundTask(Node node) {
-            super(node);
-        }
-
-        @Override
-        public void onInitialize() {
-            AssetUri uri = getNode().sound;
-            if (uri != null) {
-                StaticSound snd = assetManager.loadAsset(uri, StaticSound.class);
-                if (snd != null) {
-                    if (actor().hasLocation()) {
-                        Vector3f worldPosition = actor().location().getWorldPosition();
-                        audioManager.playSound(snd, worldPosition, getNode().volume, AudioManager.PRIORITY_NORMAL, this);
-                    } else {
-                        audioManager.playSound(snd, new Vector3f(), getNode().volume, AudioManager.PRIORITY_NORMAL, this);
-                    }
-                    playing = true;
-                }
-            }
-        }
-
-        @Override
-        public void onAudioEnd() {
-            if (playing) {
-                playing = false;
-                finished = true;
-            }
-        }
-
-        @Override
-        public Status update(float dt) {
-            if (finished) {
-                return Status.SUCCESS;
-            }
-            return playing ? Status.RUNNING : Status.FAILURE;
-        }
-
-        @Override
-        public void handle(Status result) {
-
-        }
-
-        @Override
-        public PlaySoundNode getNode() {
-            return (PlaySoundNode) super.getNode();
-        }
-    }
+public class PlaySoundNode{// extends Node {
+//    @OneOf.Provider(name = "sounds")
+//    private AssetUri sound;
+//    @Range(min = 0, max = 1)
+//    private float volume;
+//
+//    @Override
+//    public Task createTask() {
+//        return new PlaySoundTask(this);
+//    }
+//
+//    public static class PlaySoundTask extends Task implements AudioEndListener {
+//        @In
+//        private AudioManager audioManager;
+//        @In
+//        private AssetManager assetManager;
+//        private boolean playing;
+//        private boolean finished;
+//
+//        public PlaySoundTask(Node node) {
+//            super(node);
+//        }
+//
+//        @Override
+//        public void onInitialize() {
+//            AssetUri uri = getNode().sound;
+//            if (uri != null) {
+//                StaticSound snd = assetManager.loadAsset(uri, StaticSound.class);
+//                if (snd != null) {
+//                    if (actor().hasLocation()) {
+//                        Vector3f worldPosition = actor().location().getWorldPosition();
+//                        audioManager.playSound(snd, worldPosition, getNode().volume, AudioManager.PRIORITY_NORMAL, this);
+//                    } else {
+//                        audioManager.playSound(snd, new Vector3f(), getNode().volume, AudioManager.PRIORITY_NORMAL, this);
+//                    }
+//                    playing = true;
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void onAudioEnd() {
+//            if (playing) {
+//                playing = false;
+//                finished = true;
+//            }
+//        }
+//
+//        @Override
+//        public Status update(float dt) {
+//            if (finished) {
+//                return Status.SUCCESS;
+//            }
+//            return playing ? Status.RUNNING : Status.FAILURE;
+//        }
+//
+//        @Override
+//        public void handle(Status result) {
+//
+//        }
+//
+//        @Override
+//        public PlaySoundNode getNode() {
+//            return (PlaySoundNode) super.getNode();
+//        }
+//    }
 }

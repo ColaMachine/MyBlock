@@ -18,29 +18,23 @@ package cola.machine.game.myblocks.entitySystem.system;
 /**
  * @author Immortius
  */
-public abstract class BaseComponentSystem implements ComponentSystem {
+public abstract class BaseComponentSystem {//implements ComponentSystem {
 
-    @Override
     public void initialise() {
     }
 
-    @Override
     public void preBegin() {
     }
 
-    @Override
     public void postBegin() {
     }
 
-    @Override
     public void preSave() {
     }
 
-    @Override
     public void postSave() {
     }
 
-    @Override
     public void shutdown() {
     }
 }

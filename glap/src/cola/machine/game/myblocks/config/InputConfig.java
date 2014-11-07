@@ -37,7 +37,7 @@ public class InputConfig {
     }
 
     public void reset() {
-        binds.setBinds(BindsConfig.createDefault());
+        //binds.setBinds(BindsConfig.createDefault());
         InputConfig defaultConfig = new InputConfig();
         setMouseSensitivity(defaultConfig.mouseSensitivity);
         setMouseYAxisInverted(defaultConfig.mouseYAxisInverted);

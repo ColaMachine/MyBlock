@@ -15,8 +15,6 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.module.sandbox.API;
-import org.terasology.rendering.nui.properties.OneOf;
 
 /**
  * All children are evaluated in parallel. Policies for success and failure will define when this node finishes and in which state.<br/>
@@ -26,16 +24,16 @@ import org.terasology.rendering.nui.properties.OneOf;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@API
+//@API
 public class ParallelNode extends CompositeNode {
     public enum Policy {
         RequireOne,
         RequireAll
     }
 
-    @OneOf.Enum
+    //@OneOf.Enum
     private Policy successPolicy;
-    @OneOf.Enum
+    //@OneOf.Enum
     private Policy failurePolicy;
 
     public ParallelNode() {

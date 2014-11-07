@@ -35,7 +35,6 @@ import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Vector3i;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.HeightMapWorldGenerator;

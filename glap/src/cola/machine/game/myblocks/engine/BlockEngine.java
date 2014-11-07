@@ -6,15 +6,10 @@ import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglInput;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglTimer;
-import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.utilities.concurrency.Task;
 import cola.machine.game.myblocks.utilities.concurrency.TaskMaster;
-import glapp.*;
-import glmodel.GLModel;
-import glmodel.GL_Vector;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,8 +17,6 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.Set;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.crashreporter.CrashReporter;
@@ -32,34 +25,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 
-import time.Time;
 import cola.machine.game.myblocks.config.Config;
-import cola.machine.game.myblocks.control.DropControlCenter;
-import cola.machine.game.myblocks.control.MouseControlCenter;
-import cola.machine.game.myblocks.item.weapons.Sword;
-import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
-import cola.machine.game.myblocks.magicbean.fireworks.Firework;
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.ui.NuiManager;
-import cola.machine.game.myblocks.persistence.StorageManager;
-import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
-import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.rendering.world.WorldRenderer;
-import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
-import cola.machine.game.myblocks.repository.BlockRepository;
-import cola.machine.game.myblocks.resource.ResourceManager;
-import cola.machine.game.myblocks.switcher.Switcher;
-import cola.machine.game.myblocks.world.Skysphere;
-import cola.machine.game.myblocks.world.WorldProvider;
-import cola.machine.game.myblocks.world.block.BlockManager;
-import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
-import cola.machine.game.myblocks.world.chunks.ChunkProvider;
-import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
-import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
-import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 
 /**
  * Run a bare-bones GLApp. Draws one white triangle centered on screen.
@@ -231,7 +198,7 @@ public class BlockEngine implements GameEngine{
     private void initConfig() {
     	
     	 config = new Config();
-       /* if (Files.isRegularFile(Config.getConfigFile())) {
+        if (Files.isRegularFile(Config.getConfigFile())) {
             try {
                 config = Config.load(Config.getConfigFile());//加载配置文件
             } catch (IOException e) {
@@ -240,7 +207,7 @@ public class BlockEngine implements GameEngine{
             }
         } else {
             config = new Config();
-        }*/
+        }
        /* if (!config.getDefaultModSelection().hasModule(Constants.CORE_MODULE)) {
             config.getDefaultModSelection().addModule(Constants.CORE_MODULE);
         }*/

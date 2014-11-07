@@ -43,7 +43,7 @@ public class LookupNode extends Node {
         @Override
         public void onInitialize() {
             if (getNode().tree != null) {
-                start(getNode().tree.getRoot());
+              //  start(getNode().tree.getRoot());
             }
         }
 

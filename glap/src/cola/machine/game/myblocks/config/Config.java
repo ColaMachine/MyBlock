@@ -66,7 +66,7 @@ public final class Config {
 //    private PlayerConfig player = new PlayerConfig();
 //    private InputConfig input = new InputConfig();
 //    private AudioConfig audio = new AudioConfig();
-//    private RenderingConfig rendering = new RenderingConfig();
+    private RenderingConfig rendering = new RenderingConfig();
 //    private ModuleConfig defaultModSelection = new ModuleConfig();
 //    private WorldGenerationConfig worldGeneration = new WorldGenerationConfig();
 //    private Map<SimpleUri, Map<String, JsonElement>> moduleConfigs = Maps.newHashMap();
@@ -129,12 +129,12 @@ public final class Config {
 //        }
 //    }
 //
-//    /**
-//     * @return The default configuration file location
-//     */
-//    public static Path getConfigFile() {
-//        return PathManager.getInstance().getHomePath().resolve("config.cfg");
-//    }
+    /**
+     * @return The default configuration file location
+     */
+    public static Path getConfigFile() {
+        return PathManager.getInstance().getHomePath().resolve("config.cfg");
+    }
 //
 //    /**
 //     * Saves a Config to a file, in a JSON format
@@ -156,37 +156,37 @@ public final class Config {
 //     * @return The loaded configuration
 //     * @throws IOException
 //     */
-//    public static Config load(Path fromFile) throws IOException {
-//        logger.info("Reading config file {}", fromFile);
-//        try (Reader reader = Files.newBufferedReader(fromFile, Constants.CHARSET)) {
-//            Gson gson = createGson();
-//            JsonElement baseConfig = gson.toJsonTree(new Config());
-//            JsonParser parser = new JsonParser();
-//            JsonElement config = parser.parse(reader);
-//            if (!config.isJsonObject()) {
-//                return new Config();
-//            } else {
-//                merge(baseConfig.getAsJsonObject(), config.getAsJsonObject());
-//                return gson.fromJson(baseConfig, Config.class);
-//            }
-//        } catch (JsonParseException e) {
-//            throw new IOException("Failed to load config", e);
-//        }
-//    }
+    public static Config load(Path fromFile) throws IOException {
+        logger.info("Reading config file {}", fromFile);
+        try (Reader reader = Files.newBufferedReader(fromFile, Constants.CHARSET)) {
+            Gson gson = createGson();
+            JsonElement baseConfig = gson.toJsonTree(new Config());
+            JsonParser parser = new JsonParser();
+            JsonElement config = parser.parse(reader);
+            if (!config.isJsonObject()) {
+                return new Config();
+            } else {
+                merge(baseConfig.getAsJsonObject(), config.getAsJsonObject());
+                return gson.fromJson(baseConfig, Config.class);
+            }
+        } catch (JsonParseException e) {
+            throw new IOException("Failed to load config", e);
+        }
+    }
 //
-//    protected static Gson createGson() {
-//        return new GsonBuilder().setPrettyPrinting().create();
-//               /* .registerTypeAdapter(Name.class, new NameTypeAdapter())//if the variable instance of name then the value process by nametype adpter
-//                .registerTypeAdapter(Version.class, new VersionTypeAdapter())
-//                .registerTypeAdapter(BindsConfig.class, new BindsConfig.Handler())
-//                .registerTypeAdapter(SetMultimap.class, new SetMultimapTypeAdapter<>(Input.class))
-//                .registerTypeAdapter(SecurityConfig.class, new SecurityConfig.Handler())
-//                .registerTypeAdapter(Input.class, new InputHandler())
-//                .registerTypeAdapter(PixelFormat.class, new PixelFormatHandler())
-//                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
-//                .registerTypeAdapterFactory(new UriTypeAdapterFactory())
-//                */
-//    }
+    protected static Gson createGson() {
+        return new GsonBuilder().setPrettyPrinting().create();
+               /* .registerTypeAdapter(Name.class, new NameTypeAdapter())//if the variable instance of name then the value process by nametype adpter
+                .registerTypeAdapter(Version.class, new VersionTypeAdapter())
+                .registerTypeAdapter(BindsConfig.class, new BindsConfig.Handler())
+                .registerTypeAdapter(SetMultimap.class, new SetMultimapTypeAdapter<>(Input.class))
+                .registerTypeAdapter(SecurityConfig.class, new SecurityConfig.Handler())
+                .registerTypeAdapter(Input.class, new InputHandler())
+                .registerTypeAdapter(PixelFormat.class, new PixelFormatHandler())
+                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
+                .registerTypeAdapterFactory(new UriTypeAdapterFactory())
+                */
+    }
 //
 //    private static Gson createGsonForModules() {
 //        return new GsonBuilder().setPrettyPrinting().create();
@@ -195,21 +195,21 @@ public final class Config {
 //                */
 //    }
 //
-//    private static void merge(JsonObject target, JsonObject from) {
-//        for (Map.Entry<String, JsonElement> entry : from.entrySet()) {
-//            if (entry.getValue().isJsonObject()) {
-//                if (target.has(entry.getKey()) && target.get(entry.getKey()).isJsonObject()) {
-//                    merge(target.get(entry.getKey()).getAsJsonObject(), entry.getValue().getAsJsonObject());
-//                } else {
-//                    target.remove(entry.getKey());
-//                    target.add(entry.getKey(), entry.getValue());
-//                }
-//            } else {
-//                target.remove(entry.getKey());
-//                target.add(entry.getKey(), entry.getValue());
-//            }
-//        }
-//    }
+    private static void merge(JsonObject target, JsonObject from) {
+        for (Map.Entry<String, JsonElement> entry : from.entrySet()) {
+            if (entry.getValue().isJsonObject()) {
+                if (target.has(entry.getKey()) && target.get(entry.getKey()).isJsonObject()) {
+                    merge(target.get(entry.getKey()).getAsJsonObject(), entry.getValue().getAsJsonObject());
+                } else {
+                    target.remove(entry.getKey());
+                    target.add(entry.getKey(), entry.getValue());
+                }
+            } else {
+                target.remove(entry.getKey());
+                target.add(entry.getKey(), entry.getValue());
+            }
+        }
+    }
 //
 //    /**
 //     * @param uri the uri to look uo

@@ -16,7 +16,6 @@
 
 package cola.machine.game.myblocks.asset;
 
-import cola.machine.game.myblocks.resource.loader.TileLoader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -56,7 +55,7 @@ public enum AssetType {
 //    },
 //    MATERIAL("material", "materials", "mat", new MaterialLoader(), false),
 //    BLOCK_DEFINITION("blockdef", "blocks", "block", null, false),
-    BLOCK_TILE("blocktile", "blockTiles", "png", new TileLoader(), false);
+    BLOCK_TILE("blocktile", "blockTiles", "png", null, false);
 //    SKELETON_MESH("skeletalmesh", "skeletalMesh", new String[]{"md5mesh", "dae"}, new AssetLoader[]{new MD5SkeletonLoader(), new ColladaSkeletalMeshLoader()}, false),
 //    ANIMATION("animation", "animations", "md5anim", new MD5AnimationLoader(), false),
 //    FONT("font", "fonts", "fnt", new FontLoader(), false),

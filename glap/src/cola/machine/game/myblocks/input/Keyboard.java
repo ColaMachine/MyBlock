@@ -32,8 +32,8 @@ public final class Keyboard {
     private Keyboard() {
     }
 
-    public static boolean isKeyDown(int key) {
-        return CoreRegistry.get(InputSystem.class).getKeyboard().isKeyDown(key);
+    public static boolean isKeyDown(int key) {return false;
+       // return CoreRegistry.get(InputSystem.class).getKeyboard().isKeyDown(key);
     }
 
     public static class KeyId {

@@ -43,7 +43,7 @@ public class PojoPrefabManager implements PrefabManager {
     @Override
     public Prefab getPrefab(String name) {
         if (!name.isEmpty()) {
-            return Assets.getPrefab(name);
+           // return Assets.getPrefab(name);
         }
         return null;
 
@@ -54,7 +54,7 @@ public class PojoPrefabManager implements PrefabManager {
      */
     @Override
     public boolean exists(String name) {
-        return Assets.getPrefab(name) != null;
+        return false;//Assets.getPrefab(name) != null;
     }
 
     /**

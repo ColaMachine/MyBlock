@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.config.RenderingConfig;
 import cola.machine.game.myblocks.engine.ComponentSystemManager;
 import cola.machine.game.myblocks.engine.modes.GameState;
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.DisplayDevice;
 import cola.machine.game.myblocks.engine.subsystem.RenderingSubsystemFactory;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -22,6 +23,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -86,12 +88,14 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
 
            // RenderingConfig rc = config.getRendering();
             Display.setLocation(0, 0);
-            Display.setTitle("Terasology" + " | " + "Pre Alpha");
+            Display.setTitle("myblock" + " | " + "alpha");
             try {
 
-                String root = "org/terasology/icons/";
+                String root = "icons/";
                 ClassLoader classLoader = getClass().getClassLoader();
-
+//logger.debug("current class loader:"+classLoader.toString());
+                //Path path = PathManager.getInstance().getHomePath().resolve("icons");
+                //Files.createi
                 BufferedImage icon16 = ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_16.png"));
                 BufferedImage icon32 = ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_32.png"));
                 BufferedImage icon64 = ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_64.png"));

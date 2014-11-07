@@ -15,79 +15,76 @@
  */
 package cola.machine.game.myblocks.logic.behavior.nui;
 
-import org.terasology.logic.behavior.asset.BehaviorTree;
-import org.terasology.logic.behavior.tree.Interpreter;
-import org.terasology.logic.behavior.tree.Node;
-import org.terasology.logic.behavior.tree.Status;
 
 /**
  * @author synopia
  */
-public class BehaviorDebugger implements Interpreter.Debugger {
-    private BehaviorTree tree;
-    private int ticksToRun = -1;
-
-    public BehaviorDebugger() {
-    }
-
-    public void pause() {
-        ticksToRun = 0;
-    }
-
-    public void run() {
-        ticksToRun = -1;
-    }
-
-    public void step() {
-        ticksToRun = 1;
-    }
-
-    @Override
-    public void nodeFinished(Node node, Status status) {
-        if (tree == null) {
-            return;
-        }
-        RenderableNode renderableNode = tree.getRenderableNode(node);
-        if (renderableNode != null) {
-            renderableNode.setStatus(status);
-        }
-    }
-
-    @Override
-    public void nodeUpdated(Node node, Status status) {
-        if (tree == null) {
-            return;
-        }
-        RenderableNode renderableNode = tree.getRenderableNode(node);
-        if (renderableNode != null) {
-            renderableNode.setStatus(status);
-        }
-    }
-
-    @Override
-    public void started() {
-        if (tree == null) {
-            return;
-        }
-        for (RenderableNode renderableNode : tree.getRenderableNodes()) {
-            renderableNode.setStatus(null);
-        }
-    }
-
-    @Override
-    public boolean beforeTick() {
-        return ticksToRun != 0;
-    }
-
-    @Override
-    public void afterTick() {
-        if (ticksToRun > 0) {
-            ticksToRun--;
-        }
-    }
-
-    public void setTree(BehaviorTree selectedTree) {
-        tree = selectedTree;
-        started();
-    }
+public class BehaviorDebugger{
+//        implements Interpreter.Debugger {
+//    private BehaviorTree tree;
+//    private int ticksToRun = -1;
+//
+//    public BehaviorDebugger() {
+//    }
+//
+//    public void pause() {
+//        ticksToRun = 0;
+//    }
+//
+//    public void run() {
+//        ticksToRun = -1;
+//    }
+//
+//    public void step() {
+//        ticksToRun = 1;
+//    }
+//
+//    @Override
+//    public void nodeFinished(Node node, Status status) {
+//        if (tree == null) {
+//            return;
+//        }
+//        RenderableNode renderableNode = tree.getRenderableNode(node);
+//        if (renderableNode != null) {
+//            renderableNode.setStatus(status);
+//        }
+//    }
+//
+//    @Override
+//    public void nodeUpdated(Node node, Status status) {
+//        if (tree == null) {
+//            return;
+//        }
+//        RenderableNode renderableNode = tree.getRenderableNode(node);
+//        if (renderableNode != null) {
+//            renderableNode.setStatus(status);
+//        }
+//    }
+//
+//    @Override
+//    public void started() {
+//        if (tree == null) {
+//            return;
+//        }
+//        for (RenderableNode renderableNode : tree.getRenderableNodes()) {
+//            renderableNode.setStatus(null);
+//        }
+//    }
+//
+//    @Override
+//    public boolean beforeTick() {
+//        return ticksToRun != 0;
+//    }
+//
+//    @Override
+//    public void afterTick() {
+//        if (ticksToRun > 0) {
+//            ticksToRun--;
+//        }
+//    }
+//
+//    public void setTree(BehaviorTree selectedTree) {
+//        tree = selectedTree;
+//        started();
+//    }
 }

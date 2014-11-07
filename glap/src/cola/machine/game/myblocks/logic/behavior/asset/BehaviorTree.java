@@ -31,61 +31,63 @@ import java.util.List;
  *
  * @author synopia
  */
-public class BehaviorTree extends AbstractAsset<BehaviorTreeData> {
-    private BehaviorTreeData data;
+public class BehaviorTree {
+//    extends
+//} AbstractAsset<BehaviorTreeData> {
+//    private BehaviorTreeData data;
+//
+//    public BehaviorTree(AssetUri uri, BehaviorTreeData data) {
+//        super(uri);
+//        this.data = data;
+//    }
 
-    public BehaviorTree(AssetUri uri, BehaviorTreeData data) {
-        super(uri);
-        this.data = data;
-    }
-
-    public Node getRoot() {
-        return data.getRoot();
-    }
-
-    public BehaviorTreeData getData() {
-        return data;
-    }
-
-    public RenderableNode getRenderableNode(Node node) {
-        return data.getRenderableNode(node);
-    }
-
-    public List<RenderableNode> getRenderableNodes() {
-        if (!data.hasRenderable()) {
-            data.createRenderable();
-            layout(null);
-        }
-        return data.getRenderableNodes();
-    }
-
-    public void layout(RenderableNode start) {
-        data.layout(start);
-    }
-
-    @Override
-    public String toString() {
-        return getURI().getAssetName().toString();
-    }
-
-    @Override
-    public void reload(BehaviorTreeData newData) {
-        this.data = newData;
-    }
-
-    @Override
-    public void dispose() {
-        this.data = null;
-    }
-
-    @Override
-    public boolean isDisposed() {
-        return data == null;
-    }
-
-    public RenderableNode createNode(Node node) {
-        RenderableNode renderable = data.createRenderable(node);
-        data.layout(renderable);
-        return renderable;
-    }
+//    public Node getRoot() {
+//        return data.getRoot();
+//    }
+//
+//    public BehaviorTreeData getData() {
+//        return data;
+//    }
+//
+//    public RenderableNode getRenderableNode(Node node) {
+//        return data.getRenderableNode(node);
+//    }
+//
+//    public List<RenderableNode> getRenderableNodes() {
+//        if (!data.hasRenderable()) {
+//            data.createRenderable();
+//            layout(null);
+//        }
+//        return data.getRenderableNodes();
+//    }
+//
+//    public void layout(RenderableNode start) {
+//        data.layout(start);
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return getURI().getAssetName().toString();
+//    }
+//
+//    @Override
+//    public void reload(BehaviorTreeData newData) {
+//        this.data = newData;
+//    }
+//
+//    @Override
+//    public void dispose() {
+//        this.data = null;
+//    }
+//
+//    @Override
+//    public boolean isDisposed() {
+//        return data == null;
+//    }
+//
+//    public RenderableNode createNode(Node node) {
+//        RenderableNode renderable = data.createRenderable(node);
+//        data.layout(renderable);
+//        return renderable;
+//    }
 }

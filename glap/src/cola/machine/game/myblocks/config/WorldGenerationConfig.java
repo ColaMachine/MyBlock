@@ -16,7 +16,8 @@
 
 package cola.machine.game.myblocks.config;
 
-import org.terasology.engine.SimpleUri;
+
+import cola.machine.game.myblocks.engine.SimpleUri;
 
 /**
  * @author Immortius

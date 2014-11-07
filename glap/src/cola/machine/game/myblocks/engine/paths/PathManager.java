@@ -15,7 +15,7 @@ import org.lwjgl.LWJGLUtil;
 import com.google.common.collect.ImmutableList;
 
 public class PathManager {
-    public static final String TERASOLOGY_FOLDER_NAME = "Terasology";
+    public static final String TERASOLOGY_FOLDER_NAME = "myblock";
     public static final Path LINUX_HOME_SUBPATH =null; //Paths.get(".local", "share", "terasology");
 
     private static final String SAVED_GAMES_DIR = "saves";

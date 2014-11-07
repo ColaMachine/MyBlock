@@ -67,225 +67,225 @@ public final class BindsConfig {
     public BindsConfig() {
     }
 
-    /**
-     * Sets this BindsConfig to be identical to other
-     *
-     * @param other The BindsConfig to copy
-     */
-    public void setBinds(BindsConfig other) {
-        data.clear();
-        data.putAll(other.data);
-    }
-
-    public Collection<Input> getBinds(SimpleUri uri) {
-        return data.get(uri);
-    }
-
-    /**
-     * Returns whether an input bind has been registered with the BindsConfig.
-     * It may just have trivial None input.
-     *
-     * @param uri The bind's uri
-     * @return Whether the given bind has been registered with the BindsConfig
-     */
-    public boolean hasBinds(SimpleUri uri) {
-        return !data.get(uri).isEmpty();
-    }
-
-    /**
-     * Sets the inputs for a given bind, replacing any previous inputs
-     *
-     * @param bindUri
-     * @param inputs
-     */
-    public void setBinds(SimpleUri bindUri, Input... inputs) {
-        setBinds(bindUri, Arrays.asList(inputs));
-    }
-
-    public void setBinds(SimpleUri bindUri, Iterable<Input> inputs) {
-        Set<Input> uniqueInputs = Sets.newLinkedHashSet(inputs);
-
-        // Clear existing usages of the given inputs
-        Iterator<Input> iterator = data.values().iterator();
-        while (iterator.hasNext()) {
-            Input i = iterator.next();
-            if (uniqueInputs.contains(i)) {
-                iterator.remove();
-            }
-        }
-        data.replaceValues(bindUri, uniqueInputs);
-    }
-
-    /**
-     * @return A new BindsConfig, with inputs set from the DefaultBinding annotations on bind classes
-     */
-    public static BindsConfig createDefault() {
-        ModuleManager moduleManager = CoreRegistry.get(ModuleManager.class);
-        BindsConfig config = new BindsConfig();
-        DependencyResolver resolver = new DependencyResolver(moduleManager.getRegistry());
-        for (Name moduleId : moduleManager.getRegistry().getModuleIds()) {
-            if (moduleManager.getRegistry().getLatestModuleVersion(moduleId).isCodeModule()) {
-                ResolutionResult result = resolver.resolve(moduleId);
-                if (result.isSuccess()) {
-                    try (ModuleEnvironment environment = moduleManager.loadEnvironment(result.getModules(), false)) {
-                        config.addDefaultsFor(moduleId, environment.getTypesAnnotatedWith(RegisterBindButton.class, new FromModule(environment, moduleId)));
-                    }
-                }
-            }
-        }
-        return config;
-    }
-
-    /**
-     * Updates a config with any binds that it may be missing, through reflection over RegisterBindButton annotations
-     */
-    public void updateForChangedMods() {
-        ModuleManager moduleManager = CoreRegistry.get(ModuleManager.class);
-        DependencyResolver resolver = new DependencyResolver(moduleManager.getRegistry());
-        for (Name moduleId : moduleManager.getRegistry().getModuleIds()) {
-            if (moduleManager.getRegistry().getLatestModuleVersion(moduleId).isCodeModule()) {
-                ResolutionResult result = resolver.resolve(moduleId);
-                if (result.isSuccess()) {
-                    try (ModuleEnvironment environment = moduleManager.loadEnvironment(result.getModules(), false)) {
-                        updateInputsFor(moduleId, environment.getTypesAnnotatedWith(RegisterBindButton.class, new FromModule(environment, moduleId)));
-                    }
-                }
-            }
-        }
-    }
-
-    private void updateInputsFor(Name moduleId, Iterable<Class<?>> classes) {
-        for (Class<?> buttonEvent : classes) {
-            if (ButtonEvent.class.isAssignableFrom(buttonEvent)) {
-                RegisterBindButton info = buttonEvent.getAnnotation(RegisterBindButton.class);
-                SimpleUri bindUri = new SimpleUri(moduleId, info.id());
-                if (!hasBinds(bindUri)) {
-                    addBind(moduleId, buttonEvent, info);
-                }
-            }
-        }
-    }
-
-    private void addDefaultsFor(Name moduleId, Iterable<Class<?>> classes) {
-        for (Class<?> buttonEvent : classes) {
-            if (ButtonEvent.class.isAssignableFrom(buttonEvent)) {
-                RegisterBindButton info = buttonEvent.getAnnotation(RegisterBindButton.class);
-                addBind(moduleId, buttonEvent, info);
-            }
-        }
-    }
-
-    private void addBind(Name moduleName, Class<?> buttonEvent, RegisterBindButton info) {
-        List<Input> defaultInputs = Lists.newArrayList();
-        for (Annotation annotation : buttonEvent.getAnnotations()) {
-            if (annotation instanceof DefaultBinding) {
-                DefaultBinding defaultBinding = (DefaultBinding) annotation;
-                Input input = defaultBinding.type().getInput(defaultBinding.id());
-                if (!data.values().contains(input)) {
-                    defaultInputs.add(input);
-                }
-            }
-        }
-        SimpleUri bindUri = new SimpleUri(moduleName, info.id());
-        setBinds(bindUri, defaultInputs.toArray(new Input[defaultInputs.size()]));
-    }
-
-    public void applyBinds(InputSystem inputSystem, ModuleManager moduleManager) {
-        inputSystem.clearBinds();
-        registerButtonBinds(inputSystem, moduleManager.getEnvironment(), moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindButton.class));
-        registerAxisBinds(inputSystem, moduleManager.getEnvironment(), moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindAxis.class));
-    }
-
-    private void registerAxisBinds(InputSystem inputSystem, ModuleEnvironment environment, Iterable<Class<?>> classes) {
-        for (Class registerBindClass : classes) {
-            RegisterBindAxis info = (RegisterBindAxis) registerBindClass.getAnnotation(RegisterBindAxis.class);
-            Name moduleId = environment.getModuleProviding(registerBindClass);
-            SimpleUri id = new SimpleUri(moduleId, info.id());
-            if (BindAxisEvent.class.isAssignableFrom(registerBindClass)) {
-                BindableButton positiveButton = inputSystem.getBindButton(new SimpleUri(info.positiveButton()));
-                BindableButton negativeButton = inputSystem.getBindButton(new SimpleUri(info.negativeButton()));
-                if (positiveButton == null) {
-                    logger.warn("Failed to register axis \"{}\", missing positive button \"{}\"", id, info.positiveButton());
-                    continue;
-                }
-                if (negativeButton == null) {
-                    logger.warn("Failed to register axis \"{}\", missing negative button \"{}\"", id, info.negativeButton());
-                    continue;
-                }
-                try {
-                    BindableAxis bindAxis = inputSystem.registerBindAxis(id.toString(), (BindAxisEvent) registerBindClass.newInstance(), positiveButton, negativeButton);
-                    bindAxis.setSendEventMode(info.eventMode());
-                    logger.debug("Registered axis bind: {}", id);
-                } catch (InstantiationException | IllegalAccessException e) {
-                    logger.error("Failed to register axis bind \"{}\"", id, e);
-                }
-            } else {
-                logger.error("Failed to register axis bind \"{}\", does not extend BindAxisEvent", id);
-            }
-        }
-    }
-
-    private void registerButtonBinds(InputSystem inputSystem, ModuleEnvironment environment, Iterable<Class<?>> classes) {
-        for (Class registerBindClass : classes) {
-            RegisterBindButton info = (RegisterBindButton) registerBindClass.getAnnotation(RegisterBindButton.class);
-            SimpleUri bindUri = new SimpleUri(environment.getModuleProviding(registerBindClass), info.id());
-            if (BindButtonEvent.class.isAssignableFrom(registerBindClass)) {
-                try {
-                    BindableButton bindButton = inputSystem.registerBindButton(bindUri, info.description(), (BindButtonEvent) registerBindClass.newInstance());
-                    bindButton.setMode(info.mode());
-                    bindButton.setRepeating(info.repeating());
-
-                    for (Input input : getBinds(bindUri)) {
-                        if (input != null) {
-                            inputSystem.linkBindButtonToInput(input, bindUri);
-                        }
-                    }
-
-                    logger.debug("Registered button bind: {}", bindUri);
-                } catch (InstantiationException | IllegalAccessException e) {
-                    logger.error("Failed to register button bind \"{}\"", e);
-                }
-            } else {
-                logger.error("Failed to register button bind \"{}\", does not extend BindButtonEvent", bindUri);
-            }
-        }
-    }
-
-    static class Handler implements JsonSerializer<BindsConfig>, JsonDeserializer<BindsConfig> {
-
-        @Override
-        public BindsConfig deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            BindsConfig result = new BindsConfig();
-            JsonObject inputObj = json.getAsJsonObject();
-            for (Map.Entry<String, JsonElement> entry : inputObj.entrySet()) {
-                SetMultimap<String, Input> map = context.deserialize(entry.getValue(), SetMultimap.class);
-                for (String id : map.keySet()) {
-                    SimpleUri uri = new SimpleUri(new Name(entry.getKey()), id);
-                    result.data.putAll(uri, map.get(id));
-                }
-            }
-            return result;
-        }
-
-        @Override
-        public JsonElement serialize(BindsConfig src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject result = new JsonObject();
-            SetMultimap<Name, SimpleUri> bindByModule = HashMultimap.create();
-            for (SimpleUri key : src.data.keySet()) {
-                bindByModule.put(key.getModuleName(), key);
-            }
-            List<Name> sortedModules = Lists.newArrayList(bindByModule.keySet());
-            Collections.sort(sortedModules);
-            for (Name moduleId : sortedModules) {
-                SetMultimap<String, Input> moduleBinds = HashMultimap.create();
-                for (SimpleUri bindUri : bindByModule.get(moduleId)) {
-                    moduleBinds.putAll(bindUri.getObjectName().toString(), src.data.get(bindUri));
-                }
-                JsonElement map = context.serialize(moduleBinds, SetMultimap.class);
-                result.add(moduleId.toString(), map);
-            }
-            return result;
-        }
-    }
+//    /**
+//     * Sets this BindsConfig to be identical to other
+//     *
+//     * @param other The BindsConfig to copy
+//     */
+//    public void setBinds(BindsConfig other) {
+//        data.clear();
+//        data.putAll(other.data);
+//    }
+//
+//    public Collection<Input> getBinds(SimpleUri uri) {
+//        return data.get(uri);
+//    }
+//
+//    /**
+//     * Returns whether an input bind has been registered with the BindsConfig.
+//     * It may just have trivial None input.
+//     *
+//     * @param uri The bind's uri
+//     * @return Whether the given bind has been registered with the BindsConfig
+//     */
+//    public boolean hasBinds(SimpleUri uri) {
+//        return !data.get(uri).isEmpty();
+//    }
+//
+//    /**
+//     * Sets the inputs for a given bind, replacing any previous inputs
+//     *
+//     * @param bindUri
+//     * @param inputs
+//     */
+//    public void setBinds(SimpleUri bindUri, Input... inputs) {
+//        setBinds(bindUri, Arrays.asList(inputs));
+//    }
+//
+//    public void setBinds(SimpleUri bindUri, Iterable<Input> inputs) {
+//        Set<Input> uniqueInputs = Sets.newLinkedHashSet(inputs);
+//
+//        // Clear existing usages of the given inputs
+//        Iterator<Input> iterator = data.values().iterator();
+//        while (iterator.hasNext()) {
+//            Input i = iterator.next();
+//            if (uniqueInputs.contains(i)) {
+//                iterator.remove();
+//            }
+//        }
+//        data.replaceValues(bindUri, uniqueInputs);
+//    }
+//
+//    /**
+//     * @return A new BindsConfig, with inputs set from the DefaultBinding annotations on bind classes
+//     */
+//    public static BindsConfig createDefault() {
+//        ModuleManager moduleManager = CoreRegistry.get(ModuleManager.class);
+//        BindsConfig config = new BindsConfig();
+//        DependencyResolver resolver = new DependencyResolver(moduleManager.getRegistry());
+//        for (Name moduleId : moduleManager.getRegistry().getModuleIds()) {
+//            if (moduleManager.getRegistry().getLatestModuleVersion(moduleId).isCodeModule()) {
+//                ResolutionResult result = resolver.resolve(moduleId);
+//                if (result.isSuccess()) {
+//                    try (ModuleEnvironment environment = moduleManager.loadEnvironment(result.getModules(), false)) {
+//                        config.addDefaultsFor(moduleId, environment.getTypesAnnotatedWith(RegisterBindButton.class, new FromModule(environment, moduleId)));
+//                    }
+//                }
+//            }
+//        }
+//        return config;
+//    }
+//
+//    /**
+//     * Updates a config with any binds that it may be missing, through reflection over RegisterBindButton annotations
+//     */
+//    public void updateForChangedMods() {
+//        ModuleManager moduleManager = CoreRegistry.get(ModuleManager.class);
+//        DependencyResolver resolver = new DependencyResolver(moduleManager.getRegistry());
+//        for (Name moduleId : moduleManager.getRegistry().getModuleIds()) {
+//            if (moduleManager.getRegistry().getLatestModuleVersion(moduleId).isCodeModule()) {
+//                ResolutionResult result = resolver.resolve(moduleId);
+//                if (result.isSuccess()) {
+//                    try (ModuleEnvironment environment = moduleManager.loadEnvironment(result.getModules(), false)) {
+//                        updateInputsFor(moduleId, environment.getTypesAnnotatedWith(RegisterBindButton.class, new FromModule(environment, moduleId)));
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    private void updateInputsFor(Name moduleId, Iterable<Class<?>> classes) {
+//        for (Class<?> buttonEvent : classes) {
+//            if (ButtonEvent.class.isAssignableFrom(buttonEvent)) {
+//                RegisterBindButton info = buttonEvent.getAnnotation(RegisterBindButton.class);
+//                SimpleUri bindUri = new SimpleUri(moduleId, info.id());
+//                if (!hasBinds(bindUri)) {
+//                    addBind(moduleId, buttonEvent, info);
+//                }
+//            }
+//        }
+//    }
+//
+//    private void addDefaultsFor(Name moduleId, Iterable<Class<?>> classes) {
+//        for (Class<?> buttonEvent : classes) {
+//            if (ButtonEvent.class.isAssignableFrom(buttonEvent)) {
+//                RegisterBindButton info = buttonEvent.getAnnotation(RegisterBindButton.class);
+//                addBind(moduleId, buttonEvent, info);
+//            }
+//        }
+//    }
+//
+//    private void addBind(Name moduleName, Class<?> buttonEvent, RegisterBindButton info) {
+//        List<Input> defaultInputs = Lists.newArrayList();
+//        for (Annotation annotation : buttonEvent.getAnnotations()) {
+//            if (annotation instanceof DefaultBinding) {
+//                DefaultBinding defaultBinding = (DefaultBinding) annotation;
+//                Input input = defaultBinding.type().getInput(defaultBinding.id());
+//                if (!data.values().contains(input)) {
+//                    defaultInputs.add(input);
+//                }
+//            }
+//        }
+//        SimpleUri bindUri = new SimpleUri(moduleName, info.id());
+//        setBinds(bindUri, defaultInputs.toArray(new Input[defaultInputs.size()]));
+//    }
+//
+//    public void applyBinds(InputSystem inputSystem, ModuleManager moduleManager) {
+//        inputSystem.clearBinds();
+//        registerButtonBinds(inputSystem, moduleManager.getEnvironment(), moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindButton.class));
+//        registerAxisBinds(inputSystem, moduleManager.getEnvironment(), moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindAxis.class));
+//    }
+//
+//    private void registerAxisBinds(InputSystem inputSystem, ModuleEnvironment environment, Iterable<Class<?>> classes) {
+//        for (Class registerBindClass : classes) {
+//            RegisterBindAxis info = (RegisterBindAxis) registerBindClass.getAnnotation(RegisterBindAxis.class);
+//            Name moduleId = environment.getModuleProviding(registerBindClass);
+//            SimpleUri id = new SimpleUri(moduleId, info.id());
+//            if (BindAxisEvent.class.isAssignableFrom(registerBindClass)) {
+//                BindableButton positiveButton = inputSystem.getBindButton(new SimpleUri(info.positiveButton()));
+//                BindableButton negativeButton = inputSystem.getBindButton(new SimpleUri(info.negativeButton()));
+//                if (positiveButton == null) {
+//                    logger.warn("Failed to register axis \"{}\", missing positive button \"{}\"", id, info.positiveButton());
+//                    continue;
+//                }
+//                if (negativeButton == null) {
+//                    logger.warn("Failed to register axis \"{}\", missing negative button \"{}\"", id, info.negativeButton());
+//                    continue;
+//                }
+//                try {
+//                    BindableAxis bindAxis = inputSystem.registerBindAxis(id.toString(), (BindAxisEvent) registerBindClass.newInstance(), positiveButton, negativeButton);
+//                    bindAxis.setSendEventMode(info.eventMode());
+//                    logger.debug("Registered axis bind: {}", id);
+//                } catch (InstantiationException | IllegalAccessException e) {
+//                    logger.error("Failed to register axis bind \"{}\"", id, e);
+//                }
+//            } else {
+//                logger.error("Failed to register axis bind \"{}\", does not extend BindAxisEvent", id);
+//            }
+//        }
+//    }
+//
+//    private void registerButtonBinds(InputSystem inputSystem, ModuleEnvironment environment, Iterable<Class<?>> classes) {
+//        for (Class registerBindClass : classes) {
+//            RegisterBindButton info = (RegisterBindButton) registerBindClass.getAnnotation(RegisterBindButton.class);
+//            SimpleUri bindUri = new SimpleUri(environment.getModuleProviding(registerBindClass), info.id());
+//            if (BindButtonEvent.class.isAssignableFrom(registerBindClass)) {
+//                try {
+//                    BindableButton bindButton = inputSystem.registerBindButton(bindUri, info.description(), (BindButtonEvent) registerBindClass.newInstance());
+//                    bindButton.setMode(info.mode());
+//                    bindButton.setRepeating(info.repeating());
+//
+//                    for (Input input : getBinds(bindUri)) {
+//                        if (input != null) {
+//                            inputSystem.linkBindButtonToInput(input, bindUri);
+//                        }
+//                    }
+//
+//                    logger.debug("Registered button bind: {}", bindUri);
+//                } catch (InstantiationException | IllegalAccessException e) {
+//                    logger.error("Failed to register button bind \"{}\"", e);
+//                }
+//            } else {
+//                logger.error("Failed to register button bind \"{}\", does not extend BindButtonEvent", bindUri);
+//            }
+//        }
+//    }
+//
+//    static class Handler implements JsonSerializer<BindsConfig>, JsonDeserializer<BindsConfig> {
+//
+//        @Override
+//        public BindsConfig deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+//            BindsConfig result = new BindsConfig();
+//            JsonObject inputObj = json.getAsJsonObject();
+//            for (Map.Entry<String, JsonElement> entry : inputObj.entrySet()) {
+//                SetMultimap<String, Input> map = context.deserialize(entry.getValue(), SetMultimap.class);
+//                for (String id : map.keySet()) {
+//                    SimpleUri uri = new SimpleUri(new Name(entry.getKey()), id);
+//                    result.data.putAll(uri, map.get(id));
+//                }
+//            }
+//            return result;
+//        }
+//
+//        @Override
+//        public JsonElement serialize(BindsConfig src, Type typeOfSrc, JsonSerializationContext context) {
+//            JsonObject result = new JsonObject();
+//            SetMultimap<Name, SimpleUri> bindByModule = HashMultimap.create();
+//            for (SimpleUri key : src.data.keySet()) {
+//                bindByModule.put(key.getModuleName(), key);
+//            }
+//            List<Name> sortedModules = Lists.newArrayList(bindByModule.keySet());
+//            Collections.sort(sortedModules);
+//            for (Name moduleId : sortedModules) {
+//                SetMultimap<String, Input> moduleBinds = HashMultimap.create();
+//                for (SimpleUri bindUri : bindByModule.get(moduleId)) {
+//                    moduleBinds.putAll(bindUri.getObjectName().toString(), src.data.get(bindUri));
+//                }
+//                JsonElement map = context.serialize(moduleBinds, SetMultimap.class);
+//                result.add(moduleId.toString(), map);
+//            }
+//            return result;
+//        }
+//    }
 
 }

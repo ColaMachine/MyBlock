@@ -15,7 +15,6 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.rendering.nui.properties.Range;
 
 /**
  * Starts the decorated node.<br/>
@@ -26,7 +25,7 @@ import org.terasology.rendering.nui.properties.Range;
  * Auto generated javadoc - modify README.markdown instead!
  */
 public class TimerNode extends DecoratorNode {
-    @Range(min = 0, max = 20)
+  //  @Range(min = 0, max = 20)
     private float time;
 
     @Override

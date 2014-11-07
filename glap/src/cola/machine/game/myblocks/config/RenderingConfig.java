@@ -16,6 +16,11 @@
 
 package cola.machine.game.myblocks.config;
 
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.rendering.cameras.PerspectiveCameraSettings;
+import cola.machine.game.myblocks.rendering.nui.layers.mainMenu.videoSettings.CameraSetting;
+import cola.machine.game.myblocks.rendering.world.ViewDistance;
+import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
@@ -130,13 +135,13 @@ public class RenderingConfig {
 
         // TODO: Remove this, switch to a property change listener
         WorldRenderer worldRenderer = CoreRegistry.get(WorldRenderer.class);
-        LocalPlayer player = CoreRegistry.get(LocalPlayer.class);
-        if (player != null) {
-            player.getClientEntity().send(new ChangeViewRangeRequest(viewDistance));//why
-        }
-        if (worldRenderer != null) {
-            worldRenderer.changeViewDistance(viewDistance);
-        }
+//        LocalPlayer player = CoreRegistry.get(LocalPlayer.class);
+//        if (player != null) {
+//            player.getClientEntity().send(new ChangeViewRangeRequest(viewDistance));//why
+//        }
+//        if (worldRenderer != null) {
+//            worldRenderer.changeViewDistance(viewDistance);
+//        }
     }
 
     public boolean isFlickeringLight() {
@@ -397,7 +402,8 @@ public class RenderingConfig {
 
     @Override
     public String toString() {
-        return Config.createGson().toJsonTree(this).toString();
+       return "";
+        //return Config.createGson().toJsonTree(this).toString();
     }
 
 

@@ -15,13 +15,6 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.asset.AssetManager;
-import org.terasology.asset.AssetUri;
-import org.terasology.audio.AudioEndListener;
-import org.terasology.audio.AudioManager;
-import org.terasology.audio.StreamingSound;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.properties.OneOf;
 
 /**
  * <b>Properties</b>: <b>music</b><br/>
@@ -32,62 +25,62 @@ import org.terasology.rendering.nui.properties.OneOf;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-public class PlayMusicNode extends Node {
-    @OneOf.Provider(name = "music")
-    private AssetUri music;
+public class PlayMusicNode {//extends Node {
+//    @OneOf.Provider(name = "music")
+//    private AssetUri music;
+//
+//    @Override
+//    public Task createTask() {
+//        return new PlayMusicTask(this);
+//    }
+//
+//    private static class PlayMusicTask extends Task implements AudioEndListener {
+//        @In
+//        private AudioManager audioManager;
+//        @In
+//        private AssetManager assetManager;
+//        private boolean playing;
+//        private boolean finished;
+//
+//        public PlayMusicTask(PlayMusicNode node) {
+//            super(node);
+//        }
+//
+//        @Override
+//        public void onInitialize() {
+//            AssetUri uri = getNode().music;
+//            if (uri != null) {
+//                StreamingSound asset = assetManager.loadAsset(uri, StreamingSound.class);
+//                if (asset != null) {
+//                    audioManager.playMusic(asset, this);
+//                    playing = true;
+//                }
+//            }
+//        }
 
-    @Override
-    public Task createTask() {
-        return new PlayMusicTask(this);
-    }
+//        @Override
+//        public void onAudioEnd() {
+//            if (playing) {
+//                playing = false;
+//                finished = true;
+//            }
+//        }
+//
+//        @Override
+//        public Status update(float dt) {
+//            if (finished) {
+//                return Status.SUCCESS;
+//            }
+//            return playing ? Status.RUNNING : Status.FAILURE;
+//        }
 
-    private static class PlayMusicTask extends Task implements AudioEndListener {
-        @In
-        private AudioManager audioManager;
-        @In
-        private AssetManager assetManager;
-        private boolean playing;
-        private boolean finished;
-
-        public PlayMusicTask(PlayMusicNode node) {
-            super(node);
-        }
-
-        @Override
-        public void onInitialize() {
-            AssetUri uri = getNode().music;
-            if (uri != null) {
-                StreamingSound asset = assetManager.loadAsset(uri, StreamingSound.class);
-                if (asset != null) {
-                    audioManager.playMusic(asset, this);
-                    playing = true;
-                }
-            }
-        }
-
-        @Override
-        public void onAudioEnd() {
-            if (playing) {
-                playing = false;
-                finished = true;
-            }
-        }
-
-        @Override
-        public Status update(float dt) {
-            if (finished) {
-                return Status.SUCCESS;
-            }
-            return playing ? Status.RUNNING : Status.FAILURE;
-        }
-
-        @Override
-        public void handle(Status result) {
-        }
-
-        @Override
-        public PlayMusicNode getNode() {
-            return (PlayMusicNode) super.getNode();
-        }
-    }
+//        @Override
+//        public void handle(Status result) {
+//        }
+//
+//        @Override
+//        public PlayMusicNode getNode() {
+//            return (PlayMusicNode) super.getNode();
+//        }
+//    }
 }

@@ -21,9 +21,6 @@ import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.logic.common.DisplayNameComponent;
-import org.terasology.module.sandbox.API;
-import org.terasology.registry.InjectionHelper;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -37,7 +34,6 @@ import java.util.*;
  *
  * @author synopia
  */
-@API
 public class Interpreter {
     private static final Logger logger = LoggerFactory.getLogger(Interpreter.class);
 
@@ -110,7 +106,7 @@ public class Interpreter {
         return AccessController.doPrivileged(new PrivilegedAction<Task>() {
             @Override
             public Task run() {
-                InjectionHelper.inject(task);
+                //InjectionHelper.inject(task);
                 return task;
             }
         });
@@ -194,7 +190,8 @@ public class Interpreter {
 
     @Override
     public String toString() {
-        return actor.component(DisplayNameComponent.class).name;
+        //return actor.component(DisplayNameComponent.class).name;
+        return null;
     }
 
     public interface Debugger {

@@ -16,7 +16,6 @@
 package cola.machine.game.myblocks.logic.behavior.tree;
 
 import org.terasology.module.sandbox.API;
-import org.terasology.rendering.nui.properties.Range;
 
 /**
  * Starts child a limit number of times.<br/>
@@ -26,9 +25,9 @@ import org.terasology.rendering.nui.properties.Range;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@API
+//@API
 public class CounterNode extends DecoratorNode {
-    @Range(min = 0, max = 100)
+   // @Range(min = 0, max = 100)
     private int limit;
 
     public CounterNode() {
