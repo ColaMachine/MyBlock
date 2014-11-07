@@ -112,7 +112,7 @@ public class PathManager {
     }
 
     public void useDefaultHomePath() throws IOException {
-        switch (LWJGLUtil.getPlatform()) {
+       /* switch (LWJGLUtil.getPlatform()) {
             case LWJGLUtil.PLATFORM_LINUX:
                 homePath = Paths.get(System.getProperty("user.home")).resolve(LINUX_HOME_SUBPATH);
                 break;
@@ -129,7 +129,7 @@ public class PathManager {
             default:
                 homePath = Paths.get(System.getProperty("user.home")).resolve(LINUX_HOME_SUBPATH);
                 break;
-        }
+        }*/
         updateDirs();
     }
 

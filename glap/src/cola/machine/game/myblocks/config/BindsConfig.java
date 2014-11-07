@@ -251,41 +251,41 @@ public final class BindsConfig {
 //        }
 //    }
 //
-//    static class Handler implements JsonSerializer<BindsConfig>, JsonDeserializer<BindsConfig> {
-//
-//        @Override
-//        public BindsConfig deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-//            BindsConfig result = new BindsConfig();
-//            JsonObject inputObj = json.getAsJsonObject();
-//            for (Map.Entry<String, JsonElement> entry : inputObj.entrySet()) {
-//                SetMultimap<String, Input> map = context.deserialize(entry.getValue(), SetMultimap.class);
-//                for (String id : map.keySet()) {
-//                    SimpleUri uri = new SimpleUri(new Name(entry.getKey()), id);
-//                    result.data.putAll(uri, map.get(id));
-//                }
-//            }
-//            return result;
-//        }
-//
-//        @Override
-//        public JsonElement serialize(BindsConfig src, Type typeOfSrc, JsonSerializationContext context) {
-//            JsonObject result = new JsonObject();
-//            SetMultimap<Name, SimpleUri> bindByModule = HashMultimap.create();
-//            for (SimpleUri key : src.data.keySet()) {
-//                bindByModule.put(key.getModuleName(), key);
-//            }
-//            List<Name> sortedModules = Lists.newArrayList(bindByModule.keySet());
-//            Collections.sort(sortedModules);
-//            for (Name moduleId : sortedModules) {
-//                SetMultimap<String, Input> moduleBinds = HashMultimap.create();
-//                for (SimpleUri bindUri : bindByModule.get(moduleId)) {
-//                    moduleBinds.putAll(bindUri.getObjectName().toString(), src.data.get(bindUri));
-//                }
-//                JsonElement map = context.serialize(moduleBinds, SetMultimap.class);
-//                result.add(moduleId.toString(), map);
-//            }
-//            return result;
-//        }
-//    }
+    static class Handler implements JsonSerializer<BindsConfig>, JsonDeserializer<BindsConfig> {
+
+        @Override//从json 到obj
+        public BindsConfig deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            BindsConfig result = new BindsConfig();
+            JsonObject inputObj = json.getAsJsonObject();
+            for (Map.Entry<String, JsonElement> entry : inputObj.entrySet()) {
+                SetMultimap<String, Input> map = context.deserialize(entry.getValue(), SetMultimap.class);
+                for (String id : map.keySet()) {
+                    SimpleUri uri = new SimpleUri(new Name(entry.getKey()), id);
+                    result.data.putAll(uri, map.get(id));
+                }
+            }
+            return result;
+        }
+
+        @Override
+        public JsonElement serialize(BindsConfig src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject result = new JsonObject();
+            SetMultimap<Name, SimpleUri> bindByModule = HashMultimap.create();
+            for (SimpleUri key : src.data.keySet()) {
+                bindByModule.put(key.getModuleName(), key);
+            }
+            List<Name> sortedModules = Lists.newArrayList(bindByModule.keySet());
+            Collections.sort(sortedModules);
+            for (Name moduleId : sortedModules) {
+                SetMultimap<String, Input> moduleBinds = HashMultimap.create();
+                for (SimpleUri bindUri : bindByModule.get(moduleId)) {
+                    moduleBinds.putAll(bindUri.getObjectName().toString(), src.data.get(bindUri));
+                }
+                JsonElement map = context.serialize(moduleBinds, SetMultimap.class);
+                result.add(moduleId.toString(), map);
+            }
+            return result;
+        }
+    }
 
 }

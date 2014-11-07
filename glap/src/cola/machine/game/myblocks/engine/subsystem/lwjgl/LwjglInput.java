@@ -3,7 +3,9 @@ package cola.machine.game.myblocks.engine.subsystem.lwjgl;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.ComponentSystemManager;
 import cola.machine.game.myblocks.engine.modes.GameState;
+import cola.machine.game.myblocks.input.InputSystem;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -51,16 +53,16 @@ public class LwjglInput extends BaseLwjglSubsystem{
     }
 
     private void initControls() {
-//        try {
-//            Keyboard.create();
-//            Keyboard.enableRepeatEvents(true);
-//            Mouse.create();
-//            InputSystem inputSystem = CoreRegistry.putPermanently(InputSystem.class, new InputSystem());
-//            inputSystem.setMouseDevice(new LwjglMouseDevice());
-//            inputSystem.setKeyboardDevice(new LwjglKeyboardDevice());
-//        } catch (LWJGLException e) {
-//            throw new RuntimeException("Could not initialize controls.", e);
-//        }
+        try {
+            Keyboard.create();
+            Keyboard.enableRepeatEvents(true);
+            Mouse.create();
+            InputSystem inputSystem = CoreRegistry.putPermanently(InputSystem.class, new InputSystem());
+            inputSystem.setMouseDevice(new LwjglMouseDevice());
+            inputSystem.setKeyboardDevice(new LwjglKeyboardDevice());
+        } catch (LWJGLException e) {
+            throw new RuntimeException("Could not initialize controls.", e);
+        }
     }
 
     private void updateInputConfig(Config config) {

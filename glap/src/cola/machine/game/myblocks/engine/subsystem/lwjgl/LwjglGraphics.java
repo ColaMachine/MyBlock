@@ -86,8 +86,8 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
         try {
             lwjglDisplay.setFullscreen(false, false);// 不能调整大小
 
-           // RenderingConfig rc = config.getRendering();
-            Display.setLocation(0, 0);
+            RenderingConfig rc = config.getRendering();
+            Display.setLocation(rc.getWindowPosX(),rc.getWindowPosY());
             Display.setTitle("myblock" + " | " + "alpha");
             try {
 
@@ -110,8 +110,8 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
             } catch (IOException | IllegalArgumentException e) {
                 logger.warn("Could not set icon", e);
             }
-            Display.create( new PixelFormat().withDepthBits(24));
-            Display.setVSyncEnabled(false);//确定是否垂直同步
+            Display.create( rc.getPixelFormat());
+            Display.setVSyncEnabled(rc.isVSync());//确定是否垂直同步
         } catch (LWJGLException e) {
             throw new RuntimeException("Can not initialize graphics device.", e);
         }

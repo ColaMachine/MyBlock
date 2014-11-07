@@ -6,28 +6,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import com.google.common.collect.Lists;
 
 
 public class test {
 	public static void main(String args[]){
-		File file =new File("D:/graymap.png");
-		File file2 =new File("D:/graymap1.png");
-		try {
-			test t =new test();
-			
-			BufferedImage bi=ImageIO.read(new FileInputStream(file));
-		//	BufferedImage binew= t.getGrayPictureAPI(bi);
-			t.getGrayPicture(bi);
-			//ImageIO.write(binew, "png", new FileOutputStream(file2));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println((int)0.999);;
 	}
 	
 	public BufferedImage getGrayPicture(BufferedImage originalImage)
@@ -41,8 +30,8 @@ public class test {
 			{
 				for(int j = originalImage.getMinY();j < imageHeight ;j++)
 				{
-//Í¼Æ¬µÄÏñËØµãÆäÊµÊÇ¸ö¾ØÕó£¬ÕâÀïÀûÓÃÁ½¸öforÑ­»·À´¶ÔÃ¿¸öÏñËØ½øÐÐ²Ù×÷
-					Object data = originalImage.getRaster().getDataElements(i, j, null);//»ñÈ¡¸ÃµãÏñËØ£¬²¢ÒÔobjectÀàÐÍ±íÊ¾
+//Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Êµï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½}ï¿½ï¿½forÑ­ï¿½ï¿½4ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
+					Object data = originalImage.getRaster().getDataElements(i, j, null);//ï¿½ï¿½È¡ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½Í±ï¿½Ê¾
 				
 					red = originalImage.getColorModel().getRed(data);
 					blue = originalImage.getColorModel().getBlue(data);
@@ -51,14 +40,14 @@ public class test {
 					green = red;
 					blue = green;
 /*
-ÕâÀï½«r¡¢g¡¢bÔÙ×ª»¯ÎªrgbÖµ£¬ÒòÎªbufferedImageÃ»ÓÐÌá¹©ÉèÖÃµ¥¸öÑÕÉ«µÄ·½·¨£¬Ö»ÄÜÉèÖÃrgb¡£rgb×î´óÎª8388608£¬µ±´óÓÚÕâ¸öÖµÊ±£¬Ó¦¼õÈ¥255*255*255¼´16777216
+ï¿½ï¿½ï¿½ï½«rï¿½ï¿½gï¿½ï¿½bï¿½ï¿½×ªï¿½ï¿½ÎªrgbÖµï¿½ï¿½ï¿½ï¿½ÎªbufferedImageÃ»ï¿½ï¿½ï¿½á¹©ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½rgbï¿½ï¿½rgbï¿½ï¿½ï¿½Îª8388608ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÊ±ï¿½ï¿½Ó¦ï¿½ï¿½È¥255*255*255ï¿½ï¿½16777216
 */
 					rgb = (red*256 + green)*256+blue;
 					if(rgb>8388608)
 					{
 						rgb = rgb - 16777216;
 					}
-//½«rgbÖµÐ´»ØÍ¼Æ¬
+//ï¿½ï¿½rgbÖµÐ´ï¿½ï¿½Í¼Æ¬
 					System.out.printf(" %d %d %d \r\n",red,blue,green);
 				}
 				

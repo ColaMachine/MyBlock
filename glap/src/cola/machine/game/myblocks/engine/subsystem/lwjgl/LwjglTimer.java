@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine.subsystem.lwjgl;
 
+
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.EngineTime;
 import cola.machine.game.myblocks.engine.Time;
@@ -8,11 +9,16 @@ import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 public class LwjglTimer extends BaseLwjglSubsystem {
+	
+	  @Override
+	    public void preInitialise() {
+	        super.preInitialise();
+	        initTimer(); // Dependent on LWJGL
+	    }
 
+	  
 	@Override
 	public void postInitialise(Config config) {
-		super.preInitialise();
-		initTimer();
 	}
 	
 	@Override

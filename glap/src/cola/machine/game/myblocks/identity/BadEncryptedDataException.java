@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cola.machine.game.myblocks.entitySystem.system;
+package cola.machine.game.myblocks.identity;
 
 /**
- * @author Immortius
+ * This exception indicates an issue during decryption c
  */
-public abstract class BaseComponentSystem implements ComponentSystem {
+public class BadEncryptedDataException extends Exception {
 
-    public void initialise() {
+    private static final long serialVersionUID = 7220484295134905387L;
+
+    public BadEncryptedDataException() {
     }
 
-    public void preBegin() {
+    public BadEncryptedDataException(String message) {
+        super(message);
     }
 
-    public void postBegin() {
+    public BadEncryptedDataException(Throwable cause) {
+        super(cause);
     }
 
-    public void preSave() {
-    }
-
-    public void postSave() {
-    }
-
-    public void shutdown() {
+    public BadEncryptedDataException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

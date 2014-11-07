@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.Set;
 
+import org.lwjgl.Sys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.crashreporter.CrashReporter;
@@ -113,7 +114,14 @@ public class BlockEngine implements GameEngine{
     	 for(EngineSubsystem subsystem:subsystems){
     		 subsystem.preInitialise();//预先初始化各种设备
     	 }
-    	 
+    	 System.out.println((Sys.getTime()*1000)/Sys.getTimerResolution());
+    	 try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	 System.out.println((Sys.getTime()*1000)/Sys.getTimerResolution());
     	 for(EngineSubsystem subsystem:subsystems){
     		 subsystem.postInitialise(config);//预先初始化各种设备
     	 }
@@ -197,7 +205,7 @@ public class BlockEngine implements GameEngine{
 
     private void initConfig() {
     	
-    	 config = new Config();
+    	 //config = new Config();
         if (Files.isRegularFile(Config.getConfigFile())) {
             try {
                 config = Config.load(Config.getConfigFile());//加载配置文件
@@ -208,9 +216,9 @@ public class BlockEngine implements GameEngine{
         } else {
             config = new Config();
         }
-       /* if (!config.getDefaultModSelection().hasModule(Constants.CORE_MODULE)) {
+       if (!config.getDefaultModSelection().hasModule(Constants.CORE_MODULE)) {//其实没做什么
             config.getDefaultModSelection().addModule(Constants.CORE_MODULE);
-        }*/
+        }
        
         //logger.info("Video Settings: " + config.getRendering().toString());
         CoreRegistry.putPermanently(Config.class, config);

@@ -43,7 +43,7 @@ public class LwjglDisplayDevice implements DisplayDevice {
                 Display.setFullscreen(true);
             }else{
                 Config config = CoreRegistry.get(Config.class);
-                Display.setDisplayMode(new  DisplayMode(800, 600));
+                Display.setDisplayMode(config.getRendering().getDisplayMode());
             }
 
         }catch(LWJGLException e){

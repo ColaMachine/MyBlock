@@ -34,12 +34,12 @@ import java.util.Map;
 public class InputSystem extends BaseComponentSystem {
 
 //    @In
-//    private Config config;
+    private Config config;
 //
 //    @In
-//    private GameEngine engine;
+    private GameEngine engine;
 //
-//    private MouseDevice mouse = new NullMouseDevice();
+    private MouseDevice mouse = new NullMouseDevice();
 //    private KeyboardDevice keyboard = new NullKeyboardDevice();
 //
 //    private Map<String, BindableAxisImpl> axisLookup = Maps.newHashMap();

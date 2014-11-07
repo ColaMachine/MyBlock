@@ -3,7 +3,10 @@ package cola.machine.game.myblocks.engine.subsystem.lwjgl;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
+
 import com.google.common.base.Charsets;
+
 import org.lwjgl.LWJGLUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +26,7 @@ public abstract class BaseLwjglSubsystem implements EngineSubsystem {
     public synchronized void preInitialise() {
         if (!initialised) {
             initLogger();
-            //LWJGLHelper.initNativeLibs();
+            LWJGLHelper.initNativeLibs();
             initialised = true;
         }
     }
