@@ -17,8 +17,12 @@ package cola.machine.game.myblocks.input;
 
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.GameEngine;
-
 import cola.machine.game.myblocks.entitySystem.system.BaseComponentSystem;
+import cola.machine.game.myblocks.input.device.KeyboardDevice;
+import cola.machine.game.myblocks.input.device.MouseDevice;
+import cola.machine.game.myblocks.input.device.nulldevices.NullKeyboardDevice;
+import cola.machine.game.myblocks.input.device.nulldevices.NullMouseDevice;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -40,9 +44,9 @@ public class InputSystem extends BaseComponentSystem {
     private GameEngine engine;
 //
     private MouseDevice mouse = new NullMouseDevice();
-//    private KeyboardDevice keyboard = new NullKeyboardDevice();
+    private KeyboardDevice keyboard = new NullKeyboardDevice();
 //
-//    private Map<String, BindableAxisImpl> axisLookup = Maps.newHashMap();
+    private Map<String, BindableAxisImpl> axisLookup = Maps.newHashMap();
 //    private Map<SimpleUri, BindableButtonImpl> buttonLookup = Maps.newHashMap();
 //
 //    private List<BindableAxisImpl> axisBinds = Lists.newArrayList();

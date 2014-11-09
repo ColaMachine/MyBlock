@@ -4,6 +4,8 @@ import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.ComponentSystemManager;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.input.InputSystem;
+import cola.machine.game.myblocks.input.lwjgl.LwjglKeyboardDevice;
+import cola.machine.game.myblocks.input.lwjgl.LwjglMouseDevice;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import org.lwjgl.LWJGLException;
