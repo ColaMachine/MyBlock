@@ -16,4 +16,6 @@ public interface Time {
 	
 	//毫秒
 	long getRealTimeInMs();
+
+	long getGameTimeInMs();
 }

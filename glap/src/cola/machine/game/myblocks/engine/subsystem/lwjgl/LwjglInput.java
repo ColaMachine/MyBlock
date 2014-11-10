@@ -68,8 +68,8 @@ public class LwjglInput extends BaseLwjglSubsystem{
     }
 
     private void updateInputConfig(Config config) {
-//        config.getInput().getBinds().updateForChangedMods();
-//        config.save();
+        config.getInput().getBinds().updateForChangedMods();
+        config.save();
     }
 
     public void registerSystems(ComponentSystemManager componentSystemManager) {
