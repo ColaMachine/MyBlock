@@ -67,10 +67,17 @@ public class WorldRendererLwjgl implements WorldRenderer {
 			256, new ChunkFrontToBackComparator());
     /* SHADOW MAPPING */
     private Camera lightCamera = new OrthographicCamera(-SHADOW_FRUSTUM_BOUNDS, SHADOW_FRUSTUM_BOUNDS, SHADOW_FRUSTUM_BOUNDS, -SHADOW_FRUSTUM_BOUNDS);
-
+	public WorldRendererLwjgl(WorldProvider worldProvider,
+							  ChunkProvider chunkProvider, LocalPlayerSystem localPlayerSystem,
+							  GLBufferPool bufferPool) {
+		 this( worldProvider,
+				 chunkProvider,  localPlayerSystem,
+				 bufferPool, null);
+	}
 	public WorldRendererLwjgl(WorldProvider worldProvider,
 			ChunkProvider chunkProvider, LocalPlayerSystem localPlayerSystem,
-			GLBufferPool bufferPool) {
+			GLBufferPool bufferPool,Human player) {
+
        // eqr=
             //    ByteBuffer.allocateDirect(4 * GLApp.SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
         //eqr.put(0.0f).put(35.0f).put(0.0f).put(0.0f);
@@ -445,5 +452,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         GL11.glLoadMatrix(MatrixUtils.matrixToFloatBuffer(   viewMatrixReflectedLeftEye;));
     }*/
 
-
+public void setPlayer(Human human){
+	this.player=human;
+}
 }

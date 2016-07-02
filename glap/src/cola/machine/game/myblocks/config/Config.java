@@ -21,6 +21,7 @@ import cola.machine.game.myblocks.engine.SimpleUri;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.entitySystem.Component;
 import cola.machine.game.myblocks.input.Input;
+import cola.machine.game.myblocks.naming.Name;
 import cola.machine.game.myblocks.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
 import cola.machine.game.myblocks.utilities.gson.InputHandler;
 import cola.machine.game.myblocks.utilities.gson.SetMultimapTypeAdapter;
@@ -43,10 +44,10 @@ import com.google.gson.JsonSerializer;
 import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.naming.Name;
-import org.terasology.naming.Version;
-import org.terasology.naming.gson.NameTypeAdapter;
-import org.terasology.naming.gson.VersionTypeAdapter;
+//import org.terasology.naming.Name;
+//import org.terasology.naming.Version;
+//import org.terasology.naming.gson.NameTypeAdapter;
+//import org.terasology.naming.gson.VersionTypeAdapter;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -181,8 +182,8 @@ public final class Config {
 //
     protected static Gson createGson() {
         return new GsonBuilder()//deserialize 是从config to class serialize是从class to config
-                .registerTypeAdapter(Name.class, new NameTypeAdapter())//if the variable instance of name then the value process by nametype adpter
-                .registerTypeAdapter(Version.class, new VersionTypeAdapter())
+                /*.registerTypeAdapter(Name.class, new NameTypeAdapter())//if the variable instance of name then the value process by nametype adpter
+                .registerTypeAdapter(Version.class, new VersionTypeAdapter())*/
                 .registerTypeAdapter(BindsConfig.class, new BindsConfig.Handler())
                 .registerTypeAdapter(SetMultimap.class, new SetMultimapTypeAdapter<>(Input.class))
                 .registerTypeAdapter(SecurityConfig.class, new SecurityConfig.Handler())

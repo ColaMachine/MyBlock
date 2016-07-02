@@ -15,7 +15,7 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.module.sandbox.API;
+//import org.terasology.module.sandbox.API;
 
 /**
  * Base class for nodes in a behavior tree. Each node must implement the create() method to create tasks, that are
@@ -26,7 +26,7 @@ import org.terasology.module.sandbox.API;
  *
  * @author synopia
  */
-@API
+
 public abstract class Node implements TreeAccessor<Node> {
     public abstract Task createTask();
 

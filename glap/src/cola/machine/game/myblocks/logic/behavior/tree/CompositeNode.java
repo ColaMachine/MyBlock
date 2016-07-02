@@ -16,7 +16,7 @@
 package cola.machine.game.myblocks.logic.behavior.tree;
 
 import com.google.common.collect.Lists;
-import org.terasology.module.sandbox.API;
+//import org.terasology.module.sandbox.API;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author synopia
  */
-@API
+//@API
 public abstract class CompositeNode extends Node {
     private final List<Node> children = Lists.newArrayList();
 

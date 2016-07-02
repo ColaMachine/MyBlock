@@ -15,18 +15,18 @@
  */
 package cola.machine.game.myblocks.asset;
 
-import cola.machine.game.myblocks.asset.sources.AssetSourceCollection;
+import cola.machine.game.myblocks.asset.sources.ArchiveSource;
+import cola.machine.game.myblocks.asset.sources.DirectorySource;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.entitySystem.prefab.Prefab;
 import cola.machine.game.myblocks.logic.behavior.asset.BehaviorTree;
-import cola.machine.game.myblocks.persistence.ModuleContext;
+import cola.machine.game.myblocks.naming.Name;
+import cola.machine.game.myblocks.persistence.Module;
+import cola.machine.game.myblocks.persistence.ModuleEnvironment;
 import com.google.common.collect.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.module.Module;
-import org.terasology.module.ModuleEnvironment;
-import org.terasology.naming.Name;
-import  cola.machine.game.myblocks.asset.sources.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -37,12 +37,16 @@ import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.*;
 
+/*import org.terasology.module.Module;
+import org.terasology.module.ModuleEnvironment;
+import org.terasology.naming.Name;*/
+
 // TODO: Split out an interface, possibly two with one for loading and adding assets, the other with disposal and other more management methods
 public class AssetManager {
 
     private static final Logger logger = LoggerFactory.getLogger(AssetManager.class);
 
-    private ModuleEnvironment environment;//the file root archive location
+//    private ModuleEnvironment environment;//the file root archive location
     private Map<Name, AssetSource> assetSources = Maps.newHashMap();//the png image's resource
     private Map<AssetType, Map<String, AssetLoader<?>>> assetLoaders = Maps.newEnumMap(AssetType.class);//all kind of assetloader
     private Map<AssetUri, Asset<?>> assetCache = Maps.newHashMap();//assetcache
@@ -50,7 +54,7 @@ public class AssetManager {
     private Map<AssetType, AssetFactory<?, ?>> factories = Maps.newHashMap();//facotries
     private Map<AssetType, Table<Name, Name, AssetUri>> uriLookup = Maps.newHashMap();//urilookup
     private ListMultimap<AssetType, AssetResolver<?, ?>> resolvers = ArrayListMultimap.create();//path resolvers
-
+    private ModuleEnvironment environment;
     public AssetManager(ModuleEnvironment environment) {
         for (AssetType type : AssetType.values()) {
             uriLookup.put(type, HashBasedTable.<Name, Name, AssetUri>create());//init an empty hashbasedtable name asseturi
@@ -65,7 +69,7 @@ public class AssetManager {
     public void setEnvironment(ModuleEnvironment environment) {
         this.environment = environment;
         assetSources.clear();//cliear
-        for (Module module : environment) {//the enviroment advanced than module higher level
+        /*for (Module module : environment) {//the enviroment advanced than module higher level
             Collection<Path> location = module.getLocations();//get the location collections
             if (!location.isEmpty()) {//location empty
                 List<AssetSource> sources = Lists.newArrayList();//lists.newArrayList
@@ -79,7 +83,7 @@ public class AssetManager {
                     uriLookup.get(asset.getAssetType()).put(asset.getAssetName(), asset.getModuleName(), asset);
                 }
             }
-        }
+        }*/
         applyOverrides();
         refresh();
     }
@@ -131,7 +135,7 @@ public class AssetManager {
             case 1:
                 return possibilities.get(0);
             default:
-                Module context = ModuleContext.getContext();
+               /* Module context = ModuleContext.getContext();
                 if (context != null) {
                     Set<Name> dependencies = environment.getDependencyNamesOf(context.getId());
                     Iterator<AssetUri> iterator = possibilities.iterator();
@@ -147,7 +151,7 @@ public class AssetManager {
                     if (possibilities.size() == 1) {
                         return possibilities.get(0);
                     }
-                }
+                }*/
                 logger.warn("Failed to resolve {}:{} - too many valid matches {}", type, name, possibilities);
                 return null;
         }
@@ -303,19 +307,19 @@ public class AssetManager {
             List<URL> deltas;
             if (uri.getAssetType().isDeltaSupported()) {//core:block:water
                 deltas = Lists.newArrayList();
-                for (Module deltaModule : environment.getModulesOrderedByDependencies()) {//deltas is δ means unknown variable
+                /*for (Module deltaModule : environment.getModulesOrderedByDependencies()) {//deltas is δ means unknown variable
                     AssetSource source = assetSources.get(deltaModule.getId());
                     if (source != null) {
                         deltas.addAll(source.getDelta(uri));
                     }
-                }
+                }*/
             } else {
                 deltas = Collections.emptyList();
             }
             try (InputStream stream = AccessController.doPrivileged(new PrivilegedOpenStream(url))) {
                 urls.remove(url);
                 urls.add(0, url);//把url加载到前面
-                return loader.load(module, stream, urls, deltas);
+                return null;//loader.load(module, stream, urls, deltas);
             } catch (PrivilegedActionException e) {
                 logger.error("Error reading asset {}", uri, e.getCause());
                 return null;
@@ -353,7 +357,7 @@ public class AssetManager {
             }
         }
 
-        try (ModuleContext.ContextSpan ignored = ModuleContext.setContext(environment.get(uri.getModuleName()))) {
+       /* try (ModuleContext.ContextSpan ignored = ModuleContext.setContext(environment.get(uri.getModuleName()))) {
             AssetData data = loadAssetData(uri, logErrors);//shader:engine:default
 //sharedata
             if (data != null) {
@@ -367,7 +371,7 @@ public class AssetManager {
             }
         } catch (Exception e) {
             logger.error("Error loading asset: {}", uri, e);
-        }
+        }*/
         return asset;
     }
 

@@ -20,7 +20,7 @@ import cola.machine.game.myblocks.entitySystem.prefab.Prefab;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.rendering.assets.texture.TextureRegion;
-import org.terasology.naming.Name;
+//import org.terasology.naming.Name;
 
 import java.util.List;
 
@@ -35,32 +35,32 @@ public final class Assets {
     private Assets() {
     }
 
-    /**
+ /*   *//**
      * @return An iterable over the complete list of available assets
-     */
+     *//*
     public static Iterable<AssetUri> list() {
         return CoreRegistry.get(AssetManager.class).listAssets();
     }
 
-    /**
+    *//**
      * @param type
      * @return An iterable over the assets belonging to the given AssetType
-     */
+     *//*
     public static Iterable<AssetUri> list(AssetType type) {
         return CoreRegistry.get(AssetManager.class).listAssets(type);
     }
 
-    /**
+    *//**
      * @return An iterable over the list of available modules
-     */
+     *//*
     public static Iterable<Name> listModules() {
         return CoreRegistry.get(AssetManager.class).listModuleNames();
     }
 
-    /**
+    *//**
      * @param uri
      * @return The requested asset, or null if it doesn't exist.
-     */
+     *//*
     public static Asset<?> get(AssetUri uri) {
         return CoreRegistry.get(AssetManager.class).loadAsset(uri);
     }
@@ -79,10 +79,10 @@ public final class Assets {
         return null;
     }
 
-    /**
+    *//**
      * @param name
      * @return The resolved asset, or
-     */
+     *//*
     public static Asset<?> resolve(AssetType type, String name) {
         return CoreRegistry.get(AssetManager.class).resolveAndLoad(type, name);
     }
@@ -91,13 +91,13 @@ public final class Assets {
         return CoreRegistry.get(AssetManager.class).resolve(type, name);
     }
 
-    /**
+    *//**
      * @param name
      * @return The resolved Asset URIs.
-     */
+     *//*
     public static List<AssetUri> resolveAllUri(AssetType type, String name) {
         return CoreRegistry.get(AssetManager.class).resolveAll(type, name);
-    }
+    }*/
 
     /**
      * @param uri
@@ -111,6 +111,9 @@ public final class Assets {
             return assetClass.cast(result);
         }
         return null;
+    }
+
+    private static Asset<?> get(AssetUri uri) {return null;
     }
 
     /**

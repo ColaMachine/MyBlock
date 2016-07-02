@@ -19,13 +19,14 @@ package cola.machine.game.myblocks.asset.sources;
 import cola.machine.game.myblocks.asset.AssetSource;
 import cola.machine.game.myblocks.asset.AssetType;
 import cola.machine.game.myblocks.asset.AssetUri;
+import cola.machine.game.myblocks.naming.Name;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
 import com.google.common.io.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.naming.Name;
+//import org.terasology.naming.Name;
 
 import java.net.URL;
 import java.nio.file.Path;

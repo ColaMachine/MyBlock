@@ -1,6 +1,8 @@
 package cola.machine.game.myblocks.local.players;
 
 import cola.machine.game.myblocks.entitySystem.entity.EntityRef;
+import cola.machine.game.myblocks.logic.characters.CharacterComponent;
+import cola.machine.game.myblocks.logic.location.LocationComponent;
 import cola.machine.game.myblocks.network.ClientComponent;
 
 public class LocalPlayer {
@@ -33,7 +35,7 @@ public class LocalPlayer {
 	
 	public boolean isValid(){
 		EntityRef characterEntity=getCharacterEntity();
-		return characterEntity.exists()&&characterEntity.hasComponent(LocationComponent.class) && characterEntity.hasComponent(CharacterComponent.class)
+		return characterEntity.exists()&&characterEntity.hasComponent(LocationComponent.class) && characterEntity.hasComponent(CharacterComponent.class);
 	}
 	
 }

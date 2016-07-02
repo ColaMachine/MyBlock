@@ -17,7 +17,6 @@ package cola.machine.game.myblocks.logic.behavior;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.terasology.naming.Name;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -1,12 +1,13 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.naming.Name;
 import com.google.common.base.Charsets;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.terasology.naming.Name;
+//import org.terasology.naming.Name;
 
 /**
  * Created by luying on 14-10-5.

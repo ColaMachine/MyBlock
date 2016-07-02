@@ -41,8 +41,14 @@ public class MouseControlCenter {
     public float centerX = 0;
     public float centerY = 0;
 
-    float prevMouseX = 0;
-    float prevMouseY = 0;
+    public float prevMouseX = 0;
+    public float prevMouseY = 0;
+    public boolean canDetectMove = true;
+    public BulletPhysics bulletPhysics;
+    /**
+     * Add last mouse motion to the line, only if left mouse button is down.
+     */
+    Point mousepoint;
 
     public MouseControlCenter(Human human, GLCamera camera, MyBlockEngine engine) {
         this.engine = engine;
@@ -174,20 +180,20 @@ public class MouseControlCenter {
 
 
         } */
-            // tilt up
-            if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-                double timenow = GLApp.getTimeInSeconds();
+        // tilt up
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            double timenow = GLApp.getTimeInSeconds();
 
-                if ((timenow - preKeyTime) < 1) {
-                    return;
-                }
-                preKeyTime = timenow;
-                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-                    human.jumpHigh();
-                // System.out.println("ͬʱ������w��");
-                human.jump();
-                // System.out.println("jump");
-            } /*else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            if ((timenow - preKeyTime) < 1) {
+                return;
+            }
+            preKeyTime = timenow;
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                human.jumpHigh();
+            // System.out.println("ͬʱ������w��");
+            human.jump();
+            // System.out.println("jump");
+        } /*else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                 {
                     double timenow = GLApp.getTimeInSeconds();
 
@@ -244,8 +250,8 @@ public class MouseControlCenter {
         if (hitPoint != null) {
             // Block block=new
             // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
-			/*
-			 * if("wood".equals(engine.currentObject)){ block =new
+            /*
+             * if("wood".equals(engine.currentObject)){ block =new
 			 * Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
 			 * if("glass".equals(engine.currentObject)){ block =new
 			 * Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
@@ -254,7 +260,7 @@ public class MouseControlCenter {
 			 * if("water".equals(engine.currentObject)){ block =new
 			 * Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }
 			 */
-			/*
+            /*
 			 * if(block!=null){ bulletPhysics.blockRepository.put(block);
 			 * this.engine.blockRepository.reBuild(engine.currentObject); }
 			 */
@@ -322,26 +328,19 @@ public class MouseControlCenter {
 										 * lineStart.x =human.ViewDir.x; //
 										 * lineStart.y =human.ViewDir.y; //
 										 * lineStart.z = human.ViewDir.z;
-										 * 
+										 *
 										 * prevMouseX = x; prevMouseY = y;
-										 * 
+										 *
 										 * mouseEnd = GL_Vector.add(lineStart,
 										 * GL_Vector
 										 * .multiply(getLookAtDirection(x, y),
 										 * 35));
-										 * 
+										 *
 										 * // System.out.printf("%f %f %f \r\n"
 										 * + "", mouseDir.x, mouseDir.y, //
 										 * mouseDir.z);
 										 */
     }
-
-    /**
-     * Add last mouse motion to the line, only if left mouse button is down.
-     */
-    Point mousepoint;
-    public boolean canDetectMove = true;
-    public BulletPhysics bulletPhysics;
 
     public void mouseMove(int x, int y) {
         // add mouse motion to line if left button is down, and mouse has moved
@@ -391,13 +390,13 @@ public class MouseControlCenter {
         // add mouse motion to line if left button is down, and mouse has moved
         // more than 10 pixels
         if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 10f
-                && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 20f) {
+                && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 200000f) {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
             human.RotateV(-(x - prevMouseX) / 5);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-            human.RotateX((y - prevMouseY) / 5);
+            human.RotateX(-(y - prevMouseY) / 5);
 
             // regenerate the line
             // save mouse position
@@ -436,7 +435,7 @@ public class MouseControlCenter {
 
             //let put the key in a group that need cooling
 
-          if (keycode == Keyboard.KEY_1) {
+            if (keycode == Keyboard.KEY_1) {
                 CoreRegistry.get(ToolBar.class).keyDown(1);
             } else if (keycode == Keyboard.KEY_2) {
                 CoreRegistry.get(ToolBar.class).keyDown(2);
@@ -452,8 +451,7 @@ public class MouseControlCenter {
                 CoreRegistry.get(ToolBar.class).keyDown(7);
             } else if (keycode == Keyboard.KEY_8) {
                 CoreRegistry.get(ToolBar.class).keyDown(8);
-            }else
-            if (keycode == Keyboard.KEY_9) {
+            } else if (keycode == Keyboard.KEY_9) {
                 CoreRegistry.get(ToolBar.class).keyDown(9);
             }
 
@@ -463,7 +461,7 @@ public class MouseControlCenter {
                 CoreRegistry.get(Bag.class).changeShow();
             } else if (keycode == Keyboard.KEY_P) {
                 Switcher.CAMERA_2_PLAYER++;
-                if (Switcher.CAMERA_2_PLAYER >10) {
+                if (Switcher.CAMERA_2_PLAYER > 10) {
                     Switcher.CAMERA_2_PLAYER = 10;
                 }
             } else if (keycode == Keyboard.KEY_O) {
@@ -471,22 +469,143 @@ public class MouseControlCenter {
                 if (Switcher.CAMERA_2_PLAYER < 0) {
                     Switcher.CAMERA_2_PLAYER = 0;
                 }
-            }  else if (keycode == Keyboard.KEY_F4) {
+            } else if (keycode == Keyboard.KEY_F4) {
                 Switcher.IS_GOD = !Switcher.IS_GOD;
                 System.out.println("god mode:" + Switcher.IS_GOD);
-            }else if (keycode == Keyboard.KEY_ESCAPE) {
+            } else if (keycode == Keyboard.KEY_ESCAPE) {
                 CoreRegistry.get(PauseMenu.class).show();
+            } else if (keycode == Keyboard.KEY_F5) {
+                Switcher.CAMERA_MODEL++;
+                if (Switcher.CAMERA_MODEL > 2) {
+                    Switcher.CAMERA_MODEL = 0;
+                }
+                if (Switcher.CAMERA_MODEL == 0) {
+                    Switcher.CAMERA_2_PLAYER = 0;
+                } else {
+                    Switcher.CAMERA_2_PLAYER = 10;
+                }
             }
-            else if (keycode == Keyboard.KEY_F5) {
-                Switcher.CAMERA_MODEL ++;
-                if( Switcher.CAMERA_MODEL>2){
-                    Switcher.CAMERA_MODEL =0;
+            int seconds=1;
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+                human.RotateX(-human.camSpeedXZ * seconds);
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+                human.RotateX(human.camSpeedXZ * seconds);
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+                human.RotateV(human.camSpeedR * seconds);
+            } else
+                // Turn right
+                if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+
+                    human.RotateV(-human.camSpeedR * seconds);
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                    human.StrafeRight(-human.camSpeedXZ * seconds);
+                } else
+                    // Pan right
+                    if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                        human.StrafeRight(human.camSpeedXZ * seconds);
+                    } else
+                        // tilt down
+                        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+                            human.MoveForward(-human.camSpeedXZ * seconds);
+                        } else
+                            // tilt up
+                            if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+                                human.MoveForward(human.camSpeedXZ * seconds);
+                            } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+                                human.Position.y = human.Position.y - 3 * seconds;
+                                human.move(human.Position);
+                            } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
+                                human.Position.y = human.Position.y + 3 * seconds;
+                                human.move(human.Position);
+                            }
+                        /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(1);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(2);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+                            double timenow = GLApp.getTimeInSeconds();
+
+                            if ((timenow - preKeyTime) < 500) {
+                                return;
+                            }
+                            preKeyTime = timenow;
+
+
+                            Switcher.PRINT_SWITCH = !Switcher.PRINT_SWITCH;
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_F4)) {
+                            double timenow = GLApp.getTimeInSeconds();
+
+                            if ((timenow - preKeyTime) < 1) {
+                                return;
+                            }
+                            System.out.println("pretime:"
+                                    + preKeyTime + " time:" + timenow + " seconds:" + seconds);
+                            preKeyTime = timenow;
+                            Switcher.IS_GOD = !Switcher.IS_GOD;
+                            System.out.println("god mode:" + Switcher.IS_GOD);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+
+                            double timenow = GLApp.getTimeInSeconds();
+                            if ((timenow - preKeyTime) < 1) {
+                                return;
+                            }
+                            preKeyTime = timenow;
+                            CoreRegistry.get(Bag.class).changeShow();
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(3);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(4);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(5);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(6);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(7);
+                        } else if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+                            CoreRegistry.get(ToolBar.class).keyDown(8);
+                        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+            CoreRegistry.get(ToolBar.class).keyDown(9);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+            double timenow = GLApp.getTimeInSeconds();
+            if ((timenow - preKeyTime) < 1) {
+                return;
+            }
+            preKeyTime = timenow;
+            Switcher.CAMERA_2_PLAYER++;
+            if (Switcher.CAMERA_2_PLAYER > 0) {
+                Switcher.CAMERA_2_PLAYER = 0;
+            }
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+
+            if (!Keyboard.getEventKeyState()) {
+                Switcher.CAMERA_2_PLAYER--;
+                if (Switcher.CAMERA_2_PLAYER < -10) {
+                    Switcher.CAMERA_2_PLAYER = -10;
                 }
-                if(Switcher.CAMERA_MODEL==0){
-                    Switcher.CAMERA_2_PLAYER=0;
-                }else {
-                    Switcher.CAMERA_2_PLAYER=10;
+            }
+            double timenow = GLApp.getTimeInSeconds();
+            if ((timenow - preKeyTime) < 1) {
+                return;
+            }
+            preKeyTime = timenow;
+
+
+        } */
+            // tilt up
+            if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+                double timenow = GLApp.getTimeInSeconds();
+
+                if ((timenow - preKeyTime) < 1) {
+                    return;
                 }
+                preKeyTime = timenow;
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                    human.jumpHigh();
+                // System.out.println("ͬʱ������w��");
+                human.jump();
+                // System.out.println("jump");
             }
         }
 		/*

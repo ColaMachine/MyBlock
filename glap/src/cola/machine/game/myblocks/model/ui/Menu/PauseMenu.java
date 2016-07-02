@@ -1,9 +1,11 @@
 package cola.machine.game.myblocks.model.ui.Menu;
 
-import cola.machine.game.myblocks.input.Event;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.input.PauseMouseEventReceiver;
-import cola.machine.game.myblocks.model.ui.html.*;
+import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.Table;
+import cola.machine.game.myblocks.model.ui.html.Td;
+import cola.machine.game.myblocks.model.ui.html.Tr;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import glapp.GLApp;
@@ -65,13 +67,13 @@ public class PauseMenu {
     public void click(int x,int y){
 
 
-        Event event =new Event();
+     /*   InputEvent event =new InputEvent();
         event.x=x;
         event.y=y;
 
 
         mask.onClick(event);
-
+*/
 
 
     }

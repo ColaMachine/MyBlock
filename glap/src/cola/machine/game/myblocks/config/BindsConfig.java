@@ -19,6 +19,7 @@ package cola.machine.game.myblocks.config;
 import cola.machine.game.myblocks.engine.SimpleUri;
 import cola.machine.game.myblocks.engine.modules.ModuleManager;
 import cola.machine.game.myblocks.input.Input;
+import cola.machine.game.myblocks.naming.Name;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -37,11 +38,11 @@ import com.google.gson.JsonSerializer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.module.DependencyResolver;
-import org.terasology.module.ModuleEnvironment;
-import org.terasology.module.ResolutionResult;
-import org.terasology.module.predicates.FromModule;
-import org.terasology.naming.Name;
+//import org.terasology.module.DependencyResolver;
+//import org.terasology.module.ModuleEnvironment;
+//import org.terasology.module.ResolutionResult;
+//import org.terasology.module.predicates.FromModule;
+//import org.terasology.naming.Name;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;

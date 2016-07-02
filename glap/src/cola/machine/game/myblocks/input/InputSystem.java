@@ -27,6 +27,7 @@ import cola.machine.game.myblocks.input.internal.BindableAxisImpl;
 import cola.machine.game.myblocks.input.internal.BindableButtonImpl;
 import cola.machine.game.myblocks.local.players.LocalPlayer;
 
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -64,18 +65,18 @@ public class InputSystem extends BaseComponentSystem {
     private BindableButtonImpl mouseWheelDownBind;
 //
     private LocalPlayer localPlayer;
-    private CameraTargetSystem targetSystem;
+   // private CameraTargetSystem targetSystem;
 
     @Override
     public void initialise() {
         localPlayer = CoreRegistry.get(LocalPlayer.class);
-        targetSystem = CoreRegistry.get(CameraTargetSystem.class);
+//        targetSystem = CoreRegistry.get(CameraTargetSystem.class);
     }
 
     @Override
     public void shutdown() {
         localPlayer = null;
-        targetSystem = null;
+//        targetSystem = null;
     }
 
     public void setMouseDevice(MouseDevice mouseDevice) {
@@ -119,7 +120,7 @@ public class InputSystem extends BaseComponentSystem {
     public BindableButton getBindButton(SimpleUri bindId) {
         return buttonLookup.get(bindId);
     }
-
+/*
     public void linkBindButtonToInput(Input input, SimpleUri bindId) {
         switch (input.getType()) {
             case KEY:
@@ -137,7 +138,7 @@ public class InputSystem extends BaseComponentSystem {
         }
     }
 
-    public void linkBindButtonToInput(InputEvent input, SimpleUri bindId) {
+   public void linkBindButtonToInput(InputEvent input, SimpleUri bindId) {
         if (input instanceof KeyEvent) {
             linkBindButtonToKey(((KeyEvent) input).getKey().getId(), bindId);
         } else if (input instanceof MouseButtonEvent) {
@@ -394,6 +395,6 @@ public class InputSystem extends BaseComponentSystem {
     private EntityRef[] getInputEntities() {
         return new EntityRef[]{localPlayer.getClientEntity(), localPlayer.getCharacterEntity()};
     }
-
+*/
 }
 

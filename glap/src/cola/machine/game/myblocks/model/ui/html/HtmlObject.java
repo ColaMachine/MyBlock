@@ -1,7 +1,8 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.engine.entitySystem.event.Event;
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.input.Event;
+//import cola.machine.game.myblocks.input.Event;
 import cola.machine.game.myblocks.input.KeyEventReceiver;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -228,7 +230,7 @@ public class HtmlObject extends RegionArea{
     }
     public void onClick(Event event){
         if("none".equals(this.display))
-            return;
+            return;java.awt.Component a;
         if(event.cancelBubble)
             return;
     	if(this.contain(event.x, event.y)){

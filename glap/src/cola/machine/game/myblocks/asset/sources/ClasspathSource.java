@@ -16,11 +16,11 @@
 
 package cola.machine.game.myblocks.asset.sources;
 
-import org.terasology.naming.Name;
 
 import cola.machine.game.myblocks.asset.AssetSource;
 import cola.machine.game.myblocks.asset.AssetType;
 import cola.machine.game.myblocks.asset.AssetUri;
+import cola.machine.game.myblocks.naming.Name;
 
 import java.net.URL;
 import java.nio.file.Files;

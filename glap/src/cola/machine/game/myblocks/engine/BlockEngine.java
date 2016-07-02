@@ -20,7 +20,7 @@ import java.util.Set;
 import org.lwjgl.Sys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.crashreporter.CrashReporter;
+//import org.terasology.crashreporter.CrashReporter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -100,7 +100,7 @@ public class BlockEngine implements GameEngine{
         	if(crashReportEnabled){
         		Path logFile =logPath.resolve("game.log");
         		
-        		CrashReporter.report(e, logFile);
+        		//CrashReporter.report(e, logFile);
         	}
             e.printStackTrace();
             System.exit(0);

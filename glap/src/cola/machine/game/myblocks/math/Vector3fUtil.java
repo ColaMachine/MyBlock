@@ -16,8 +16,6 @@
 
 package cola.machine.game.myblocks.math;
 
-import com.bulletphysics.BulletGlobals;
-
 import javax.vecmath.Vector3f;
 
 /**
@@ -59,9 +57,9 @@ public final class Vector3fUtil {
     public static Vector3f safeNormalize(Vector3f v, Vector3f out) {
         out.set(v);
         out.normalize();
-        if (out.length() < BulletGlobals.SIMD_EPSILON) {
+     /*   if (out.length() < BulletGlobals.SIMD_EPSILON) {
             out.set(0, 0, 0);
-        }
+        }*/
         return out;
     }
 

@@ -16,8 +16,8 @@
 
 package math;
 
-import com.bulletphysics.linearmath.AabbUtil2;
-import com.bulletphysics.linearmath.Transform;
+//import com.bulletphysics.linearmath.AabbUtil2;
+//import com.bulletphysics.linearmath.Transform;
 import com.google.common.base.Objects;
 import gnu.trove.list.TFloatList;
 
@@ -138,20 +138,20 @@ public final class AABB {
         return new AABB(newMin, newMax);
     }
 
-    public AABB transform(Quat4f rotation, Vector3f offset, float scale) {
-        Transform transform = new Transform(new Matrix4f(rotation, offset, scale));
-        Vector3f newMin = new Vector3f();
-        Vector3f newMax = new Vector3f();
-        AabbUtil2.transformAabb(min, max, 0.01f, transform, newMin, newMax);
-        return new AABB(newMin, newMax);
-    }
-
-    public AABB transform(Transform transform) {
-        Vector3f newMin = new Vector3f();
-        Vector3f newMax = new Vector3f();
-        AabbUtil2.transformAabb(min, max, 0.01f, transform, newMin, newMax);
-        return new AABB(newMin, newMax);
-    }
+//    public AABB transform(Quat4f rotation, Vector3f offset, float scale) {
+//        Transform transform = new Transform(new Matrix4f(rotation, offset, scale));
+//        Vector3f newMin = new Vector3f();
+//        Vector3f newMax = new Vector3f();
+//        AabbUtil2.transformAabb(min, max, 0.01f, transform, newMin, newMax);
+//        return new AABB(newMin, newMax);
+//    }
+//
+//    public AABB transform(Transform transform) {
+//        Vector3f newMin = new Vector3f();
+//        Vector3f newMax = new Vector3f();
+//        AabbUtil2.transformAabb(min, max, 0.01f, transform, newMin, newMax);
+//        return new AABB(newMin, newMax);
+//    }
 
     /**
      * Returns true if this AABB overlaps the given AABB.

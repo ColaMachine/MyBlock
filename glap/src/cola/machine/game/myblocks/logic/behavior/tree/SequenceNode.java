@@ -15,8 +15,6 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.module.sandbox.API;
-
 import java.util.Iterator;
 
 /**
@@ -28,7 +26,7 @@ import java.util.Iterator;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@API
+//@API
 public class SequenceNode extends CompositeNode {
     @Override
     public SequenceTask createTask() {

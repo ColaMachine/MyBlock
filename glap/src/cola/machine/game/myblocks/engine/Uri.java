@@ -1,6 +1,5 @@
 package cola.machine.game.myblocks.engine;
-
-import org.terasology.naming.Name;
+import cola.machine.game.myblocks.naming.Name;
 
 /**
  * Created by luying on 14/11/5.

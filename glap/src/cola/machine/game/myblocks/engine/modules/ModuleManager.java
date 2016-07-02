@@ -5,11 +5,11 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.module.*;
-import org.terasology.module.sandbox.APIScanner;
-import org.terasology.module.sandbox.BytecodeInjector;
-import org.terasology.module.sandbox.ModuleSecurityManager;
-import org.terasology.module.sandbox.ModuleSecurityPolicy;
+//import org.terasology.module.*;
+//import org.terasology.module.sandbox.APIScanner;
+//import org.terasology.module.sandbox.BytecodeInjector;
+//import org.terasology.module.sandbox.ModuleSecurityManager;
+//import org.terasology.module.sandbox.ModuleSecurityPolicy;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class ModuleManager {
 
-
+/*
 
     public static final String SERVER_SIDE_ONLY_EXT = "serverSideOnly";
 
@@ -153,5 +153,5 @@ public class ModuleManager {
 
     public ModuleMetadataReader getModuleMetadataReader() {
         return metadataReader;
-    }
+    }*/
 }

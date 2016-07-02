@@ -61,8 +61,10 @@ public class MyBlockEngine extends GLApp {
     int waterTextureHandle = 0;
     int crossTextureHandle = 0;
     GLImage textureImg;
+    String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
     Time time = new Time();
     MouseControlCenter mouseControlCenter;
+
     // Light position: if last value is 0, then this describes light direction.
     // If 1, then light position.
     //float lightPosition[] = { 5f, 45f, 5f, 0f };
@@ -156,6 +158,13 @@ public class MyBlockEngine extends GLApp {
         //human2 = new Human(blockRepository);
         CoreRegistry.put(MyBlockEngine.class, this);
         CoreRegistry.put(Human.class, human);
+        dcc.blockRepository = blockRepository;
+        bulletPhysics = new BulletPhysics(blockRepository);
+
+        mouseControlCenter = new MouseControlCenter(human, camera1, this);
+        mouseControlCenter.bulletPhysics = bulletPhysics;
+
+
         this.initManagers();
         Collection<EngineSubsystem> subsystemList;
         subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
@@ -225,8 +234,6 @@ public class MyBlockEngine extends GLApp {
         //GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11.GL_FALSE);
 //		
         //GL11.glEnable(GL11.GL_AUTO_NORMAL);
-        dcc.blockRepository = blockRepository;
-        bulletPhysics = new BulletPhysics(blockRepository);
 
 
         // Enable alpha transparency (so text will have transparent background)
@@ -248,8 +255,6 @@ public class MyBlockEngine extends GLApp {
 
         human.startWalk();
 
-        mouseControlCenter = new MouseControlCenter(human, camera1, this);
-        mouseControlCenter.bulletPhysics = bulletPhysics;
 
 
         // make a shadow handler
@@ -274,7 +279,9 @@ public class MyBlockEngine extends GLApp {
         CoreRegistry.put(ChunkProvider.class, chunkProvider);
         WorldProvider WorldProvider = new WorldProviderWrapper();
 
-        worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null);
+        WorldRendererLwjgl worldRenderer2 = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null,human);
+
+        this.worldRenderer=worldRenderer2;
     }
 
     /**
@@ -300,7 +307,7 @@ public class MyBlockEngine extends GLApp {
                 dcc.check(human);
             }
 
-        mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
+       // mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
         // cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -539,45 +546,7 @@ public class MyBlockEngine extends GLApp {
         GL11.glPopMatrix();*/
     }
 
-    public void keyDown(int keycode) {
-		/*
-		 * if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
-		 * camera1)? camera2 : camera1); }
-		 */
-        mouseControlCenter.keyDown(keycode);
-    }
 
-    public void keyUp(int keycode) {
-        mouseControlCenter.keyUp(keycode);
-    }
-
-    /**
-     * Add last mouse motion to the line, only if left mouse button is down.
-     */
-    public void mouseMove(int x, int y) {
-        mouseControlCenter.mouseMove(x, y);
-    }
-
-    /**
-     * Add last mouse motion to the line, only if left mouse button is down.
-     */
-    public void mouseUp(int x, int y) {
-        mouseControlCenter.mouseUp(x, y);
-    }
-
-    /**
-     * Add last mouse motion to the line, only if left mouse button is down.
-     */
-    public void mouseDown(int x, int y) {
-        msg("DX=" + x + " DY=" + y);
-        if (this.mouseButtonDown(0)) {
-            mouseControlCenter.mouseLClick(x, y);
-        }
-        if (this.mouseButtonDown(1)) {
-            mouseControlCenter.mouseRClick(x, y);
-        }
-
-    }
 
 
     public void initSelf() {
@@ -600,6 +569,10 @@ public class MyBlockEngine extends GLApp {
     }
 
     private void initManagers() {
+
+
+        CoreRegistry.put(MouseControlCenter.class,mouseControlCenter);
+
        // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
@@ -653,7 +626,7 @@ public class MyBlockEngine extends GLApp {
 
     public void mainDraw() {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        worldRenderer.render();
+        //worldRenderer.render();
         TextureInfo ti = TextureManager.getTextureInfo("human");
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
         GL11.glPushMatrix();

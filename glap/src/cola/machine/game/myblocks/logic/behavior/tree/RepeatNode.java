@@ -15,7 +15,7 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.module.sandbox.API;
+//import org.terasology.module.sandbox.API;
 
 /**
  * Repeats the child node forever.<br/>
@@ -25,7 +25,7 @@ import org.terasology.module.sandbox.API;
  * <br/>
  * Auto generated javadoc - modify README.markdown instead!
  */
-@API
+//@API
 public class RepeatNode extends DecoratorNode {
     public RepeatNode() {
     }

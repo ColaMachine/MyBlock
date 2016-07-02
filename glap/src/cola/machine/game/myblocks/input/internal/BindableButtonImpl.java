@@ -109,7 +109,7 @@ public class BindableButtonImpl implements BindableButton{
 					buttonEvent.prepare(id, ButtonState.DOWN, delta);
 					buttonEvent.setTargetInfo(target,targetBlockPos,hitPosition,hitNormal);
 					for(EntityRef entity:inputEntities){
-						entity.send(buttonEvent);
+						//entity.send(buttonEvent);
 						if(buttonEvent.isConsumed()){
 							break;
 						}
@@ -127,7 +127,7 @@ public class BindableButtonImpl implements BindableButton{
 					buttonEvent.prepare(id,ButtonState.UP,delta);
 					buttonEvent.setTargetInfo(target, targetBlockPos, hitPosition, hitNormal);
 					for(EntityRef entity:inputEntities){
-						entity.send(buttonEvent);
+						//entity.send(buttonEvent);
 						if(buttonEvent.isConsumed()){
 							break;
 						}

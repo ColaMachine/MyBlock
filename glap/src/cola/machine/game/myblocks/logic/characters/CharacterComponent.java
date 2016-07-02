@@ -3,7 +3,7 @@ package cola.machine.game.myblocks.logic.characters;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
-import com.bulletphysics.linearmath.QuaternionUtil;
+//import com.bulletphysics.linearmath.QuaternionUtil;
 
 import cola.machine.game.myblocks.entitySystem.Component;
 import cola.machine.game.myblocks.entitySystem.entity.EntityRef;
@@ -26,13 +26,13 @@ public class CharacterComponent implements Component{
 	
 	public Quat4f getLookRotation(){
 		Quat4f lookRotation =new Quat4f();
-		QuaternionUtil.setEuler(lookRotation, TeraMath.DEG_TO_RAD*yaw,TeraMath.DEG_TO_RAD*pitch, 0);
+//		QuaternionUtil.setEuler(lookRotation, TeraMath.DEG_TO_RAD*yaw,TeraMath.DEG_TO_RAD*pitch, 0);
 		return lookRotation;
 	}
 	
 	public Vector3f getLookDirection(){
 		Vector3f result =Direction.FORWARD.getVector3f();
-		QuaternionUtil.quatRotate(getLookRotation(), result, result);
+//		QuaternionUtil.quatRotate(getLookRotation(), result, result);
 		return result;
 	}
 	

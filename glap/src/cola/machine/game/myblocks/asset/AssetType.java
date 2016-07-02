@@ -16,11 +16,12 @@
 
 package cola.machine.game.myblocks.asset;
 
+import cola.machine.game.myblocks.naming.Name;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
-import org.terasology.naming.Name;
+//import org.terasology.naming.Name;
 
 import java.util.Collection;
 import java.util.List;

@@ -15,12 +15,10 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.module.sandbox.API;
-
 /**
  * @author synopia
  */
-@API
+//@API
 public enum Status {
     INVALID,
     SUCCESS,

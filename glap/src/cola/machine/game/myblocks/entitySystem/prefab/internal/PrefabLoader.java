@@ -17,7 +17,7 @@ package cola.machine.game.myblocks.entitySystem.prefab.internal;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
-import org.terasology.module.Module;
+//import org.terasology.module.Module;
 
 import java.io.BufferedReader;
 import java.io.IOException;

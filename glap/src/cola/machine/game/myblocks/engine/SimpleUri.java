@@ -15,10 +15,11 @@
  */
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.naming.Name;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.terasology.module.sandbox.API;
-import org.terasology.naming.Name;
+//import org.terasology.module.sandbox.API;
+//import org.terasology.naming.Name;
 
 /**
  * A URI to identify standard objects in Terasology - components, events, etc. These URIs are always in the form: <module-name>:<object-name>. They are case-insensitive (using
@@ -26,7 +27,7 @@ import org.terasology.naming.Name;
  *
  * @author synopia
  */
-@API
+//@API
 public class SimpleUri implements Uri, Comparable<SimpleUri> {
     private Name moduleName = Name.EMPTY;
     private Name objectName = Name.EMPTY;

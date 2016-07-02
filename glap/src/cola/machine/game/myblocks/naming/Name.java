@@ -7,7 +7,7 @@ import java.util.Locale;
 /**
  * Created by luying on 14-10-15.
  */
-final class Name implements  Comparable<Name>{
+public class Name implements  Comparable<Name>{
     public static final Name EMPTY=new Name("");
 
     private final String originalName;

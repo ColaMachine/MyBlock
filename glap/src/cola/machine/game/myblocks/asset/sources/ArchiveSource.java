@@ -17,9 +17,10 @@
 package cola.machine.game.myblocks.asset.sources;
 
 import cola.machine.game.myblocks.asset.AssetUri;
+import cola.machine.game.myblocks.naming.Name;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.naming.Name;
+
 
 import java.io.File;
 import java.io.IOException;

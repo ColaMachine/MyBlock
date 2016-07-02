@@ -15,7 +15,9 @@
  */
 package cola.machine.game.myblocks.asset;
 
-import org.terasology.naming.Name;
+//import org.terasology.naming.Name;
+
+import cola.machine.game.myblocks.naming.Name;
 
 /**
  * @author Immortius

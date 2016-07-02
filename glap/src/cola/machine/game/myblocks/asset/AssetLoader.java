@@ -16,7 +16,7 @@
 
 package cola.machine.game.myblocks.asset;
 
-import org.terasology.module.Module;
+/*import org.terasology.module.Module;*/
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,5 +44,5 @@ public interface AssetLoader<T extends AssetData> {
      * @return The loaded asset, or null
      * @throws java.io.IOException If there is any error loading the asset
      */
-    T load(Module module, InputStream stream, List<URL> urls, List<URL> deltas) throws IOException;
+    /*T load(Module module, InputStream stream, List<URL> urls, List<URL> deltas) throws IOException;*/
 }

@@ -1,29 +1,20 @@
 package cola.machine.game.myblocks.model.ui.bag;
 
-import cola.machine.game.myblocks.input.Event;
-import cola.machine.game.myblocks.model.ui.html.Div;
-import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.model.ui.html.HtmlObject;
-import cola.machine.game.myblocks.model.ui.html.Table;
-import cola.machine.game.myblocks.model.ui.html.Td;
-import cola.machine.game.myblocks.model.ui.html.Tr;
-import cola.machine.game.myblocks.switcher.Switcher;
-import glapp.GLApp;
-
-import org.lwjgl.opengl.GL11;
-
 import cola.machine.game.myblocks.container.Slot;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
+import cola.machine.game.myblocks.engine.entitySystem.event.Event;
 import cola.machine.game.myblocks.input.BagMouseEventReceiver;
-import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.input.ToolbarMouseEventReceiver;
 import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.model.ui.html.*;
 import cola.machine.game.myblocks.model.ui.tool.ToolBarSlop;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
+import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector3f;
 

@@ -9,6 +9,8 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import de.matthiasmann.twl.GUI;
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.input.*;
@@ -230,36 +232,61 @@ public class GLApp {
         if (mouseDW != 0) {
         	mouseWheel(mouseDW);
         }
+
+
+
+        GUI gui = CoreRegistry.get(GUI.class);
         // handle mouse clicks
-        while ( Mouse.next() ) {
-        	if(Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
-        		mouseDown(cursorX, cursorY);
-        	}
-        	if(Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
-        		mouseUp(cursorX, cursorY);
-        	}
-        	if(Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
-        		mouseDown(cursorX, cursorY);
-        	}
-        	if(Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
-        		mouseUp(cursorX, cursorY);
-        	}
+    if(Mouse.isCreated())
+    {
+        while (Mouse.next()) {
+
+            gui.handleMouse(
+                    Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
+                    Mouse.getEventButton(), Mouse.getEventButtonState());
+
+            int wheelDelta = Mouse.getEventDWheel();
+            if (wheelDelta != 0) {
+                gui.handleMouseWheel(wheelDelta / 120);
+            }
+            if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
+                mouseDown(cursorX, cursorY);
+            }
+            if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
+                mouseUp(cursorX, cursorY);
+            }
+            if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
+                mouseDown(cursorX, cursorY);
+            }
+            if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
+                mouseUp(cursorX, cursorY);
+            }
+
+
         }
+    }
         // Handle key hits
-        while ( Keyboard.next() )  {
-        	// check for exit key
+            if(Keyboard.isCreated()) {
+                while (Keyboard.next()) {
+                    // check for exit key
            /* if (Keyboard.getEventKey() == finishedKey) {
                 finished = true;
             }*/
-            // pass key event to handler
-            if (Keyboard.getEventKeyState()) {    // key was just pressed, trigger keyDown()
-                keyDown(Keyboard.getEventKey());
-            }
-            else {
-                keyUp(Keyboard.getEventKey());    // key was released
-            }
-        }
+                    // pass key event to handler
+            System.out.println("Character"+Keyboard.getEventCharacter());
 
+                    gui.handleKey(
+                            Keyboard.getEventKey(),
+                            Keyboard.getEventCharacter(),
+                            Keyboard.getEventKeyState());
+
+                    if (Keyboard.getEventKeyState()) {    // key was just pressed, trigger keyDown()
+                        keyDown(Keyboard.getEventKey());
+                    } else {
+                        keyUp(Keyboard.getEventKey());    // key was released
+                    }
+                }
+            }
         // Count frames
         frameCount++;
         if ((Sys.getTime()-lastFrameTime) > ticksPerSecond) {
@@ -2933,7 +2960,7 @@ public class GLApp {
     {
     	// if font is not initiallized, try loading default font
     	if (fontListBase == -1 || fontTextureHandle == -1) {
-    		if (!buildFont("images/font_tahoma.png", 12)) {
+    		if (!buildFont("glap/images/font_tahoma.png", 12)) {
     			err("GLApp.print(): character set has not been created -- see buildFont()");
     			return;
     		}
@@ -3472,8 +3499,13 @@ public class GLApp {
      */
     public static InputStream getInputStream(String filename) {
     	InputStream in = null;
-    	
-    	// 1) look for file in local filesystem
+                System.out.println(System.getProperty("user.dir"));
+        File directory = new File("");//设定为当前文件夹
+        try{
+            System.out.println(directory.getCanonicalPath());//获取标准的路径
+            System.out.println(directory.getAbsolutePath());//获取绝对路径
+        }catch(Exception e){}
+        // 1) look for file in local filesystem
     	try {
     		in = new FileInputStream(filename);
     	}

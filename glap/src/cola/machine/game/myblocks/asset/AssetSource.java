@@ -16,7 +16,9 @@
 
 package cola.machine.game.myblocks.asset;
 
-import org.terasology.naming.Name;
+//import org.terasology.naming.Name;
+
+import cola.machine.game.myblocks.naming.Name;
 
 import java.net.URL;
 import java.util.Collection;

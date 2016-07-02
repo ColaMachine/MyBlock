@@ -18,9 +18,8 @@ package cola.machine.game.myblocks.asset;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.terasology.naming.Name;
 import cola.machine.game.myblocks.engine.Uri;
-
+import cola.machine.game.myblocks.naming.Name;
 /**
  * @author Immortius
  */

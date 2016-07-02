@@ -16,8 +16,8 @@
 
 package cola.machine.game.myblocks.config;
 
+import cola.machine.game.myblocks.naming.Name;
 import com.google.common.collect.Lists;
-import org.terasology.naming.Name;
 
 import java.util.List;
 

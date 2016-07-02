@@ -15,14 +15,14 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.module.sandbox.API;
+//import org.terasology.module.sandbox.API;
 
 /**
  * A task run by an interpreter for an actor.
  *
  * @author synopia
  */
-@API
+//@API
 public abstract class Task {
     private Interpreter interpreter;
     private Node node;

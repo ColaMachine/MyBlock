@@ -13,7 +13,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
-import org.newdawn.slick.opengl.ImageIOImageData;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,12 +101,13 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
                 BufferedImage icon64 = ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_64.png"));
                 BufferedImage icon128 = ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_128.png"));
 
-                Display.setIcon(new ByteBuffer[]{
+               /* Display.setIcon(new ByteBuffer[]{
+                        ImageIO.
                         new ImageIOImageData().imageToByteBuffer(icon16, false, false, null),
                         new ImageIOImageData().imageToByteBuffer(icon32, false, false, null),
                         new ImageIOImageData().imageToByteBuffer(icon64, false, false, null),
                         new ImageIOImageData().imageToByteBuffer(icon128, false, false, null)
-                });
+                });*/
             } catch (IOException | IllegalArgumentException e) {
                 logger.warn("Could not set icon", e);
             }

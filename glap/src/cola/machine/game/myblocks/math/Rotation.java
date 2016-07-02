@@ -15,7 +15,7 @@
  */
 package cola.machine.game.myblocks.math;
 
-import com.bulletphysics.linearmath.QuaternionUtil;
+//import com.bulletphysics.linearmath.QuaternionUtil;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import gnu.trove.map.TByteObjectMap;
@@ -113,13 +113,13 @@ public final class Rotation {
     public Roll getRoll() {
         return roll;
     }
-
+/*
     public Quat4f getQuat4f() {
         Quat4f rotation = new Quat4f();
         QuaternionUtil.setEuler(rotation, yaw.getRadians(), pitch.getRadians(), roll.getRadians());
         rotation.normalize();
         return rotation;
-    }
+    }*/
 
     public Side rotate(Side side) {
         Side result = side;

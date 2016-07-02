@@ -15,14 +15,14 @@
  */
 package cola.machine.game.myblocks.logic.behavior.tree;
 
-import org.terasology.module.sandbox.API;
+//import org.terasology.module.sandbox.API;
 
 /**
  * Base class for decorator nodes, which have exactly one child (the decorated node).
  *
  * @author synopia
  */
-@API
+//@API
 public abstract class DecoratorNode extends Node {
     protected Node child;
 
@@ -75,7 +75,7 @@ public abstract class DecoratorNode extends Node {
         this.child = child;
     }
 
-    @API
+//    @API
     public abstract static class DecoratorTask extends Task {
         protected DecoratorTask(Node node) {
             super(node);
