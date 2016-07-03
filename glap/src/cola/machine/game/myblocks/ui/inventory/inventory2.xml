@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE themes PUBLIC "-//www.matthiasmann.de//TWL-Theme//EN" "http://hg.l33tlabs.org/twl/raw-file/tip/src/de/matthiasmann/twl/theme/theme.dtd">
+<themes>
+
+    <images file="../chat/chat.png" format="RGBA" filter="linear">
+
+        <area name="tooltip.background" border="3" xywh="1,24,7,7" splitx="L3,R3" splity="T3,B3"/>
+        <area name="evilframe.background" border="27,10,10,10" xywh="40,1,20,29" splitx="L5,R5" splity="T19,B5"/>
+
+        <area name="-innerframe.background" splitx="2,3" splity="2,3" xywh="17,1,5,5"/>
+        <select name="innerframe.background" border="2">
+            <alias ref="-innerframe.background" if="disabled" tint="#888"/>
+            <alias ref="-innerframe.background"/>
+        </select>
+
+        <composed name="itemslot.background" border="5" sizeOverwriteH="40" sizeOverwriteV="40">
+            <alias ref="-innerframe.background"/>
+            <alias ref="white" if="dropOk" tint="#80FFFFFF"/>
+            <alias ref="white" if="dropBlocked" tint="#80FF0000"/>
+        </composed>
+    </images>
+    <images file="../test/items.png">
+        <area name="icon.green" xywh="3,0,28,31" center="true"/>
+        <area name="icon.red" xywh="34,0,29,31" center="true"/>
+        <area name="icon.blue" xywh="65,0,29,31" center="true"/>
+        <area name="icon.yellow" xywh="97,0,28,31" center="true"/>
+    </images>
+    <images file="../test/items.png">
+        <area name="icon.wood_helmet" xywh="0,0,16,16" nocenter="true"/>
+        <area name="icon.wood_armour" xywh="0,16,16,16" nocenter="true"/>
+        <area name="icon.wood_pants" xywh="0,32,16,16" nocenter="true"/>
+        <area name="icon.wood_shoe" xywh="0,48,16,16" nocenter="true"/>
+        <area name="icon.wood_sword" xywh="0,64,16,16" nocenter="true"/>
+        <area name="icon.wood_pickax" xywh="0,80,16,16" nocenter="true"/>
+        <area name="icon.wood_axe" xywh="0,96,16,16" nocenter="true"/>
+        <area name="icon.wood_hoe" xywh="0,112,16,16" nocenter="true"/>
+    </images>
+    <include filename="../test/cursors.xml"/>
+    <fontDef name="black" filename="../test/font.fnt" color="black"/>
+    <fontDef name="button" filename="../test/font.fnt" color="white">
+        <fontParam if="disabled" color="gray"/>
+        <fontParam if="pressed" offsetX="1" offsetY="1"/>
+    </fontDef>
+    
+
+    <theme name="fpscounter" ref="-defaults" allowWildcard="true">
+        <param name="tooltip"><string>Current FPS</string></param>
+    </theme>
+
+
+
+    <theme name="inventorydemo" ref="-defaults" allowWildcard="true">
+        <param name="background"><image>evilframe.background</image></param>
+        <param name="border"><border>background.border</border></param>
+        <param name="titleAreaTop"><int>1</int></param>
+        <param name="titleAreaLeft"><int>8</int></param>
+        <param name="titleAreaRight"><int>-8</int></param>
+        <param name="titleAreaBottom"><int>15</int></param>
+        <param name="hasCloseButton"><bool>true</bool></param>
+        <param name="closeButtonX"><int>0</int></param>
+        <param name="closeButtonY"><int>0</int></param>
+        <param name="hasResizeHandle"><bool>false</bool></param>
+        <param name="resizeHandleX"><int>0</int></param>
+        <param name="resizeHandleY"><int>0</int></param>
+        <param name="fadeColorInactive"><color>white</color></param>
+        <param name="fadeDurationActivate"><int>0</int></param>
+        <param name="fadeDurationDeactivate"><int>0</int></param>
+        <param name="fadeDurationShow"><int>0</int></param>
+        <param name="fadeDurationHide"><int>0</int></param>
+        <param name="mouseCursor"><cursor>arrow.*</cursor></param>
+        <theme name="title" ref="-defaults">
+            <param name="textAlignment"><enum type="alignment">left</enum></param>
+            <param name="font"><font>black</font></param>
+        </theme>
+        <theme  name="closeButton" ref="-defaults" allowWildcard="true">
+
+            <param name="border"><border>background.border</border></param>
+            <param name="font"><font>button</font></param>
+        </theme>
+        <theme name="resizeHandle" ref="-defaults"/>
+    </theme>
+
+
+    <theme name="inventorypanel" ref="-defaults" allowWildcard="true">
+        <param name="slotSpacing"><int>5</int></param>
+    </theme>
+    
+    <theme name="itemslot" ref="-defaults" allowWildcard="true">
+        <param name="background"><image>itemslot.background</image></param>
+        <param name="border"><border>background.border</border></param>
+        <param name="icons"><map>
+            <param name=""><image>icon.*</image></param>
+        </map></param>
+    </theme>
+    
+</themes>

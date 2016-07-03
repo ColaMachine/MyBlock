@@ -31,6 +31,7 @@ package cola.machine.game.myblocks.ui.inventory;
 
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
+import de.matthiasmann.twl.renderer.Font;
 import de.matthiasmann.twl.renderer.Image;
 
 /**
@@ -42,7 +43,7 @@ public class ItemSlot extends Widget {
     public static final StateKey STATE_DRAG_ACTIVE = StateKey.get("dragActive");
     public static final StateKey STATE_DROP_OK = StateKey.get("dropOk");
     public static final StateKey STATE_DROP_BLOCKED = StateKey.get("dropBlocked");
-    
+    Font font;
     public interface DragListener {
         public void dragStarted(ItemSlot slot, Event evt);
         public void dragging(ItemSlot slot, Event evt);
@@ -51,11 +52,17 @@ public class ItemSlot extends Widget {
     
     private String item;
     private Image icon;
+    private int num;
+    private Label label;
     private DragListener listener;
     private boolean dragActive;
     private ParameterMap icons;
 
     public ItemSlot() {
+         label =new Label();
+        label.setText("");
+        add(label);
+        //font=this.getgetTheme().dragetFont("black");
     }
 
     public String getItem() {
@@ -64,6 +71,13 @@ public class ItemSlot extends Widget {
 
     public void setItem(String item) {
         this.item = item;
+        findIcon();//根据name 查找
+    }
+
+    public void setItem(String item,int num) {
+        this.item = item;
+        this.num=num;
+        label.setText(""+num);
         findIcon();//根据name 查找
     }
 
@@ -120,6 +134,8 @@ public class ItemSlot extends Widget {
     protected void paintWidget(GUI gui) {
         if(!dragActive && icon != null) {
             icon.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            //font.drawText(null,getInnerX(), getInnerY(),"10");
+            this.paintChild(gui,label);
         }
     }
 

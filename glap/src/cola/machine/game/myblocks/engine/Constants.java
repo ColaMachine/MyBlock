@@ -18,6 +18,9 @@ public class Constants {
     public static final int DEFAULT_PORT=25777;//server port
     public static final String WORLD_DATA_FILE="world.dat";
     public static final String MAIN_WORLD="main";
+    public static final int BAG_NUM_SLOTS_X=10;
+    public static final int BAG_NUM_SLOTS_Y=5;
+    public static final int BAG_CAPACITY=BAG_NUM_SLOTS_X*BAG_NUM_SLOTS_Y;
     public static final Charset CHARSET= Charsets.UTF_8;
     public static final Name ENGINE_MODULE=new Name("engine");
     public static final Name CORE_MODULE= new Name("core");

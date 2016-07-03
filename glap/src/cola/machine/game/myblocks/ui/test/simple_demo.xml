@@ -41,10 +41,10 @@
             <area inset="2" tint="lime" xywh="25,5,1,1"/>
         </composed>
     </images>
-    
+
     <theme name="progressbar-glow" ref="progressbar" allowWildcard="true"/>
     <theme name="progressbar-glow-anim" ref="progressbar" allowWildcard="true"/>
-    
+
     <images file="TWL Logo.png" format="RGBA">
         <area name="twl-logo" inset="-8" xywh="0,0,256,128"/>
     </images>
@@ -74,12 +74,12 @@
         </map></param>
         <param name="maxWidth"><int>600</int></param>
     </theme>
-    
+
     <theme name="tableScrollPane" ref="scrollpane">
         <param name="background"><image>-borderC</image></param>
         <param name="border"><border>2</border></param>
     </theme>
-    
+
     <theme name="optionsdialog" ref="dialoglayout">
         <param name="background"><image>none</image></param>
         <param name="border"><border>4</border></param>
@@ -189,4 +189,5 @@
             </theme>
         </theme>
     </theme>
+    <include filename="../inventory/inventory2.xml"/>
 </themes>

@@ -29,16 +29,26 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
+import cola.machine.game.myblocks.action.BagController;
+import cola.machine.game.myblocks.bean.BagEntity;
+import cola.machine.game.myblocks.bean.ItemEntity;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.sun.tools.javac.util.Assert;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.ThemeInfo;
 import de.matthiasmann.twl.Widget;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author Matthias Mann
  */
 public class InventoryPanel extends Widget {
-    
+    private BagEntity bagEntity;
+    private BagController bagController;
     private int numSlotsX;
     private int numSlotsY;
     private final ItemSlot[] slot;
@@ -49,6 +59,11 @@ public class InventoryPanel extends Widget {
     private ItemSlot dropSlot;
     
     public InventoryPanel(int numSlotsX, int numSlotsY) {
+        this.bagController = CoreRegistry.get(BagController.class);
+        Assert.checkNonNull(bagController,"bagController miss in CoreRegistry");
+
+       // this.bagEntity = CoreRegistry.get(BagEntity.class);
+        //Assert.checkNonNull(bagEntity,"bagEntity miss in CoreRegistry");
         this.numSlotsX = numSlotsX;
         this.numSlotsY = numSlotsY;
         this.slot = new ItemSlot[numSlotsX * numSlotsY];//数组
@@ -70,11 +85,18 @@ public class InventoryPanel extends Widget {
             slot[i].setListener(listener);//所有的slot都绑定了一个listener
             add(slot[i]);
         }
-
-        slot[0].setItem("red");
-        slot[1].setItem("green");
-        slot[2].setItem("blue");
-        slot[3].setItem("yellow");
+        Map<Integer,ItemEntity> itemEntityMap=bagController.getAllItemEntity();
+        Set<Integer> set = itemEntityMap.keySet();
+        for(int key:set){
+            slot[key].setItem(itemEntityMap.get(key).getName(),itemEntityMap.get(key).getNum());
+        }
+       /* for(int i=0;i<itemEntitys.length;i++){
+            slot[0].setItem(itemEntitys[i].getName(),itemEntitys[i].getNum());
+        }*/
+        slot[10].setItem("red");
+        slot[11].setItem("green");
+        slot[12].setItem("blue");
+        slot[13].setItem("yellow");
     }
 
     @Override

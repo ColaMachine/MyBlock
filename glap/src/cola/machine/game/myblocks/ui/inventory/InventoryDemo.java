@@ -91,7 +91,7 @@ public class InventoryDemo extends DesktopArea {
     }
 
     final FPSCounter fpsCounter;
-    final FadeFrame frame;
+    final FadeFrame rootFrame;
     final InventoryPanel inventoryPanel;
     
     boolean quit;
@@ -102,21 +102,21 @@ public class InventoryDemo extends DesktopArea {
         fpsCounter = new FPSCounter();//fps显示组件
         this.setCanAcceptKeyboardFocus(true);
         inventoryPanel = new InventoryPanel(10, 5);//10行5列
-        CtrlFrame ctrlFrame =new CtrlFrame();
-        frame = new FadeFrame();//创建包裹框
-        frame.setTitle("Inventory");//整个包裹的标题
-        frame.setResizableAxis(ResizableFrame.ResizableAxis.BOTH);//是否可以调整大小
-        frame.add(inventoryPanel);//添加panel
-        frame.addCloseCallback(new Runnable() {
+        //CtrlFrame ctrlFrame =new CtrlFrame();
+        rootFrame = new FadeFrame();//创建包裹框
+        rootFrame.setTitle("Inventory");//整个包裹的标题
+        rootFrame.setResizableAxis(ResizableFrame.ResizableAxis.BOTH);//是否可以调整大小
+        rootFrame.add(inventoryPanel);//添加panel
+        rootFrame.addCloseCallback(new Runnable() {
             @Override
             public void run() {
-                frame.setVisible(false);
+                rootFrame.setVisible(false);
             }
         });
         add(fpsCounter);//添加fps
        // ctrlFrame.setTheme("ctrlframe");
        // add(ctrlFrame);
-        add(frame);//添加包裹
+        add(rootFrame);//添加包裹
         chatFrame = new ChatFrame();
         chatFrame.setTheme("chatframe");
         add(chatFrame);
@@ -127,7 +127,7 @@ public class InventoryDemo extends DesktopArea {
 
         final SimpleTest.RootPane root = new SimpleTest.RootPane();
         //增加底部按钮
-        root.addButton("包裹", "包裹", new ToggleFadeFrame(frame)).setTooltipContent(makeComplexTooltip());
+        root.addButton("包裹", "包裹", new ToggleFadeFrame(rootFrame)).setTooltipContent(makeComplexTooltip());
         add(root);
 
     }
@@ -139,10 +139,10 @@ public class InventoryDemo extends DesktopArea {
         return ta;
     }
     public void positionFrame() {
-        frame.adjustSize();//调整包裹大小 刚好包裹格子
-        frame.setPosition(
-                getInnerX() + (getInnerWidth() - frame.getWidth())/2,
-                getInnerY() + (getInnerHeight() - frame.getHeight())/2);//调整位置
+        rootFrame.adjustSize();//调整包裹大小 刚好包裹格子
+        rootFrame.setPosition(
+                getInnerX() + (getInnerWidth() - rootFrame.getWidth())/2,
+                getInnerY() + (getInnerHeight() - rootFrame.getHeight())/2);//调整位置
     }
     
     @Override
@@ -157,7 +157,7 @@ public class InventoryDemo extends DesktopArea {
     } private boolean dragActive;
     @Override
     protected boolean handleEvent(Event evt) {
-
+//System.out.println(System.getProperty("java.library.path"));
         boolean handled =super.handleEvent(evt);
         if(!handled)
         if(evt.isMouseEventNoWheel()) {

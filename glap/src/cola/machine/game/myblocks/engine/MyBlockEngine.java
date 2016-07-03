@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.action.BagController;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
@@ -15,6 +16,8 @@ import org.lwjgl.util.glu.GLU;
 
 import com.google.common.collect.Lists;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import time.Time;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
@@ -52,6 +55,8 @@ import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
  * napier at potatoland dot org
  */
 public class MyBlockEngine extends GLApp {
+    private Logger logger = LoggerFactory.getLogger(MyBlockEngine.class);
+
     // Handle for texture
     int sphereTextureHandle = 0;
     int groundTextureHandle = 0;
@@ -61,10 +66,10 @@ public class MyBlockEngine extends GLApp {
     int waterTextureHandle = 0;
     int crossTextureHandle = 0;
     GLImage textureImg;
-    String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
+   // String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
     Time time = new Time();
     MouseControlCenter mouseControlCenter;
-
+    BagController bagController =new BagController();
     // Light position: if last value is 0, then this describes light direction.
     // If 1, then light position.
     //float lightPosition[] = { 5f, 45f, 5f, 0f };
@@ -114,12 +119,15 @@ public class MyBlockEngine extends GLApp {
             PathManager.getInstance().useDefaultHomePath();
 
 
+
+            //System.out.println(System.getProperty("java.library.path"));
             Collection<EngineSubsystem> subsystemList;
 
             subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
 
             // create the app
             MyBlockEngine demo = new MyBlockEngine();
+           // System.out.println(System.getProperty("java.library.path"));
             demo.VSyncEnabled = true;
             demo.fullScreen = false;
             demo.displayWidth = 800;
@@ -153,6 +161,7 @@ public class MyBlockEngine extends GLApp {
         //  GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
         //GL11.glEnable(GL11.GL_DEPTH_TEST);
         // GL11.glDepthFunc(GL11.GL_LEQUAL);
+        CoreRegistry.put(BagController.class,bagController);
         human = new Human(blockRepository);
         //sword=new Sword(0,0,0);
         //human2 = new Human(blockRepository);

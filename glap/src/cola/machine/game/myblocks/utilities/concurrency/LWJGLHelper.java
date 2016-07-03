@@ -31,13 +31,14 @@ public class LWJGLHelper {
 			case LWJGLUtil.PLATFORM_LINUX:
 				osNativePath=nativePath.resolve("linux");
 				break;
-			
+
 		}
 		addLibraryPath(osNativePath);
 	}
-	public static void addLibraryPath(Path path){
+	public static void addLibraryPath(Path path){//通过反射的方式设置java.library.pathx
 		String envpath= System.getProperty("java.library.path");
-		System.setProperty("java.library.path",path.toAbsolutePath().toString()+File.pathSeparator+ envpath);
+		//System.setProperty("java.library.path",path.toAbsolutePath().toString()+File.pathSeparator+ envpath);
+        // envpath= System.getProperty("java.library.path");
 		try{
 		final Field usrPathField = ClassLoader.class.getDeclaredField("usr_paths");
 		usrPathField.setAccessible(true);

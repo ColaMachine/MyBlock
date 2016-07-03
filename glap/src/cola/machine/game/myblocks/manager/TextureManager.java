@@ -43,8 +43,8 @@ public class TextureManager {
         this.put("widgets", "assets/minecraft/textures/gui/widgets.png");
         textureMap.put("toolbar", new TextureInfo("widgets", 0, 469, 362, 43));
 
-        this.put("night", "images/night.jpg");
-        textureMap.put("night", new TextureInfo("night"));
+        //this.put("night", "images/night.jpg");
+        //textureMap.put("night", new TextureInfo("night"));
 
         //this.put("most","images/fewest.tif");
         //textureMap.put("most",new TextureInfo("most"));
