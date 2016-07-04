@@ -91,6 +91,19 @@
         <param name="icons"><map>
             <param name=""><image>icon.*</image></param>
         </map></param>
+
+        <theme name="itemwrap" ref="-defaults" allowWildcard="true">
+            <param name="minWidth"><int>13</int></param>
+            <param name="minHeight"><int>13</int></param>
+            <param name="maxWidth"><int>13</int></param>
+            <param name="maxHeight"><int>13</int></param>
+            <param name="background"><image>icon.green</image></param>
+            <param name="border"><border>background.border</border></param>
+            <param name="icons"><map>
+                <param name=""><image>icon.*</image></param>
+            </map></param>
+        </theme>
     </theme>
+
     
 </themes>

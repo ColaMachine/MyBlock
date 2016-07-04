@@ -88,15 +88,15 @@ public class InventoryPanel extends Widget {
         Map<Integer,ItemEntity> itemEntityMap=bagController.getAllItemEntity();
         Set<Integer> set = itemEntityMap.keySet();
         for(int key:set){
-            slot[key].setItem(itemEntityMap.get(key).getName(),itemEntityMap.get(key).getNum());
+            slot[key].setItemWrap(new ItemWrap(itemEntityMap.get(key)));
         }
        /* for(int i=0;i<itemEntitys.length;i++){
             slot[0].setItem(itemEntitys[i].getName(),itemEntitys[i].getNum());
         }*/
-        slot[10].setItem("red");
-        slot[11].setItem("green");
-        slot[12].setItem("blue");
-        slot[13].setItem("yellow");
+//        slot[10].setItem("red");
+       // slot[11].setItem("green");
+      //  slot[12].setItem("blue");
+      //  slot[13].setItem("yellow");
     }
 
     @Override
@@ -131,7 +131,7 @@ public class InventoryPanel extends Widget {
     }
     
     void dragStarted(ItemSlot slot, Event evt) {
-        if(slot.getItem() != null) {
+        if(slot.getItemWrap() != null) {
             dragSlot = slot;
             dragging(slot, evt);
         }
@@ -152,8 +152,9 @@ public class InventoryPanel extends Widget {
         if(dragSlot != null) {
             dragging(slot, evt);
             if(dropSlot != null && dropSlot.canDrop() && dropSlot != dragSlot) {
-                dropSlot.setItem(dragSlot.getItem());
-                dragSlot.setItem(null);
+                dropSlot.setItemWrap(dragSlot.getItemWrap());
+                dragSlot.setItemWrap(null);
+               // dropSlot.setNum(dragSlot.getNum());
             }
             setDropSlot(null);
             dragSlot = null;
