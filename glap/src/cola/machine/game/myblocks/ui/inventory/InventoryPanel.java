@@ -33,7 +33,7 @@ import cola.machine.game.myblocks.action.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.bean.ItemEntity;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.sun.tools.javac.util.Assert;
+
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.ThemeInfo;
 import de.matthiasmann.twl.Widget;
@@ -60,7 +60,8 @@ public class InventoryPanel extends Widget {
     
     public InventoryPanel(int numSlotsX, int numSlotsY) {
         this.bagController = CoreRegistry.get(BagController.class);
-        Assert.checkNonNull(bagController,"bagController miss in CoreRegistry");
+        assert bagController!=null:"bagController miss in CoreRegistry";
+        //Assert.checkNonNull(bagController,"bagController miss in CoreRegistry");
 
        // this.bagEntity = CoreRegistry.get(BagEntity.class);
         //Assert.checkNonNull(bagEntity,"bagEntity miss in CoreRegistry");
