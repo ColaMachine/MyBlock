@@ -33,6 +33,7 @@ import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 import de.matthiasmann.twl.renderer.Font;
 import de.matthiasmann.twl.renderer.Image;
+import de.matthiasmann.twl.renderer.lwjgl.LWJGLFont;
 
 /**
  *
@@ -49,23 +50,52 @@ public class ItemSlot extends Widget {
         public void dragging(ItemSlot slot, Event evt);
         public void dragStopped(ItemSlot slot, Event evt);
     }
-    
-    private String item;
-    private Image icon;
-    private int num;
-    private Label label;
+    private ItemWrap itemWrap;
+
+    public ItemWrap getItemWrap() {
+        return itemWrap;
+    }
+
+    public void setItemWrap(ItemWrap itemWrap) {
+       // this.allChildrenRemoved();
+        if(itemWrap == null ){
+            this.allChildrenRemoved();
+        }
+        this.itemWrap = itemWrap;
+        if(itemWrap!=null && itemWrap.getParent()!=null){
+            itemWrap.getParent().removeChild(itemWrap);
+
+        }
+        if(itemWrap!=null){
+            add(itemWrap);
+            itemWrap.adjustSize();
+        }
+
+    }
+
+    //private String item;
+   // private Image icon;
+   // private int num;
+    //private Label label;
     private DragListener listener;
     private boolean dragActive;
     private ParameterMap icons;
 
     public ItemSlot() {
-         label =new Label();
-        label.setText("");
-        add(label);
-        //font=this.getgetTheme().dragetFont("black");
+      //   label =new Label();
+       // label.setText("");
+       // add(label);
+   /*     font=new LWJGLFont();
+        font=.getgetTheme().dragetFont("black");*/
     }
+    /*public int getNum(){
+        return num;
+    }
+    public void setNum(int num){
+        this.num=num;
+    }*/
 
-    public String getItem() {
+    /*public String getItem() {
         return item;
     }
 
@@ -77,17 +107,17 @@ public class ItemSlot extends Widget {
     public void setItem(String item,int num) {
         this.item = item;
         this.num=num;
-        label.setText(""+num);
+   //     label.setText(""+num);
         findIcon();//根据name 查找
-    }
+    }*/
 
     public boolean canDrop() {
-        return item == null;
+        return itemWrap == null;
     }
     
-    public Image getIcon() {
+   /* public Image getIcon() {
         return icon;
-    }
+    }*/
     
     public DragListener getListener() {
         return listener;
@@ -132,22 +162,28 @@ public class ItemSlot extends Widget {
 
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
-        if(!dragActive && icon != null) {
-            icon.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+        if(!dragActive && itemWrap != null) {
+            //icon.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
             //font.drawText(null,getInnerX(), getInnerY(),"10");
-            this.paintChild(gui,label);
+            //this.paintChild(gui,label);
+            //this.paintChild(gui,itemWrap);
+            //font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,num+"");
         }
     }
 
     @Override//绘制拖动过程
     protected void paintDragOverlay(GUI gui, int mouseX, int mouseY, int modifier) {
-        if(icon != null) {
+        if(itemWrap != null) {
             final int innerWidth = getInnerWidth();
             final int innerHeight = getInnerHeight();
-            icon.draw(getAnimationState(),
+            /*icon.draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
-                    innerWidth, innerHeight);
+                    innerWidth, innerHeight);*/
+            itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
+            //this.paintChild(gui,itemWrap);
+           // label.setOffscreenExtra(mouseX,mouseY,label.getWidth(),label.getHeight());
+            //font.drawText(getAnimationState(),mouseX+5,mouseY+5,num+"");
         }
     }
 
@@ -155,14 +191,15 @@ public class ItemSlot extends Widget {
     protected void applyTheme(ThemeInfo themeInfo) {
         super.applyTheme(themeInfo);
         icons = themeInfo.getParameterMap("icons");
-        findIcon();
+        font = themeInfo.getFont("white");
+        //findIcon();
     }
     
-    private void findIcon() {
-        if(item == null || icons == null) {
+   /* private void findIcon() {
+        if(itemWrap == null || icons == null) {
             icon = null;
         } else {
             icon = icons.getImage(item);
         }
-    }
+    }*/
 }
