@@ -58,9 +58,9 @@ public float x1;
          withWH((float)x/w, (float)y/h, (float)width/w, (float)height/h);
          textureHandle= img.textureHandle;
 	}*/
-    public TextureInfo(String imgName, float x, float y, float width, float height, float w, float h) {
+    public TextureInfo(String imgName, float x, float y, float width, float height, float totalWidth, float totalHeight) {
         GLImage img=TextureManager.getImage(imgName);
-        withWH((float)x/w, (float)y/h, (float)width/w, (float)height/h);
+        withWH((float)x/totalWidth, (float)y/totalHeight, (float)width/totalWidth, (float)height/totalHeight);
         textureHandle= img.textureHandle;
     }
     public TextureInfo(String imgName, float x, float y, float width, float height, float w, float h,float offset) {

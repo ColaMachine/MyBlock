@@ -123,7 +123,8 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                         chunk.setBlock(x, y, z, mantle);
                         break;
                     }
-
+                    if(1==1)
+                    continue;
                     if (y <= 32 && y > 0) { // Ocean
                         chunk.setBlock(x, y, z, water);
                        // chunk.setLiquid(x, y, z, new LiquidData(LiquidType.WATER, LiquidData.MAX_LIQUID_DEPTH));

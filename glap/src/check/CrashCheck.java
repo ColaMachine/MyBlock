@@ -26,16 +26,16 @@ public class CrashCheck {
         float plr_pos_x=player.Position.x;
         float plr_pos_y=player.Position.y;
         float plr_pos_z=player.Position.z;
-        for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {
+        for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
 
-            for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {
+            for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//这个人的碰撞体积厚度
                 ChunkImpl chunk_corner = null;
                 int chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_pos_x);
                 int chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_pos_z);
                 for (int i = 0; i < chunksInProximity.size(); i++) {
                     ChunkImpl chunk_temp = chunksInProximity.get(i);
-                    if (chunk_temp.getPos().x == chunk_pos_x_16 &&
-                            chunk_temp.getPos().z == chunk_pos_z_16) {
+                    if (chunk_temp.getPos().x == chunk_pos_x_16 &&//0
+                            chunk_temp.getPos().z == chunk_pos_z_16) {//0
                         chunk_corner = chunk_temp;
                     } else {
                         continue;

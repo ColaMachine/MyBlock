@@ -5,6 +5,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
@@ -500,6 +501,7 @@ public class MouseControlCenter {
                     human.RotateV(-human.camSpeedR * seconds);
                 } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                     human.StrafeRight(-human.camSpeedXZ * seconds);
+                    //LogUtil.println("walk left");
                 } else
                     // Pan right
                     if (Keyboard.isKeyDown(Keyboard.KEY_D)) {

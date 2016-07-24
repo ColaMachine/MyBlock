@@ -60,7 +60,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 			
 			Path chunkPath =
                         PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
-				if(Files.isRegularFile(chunkPath)){
+				if(Files.isRegularFile(chunkPath)&&1==2){
 					
 					ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
 						try {

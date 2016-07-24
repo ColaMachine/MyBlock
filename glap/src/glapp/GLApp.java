@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.GUI;
 import org.lwjgl.*;
@@ -61,7 +62,7 @@ public class GLApp {
     public static boolean VSyncEnabled = true;           // if true, synchronize screen updates with video refresh rate
     public static boolean useCurrentDisplay = false;     // when initing display, use the settings of the desktop (whatever the PC was using before app was started)
     public static boolean fullScreen = false;            // full screen or floating window
-	public static boolean showMessages = true;           // if true, show debug messages, if false show only error messages (see msg() err())
+    public static boolean showMessages = true;           // if true, show debug messages, if false show only error messages (see msg() err())
     public static float aspectRatio = 0;                 // aspect ratio of OpenGL context (if 0, default to displayWidth/displayHeight)
 
     // Display settings (settings in glapp.cfg will override these)
@@ -120,9 +121,9 @@ public class GLApp {
     // Misc.
     public static float rotation = 0f;       // to rotate cubes (just to put something on screen)
     public static final float PIOVER180 = 0.0174532925f;   // A constant used in navigation: PI/180
-	public static final float PIUNDER180 = 57.2957795130f;   // A constant used in navigation: 180/PI;
-	static Hashtable OpenGLextensions;       // will be populated by extensionExists()
-	static double avgSecsPerFrame=.01;       // to smooth out motion, keep a moving average of frame render times
+    public static final float PIUNDER180 = 57.2957795130f;   // A constant used in navigation: 180/PI;
+    static Hashtable OpenGLextensions;       // will be populated by extensionExists()
+    static double avgSecsPerFrame=.01;       // to smooth out motion, keep a moving average of frame render times
 
     //========================================================================
     // Run main loop of application.  Handle mouse and keyboard input.
@@ -147,8 +148,8 @@ public class GLApp {
      * handleEvents() calls:  mouseMove(), mouseDown(), mouseUp(), keyDown(), keyUp()
      */
     public void run() {
-    	// hold onto application class in case we need to load images from jar (see getInputStream())
-    	setRootClass();
+        // hold onto application class in case we need to load images from jar (see getInputStream())
+        setRootClass();
         try {
             // Init Display, Keyboard, Mouse, OpenGL, load config file
             init();
@@ -194,14 +195,14 @@ public class GLApp {
         initInput();
         initGL();
         setup();        // subclass usually overrides this
-    	updateTimer();  // Do this once to init time values to something sane, otherwise the first game loop will report a huge secondsElapsedPerFrame
+        updateTimer();  // Do this once to init time values to something sane, otherwise the first game loop will report a huge secondsElapsedPerFrame
     }
 
     /**
      * Called by the run() loop.  Handles animation and input for each frame.
      */
     public void handleEvents() {
-    	cursorX=Mouse.getEventX();
+        cursorX=Mouse.getEventX();
         cursorY=Mouse.getEventY();
         int mouseDW = Mouse.getDWheel();
         /*int mouseDX = Mouse.getDX();
@@ -230,63 +231,64 @@ public class GLApp {
         mouseMove(cursorX,cursorY);
         // handle mouse wheel event
         if (mouseDW != 0) {
-        	mouseWheel(mouseDW);
+            mouseWheel(mouseDW);
         }
 
 
 
         GUI gui = CoreRegistry.get(GUI.class);
         // handle mouse clicks
-    if(Mouse.isCreated())
-    {
-        while (Mouse.next()) {
-
-            gui.handleMouse(
-                    Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
-                    Mouse.getEventButton(), Mouse.getEventButtonState());
-
-            int wheelDelta = Mouse.getEventDWheel();
-            if (wheelDelta != 0) {
-                gui.handleMouseWheel(wheelDelta / 120);
-            }
-            if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
-                mouseDown(cursorX, cursorY);
-            }
-            if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
-                mouseUp(cursorX, cursorY);
-            }
-            if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
-                mouseDown(cursorX, cursorY);
-            }
-            if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
-                mouseUp(cursorX, cursorY);
-            }
+        if(Mouse.isCreated())
+        {
+            while (Mouse.next()) {
 
 
+
+                int wheelDelta = Mouse.getEventDWheel();
+                if (wheelDelta != 0) {
+                    gui.handleMouseWheel(wheelDelta / 120);
+                }
+                if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
+                    mouseDown(cursorX, cursorY);
+                }
+                if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
+                    mouseUp(cursorX, cursorY);
+                }
+                if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
+                    mouseDown(cursorX, cursorY);
+                }
+                if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
+                    mouseUp(cursorX, cursorY);
+                }
+                gui.handleMouse(
+                        Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
+                        Mouse.getEventButton(), Mouse.getEventButtonState());
+
+            }
         }
-    }
         // Handle key hits
-            if(Keyboard.isCreated()) {
-                while (Keyboard.next()) {
-                    // check for exit key
+        if(Keyboard.isCreated()) {
+            while (Keyboard.next()) {
+                // check for exit key
            /* if (Keyboard.getEventKey() == finishedKey) {
                 finished = true;
             }*/
-                    // pass key event to handler
-            System.out.println("Character"+Keyboard.getEventCharacter());
+                // pass key event to handler
+                System.out.println("Character"+Keyboard.getEventCharacter());
 
                     gui.handleKey(
                             Keyboard.getEventKey(),
                             Keyboard.getEventCharacter(),
                             Keyboard.getEventKeyState());
 
-                    if (Keyboard.getEventKeyState()) {    // key was just pressed, trigger keyDown()
-                        keyDown(Keyboard.getEventKey());
-                    } else {
-                        keyUp(Keyboard.getEventKey());    // key was released
-                    }
+                if (Keyboard.getEventKeyState()) {    // key was just pressed, trigger keyDown()
+                    keyDown(Keyboard.getEventKey());
+                    LogUtil.println("key presseds");
+                } else {
+                    keyUp(Keyboard.getEventKey());    // key was released
                 }
             }
+        }
         // Count frames
         frameCount++;
         if ((Sys.getTime()-lastFrameTime) > ticksPerSecond) {
@@ -308,21 +310,21 @@ public class GLApp {
      */
     public void loadSettings(String configFilename)
     {
-    	if (configFilename == null || configFilename.equals("")) {
-    		return;
-    	}
-    	InputStream configFileIn = getInputStream(configFilename);
+        if (configFilename == null || configFilename.equals("")) {
+            return;
+        }
+        InputStream configFileIn = getInputStream(configFilename);
         settings = new Properties();
         if (configFileIn == null) {
             msg("GLApp.loadSettings() warning: config file " + configFilename + " not found, will use default settings.");
             return;
         }
         else {
-        	try { settings.load(configFileIn); }
-        	catch (Exception e) {
-        		msg("GLApp.loadSettings() warning: " + e);
-        		return;
-        	}
+            try { settings.load(configFileIn); }
+            catch (Exception e) {
+                msg("GLApp.loadSettings() warning: " + e);
+                return;
+            }
         }
         // Debug: show the settings
         settings.list(System.out);
@@ -377,19 +379,19 @@ public class GLApp {
     public boolean initDisplay() {
         origDM = Display.getDisplayMode();  // current display settings
         msg("GLApp.initDisplay(): Current display mode is " + origDM);
-    	// for display properties that have not been specified, default to current display value
-    	if (displayHeight == -1) displayHeight = origDM.getHeight();
-    	if (displayWidth == -1) displayWidth = origDM.getWidth();
-    	if (displayColorBits == -1) displayColorBits = origDM.getBitsPerPixel();
-    	if (displayFrequency == -1) displayFrequency = origDM.getFrequency();
+        // for display properties that have not been specified, default to current display value
+        if (displayHeight == -1) displayHeight = origDM.getHeight();
+        if (displayWidth == -1) displayWidth = origDM.getWidth();
+        if (displayColorBits == -1) displayColorBits = origDM.getBitsPerPixel();
+        if (displayFrequency == -1) displayFrequency = origDM.getFrequency();
         // Set display mode
         try {
-            if (useCurrentDisplay) {  
-            	// use current display settings (ignore properties file)
+            if (useCurrentDisplay) {
+                // use current display settings (ignore properties file)
                 DM = origDM;
             }
             else {
-            	// find a display mode that matches the specified settings (or use a sane alternative)
+                // find a display mode that matches the specified settings (or use a sane alternative)
                 if ( (DM = getDisplayMode(displayWidth, displayHeight, displayColorBits, displayFrequency)) == null) {
                     if ( (DM = getDisplayMode(1024, 768, 32, 60)) == null) {
                         if ( (DM = getDisplayMode(1024, 768, 16, 60)) == null) {
@@ -446,20 +448,20 @@ public class GLApp {
      * Retrieve a DisplayMode object with the given params
      */
     public static DisplayMode getDisplayMode(int w, int h, int colorBits, int freq) {
-         try {
-             DisplayMode allDisplayModes[] = Display.getAvailableDisplayModes();
-             DisplayMode dm = null;
-             for (int j = 0; j < allDisplayModes.length; j++) {
-                 dm = allDisplayModes[j];
-                 if (dm.getWidth() == w && dm.getHeight() == h && dm.getBitsPerPixel() == colorBits &&
-                     dm.getFrequency() == freq) {
-                     return dm;
-                 }
-             }
-         }
-         catch (LWJGLException lwjgle) {
-             err("GLApp.getDisplayMode() error:" + lwjgle);
-         }
+        try {
+            DisplayMode allDisplayModes[] = Display.getAvailableDisplayModes();
+            DisplayMode dm = null;
+            for (int j = 0; j < allDisplayModes.length; j++) {
+                dm = allDisplayModes[j];
+                if (dm.getWidth() == w && dm.getHeight() == h && dm.getBitsPerPixel() == colorBits &&
+                        dm.getFrequency() == freq) {
+                    return dm;
+                }
+            }
+        }
+        catch (LWJGLException lwjgle) {
+            err("GLApp.getDisplayMode() error:" + lwjgle);
+        }
         return null;
     }
 
@@ -479,15 +481,15 @@ public class GLApp {
             // Turn off native cursor?
             if (disableNativeCursor) {
                 // Mouse.setGrabbed(true) will turn off the native cursor
-	            disableNativeCursor(true);
-	            // set initial cursor pos to center screen
-	            cursorX = (int) DM.getWidth() / 2;
-	            cursorY = (int) DM.getHeight() / 2;
+                disableNativeCursor(true);
+                // set initial cursor pos to center screen
+                cursorX = (int) DM.getWidth() / 2;
+                cursorY = (int) DM.getHeight() / 2;
             }
 
             // Hide native cursor when inside application window?
             if (hideNativeCursor) {
-            	hideNativeCursor(true);
+                hideNativeCursor(true);
             }
 
             // Init hi-res timer (see time functions)
@@ -525,7 +527,7 @@ public class GLApp {
             GL11.glClearColor(0f, 0f, 0f, 1f); // Black Background
             GL11.glEnable(GL11.GL_NORMALIZE);  // force normal lengths to 1
             GL11.glEnable(GL11.GL_CULL_FACE);  // don't render hidden faces
-        	GL11.glEnable(GL11.GL_TEXTURE_2D); // use textures
+            GL11.glEnable(GL11.GL_TEXTURE_2D); // use textures
             GL11.glEnable(GL11.GL_BLEND);      // enable transparency
 
             // How to handle transparency: average colors together
@@ -609,18 +611,18 @@ public class GLApp {
         // rotate, scale and draw cube
         GL11.glPushMatrix();
         {
-        	GL11.glRotatef(rotation, 0, 1, 0);
-        	GL11.glColor4f(0f, .5f, 1f, 1f);
-        	renderCube();
+            GL11.glRotatef(rotation, 0, 1, 0);
+            GL11.glColor4f(0f, .5f, 1f, 1f);
+            renderCube();
         }
         GL11.glPopMatrix();
 
         // draw another overlapping cube
         GL11.glPushMatrix();
         {
-        	GL11.glRotatef(rotation, 1, 1, 1);
-        	GL11.glColor4f(.7f, .5f, 0f, 1f);
-        	renderCube();
+            GL11.glRotatef(rotation, 1, 1, 1);
+            GL11.glColor4f(.7f, .5f, 0f, 1f);
+            renderCube();
         }
         GL11.glPopMatrix();
     }
@@ -671,7 +673,7 @@ public class GLApp {
      * @param whichButton  number of mouse button (0=left button)
      */
     public boolean mouseButtonDown(int whichButton) {
-    	return Mouse.isButtonDown(whichButton);
+        return Mouse.isButtonDown(whichButton);
     }
 
     /**
@@ -785,7 +787,7 @@ public class GLApp {
      * @see setViewport(int,int,int,int)
      */
     public static int getWidth() {
-    	return viewportW;
+        return viewportW;
     }
 
     /**
@@ -798,7 +800,7 @@ public class GLApp {
      * @see setViewport(int,int,int,int)
      */
     public static int getHeight() {
-    	return viewportH;
+        return viewportH;
     }
 
     /**
@@ -806,7 +808,7 @@ public class GLApp {
      * is running and Display has been initialized.
      */
     public static int getWidthWindow() {
-    	return displayWidth;
+        return displayWidth;
     }
 
     /**
@@ -814,7 +816,7 @@ public class GLApp {
      * app is running and Display has been initialized.
      */
     public static int getHeightWindow() {
-    	return displayHeight;
+        return displayHeight;
     }
 
     //========================================================================
@@ -843,54 +845,54 @@ public class GLApp {
      * @see hideHardwareCursor()
      */
     public static void disableNativeCursor(boolean off) {
-    	disableNativeCursor = off;
+        disableNativeCursor = off;
         Mouse.setGrabbed(off);
     }
 
-	/**
-	 *  If param is true, make the native cursor transparent.  Cursor will be hidden
-	 *  in the window area, but will be visible outside the window (assuming you're not in
-	 *  fullscreen mode).  I also used this approach with touch screens because the touch
-	 *  screen drivers needed to read the hardware mouse position, so I
-	 *  couldn't disable the hardware cursor, but I wanted to hide it.
-	 *  <P>
-	 *  If param is false, reset the cursor to the default.
-	 *
-	 *  @see disableHardwareCursor()
-	 */
+    /**
+     *  If param is true, make the native cursor transparent.  Cursor will be hidden
+     *  in the window area, but will be visible outside the window (assuming you're not in
+     *  fullscreen mode).  I also used this approach with touch screens because the touch
+     *  screen drivers needed to read the hardware mouse position, so I
+     *  couldn't disable the hardware cursor, but I wanted to hide it.
+     *  <P>
+     *  If param is false, reset the cursor to the default.
+     *
+     *  @see disableHardwareCursor()
+     */
     public static void hideNativeCursor(boolean hide) {
-    	hideNativeCursor = hide;
-    	if ( (Cursor.getCapabilities() & Cursor.CURSOR_ONE_BIT_TRANSPARENCY) == 0) {
-    		err("GLApp.hideHardwareCursor(): No hardwared cursor support!");
-    		return;
-    	}
-    	try {
-    		if (hide) {
-    			Cursor cursor = null;
-    			int cursorImageCount = 1;
-    			int cursorWidth = Cursor.getMaxCursorSize();
-    			int cursorHeight = cursorWidth;
-    			IntBuffer cursorImages;
-    			IntBuffer cursorDelays = null;
-    			// Create a single cursor, completely transparent
-    			cursorImages = ByteBuffer.allocateDirect(cursorWidth * cursorHeight * cursorImageCount * SIZE_INT).order(ByteOrder.nativeOrder()).asIntBuffer();
-    			for (int j = 0; j < cursorWidth; j++) {
-    				for (int l = 0; l < cursorHeight; l++) {
-    					cursorImages.put(0x00000000);
-    				}
-    			}
-    			cursorImages.flip();
-    			cursor = new Cursor(Cursor.getMaxCursorSize(), Cursor.getMaxCursorSize(), Cursor.getMaxCursorSize() / 2, Cursor.getMaxCursorSize() / 2, cursorImageCount, cursorImages, cursorDelays);
-    			// turn it on
-    			Mouse.setNativeCursor(cursor);
-    		}
-    		else {
-    			Mouse.setNativeCursor(null);
-    		}
-    	}
-    	catch (Exception e) {
-    		err("GLApp.hideHardwareCursor(): error " + e);
-    	}
+        hideNativeCursor = hide;
+        if ( (Cursor.getCapabilities() & Cursor.CURSOR_ONE_BIT_TRANSPARENCY) == 0) {
+            err("GLApp.hideHardwareCursor(): No hardwared cursor support!");
+            return;
+        }
+        try {
+            if (hide) {
+                Cursor cursor = null;
+                int cursorImageCount = 1;
+                int cursorWidth = Cursor.getMaxCursorSize();
+                int cursorHeight = cursorWidth;
+                IntBuffer cursorImages;
+                IntBuffer cursorDelays = null;
+                // Create a single cursor, completely transparent
+                cursorImages = ByteBuffer.allocateDirect(cursorWidth * cursorHeight * cursorImageCount * SIZE_INT).order(ByteOrder.nativeOrder()).asIntBuffer();
+                for (int j = 0; j < cursorWidth; j++) {
+                    for (int l = 0; l < cursorHeight; l++) {
+                        cursorImages.put(0x00000000);
+                    }
+                }
+                cursorImages.flip();
+                cursor = new Cursor(Cursor.getMaxCursorSize(), Cursor.getMaxCursorSize(), Cursor.getMaxCursorSize() / 2, Cursor.getMaxCursorSize() / 2, cursorImageCount, cursorImages, cursorDelays);
+                // turn it on
+                Mouse.setNativeCursor(cursor);
+            }
+            else {
+                Mouse.setNativeCursor(null);
+            }
+        }
+        catch (Exception e) {
+            err("GLApp.hideHardwareCursor(): error " + e);
+        }
     }
 
     /**
@@ -901,9 +903,9 @@ public class GLApp {
      * @param screenY
      */
     public static void setCursorPosition(int screenX, int screenY) {
-       	Mouse.setCursorPosition(screenX,screenY);
-       	cursorX = screenX;
-       	cursorY = screenY;
+        Mouse.setCursorPosition(screenX,screenY);
+        cursorX = screenX;
+        cursorY = screenY;
     }
 
     //========================================================================
@@ -1077,13 +1079,13 @@ public class GLApp {
      */
     public static int makeTexture(String textureImagePath)
     {
-		int textureHandle = 0;
-		GLImage textureImg = loadImage(textureImagePath);
-		if (textureImg != null) {
-			textureHandle = makeTexture(textureImg);
-			makeTextureMipMap(textureHandle,textureImg);
-		}
-		return textureHandle;
+        int textureHandle = 0;
+        GLImage textureImg = loadImage(textureImagePath);
+        if (textureImg != null) {
+            textureHandle = makeTexture(textureImg);
+            makeTextureMipMap(textureHandle,textureImg);
+        }
+        return textureHandle;
     }
 
     /**
@@ -1153,7 +1155,7 @@ public class GLApp {
      *  Returns true if n is a power of 2.  If n is 0 return zero.
      */
     public static boolean isPowerOf2(int n) {
-    	if (n == 0) { return false; }
+        if (n == 0) { return false; }
         return (n & (n - 1)) == 0;
     }
 
@@ -1165,7 +1167,7 @@ public class GLApp {
     {
         ByteBuffer pixels = allocBytes(w*w*SIZE_INT);  // allocate 4 bytes per pixel
         return makeTexture(pixels, w, w, false);
-	}
+    }
 
     /**
      * Create a texture from the given pixels in the default Java ARGB int format.<BR>
@@ -1175,11 +1177,11 @@ public class GLApp {
      */
     public static int makeTexture(int[] pixelsARGB, int w, int h, boolean anisotropic)
     {
-    	if (pixelsARGB != null) {
-    		ByteBuffer pixelsRGBA = GLImage.convertImagePixelsRGBA(pixelsARGB,w,h,true);
-    		return makeTexture(pixelsRGBA, w, h, anisotropic);
-    	}
-    	return 0;
+        if (pixelsARGB != null) {
+            ByteBuffer pixelsRGBA = GLImage.convertImagePixelsRGBA(pixelsARGB,w,h,true);
+            return makeTexture(pixelsRGBA, w, h, anisotropic);
+        }
+        return 0;
     }
 
     /**
@@ -1203,24 +1205,24 @@ public class GLApp {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST); //GL11.GL_NEAREST);
 
         // make texture "anisotropic" so it will minify more gracefully
-    	if (anisotropic && extensionExists("GL_EXT_texture_filter_anisotropic")) {
-    		// Due to LWJGL buffer check, you can't use smaller sized buffers (min_size = 16 for glGetFloat()).
-    		FloatBuffer max_a = allocFloats(16);
-    		// Grab the maximum anisotropic filter.
-    		GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, max_a);
-    		// Set up the anisotropic filter.
-    		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, max_a.get(0));
-    	}
+        if (anisotropic && extensionExists("GL_EXT_texture_filter_anisotropic")) {
+            // Due to LWJGL buffer check, you can't use smaller sized buffers (min_size = 16 for glGetFloat()).
+            FloatBuffer max_a = allocFloats(16);
+            // Grab the maximum anisotropic filter.
+            GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, max_a);
+            // Set up the anisotropic filter.
+            GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, max_a.get(0));
+        }
 
         // Create the texture from pixels
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
-        		0, 						// level of detail
-        		GL11.GL_RGBA8,			// internal format for texture is RGB with Alpha
-        		w, h, 					// size of texture image
-        		0,						// no border
-        		GL11.GL_RGBA, 			// incoming pixel format: 4 bytes in RGBA order
-        		GL11.GL_UNSIGNED_BYTE,	// incoming pixel data type: unsigned bytes
-        		pixels);				// incoming pixels
+                0, 						// level of detail
+                GL11.GL_RGBA8,			// internal format for texture is RGB with Alpha
+                w, h, 					// size of texture image
+                0,						// no border
+                GL11.GL_RGBA, 			// incoming pixel format: 4 bytes in RGBA order
+                GL11.GL_UNSIGNED_BYTE,	// incoming pixel data type: unsigned bytes
+                pixels);				// incoming pixels
 
         // restore previous texture settings
         GL11.glPopAttrib();
@@ -1246,10 +1248,10 @@ public class GLApp {
      */
     public static int makeTextureARGB(ByteBuffer pixels, int w, int h)
     {
-    	// byte buffer has ARGB ints in little endian or big endian byte order
-		int pixel_byte_order = (pixels.order() == ByteOrder.BIG_ENDIAN)?
-				GL12.GL_UNSIGNED_INT_8_8_8_8 :
-				GL12.GL_UNSIGNED_INT_8_8_8_8_REV;
+        // byte buffer has ARGB ints in little endian or big endian byte order
+        int pixel_byte_order = (pixels.order() == ByteOrder.BIG_ENDIAN)?
+                GL12.GL_UNSIGNED_INT_8_8_8_8 :
+                GL12.GL_UNSIGNED_INT_8_8_8_8_REV;
         // get a new empty texture
         int textureHandle = allocateTexture();
         // 'select' the new texture by it's handle
@@ -1261,13 +1263,13 @@ public class GLApp {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); //GL11.GL_NEAREST);
         // Create the texture from pixels
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
-        		0, 						// level of detail
-        		GL11.GL_RGBA8,			// internal format for texture is RGB with Alpha
-        		w, h, 					// size of texture image
-        		0,						// no border
-        		GL12.GL_BGRA, 			// incoming pixel format: 4 bytes in ARGB order
-        		pixel_byte_order,		// incoming pixel data type: little or big endian ints
-        		pixels);				// incoming pixels
+                0, 						// level of detail
+                GL11.GL_RGBA8,			// internal format for texture is RGB with Alpha
+                w, h, 					// size of texture image
+                0,						// no border
+                GL12.GL_BGRA, 			// incoming pixel format: 4 bytes in ARGB order
+                pixel_byte_order,		// incoming pixel data type: little or big endian ints
+                pixels);				// incoming pixels
         return textureHandle;
     }
 
@@ -1280,21 +1282,21 @@ public class GLApp {
      */
     public static int makeTextureMipMap(int textureHandle, GLImage textureImg)
     {
-    	int ret = 0;
-    	if (textureImg != null && textureImg.isLoaded()) {
-    		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
-    		ret = GLU.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D, GL11.GL_RGBA8,
-    				textureImg.w, textureImg.h,
-    				GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, textureImg.getPixelBytes());
-    		if (ret != 0) {
-    			err("GLApp.makeTextureMipMap(): Error occured while building mip map, ret=" + ret + " error=" + GLU.gluErrorString(ret) );
-    		}
+        int ret = 0;
+        if (textureImg != null && textureImg.isLoaded()) {
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
+            ret = GLU.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D, GL11.GL_RGBA8,
+                    textureImg.w, textureImg.h,
+                    GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, textureImg.getPixelBytes());
+            if (ret != 0) {
+                err("GLApp.makeTextureMipMap(): Error occured while building mip map, ret=" + ret + " error=" + GLU.gluErrorString(ret) );
+            }
 //            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 //                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-    		// Assign the mip map levels and texture info
-    		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
-    		GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
-    	}
+            // Assign the mip map levels and texture info
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
+            GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+        }
         return ret;
     }
 
@@ -1347,46 +1349,46 @@ public class GLApp {
         return n+1;
     }
 
-	/**
-	 * Copy pixels from a ByteBuffer to a texture.  The buffer pixels are integers in ARGB format
-	 * (this is the Java default format you get from a BufferedImage) or BGRA format (this is the
-	 * native order of Intel systems.
-	 *
-	 * The glTexSubImage2D() call treats the incoming pixels as integers
-	 * in either big-endian (ARGB) or little-endian (BGRA) formats based on the setting
-	 * of the bytebuffer (pixel_byte_order).
-	 *
-	 * @param bb  ByteBuffer of pixels stored as ARGB or BGRA integers
-	 * @param w   width of source image
-	 * @param h   height of source image
-	 * @param textureHandle  texture to copy pixels into
-	 */
-	public static void copyPixelsToTexture(ByteBuffer bb, int w, int h, int textureHandle) {
-		int pixel_byte_order = (bb.order() == ByteOrder.BIG_ENDIAN)?
-										GL12.GL_UNSIGNED_INT_8_8_8_8 :
-										GL12.GL_UNSIGNED_INT_8_8_8_8_REV;
+    /**
+     * Copy pixels from a ByteBuffer to a texture.  The buffer pixels are integers in ARGB format
+     * (this is the Java default format you get from a BufferedImage) or BGRA format (this is the
+     * native order of Intel systems.
+     *
+     * The glTexSubImage2D() call treats the incoming pixels as integers
+     * in either big-endian (ARGB) or little-endian (BGRA) formats based on the setting
+     * of the bytebuffer (pixel_byte_order).
+     *
+     * @param bb  ByteBuffer of pixels stored as ARGB or BGRA integers
+     * @param w   width of source image
+     * @param h   height of source image
+     * @param textureHandle  texture to copy pixels into
+     */
+    public static void copyPixelsToTexture(ByteBuffer bb, int w, int h, int textureHandle) {
+        int pixel_byte_order = (bb.order() == ByteOrder.BIG_ENDIAN)?
+                GL12.GL_UNSIGNED_INT_8_8_8_8 :
+                GL12.GL_UNSIGNED_INT_8_8_8_8_REV;
 
-		// "select" the texture that we'll write into
-    	GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
+        // "select" the texture that we'll write into
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
 
-		// Copy pixels to texture
-    	GL11.glTexSubImage2D(
-    			GL11.GL_TEXTURE_2D,   		// always GL_TEXTURE_2D
-    			0,                  		// texture detail level: always 0
-    			0, 0,                		// x,y offset into texture
-    			w, h,             			// dimensions of image pixel data
-    			GL12.GL_BGRA,   			// format of pixels in texture (little_endian - native for PC)
-    			pixel_byte_order,    		// format of pixels in bytebuffer (big or little endian ARGB integers)
-    			bb           				// image pixel data
-    	);
-	}
+        // Copy pixels to texture
+        GL11.glTexSubImage2D(
+                GL11.GL_TEXTURE_2D,   		// always GL_TEXTURE_2D
+                0,                  		// texture detail level: always 0
+                0, 0,                		// x,y offset into texture
+                w, h,             			// dimensions of image pixel data
+                GL12.GL_BGRA,   			// format of pixels in texture (little_endian - native for PC)
+                pixel_byte_order,    		// format of pixels in bytebuffer (big or little endian ARGB integers)
+                bb           				// image pixel data
+        );
+    }
 
-	/**
-	 * Calls glTexSubImage2D() to copy pixels from an image into a texture.
-	 */
-	public static void copyImageToTexture(GLImage img, int textureHandle) {
-		copyPixelsToTexture(img.pixelBuffer, img.w, img.h, textureHandle);
-	}
+    /**
+     * Calls glTexSubImage2D() to copy pixels from an image into a texture.
+     */
+    public static void copyImageToTexture(GLImage img, int textureHandle) {
+        copyPixelsToTexture(img.pixelBuffer, img.w, img.h, textureHandle);
+    }
 
     //========================================================================
     // functions to set projection
@@ -1419,25 +1421,25 @@ public class GLApp {
      * Let's say we're drawing in 2D and want to have a cinema proportioned
      * viewport (16x9), and want to bound our 2D rendering into that area ie.
      * <PRE>
-          ___________1024,576
-         |           |
-         |  Scene    |      Set the bounds on the scene geometry
-         |___________|      to the viewport size and shape
-      0,0
+     ___________1024,576
+     |           |
+     |  Scene    |      Set the bounds on the scene geometry
+     |___________|      to the viewport size and shape
+     0,0
 
-          ___________1024,576
-         |           |
-         |  Ortho    |      Set the projection to cover the same
-         |___________|      area as the scene
-      0,0
+     ___________1024,576
+     |           |
+     |  Ortho    |      Set the projection to cover the same
+     |___________|      area as the scene
+     0,0
 
-          ___________ 1024,768
-         |___________|
-         |           |1024,672
-         |  Viewport |      Set the viewport to the same shape
+     ___________ 1024,768
+     |___________|
+     |           |1024,672
+     |  Viewport |      Set the viewport to the same shape
      0,96|___________|      as scene and ortho, but centered on
-         |___________|      screen.
-      0,0
+     |___________|      screen.
+     0,0
      *</PRE>
      */
     public static void setOrtho()
@@ -1447,9 +1449,9 @@ public class GLApp {
         GL11.glLoadIdentity();
         // set ortho to same size as viewport, positioned at 0,0
         GL11.glOrtho(
-        		0,viewportW,  // left,right
-        		0,viewportH,  // bottom,top
-        		-500,500);    // Zfar, Znear
+                0,viewportW,  // left,right
+                0,viewportH,  // bottom,top
+                -500,500);    // Zfar, Znear
         // return to modelview matrix
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
     }
@@ -1461,9 +1463,9 @@ public class GLApp {
         GL11.glLoadIdentity();
         // set ortho to same size as viewport, positioned at 0,0
         GL11.glOrtho(
-        		0,width,  // left,right
-        		0,height,  // bottom,top
-        		-500,500);    // Zfar, Znear
+                0,width,  // left,right
+                0,height,  // bottom,top
+                -500,500);    // Zfar, Znear
         // return to modelview matrix
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
     }
@@ -1489,22 +1491,22 @@ public class GLApp {
      */
     public static void setOrthoOn()
     {
-		// prepare projection matrix to render in 2D
+        // prepare projection matrix to render in 2D
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();                   // preserve perspective view
         GL11.glLoadIdentity();                 // clear the perspective matrix
         GL11.glOrtho(                          // turn on 2D mode
-        		////viewportX,viewportX+viewportW,    // left, right
-        		////viewportY,viewportY+viewportH,    // bottom, top    !!!
-        		0,viewportW,    // left, right
-        		0,viewportH,    // bottom, top
-        		-500,500);                        // Zfar, Znear
+                ////viewportX,viewportX+viewportW,    // left, right
+                ////viewportY,viewportY+viewportH,    // bottom, top    !!!
+                0,viewportW,    // left, right
+                0,viewportH,    // bottom, top
+                -500,500);                        // Zfar, Znear
         // clear the modelview matrix
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();				   // Preserve the Modelview Matrix
         GL11.glLoadIdentity();				   // clear the Modelview Matrix
-		// disable depth test so further drawing will go over the current scene
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
+        // disable depth test so further drawing will go over the current scene
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
     }
 
     /**
@@ -1588,13 +1590,13 @@ public class GLApp {
      */
     public static void setViewport(int x, int y, int width, int height)
     {
-    	viewportX = x;
-    	viewportY = y;
-    	viewportW = width;
-    	viewportH = height;
-     	aspectRatio = (float)width / (float)height;
-       	GL11.glViewport(x,y,width,height);
-   }
+        viewportX = x;
+        viewportY = y;
+        viewportW = width;
+        viewportH = height;
+        aspectRatio = (float)width / (float)height;
+        GL11.glViewport(x,y,width,height);
+    }
 
     /**
      * Reset the viewport to full screen (displayWidth x displayHeight).
@@ -1603,7 +1605,7 @@ public class GLApp {
      */
     public static void resetViewport()
     {
-    	setViewport(0,0,displayWidth,displayHeight);
+        setViewport(0,0,displayWidth,displayHeight);
     }
 
     /**
@@ -1616,83 +1618,83 @@ public class GLApp {
     {
         // set viewpoint
         GLU.gluLookAt(
-        		lookatX,lookatY,lookatZ+distance,  // eye is at the same XY as the target, <distance> units up the Z axis
-        		lookatX,lookatY,lookatZ,           // look at the target position
-        		0,1,0);                            // the Y axis is up
+                lookatX,lookatY,lookatZ+distance,  // eye is at the same XY as the target, <distance> units up the Z axis
+                lookatX,lookatY,lookatZ,           // look at the target position
+                0,1,0);                            // the Y axis is up
     }
 
     //========================================================================
     // Functions to push/pop OpenGL settings
     //========================================================================
 
-	/**
-	 * preserve all OpenGL settings that can be preserved.  Use this
-	 * function to isolate settings changes.  Call pushAttrib() before
-	 * calling glEnable(), glDisable(), glMatrixMode() etc. After
-	 * your code executes, call popAttrib() to return to the
-	 * previous settings.
-	 *
-	 * For better performance, call pushAttrib() with specific settings
-	 * flags to preserve only specific settings.
-	 *
-	 * @see popAttrib()
-	 */
-	public static void pushAttrib()
-	{
+    /**
+     * preserve all OpenGL settings that can be preserved.  Use this
+     * function to isolate settings changes.  Call pushAttrib() before
+     * calling glEnable(), glDisable(), glMatrixMode() etc. After
+     * your code executes, call popAttrib() to return to the
+     * previous settings.
+     *
+     * For better performance, call pushAttrib() with specific settings
+     * flags to preserve only specific settings.
+     *
+     * @see popAttrib()
+     */
+    public static void pushAttrib()
+    {
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-	}
+    }
 
-	/**
-	 * preserve the specified OpenGL setting.  Call popAttrib() to return to
-	 * the preserved state.
-	 *
-	 * @see popAttrib()
-	 */
-	public static void pushAttrib(int attribute_bits)
-	{
+    /**
+     * preserve the specified OpenGL setting.  Call popAttrib() to return to
+     * the preserved state.
+     *
+     * @see popAttrib()
+     */
+    public static void pushAttrib(int attribute_bits)
+    {
         GL11.glPushAttrib(attribute_bits);
-	}
+    }
 
-	/**
-	 * preserve the OpenGL settings that will be affected when we draw in ortho
-	 * mode over the scene.  For example if we're drawing an interface layer,
-	 * buttons, popup menus, cursor, text, etc. we need to turn off lighting,
-	 * turn on blending, set color to white and turn off depth test.
-	 * <P>
-	 * call pushAttribOverlay(), enable settings that you need, when done call popAttrib()
-	 *
-	 * @see popAttrib()
-	 */
-	public static void pushAttribOrtho()
-	{
+    /**
+     * preserve the OpenGL settings that will be affected when we draw in ortho
+     * mode over the scene.  For example if we're drawing an interface layer,
+     * buttons, popup menus, cursor, text, etc. we need to turn off lighting,
+     * turn on blending, set color to white and turn off depth test.
+     * <P>
+     * call pushAttribOverlay(), enable settings that you need, when done call popAttrib()
+     *
+     * @see popAttrib()
+     */
+    public static void pushAttribOrtho()
+    {
         GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-	}
+    }
 
-	/**
-	 * preserve the OpenGL viewport settings.
-	 * <pre>
-	 *       pushAttribViewport();
-	 *           setViewport(0,0,displaymode.getWidth(),displaymode.getHeight());
-	 *           ... do some drawing outside of previous viewport area
-	 *       popAttrib();
-	 * </pre>
-	 *
-	 * @see popAttrib()
-	 */
-	public static void pushAttribViewport()
-	{
+    /**
+     * preserve the OpenGL viewport settings.
+     * <pre>
+     *       pushAttribViewport();
+     *           setViewport(0,0,displaymode.getWidth(),displaymode.getHeight());
+     *           ... do some drawing outside of previous viewport area
+     *       popAttrib();
+     * </pre>
+     *
+     * @see popAttrib()
+     */
+    public static void pushAttribViewport()
+    {
         GL11.glPushAttrib(GL11.GL_VIEWPORT_BIT);
-	}
+    }
 
-	/**
-	 * return to the OpenGL settings that were preserved by the previous pushAttrib() call.
-	 *
-	 * @see pushAttrib()
-	 */
-	public static void popAttrib()
-	{
+    /**
+     * return to the OpenGL settings that were preserved by the previous pushAttrib() call.
+     *
+     * @see pushAttrib()
+     */
+    public static void popAttrib()
+    {
         GL11.glPopAttrib();
-	}
+    }
 
     //========================================================================
     // Lighting functions
@@ -1712,7 +1714,7 @@ public class GLApp {
      * @param position
      */
     public static void setLight( int GLLightHandle,
-        float[] diffuseLightColor, float[] ambientLightColor, float[] specularLightColor, float[] position )
+                                 float[] diffuseLightColor, float[] ambientLightColor, float[] specularLightColor, float[] position )
     {
         FloatBuffer ltDiffuse = allocFloats(diffuseLightColor);
         FloatBuffer ltAmbient = allocFloats(ambientLightColor);
@@ -1729,8 +1731,8 @@ public class GLApp {
 
 
     public static void setSpotLight( int GLLightHandle,
-        float[] diffuseLightColor, float[] ambientLightColor,
-        float[] position, float[] direction, float cutoffAngle )
+                                     float[] diffuseLightColor, float[] ambientLightColor,
+                                     float[] position, float[] direction, float cutoffAngle )
     {
         FloatBuffer ltDirection = allocFloats(direction);
         setLight(GLLightHandle, diffuseLightColor, ambientLightColor, diffuseLightColor, position);
@@ -1757,7 +1759,7 @@ public class GLApp {
      */
     public static void setLightPosition(int GLLightHandle, float x, float y, float z)
     {
-    	put(tmpFloats, new float[] {x,y,z,1});
+        put(tmpFloats, new float[] {x,y,z,1});
         GL11.glLight(GLLightHandle, GL11.GL_POSITION, tmpFloats);
     }
 
@@ -1776,29 +1778,29 @@ public class GLApp {
      */
     public static void setLight(int GLLightHandle, boolean on)
     {
-		if (on) {
-			GL11.glEnable(GLLightHandle);
-		}
-		else {
-			GL11.glDisable(GLLightHandle);
-		}
+        if (on) {
+            GL11.glEnable(GLLightHandle);
+        }
+        else {
+            GL11.glDisable(GLLightHandle);
+        }
     }
 
-	/**
-	 * Enable/disable lighting.  If parameter value is false, this will turn off all
-	 * lights and ambient lighting.
-	 *
-	 * NOTE: When lighting is disabled, material colors are disabled as well.  Use
-	 *       glColor() to set color properties when ligthing is off.
-	 */
-	public static void setLighting(boolean on) {
-		if (on) {
-			GL11.glEnable(GL11.GL_LIGHTING);
-		}
-		else {
-			GL11.glDisable(GL11.GL_LIGHTING);
-		}
-	}
+    /**
+     * Enable/disable lighting.  If parameter value is false, this will turn off all
+     * lights and ambient lighting.
+     *
+     * NOTE: When lighting is disabled, material colors are disabled as well.  Use
+     *       glColor() to set color properties when ligthing is off.
+     */
+    public static void setLighting(boolean on) {
+        if (on) {
+            GL11.glEnable(GL11.GL_LIGHTING);
+        }
+        else {
+            GL11.glDisable(GL11.GL_LIGHTING);
+        }
+    }
 
     //========================================================================
     // Material functions
@@ -1811,21 +1813,21 @@ public class GLApp {
     public static final float[] colorGreen   = {  0f,  1f,  0f,  1f};
     public static final float[] colorBlue    = {  0f,  0f,  1f,  1f};
 
-	/**
-	*  A simple way to set the current material properties to approximate a
-	*  "real" surface.  Provide the surface color (float[4]]) and shininess
-	*  value (range 0-1).
-	*  <P>
-	*  Sets diffuse material color to the surfaceColor and ambient material color
-	*  to surfaceColor/2.  Based on the shiny value (0-1), sets the specular
-	*  property to a color between black (0) and white (1), and sets the
-	*  shininess property to a value between 0 and 127.
-	*  <P>
-	*  Lighting must be enabled for material colors to take effect.
-	*  <P>
-	*  @param surfaceColor - must be float[4] {R,G,B,A}
-	*  @param reflection - a float from 0-1 (0=very matte, 1=very shiny)
-	*/
+    /**
+     *  A simple way to set the current material properties to approximate a
+     *  "real" surface.  Provide the surface color (float[4]]) and shininess
+     *  value (range 0-1).
+     *  <P>
+     *  Sets diffuse material color to the surfaceColor and ambient material color
+     *  to surfaceColor/2.  Based on the shiny value (0-1), sets the specular
+     *  property to a color between black (0) and white (1), and sets the
+     *  shininess property to a value between 0 and 127.
+     *  <P>
+     *  Lighting must be enabled for material colors to take effect.
+     *  <P>
+     *  @param surfaceColor - must be float[4] {R,G,B,A}
+     *  @param reflection - a float from 0-1 (0=very matte, 1=very shiny)
+     */
     public static void setMaterial(float[] surfaceColor, float shiny) {
         float[] reflect = {shiny,shiny,shiny,1}; // make a shade of gray
         float[] ambient = {surfaceColor[0]*.5f,surfaceColor[1]*.5f,surfaceColor[2]*.5f,1};  // darker surface color
@@ -1836,24 +1838,24 @@ public class GLApp {
         // size of reflection
         int openglShininess = ((int)(shiny*127f));   // convert 0-1 to 0-127
         if (openglShininess >= 0 && openglShininess <= 127) {
-        	mtlshininess.put(new float[] {openglShininess,0,0,0}).flip();
+            mtlshininess.put(new float[] {openglShininess,0,0,0}).flip();
         }
         applyMaterial();
     }
 
-	/**
-	*  Set the four material colors and calls glMaterial() to change the current
-	*  material color in OpenGL.  Lighting must be enabled for material colors to take effect.
-	*
-	*  @param shininess: size of reflection (0 is matte, 127 is pinpoint reflection)
-	*/
+    /**
+     *  Set the four material colors and calls glMaterial() to change the current
+     *  material color in OpenGL.  Lighting must be enabled for material colors to take effect.
+     *
+     *  @param shininess: size of reflection (0 is matte, 127 is pinpoint reflection)
+     */
     public static void setMaterial(float[] diffuseColor, float[] ambientColor, float[] specularColor, float[] emissiveColor, float shininess) {
-    	mtldiffuse.put(diffuseColor).flip();     // surface directly lit
-    	mtlambient.put(ambientColor).flip();     // surface in shadow
-    	mtlspecular.put(specularColor).flip();   // reflection color
-    	mtlemissive.put(emissiveColor).flip();   // glow color
+        mtldiffuse.put(diffuseColor).flip();     // surface directly lit
+        mtlambient.put(ambientColor).flip();     // surface in shadow
+        mtlspecular.put(specularColor).flip();   // reflection color
+        mtlemissive.put(emissiveColor).flip();   // glow color
         if (shininess >= 0 && shininess <= 127) {
-        	mtlshininess.put(new float[] {shininess,0,0,0}).flip();  // size of reflection 0=broad 127=pinpoint
+            mtlshininess.put(new float[] {shininess,0,0,0}).flip();  // size of reflection 0=broad 127=pinpoint
         }
         applyMaterial();
     }
@@ -1866,8 +1868,8 @@ public class GLApp {
     public static void setMaterialAlpha(float alpha) {
         if (alpha < 0) alpha = 0;
         if (alpha > 1) alpha = 1;
-    	mtldiffuse.put(3,alpha).flip();     // alpha value of diffuse color
-    	applyMaterial();
+        mtldiffuse.put(3,alpha).flip();     // alpha value of diffuse color
+        applyMaterial();
     }
 
     /**
@@ -1887,44 +1889,44 @@ public class GLApp {
     // Fog
     //========================================================================
 
-	/**
-	 * Enable atmospheric fog effect, with the given color and density.
-	 * <PRE>
-	 *      setFog(new float[] {.5f,.5f,.5f,1f}, .3f);
-	 * </PRE>
-	 *
-	 * @param fogColor   float[4] specifies the RGB fog color value
-	 * @param fogDensity  float in range 0-1 specifies how opaque the fog will be
-	 */
-	public static void setFog(float[] fogColor, float fogdensity) {
-		put(tmpFloats,fogColor);
-		// turn fog on
-		GL11.glEnable(GL11.GL_FOG);
-		// mode: GL_EXP2 is dense fog, GL_EXP is thinner, GL_LINEAR is very thin
-		GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP2);
-		// start and end (only apply when fog mode=GL_LINEAR
-		//GL11.glFogf(GL11.GL_FOG_START, 100f);
-		//GL11.glFogf(GL11.GL_FOG_END, 1000f);
-		// color
-		GL11.glFog(GL11.GL_FOG_COLOR, tmpFloats);
-		// density
-		GL11.glFogf(GL11.GL_FOG_DENSITY, fogdensity);
-		// quality
-		GL11.glHint(GL11.GL_FOG_HINT, GL11.GL_NICEST);
-	}
+    /**
+     * Enable atmospheric fog effect, with the given color and density.
+     * <PRE>
+     *      setFog(new float[] {.5f,.5f,.5f,1f}, .3f);
+     * </PRE>
+     *
+     * @param fogColor   float[4] specifies the RGB fog color value
+     * @param fogDensity  float in range 0-1 specifies how opaque the fog will be
+     */
+    public static void setFog(float[] fogColor, float fogdensity) {
+        put(tmpFloats,fogColor);
+        // turn fog on
+        GL11.glEnable(GL11.GL_FOG);
+        // mode: GL_EXP2 is dense fog, GL_EXP is thinner, GL_LINEAR is very thin
+        GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP2);
+        // start and end (only apply when fog mode=GL_LINEAR
+        //GL11.glFogf(GL11.GL_FOG_START, 100f);
+        //GL11.glFogf(GL11.GL_FOG_END, 1000f);
+        // color
+        GL11.glFog(GL11.GL_FOG_COLOR, tmpFloats);
+        // density
+        GL11.glFogf(GL11.GL_FOG_DENSITY, fogdensity);
+        // quality
+        GL11.glHint(GL11.GL_FOG_HINT, GL11.GL_NICEST);
+    }
 
 
-	/**
-	 * Enable/disable fog effect.  Does not change the fog settings.
-	 */
-	public static void setFog(boolean on) {
-		if (on) {
-			GL11.glEnable(GL11.GL_FOG);
-		}
-		else {
-			GL11.glDisable(GL11.GL_FOG);
-		}
-	}
+    /**
+     * Enable/disable fog effect.  Does not change the fog settings.
+     */
+    public static void setFog(boolean on) {
+        if (on) {
+            GL11.glEnable(GL11.GL_FOG);
+        }
+        else {
+            GL11.glDisable(GL11.GL_FOG);
+        }
+    }
 
     //========================================================================
     // Time functions
@@ -1957,18 +1959,18 @@ public class GLApp {
      */
     public static void updateTimer()
     {
-    	// number of frames to average (about one second)
-    	double numToAvg = 50;
-    	// calc time elapsed since we last rendered
-    	secondsSinceLastFrame = (double)(Sys.getTime() - lastFrameTime) / (double)ticksPerSecond;
-    	lastFrameTime = Sys.getTime();
-    	// keep a moving average of frame elapsed times
-    	if (secondsSinceLastFrame < 1) {
-    		avgSecsPerFrame = (double) ((avgSecsPerFrame*numToAvg)+secondsSinceLastFrame) / (numToAvg+1D);
-    	}
+        // number of frames to average (about one second)
+        double numToAvg = 50;
+        // calc time elapsed since we last rendered
+        secondsSinceLastFrame = (double)(Sys.getTime() - lastFrameTime) / (double)ticksPerSecond;
+        lastFrameTime = Sys.getTime();
+        // keep a moving average of frame elapsed times
+        if (secondsSinceLastFrame < 1) {
+            avgSecsPerFrame = (double) ((avgSecsPerFrame*numToAvg)+secondsSinceLastFrame) / (numToAvg+1D);
+        }
     }
 
-	/**
+    /**
      * Return the moving average of the seconds per frame for the last 50 frames.
      * Useful when animating in real time.  Will provide smoother time deltas
      * than the secondsSinceLastFrame variable, which holds the exact time elapsed
@@ -1976,17 +1978,17 @@ public class GLApp {
      *
      * @see updateTimer()
      */
-	public static double getSecondsPerFrame() {
-    	return avgSecsPerFrame;
+    public static double getSecondsPerFrame() {
+        return avgSecsPerFrame;
     }
 
-	/**
+    /**
      * Return the moving average of the frames per second for the last 50 frames.
      *
      * @see updateTimer()
      */
-	public static double getFramesPerSecond() {
-    	return 1d/avgSecsPerFrame;
+    public static double getFramesPerSecond() {
+        return 1d/avgSecsPerFrame;
     }
 
     //========================================================================
@@ -2060,14 +2062,14 @@ public class GLApp {
      * @param cursorTextureHandle  handle to texture containing 32x32 cursor image
      */
     public static void drawCursor(int cursorTextureHandle) {
-		// set projection matrix to 2D fullscreen
+        // set projection matrix to 2D fullscreen
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();                   // preserve perspective view
         GL11.glLoadIdentity();                 // clear the perspective matrix
         GL11.glOrtho(                          // set ortho to exactly match screen size
-        		0,displayWidth,     // left, right
-        		0,displayHeight,    // bottom, top
-        		-1,1);              // Zfar, Znear
+                0,displayWidth,     // left, right
+                0,displayHeight,    // bottom, top
+                -1,1);              // Zfar, Znear
         // clear the modelview matrix
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();				   // preserve current modelview matrix
@@ -2076,9 +2078,9 @@ public class GLApp {
         // preserve current settings then draw cursor
         GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT | GL11.GL_VIEWPORT_BIT);
         {
-        	// set viewport to full screen
-        	GL11.glViewport(0,0,displayWidth,displayHeight);
-    	    // tweak settings
+            // set viewport to full screen
+            GL11.glViewport(0,0,displayWidth,displayHeight);
+            // tweak settings
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
             GL11.glColor4f(1,1,1,1);             // no color
             GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
@@ -2132,7 +2134,7 @@ public class GLApp {
         setOrthoOn();
         GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT);
         {
-    	    // tweak settings
+            // tweak settings
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
             GL11.glColor4f(1,1,1,1);             // no color
             GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
@@ -2162,49 +2164,49 @@ public class GLApp {
      * @see resetViewport()
      */
     public static void drawImageFullScreen(GLImage img) {
-    	if (img == null || img.isLoaded() == false) {
-    		return;
-    	}
-    	// if image has no texture, convert the image to a texture
-    	if (img.textureHandle <= 0) {
-    		img.textureHandle = makeTexture(img);
-    	}
-    	// Calculate the UV dimensions of the image in the texture
-    	float maxU = (float)img.w / (float)img.textureW;
-    	float maxV = (float)img.h / (float)img.textureH;
-    	// preserve settings
-    	pushAttribOrtho();
-    	// switch to 2D projection
-    	setOrthoOn();
-    	// tweak settings
-    	GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
-    	GL11.glColor4f(1,1,1,1);             // no color
-    	GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
-    	GL11.glDisable(GL11.GL_DEPTH_TEST);  // no depth test
-    	GL11.glEnable(GL11.GL_BLEND);        // enable transparency
-    	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    	// activate the image texture
-    	GL11.glBindTexture(GL11.GL_TEXTURE_2D,img.textureHandle);
-    	// draw a textured quad
-    	GL11.glBegin(GL11.GL_QUADS);
-    	{
-    		GL11.glTexCoord2f(0, 0);
-    		GL11.glVertex3f(0f, 0f, 0f);         // Bottom Left
+        if (img == null || img.isLoaded() == false) {
+            return;
+        }
+        // if image has no texture, convert the image to a texture
+        if (img.textureHandle <= 0) {
+            img.textureHandle = makeTexture(img);
+        }
+        // Calculate the UV dimensions of the image in the texture
+        float maxU = (float)img.w / (float)img.textureW;
+        float maxV = (float)img.h / (float)img.textureH;
+        // preserve settings
+        pushAttribOrtho();
+        // switch to 2D projection
+        setOrthoOn();
+        // tweak settings
+        GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
+        GL11.glColor4f(1,1,1,1);             // no color
+        GL11.glDisable(GL11.GL_LIGHTING);    // no lighting
+        GL11.glDisable(GL11.GL_DEPTH_TEST);  // no depth test
+        GL11.glEnable(GL11.GL_BLEND);        // enable transparency
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        // activate the image texture
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D,img.textureHandle);
+        // draw a textured quad
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex3f(0f, 0f, 0f);         // Bottom Left
 
-    		GL11.glTexCoord2f(maxU, 0);
-    		GL11.glVertex3f(getWidth(), 0f, 0f);         // Bottom Right
+            GL11.glTexCoord2f(maxU, 0);
+            GL11.glVertex3f(getWidth(), 0f, 0f);         // Bottom Right
 
-    		GL11.glTexCoord2f(maxU, maxV);
-    		GL11.glVertex3f(getWidth(), getHeight(), 0f);   // Top Right
+            GL11.glTexCoord2f(maxU, maxV);
+            GL11.glVertex3f(getWidth(), getHeight(), 0f);   // Top Right
 
-    		GL11.glTexCoord2f(0, maxV);
-    		GL11.glVertex3f(0f, getHeight(), 0f);       // Top left
-    	}
-    	GL11.glEnd();
-    	// return to previous projection mode
-    	setOrthoOff();
-    	// return to previous settings
-    	popAttrib();
+            GL11.glTexCoord2f(0, maxV);
+            GL11.glVertex3f(0f, getHeight(), 0f);       // Top left
+        }
+        GL11.glEnd();
+        // return to previous projection mode
+        setOrthoOff();
+        // return to previous settings
+        popAttrib();
     }
 
     /**
@@ -2217,28 +2219,28 @@ public class GLApp {
      * @see drawImageFullScreen()
      */
     public static void drawImage(GLImage img, int x, int y, float w, float h) {
-    	// if image has no texture, convert the image to a texture
-    	if (img.textureHandle <= 0) {
-    		img.textureHandle = makeTexture(img);
-    	}
-    	// preserve settings
-    	pushAttribOrtho();
-    	// set color to white
-    	//GL11.glColor4f(1,1,1,1);   // don't force color to white (may want to tint image)
+        // if image has no texture, convert the image to a texture
+        if (img.textureHandle <= 0) {
+            img.textureHandle = makeTexture(img);
+        }
+        // preserve settings
+        pushAttribOrtho();
+        // set color to white
+        //GL11.glColor4f(1,1,1,1);   // don't force color to white (may want to tint image)
         // activate the image texture
         GL11.glBindTexture(GL11.GL_TEXTURE_2D,img.textureHandle);
         // draw a textured quad
         GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
         GL11.glBegin(GL11.GL_QUADS);
         {
-	        GL11.glTexCoord2f(0f, 0f);
-	        GL11.glVertex3f( (float)x, (float)y, (float)0);
-	        GL11.glTexCoord2f(1f, 0f);
-	        GL11.glVertex3f( (float)x+w, (float)y, (float)0);
-	        GL11.glTexCoord2f(1f, 1f);
-	        GL11.glVertex3f( (float)x+w, (float)y+h, (float)0);
-	        GL11.glTexCoord2f(0f, 1f);
-	        GL11.glVertex3f( (float)x, (float)y+h, (float)0);
+            GL11.glTexCoord2f(0f, 0f);
+            GL11.glVertex3f( (float)x, (float)y, (float)0);
+            GL11.glTexCoord2f(1f, 0f);
+            GL11.glVertex3f( (float)x+w, (float)y, (float)0);
+            GL11.glTexCoord2f(1f, 1f);
+            GL11.glVertex3f( (float)x+w, (float)y+h, (float)0);
+            GL11.glTexCoord2f(0f, 1f);
+            GL11.glVertex3f( (float)x, (float)y+h, (float)0);
         }
         GL11.glEnd();
         // return to previous settings
@@ -2306,14 +2308,14 @@ public class GLApp {
      * Return a ByteBuffer containing ARGB pixels of the entire screen area.
      */
     public static ByteBuffer framePixels() {
-		return framePixels(0,0,displayMode.getWidth(),displayMode.getHeight());
+        return framePixels(0,0,displayMode.getWidth(),displayMode.getHeight());
     }
 
     /**
      * Return a ByteBuffer containing ARGB pixels from the given screen area.
      */
     public static ByteBuffer framePixels(int x, int y, int w, int h) {
-		// allocate 4 bytes per pixel
+        // allocate 4 bytes per pixel
         ByteBuffer pixels = allocBytes(w*h*4);
         // Get pixels from frame buffer in ARGB format.
         GL11.glReadPixels(x,y,w,h, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixels);
@@ -2339,12 +2341,12 @@ public class GLApp {
      */
     public static byte[] getPixelColor(int x, int y)
     {
-    	// color value will be stored in an integer
-    	tmpInt.clear();
-    	// read the framebuffer color value at the given position, as bytes
-    	GL11.glReadPixels(x, y, 1, 1, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, tmpInt);
-    	byte[] rgb = new byte[] {tmpInt.get(0), tmpInt.get(1), tmpInt.get(2)};
-    	return rgb;
+        // color value will be stored in an integer
+        tmpInt.clear();
+        // read the framebuffer color value at the given position, as bytes
+        GL11.glReadPixels(x, y, 1, 1, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, tmpInt);
+        byte[] rgb = new byte[] {tmpInt.get(0), tmpInt.get(1), tmpInt.get(2)};
+        return rgb;
     }
 
     /**
@@ -2356,7 +2358,7 @@ public class GLApp {
      */
     public static float getPixelDepth(int x, int y)
     {
-    	return getZDepth(x,y);
+        return getZDepth(x,y);
     }
 
     /**
@@ -2369,7 +2371,7 @@ public class GLApp {
      */
     public static int getPixelStencil(int x, int y)
     {
-    	return getMaskValue(x,y);
+        return getMaskValue(x,y);
     }
 
     /**
@@ -2431,7 +2433,7 @@ public class GLApp {
      * @see screenShot()
      */
     public static void frameSave() {
-    	screenShot();
+        screenShot();
     }
 
     //========================================================================
@@ -2461,8 +2463,8 @@ public class GLApp {
      * @see drawRect()
      */
     public static void  drawRectZ(int x, int y, int z, float w, float h) {
-    	// preserve current settings
-    	GL11.glPushAttrib(GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT);
+        // preserve current settings
+        GL11.glPushAttrib(GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT);
         // de-activate texture and light
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -2601,52 +2603,52 @@ public class GLApp {
      * @param segments   # segments to divide each side into
      */
     public static void renderCube(float size, int segments) {
-    	float halfsize = size/2f;
-    	GL11.glPushMatrix();
-    	{
-    		GL11.glPushMatrix();
-    		{
-    			GL11.glTranslatef(0,0,halfsize);
-    			renderPlane(size,segments);// front
-    		}
-    		GL11.glPopMatrix();
-    		GL11.glPushMatrix();
-    		{
-    			GL11.glRotatef(90,0,1,0);
-    			GL11.glTranslatef(0,0,halfsize);
-    			renderPlane(size,segments);// right
-    		}
-    		GL11.glPopMatrix();
-    		GL11.glPushMatrix();
-    		{
-    			GL11.glRotatef(180,0,1,0);
-    			GL11.glTranslatef(0,0,halfsize);
-    			renderPlane(size,segments);// back
-    		}
-    		GL11.glPopMatrix();
-    		GL11.glPushMatrix();
-    		{
-    			GL11.glRotatef(270,0,1,0);
-    			GL11.glTranslatef(0,0,halfsize);
-    			renderPlane(size,segments);// left
-    		}
-    		GL11.glPopMatrix();
-    		GL11.glPushMatrix();
-    		{
-    			GL11.glRotatef(90,1,0,0);
-    			GL11.glTranslatef(0,0,halfsize);
-    			renderPlane(size,segments);// bottom
-    		}
-    		GL11.glPopMatrix();
-    		GL11.glPushMatrix();
-    		{
-    			GL11.glRotatef(-90,1,0,0);
-    			GL11.glTranslatef(0,0,halfsize);
-    			renderPlane(size,segments);// top
-    		}
-    		GL11.glPopMatrix();
-    	}
-    	GL11.glPopMatrix();
+        float halfsize = size/2f;
+        GL11.glPushMatrix();
+        {
+            GL11.glPushMatrix();
+            {
+                GL11.glTranslatef(0,0,halfsize);
+                renderPlane(size,segments);// front
+            }
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            {
+                GL11.glRotatef(90,0,1,0);
+                GL11.glTranslatef(0,0,halfsize);
+                renderPlane(size,segments);// right
+            }
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            {
+                GL11.glRotatef(180,0,1,0);
+                GL11.glTranslatef(0,0,halfsize);
+                renderPlane(size,segments);// back
+            }
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            {
+                GL11.glRotatef(270,0,1,0);
+                GL11.glTranslatef(0,0,halfsize);
+                renderPlane(size,segments);// left
+            }
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            {
+                GL11.glRotatef(90,1,0,0);
+                GL11.glTranslatef(0,0,halfsize);
+                renderPlane(size,segments);// bottom
+            }
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            {
+                GL11.glRotatef(-90,1,0,0);
+                GL11.glTranslatef(0,0,halfsize);
+                renderPlane(size,segments);// top
+            }
+            GL11.glPopMatrix();
+        }
+        GL11.glPopMatrix();
     }
 
     /**
@@ -2679,34 +2681,34 @@ public class GLApp {
      * @param segments  number of segments to divide each side into
      */
     public static void renderPlane(float length, float height, int length_segments, int height_segments, float tilefactorU, float tilefactorV) {
-    	float xpos = - length/2f;
-    	float ypos = - height/2f;
-    	float segsizeL = length/(float)length_segments;
-    	float segsizeH = height/(float)height_segments;
+        float xpos = - length/2f;
+        float ypos = - height/2f;
+        float segsizeL = length/(float)length_segments;
+        float segsizeH = height/(float)height_segments;
         float maxDimension = (length > height)? length : height;
-    	float uvsegsizeL = (length/maxDimension) / (float)length_segments;
-    	float uvsegsizeH = (height/maxDimension) / (float)height_segments;
-    	GL11.glBegin(GL11.GL_QUADS); {
-    		GL11.glNormal3f(0f, 0f, 1f);   // plane is facing up the Z axis
-    		for (int x=0; x < length_segments; x++, xpos+=segsizeL) {
-    			for (int y=0; y < height_segments; y++, ypos+=segsizeH) {
-    				// bottom left
-    				GL11.glTexCoord2f((x*uvsegsizeL)*tilefactorU, (y*uvsegsizeH)*tilefactorV);
-    				GL11.glVertex3f( xpos, ypos, 0f);
-    				// bottom rite
-    				GL11.glTexCoord2f(((x*uvsegsizeL)+uvsegsizeL)*tilefactorU, (y*uvsegsizeH)*tilefactorV);
-    				GL11.glVertex3f( xpos+segsizeL, ypos,  0f);
-    				// top rite
-    				GL11.glTexCoord2f(((x*uvsegsizeL)+uvsegsizeL)*tilefactorU, ((y*uvsegsizeH)+uvsegsizeH)*tilefactorV);
-    				GL11.glVertex3f( xpos+segsizeL,  ypos+segsizeH, 0f);
-    				// top left
-    				GL11.glTexCoord2f((x*uvsegsizeL)*tilefactorU, ((y*uvsegsizeH)+uvsegsizeH)*tilefactorV);
-    				GL11.glVertex3f( xpos,  ypos+segsizeH, 0f);
-    			}
-    			ypos = - height/2f; // reset column position
-    		}
-    	}
-    	GL11.glEnd();
+        float uvsegsizeL = (length/maxDimension) / (float)length_segments;
+        float uvsegsizeH = (height/maxDimension) / (float)height_segments;
+        GL11.glBegin(GL11.GL_QUADS); {
+            GL11.glNormal3f(0f, 0f, 1f);   // plane is facing up the Z axis
+            for (int x=0; x < length_segments; x++, xpos+=segsizeL) {
+                for (int y=0; y < height_segments; y++, ypos+=segsizeH) {
+                    // bottom left
+                    GL11.glTexCoord2f((x*uvsegsizeL)*tilefactorU, (y*uvsegsizeH)*tilefactorV);
+                    GL11.glVertex3f( xpos, ypos, 0f);
+                    // bottom rite
+                    GL11.glTexCoord2f(((x*uvsegsizeL)+uvsegsizeL)*tilefactorU, (y*uvsegsizeH)*tilefactorV);
+                    GL11.glVertex3f( xpos+segsizeL, ypos,  0f);
+                    // top rite
+                    GL11.glTexCoord2f(((x*uvsegsizeL)+uvsegsizeL)*tilefactorU, ((y*uvsegsizeH)+uvsegsizeH)*tilefactorV);
+                    GL11.glVertex3f( xpos+segsizeL,  ypos+segsizeH, 0f);
+                    // top left
+                    GL11.glTexCoord2f((x*uvsegsizeL)*tilefactorU, ((y*uvsegsizeH)+uvsegsizeH)*tilefactorV);
+                    GL11.glVertex3f( xpos,  ypos+segsizeH, 0f);
+                }
+                ypos = - height/2f; // reset column position
+            }
+        }
+        GL11.glEnd();
     }
 
     /**
@@ -2717,34 +2719,34 @@ public class GLApp {
      * @param segments  number of segments to divide each side into
      */
     public static void renderPlaneORIG(float length, float height, int length_segments, int height_segments) {
-    	float xpos = - length/2f;
-    	float ypos = - height/2f;
-    	float segsizeL = length/(float)length_segments;
-    	float segsizeH = height/(float)height_segments;
+        float xpos = - length/2f;
+        float ypos = - height/2f;
+        float segsizeL = length/(float)length_segments;
+        float segsizeH = height/(float)height_segments;
         float maxDimension = (length > height)? length : height;
-    	float uvsegsizeL = (length/maxDimension) / (float)length_segments;
-    	float uvsegsizeH = (height/maxDimension) / (float)height_segments;
-    	GL11.glBegin(GL11.GL_QUADS); {
-    		GL11.glNormal3f(0f, 0f, 1f);   // plane is facing up the Z axis
-    		for (int x=0; x < length_segments; x++, xpos+=segsizeL) {
-    			for (int y=0; y < height_segments; y++, ypos+=segsizeH) {
-    				// bottom left
-    				GL11.glTexCoord2f(x*uvsegsizeL, y*uvsegsizeH);
-    				GL11.glVertex3f( xpos, ypos, 0f);
-    				// bottom rite
-    				GL11.glTexCoord2f((x*uvsegsizeL)+uvsegsizeL, y*uvsegsizeH);
-    				GL11.glVertex3f( xpos+segsizeL, ypos,  0f);
-    				// top rite
-    				GL11.glTexCoord2f((x*uvsegsizeL)+uvsegsizeL, (y*uvsegsizeH)+uvsegsizeH);
-    				GL11.glVertex3f( xpos+segsizeL,  ypos+segsizeH, 0f);
-    				// top left
-    				GL11.glTexCoord2f(x*uvsegsizeL, (y*uvsegsizeH)+uvsegsizeH);
-    				GL11.glVertex3f( xpos,  ypos+segsizeH, 0f);
-    			}
-    			ypos = - height/2f; // reset column position
-    		}
-    	}
-    	GL11.glEnd();
+        float uvsegsizeL = (length/maxDimension) / (float)length_segments;
+        float uvsegsizeH = (height/maxDimension) / (float)height_segments;
+        GL11.glBegin(GL11.GL_QUADS); {
+            GL11.glNormal3f(0f, 0f, 1f);   // plane is facing up the Z axis
+            for (int x=0; x < length_segments; x++, xpos+=segsizeL) {
+                for (int y=0; y < height_segments; y++, ypos+=segsizeH) {
+                    // bottom left
+                    GL11.glTexCoord2f(x*uvsegsizeL, y*uvsegsizeH);
+                    GL11.glVertex3f( xpos, ypos, 0f);
+                    // bottom rite
+                    GL11.glTexCoord2f((x*uvsegsizeL)+uvsegsizeL, y*uvsegsizeH);
+                    GL11.glVertex3f( xpos+segsizeL, ypos,  0f);
+                    // top rite
+                    GL11.glTexCoord2f((x*uvsegsizeL)+uvsegsizeL, (y*uvsegsizeH)+uvsegsizeH);
+                    GL11.glVertex3f( xpos+segsizeL,  ypos+segsizeH, 0f);
+                    // top left
+                    GL11.glTexCoord2f(x*uvsegsizeL, (y*uvsegsizeH)+uvsegsizeH);
+                    GL11.glVertex3f( xpos,  ypos+segsizeH, 0f);
+                }
+                ypos = - height/2f; // reset column position
+            }
+        }
+        GL11.glEnd();
     }
 
     /**
@@ -2758,8 +2760,8 @@ public class GLApp {
         s.setTextureFlag(true);             // generate texture coords
         GL11.glPushMatrix();
         {
-	        GL11.glRotatef(0f, 1,0,0);    // rotate the sphere to align the axis vertically
-	        s.draw(1, facets, facets);              // run GL commands to draw sphere
+            GL11.glRotatef(0f, 1,0,0);    // rotate the sphere to align the axis vertically
+            s.draw(1, facets, facets);              // run GL commands to draw sphere
         }
         GL11.glPopMatrix();
     }
@@ -2779,10 +2781,10 @@ public class GLApp {
      */
     public static void setLineWidth(int width)
     {
-    	GL11.glLineWidth(width);
-    	GL11.glPointSize(width);
-    	//GL11.glEnable(GL11.GL_POINT_SMOOTH);
-    	//GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glLineWidth(width);
+        GL11.glPointSize(width);
+        //GL11.glEnable(GL11.GL_POINT_SMOOTH);
+        //GL11.glEnable(GL11.GL_LINE_SMOOTH);
     }
 
     /**
@@ -2792,7 +2794,7 @@ public class GLApp {
      */
     public static void setColor(float R, float G, float B, float A)
     {
-    	GL11.glColor4f(R,G,B,A);
+        GL11.glColor4f(R,G,B,A);
     }
 
     /**
@@ -2802,7 +2804,7 @@ public class GLApp {
      */
     public static void setColorB(int R, int G, int B, int A)
     {
-    	GL11.glColor4ub((byte)R,(byte)G,(byte)B,(byte)A);
+        GL11.glColor4ub((byte)R,(byte)G,(byte)B,(byte)A);
     }
 
     /**
@@ -2813,14 +2815,14 @@ public class GLApp {
      */
     public static void setColor(float[] rgba)
     {
-    	if (rgba != null) {
-    		if (rgba.length == 4) {
-    			GL11.glColor4f(rgba[0],rgba[1],rgba[2],rgba[3]);
-    		}
-    		else if (rgba.length == 3) {
-    			GL11.glColor4f(rgba[0],rgba[1],rgba[2],1);
-    		}
-    	}
+        if (rgba != null) {
+            if (rgba.length == 4) {
+                GL11.glColor4f(rgba[0],rgba[1],rgba[2],rgba[3]);
+            }
+            else if (rgba.length == 3) {
+                GL11.glColor4f(rgba[0],rgba[1],rgba[2],1);
+            }
+        }
     }
 
     /**
@@ -2834,15 +2836,15 @@ public class GLApp {
      */
     public static void setColorMaterial(boolean on)
     {
-    	if (on) {
-    		// glColor() will change the diffuse and ambient material colors
-    		GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
-    		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-    	}
-    	else {
-    		// glColor() behaves normally
-    		GL11.glDisable(GL11.GL_COLOR_MATERIAL);
-    	}
+        if (on) {
+            // glColor() will change the diffuse and ambient material colors
+            GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
+            GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        }
+        else {
+            // glColor() behaves normally
+            GL11.glDisable(GL11.GL_COLOR_MATERIAL);
+        }
     }
 
     //========================================================================
@@ -2869,36 +2871,36 @@ public class GLApp {
      */
     public static boolean buildFont(String charSetImage, int fontWidth)
     {
-    	// make texture from image
-    	GLImage textureImg = loadImage(charSetImage);
-    	if (textureImg == null) {
-    		return false;  // image not found
-    	}
-    	//pushAttrib();
-    	fontTextureHandle = makeTexture(textureImg);
-    	// build character set as call list of 256 textured quads
-    	buildFont(fontTextureHandle, fontWidth);
-    	//popAttrib();
-    	return true;
+        // make texture from image
+        GLImage textureImg = loadImage(charSetImage);
+        if (textureImg == null) {
+            return false;  // image not found
+        }
+        //pushAttrib();
+        fontTextureHandle = makeTexture(textureImg);
+        // build character set as call list of 256 textured quads
+        buildFont(fontTextureHandle, fontWidth);
+        //popAttrib();
+        return true;
     }
 
     /**
-      * Build the character set display list from the given texture.  Creates
-      * one quad for each character, with one letter textured onto each quad.
-      * Assumes the texture is a 256x256 image containing every
-      * character of the charset arranged in a 16x16 grid.  Each character
-      * is 16x16 pixels.  Call destroyFont() to release the display list memory.
-      *
-      * Should be in ORTHO (2D) mode to render text (see setOrtho()).
-      *
-      * Special thanks to NeHe and Giuseppe D'Agata for the "2D Texture Font"
-      * tutorial (http://nehe.gamedev.net).
-      *
-      * @param charSetImage   texture image containing 256 characters in a 16x16 grid
-      * @param fontWidth      how many pixels to allow per character on screen
-      *
-      * @see       destroyFont()
-      */
+     * Build the character set display list from the given texture.  Creates
+     * one quad for each character, with one letter textured onto each quad.
+     * Assumes the texture is a 256x256 image containing every
+     * character of the charset arranged in a 16x16 grid.  Each character
+     * is 16x16 pixels.  Call destroyFont() to release the display list memory.
+     *
+     * Should be in ORTHO (2D) mode to render text (see setOrtho()).
+     *
+     * Special thanks to NeHe and Giuseppe D'Agata for the "2D Texture Font"
+     * tutorial (http://nehe.gamedev.net).
+     *
+     * @param charSetImage   texture image containing 256 characters in a 16x16 grid
+     * @param fontWidth      how many pixels to allow per character on screen
+     *
+     * @see       destroyFont()
+     */
     public static void buildFont(int fontTxtrHandle, int fontWidth)
     {
         float factor = 1f/16f;
@@ -2944,7 +2946,7 @@ public class GLApp {
      */
     public static void print(int x, int y, String msg)
     {
-    	print(x,y,msg,0);
+        print(x,y,msg,0);
     }
 
     /**
@@ -2958,36 +2960,36 @@ public class GLApp {
      */
     public static void print(int x, int y, String msg, int set)
     {
-    	// if font is not initiallized, try loading default font
-    	if (fontListBase == -1 || fontTextureHandle == -1) {
-    		if (!buildFont("glap/images/font_tahoma.png", 12)) {
-    			err("GLApp.print(): character set has not been created -- see buildFont()");
-    			return;
-    		}
-    	}
-    	if (msg != null) {
-    		int offset = fontListBase - 32 + (128 * set);
-    		// preserve current GL settings
-    		pushAttribOrtho();
-    		// turn off lighting
-    		GL11.glDisable(GL11.GL_LIGHTING);
-    		// enable alpha blending, so character background is transparent
-    		GL11.glEnable(GL11.GL_BLEND);
-    		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    		// enable the charset texture
-    		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fontTextureHandle);
-    		// prepare to render in 2D
-    		setOrthoOn();
-    		// draw the text
-    		GL11.glTranslatef(x, y, 0);        // Position The Text (in pixel coords)
-    		for(int i=0; i<msg.length(); i++) {
-    			GL11.glCallList(offset + msg.charAt(i));
-    		}
-    		// restore the original positions and views
-    		setOrthoOff();
-    		// restore previous settings
-    		popAttrib();
-    	}
+        // if font is not initiallized, try loading default font
+        if (fontListBase == -1 || fontTextureHandle == -1) {
+            if (!buildFont("glap/images/font_tahoma.png", 12)) {
+                err("GLApp.print(): character set has not been created -- see buildFont()");
+                return;
+            }
+        }
+        if (msg != null) {
+            int offset = fontListBase - 32 + (128 * set);
+            // preserve current GL settings
+            pushAttribOrtho();
+            // turn off lighting
+            GL11.glDisable(GL11.GL_LIGHTING);
+            // enable alpha blending, so character background is transparent
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            // enable the charset texture
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, fontTextureHandle);
+            // prepare to render in 2D
+            setOrthoOn();
+            // draw the text
+            GL11.glTranslatef(x, y, 0);        // Position The Text (in pixel coords)
+            for(int i=0; i<msg.length(); i++) {
+                GL11.glCallList(offset + msg.charAt(i));
+            }
+            // restore the original positions and views
+            setOrthoOff();
+            // restore previous settings
+            popAttrib();
+        }
     }
 
     /**
@@ -2996,29 +2998,29 @@ public class GLApp {
      */
     public static void printZ(float x, float y, float z, int set, float scale, String msg)
     {
-    	int offset;
-    	if (fontListBase == -1 || fontTextureHandle == -1) {
-    		// font is not initiallized, try this default
-    		if (!buildFont("images/font_tahoma.png", 12)) {
-    			err("GLApp.printZ(): character set has not been created -- see buildFont()");
-    			return;
-    		}
-    	}
-    	offset = fontListBase - 32 + (128 * set);
-    	if (msg != null) {
-    		// enable the charset texture
-    		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fontTextureHandle);
-    		// draw the text
-    		GL11.glPushMatrix();
-    		{
-    			GL11.glTranslatef(x, y, z); // Position The Text (in pixels coords)
-    			GL11.glScalef(scale,scale,scale);  // make it smaller (arbitrary kludge!!!!)
-    			for (int i = 0; i < msg.length(); i++) {
-    				GL11.glCallList(offset + msg.charAt(i));
-    			}
-    		}
-    		GL11.glPopMatrix();
-    	}
+        int offset;
+        if (fontListBase == -1 || fontTextureHandle == -1) {
+            // font is not initiallized, try this default
+            if (!buildFont("images/font_tahoma.png", 12)) {
+                err("GLApp.printZ(): character set has not been created -- see buildFont()");
+                return;
+            }
+        }
+        offset = fontListBase - 32 + (128 * set);
+        if (msg != null) {
+            // enable the charset texture
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, fontTextureHandle);
+            // draw the text
+            GL11.glPushMatrix();
+            {
+                GL11.glTranslatef(x, y, z); // Position The Text (in pixels coords)
+                GL11.glScalef(scale,scale,scale);  // make it smaller (arbitrary kludge!!!!)
+                for (int i = 0; i < msg.length(); i++) {
+                    GL11.glCallList(offset + msg.charAt(i));
+                }
+            }
+            GL11.glPopMatrix();
+        }
     }
 
 
@@ -3043,20 +3045,20 @@ public class GLApp {
      * @see selectPbuffer(), selectDisplay()
      */
     public static Pbuffer makePbuffer(final int width, final int height) {
-    	Pbuffer pbuffer = null;
-    	try {
-    		pbuffer = new Pbuffer(width, height,
-    				new PixelFormat(24, //bitsperpixel
-    						8,  //alpha
-    						24, //depth
-    						8,  //stencil
-    						0), //samples
-    						null,
-    						null);
-    	} catch (LWJGLException e) {
-    		err("GLApp.makePbuffer(): exception " + e);
-    	}
-    	return pbuffer;
+        Pbuffer pbuffer = null;
+        try {
+            pbuffer = new Pbuffer(width, height,
+                    new PixelFormat(24, //bitsperpixel
+                            8,  //alpha
+                            24, //depth
+                            8,  //stencil
+                            0), //samples
+                    null,
+                    null);
+        } catch (LWJGLException e) {
+            err("GLApp.makePbuffer(): exception " + e);
+        }
+        return pbuffer;
     }
 
     /**
@@ -3075,24 +3077,24 @@ public class GLApp {
      * @see       selectDisplay(), makePbuffer()
      */
     public static Pbuffer selectPbuffer(Pbuffer pb) {
-    	if (pb != null) {
-    		try {
-    			// re-create the buffer if necessary
-    			if (pb.isBufferLost()) {
-    				int w = pb.getWidth();
-    				int h = pb.getHeight();
-    				msg("GLApp.selectPbuffer(): Buffer contents lost - recreating the pbuffer");
-    				pb.destroy();
-    				pb = makePbuffer(w, h);
-    			}
-    			// select the pbuffer for rendering
-    			pb.makeCurrent();
-    		}
-    		catch (LWJGLException e) {
-    			err("GLApp.selectPbuffer(): exception " + e);
-    		}
-    	}
-    	return pb;
+        if (pb != null) {
+            try {
+                // re-create the buffer if necessary
+                if (pb.isBufferLost()) {
+                    int w = pb.getWidth();
+                    int h = pb.getHeight();
+                    msg("GLApp.selectPbuffer(): Buffer contents lost - recreating the pbuffer");
+                    pb.destroy();
+                    pb = makePbuffer(w, h);
+                }
+                // select the pbuffer for rendering
+                pb.makeCurrent();
+            }
+            catch (LWJGLException e) {
+                err("GLApp.selectPbuffer(): exception " + e);
+            }
+        }
+        return pb;
     }
 
     /**
@@ -3103,11 +3105,11 @@ public class GLApp {
      */
     public static void selectDisplay()
     {
-    	try {
-    		Display.makeCurrent();
-    	} catch (LWJGLException e) {
-    		err("GLApp.selectDisplay(): exception " + e);
-    	}
+        try {
+            Display.makeCurrent();
+        } catch (LWJGLException e) {
+            err("GLApp.selectDisplay(): exception " + e);
+        }
     }
 
     /**
@@ -3115,8 +3117,8 @@ public class GLApp {
      * Is RGB the fastest format?)
      */
     public static void frameCopy(Pbuffer pbuff, int textureHandle) {
-    	GL11.glBindTexture(GL11.GL_TEXTURE_2D,textureHandle);
-    	GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 0, pbuff.getWidth(), pbuff.getHeight(), 0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D,textureHandle);
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 0, pbuff.getWidth(), pbuff.getHeight(), 0);
     }
 
     /**
@@ -3125,7 +3127,7 @@ public class GLApp {
      * set to <applicationClassName>-<timestamp>.png
      */
     public static void screenShot() {
-    	screenShot(0, 0, displayMode.getWidth(), displayMode.getHeight(), rootClass.getName() + "-" + makeTimestamp() + ".png");
+        screenShot(0, 0, displayMode.getWidth(), displayMode.getHeight(), rootClass.getName() + "-" + makeTimestamp() + ".png");
     }
 
     /**
@@ -3134,7 +3136,7 @@ public class GLApp {
      * have been rendered into the offscreen pbuffer.
      */
     public static void screenShot(String imageFilename) {
-    	screenShot(0, 0, displayMode.getWidth(), displayMode.getHeight(), imageFilename);
+        screenShot(0, 0, displayMode.getWidth(), displayMode.getHeight(), imageFilename);
     }
 
     /**
@@ -3144,7 +3146,7 @@ public class GLApp {
      * NOTE: Have to call selectPbuffer() before calling this function.
      */
     public static void screenShot(Pbuffer pb) {
-    	screenShot(0, 0, pb.getWidth(), pb.getHeight(), rootClass.getName() + "_" + makeTimestamp() + ".png");
+        screenShot(0, 0, pb.getWidth(), pb.getHeight(), rootClass.getName() + "_" + makeTimestamp() + ".png");
     }
 
     /**
@@ -3161,212 +3163,212 @@ public class GLApp {
      * @see   savePixelsToPNG()
      */
     public static void screenShot(int x, int y, int width, int height, String imageFilename) {
-    	// allocate space for ARBG pixels
-    	ByteBuffer framebytes = allocBytes(width * height * SIZE_INT);
-    	int[] pixels = new int[width * height];
-    	// grab the current frame contents as ARGB ints (BGRA ints reversed)
-    	GL11.glReadPixels(x, y, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, framebytes);
-    	// copy ARGB data from ByteBuffer to integer array
-    	framebytes.asIntBuffer().get(pixels, 0, pixels.length);
-    	// free up this memory
-    	framebytes = null;
-    	// flip the pixels vertically and save to file
-    	GLImage.savePixelsToPNG(pixels, width, height, imageFilename, true);
+        // allocate space for ARBG pixels
+        ByteBuffer framebytes = allocBytes(width * height * SIZE_INT);
+        int[] pixels = new int[width * height];
+        // grab the current frame contents as ARGB ints (BGRA ints reversed)
+        GL11.glReadPixels(x, y, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, framebytes);
+        // copy ARGB data from ByteBuffer to integer array
+        framebytes.asIntBuffer().get(pixels, 0, pixels.length);
+        // free up this memory
+        framebytes = null;
+        // flip the pixels vertically and save to file
+        GLImage.savePixelsToPNG(pixels, width, height, imageFilename, true);
     }
 
-	/**
-	 * Save a ByteBuffer of ARGB pixels to a PNG file.
-	 * If flipY is true, flip the pixels on the Y axis before saving.
-	 */
-	public static void savePixelsToPNG(ByteBuffer framebytes, int width, int height, String imageFilename, boolean flipY) {
-		if (framebytes != null && imageFilename != null) {
-			// copy ARGB data from ByteBuffer to integer array
-			int[] pixels = new int[width * height];
-			framebytes.asIntBuffer().get(pixels, 0, pixels.length);
-			// save pixels to file
-			GLImage.savePixelsToPNG(pixels, width, height, imageFilename, flipY);
-		}
-	}
+    /**
+     * Save a ByteBuffer of ARGB pixels to a PNG file.
+     * If flipY is true, flip the pixels on the Y axis before saving.
+     */
+    public static void savePixelsToPNG(ByteBuffer framebytes, int width, int height, String imageFilename, boolean flipY) {
+        if (framebytes != null && imageFilename != null) {
+            // copy ARGB data from ByteBuffer to integer array
+            int[] pixels = new int[width * height];
+            framebytes.asIntBuffer().get(pixels, 0, pixels.length);
+            // save pixels to file
+            GLImage.savePixelsToPNG(pixels, width, height, imageFilename, flipY);
+        }
+    }
 
-	/**
-	 * Save the contents of the current render buffer to a PNG image. This is
-	 * an older version of screenShot() that used the default OpenGL GL_RGBA
-	 * pixel format which had to be swizzled into an ARGB format. I'm
-	 * keeping the function here for reference.
-	 * <P>
-	 * If the current buffer is the framebuffer then this will work as a screen capture.
-	 * Can also be used with the PBuffer class to copy large images or textures that
-	 * have been rendered into the offscreen pbuffer.
-	 * <P>
-	 * WARNING: this function hogs memory!  Call java with more memory
-	 * (java -Xms128m -Xmx128)
-	 * <P>
-	 * @see   selectPbuffer(), selectDisplay()
-	 */
-	public static void screenShotRGB(int width, int height, String saveFilename) {
-		// allocate space for RBG pixels
-		ByteBuffer framebytes = GLApp.allocBytes(width * height * 3);
-		int[] pixels = new int[width * height];
-		int bindex;
-		// grab a copy of the current frame contents as RGB (has to be UNSIGNED_BYTE or colors come out too dark)
-		GL11.glReadPixels(0, 0, width, height, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, framebytes);
-		// copy RGB data from ByteBuffer to integer array
-		for (int i = 0; i < pixels.length; i++) {
-			bindex = i * 3;
-			pixels[i] =
-				0xFF000000                                          // A
-				| ((framebytes.get(bindex) & 0x000000FF) << 16)     // R
-				| ((framebytes.get(bindex+1) & 0x000000FF) << 8)    // G
-				| ((framebytes.get(bindex+2) & 0x000000FF) << 0);   // B
-		}
-		// free up some memory
-		framebytes = null;
-		// save to file (flip Y axis before saving)
-		GLImage.savePixelsToPNG(pixels, width, height, saveFilename, true);
-	}
+    /**
+     * Save the contents of the current render buffer to a PNG image. This is
+     * an older version of screenShot() that used the default OpenGL GL_RGBA
+     * pixel format which had to be swizzled into an ARGB format. I'm
+     * keeping the function here for reference.
+     * <P>
+     * If the current buffer is the framebuffer then this will work as a screen capture.
+     * Can also be used with the PBuffer class to copy large images or textures that
+     * have been rendered into the offscreen pbuffer.
+     * <P>
+     * WARNING: this function hogs memory!  Call java with more memory
+     * (java -Xms128m -Xmx128)
+     * <P>
+     * @see   selectPbuffer(), selectDisplay()
+     */
+    public static void screenShotRGB(int width, int height, String saveFilename) {
+        // allocate space for RBG pixels
+        ByteBuffer framebytes = GLApp.allocBytes(width * height * 3);
+        int[] pixels = new int[width * height];
+        int bindex;
+        // grab a copy of the current frame contents as RGB (has to be UNSIGNED_BYTE or colors come out too dark)
+        GL11.glReadPixels(0, 0, width, height, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, framebytes);
+        // copy RGB data from ByteBuffer to integer array
+        for (int i = 0; i < pixels.length; i++) {
+            bindex = i * 3;
+            pixels[i] =
+                    0xFF000000                                          // A
+                            | ((framebytes.get(bindex) & 0x000000FF) << 16)     // R
+                            | ((framebytes.get(bindex+1) & 0x000000FF) << 8)    // G
+                            | ((framebytes.get(bindex+2) & 0x000000FF) << 0);   // B
+        }
+        // free up some memory
+        framebytes = null;
+        // save to file (flip Y axis before saving)
+        GLImage.savePixelsToPNG(pixels, width, height, saveFilename, true);
+    }
 
-	//========================================================================
-	// Stencil functions
-	//========================================================================
+    //========================================================================
+    // Stencil functions
+    //========================================================================
 
-	/**
-	 * clear the stencil buffer
-	 */
-	public static void clearMask() {
-		GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
-	}
+    /**
+     * clear the stencil buffer
+     */
+    public static void clearMask() {
+        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
+    }
 
 
-	/**
-	 *  Begin creating a mask.  This function turns off the color and depth buffers
-	 *  so all subsequent drawing will go only into the stencil buffer.
-	 *  To use:
-	 *          beginMask(1);
-	 *          renderModel();  // draw some geometry
-	 *          endMask();
-	 */
-	public static void beginMask(int maskvalue) {
-		// turn off writing to the color buffer and depth buffer
-		GL11.glColorMask(false, false, false, false);
-		GL11.glDepthMask(false);
+    /**
+     *  Begin creating a mask.  This function turns off the color and depth buffers
+     *  so all subsequent drawing will go only into the stencil buffer.
+     *  To use:
+     *          beginMask(1);
+     *          renderModel();  // draw some geometry
+     *          endMask();
+     */
+    public static void beginMask(int maskvalue) {
+        // turn off writing to the color buffer and depth buffer
+        GL11.glColorMask(false, false, false, false);
+        GL11.glDepthMask(false);
 
-		// enable stencil buffer
-		GL11.glEnable(GL11.GL_STENCIL_TEST);
+        // enable stencil buffer
+        GL11.glEnable(GL11.GL_STENCIL_TEST);
 
-		// set the stencil test to ALWAYS pass
-		GL11.glStencilFunc(GL11.GL_ALWAYS, maskvalue, 0xFFFFFFFF);
-		// REPLACE the stencil buffer value with maskvalue whereever we draw
-		GL11.glStencilOp(GL11.GL_REPLACE, GL11.GL_REPLACE, GL11.GL_REPLACE);
-	}
+        // set the stencil test to ALWAYS pass
+        GL11.glStencilFunc(GL11.GL_ALWAYS, maskvalue, 0xFFFFFFFF);
+        // REPLACE the stencil buffer value with maskvalue whereever we draw
+        GL11.glStencilOp(GL11.GL_REPLACE, GL11.GL_REPLACE, GL11.GL_REPLACE);
+    }
 
-	/**
-	 *  End the mask.  Freeze the stencil buffer and activate the color and depth buffers.
-	 */
-	public static void endMask() {
-		// don't let future drawing modify the contents of the stencil buffer
-		GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
+    /**
+     *  End the mask.  Freeze the stencil buffer and activate the color and depth buffers.
+     */
+    public static void endMask() {
+        // don't let future drawing modify the contents of the stencil buffer
+        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
 
-		// turn the color and depth buffers back on
-		GL11.glColorMask(true, true, true, true);
-		GL11.glDepthMask(true);
-	}
+        // turn the color and depth buffers back on
+        GL11.glColorMask(true, true, true, true);
+        GL11.glDepthMask(true);
+    }
 
-	/**
-	 *  Restrict rendering to the masked area.
-	 *  To use:
-	 *          GLStencil.beginMask(1);
-	 *          renderModel();
-	 *          GLStencil.endMask();
-	 */
-	public static void activateMask(int maskvalue) {
-		// enable stencil buffer
-		GL11.glEnable(GL11.GL_STENCIL_TEST);
+    /**
+     *  Restrict rendering to the masked area.
+     *  To use:
+     *          GLStencil.beginMask(1);
+     *          renderModel();
+     *          GLStencil.endMask();
+     */
+    public static void activateMask(int maskvalue) {
+        // enable stencil buffer
+        GL11.glEnable(GL11.GL_STENCIL_TEST);
 
-		// until stencil test is disabled, only write to areas where the
-		// stencil buffer equals the mask value
-		GL11.glStencilFunc(GL11.GL_EQUAL, maskvalue, 0xFFFFFFFF);
-	}
+        // until stencil test is disabled, only write to areas where the
+        // stencil buffer equals the mask value
+        GL11.glStencilFunc(GL11.GL_EQUAL, maskvalue, 0xFFFFFFFF);
+    }
 
-	/**
-	 *  turn off the stencil test so stencil has no further affect on rendering.
-	 */
-	public static void disableMask() {
-		GL11.glDisable(GL11.GL_STENCIL_TEST);
-	}
+    /**
+     *  turn off the stencil test so stencil has no further affect on rendering.
+     */
+    public static void disableMask() {
+        GL11.glDisable(GL11.GL_STENCIL_TEST);
+    }
 
-	/**
-	 * Return the stencil buffer value at the given screen position.
-	 */
-	public static int getMaskValue(int x, int y)
-	{
-		tmpByte.clear();
-		// read the stencil value at the given position, as an unsigned byte, store it in tmpByte
-		GL11.glReadPixels(x, y, 1, 1, GL11.GL_STENCIL_INDEX, GL11.GL_UNSIGNED_BYTE, tmpByte);
-		return (int) tmpByte.get(0);
-	}
+    /**
+     * Return the stencil buffer value at the given screen position.
+     */
+    public static int getMaskValue(int x, int y)
+    {
+        tmpByte.clear();
+        // read the stencil value at the given position, as an unsigned byte, store it in tmpByte
+        GL11.glReadPixels(x, y, 1, 1, GL11.GL_STENCIL_INDEX, GL11.GL_UNSIGNED_BYTE, tmpByte);
+        return (int) tmpByte.get(0);
+    }
 
-	//========================================================================
-	// Display list functions
-	//
-	// Display lists are OpenGL commands that have been optimized and stored
-	// into memory on the graphics card.  They greatly improve rendering
-	// performance but also "freeze" the geometry, so are not suitable in cases
-	// where the geometry has to change dynamically.
-	//
-	// Display lists have to be deleted from the graphics card when
-	// the program exits, or they can accumulate and consume memory.  The
-	// function destroyDisplayLists() is called by cleanup() to de-allocate
-	// any display lists that were created by these functions.
-	//
-	//========================================================================
-	public static ArrayList displayLists = new ArrayList();  // will hold display list IDs created by beginDisplayList()
+    //========================================================================
+    // Display list functions
+    //
+    // Display lists are OpenGL commands that have been optimized and stored
+    // into memory on the graphics card.  They greatly improve rendering
+    // performance but also "freeze" the geometry, so are not suitable in cases
+    // where the geometry has to change dynamically.
+    //
+    // Display lists have to be deleted from the graphics card when
+    // the program exits, or they can accumulate and consume memory.  The
+    // function destroyDisplayLists() is called by cleanup() to de-allocate
+    // any display lists that were created by these functions.
+    //
+    //========================================================================
+    public static ArrayList displayLists = new ArrayList();  // will hold display list IDs created by beginDisplayList()
 
-	/**
-	 * Begin a display list. All following OpenGL geometry commands (up to endDisplayList())
-	 * will be stored in a display list, not drawn to screen.
-	 * <P>
-	 * To use, create a display list in setup():
-	 * <PRE>
-	 *      int teapotID = beginDisplayList();
-	 *      ... // run teapot render code here
-	 *      endDisplayList();
-	 * </PRE>
-	 *
-	 * Then call the display list later in render():
-	 * <PRE>
-	 *      callDisplayList(teapotID);
-	 * </PRE>
-	 *
-	 * @return integer display list id
-	 * @see endDisplayList(), callDisplayList(), destroyDisplayList()
-	 */
-	public static int beginDisplayList() {
-		int DL_ID = GL11.glGenLists(1);         // Allocate 1 new Display List
-		GL11.glNewList(DL_ID, GL11.GL_COMPILE); // Start Building A List
-		displayLists.add( new Integer(DL_ID) ); // save the list ID so we can delete it later (see destroyDisplayLists())
-		return DL_ID;
-	}
+    /**
+     * Begin a display list. All following OpenGL geometry commands (up to endDisplayList())
+     * will be stored in a display list, not drawn to screen.
+     * <P>
+     * To use, create a display list in setup():
+     * <PRE>
+     *      int teapotID = beginDisplayList();
+     *      ... // run teapot render code here
+     *      endDisplayList();
+     * </PRE>
+     *
+     * Then call the display list later in render():
+     * <PRE>
+     *      callDisplayList(teapotID);
+     * </PRE>
+     *
+     * @return integer display list id
+     * @see endDisplayList(), callDisplayList(), destroyDisplayList()
+     */
+    public static int beginDisplayList() {
+        int DL_ID = GL11.glGenLists(1);         // Allocate 1 new Display List
+        GL11.glNewList(DL_ID, GL11.GL_COMPILE); // Start Building A List
+        displayLists.add( new Integer(DL_ID) ); // save the list ID so we can delete it later (see destroyDisplayLists())
+        return DL_ID;
+    }
 
-	/**
-	 * Finish display list creation.  Use this function only after calling
-	 * beginDisplayList()
-	 *
-	 * @see beginDisplayList()
-	 */
-	public static void endDisplayList() {
-		GL11.glEndList();
-	}
+    /**
+     * Finish display list creation.  Use this function only after calling
+     * beginDisplayList()
+     *
+     * @see beginDisplayList()
+     */
+    public static void endDisplayList() {
+        GL11.glEndList();
+    }
 
-	/**
-	 * Render the geometry stored in a display list.  Use this function after
-	 * calling beginDisplayList() and endDisplayList() to create a display list.
-	 *
-	 * @see beginDisplayList()
-	 * @see endDisplayList()
-	 */
-	public static void callDisplayList(int displayListID) {
-		GL11.glCallList(displayListID);
-	}
+    /**
+     * Render the geometry stored in a display list.  Use this function after
+     * calling beginDisplayList() and endDisplayList() to create a display list.
+     *
+     * @see beginDisplayList()
+     * @see endDisplayList()
+     */
+    public static void callDisplayList(int displayListID) {
+        GL11.glCallList(displayListID);
+    }
 
     /**
      * Delete the given display list ID.  Frees up resources on the graphics card.
@@ -3397,63 +3399,63 @@ public class GLApp {
     //========================================================================
 
     public static ByteBuffer allocBytes(int howmany) {
-    	return ByteBuffer.allocateDirect(howmany * SIZE_BYTE).order(ByteOrder.nativeOrder());
+        return ByteBuffer.allocateDirect(howmany * SIZE_BYTE).order(ByteOrder.nativeOrder());
     }
 
     public static IntBuffer allocInts(int howmany) {
-    	return ByteBuffer.allocateDirect(howmany * SIZE_INT).order(ByteOrder.nativeOrder()).asIntBuffer();
+        return ByteBuffer.allocateDirect(howmany * SIZE_INT).order(ByteOrder.nativeOrder()).asIntBuffer();
     }
 
     public static FloatBuffer allocFloats(int howmany) {
-    	return ByteBuffer.allocateDirect(howmany * SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        return ByteBuffer.allocateDirect(howmany * SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
     }
 
     public static DoubleBuffer allocDoubles(int howmany) {
-    	return ByteBuffer.allocateDirect(howmany * SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+        return ByteBuffer.allocateDirect(howmany * SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
     }
 
     public static ByteBuffer allocBytes(byte[] bytearray) {
-    	ByteBuffer bb = ByteBuffer.allocateDirect(bytearray.length * SIZE_BYTE).order(ByteOrder.nativeOrder());
-    	bb.put(bytearray).flip();
-    	return bb;
+        ByteBuffer bb = ByteBuffer.allocateDirect(bytearray.length * SIZE_BYTE).order(ByteOrder.nativeOrder());
+        bb.put(bytearray).flip();
+        return bb;
     }
 
     public static IntBuffer allocInts(int[] intarray) {
-    	IntBuffer ib = ByteBuffer.allocateDirect(intarray.length * SIZE_FLOAT).order(ByteOrder.nativeOrder()).asIntBuffer();
-    	ib.put(intarray).flip();
-    	return ib;
+        IntBuffer ib = ByteBuffer.allocateDirect(intarray.length * SIZE_FLOAT).order(ByteOrder.nativeOrder()).asIntBuffer();
+        ib.put(intarray).flip();
+        return ib;
     }
 
     public static FloatBuffer allocFloats(float[] floatarray) {
-    	FloatBuffer fb = ByteBuffer.allocateDirect(floatarray.length * SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
-    	fb.put(floatarray).flip();
-    	return fb;
+        FloatBuffer fb = ByteBuffer.allocateDirect(floatarray.length * SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        fb.put(floatarray).flip();
+        return fb;
     }
 
     public static DoubleBuffer allocDoubles(double[] darray) {
-    	DoubleBuffer fb = ByteBuffer.allocateDirect(darray.length * SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
-    	fb.put(darray).flip();
-    	return fb;
+        DoubleBuffer fb = ByteBuffer.allocateDirect(darray.length * SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+        fb.put(darray).flip();
+        return fb;
     }
 
     public static void put(ByteBuffer b, byte[] values) {
-    	b.clear();
-    	b.put(values).flip();
+        b.clear();
+        b.put(values).flip();
     }
 
     public static void put(IntBuffer b, int[] values) {
-    	b.clear();
-    	b.put(values).flip();
+        b.clear();
+        b.put(values).flip();
     }
 
     public static void put(FloatBuffer b, float[] values) {
-    	b.clear();
-    	b.put(values).flip();
+        b.clear();
+        b.put(values).flip();
     }
 
     public static void put(DoubleBuffer b, double[] values) {
-    	b.clear();
-    	b.put(values).flip();
+        b.clear();
+        b.put(values).flip();
     }
 
     /**
@@ -3462,7 +3464,7 @@ public class GLApp {
      *  @param values  target integer array, must be same length as ByteBuffer capacity/4
      */
     public static void get(ByteBuffer b, int[] values) {
-    	b.asIntBuffer().get(values, 0, values.length);
+        b.asIntBuffer().get(values, 0, values.length);
     }
 
     /**
@@ -3471,7 +3473,7 @@ public class GLApp {
      *  @param values  target integer array, must be same length as IntBuffer
      */
     public static void get(IntBuffer b, int[] values) {
-    	b.get(values, 0, values.length);
+        b.get(values, 0, values.length);
     }
 
     /**
@@ -3479,9 +3481,9 @@ public class GLApp {
      *  @param b  source ByteBuffer
      */
     public static int[] getInts(ByteBuffer b) {
-    	int[] values = new int[b.capacity()/SIZE_INT];
-    	b.asIntBuffer().get(values, 0, values.length);
-    	return values;
+        int[] values = new int[b.capacity()/SIZE_INT];
+        b.asIntBuffer().get(values, 0, values.length);
+        return values;
     }
 
     //========================================================================
@@ -3498,65 +3500,65 @@ public class GLApp {
      * @param filename to open
      */
     public static InputStream getInputStream(String filename) {
-    	InputStream in = null;
-                System.out.println(System.getProperty("user.dir"));
+        InputStream in = null;
+        System.out.println(System.getProperty("user.dir"));
         File directory = new File("");//设定为当前文件夹
         try{
             System.out.println(directory.getCanonicalPath());//获取标准的路径
             System.out.println(directory.getAbsolutePath());//获取绝对路径
         }catch(Exception e){}
         // 1) look for file in local filesystem
-    	try {
-    		in = new FileInputStream(filename);
-    	}
-    	catch (IOException ioe) {
-    		msg("GLApp.getInputStream (" + filename + "): " + ioe);
-    		if (in != null) {
-    			try {
-    				in.close();
-    			}
-    			catch (Exception e) {}
-    			in = null;
-    		}
-    	}
-    	catch (Exception e) {
-    		msg("GLApp.getInputStream (" + filename + "): " + e);
-    	}
-    	
-		// 2) if couldn't open file, look in jar
-    	if (in == null && rootClass != null) {
-    		// NOTE: class.getResource() looks for files relative to the folder that the class is in.
-    		// ideally the class will be an application in the root of the installation, see setRootClass().
-    		URL u = null;
-    		if (filename.startsWith(".")) {   // remove leading . ie. "./file"
-    			filename = filename.substring(1);
-    		}
-    		try {u = rootClass.getResource(filename);}
-    		catch (Exception ue) {msg("GLApp.getInputStream(): Can't find resource: " + ue);}
-    		//msg("GLApp.getInputStream (" +filename+ "): try jar resource url=" + u);
-    		if (u != null) {
-    			try {
-    				in = u.openStream();
-    			}
-    			catch (Exception e) {
-    				msg("GLApp.getInputStream (" +filename+ "): Can't load from jar: " + e);
-    			}
-    		}
-    		
-    		// 3) try loading file from applet base url
-    		if (in == null && appletBaseURL != null) {
-    			try {u = new URL(appletBaseURL,filename);}
-    			catch (Exception ue) {msg("GLApp.getInputStream(): Can't make applet base url: " + ue);}
-    			//msg("GLApp.getInputStream (" +filename+ "): try applet base url=" + u);
-    			try {
-    				in = u.openStream();
-    			}
-    			catch (Exception e) {
-    				msg("GLApp.getInputStream (" +filename+ "): Can't load from applet base URL: " + e);
-    			}
-    		}
-    	}
-    	return in;
+        try {
+            in = new FileInputStream(filename);
+        }
+        catch (IOException ioe) {
+            msg("GLApp.getInputStream (" + filename + "): " + ioe);
+            if (in != null) {
+                try {
+                    in.close();
+                }
+                catch (Exception e) {}
+                in = null;
+            }
+        }
+        catch (Exception e) {
+            msg("GLApp.getInputStream (" + filename + "): " + e);
+        }
+
+        // 2) if couldn't open file, look in jar
+        if (in == null && rootClass != null) {
+            // NOTE: class.getResource() looks for files relative to the folder that the class is in.
+            // ideally the class will be an application in the root of the installation, see setRootClass().
+            URL u = null;
+            if (filename.startsWith(".")) {   // remove leading . ie. "./file"
+                filename = filename.substring(1);
+            }
+            try {u = rootClass.getResource(filename);}
+            catch (Exception ue) {msg("GLApp.getInputStream(): Can't find resource: " + ue);}
+            //msg("GLApp.getInputStream (" +filename+ "): try jar resource url=" + u);
+            if (u != null) {
+                try {
+                    in = u.openStream();
+                }
+                catch (Exception e) {
+                    msg("GLApp.getInputStream (" +filename+ "): Can't load from jar: " + e);
+                }
+            }
+
+            // 3) try loading file from applet base url
+            if (in == null && appletBaseURL != null) {
+                try {u = new URL(appletBaseURL,filename);}
+                catch (Exception ue) {msg("GLApp.getInputStream(): Can't make applet base url: " + ue);}
+                //msg("GLApp.getInputStream (" +filename+ "): try applet base url=" + u);
+                try {
+                    in = u.openStream();
+                }
+                catch (Exception e) {
+                    msg("GLApp.getInputStream (" +filename+ "): Can't load from applet base URL: " + e);
+                }
+            }
+        }
+        return in;
     }
 
     /**
@@ -3565,54 +3567,54 @@ public class GLApp {
      * NOTE: Does not close the inputStream!
      */
     public static byte[] getBytesFromStream(InputStream is) {
-    	int chunkSize = 1024;
-    	int totalRead = 0;
-    	int num = 0;
-    	byte[] bytes = new byte[chunkSize];
-    	ArrayList byteChunks = new ArrayList();
+        int chunkSize = 1024;
+        int totalRead = 0;
+        int num = 0;
+        byte[] bytes = new byte[chunkSize];
+        ArrayList byteChunks = new ArrayList();
 
-    	// Read the bytes in chunks of 1024
-    	try {
-    		while ( (num=is.read(bytes)) >= 0) {
-    			byteChunks.add(bytes);
-    			bytes = new byte[chunkSize];
-    			totalRead += num;
-    		}
-    	}
-    	catch (IOException ioe) {
-    		err("GLApp.getBytesFromStream(): IOException " + ioe);
-    	}
+        // Read the bytes in chunks of 1024
+        try {
+            while ( (num=is.read(bytes)) >= 0) {
+                byteChunks.add(bytes);
+                bytes = new byte[chunkSize];
+                totalRead += num;
+            }
+        }
+        catch (IOException ioe) {
+            err("GLApp.getBytesFromStream(): IOException " + ioe);
+        }
 
-    	int numCopied = 0;
-    	bytes = new byte[totalRead];
+        int numCopied = 0;
+        bytes = new byte[totalRead];
 
-    	// copy byte chunks to byte array (last chunk may be partial)
-    	while (byteChunks.size() > 0) {
-    		byte[] byteChunk = (byte[]) byteChunks.get(0);
-    		int copylen = (totalRead - numCopied > chunkSize)? chunkSize : (totalRead - numCopied);
-    		System.arraycopy(byteChunk, 0, bytes, numCopied, copylen);
-    		byteChunks.remove(0);
-    		numCopied += copylen;
-    	}
+        // copy byte chunks to byte array (last chunk may be partial)
+        while (byteChunks.size() > 0) {
+            byte[] byteChunk = (byte[]) byteChunks.get(0);
+            int copylen = (totalRead - numCopied > chunkSize)? chunkSize : (totalRead - numCopied);
+            System.arraycopy(byteChunk, 0, bytes, numCopied, copylen);
+            byteChunks.remove(0);
+            numCopied += copylen;
+        }
 
-    	msg("getBytesFromStream() read " + numCopied + " bytes.");
+        msg("getBytesFromStream() read " + numCopied + " bytes.");
 
-    	return bytes;
+        return bytes;
     }
 
     /**
      *  Return an array of bytes read from a file.
      */
     public static byte[] getBytesFromFile(String filename) {
-    	InputStream is = getInputStream(filename);
-    	byte[] bytes = getBytesFromStream(is);
-    	try {
-    		is.close();
-    	}
-    	catch (IOException ioe) {
-    		err("GLApp.getBytesFromFile(): IOException " + ioe);
-    	}
-    	return bytes;
+        InputStream is = getInputStream(filename);
+        byte[] bytes = getBytesFromStream(is);
+        try {
+            is.close();
+        }
+        catch (IOException ioe) {
+            err("GLApp.getBytesFromFile(): IOException " + ioe);
+        }
+        return bytes;
     }
 
     /**
@@ -3621,17 +3623,17 @@ public class GLApp {
      *  and result[1] will be the full filename.
      */
     public static String[] getPathAndFile(String filename) {
-    	String[] pathAndFile = new String[2];
-    	Matcher matcher = Pattern.compile("^.*/").matcher(filename);
-    	if (matcher.find()) {
-    		pathAndFile[0] = matcher.group();
-    		pathAndFile[1] = filename.substring(matcher.end());
-    	}
-    	else {
-    		pathAndFile[0] = "";
-    		pathAndFile[1] = filename;
-    	}
-    	return pathAndFile;
+        String[] pathAndFile = new String[2];
+        Matcher matcher = Pattern.compile("^.*/").matcher(filename);
+        if (matcher.find()) {
+            pathAndFile[0] = matcher.group();
+            pathAndFile[1] = filename.substring(matcher.end());
+        }
+        else {
+            pathAndFile[0] = "";
+            pathAndFile[1] = filename;
+        }
+        return pathAndFile;
     }
 
     /**
@@ -3660,7 +3662,7 @@ public class GLApp {
      *  @see getInputStream()
      */
     public void setRootClass() {
-    	rootClass = this.getClass();
+        rootClass = this.getClass();
     }
 
     /**
@@ -3669,64 +3671,64 @@ public class GLApp {
      */
     public static String makeTimestamp()
     {
-    	Calendar now = Calendar.getInstance();
-    	int year = now.get(Calendar.YEAR);
-    	int month = now.get(Calendar.MONTH) + 1;
-    	int day = now.get(Calendar.DAY_OF_MONTH);
-    	int hours = now.get(Calendar.HOUR_OF_DAY);
-    	int minutes = now.get(Calendar.MINUTE);
-    	int seconds = now.get(Calendar.SECOND);
-    	String datetime =  ""
-    		+ year
-    		+ (month < 10 ? "0" : "") + month
-    		+ (day < 10 ? "0" : "") + day
-    		+ "-"
-    		+ (hours < 10 ? "0" : "") + hours
-    		+ (minutes < 10 ? "0" : "") + minutes
-    		+ (seconds < 10 ? "0" : "")  + seconds;
-    	return datetime;
+        Calendar now = Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        int month = now.get(Calendar.MONTH) + 1;
+        int day = now.get(Calendar.DAY_OF_MONTH);
+        int hours = now.get(Calendar.HOUR_OF_DAY);
+        int minutes = now.get(Calendar.MINUTE);
+        int seconds = now.get(Calendar.SECOND);
+        String datetime =  ""
+                + year
+                + (month < 10 ? "0" : "") + month
+                + (day < 10 ? "0" : "") + day
+                + "-"
+                + (hours < 10 ? "0" : "") + hours
+                + (minutes < 10 ? "0" : "") + minutes
+                + (seconds < 10 ? "0" : "")  + seconds;
+        return datetime;
     }
 
     /**
      * Return a random floating point value between 0 and 1
      */
     public static float random() {
-    	return (float)Math.random();
+        return (float)Math.random();
     }
 
     /**
      * Return a random floating point value between 0 and upperbound (not including upperbound)
      */
     public static float random(float upperbound) {
-    	return (float)(Math.random()*(double)upperbound);
+        return (float)(Math.random()*(double)upperbound);
     }
 
     /**
      * Return a random integer value between 0 and upperbound (not including upperbound)
      */
     public static int random(int upperbound) {
-    	return (int)(Math.random()*(double)upperbound);
+        return (int)(Math.random()*(double)upperbound);
     }
 
     /**
      * Round a float value to the nearest int.
      */
     public static int round(float f) {
-    	return Math.round(f);
+        return Math.round(f);
     }
 
     /**
      * Return true if the OpenGL context supports the given OpenGL extension.
      */
     public static boolean extensionExists(String extensionName) {
-    	if (OpenGLextensions == null) {
-    		String[] GLExtensions = GL11.glGetString(GL11.GL_EXTENSIONS).split(" ");
-    		OpenGLextensions = new Hashtable();
-    		for (int i=0; i < GLExtensions.length; i++) {
-    			OpenGLextensions.put(GLExtensions[i].toUpperCase(),"");
-    		}
-    	}
-    	return (OpenGLextensions.get(extensionName.toUpperCase()) != null);
+        if (OpenGLextensions == null) {
+            String[] GLExtensions = GL11.glGetString(GL11.GL_EXTENSIONS).split(" ");
+            OpenGLextensions = new Hashtable();
+            for (int i=0; i < GLExtensions.length; i++) {
+                OpenGLextensions.put(GLExtensions[i].toUpperCase(),"");
+            }
+        }
+        return (OpenGLextensions.get(extensionName.toUpperCase()) != null);
     }
 
     /**
@@ -3735,9 +3737,9 @@ public class GLApp {
      * @param text
      */
     public static void msg(String text) {
-    	if (showMessages) {
-    		System.out.println(text);
-    	}
+        if (showMessages) {
+            System.out.println(text);
+        }
     }
 
     /**
@@ -3746,7 +3748,7 @@ public class GLApp {
      * @param text
      */
     public static void err(String text) {
-    	System.out.println(text);
+        System.out.println(text);
     }
 
     /**
@@ -3765,14 +3767,14 @@ public class GLApp {
      * @see invoke()
      */
     public static Method method(Object object, String methodName) {
-    	Method M = null;
-    	try {
-    		// Look for a method with the given name and no parameters
-    		M = object.getClass().getMethod(methodName, null);
-    	} catch (Exception e) {
-    		err("GLApp.method(): Can't find method (" +methodName+ ").  " + e);
-    	}
-    	return M;
+        Method M = null;
+        try {
+            // Look for a method with the given name and no parameters
+            M = object.getClass().getMethod(methodName, null);
+        } catch (Exception e) {
+            err("GLApp.method(): Can't find method (" +methodName+ ").  " + e);
+        }
+        return M;
     }
 
     /**
@@ -3784,7 +3786,7 @@ public class GLApp {
      * @see invoke()
      */
     public Method method(String methodName) {
-    	return method(this,methodName);
+        return method(this,methodName);
     }
 
     /**
@@ -3796,15 +3798,15 @@ public class GLApp {
      * @see method()
      */
     public static void invoke(Object object, Method method) {
-    	if (object != null && method != null){
-    		try {
-    			// Call the method with this object as the argument!
-    			method.invoke(object, null);
-    		} catch (Exception e) {
-    			// Error handling
-    			System.err.println("GLApp.invoke(): couldn't invoke method " + method.getName() + " on object " + object.getClass().getName());
-    		}
-    	}
+        if (object != null && method != null){
+            try {
+                // Call the method with this object as the argument!
+                method.invoke(object, null);
+            } catch (Exception e) {
+                // Error handling
+                System.err.println("GLApp.invoke(): couldn't invoke method " + method.getName() + " on object " + object.getClass().getName());
+            }
+        }
     }
 
     /**
@@ -3816,14 +3818,14 @@ public class GLApp {
      * @see method()
      */
     public void invoke(Method method) {
-    	if (method != null){
-    		try {
-    			// Call the method with this object as the argument!
-    			method.invoke(this, null);
-    		} catch (Exception e) {
-    			// Error handling
-    			System.err.println("GLApp.invoke(): couldn't invoke method " + method.getName() + " on object " + this.getClass().getName());
-    		}
-    	}
+        if (method != null){
+            try {
+                // Call the method with this object as the argument!
+                method.invoke(this, null);
+            } catch (Exception e) {
+                // Error handling
+                System.err.println("GLApp.invoke(): couldn't invoke method " + method.getName() + " on object " + this.getClass().getName());
+            }
+        }
     }
 }
