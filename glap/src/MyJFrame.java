@@ -18,15 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class MyJFrame extends JFrame {
-	JButton start_butt = new JButton("end");//¿ªÊ¼°´Å¥
+	JButton start_butt = new JButton("end");//ï¿½ï¿½Ê¼ï¿½ï¿½Å¥
 	JPanel p = new JPanel();
 	JTextField label = new JTextField();
 
 	public MyJFrame(String sTitle, int iWidth, int iHeight) {
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//»ñÈ¡ÆÁÄ»³ß´ç
-		setTitle(sTitle);//ÉèÖÃ´°Ìå±êÌâ
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);//ÉèÖÃµ«¹Ø±Õ´°ÌåÊ±ÍË³ö³ÌÐò
-		setSize(iWidth, iHeight);//ÉèÖÃ´°Ìå´óÐ¡
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//ï¿½ï¿½È¡ï¿½ï¿½Ä»ï¿½ß´ï¿½
+		setTitle(sTitle);//ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);//ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ø±Õ´ï¿½ï¿½ï¿½Ê±ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
+		setSize(iWidth, iHeight);//ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½Ð¡
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
@@ -44,24 +44,24 @@ public class MyJFrame extends JFrame {
 			}
 		});
 		this.setAlwaysOnTop(true);
-		start_butt.addActionListener(new ActionListener()//·ÅÖÃ¿ªÊ¼¼àÌý
+		start_butt.addActionListener(new ActionListener()//ï¿½ï¿½ï¿½Ã¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
 				{
 					public Thread t;
 					public void actionPerformed(ActionEvent e) {
 //						Calendar c = Calendar.getInstance();
 						t=new Thread(new MyThread());
 //						if(c.get(Calendar.DAY_OF_WEEK) - 1  < 6){
-//							System.out.println("BOSS:½ñÌìÊÇ¹¤×÷ÈÕ");
+//							System.out.println("BOSS:ï¿½ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½");
 //							try {
 //								//t.sleep(120 * 1000);
 //								t.sleep(100);
 //							} catch (InterruptedException e1) {
-//								System.out.println("ÐÝÃßÒì³£¡£¡£¡£");
+//								System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 //								e1.printStackTrace();
 //							}
 //							t.start();
 //						}else{
-//							System.out.println("BOSS:½ñÌì·Ç¹¤×÷ÈÕ");
+//							System.out.println("BOSS:ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½");
 //							t.stop();
 //							t.destroy();
 //							//p.hide();
@@ -71,7 +71,7 @@ public class MyJFrame extends JFrame {
 //						System.out.print(start_butt.getText());
 //						if (start_butt.getText().equals("start")) {
 //							if (Configuration.isTerminated()) {
-//								Configuration.setTerminated(false);// ÅäÖÃ²ÎÊý¾ö¶¨ÊÇ·ñÆôÓÃ»òÕßÍ£Ö¹
+//								Configuration.setTerminated(false);// ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Í£Ö¹
 //								start_butt.setText("end");
 //								t=new Thread(new MyThread());
 //								t.start();
@@ -86,27 +86,27 @@ public class MyJFrame extends JFrame {
 		p.setLayout(new GridLayout(2, 1));
 		p.add(label);
 		p.add(start_butt);
-		// setUndecorated(true);//È¥µô±ß¿ò1
-		this.setResizable(false);//ÉèÖÃ²»¿Éµ÷Õû´óÐ¡
+		// setUndecorated(true);//È¥ï¿½ï¿½ï¿½ß¿ï¿½1
+		this.setResizable(false);//ï¿½ï¿½ï¿½Ã²ï¿½ï¿½Éµï¿½ï¿½ï¿½ï¿½Ð¡
 		this.add(p);
-		setVisible(true);//ÏÔÊ¾´°Ìå
+		setVisible(true);//ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
 		
 		
 		Thread t;
 			Calendar c = Calendar.getInstance();
 			t=new Thread(new MyThread());
 			if(c.get(Calendar.DAY_OF_WEEK) - 1  < 6){
-				System.out.println("BOSS:½ñÌìÊÇ¹¤×÷ÈÕ");
+				//System.out.println("BOSS:ï¿½ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½");
 				try {
 					//t.sleep(120 * 1000);
 					t.sleep(1000);
 				} catch (InterruptedException e1) {
-					System.out.println("ÐÝÃßÒì³£¡£¡£¡£");
+					//System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 					e1.printStackTrace();
 				}
 				t.start();
 			}else{
-				System.out.println("BOSS:½ñÌì·Ç¹¤×÷ÈÕ");
+				//System.out.println("BOSS:ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½");
 				t.stop();
 				t.destroy();
 				//p.hide();
@@ -116,6 +116,6 @@ public class MyJFrame extends JFrame {
 
 	public static void main(String[] args) {
 		Configuration.init();
-		MyJFrame mF = new MyJFrame("zzwµÄ°´¼ü¾«Áé", 100, 100);//³õÊ¼»¯´°¿Ú
+		MyJFrame mF = new MyJFrame("zzwï¿½Ä°ï¿½ï¿½ï¿½ï¿½ï¿½", 100, 100);//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 }

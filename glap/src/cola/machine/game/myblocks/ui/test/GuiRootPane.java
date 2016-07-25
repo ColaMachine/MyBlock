@@ -111,18 +111,18 @@ public class GuiRootPane extends Widget {
                     //System.out.println("开始拖动");
                 }else if(evt.getType()== Event.Type.MOUSE_CLICKED){
 
-                    System.out.println("ctrlframe:"+evt.getKeyCode());
+                   // System.out.println("ctrlframe:"+evt.getKeyCode());
                 }
                 return true;
             }else if(evt.isKeyPressedEvent()){
-                System.out.println("key pressed "+evt.getType());
+                //System.out.println("key pressed "+evt.getType());
                 mouseControlCenter.keyDown(evt.getKeyCode());
             }else{
-                System.out.println("nothing event type"+evt.getType());
+               // System.out.println("nothing event type"+evt.getType());
             }
-        //return false;
+        return false;
 
-        return super.handleEvent(evt);
+        //return super.handleEvent(evt);
     }
 
 }

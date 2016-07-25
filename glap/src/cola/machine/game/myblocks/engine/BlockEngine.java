@@ -210,15 +210,16 @@ public class BlockEngine implements GameEngine{
             try {
                 config = Config.load(Config.getConfigFile());//加载配置文件
             } catch (IOException e) {
+                e.printStackTrace();
                 logger.error("Failed to load config", e);
                
             }
         } else {
             config = new Config();
         }
-       if (!config.getDefaultModSelection().hasModule(Constants.CORE_MODULE)) {//其实没做什么
+    /*   if (!config.getDefaultModSelection().hasModule(Constants.CORE_MODULE)) {//其实没做什么
             config.getDefaultModSelection().addModule(Constants.CORE_MODULE);
-        }
+        }*/
        
         //logger.info("Video Settings: " + config.getRendering().toString());
         CoreRegistry.putPermanently(Config.class, config);

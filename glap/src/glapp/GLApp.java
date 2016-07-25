@@ -273,7 +273,7 @@ public class GLApp {
                 finished = true;
             }*/
                     // pass key event to handler
-            System.out.println("Character"+Keyboard.getEventCharacter());
+            //System.out.println("Character"+Keyboard.getEventCharacter());
 
                     gui.handleKey(
                             Keyboard.getEventKey(),
@@ -414,7 +414,7 @@ public class GLApp {
         }
         // Initialize the Window
         try {
-            Display.create(new PixelFormat(0, depthBufferBits, 8));  // set bits per buffer: alpha, depth, stencil
+            Display.create(new PixelFormat(0, 0, 0));  // set bits per buffer: alpha, depth, stencil
             Display.setTitle(window_title);
             Display.setFullscreen(fullScreen);
             Display.setVSyncEnabled(VSyncEnabled);

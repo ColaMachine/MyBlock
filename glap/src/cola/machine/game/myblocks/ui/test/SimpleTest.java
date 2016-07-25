@@ -381,7 +381,7 @@ public class SimpleTest {
                     (evt.getModifiers() & Event.MODIFIER_CTRL) != 0 &&
                     (evt.getModifiers() & Event.MODIFIER_SHIFT) != 0) {
                 reduceLag ^= true;
-                System.out.println("reduceLag = " + reduceLag);
+                //System.out.println("reduceLag = " + reduceLag);
             }
 
             return super.handleEvent(evt);

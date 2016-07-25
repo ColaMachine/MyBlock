@@ -145,7 +145,7 @@ class NewFrame extends JFrame {
     private class comboxListener implements ActionListener {
         public void actionPerformed(ActionEvent e){
             Object o = e.getSource();
-            System.out.println(o.toString());
+            //System.out.println(o.toString());
         }
     }
     /**
@@ -183,7 +183,7 @@ class NewFrame extends JFrame {
      */
     private class HelloButton implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            System.out.println("Hello world!");
+            //System.out.println("Hello world!");
         }
     }
     /**

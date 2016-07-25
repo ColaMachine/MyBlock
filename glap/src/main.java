@@ -14,7 +14,7 @@ public class main {
 		
 		String minute = ((Math.random()*15)+"").substring(0,2).replace(".", "");
 		int _minute = Integer.parseInt(minute);
-		System.out.println(_minute);
+		//System.out.println(_minute);
 
         double x;
         double y;

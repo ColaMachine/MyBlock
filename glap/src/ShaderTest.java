@@ -284,7 +284,7 @@ public class ShaderTest {
         Util.checkGLError();
 
         // Print possible compile errors
-        System.out.println("Vertex shader compilation:");
+        //System.out.println("Vertex shader compilation:");
         printShaderLog(VertexShaderId);
         Util.checkGLError();
 

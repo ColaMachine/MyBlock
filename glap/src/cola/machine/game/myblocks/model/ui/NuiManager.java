@@ -114,6 +114,12 @@ public class NuiManager {
         inventoryPanel.center(0.5f, 0.5f);
         inventoryPanel.addCloseCallback();
 
+        InventoryDialog inventoryPanel2 = new InventoryDialog();//10行5列
+        root.desk.add(inventoryPanel2);
+        inventoryPanel2.adjustSize();
+        inventoryPanel2.center(0.5f, 0.5f);
+        inventoryPanel2.addCloseCallback();
+
         TextAreaDemoDialog2 fTextAreaTest = new TextAreaDemoDialog2();
         fTextAreaTest.setHardVisible(false);
         root.desk.add(fTextAreaTest);
@@ -150,6 +156,8 @@ public class NuiManager {
         });
         root.addButton("Info", "Shows TWL license", new ToggleFadeFrame(fInfo)).setTooltipContent(makeComplexTooltip());
         root.addButton("inventory", "inventory", new ToggleFadeFrame(inventoryPanel)).setTooltipContent(makeComplexTooltip());
+        root.addButton("inventory", "inventory", new ToggleFadeFrame(inventoryPanel2)).setTooltipContent(makeComplexTooltip());
+
         root.addButton("TA", "Shows a text area test", new ToggleFadeFrame(fTextAreaTest));
 
             root.addButton("Settings", "Opens a dialog which might be used to change video settings", new Runnable() {
@@ -216,7 +224,7 @@ public class NuiManager {
         // return to previous settings
        GLApp. popAttrib();
        //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-        System.out.println();
+       // System.out.println();
         gui.update();//刷新gui
        // GLApp.setFog(true);
     }

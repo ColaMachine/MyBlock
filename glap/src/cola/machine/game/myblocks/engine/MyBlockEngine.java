@@ -66,7 +66,7 @@ public class MyBlockEngine extends GLApp {
     int waterTextureHandle = 0;
     int crossTextureHandle = 0;
     GLImage textureImg;
-   // String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
+    String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
     Time time = new Time();
     MouseControlCenter mouseControlCenter;
     BagController bagController =new BagController();

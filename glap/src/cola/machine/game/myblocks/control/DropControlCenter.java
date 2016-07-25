@@ -41,7 +41,7 @@ public class DropControlCenter {
 //			int y = MathUtil.getNearOdd(human.Position.y);
 //			int z = MathUtil.getNearOdd(human.Position.z );
 			if(!CoreRegistry.get(CrashCheck.class).haveBlock2()){
-				System.out.println("check the human hasn't under block  begin to drop");
+				//System.out.println("check the human hasn't under block  begin to drop");
 				//System.out.println("��ǰ�����y:"+human.Position.y+"��⵽����:"+y);
 				human.drop();
 				human.mark=(int)human.Position.y-1;

@@ -20,9 +20,9 @@ public class MyThread implements Runnable{
 			do{
 				Calendar c = Calendar.getInstance();
 			
-				//ÔçÉÏ°ËµãÒÔºó
+				//ï¿½ï¿½ï¿½Ï°Ëµï¿½ï¿½Ôºï¿½
 				int hour = c.get(Calendar.HOUR_OF_DAY) ;
-			//5-15Ö®¼ä
+			//5-15Ö®ï¿½ï¿½
 				String minute = ((Math.random()*15)+"").substring(0,2).replace(".", "");
 				int _minute = Integer.parseInt(minute);
 				//
@@ -47,7 +47,7 @@ public class MyThread implements Runnable{
 					}/*else if(s.indexOf("mousepress")!=-1){
 						robot.mousePress(InputEvent.BUTTON1_MASK);
 					}*/else if(s.indexOf("mousepress")!=-1){
-						System.out.println("°´ÏÂÈ¥ÁË");
+						//System.out.println("ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½");
 //							robot.mousePress(InputEvent.BUTTON1_MASK);
 							Thread.sleep(10);
 							robot.mouseRelease(InputEvent.BUTTON1_MASK);

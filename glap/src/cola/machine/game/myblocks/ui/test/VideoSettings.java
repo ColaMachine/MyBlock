@@ -107,9 +107,9 @@ public class VideoSettings extends DialogLayout {
         });
         
         lResolution = new Label("Resolution");
-        cResolution = new ComboBox<ModeEntry>();
-        cResolution.setComputeWidthFromModel(true);
-        cResolution.addCallback(new Runnable() {
+        cResolution = new ComboBox<ModeEntry>();//select
+        cResolution.setComputeWidthFromModel(true);//根据内容计算宽度
+        cResolution.addCallback(new Runnable() {//选择了之后响应变化
             public void run() {
                 selectionChanged();
             }
@@ -132,15 +132,15 @@ public class VideoSettings extends DialogLayout {
                 
         Group ghLabels = createParallelGroup().
                 addWidget(lFullscreen).
-                addWidget(lResolution);
+                addWidget(lResolution);//把两个label 添加到ghLabels水平group
         Group ghControls = createParallelGroup().
-                addWidget(cFullscreen, Alignment.LEFT).
+                addWidget(cFullscreen, Alignment.LEFT).//cFullscreen是toggleButton
                 addWidget(cResolution);
 
-        setHorizontalGroup(createParallelGroup().
+        setHorizontalGroup(createParallelGroup().//让他计算水平高度
                 addGroup(createSequentialGroup().addGroup(ghLabels).addGroup(ghControls).addGap()).
                 addGroup(createSequentialGroup().addGap().addWidget(bAccept).addGap(DialogLayout.MEDIUM_GAP).addWidget(bCancel)));
-        setVerticalGroup(createSequentialGroup().
+        setVerticalGroup(createSequentialGroup().//让他计算垂直高度
                 addGroup(createParallelGroup().addWidget(lFullscreen).addWidget(cFullscreen)).
                 addGroup(createParallelGroup().addWidget(lResolution).addWidget(cResolution)).
                 addGap(DialogLayout.MEDIUM_GAP, DialogLayout.MEDIUM_GAP, Short.MAX_VALUE).

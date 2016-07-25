@@ -34,13 +34,15 @@ import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 import de.matthiasmann.twl.renderer.Font;
 import de.matthiasmann.twl.renderer.Image;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLFont;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 
 /**
  *
  * @author Matthias Mann
  */
 public class ItemSlot extends Widget {
-    
+    private Logger logger = Logger.getLogger(ItemSlot.class);
     public static final StateKey STATE_DRAG_ACTIVE = StateKey.get("dragActive");
     public static final StateKey STATE_DROP_OK = StateKey.get("dropOk");
     public static final StateKey STATE_DROP_BLOCKED = StateKey.get("dropBlocked");
@@ -58,18 +60,19 @@ public class ItemSlot extends Widget {
 
     public void setItemWrap(ItemWrap itemWrap) {
        // this.allChildrenRemoved();
-        if(itemWrap == null ){
+       /* if(itemWrap == null ){
             this.allChildrenRemoved();
-        }
+        }*/
         this.itemWrap = itemWrap;
-        if(itemWrap!=null && itemWrap.getParent()!=null){
+
+      /*  if(itemWrap!=null && itemWrap.getParent()!=null){
             itemWrap.getParent().removeChild(itemWrap);
 
         }
         if(itemWrap!=null){
             add(itemWrap);
-            itemWrap.adjustSize();
-        }
+          //  itemWrap.adjustSize();
+        }*/
 
     }
 
@@ -87,6 +90,13 @@ public class ItemSlot extends Widget {
        // add(label);
    /*     font=new LWJGLFont();
         font=.getgetTheme().dragetFont("black");*/
+
+    /*  KeyStroke ks = KeyStroke.parse("ctrl c", "copy");
+
+        InputMap inputMap = InputMap.empty();
+        inputMap.addKeyStroke(ks);
+        //setCanAcceptKeyboardFocus(true);
+        this.setInputMap(inputMap);*/
     }
     /*public int getNum(){
         return num;
@@ -112,7 +122,7 @@ public class ItemSlot extends Widget {
     }*/
 
     public boolean canDrop() {
-        return itemWrap == null;
+        return true;//itemWrap == null;
     }
     
    /* public Image getIcon() {
@@ -133,14 +143,19 @@ public class ItemSlot extends Widget {
         as.setAnimationState(STATE_DROP_BLOCKED, drop && !ok);
     }
     
-    @Override
+
     protected boolean handleEvent(Event evt) {
         if(evt.isMouseEventNoWheel()) {
-            if(dragActive) {
+          if(dragActive) {
+
                 if(evt.isMouseDragEnd()) {
                     if(listener != null) {
                         listener.dragStopped(this, evt);
                     }
+                   /* if((evt.getModifiers() & 2) == 2) {
+                        logger.info("ctrl ");
+                    }*/
+
                     dragActive = false;
                     getAnimationState().setAnimationState(STATE_DRAG_ACTIVE, false);
                 } else if(listener != null) {
@@ -152,9 +167,37 @@ public class ItemSlot extends Widget {
                 if(listener != null) {
                     listener.dragStarted(this, evt);
                 }
-            }
+            }/*
+            if(dragActive) {
+                if (evt.getType()==Event.Type.MOUSE_CLICKED) {
+                    if (listener != null) {
+                        listener.dragStopped(this, evt);
+                    }
+                    logger.info("放下");
+                    System.out.println("itemSlog 放下");
+                    dragActive = false;
+                    getAnimationState().setAnimationState(STATE_DRAG_ACTIVE, false);
+                }else{
+                    listener.dragging(this, evt);
+                }
+            }else if(evt.getType()==Event.Type.MOUSE_CLICKED){
+                logger.info("拿起");
+                System.out.println("itemSlog 拿起");
+                dragActive = true;
+                getzAnimationState().setAnimationState(STATE_DRAG_ACTIVE, true);
+                if(listener != null) {
+                    listener.dragStarted(this, evt);
+                }
+            }*/
             return true;
-        }
+        }/*else if(evt.isKeyEvent()){
+            logger.info(evt.getKeyChar());
+            String name =this.getInputMap().mapEvent(evt);
+            if(name!=null ) {
+                 name =this.getInputMap().mapEvent(evt);
+                logger.info("paset");
+            }
+        }*/
         
         
         return super.handleEvent(evt);
@@ -163,12 +206,13 @@ public class ItemSlot extends Widget {
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
         if(!dragActive && itemWrap != null) {
-            //icon.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            itemWrap.getIcon().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
             //font.drawText(null,getInnerX(), getInnerY(),"10");
             //this.paintChild(gui,label);
             //this.paintChild(gui,itemWrap);
-            //font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,num+"");
+            font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,itemWrap.getNum()+"");
         }
+
     }
 
     @Override//绘制拖动过程
@@ -176,14 +220,15 @@ public class ItemSlot extends Widget {
         if(itemWrap != null) {
             final int innerWidth = getInnerWidth();
             final int innerHeight = getInnerHeight();
-            /*icon.draw(getAnimationState(),
+
+            itemWrap.getIcon().draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
-                    innerWidth, innerHeight);*/
-            itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
+                    innerWidth, innerHeight);
+           // itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
             //this.paintChild(gui,itemWrap);
            // label.setOffscreenExtra(mouseX,mouseY,label.getWidth(),label.getHeight());
-            //font.drawText(getAnimationState(),mouseX+5,mouseY+5,num+"");
+            font.drawText(getAnimationState(),mouseX+5,mouseY+5,itemWrap.getNum()+"");
         }
     }
 
@@ -191,15 +236,16 @@ public class ItemSlot extends Widget {
     protected void applyTheme(ThemeInfo themeInfo) {
         super.applyTheme(themeInfo);
         icons = themeInfo.getParameterMap("icons");
-        font = themeInfo.getFont("white");
-        //findIcon();
+        font = themeInfo.getFont("black");
+        findIcon();
     }
     
-   /* private void findIcon() {
+    private void findIcon() {
         if(itemWrap == null || icons == null) {
-            icon = null;
+            //icon = null;
         } else {
-            icon = icons.getImage(item);
+            //icon = icons.getImage(item)
+           itemWrap.setIcon(icons.getImage(itemWrap.getItem())) ;
         }
-    }*/
+    }
 }

@@ -12,7 +12,7 @@ public class BagService {
     public Map<Integer,ItemEntity> getBagItemEntitys(){
         //test
         HashMap<Integer,ItemEntity > itemEntityMap = new HashMap<Integer,ItemEntity >();
-        itemEntityMap.put(0,new ItemEntity("wood_helmet",1));
+        itemEntityMap.put(0,new ItemEntity("wood_helmet",11));
         itemEntityMap.put(1,new ItemEntity("wood_armour",1));
         itemEntityMap.put(2,new ItemEntity("wood_pants",1));
         itemEntityMap.put(3,new ItemEntity("wood_shoe",1));

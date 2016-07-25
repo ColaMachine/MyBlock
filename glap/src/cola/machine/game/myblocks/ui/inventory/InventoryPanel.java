@@ -34,9 +34,8 @@ import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.bean.ItemEntity;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
-import de.matthiasmann.twl.Event;
-import de.matthiasmann.twl.ThemeInfo;
-import de.matthiasmann.twl.Widget;
+import de.matthiasmann.twl.*;
+import de.matthiasmann.twl.renderer.Font;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -98,6 +97,13 @@ public class InventoryPanel extends Widget {
        // slot[11].setItem("green");
       //  slot[12].setItem("blue");
       //  slot[13].setItem("yellow");
+
+        KeyStroke ks = KeyStroke.parse("ctrl A", "copy");
+
+        InputMap inputMap = InputMap.empty();
+        inputMap.addKeyStroke(ks);
+        //setCanAcceptKeyboardFocus(true);
+        this.setInputMap(inputMap);
     }
 
     @Override
@@ -129,6 +135,7 @@ public class InventoryPanel extends Widget {
     protected void applyTheme(ThemeInfo themeInfo) {
         super.applyTheme(themeInfo);
         slotSpacing = themeInfo.getParameter("slotSpacing", 5);
+        font = themeInfo.getFont("black");
     }
     
     void dragStarted(ItemSlot slot, Event evt) {
@@ -140,8 +147,9 @@ public class InventoryPanel extends Widget {
     
     void dragging(ItemSlot slot, Event evt) {
         if(dragSlot != null) {
-            Widget w = getWidgetAt(evt.getMouseX(), evt.getMouseY());
+            Widget w = this.getParent().getParent().getWidgetAt(evt.getMouseX(), evt.getMouseY());
             if(w instanceof ItemSlot) {
+                //System.out.println(1);
                 setDropSlot((ItemSlot)w);
             } else {
                 setDropSlot(null);
@@ -153,9 +161,25 @@ public class InventoryPanel extends Widget {
         if(dragSlot != null) {
             dragging(slot, evt);
             if(dropSlot != null && dropSlot.canDrop() && dropSlot != dragSlot) {
+              ItemWrap dropItem = dropSlot.getItemWrap();
+                ItemWrap dragItem = dragSlot.getItemWrap();
+                //如果是相同的元素 允许堆叠
+                if(dropItem==null){
+                    dropSlot.setItemWrap(dragItem);
+                    dragSlot.setItemWrap(null);
+                }else
+                if(dropItem.getItem().equals(dragItem.getItem())){
+                    dropItem.setNum(dropItem.getNum()+dragItem.getNum());
+                    dragSlot.setItemWrap(null);
+                }else{
+                    dropSlot.setItemWrap(dragItem);
+                    dragSlot.setItemWrap(dropItem);
+                }
+
+            /*    slot.setItemWrap(null);
                 dropSlot.setItemWrap(dragSlot.getItemWrap());
-                dragSlot.setItemWrap(null);
-               // dropSlot.setNum(dragSlot.getNum());
+                dragSlot.setItemWrap(null);*/
+              // dropSlot.setNum(dragSlot.getNum());
             }
             setDropSlot(null);
             dragSlot = null;
@@ -172,6 +196,92 @@ public class InventoryPanel extends Widget {
                 dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop());
             }
         }
+    }
+    boolean dragActive=false;
+    ItemWrap itemWrap = null;
+    int mouseX = 0;
+    int mouseY =0;
+    Font font;
+    @Override//静态绘制
+    protected void paintWidget(GUI gui) {
+        if(itemWrap != null) {
+            final int innerWidth = 40;
+            final int innerHeight = 40;
+
+            itemWrap.getIcon().draw(getAnimationState(),
+                    mouseX - innerWidth/2,
+                    mouseY - innerHeight/2,
+                    innerWidth, innerHeight);
+            // itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
+            //this.paintChild(gui,itemWrap);
+            // label.setOffscreenExtra(mouseX,mouseY,label.getWidth(),label.getHeight());
+            font.drawText(getAnimationState(),mouseX+5,mouseY+5,itemWrap.getNum()+"");
+        }
+
+    }
+    protected boolean handleEvent1(Event evt) {
+
+            if(itemWrap!=null) {//如果正在拖动
+
+                if (evt.getType()==Event.Type.MOUSE_CLICKED ) {//如果是鼠标单击事件
+
+                    Widget w = getWidgetAt(evt.getMouseX(), evt.getMouseY());//判断有没有点击到slot上
+                    if(w instanceof ItemSlot ) {
+                        ItemSlot slot = (ItemSlot)w;
+                       // ItemWrap oldItemWrap = slot.getItemWrap();
+                        ItemWrap oldItemWrap= slot.getItemWrap();
+                        slot.setItemWrap(itemWrap);
+                        this. itemWrap=oldItemWrap;
+                        /*if(oldItemWrap !=null){
+                            itemWrap=oldItemWrap;
+                        }*/
+                        setDropSlot((ItemSlot)w);
+                        System.out.println("InventoryPanel 放下");
+                        int eventModifiers= evt.getModifiers();
+                        if((eventModifiers & Event.MODIFIER_CTRL) != 0) {
+                            System.out.println("ctrl DOWN");
+                        }
+                       /*     String name =this.getInputMap().mapEvent(evt);
+                            if(name!=null ) {
+                                name =this.getInputMap().mapEvent(evt);
+                                System.out.println("ctrl DOWN");
+                            }*/
+                    } else {
+                        setDropSlot(null);
+                    }
+
+
+
+                    //dragActive = false;
+
+                }else{
+                    mouseX=evt.getMouseX();
+                    mouseY=evt.getMouseY();
+
+//                    listener.dragging(this, evt);
+                }
+            }else if(evt.getType()==Event.Type.MOUSE_CLICKED){
+                Widget w = getWidgetAt(evt.getMouseX(), evt.getMouseY());
+                if(w instanceof ItemSlot) {
+                    ItemSlot slot = (ItemSlot)w;
+
+                       itemWrap = slot.getItemWrap();
+
+                    if(itemWrap!=null) {
+                        slot.setItemWrap(null);
+                        System.out.println("拿起");
+                        mouseX=evt.getMouseX();
+                        mouseY=evt.getMouseY();
+                    }
+
+                }
+
+            }
+            return true;
+
+
+
+//        return super.handleEvent(evt);
     }
     
 }

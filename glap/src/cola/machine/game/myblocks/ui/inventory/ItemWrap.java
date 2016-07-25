@@ -62,7 +62,9 @@ public class ItemWrap extends Widget {
     public int getNum(){
         return itemEntity.getNum();
     }
-
+    public void  setNum(int num){
+        this.itemEntity.setNum(num);
+    }
     public String getItem() {
         return itemEntity.getName();
     }
@@ -77,6 +79,9 @@ public class ItemWrap extends Widget {
 
     public Image getIcon() {
         return icon;
+    }
+    public void setIcon(Image icon) {
+        this. icon=icon;
     }
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
