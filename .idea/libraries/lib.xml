@@ -1,9 +1,7 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/glap/lib/guava-15.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/glap/lib/lwjgl_util-2.9.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/glap/lib/slf4j-api-1.7.7-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/glap/lib/lwjgl-2.9.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/glap/lib/vecmath-1.3.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/glap/lib/guava-15.0.jar!/" />

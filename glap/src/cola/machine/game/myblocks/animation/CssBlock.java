@@ -10,4 +10,5 @@ public class CssBlock {
     public String title;
 
     public List<String> contents=new ArrayList<String>();
+    List<CssBlock> blocks =new ArrayList<CssBlock>() ;
 }
