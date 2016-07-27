@@ -81,7 +81,7 @@ public class HumanLeg {
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
         
-        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);//0~4  0~12
         GL11.glTexCoord2f(0f, 0f); glVertex3fv(P1);	// Bottom Left ǰ����
         GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P2);	// Bottom Right ǰ����
         GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P6);	// Top Right ǰ����

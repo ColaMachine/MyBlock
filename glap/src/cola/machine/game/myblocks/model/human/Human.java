@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.logic.characters.MovementMode;
+import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.model.Connector;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
@@ -22,6 +24,18 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import javax.vecmath.Vector3f;
 
 public class Human extends AABB{
+
+    float HAND_HEIGHT=1.5f;
+    float HAND_WIDTH=0.5f;
+    float HAND_THICK=0.5f;
+
+    float BODY_HEIGHT=1.5f;
+    float BODY_WIDTH=1f;
+    float BODY_THICK=0.5f;
+
+
+
+
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
 	public GL_Vector RightVector;
@@ -30,9 +44,9 @@ public class Human extends AABB{
 	public GL_Vector Position;
     public GL_Vector oldPosition=new GL_Vector();
 	public float RotatedX, RotatedY, RotatedZ;
-	public float camSpeedR = 50; // degrees per second
-	public float camSpeedXZ = 5; // units per second
-	public float camSpeedY = 10; // units per second
+	public float camSpeedR = 1; // degrees per second
+	public float camSpeedXZ = 0.4f; // units per second
+	public float camSpeedY = 0.1f; // units per second
 
     public MovementMode movementMode=MovementMode.NONE;
 
@@ -43,6 +57,7 @@ public class Human extends AABB{
     public byte armor_hand=0;
 
 	int height = 2;
+    Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 	public HumanHead head = new HumanHead();
 	public HumanHand LHand = new HumanHand(true);
 	public HumanHand RHand = new HumanHand(false);
@@ -54,7 +69,19 @@ public class Human extends AABB{
 	BlockRepository blockRepository;
 	public boolean stable = true;
 	public Human(	BlockRepository blockRepository){
-		this.blockRepository=blockRepository;
+
+
+       Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        Connector body_lhand = new Connector(lHandComponent,new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
+
+        bodyComponent.addConnector(body_lhand);
+        Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        Connector body_rhand = new Connector(lHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addConnector(body_rhand);
+
+        this.blockRepository=blockRepository;
+
+
 
         RHand.human= this;
         LHand.human= this;

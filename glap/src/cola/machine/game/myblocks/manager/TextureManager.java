@@ -103,6 +103,34 @@ public class TextureManager {
         textureMap.put("borken_9", new TextureInfo("terrain", 9, 0, 1, 1, 16, 16));
         textureMap.put("borken_10", new TextureInfo("terrain", 10, 0, 1, 1, 16, 16));
 
+        textureMap.put("humanBody-front", new TextureInfo("human", 20, 0, 8, 12, 64, 32));
+        textureMap.put("humanBody-back", new TextureInfo("human", 32, 0, 8, 12, 64, 32));
+        textureMap.put("humanBody-left", new TextureInfo("human", 16, 0, 4, 12, 64, 32));
+        textureMap.put("humanBody-right", new TextureInfo("human", 28, 0, 4, 12, 64, 32));
+        textureMap.put("humanBody-top", new TextureInfo("human", 20, 12, 8, 4, 64, 32));
+        textureMap.put("humanBody-bottom", new TextureInfo("human", 28, 12, 8, 4, 64, 32));
+
+        textureMap.put("humanHand-front", new TextureInfo("human", 40, 0, 4, 12, 64, 32));
+        textureMap.put("humanHand-back", new TextureInfo("human", 44, 0, 4, 12, 64, 32));
+        textureMap.put("humanHand-left", new TextureInfo("human", 48, 0, 4, 12, 64, 32));
+        textureMap.put("humanHand-right", new TextureInfo("human", 52, 0, 4, 12, 64, 32));
+        textureMap.put("humanHand-top", new TextureInfo("human", 44, 12, 4, 4, 64, 32));
+        textureMap.put("humanHand-bottom", new TextureInfo("human", 48, 12, 4, 4, 64, 32));
+
+        textureMap.put("humanLeg-front", new TextureInfo("human", 0, 0, 4, 12, 64, 32));
+        textureMap.put("humanLeg-back", new TextureInfo("human", 0, 0, 4, 12, 64, 32));
+        textureMap.put("humanLeg-left", new TextureInfo("human", 0, 0, 4, 12, 64, 32));
+        textureMap.put("humanLeg-right", new TextureInfo("human", 0, 0, 4, 12, 64, 32));
+        textureMap.put("humanLeg-top", new TextureInfo("human", 4, 12, 4, 4, 64, 32));
+        textureMap.put("humanLeg-bottom", new TextureInfo("human", 4, 12, 4, 4, 64, 32));
+
+        textureMap.put("humanHead-front", new TextureInfo("human", 8, 16, 8, 8, 64, 32));
+        textureMap.put("humanHead-back", new TextureInfo("human", 24,16, 8, 8, 64, 32));
+        textureMap.put("humanHead-left", new TextureInfo("human", 16, 16, 8, 8, 64, 32));
+        textureMap.put("humanHead-right", new TextureInfo("human", 0, 16, 8, 8, 64, 32));
+        textureMap.put("humanHead-top", new TextureInfo("human", 8, 24, 8, 8, 64, 32));
+        textureMap.put("humanHead-bottom", new TextureInfo("human", 16, 16, 8, 8, 64, 32));
+
 //        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
 //        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
 //        textureMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));

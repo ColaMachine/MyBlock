@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.action.BagController;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
+import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.*;
 import glmodel.GL_Vector;
@@ -66,7 +67,12 @@ public class MyBlockEngine extends GLApp {
     int waterTextureHandle = 0;
     int crossTextureHandle = 0;
     GLImage textureImg;
+
     String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
+
+
+   // String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
+
     Time time = new Time();
     MouseControlCenter mouseControlCenter;
     BagController bagController =new BagController();
@@ -74,6 +80,7 @@ public class MyBlockEngine extends GLApp {
     // If 1, then light position.
     //float lightPosition[] = { 5f, 45f, 5f, 0f };
     float lightPosition[] = {-2f, 36f, 2f, 0f};
+    float humanLightPosition[] = {-2f, 4f, 2f, 0f};
     // Camera position
     float[] cameraPos = {0f, 3f, 20f};
 
@@ -175,6 +182,7 @@ public class MyBlockEngine extends GLApp {
 
 
         this.initManagers();
+        this.initEntities();
         Collection<EngineSubsystem> subsystemList;
         subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
         //, new LwjglTimer(), new LwjglAudio(), new LwjglInput()
@@ -204,7 +212,7 @@ public class MyBlockEngine extends GLApp {
                 new float[]{1f, 1f, 1f, 1f},
                 new float[]{0.5f, 0.5f, .53f, 1f},
                 new float[]{1f, 1f, 1f, 1f},
-                lightPosition);
+                humanLightPosition);
 
         // Create a directional light (light green, to simulate reflection off grass)
 //        setLight( GL11.GL_LIGHT2,
@@ -257,7 +265,7 @@ public class MyBlockEngine extends GLApp {
         //textureImg = loadImage("images/gui.png");
         // set camera 1 position
         camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-        human.setHuman(1, 34, 5, 0, 0, -1, 0, 1, 0);
+        human.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
         //human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
 //        human2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
@@ -288,9 +296,9 @@ public class MyBlockEngine extends GLApp {
         CoreRegistry.put(ChunkProvider.class, chunkProvider);
         WorldProvider WorldProvider = new WorldProviderWrapper();
 
-        WorldRendererLwjgl worldRenderer2 = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null,human);
+        WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null,human);
 
-        this.worldRenderer=worldRenderer2;
+        this.worldRenderer=worldRenderer;
     }
 
     /**
@@ -369,7 +377,7 @@ public class MyBlockEngine extends GLApp {
         //drawLine();
         //sword.y=human.Position.y+4;
         //sword.render();
-
+        print( 30, viewportH- 45, "position x:"+human.oldPosition.x +" y:"+human.oldPosition.y+" z:"+human.oldPosition.z);
       /*  print( 30, viewportH- 45, "Use arrow keys to navigate:");
         print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
         print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
@@ -574,9 +582,15 @@ public class MyBlockEngine extends GLApp {
         //
         // initOPFlow();
         //
+        initEntities();
 
     }
+    Player player;
+    private void initEntities(){
+         player =new Player(CoreRegistry.get(TextureManager.class));
 
+        CoreRegistry.put(Player.class,player);
+    }
     private void initManagers() {
 
 
@@ -634,8 +648,13 @@ public class MyBlockEngine extends GLApp {
     }
 
     public void mainDraw() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        //worldRenderer.render();
+        worldRenderer.render();
         TextureInfo ti = TextureManager.getTextureInfo("human");
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
         GL11.glPushMatrix();
@@ -646,6 +665,7 @@ public class MyBlockEngine extends GLApp {
                 human.renderPart();
 
         }
+
         GL11.glPopMatrix();
 		/*
 		 * ti = TextureManager.getTextureInfo("gold_armor");
@@ -667,10 +687,52 @@ public class MyBlockEngine extends GLApp {
 		 */
        // firework.render();
         //GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+
+        player.render();
         CoreRegistry.get(NuiManager.class).render();
 
         //
 
     }
+/*
+    public void keyDown(int keycode) {
+		*//*
+		 * if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
+		 * camera1)? camera2 : camera1); }
+		 *//*
+        mouseControlCenter.keyDown(keycode);
+    }
+
+    public void keyUp(int keycode) {
+        mouseControlCenter.keyUp(keycode);
+    }
+
+    *//**
+     * Add last mouse motion to the line, only if left mouse button is down.
+     *//*
+    public void mouseMove(int x, int y) {
+        mouseControlCenter.mouseMove(x, y);
+    }
+
+    *//**
+     * Add last mouse motion to the line, only if left mouse button is down.
+     *//*
+    public void mouseUp(int x, int y) {
+        mouseControlCenter.mouseUp(x, y);
+    }
+
+    *//**
+     * Add last mouse motion to the line, only if left mouse button is down.
+     *//*
+    public void mouseDown(int x, int y) {
+        msg("DX=" + x + " DY=" + y);
+        if (this.mouseButtonDown(0)) {
+            mouseControlCenter.mouseLClick(x, y);
+        }
+        if (this.mouseButtonDown(1)) {
+            mouseControlCenter.mouseRClick(x, y);
+        }
+
+    }*/
 
 }

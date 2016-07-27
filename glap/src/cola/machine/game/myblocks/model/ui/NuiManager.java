@@ -72,7 +72,7 @@ public class NuiManager {
     }
 
     private void addComponent(){
-        WidgetsDemoDialog1 dlg1 = new WidgetsDemoDialog1();
+        /*WidgetsDemoDialog1 dlg1 = new WidgetsDemoDialog1();
         root.desk.add(dlg1);
         dlg1.adjustSize();
         dlg1.center(0.35f, 0.5f);
@@ -106,7 +106,7 @@ public class NuiManager {
         root.desk.add(fInfo);
         fInfo.setSize(gui.getWidth()*2/3, gui.getHeight()*2/3);
         fInfo.center(0.5f, 0.5f);
-        fInfo.addCloseCallback();
+        fInfo.addCloseCallback();*/
 
         InventoryDialog inventoryPanel = new InventoryDialog();//10行5列
         root.desk.add(inventoryPanel);
@@ -114,13 +114,18 @@ public class NuiManager {
         inventoryPanel.center(0.5f, 0.5f);
         inventoryPanel.addCloseCallback();
 
+/*
         InventoryDialog inventoryPanel2 = new InventoryDialog();//10行5列
         root.desk.add(inventoryPanel2);
         inventoryPanel2.adjustSize();
         inventoryPanel2.center(0.5f, 0.5f);
-        inventoryPanel2.addCloseCallback();
+        inventoryPanel2.addCloseCallback();*/
 
         TextAreaDemoDialog2 fTextAreaTest = new TextAreaDemoDialog2();
+
+        inventoryPanel.setVisible(false);
+       /* TextAreaDemoDialog2 fTextAreaTest = new TextAreaDemoDialog2();
+>>>>>>> 0ee979ac5e533853303ebca53ea6238e474ff593
         fTextAreaTest.setHardVisible(false);
         root.desk.add(fTextAreaTest);
         fTextAreaTest.setSize(gui.getWidth()*2/3, gui.getHeight()*2/3);
@@ -147,18 +152,20 @@ public class NuiManager {
                 vidDlgCloseReason = reason;
                 settingsDlg.closePopup();
             }
-        });
+        });*/
 
         root.addButton("Exit", new Runnable() {
             public void run() {
                 closeRequested = true;
             }
         });
-        root.addButton("Info", "Shows TWL license", new ToggleFadeFrame(fInfo)).setTooltipContent(makeComplexTooltip());
-        root.addButton("inventory", "inventory", new ToggleFadeFrame(inventoryPanel)).setTooltipContent(makeComplexTooltip());
-        root.addButton("inventory", "inventory", new ToggleFadeFrame(inventoryPanel2)).setTooltipContent(makeComplexTooltip());
 
-        root.addButton("TA", "Shows a text area test", new ToggleFadeFrame(fTextAreaTest));
+
+
+        /*root.addButton("Info", "Shows TWL license", new ToggleFadeFrame(fInfo)).setTooltipContent(makeComplexTooltip());
+        */root.addButton("inventory", "inventory", new ToggleFadeFrame(inventoryPanel)).setTooltipContent(makeComplexTooltip());
+        /*root.addButton("TA", "Shows a text area test", new ToggleFadeFrame(fTextAreaTest));
+
 
             root.addButton("Settings", "Opens a dialog which might be used to change video settings", new Runnable() {
                 public void run() {
@@ -166,9 +173,9 @@ public class NuiManager {
                     settingsDlg.openPopupCentered();
                 }
             });
+*/
 
-
-        root.addButton("ScrollPane", new ToggleFadeFrame(fScroll));
+      /*  root.addButton("ScrollPane", new ToggleFadeFrame(fScroll));
         root.addButton("Properties", new ToggleFadeFrame(fPropertySheet));
         root.addButton("Color", new ToggleFadeFrame(fCS));
 
@@ -181,9 +188,9 @@ public class NuiManager {
                 popup.add(game);
                 popup.openPopupCentered();
             }
-        });
+        });*/
 
-        fInfo.requestKeyboardFocus();
+        //fInfo.requestKeyboardFocus();
     }
 
     private void loadTheme() throws IOException {

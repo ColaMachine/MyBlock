@@ -36,10 +36,10 @@ public class HumanHead {
 	GL_Vector[] vertexs={
 			P1,P2,P6,P5,
 			P3,P4,P8,P7,
-			P5,P6,P7,P8,
-			P4,P3,P2,P1,
-			P2,P3,P7,P6,
-			P4,P1,P5,P8
+			P5,P6,P7,P8,//top
+			P4,P3,P2,P1,//bottom
+			P2,P3,P7,P6,//right
+			P4,P1,P5,P8//left
 			};
 	float[] v={1/8f, 4/8f,
 			2/8f, 4/8f,

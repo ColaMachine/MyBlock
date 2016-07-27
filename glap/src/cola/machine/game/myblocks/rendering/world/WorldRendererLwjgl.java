@@ -246,7 +246,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcPlayerChunkOffsetX();
 		int newChunkPosZ = calcPlayerChunkOffsetZ();
-		int viewingDistance =2;// config.getRendering().getViewDistance().getChunkDistance();
+		int viewingDistance =4;// config.getRendering().getViewDistance().getChunkDistance();
 
 		boolean chunksCurrentlyPending = false;
 
@@ -277,7 +277,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 				}
 			} else {
 
-				int vd2 = viewingDistance / 2;
+				int vd2 = viewingDistance/2 ;
 				Rect2i oldView = Rect2i.createFromMinAndSize(chunkPosX - vd2,
 						chunkPosZ - vd2, viewingDistance, viewingDistance);
 				Rect2i newView = Rect2i.createFromMinAndSize(
