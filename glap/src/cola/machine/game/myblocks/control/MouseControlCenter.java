@@ -398,7 +398,7 @@ public class MouseControlCenter {
             human.RotateV(-(x - prevMouseX) / 5);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             human.RotateX(-(y - prevMouseY) / 5);
-
+            camera.fenli=false;
             // regenerate the line
             // save mouse position
             prevMouseX = x;
@@ -414,9 +414,10 @@ public class MouseControlCenter {
             // add a segment to the line
             // System.out.println("ͷ��ת��");
             // System.out.println(x-prevMouseX);
-            human.ViewRotateV(-(x - prevMouseX) / 5);
+            camera.fenli=true;
+            camera.RotateX(-(x - prevMouseX) / 5);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-            human.ViewRotateX((y - prevMouseY) / 5);
+            camera.RotateY((y - prevMouseY) / 5);
 
             // regenerate the line
             // save mouse position

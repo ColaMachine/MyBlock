@@ -1,16 +1,60 @@
 package cola.machine.game.myblocks.animation;
 
+import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.model.Component;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by colamachine on 16-7-25.
  */
 public class AnimationManager {
-    HashMap<String,Animation> domAnimations=new HashMap<>();
-    HashMap<String ,KeyFrames > keyFrames= new HashMap<>();
+    HashMap<String,Animation> domAnimationsMap=new HashMap<>();
+    HashMap<String ,KeyFrames > keyFramesMap= new HashMap<>();
+    List<Animator> animators =new ArrayList<>();
+    HashMap<String,Animator> animatorMap = new HashMap<>();
+
+    public AnimationManager(){
+        this.init();
+
+    }
+    public void apply(Component component , String action){
+        Animation animation = domAnimationsMap.get(component.id+":"+action);
+        if(animation!=null){
+        Animator animator = new Animator(animation,component);
+            animators.add(animator);
+            if(animatorMap.get(component.id)!=null){
+                animatorMap.get(component.id).complete=true;
+            }
+            animatorMap.put(animator.component.id,animator);
+        }
+        if(component.connectors.size()>0){
+            for(int i=0;i<component.connectors.size();i++){
+                apply(component.connectors.get(i).child,action);
+            }
+        }
+    }
+
+    public void update() throws Exception {
+        Long now =new Date().getTime();
+        for(int i=animators.size()-1;i>=0;i--){
+           // LogUtil.println(now+"正在画:"+i);
+//            LogUtil.println("判断两个元素是否相同:"+(animators.get(0).component == animators.get(1).component));
+            Animator animator = animators.get(i);
+           // LogUtil.println("画完前:"+animator.component.rotateX);
+
+            if(animator.complete){
+                animators.remove(i);
+            }else {
+                animator.process(now);
+            }
+
+            //LogUtil.println("画完后:"+animator.component.rotateX);
+        }
+    }
     public void readConfigFile(String path) throws Exception {
         StringBuffer content = new StringBuffer();
         File file =new File(path);
@@ -48,20 +92,131 @@ public class AnimationManager {
     System.out.println(blocks.size());
         for(int i=0;i<blocks.size();i++){
             CssBlock block = blocks.get(i);
-            if(block.title.startsWith("@keyframes"){
+            if(block.title.startsWith("@keyframes")){
                 KeyFrames keyFrames=new KeyFrames();
                 keyFrames.name= block.title.replace("@keyframes","").trim();
-                keyFrames.from=parseKeyFrame(block.blocks.get(0));
-                keyFrames.to=parseKeyFrame(block.blocks.get(block.blocks.size()-1));
+                for(int j=0;j<block.blocks.size();j++){
+                    keyFrames.frames.add( parseKeyFrame(block.blocks.get(j)));
+                }
 
+               // keyFrames.from=parseKeyFrame(block.blocks.get(0));
+              //  keyFrames.to=parseKeyFrame(block.blocks.get(block.blocks.size()-1));
+                keyFramesMap.put(keyFrames.name,keyFrames);
+            }else{
+                Animation animation =new Animation();
+                animation= parseAnimation(block);
+                domAnimationsMap.put(animation.domName+":"+animation.action,animation);
             }
         }
+        Iterator aniIter = domAnimationsMap.entrySet().iterator();
+        while (aniIter.hasNext()) {
+            Map.Entry entry = (Map.Entry) aniIter.next();
+            Object key = entry.getKey();
+            Object val = entry.getValue();
+
+            Animation animation= ((Animation)val);
+            animation.setKeyFrames(keyFramesMap.get(animation.animation_name));
+
+            }
 
     }
 
-    public void KeyFrame parseKeyFrame(CssBlock block){
+    private Animation parseAnimation(CssBlock block) throws Exception {
+        String[] title = block.title.split(":");
+        Animation animation =new Animation();
+        animation.domName = title[0].trim();
+        animation.action = title[1].trim();
+
+        for(int i=0;i<block.contents.size();i++){
+            String  content = block.contents.get(i);
+            String[] contentAry = content.split(":");
+            String key =contentAry[0].trim();
+            String value =contentAry[1].trim();
+
+
+
+           /* try {
+                Field field = animation.getClass().getDeclaredField(contentAry[0]);
+                if(field!=null ){
+                    field.set(animation,);
+                }
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }*/
+
+            if(key.equals("animation-name")){
+                animation.animation_name= value;
+            }else  if(key.equals("animation-duration")){
+                animation.animation_duration= Integer.valueOf(value.replace("s",""));
+            }else  if(key.equals("animation-timing-function")){
+                animation.animation_timing_function= value;
+            }else  if(key.equals("animation-delay")){
+                animation.animation_delay= Integer.valueOf(value.replace("s",""));
+            }else  if(key.equals("animation-iteration-count")){
+                if(value.equals("infinite"))
+                {
+                    animation.animation_iteration_count=1000;
+                }else
+                    animation.animation_iteration_count= Integer.valueOf(value.replace("s",""));
+            }else  if(key.equals("animation-direction")){
+                animation.animation_direction= value;
+            }else  if(key.equals("animation-fill-mode")){
+                animation.animation_fill_mode=value;
+            }else{
+                throw new Exception("animation has no property :"+key);
+            }
+
+        }
+        return animation;
+    }
+
+    public  KeyFrame parseKeyFrame(CssBlock block) throws Exception {
         String percent= block.title.trim();
-        List<co>
+        KeyFrame keyFrame
+                =new KeyFrame();
+        if(!percent.endsWith("%")){
+            throw new Exception("参数应为19%的格式");
+
+        }
+
+        String numStr =this.getMatch(percent,"(\\d+)%",1);
+        keyFrame.num = Integer.valueOf(numStr);
+        for(int i=0;i<block.contents.size();i++){
+            String content = block.contents.get(i);
+            String[] arr = content.split(":");
+
+            if(arr[0].trim().equals("transform")){
+                Transform transform =new Transform();
+                keyFrame.transform=transform;
+                Pattern p=Pattern.compile("rotate([XYZ])\\((-?\\d+)deg\\)");
+                Matcher m=p.matcher(arr[1].trim());
+                while(m.find()){
+                    //LogUtil.println("总数:"+m.groupCount()+"找到一条transform value:"+m.group(1));
+                    LogUtil.println(m.group(1) + ":" + m.group(2));
+                    if (m.group(1).equals("X")) {
+                        transform.rotateX = Integer.valueOf(m.group(2));
+                    } else if (m.group(1).equals("Y")) {
+                        transform.rotateY = Integer.valueOf(m.group(2));
+                    } else if (m.group(1).equals("Z")) {
+                        transform.rotateZ = Integer.valueOf(m.group(2));
+                    }
+                }
+            }
+        }
+        return keyFrame;
+    }
+
+    public String getMatch(String content,String pattern,int index){
+        Pattern p=Pattern.compile(pattern);
+        Matcher m=p.matcher(content);
+        if(m.find()){
+           // LogUtil.println(m.group(index)+":"+m.group(2));
+            return m.group(index);
+
+        }
+
+
+        return null;
     }
 
     public int readBlock( List<CssBlock> blocks,StringBuffer content,int pos){
@@ -141,10 +296,20 @@ public class AnimationManager {
         }
         return 0;
     }
-    public static void main(String args[]){
-        AnimationManager manager =new AnimationManager();
+    public  void init(){
+
+        /*Pattern p=Pattern.compile("rotate([XYZ])\\((\\d+)deg\\)");
+        Matcher m=p.matcher("rotateX(12deg)rotateY(12deg)");
+        while(m.find()){
+
+            LogUtil.println(m.group(1));
+
+        }*/
+
+
+     //   AnimationManager manager =new AnimationManager();
         try {
-            manager.readConfigFile("/home/colamachine/workspace/MyBlock/glap/src/cola/machine/game/myblocks/animation/animation.cfg");
+            this.readConfigFile(AnimationManager.class.getResource("animation.cfg").getPath());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<style>
+
+    div
+    {
+        width:50px;
+        height:50px;
+        position: absolute;
+        transform:rotateZ(45deg);
+        animation: myfirst 5s;
+        infinite:true;
+       -webkit-animation: myfirst 5s 1;	/* Safari 和 Chrome */
+        -webkit-animation-fill-mode:forwards;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-direction: alternate;
+        infinite:true;
+    }
+
+    @keyframes myfirst
+    {
+        0%   {background: red; left:0px; top:0px;transform:rotateZ(10deg)rotateX(180deg)}
+        25%  {background: yellow; left:200px; top:0px;transform:rotateZ(90deg)}
+        50%  {background: blue; left:200px; top:200px;transform:rotateZ(10deg)}
+        75%  {background: green; left:0px; top:200px;transform:rotateZ(10deg)}
+        100% {background: red; left:0px; top:0px;transform:rotateZ(10deg)}
+    }
+
+
+
+    @-webkit-keyframes myfirst /* Safari 和 Chrome */
+    {
+        0%   {background: red; left:0px; top:0px;}
+        25%  {background: yellow; left:200px; top:0px;transform:rotateZ(90deg)}
+        50%  {background: blue; left:200px; top:200px;transform:rotateZ(10deg)rotateX(90deg)}
+        75%  {background: green; left:0px; top:200px;transform:rotateZ(10deg)}
+        100% {background: black; left:0px; top:0px;transform:rotateZ(10deg)}
+    }
+
+
+
+</style>
+<div class=" ">123
+    </div>
+</body>
+</html>

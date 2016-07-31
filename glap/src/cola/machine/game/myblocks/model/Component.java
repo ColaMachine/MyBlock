@@ -12,6 +12,7 @@ import java.util.List;
  * Created by luying on 16/7/23.
  */
 public class Component {
+    public String id;
 
     TextureInfo front;
     TextureInfo back;
@@ -20,9 +21,9 @@ public class Component {
     TextureInfo right;
     TextureInfo bottom;
 
-    float xRoate;
-    float yRoate;
-    float zRoate;
+    public float rotateX;
+    public float rotateY;
+    public float rotateZ;
    GL_Vector offsetPosition=new GL_Vector(0,0,0);
     GL_Vector P1;
     GL_Vector P2;
@@ -32,7 +33,7 @@ public class Component {
     GL_Vector P6;
     GL_Vector P7;
     GL_Vector P8;
-    List<Connector> connectors =new ArrayList<Connector>();
+    public List<Connector> connectors =new ArrayList<Connector>();
 
     public void addConnector(Connector connector){
         connectors.add(connector);
@@ -57,6 +58,7 @@ public class Component {
 
     public void render(){
         GL11.glTranslatef(offsetPosition.x, offsetPosition.y, offsetPosition.z);
+//        GL11.glRotatef(rotateX, rotateY, rotateZ, 0);
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
         GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
@@ -101,7 +103,7 @@ public class Component {
         }
 
 
-
+//        GL11.glRotatef(-rotateX, -rotateY, -rotateZ, 0);
         GL11.glTranslatef(-offsetPosition.x,-offsetPosition.y,-offsetPosition.z);
     }
 
@@ -137,6 +139,7 @@ public class Component {
         this.bottom=texture;
     }
     public void setEightFace(String name,TextureManager textureManager){
+        this.id= name;
         this.front= textureManager.getTextureInfo(name+"-front");
         this.back= textureManager.getTextureInfo(name+"-back");
         this.left= textureManager.getTextureInfo(name+"-left");

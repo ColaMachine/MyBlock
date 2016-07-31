@@ -36,7 +36,7 @@ public class GLCamera {
 	public GL_Vector UpVector;
 	public GL_Vector Position;
 	public float RotatedX, RotatedY, RotatedZ;
-	
+	public boolean fenli=false;
 	public GLCamera() {
 		setCamera( 	0f, 0f, 0f,         // position at origin
 				0f, 0f, -1f,        // looking down Z axis

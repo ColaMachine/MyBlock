@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.engine;
 
 import cola.machine.game.myblocks.action.BagController;
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
@@ -19,6 +20,7 @@ import com.google.common.collect.Lists;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.jvm.hotspot.utilities.Assert;
 import time.Time;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
@@ -68,7 +70,7 @@ public class MyBlockEngine extends GLApp {
     int crossTextureHandle = 0;
     GLImage textureImg;
 
-    String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
+    //String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
 
 
    // String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
@@ -120,7 +122,7 @@ public class MyBlockEngine extends GLApp {
      */
 
     WorldRenderer worldRenderer;
-
+    AnimationManager animationManager;
     public static void main(String args[]) {
         try {
             PathManager.getInstance().useDefaultHomePath();
@@ -331,10 +333,11 @@ public class MyBlockEngine extends GLApp {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
-
-        GL_Vector camera_pos = GL_Vector.add(human.Position,
-                GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
-        camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
+//        if(!camera1.fenli) {
+            GL_Vector camera_pos = GL_Vector.add(human.Position,
+                    GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
+            camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
+//        }
         // camera1.MoveTo(human.Position.x, human.Position.y + 4,
         // human.Position.z);
 
@@ -605,6 +608,9 @@ public class MyBlockEngine extends GLApp {
                 new NuiManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
+        animationManager=  new AnimationManager();
+        CoreRegistry.put(AnimationManager.class,
+                animationManager);
         // AssetManager assetManager =
         // CoreRegistry.putPermanently(AssetManager.class, new
         // AssetManager(moduleManager.getEnvironment()));
@@ -649,9 +655,16 @@ public class MyBlockEngine extends GLApp {
 
     public void mainDraw() {
         try {
-            Thread.sleep(500);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        try {
+
+            animationManager.update();
+        } catch (Exception e) {
+            e.printStackTrace();
+            exit();
         }
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         worldRenderer.render();

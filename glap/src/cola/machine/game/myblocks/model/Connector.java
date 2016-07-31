@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class Connector {
 
-    Component child;
+   public Component child;
     GL_Vector parentLocation;
     GL_Vector childLocation;
 
@@ -22,9 +22,11 @@ public class Connector {
 
     public void render(){
         GL11.glTranslatef(parentLocation.x, parentLocation.y, parentLocation.z);
+        GL11.glRotatef(child.rotateX, child.rotateY, child.rotateZ, 0);
         GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
         child.render();
         GL11.glTranslatef(childLocation.x, childLocation.y, childLocation.z);
+        GL11.glRotatef(-child.rotateX, -child.rotateY, -child.rotateZ, 0);
         GL11.glTranslatef(-parentLocation.x, -parentLocation.y, -parentLocation.z);
     }
 }

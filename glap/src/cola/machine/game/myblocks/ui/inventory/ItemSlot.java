@@ -34,15 +34,15 @@ import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 import de.matthiasmann.twl.renderer.Font;
 import de.matthiasmann.twl.renderer.Image;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLFont;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
-
+//import org.apache.log4j.Logger;
+//import org.apache.log4j.spi.LoggerFactory;
+//
 /**
  *
  * @author Matthias Mann
  */
 public class ItemSlot extends Widget {
-    private Logger logger = Logger.getLogger(ItemSlot.class);
+//    private Logger logger = Logger.getLogger(ItemSlot.class);
     public static final StateKey STATE_DRAG_ACTIVE = StateKey.get("dragActive");
     public static final StateKey STATE_DROP_OK = StateKey.get("dropOk");
     public static final StateKey STATE_DROP_BLOCKED = StateKey.get("dropBlocked");

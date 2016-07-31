@@ -30,8 +30,10 @@
 package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.action.BagController;
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.bean.ItemEntity;
+import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import de.matthiasmann.twl.*;
@@ -167,6 +169,9 @@ public class InventoryPanel extends Widget {
                 if(dropItem==null){
                     dropSlot.setItemWrap(dragItem);
                     dragSlot.setItemWrap(null);
+                    Player player= CoreRegistry.get(Player.class);
+                    AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+                    manager.apply(player.bodyComponent,"walker");
                 }else
                 if(dropItem.getItem().equals(dragItem.getItem())){
                     dropItem.setNum(dropItem.getNum()+dragItem.getNum());

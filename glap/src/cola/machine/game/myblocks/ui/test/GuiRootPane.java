@@ -101,7 +101,12 @@ public class GuiRootPane extends Widget {
                         dragActive = false;
 
                     }else{
-                        mouseControlCenter.mouseRightDrag(evt.getMouseX(),evt.getMouseY());
+                        //System.out.println(evt.getMouseButton()+":"+evt.getKeyChar()+":"+evt.getModifiers() );
+                        if(evt.getModifiers()==64){
+                            mouseControlCenter.mouseLeftDrag(evt.getMouseX(), evt.getMouseY());
+                        }else if(evt.getModifiers()==128) {
+                            mouseControlCenter.mouseRightDrag(evt.getMouseX(), evt.getMouseY());
+                        }
                     }
 
                 } else if(evt.isMouseDragEvent()) {

@@ -225,7 +225,7 @@ public class Human extends AABB{
 	public void render() {
 		adjust(this.Position.x, this.Position.y, this.Position.z);
 		//GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
-		float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,-1));
+		float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
 		//System.out.println("glRotatef angle :"+angle);
 		//System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
 		
@@ -374,6 +374,7 @@ public class Human extends AABB{
 		// the right vector is perpendicular to the new view and Up vectors
 		//RightVector = GL_Vector.crossProduct(vd, UpVector);
 		ViewDir = vd;
+
 		/*System.out.printf("ViewDir : %f %f %f \r\n", ViewDir.x, ViewDir.y,
 				ViewDir.z);*/
 		// set the view direction
@@ -384,9 +385,13 @@ public class Human extends AABB{
 		//System.out.println("angle" + Angle);
 		//RotatedX += Angle;
 		// Rotate viewdir around the right vector:
+        RotatedX += Angle;
 		ViewDir = GL_Vector.normalize(GL_Vector.add(GL_Vector.multiply(ViewDir,
 				(float) Math.cos(Angle * PIdiv180)), GL_Vector.multiply(
 				UpVector, (float) Math.sin(Angle * PIdiv180))));
+
+//        WalkDir .x= ViewDir.x;
+//        WalkDir .z= ViewDir.z;
 		/*System.out.printf("ViewDir : %f %f %f \r\n", ViewDir.x, ViewDir.y,
 				ViewDir.z);
 
@@ -404,6 +409,8 @@ public class Human extends AABB{
 		ViewDir = GL_Vector.normalize(GL_Vector.add(GL_Vector.multiply(ViewDir,
 				(float) Math.cos(Angle * PIdiv180)), GL_Vector.multiply(
 				UpVector, (float) Math.sin(Angle * PIdiv180))));
+
+
 		/*System.out.printf("ViewDir : %f %f %f \r\n", ViewDir.x, ViewDir.y,
 				ViewDir.z);
 
