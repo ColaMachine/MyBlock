@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.model.Connector;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import glmodel.GL_Vector;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Created by luying on 16/7/24.
@@ -35,7 +36,7 @@ public class Player {
     public Player(TextureManager textureManager){
 
         this.textureManager=textureManager;
-        bodyComponent.setOffsetPosition(new GL_Vector(0,4,0));
+        //bodyComponent.setOffsetPosition(new GL_Vector(0,4,0));
         bodyComponent.setEightFace("humanBody",textureManager);
         //body
     //lhand
@@ -81,6 +82,9 @@ public class Player {
     }
 
     public void render(){
+       // GL11. glEnable(GL11.GL_DEPTH_TEST);
+       // GL11.glDisable(GL11.GL_BLEND);
+      //  GL11.glDepthRange(0,10);
         bodyComponent.render();
     }
 }

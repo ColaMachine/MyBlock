@@ -285,7 +285,7 @@ public class AnimationEngine extends MyBlockEngine {
                     if(result >=0 ){
 
                     }else{
-                        System.out.println("123:"+Double.isNaN(result));
+                        //System.out.println("123:"+Double.isNaN(result));
                     }
                     if(x<xrange-1.0/acc&& y<yrange){
                         try {
@@ -443,7 +443,7 @@ public class AnimationEngine extends MyBlockEngine {
        // if(Math.random()>0.5) {
          //   dcc.check(human);}
 
-            mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
+            //mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
             // cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 

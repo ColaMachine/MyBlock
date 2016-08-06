@@ -1,13 +1,15 @@
 package cola.machine.game.myblocks.magicbean.fireworks;
 
+import cola.machine.game.myblocks.model.human.Human;
 import glapp.GLApp;
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
 import cola.machine.game.myblocks.manager.TextureManager;
 import gldemo.Particles;
 
 public class Firework {
-    int MAX_PARTICLES = 1000;//
+    int MAX_PARTICLES = 100;//
     boolean rainbow = true;
     boolean sp;
     boolean rp;
@@ -49,11 +51,11 @@ public class Firework {
 
             // 既然粒子是活跃的,而且我们又给它生命,下面将给它颜色数值.一开始,我们就想每个粒子有不同的颜色.我怎么做才能使每个粒子与前面颜色箱里的颜色一一对应那?数学很简单,我们用loop变量乘以箱子中颜色的数目与粒子最大值(MAX_PARTICLES)的余数.这样防止最后的颜色数值大于最大的颜色数值(12).举例:900*(12/900)=12.1000*(12/1000)=12,等等
 
-            particle[loop].r = colors[(int) (Math.random() * 12)][0]; // 粒子的红色颜色
+            particle[loop].r =(float)Math.random(); //colors[(int) (Math.random() * 12)][0]; // 粒子的红色颜色
 
-            particle[loop].g = colors[(int) (Math.random() * 12)][1]; // 粒子的绿色颜色
+            particle[loop].g = (float)Math.random(); //colors[(int) (Math.random() * 12)][1]; // 粒子的绿色颜色
 
-            particle[loop].b = colors[(int) (Math.random() * 12)][2]; // 粒子的蓝色颜色
+            particle[loop].b = (float)Math.random(); //colors[(int) (Math.random() * 12)][2]; // 粒子的蓝色颜色
 
             // 现在设定每个粒子移动的方向和速度.我们通过将结果乘于10.0f来创造开始时的爆炸效果.我们将会以任意一个正或负值结束.这个数值将以任意速度,任意方向移动粒子.
 
@@ -74,7 +76,10 @@ public class Firework {
         }
     }
 
-    public void render() {
+    public void render(Human human) {
+        //GL_Vector vector =human.WalkDir;
+        //vector.set(-human.WalkDir.x,-human.WalkDir.y,-human.WalkDir.z);
+
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_LIGHT1);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -95,7 +100,7 @@ public class Firework {
 
         // GL11.glDisable(GL11.GL_LIGHTING);
 
-        GL11.glTranslated(1, 35, -0);
+        GL11.glTranslated(1, 4, -0);
         for (loop = 0; loop < MAX_PARTICLES; loop++) // 循环所有的粒子
 
         {
@@ -127,18 +132,26 @@ public class Firework {
 
 
                 // GLApp.drawCursor().renderCube(x,y,z);
-
+                GL_Vector right = GL_Vector.add(new GL_Vector(particle[loop].x,particle[loop].y,particle[loop].z), GL_Vector.multiply(human.RightVector,
+                        0.5f));
+                GL_Vector left = GL_Vector.add(right, GL_Vector.multiply(human.RightVector,
+                        -1f));
+                GL_Vector lefttop = GL_Vector.add(left, GL_Vector.multiply(human.UpVector,
+                        0.5f));
+                GL_Vector righttop = GL_Vector.add(right, GL_Vector.multiply(human.UpVector,
+                        0.5f));
                 GL11.glTexCoord2d(1, 1);
-                GL11.glVertex3f(x + 0.5f, y + 0.5f, z);
-
+               // GL11.glVertex3f(x + 0.5f, y + 0.5f, z);
+                GL11.glVertex3f(righttop.x, righttop.y ,righttop. z);
                 GL11.glTexCoord2d(0, 1);
-                GL11.glVertex3f(x - 0.5f, y + 0.5f, z);
-
+                //GL11.glVertex3f(x - 0.5f, y + 0.5f, z);
+                GL11.glVertex3f(lefttop.x, lefttop.y ,lefttop. z);
                 GL11.glTexCoord2d(1, 0);
-                GL11.glVertex3f(x + 0.5f, y - 0.5f, z);
-
+                //GL11.glVertex3f(x + 0.5f, y - 0.5f, z);
+                GL11.glVertex3f(right.x, right.y ,right. z);
                 GL11.glTexCoord2d(0, 0);
-                GL11.glVertex3f(x - 0.5f, y - 0.5f, z);
+               // GL11.glVertex3f(x - 0.5f, y - 0.5f, z);
+                GL11.glVertex3f(left.x, left.y ,left. z);
 
                 // 最后我们告诉Opengl我们画完三角形带
                 GL11.glEnd();
@@ -181,14 +194,22 @@ public class Firework {
 
                     particle[loop].z = 0.0f;
 
+
+
                     // 在粒子从新设置之后,将给它新的移动速度/方向.注意:我增加最大和最小值,粒子移动速度为从50到60的任意值,但是这次我们没将移动速度乘10.我们这次不想要一个爆发的效果,而要比较慢地移动粒子.也注意我把xspeed和x轴移动速度相加,y轴移动速度和yspeed相加.这个控制粒子的移动方向.
-                    particle[loop].xi = xspeed
-                            + (float) ((Math.random() * 60) - 32.0f); // 随机生成粒子速度
+//                    particle[loop].xi = xspeed
+//                            + (float) ((Math.random() * 60) - 32.0f); // 随机生成粒子速度
+//
+//                    particle[loop].yi = yspeed
+//                            + (float) ((Math.random() * 60) - 30.0f);
+//
+//                    particle[loop].zi = (float) ((Math.random() * 60) - 30.0f);
 
-                    particle[loop].yi = yspeed
-                            + (float) ((Math.random() * 60) - 30.0f);
+                    particle[loop].xi = (float) ((Math.random() * 50) - 26.0f) * 10.0f; // 随机生成X轴方向速度
 
-                    particle[loop].zi = (float) ((Math.random() * 60) - 30.0f);
+                    particle[loop].yi = (float) ((Math.random() * 50) - 25.0f) * 10.0f; // 随机生成Y轴方向速度
+
+                    particle[loop].zi = (float) ((Math.random() * 50) - 25.0f) * 10.0f; // 随机生成Z轴方向速度
 
                     // 最后我们分配粒子一种新的颜色.变量col保存一个数字从1到11(12种颜色),我们用这个变量去找红,绿,蓝亮度在颜色箱里面.下面第一行表示红色的强度,数值保存在colors[col][0].所以如果col是0,红色的亮度就是1.0f.绿色的和蓝色的值用相同的方法读取.如果你不了解为什么红色亮度为1.0f那col就为0.我将一点点的解释.看着程序的最前面.找到那行:static
                     // GLfloat
@@ -206,10 +227,11 @@ public class Firework {
                 // 地心引力)值.这引起向上的力.如果这个程序在循环外面,那么我们必须生成另一个循环做相同的工作,因此我们最好放在这里
             }
         }
-        GL11.glTranslated(-1, -35, 0);
+        GL11.glTranslated(-1, -4, 0);
         // do gluLookAt() with camera position, direction, orientation
         GL11.glEnable(GL11.GL_LIGHT1);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 

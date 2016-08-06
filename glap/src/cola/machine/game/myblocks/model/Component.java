@@ -56,7 +56,7 @@ public class Component {
         this.P8= new GL_Vector(0,height,0);
     }
 
-    public void render(){
+    public void render(){ GL11. glEnable(GL11.GL_DEPTH_TEST);
         GL11.glTranslatef(offsetPosition.x, offsetPosition.y, offsetPosition.z);
 //        GL11.glRotatef(rotateX, rotateY, rotateZ, 0);
         GL11.glBegin(GL11.GL_QUADS);

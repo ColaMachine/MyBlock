@@ -224,6 +224,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
                     -chunk.getChunkWorldPosZ());
         }										// Draw The Ball
         GL11. glFlush();*/
+
 		skysphere.render();
 	}
 

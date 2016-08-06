@@ -5,6 +5,8 @@ package cola.machine.game.myblocks.log;
  */
 public class LogUtil {
     public static void println(String s){
-        System.out.println(s);
+        Throwable e =new Throwable();
+        StackTraceElement[] eles = e.getStackTrace();
+        System.out.println(eles[1]+":"+s);
     }
 }

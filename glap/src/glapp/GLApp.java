@@ -278,7 +278,7 @@ public class GLApp {
                 //System.out.println("Character"+Keyboard.getEventCharacter());
 
                 // pass key event to handler
-                LogUtil.println("Character"+Keyboard.getEventCharacter());
+                //LogUtil.println("Character"+Keyboard.getEventCharacter());
 
 
                 gui.handleKey(
@@ -288,7 +288,7 @@ public class GLApp {
 
                 if (Keyboard.getEventKeyState()) {    // key was just pressed, trigger keyDown()
                     keyDown(Keyboard.getEventKey());
-                    LogUtil.println("key presseds");
+                   // LogUtil.println("key presseds");
                 } else {
                     keyUp(Keyboard.getEventKey());    // key was released
                 }

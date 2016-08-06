@@ -63,7 +63,7 @@ public class Animator {
 
         if(frames[i].transform.rotateX!=null ){
             rotateX_speed=(frames[i].transform.rotateX-component.rotateX)/(timeSlice[i]-(i==0?0:timeSlice[i-1]));
-            System.out.println("rotateX_speed"+rotateX_speed);
+            //System.out.println("rotateX_speed"+rotateX_speed);
         }
         if(frames[i].transform.rotateY!=null){
             rotateY_speed=(frames[i].transform.rotateY-component.rotateY)/(timeSlice[i]-(i==0?0:timeSlice[i-1]));
@@ -79,7 +79,7 @@ public class Animator {
 
         if(toFrame.transform.rotateX!=null ){
             rotateX_speed=(toFrame.transform.rotateX-component.rotateX)/betweenTime;
-            System.out.println("rotateX_speed"+rotateX_speed);
+           // System.out.println("rotateX_speed"+rotateX_speed);
         }
         if(toFrame.transform.rotateY!=null){
             //TODO
@@ -115,7 +115,7 @@ public class Animator {
                 if(animation.animation_fill_mode.equals("forwards"))
                 {
                     //保留最后动画
-                    LogUtil.println("forward");
+                    //LogUtil.println("forward");
                     if(frames[0].transform.rotateX!=null){
                         component.rotateX=frames[0].transform.rotateX;
                     }
@@ -140,7 +140,7 @@ public class Animator {
 
                 }
 
-                LogUtil.println("动画结束");
+                //LogUtil.println("动画结束");
                 //是不是在本次时间范围内
                 complete=true;
                 return;
@@ -160,7 +160,7 @@ public class Animator {
                         if (rotateX_speed != null) {
                             component.rotateX += rotateX_speed * (nowTime - lastTime);
                             //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
-                            System.out.println("component.rotateX:" + component.rotateX);
+                            //System.out.println("component.rotateX:" + component.rotateX);
                         }
                         if (rotateY_speed != null) {
                             component.rotateY += rotateY_speed;
@@ -188,7 +188,7 @@ public class Animator {
                         if (rotateX_speed != null) {
                             component.rotateX += rotateX_speed * (nowTime - lastTime);
                             //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
-                            System.out.println("component.rotateX:" + component.rotateX);
+                           // System.out.println("component.rotateX:" + component.rotateX);
                         }
                         if (rotateY_speed != null) {
                             component.rotateY += rotateY_speed;
@@ -228,7 +228,7 @@ public class Animator {
                }
                 count++;startTime=nowTime;
 
-                LogUtil.println("count++:"+count);
+                //LogUtil.println("count++:"+count);
 
             }
 
@@ -241,7 +241,7 @@ public int count;
         Integer a = 0;
         Integer b =a;
         b=1;
-        System.out.println(a);
+       // System.out.println(a);
     }
 
 

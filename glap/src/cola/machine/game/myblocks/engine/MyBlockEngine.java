@@ -5,8 +5,11 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
+import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.*;
 import glmodel.GL_Vector;
 
@@ -156,20 +159,20 @@ public class MyBlockEngine extends GLApp {
    // GLShadowOnPlane airplaneShadow;
 
     public void setup() {
-
+        //开启胜读测试
 
        // makeTexture("images/Particle.bmp", true, true);
        // airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
        // boat = new GLModel("glap/models/boat/botrbsm1.obj");
-      //  groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg", true, true);
+      groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg", true, true);
       //  boat.mesh.regenerateNormals();
       //  boat.makeDisplayList();
-        //  GL11. glEnable(GL11.GL_POINT_SMOOTH);
-        //  GL11. glEnable( GL11. GL_LINE_SMOOTH);
-        //  GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
-        //  GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
-        //GL11.glEnable(GL11.GL_DEPTH_TEST);
-        // GL11.glDepthFunc(GL11.GL_LEQUAL);
+          GL11. glEnable(GL11.GL_POINT_SMOOTH);
+          GL11. glEnable( GL11. GL_LINE_SMOOTH);
+          GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
+          GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
         CoreRegistry.put(BagController.class,bagController);
         human = new Human(blockRepository);
         //sword=new Sword(0,0,0);
@@ -208,6 +211,8 @@ public class MyBlockEngine extends GLApp {
         		new float[]{-5,35,1,1} );
 
 */
+
+
         // position
         // Create a light (diffuse light, ambient light, position)
         setLight(GL11.GL_LIGHT1,
@@ -259,7 +264,7 @@ public class MyBlockEngine extends GLApp {
 
         // GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Create texture for spere
-        //sphereTextureHandle = makeTexture("images/background.png");
+        sphereTextureHandle = makeTexture("images/background.png");
         //humanTextureHandle = makeTexture("images/2000.png");
         //skyTextureHandle = makeTexture("images/sky180.png");
         //crossTextureHandle = makeTexture("images/gui.png");
@@ -301,6 +306,8 @@ public class MyBlockEngine extends GLApp {
         WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null,human);
 
         this.worldRenderer=worldRenderer;
+       // initDisplayList();
+        initChuck();
     }
 
     /**
@@ -354,7 +361,7 @@ public class MyBlockEngine extends GLApp {
         if (Switcher.PRINT_SWITCH)
             printText();
         //}
-        //drawAllBlock();
+       // drawAllBlock();
         //drawColorBlocks();
         try {
             Thread.sleep(100);
@@ -364,23 +371,12 @@ public class MyBlockEngine extends GLApp {
         mainDraw();
         //skysphere.render();
 
-        // draw the ground plane
-       /* GL11.glPushMatrix();
-        {
-           // GL11.glTranslatef(4f, 33f, 1f); // down a bit
-            GL11.glScalef(15f, .01f, 15f);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, groundTextureHandle);
-            renderCube();
-        }
-        GL11.glPopMatrix();*/
 
-        // airplaneShadow.drawShadow();
-        //drawObjects();
         //drawShip();
         //drawLine();
         //sword.y=human.Position.y+4;
         //sword.render();
-        print( 30, viewportH- 45, "position x:"+human.oldPosition.x +" y:"+human.oldPosition.y+" z:"+human.oldPosition.z);
+       // print( 30, viewportH- 45, "position x:"+human.oldPosition.x +" y:"+human.oldPosition.y+" z:"+human.oldPosition.z);
       /*  print( 30, viewportH- 45, "Use arrow keys to navigate:");
         print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
         print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
@@ -429,7 +425,7 @@ public class MyBlockEngine extends GLApp {
 
         // GL11.glTranslatef(1,30,1);
         GL11.glTranslatef(
-                1, 35, 1
+                1, 1, 1
         );
         //GL11.glScalef(0.1f, 0.1f, 0.1f);
         //GL11.glRotated(90, 1, 0, 0);
@@ -447,7 +443,7 @@ public class MyBlockEngine extends GLApp {
 //        GL11.glTranslatef(1,-30,1);
 
         GL11.glTranslatef(
-                -1, -35, -1
+                -1, -1, -1
         );
         GL11.glPopMatrix();
     }
@@ -501,71 +497,42 @@ public class MyBlockEngine extends GLApp {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
-    public void drawObjects() {
-
-
+    public void DrawObject() {
+        //GL11.glPushMatrix();
         // draw the earth
-        GL11.glPushMatrix();
-        {//GL11.glTranslated(4,36,1);
-            GL11.glScalef(2f, 2f, 2f);          // scale up
+        { GL11.glColor3f(1.0f, 1.0f, 1.0f);
+            // GL11.glTranslated(0,-1.5,0);
+            //GL11.glRotatef(rotation, 0, 1, 0);  // rotate around Y axis
+            // GL11.glScalef(0.35f, 0.35f, 0.35f);          // scale up
+            // GL11. glRotatef(xrot, 1.0f, 0.0f, 0.0f);					// Rotate On The X Axis
+            // GL11. glRotatef(yrot, 0.0f, 1.0f, 0.0f);					// Rotate On The Y Axis
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
             callDisplayList(earth);
         }
-        GL11.glPopMatrix();
-        /*TextureInfo ti = TextureManager.getTextureInfo("background");
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); //GL11.GL_NEAREST);
-
-
-        // Front Face
-        GL11.glTranslated(1,10,1);
-        GL11.glScaled(1,1,1);
-        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
-        int _x=8;
-        int _y=8;
-        int _z=1;
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2f(0.0f, 0.0f); GL11.glVertex3f(0-_x, 0-_y,  _z);	// Bottom Left
-        GL11.glTexCoord2f(1.0f, 0.0f); GL11.glVertex3f( _x, 0-_y,  _z);	// Bottom Right
-        GL11.glTexCoord2f(1.0f, 1.0f); GL11.glVertex3f( _x,  _y,  _z);	// Top Right
-        GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(0-_x,  _y,  _z);	// Top Left
-        GL11.glEnd();*/
-        TextureInfo ti = TextureManager.getTextureInfo("human");
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
-        GL11.glPushMatrix();
+        // GL11.glPopMatrix();
+        // draw the earth
+        // GL11.glPushMatrix();
         {
-            if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
-                human.render();
-            } else
-                human.renderPart();
+            GL11.glColor4f(1.0f, 1.0f, 1.0f, 0.4f);
+            // GL11.glScalef(0.35f, 0.35f, 0.35f);
+            // Rotate On The Y Axis
+            // scale up
+            GL11. glEnable( GL11.GL_BLEND);						// 启用混合
 
-        }
-        GL11.glPopMatrix();
-/*
-         ti = TextureManager.getTextureInfo("gold_armor");
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
-        GL11.glPushMatrix();
-        {
-            if(Switcher.CAMERA_2_PLAYER<-2){
-                human.render();
-            }else
-                human.renderPart();
+            GL11. glBlendFunc( GL11.GL_SRC_ALPHA,  GL11.GL_ONE);					// 把原颜色的40%与目标颜色混合
 
-        }
-        GL11.glPopMatrix();*/
-/*GL11.glTranslated(1,-5,1);
-        GL11.glRotated(30,1,0,0);
-        GL11.glScaled(1,1,1);*/
+            GL11. glEnable( GL11.GL_TEXTURE_GEN_S);						// 使用球映射
 
-       /* GL11.glPushMatrix();
-        {
+            GL11.glEnable( GL11.GL_TEXTURE_GEN_T);
 
-            human2.render();
-        }
-        GL11.glPopMatrix();*/
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.groundTextureHandle);
+            callDisplayList(earth);
+        } //GL11.glPopMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_GEN_S);
+        GL11.glDisable(GL11.GL_TEXTURE_GEN_T);
+        GL11.glDisable(GL11.GL_BLEND);
+
     }
-
 
 
 
@@ -652,24 +619,58 @@ public class MyBlockEngine extends GLApp {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
     }
+    public void testDraw(){
+        // draw the ground plane
+       /* GL11.glPushMatrix();
+        {
+            // GL11.glTranslatef(4f, 33f, 1f); // down a bit
+            GL11.glScalef(1f, 1f, 1f);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, groundTextureHandle);
+            renderCube();
 
+            GL11.glTranslated(2f,2f,2f);
+            renderCube();
+        }
+        GL11.glPopMatrix();*/
+
+        //airplaneShadow.drawShadow();
+        //DrawObject();
+        //testBeginDisplayList();
+
+        testChunk();
+
+    }
     public void mainDraw() {
-        try {
+
+
+      /*  try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        try {
+*/
+        /*try {
 
             animationManager.update();
         } catch (Exception e) {
             e.printStackTrace();
             exit();
-        }
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        worldRenderer.render();
+        }*/
+        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+
+       /* GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11. glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+        GL11. glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);*/
+       // TextureInfo ti1 = TextureManager.getTextureInfo("human");
+       // GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti1.textureHandle);
+        //worldRenderer.render();
+        //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+       // GL11. glFlush();
         TextureInfo ti = TextureManager.getTextureInfo("human");
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+
         GL11.glPushMatrix();
         {
             if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
@@ -680,6 +681,9 @@ public class MyBlockEngine extends GLApp {
         }
 
         GL11.glPopMatrix();
+       testDraw();
+
+        player.render();
 		/*
 		 * ti = TextureManager.getTextureInfo("gold_armor");
 		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
@@ -698,15 +702,117 @@ public class MyBlockEngine extends GLApp {
 		 * 
 		 * human2.render(); } GL11.glPopMatrix();
 		 */
-       // firework.render();
-        //GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+        //firework.render(human);
+       // GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+      // GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        player.render();
-        CoreRegistry.get(NuiManager.class).render();
+      CoreRegistry.get(NuiManager.class).render();
 
         //
 
     }
+    ChunkImpl chunk ;
+    public void initChuck(){
+chunk =new ChunkImpl();
+        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        //Block block =blockManager .getBlock("soil");
+        for (int x = 0; x < chunk.getChunkSizeX(); x+=2) {
+            for (int z = 0; z < chunk.getChunkSizeZ(); z+=2) {
+                Block block =blockManager .getBlock("soil");
+                chunk.setBlock(x, 0, z, block);
+            }
+        }
+
+       // chunk.setBlock(0,0,-2,block);
+
+        chunk.build();
+    }
+    public void testChunk(){
+        TextureInfo ti = TextureManager.getTextureInfo("soil");
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+        GL11.glBegin(GL11.GL_QUADS);
+        chunk.render();
+        GL11.glEnd();
+    }
+    int testDisplayId;
+    public void testBeginDisplayList(){
+
+        TextureInfo ti = TextureManager.getTextureInfo("human");
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+        GLApp.callDisplayList(this.testDisplayId);
+
+    }
+
+    public void initDisplayList(){
+        testDisplayId = GLApp.beginDisplayList();
+        GL11.glBegin(GL11.GL_QUADS);
+        // Front Face
+
+        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);//0~4  0~12
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P1);	// Bottom Left ǰ����
+        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P2);	// Bottom Right ǰ����
+        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P6);	// Top Right ǰ����
+        GL11.glTexCoord2f(0f, 3/8f); glVertex3fv(P5);	// Top Left	ǰ����
+        // Back Face
+
+        GL11.glNormal3f( 0.0f, 0.0f, -1.0f);
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P3);	// Bottom Left ������
+        GL11.glTexCoord2f(1/16f, 0f); glVertex3fv(P4);	// Bottom Right ������
+        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P8);	// Top Right ������
+        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P7);	// Top Left ������
+
+        // Top Face
+        GL11.glNormal3f( 0.0f, 1.0f, 0.0f);
+
+        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P5);	// Bottom Left ǰ����
+        GL11.glTexCoord2f(2/16f, 3/8f); glVertex3fv(P6);	// Bottom Right ǰ����
+        GL11.glTexCoord2f(2/16f, 4/8f); glVertex3fv(P7);	// Top Right ������
+        GL11.glTexCoord2f(1/16f, 4/8f); glVertex3fv(P8);	// Top Left ������
+        // Bottom Face
+        GL11.glNormal3f( 0.0f, -1.0f, 0.0f);
+        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P4);	// Top Right ������
+        GL11.glTexCoord2f(2/16f, 3/8f); glVertex3fv(P3);	// Top Left ������
+        GL11.glTexCoord2f(2/16f, 4/8f);glVertex3fv(P2);	// Bottom Left ǰ����
+        GL11.glTexCoord2f(1/16f, 4/8f);glVertex3fv(P1);	// Bottom Right ǰ����
+        // Right face
+        GL11.glNormal3f( 1.0f, 0.0f, 0.0f);
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P2);	// Bottom Left ǰ����
+        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P3);	// Bottom Right ������
+        GL11.glTexCoord2f(1/16f, 3/8f); glVertex3fv(P7);	// Top Right ������
+        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P6);	// Top Left ǰ����
+
+        // Left Face
+        GL11.glNormal3f( -1.0f, 0.0f, 0.0f);
+        GL11.glTexCoord2f(0f, 0f); glVertex3fv(P4);	// Bottom Left ������
+        GL11.glTexCoord2f(1/16f, 0f);glVertex3fv(P1);	// Bottom Right ǰ����
+        GL11.glTexCoord2f(1/16f, 3/8f);glVertex3fv(P5);	// Top Right ǰ����
+        GL11.glTexCoord2f(0f, 3/8f);glVertex3fv(P8);	// Top Leftǰ����
+        GL11.glEnd();
+
+        GL11.glEndList();
+    }
+    public void glVertex3fv(GL_Vector p){
+        GL11.glVertex3f(p.x,p.y,p.z);
+    }
+
+    GL_Vector P1=new GL_Vector(-0.25f,-1.5f,0.25f);
+    GL_Vector P2=new GL_Vector(0.25f,-1.5f,0.25f);
+    GL_Vector P3=new GL_Vector(0.25f,-1.5f,-0.25f);
+    GL_Vector P4=new GL_Vector(-0.25f,-1.5f,-0.25f);
+    GL_Vector P5=new GL_Vector(-0.25f,0f,0.25f);
+    GL_Vector P6=new GL_Vector(0.25f,0f,0.25f);
+    GL_Vector P7=new GL_Vector(0.25f,0f,-0.25f);
+    GL_Vector P8=new GL_Vector(-0.25f,0f,-0.25f);
+
+
+    GL_Vector[] vertexs={
+            P1,P2,P6,P5,
+            P3,P4,P8,P7,
+            P5,P6,P7,P8,
+            P4,P3,P2,P1,
+            P2,P3,P7,P6,
+            P4,P1,P5,P8
+    };
 /*
     public void keyDown(int keycode) {
 		*//*

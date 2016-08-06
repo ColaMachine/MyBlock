@@ -68,7 +68,7 @@ public class MouseControlCenter {
         }
     }
 
-    public void handleNavKeys(float seconds) {
+    public void handleNavKeys1(float seconds) {
         //dosn't need cooling
         // w a s d space
         //i think it's something  could be repeat something only receive down up as a signal;
@@ -76,16 +76,16 @@ public class MouseControlCenter {
         //let put the key in a group that need cooling
 
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            human.RotateX(-human.camSpeedXZ * seconds);
+            human.headRotate(-human.camSpeedXZ * seconds,0);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            human.RotateX(human.camSpeedXZ * seconds);
+            human.headRotate(human.camSpeedXZ * seconds,0);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            human.RotateV(human.camSpeedR * seconds);
+            human.bodyRotate(0,human.camSpeedR * seconds);
         } else
             // Turn right
             if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 
-                human.RotateV(-human.camSpeedR * seconds);
+                human.bodyRotate(0,-human.camSpeedR * seconds);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                 human.StrafeRight(-human.camSpeedXZ * seconds);
             } else
@@ -363,11 +363,11 @@ public class MouseControlCenter {
 
 
             if (Switcher.MOUSE_AUTO_CENTER) {
-                human.RotateV((float) (-(mousepoint.x - centerX)
+                human.headRotate((float) (-(mousepoint.x - centerX)
+                        * 4 * GLApp.getSecondsPerFrame()),(float) (-(mousepoint.y - centerY)
                         * 4 * GLApp.getSecondsPerFrame()));
                 // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-                human.RotateX((float) (-(mousepoint.y - centerY)
-                        * 4 * GLApp.getSecondsPerFrame()));
+               // human.RotateX();
 
                 //robot.mouseMove(mousepoint.x-(x-400), mousepoint.y-(y-300));
                 // robot.mouseMove(Display.getX()+400, Display.getY()+300);
@@ -390,14 +390,14 @@ public class MouseControlCenter {
     public void mouseRightDrag(int x, int y) {
         // add mouse motion to line if left button is down, and mouse has moved
         // more than 10 pixels
-        if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 10f
+        if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 1f
                 && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 200000f) {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
-            human.RotateV(-(x - prevMouseX) / 5);
+            human.bodyRotate(-(y - prevMouseY) ,-(x - prevMouseX) );
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-            human.RotateX(-(y - prevMouseY) / 5);
+            //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli=false;
             // regenerate the line
             // save mouse position
@@ -409,15 +409,17 @@ public class MouseControlCenter {
     }
 
     public void mouseLeftDrag(int x, int y) {
-        if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 10f
-                && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 20) {
+        if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 1f
+                && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 2000) {
             // add a segment to the line
             // System.out.println("ͷ��ת��");
             // System.out.println(x-prevMouseX);
             camera.fenli=true;
-            camera.RotateX(-(x - prevMouseX) / 5);
+
+            human.headRotate(-(x - prevMouseX) , (y - prevMouseY) );
+           // camera.RotateX(-(x - prevMouseX) / 5);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-            camera.RotateY((y - prevMouseY) / 5);
+            //camera.RotateY((y - prevMouseY) / 5);
 
             // regenerate the line
             // save mouse position
@@ -490,16 +492,16 @@ public class MouseControlCenter {
             int seconds=1;
 
             if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                human.RotateX(-human.camSpeedXZ * seconds);
+                human.headRotate(0,-human.camSpeedXZ * seconds);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                human.RotateX(human.camSpeedXZ * seconds);
+                human.headRotate(human.camSpeedXZ * seconds,0);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-                human.RotateV(human.camSpeedR * seconds);
+                human.bodyRotate(0,human.camSpeedR * seconds);
             } else
                 // Turn right
                 if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 
-                    human.RotateV(-human.camSpeedR * seconds);
+                    human.bodyRotate(0,-human.camSpeedR * seconds);
                 } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                     human.StrafeRight(-human.camSpeedXZ * seconds);
                     //LogUtil.println("walk left");

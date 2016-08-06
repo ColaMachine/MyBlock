@@ -112,19 +112,20 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
         /*
          * Generate the chunk from the density map.
          */
+
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
                 WorldBiomeProvider.Biome type = biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x), chunk.getBlockWorldPosZ(z));
                 int firstBlockHeight = -1;
 
-                for (int y = chunk.getChunkSizeY() - 1; y >= 0; y--) {
+                for (int y = chunk.getChunkSizeY() - 1; y >= 0; y--) {//
 
                     if (y == 0) { // The very deepest layer of the world is an indestructible mantle
                         chunk.setBlock(x, y, z, mantle);
                         break;
                     }
-                    if(1==1)
-                    continue;
+                    //if(1==1)
+                   // continue;
                     if (y <= 32 && y > 0) { // Ocean
                         chunk.setBlock(x, y, z, water);
                        // chunk.setLiquid(x, y, z, new LiquidData(LiquidType.WATER, LiquidData.MAX_LIQUID_DEPTH));

@@ -38,9 +38,9 @@ public class Human extends AABB{
 
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
+    public GL_Vector WalkDir;
 	public GL_Vector RightVector;
 	public GL_Vector UpVector;
-	public GL_Vector WalkDir;
 	public GL_Vector Position;
     public GL_Vector oldPosition=new GL_Vector();
 	public float RotatedX, RotatedY, RotatedZ;
@@ -232,6 +232,7 @@ public class Human extends AABB{
 	//	GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
 		this.walk();
 		this.dropControl();
+
         GL11.glTranslatef(Position.x,Position.y,Position.z);
         
         GL11.glRotatef(angle, 0, 1, 0);
@@ -258,7 +259,7 @@ public class Human extends AABB{
     public void renderPart() {
         adjust(this.Position.x, this.Position.y, this.Position.z);
         //GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
-        float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,-1));
+        float angle=GL_Vector.angleXZ(this.WalkDir, new GL_Vector(0,0,-1));//得到两个向量在xz平面上的角度
         //System.out.println("glRotatef angle :"+angle);
         //System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
 
@@ -341,7 +342,7 @@ public class Human extends AABB{
 	 * @param Angle
 	 *            the angle to rotate around the vertical axis in degrees
 	 */
-	public void RotateV(float Angle) {
+	public void RotateV1(float Angle) {
 		// Make a matrix to rotate the given number of degrees around Y axis
 		GL_Matrix M = GL_Matrix.rotateMatrix(0, (float) Math.toRadians(Angle),
 				0);
@@ -359,8 +360,31 @@ public class Human extends AABB{
 		//RotatedY += Angle;
 		// System.out.println(RotatedY);
 	}
-	
-	public void ViewRotateV(float Angle) {
+
+    /**
+     * x 是俯仰角度
+     * y 是左右角度
+     * @param x
+     * @param y
+     */
+	public void headRotate(float leftRightDegree,float updownDegree){
+        GL_Matrix M = GL_Matrix.rotateMatrix((float) Math.toRadians(updownDegree)/5, (float) Math.toRadians(leftRightDegree)/5,
+                0);
+        GL_Vector vd = M.transform(ViewDir);
+        ViewDir = vd;
+        //System.out.println(vd);
+    }
+    public void bodyRotate(float updownDegree,float leftRightDegree){
+        GL_Matrix M = GL_Matrix.rotateMatrix(0, (float) Math.toRadians(leftRightDegree)/5,
+                0);
+        GL_Vector vd = M.transform(WalkDir);
+        RightVector = GL_Vector.crossProduct(vd, UpVector);
+        WalkDir = vd;
+        ViewDir.x= vd.x;
+        ViewDir.z = vd.z;
+        headRotate(0,-updownDegree);
+    }
+	public void ViewRotateV1(float Angle) {
 		// Make a matrix to rotate the given number of degrees around Y axis
 		GL_Matrix M = GL_Matrix.rotateMatrix(0, (float) Math.toRadians(Angle),
 				0);
@@ -381,7 +405,7 @@ public class Human extends AABB{
 		// System.out.println(RotatedY);
 	}
 
-	public void RotateX(float Angle) {
+	public void RotateX1(float Angle) {
 		//System.out.println("angle" + Angle);
 		//RotatedX += Angle;
 		// Rotate viewdir around the right vector:
@@ -402,7 +426,7 @@ public class Human extends AABB{
 		/*UpVector = GL_Vector.multiply(GL_Vector.crossProduct(ViewDir,
 				RightVector), -1);*/
 	}
-	public void ViewRotateX(float Angle) {
+	public void ViewRotateX1(float Angle) {
 	//	System.out.println("angle" + Angle);
 		RotatedX += Angle;
 		// Rotate viewdir around the right vector:

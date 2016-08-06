@@ -61,7 +61,7 @@ public class HumanLeg {
 		}
 		Position 	= new GL_Vector(posx, posy, posz);
 	}
-	public void render(){
+	public void render(){ GL11. glEnable(GL11.GL_DEPTH_TEST);
 		 //GL11.glTranslatef(Position.x,Position.y,Position.z); // down a bit
 		
 		//λ��������ϵͳ
