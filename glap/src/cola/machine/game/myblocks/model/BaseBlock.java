@@ -15,6 +15,7 @@ public class BaseBlock extends AABB implements Block{
 	public int red=0;
 	public int blue=0;
 	public int green=0;
+    boolean alpha =false;
 	public String getName(){
 		return name;
 	}
@@ -48,10 +49,15 @@ public class BaseBlock extends AABB implements Block{
 		this.blue=color.b();
 		this.green=color.g();
 	}
-	public BaseBlock(String name,int id){
+	public BaseBlock(String name,int id,boolean alpha){
 		this.name=name;
 		this.id=id;
+        this.alpha=alpha;
 	}
+    public boolean getAlpha(){
+        return this.alpha;
+    }
+
 	public BaseBlock(){
 		
 	}

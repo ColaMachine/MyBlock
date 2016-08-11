@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import glapp.GLApp;
 import glapp.GLCamera;
@@ -43,11 +44,12 @@ import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
 import com.google.common.collect.Lists;
 
-import sun.security.krb5.Config;
+import cola.machine.game.myblocks.config.Config;
 import util.MathUtil;
 import static org.lwjgl.opengl.GL11.*;
 
 public class WorldRendererLwjgl implements WorldRenderer {
+    private final Config config;
     //DoubleBuffer eqr ;
 	private static final Logger logger = LoggerFactory
 			.getLogger(WorldRendererLwjgl.class);
@@ -82,7 +84,11 @@ public class WorldRendererLwjgl implements WorldRenderer {
        // eqr=
             //    ByteBuffer.allocateDirect(4 * GLApp.SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
         //eqr.put(0.0f).put(35.0f).put(0.0f).put(0.0f);
-
+        this.config=CoreRegistry.get(Config.class);
+        if(config ==null){
+            LogUtil.println("config 不能为Null ");
+           System.exit(0);
+        }
         //this.activeCamera = camera1;
 		this.chunkProvider = chunkProvider;
 		this.worldProvider = worldProvider;
@@ -136,7 +142,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
                     -chunk.getChunkWorldPosZ());
         }
 
-        for (ChunkImpl chunk : chunksInProximity) {
+       /* for (ChunkImpl chunk : chunksInProximity) {
             GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
                     chunk.getChunkWorldPosZ());
             GL11.glBegin(GL11.GL_QUADS);
@@ -144,7 +150,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
             GL11.glEnd();
             GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
                     -chunk.getChunkWorldPosZ());
-        }
+        }*/
         GL11.glDisable(GL11.GL_BLEND);
 /*
         GL11.glLoadIdentity();
@@ -248,7 +254,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcPlayerChunkOffsetX();
 		int newChunkPosZ = calcPlayerChunkOffsetZ();
-		int viewingDistance = 15;//config.getInstance().getRendering().getViewDistance().getChunkDistance();
+		int viewingDistance = config.getRendering().getViewDistance().getChunkDistance();
 
 		boolean chunksCurrentlyPending = false;
 

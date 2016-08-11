@@ -6,7 +6,7 @@ public abstract class BlockManager {
 
 	 public abstract Block getBlock(String uri);
 
-	public abstract Block getBlock(short oldValue);
+	public abstract Block getBlock(int oldValue);
 	
 
 }

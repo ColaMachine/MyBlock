@@ -59,7 +59,7 @@ public class BulletPhysics  {
     		
     		if(chunk.getBlockData(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z))>0){
     			if(delete){
-    				Block block=new BaseBlock("water",0);
+    				Block block=new BaseBlock("water",0,false);
     				chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z),block);
     				chunk.build();
                     chunk.buildAlpha();
@@ -72,7 +72,7 @@ public class BulletPhysics  {
         		 chunk_pos_x =  MathUtil.floor(((float)_x)/16);
          		 chunk_pos_z =  MathUtil.floor(((float)_z)/16);
     			BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-    			Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId());
+    			Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId(),false);
     			
     			ChunkImpl _chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
     			_chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor(_y), MathUtil.getOffesetChunk(_z), block);

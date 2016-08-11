@@ -150,4 +150,7 @@ public class ColorBlock extends AABB implements Block {
 		// VIP Auto-generated method stub
 		return 0;
 	}
+    public boolean getAlpha(){
+        return false;
+    }
 }

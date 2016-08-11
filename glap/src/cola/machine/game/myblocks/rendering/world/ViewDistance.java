@@ -24,7 +24,7 @@ public enum ViewDistance {
 		}
 	}
 
-	private ViewDistance(String displayName,int index, int chunkDistace){
+	private ViewDistance(String displayName,int index, int chunkDistance){
 		this.displayName=displayName;
 		this.index=index;
 		this.chunkDistance= chunkDistance;

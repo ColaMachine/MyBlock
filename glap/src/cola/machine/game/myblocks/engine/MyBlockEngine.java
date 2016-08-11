@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.engine;
 
 import cola.machine.game.myblocks.action.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
@@ -14,6 +15,7 @@ import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.*;
 import glmodel.GL_Vector;
 
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Collection;
 
@@ -295,21 +297,14 @@ public class MyBlockEngine extends GLApp {
         // water=new Water();
         // water.setCenter(2, 2, 2);
         // org.lwjgl.input.Keyboard.enableRepeatEvents(true);
-
-        StorageManager storageManager = new StorageManagerInternal();
-        PerlinWorldGenerator worldGenerator = new PerlinWorldGenerator();
-        worldGenerator.initialize();
-        worldGenerator.setWorldSeed("123123123");
-        GeneratingChunkProvider chunkProvider = new LocalChunkProvider(storageManager, worldGenerator);
-        //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
-        CoreRegistry.put(ChunkProvider.class, chunkProvider);
-        WorldProvider WorldProvider = new WorldProviderWrapper();
-
-        WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null,human);
-
-        this.worldRenderer=worldRenderer;
+try {
+    initSelf();
+}catch (Exception e){
+    e.printStackTrace();
+    exit();
+}
        // initDisplayList();
-        initChuck();
+       // initChuck();
     }
 
     /**
@@ -360,8 +355,7 @@ public class MyBlockEngine extends GLApp {
         }
         cam.render();
 
-        if (Switcher.PRINT_SWITCH)
-            printText();
+
         //}
        // drawAllBlock();
         //drawColorBlocks();
@@ -539,23 +533,41 @@ public class MyBlockEngine extends GLApp {
 
 
 
-    public void initSelf() {
+    public void initSelf()  {
         // TODO Auto-generated method stub
 
         // 暂时用默认的参数初始化manager 然后manager 放到corerepgistry里
         //
 
 		/* read config.cfg */
-        initConfig();
+        try {
+            initConfig();
 
-        initManagers();
+            initManagers();
 
-        // load assets
-        // initAssets();
-        //
-        // initOPFlow();
-        //
-        initEntities();
+            // load assets
+            // initAssets();
+            //
+            // initOPFlow();
+            //
+            initEntities();
+
+            StorageManager storageManager = new StorageManagerInternal();
+            PerlinWorldGenerator worldGenerator = new PerlinWorldGenerator();
+            worldGenerator.initialize();
+            worldGenerator.setWorldSeed("123123123");
+            GeneratingChunkProvider chunkProvider = new LocalChunkProvider(storageManager, worldGenerator);
+            //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
+            CoreRegistry.put(ChunkProvider.class, chunkProvider);
+            WorldProvider WorldProvider = new WorldProviderWrapper();
+
+            WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, human);
+
+            this.worldRenderer = worldRenderer;
+        }catch(Exception e ){
+            e.printStackTrace();;
+            System.exit(0);
+        }
 
     }
     Player player;
@@ -587,17 +599,19 @@ public class MyBlockEngine extends GLApp {
 
     }
 
-    public void initConfig() {
+    public void initConfig() throws IOException {
+        Config config =  Config.load(Config.getConfigFile());
+        CoreRegistry.put(Config.class,config );
         //
     }
 
     public void printText() {
-        print(30, viewportH - 45, "press key 0~9 choose the object");
-        print(30, viewportH - 60, "press key B open package");
-        print(30, viewportH - 75, "press key wasd qe walk and turn direction ");
-        print(30, viewportH - 90, "press space jump ");
-        print(30, viewportH - 105, "press up down look up down ");
-        print(30, viewportH - 120, "mouse click create block");
+//        print(30, viewportH - 45, "press key 0~9 choose the object");
+//        print(30, viewportH - 60, "press key B open package");
+//        print(30, viewportH - 75, "press key wasd qe walk and turn direction ");
+//        print(30, viewportH - 90, "press space jump ");
+//        print(30, viewportH - 105, "press up down look up down ");
+        print(30, viewportH - 120, "cam:"+human.ViewDir);
         print(30, viewportH - 135, "fps:" + time.tick());
     }
 
@@ -658,15 +672,14 @@ public class MyBlockEngine extends GLApp {
         }else if(Switcher.gameState==1){
 
             try {
-
                 animationManager.update();
             } catch (Exception e) {
                 e.printStackTrace();
                 exit();
             }
-            GL11.glScaled(0.1,0.1,0.1);
+            //GL11.glScaled(0.1,0.1,0.1);
             worldRenderer.render();
-            GL11.glScaled(10,10,10);
+            //GL11.glScaled(10,10,10);
             TextureInfo ti = TextureManager.getTextureInfo("human");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
 
@@ -727,7 +740,8 @@ public class MyBlockEngine extends GLApp {
       // GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 
-
+        if (Switcher.PRINT_SWITCH)
+            printText();
         //
 
     }

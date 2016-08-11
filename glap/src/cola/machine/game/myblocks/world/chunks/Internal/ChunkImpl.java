@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.world.chunks.*;
 import glapp.GLApp;
 
 import java.io.FileNotFoundException;
@@ -25,9 +27,6 @@ import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
-import cola.machine.game.myblocks.world.chunks.Chunk;
-import cola.machine.game.myblocks.world.chunks.ChunkBlockIterator;
-import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 
@@ -107,9 +106,18 @@ public class ChunkImpl implements Chunk {
      * @return
      */
 	public boolean needToPaint(int selfType,int blockType){
-		if( blockType==0){
+		if( blockType==0||selfType==0){
 			return true;
 		}
+//如果一个是透明的 另一个是不透明的 就需要绘制
+        //如果两个都是不透明的就不需要绘制
+        if((!blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha()) ){
+            return false;
+        }else if(blockManager.getBlock(selfType).getAlpha() && blockManager.getBlock(blockType).getAlpha()){
+            return false;
+        }else{
+            return true;
+        }
 		/*if((selfType==6||selfType==3) && blockType==0){
 			return true;
 		}
@@ -117,7 +125,7 @@ public class ChunkImpl implements Chunk {
 			return true;
 		}*/
 		
-		return false;
+		//return false;
 	}
     public boolean judgeAlpha(int type){
         if(3==type|| 0==type|| 6==type){
@@ -217,6 +225,11 @@ public class ChunkImpl implements Chunk {
 	public void build() {
 
 		displayId = GLApp.beginDisplayList();
+        ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
+        ChunkImpl leftChunk = (ChunkImpl)chunkProvider.getChunk(this.chunkPos.x-1,this.chunkPos.y,this.chunkPos.z);
+        ChunkImpl rightChunk = (ChunkImpl)chunkProvider.getChunk(this.chunkPos.x+1,this.chunkPos.y,this.chunkPos.z);
+        ChunkImpl frontChunk = (ChunkImpl)chunkProvider.getChunk(this.chunkPos.x,this.chunkPos.y,this.chunkPos.z+1);
+        ChunkImpl backChunk =(ChunkImpl) chunkProvider.getChunk(this.chunkPos.x,this.chunkPos.y,this.chunkPos.z-1);
 
 		// block.render();
         //GL11.glBegin(GL11.GL_QUADS);
@@ -253,7 +266,7 @@ public class ChunkImpl implements Chunk {
 								addThisBottom(x, y, z);//System.out.println("Bottom");
 							}
 						} else {
-							addThisBottom(x, y, z);//System.out.println("Bottom");
+							//addThisBottom(x, y, z);//System.out.println("Bottom");
 						}
 
 						// 判断左面
@@ -262,8 +275,15 @@ public class ChunkImpl implements Chunk {
 								addThisLeft(x, y, z);//System.out.println("left");
 							}
 						} else {
-							// TODO
-							addThisLeft(x, y, z);//System.out.println("left");
+							// TODO//x
+                            if(leftChunk!=null)
+                            if (needToPaint(i,  leftChunk.blockData.get(leftChunk.getChunkSizeX()-1,y,z))) {
+                                addThisLeft(x, y, z);//System.out.println("left");
+                            }else{
+                                //LogUtil.println("bu xu yao hui zhi");
+                            }
+
+
 						}
 
 						// 判断右面
@@ -273,7 +293,12 @@ public class ChunkImpl implements Chunk {
 								addThisRight(x, y, z);//System.out.println("Right");
 							}
 						} else {// TODO
-							addThisRight(x, y, z);//System.out.println("Right");
+
+                            if(rightChunk!=null)
+                            if (needToPaint(i,  rightChunk.blockData.get(0,y,z))) {
+                                addThisRight(x, y, z);//System.out.println("left");
+                            }
+							//addThisRight(x, y, z);//System.out.println("Right");
 						}
 
 						// 前面
@@ -283,7 +308,11 @@ public class ChunkImpl implements Chunk {
 								addThisFront(x, y, z);//System.out.println("Front");
 							}
 						} else {// TODO
-							addThisFront(x, y, z);//System.out.println("Front");
+                            if(frontChunk!=null)
+                                if (needToPaint(i,  frontChunk.blockData.get(x,y,0))) {
+                                    addThisFront(x, y, z);//System.out.println("left");
+                                }
+							//addThisFront(x, y, z);//System.out.println("Front");
 						}
 
 						// 后面
@@ -292,8 +321,12 @@ public class ChunkImpl implements Chunk {
 							if (needToPaint(i,blockData.get(x, y, z - 1) )) {
 								addThisBack(x, y, z);//System.out.println("back");
 							}
-						} else {// TODO
-							addThisBack(x, y, z);//System.out.println("back");
+						} else {// TODO z==0
+                            if(backChunk!=null)
+                                if (needToPaint(i,  backChunk.blockData.get(x,y,this.getChunkSizeZ()-1))) {
+                                    addThisBack(x, y, z);//System.out.println("left");
+                                }
+							//addThisBack(x, y, z);//System.out.println("back");
 						}
 
 					}
@@ -766,7 +799,7 @@ boolean flat =true;
 	public void preRender() {
 		if (this.disposed) {
 			// if(this.displayId==0){
-			this.build();this.buildAlpha();
+			this.build();//this.buildAlpha();
 			this.disposed = false;
 		}
 		if (this.displayId == 0) {
@@ -780,7 +813,7 @@ boolean flat =true;
 	public void render() {
 		if (this.displayId == 0) {
 			// int error =GL11.glGetError();
-			System.out.println("displayId should not be 0 in render");
+			System.out.println(this.chunkPos+"displayId should not be 0 in render");
 		} else {
 
 			GLApp.callDisplayList(this.displayId);

@@ -15,4 +15,5 @@ public interface  Block {
 	public int b();
 	public int g();
 	public int getId();
+    public boolean getAlpha();
 }
