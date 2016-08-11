@@ -2,10 +2,12 @@ package cola.machine.game.myblocks.model.ui;
 
 import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.chat.ChatDemo;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import cola.machine.game.myblocks.ui.inventory.InventoryDemo;
 import cola.machine.game.myblocks.ui.inventory.InventoryDialog;
+import cola.machine.game.myblocks.ui.login.LoginDemo;
 import cola.machine.game.myblocks.ui.test.*;
 import de.matthiasmann.twl.CallbackWithReason;
 import de.matthiasmann.twl.GUI;
@@ -30,18 +32,20 @@ public class NuiManager {
     Bag bag;
     PauseMenu PauseMenu;
     protected boolean closeRequested;
-    protected final DisplayMode desktopMode;
+    //protected final DisplayMode desktopMode;
     protected VideoSettings.CallbackReason vidDlgCloseReason;
     LWJGLRenderer renderer;
-     GuiRootPane root;
+    GuiRootPane root;
+    GUI gameGui;
+    GUI startGui;
     public  NuiManager() {
 
-        cross = new Cross();
+      /*  cross = new Cross();
         desktopMode = Display.getDisplayMode();
 
         bag = new Bag();
         PauseMenu = new PauseMenu();
-        toolbarcontainer = new ToolBar();
+        toolbarcontainer = new ToolBar();*/
         try{
      /*   Display.setDisplayMode(new DisplayMode(800, 600));//设置高度 宽度
         Display.create();//创建窗口
@@ -49,26 +53,30 @@ public class NuiManager {
         Display.setVSyncEnabled(true);//垂直同步
 
         Mouse.setClipMouseCoordinatesToWindow(false);//修建鼠标位置对应于窗口*/
-           root = new GuiRootPane();//创建root pane
-        //InventoryDemo demo = new InventoryDemo();//创建包裹实力
+            root = new GuiRootPane();//创建root pane
+            //InventoryDemo demo = new InventoryDemo();//创建包裹实力
 
-         renderer = new LWJGLRenderer();//调用lwjgl能力
-        renderer.setUseSWMouseCursors(true);
-        gui = new GUI(root, renderer);//创建gui
+            renderer = new LWJGLRenderer();//调用lwjgl能力
+            renderer.setUseSWMouseCursors(true);
+            gameGui = new GUI(root, renderer);//创建gui
             //ChatDemo chat = new ChatDemo();
 
-        this.loadTheme();//加载主题
-        this.addComponent();
+           LoginDemo loginDemo = new LoginDemo();
+             startGui = new GUI(loginDemo, renderer);
+
+
+            this.loadTheme();//加载主题
+
        /* ThemeManager theme = ThemeManager.createThemeManager(
                 InventoryDemo.class.getResource("inventory.xml"), renderer);//加载主体
         gui.applyTheme(theme);//应用主体
 */
-        //gui.validateLayout();//调整组件位置在窗口中间 验证布局
-        //demo.positionFrame();//调整组件 让组件自动调整到自适应大小
-         }catch(Exception e) {
+            //gui.validateLayout();//调整组件位置在窗口中间 验证布局
+            //demo.positionFrame();//调整组件 让组件自动调整到自适应大小
+        }catch(Exception e) {
             e.printStackTrace();
         }
-        CoreRegistry.put(GUI.class,gui);
+         CoreRegistry.put(GUI.class,startGui);
     }
 
     private void addComponent(){
@@ -195,7 +203,7 @@ public class NuiManager {
 
     private void loadTheme() throws IOException {
         renderer.syncViewportSize();
-        System.out.println("width="+renderer.getWidth()+" height="+renderer.getHeight());
+        //System.out.println("width="+renderer.getWidth()+" height="+renderer.getHeight());
 
         long startTime = System.nanoTime();
         // NOTE: this code destroys the old theme manager (including it's cache context)
@@ -203,37 +211,62 @@ public class NuiManager {
         // This allows easy reloading of a theme for development.
         // If you want fast theme switching without reloading then use the existing
         // cache context for loading the new theme and don't destroy the old theme.
-        ThemeManager newTheme = ThemeManager.createThemeManager(
-                SimpleTest.class.getResource("simple_demo.xml"), renderer);
+
+
+
+
+
+        ThemeManager theme = ThemeManager.createThemeManager(
+                LoginDemo.class.getResource("login.xml"), renderer);
+        startGui.applyTheme(theme);
+    }
+    public void startGame()  {
+        long startTime = System.nanoTime();
+        ThemeManager newTheme = null;
+        try {
+            newTheme = ThemeManager.createThemeManager(
+                    SimpleTest.class.getResource("simple_demo.xml"), renderer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         long duration = System.nanoTime() - startTime;
         System.out.println("Loaded theme in " + (duration/1000) + " us");
 
 
-
-        gui.setSize();
-        gui.applyTheme(newTheme);
-        gui.setBackground(newTheme.getImageNoWarning("gui.background"));
+        this.addComponent();
+        gameGui.setSize();
+        gameGui.applyTheme(newTheme);
+        gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
+        gameGui.validateLayout();
+        gameGui.adjustSize();
+        CoreRegistry.put(GUI.class,gameGui);
+        Switcher.gameState=1;
     }
 
-    GUI gui;
     public void render(){
-       // GLApp.setFog(false);
-    	   GLApp.pushAttribOrtho();
-           // switch to 2D projection
-           GLApp. setOrthoOn();
-        cross.render();
-        toolbarcontainer.render();
-        bag.render();
+        // GLApp.setFog(false);
+        //GLApp.pushAttribOrtho();
+        // switch to 2D projection
+        //GLApp. setOrthoOn();
+      //  cross.render();
+       // toolbarcontainer.render();
+        //bag.render();
 
-        PauseMenu.render();
+       // PauseMenu.render();
 
-          GLApp.setOrthoOff();
+       // GLApp.setOrthoOff();
         // return to previous settings
-       GLApp. popAttrib();
-       //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-       // System.out.println();
-        gui.update();//刷新gui
-       // GLApp.setFog(true);
+      //  GLApp. popAttrib();
+        //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        // System.out.println();
+        if(Switcher.gameState==0){
+            startGui.update();
+        }else if(Switcher.gameState==1) {
+            gameGui.update();//刷新gui
+        }
+
+
+        // GLApp.setFog(true);
     }
 
     private Object makeComplexTooltip() {

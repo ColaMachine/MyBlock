@@ -367,12 +367,19 @@ public class Human extends AABB{
      * @param x
      * @param y
      */
+
 	public void headRotate(float leftRightDegree,float updownDegree){
-        GL_Matrix M = GL_Matrix.rotateMatrix((float) Math.toRadians(updownDegree)/5, (float) Math.toRadians(leftRightDegree)/5,
+        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float) Math.toRadians(leftRightDegree)/5,
                 0);
+		ViewDir.y-=updownDegree/100;
         GL_Vector vd = M.transform(ViewDir);
         ViewDir = vd;
-        //System.out.println(vd);
+
+		if(ViewDir.y<=-0.5  )
+			ViewDir.y=-0.5f;
+		if(ViewDir.y>=0.9  )
+			ViewDir.y=0.9f;
+      //  System.out.println(vd);
     }
     public void bodyRotate(float updownDegree,float leftRightDegree){
         GL_Matrix M = GL_Matrix.rotateMatrix(0, (float) Math.toRadians(leftRightDegree)/5,

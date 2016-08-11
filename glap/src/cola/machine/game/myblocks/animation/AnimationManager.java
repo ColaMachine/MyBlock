@@ -89,7 +89,7 @@ public class AnimationManager {
                 throw new Exception("解析错误");
             }
         }
-    System.out.println(blocks.size());
+   // System.out.println(blocks.size());
         for(int i=0;i<blocks.size();i++){
             CssBlock block = blocks.get(i);
             if(block.title.startsWith("@keyframes")){

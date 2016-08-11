@@ -3,7 +3,7 @@
 <themes>
 
     <images file="chat.png" format="RGBA" filter="linear">
-        <area name="tooltip.background" border="3" xywh="1,24,7,7" splitx="L3,R3" splity="T3,B3"/>
+
         <grid name="frame.background" weightsX="0,0,1,0" weightsY="0,1,0" border="20,4,4,4" tint="#DFFF">
             <area xywh="1,1,2,17"/>
             <area sizeOverwriteH="40" xywh="4,1,1,17"/>
@@ -18,45 +18,45 @@
             <area xywh="8,21,1,2"/>
             <area xywh="13,21,2,2"/>
         </grid>
-        <select name="vscrollbar.upbutton.background" center="true">
-            <area tint="#FF0000" if="pressed" xywh="16,7,7,4"/>
-            <area tint="#5A5A5A" if="hover" xywh="16,7,7,4"/>
-            <area tint="#000000" xywh="16,7,7,4"/>
-        </select>
-        <select name="vscrollbar.downbutton.background" center="true">
-            <area tint="#FF0000" if="pressed" xywh="16,12,7,4"/>
-            <area tint="#5A5A5A" if="hover" xywh="16,12,7,4"/>
-            <area tint="#000000" xywh="16,12,7,4"/>
-        </select>
-        <select name="vscrollbar.thumb.background">
-            <area splity="4,5" tint="#FF0000" if="pressed" xywh="16,17,7,10"/>
-            <area splity="4,5" tint="#5A5A5A" if="hover" xywh="16,17,7,10"/>
-            <area splity="4,5" tint="#000000" xywh="16,17,7,10"/>
-        </select>
-        <area name="smiley" center="true" xywh="24,1,14,14"/>
-        <area name="innerframe.background" splitx="2,3" splity="2,3" border="2" xywh="17,1,5,5"/>
 
-        <area name="-editfield.cursor" xywh="1,1,1,1"/>
+        <area name="smiley" center="true" xywh="24,1,14,14"/>
+        <area name="chat.evilframe.background" border="27,10,10,10" xywh="40,1,20,29" splitx="L5,R5" splity="T19,B5"/>
+
+        <area name="-chat.innerframe.background" splitx="2,3" splity="2,3" xywh="17,1,5,5"/>
+        <select name="chat.innerframe.background" border="2">
+            <alias ref="-chat.innerframe.background" if="disabled" tint="#888"/>
+            <alias ref="-chat.innerframe.background"/>
+        </select>
+
+        <area name="-chat.editfield.cursor" xywh="1,1,1,1"/>
+        <animation name="chat.editfield.cursor" timeSource="keyboardFocus">
+            <frame ref="-chat.editfield.cursor" duration="500"/>
+            <frame ref="none" duration="500"/>
+        </animation>
+        <area name="chat.editfield.selection" tint="#E000FEFF" xywh="1,1,1,1"/>
+<!--        <area name="innerframe.background" splitx="2,3" splity="2,3" border="2" xywh="17,1,5,5"/>-->
+
+      <!--  <area name="-editfield.cursor" xywh="1,1,1,1"/>
         <animation name="editfield.cursor" timeSource="keyboardFocus">
             <frame ref="-editfield.cursor" duration="500"/>
             <frame ref="none" duration="500"/>
         </animation>
         <area name="editfield.selection" tint="#E000FEFF" xywh="1,1,1,1"/>
-        <area name="evilframe.background" border="19,5,5,5" xywh="40,1,20,29" splitx="L5,R5" splity="T19,B5"/>
+        <area name="evilframe.background" border="19,5,5,5" xywh="40,1,20,29" splitx="L5,R5" splity="T19,B5"/>-->
     </images>
 
-    <images file="../test/chaos_sphere_blue_800x600.png" format="RGB" filter="linear">
+    <!--<images file="../test/chaos_sphere_blue_800x600.png" format="RGB" filter="linear">
         <area name="background-image" xywh="0,0,800,600"/>
     </images>
+-->
+  <!--  <include filename="../test/cursors.xml"/>-->
 
-    <include filename="../test/cursors.xml"/>
-
-    <fontDef name="normal" filename="../test/font.fnt" color="white">
+<!--    <fontDef name="normal" filename="../test/font.fnt" color="white">
         <fontParam if="error" color="red"/>
         <fontParam if="disabled" color="gray"/>
         <fontParam if="textSelection" color="blue"/>
-    </fontDef>
-    <fontDef name="black" filename="../test/font.fnt" color="black"/>
+    </fontDef>-->
+<!--    <fontDef name="black" filename="../test/font.fnt" color="black"/>-->
     <fontDef name="red" filename="../test/font.fnt" color="red"/>
     <fontDef name="green" filename="../test/font.fnt" color="green"/>
     <fontDef name="blue" filename="../test/font.fnt" color="blue"/>
@@ -64,14 +64,14 @@
         <fontParam if="hover" color="blue" underline="true"/>
     </fontDef>
 
-    <inputMapDef name="-defaultInputMap">
+   <!-- <inputMapDef name="-defaultInputMap">
         <action name="selectAll">ctrl A</action>
         <action name="cut">ctrl X</action>
         <action name="copy">ctrl C</action>
         <action name="paste">ctrl V</action>
-    </inputMapDef>
+    </inputMapDef>-->
 
-    <theme name="-defaults">
+  <!--  <theme name="-defaults">
         <param name="background"><image>none</image></param>
         <param name="overlay"><image>none</image></param>
         <param name="font"><font>normal</font></param>
@@ -81,18 +81,18 @@
         <param name="maxWidth"><int>0</int></param>
         <param name="maxHeight"><int>0</int></param>
         <param name="inputMap"><inputMap>-defaultInputMap</inputMap></param>
-    </theme>
+    </theme>-->
 
-    <theme name="tooltipwindow" ref="-defaults">
+   <!-- <theme name="tooltipwindow" ref="-defaults">
         <param name="background"><image>tooltip.background</image></param>
         <param name="border"><border>5</border></param>
         <param name="fadeInTime"><int>0</int></param>
         <theme name="label" ref="-defaults">
             <param name="font"><font>black</font></param>
         </theme>
-    </theme>
+    </theme>-->
 
-    <theme name="resizableframe" ref="-defaults" allowWildcard="true">
+    <theme name="chatresizableframe" ref="-defaults" allowWildcard="true">
         <param name="background"><image>frame.background</image></param>
         <param name="border"><border>background.border</border></param>
         <param name="titleAreaTop"><int>1</int></param>
@@ -119,7 +119,7 @@
         <theme name="resizeHandle" ref="-defaults"/>
     </theme>
 
-    <theme name="vscrollbar" ref="-defaults" allowWildcard="true">
+    <!--<theme name="vscrollbar" ref="-defaults" allowWildcard="true">
         <theme name="upbutton" ref="-defaults">
             <param name=""><image>vscrollbar.upbutton.*</image></param>
             <param name="minHeight"><int>9</int></param>
@@ -137,7 +137,7 @@
     </theme>
 
     <theme name="hscrollbar" ref="-defaults" allowWildcard="true">
-        <!-- dummy -->
+        &lt;!&ndash; dummy &ndash;&gt;
         <theme name="leftbutton" ref="-defaults"/>
         <theme name="rightbutton" ref="-defaults"/>
         <theme name="thumb" ref="-defaults"/>
@@ -145,7 +145,7 @@
     </theme>
 
     <theme name="scrollpane" ref="-defaults" allowWildcard="true">
-        <theme name="hscrollbar" ref="hscrollbar"/>  <!-- not used -->
+        <theme name="hscrollbar" ref="hscrollbar"/>  &lt;!&ndash; not used &ndash;&gt;
         <theme name="vscrollbar" ref="vscrollbar"/>
         <param name="minWidth"><int>100</int></param>
         <param name="minHeight"><int>100</int></param>
@@ -166,15 +166,15 @@
         <theme name="renderer" ref="-defaults"/>
         <param name="autocompletion-height"><int>150</int></param>
     </theme>
+-->
+   <!-- <theme name="chatdemo" ref="-defaults">-->
+       <!--<param name="background"><image>background-image</image></param>-->
 
-    <theme name="chatdemo" ref="-defaults">
-        <param name="background"><image>background-image</image></param>
-
-        <theme name="fpscounter" ref="-defaults">
+      <!--  <theme name="fpscounter" ref="-defaults">
             <param name="tooltip"><string>Current FPS</string></param>
-        </theme>
+        </theme>-->
 
-        <theme name="chatframe" ref="resizableframe">
+        <theme name="chatframe" ref="chatresizableframe">
             <theme name="content" ref="-defaults">
                 <param name="defaultGap"><dimension>5,5</dimension></param>
                 <param name="smallGap"><dimension>8,8</dimension></param>
@@ -203,12 +203,13 @@
                         <param name="mouseCursor.link"><cursor>cursor.finger</cursor></param>
                     </theme>
                 </theme>
-                
-                <theme name="editfield" ref="editfield">
-                    <param name="background"><image>innerframe.background</image></param>
-                    <param name="border"><border>background.border</border></param>
-                </theme>
+
+
             </theme>
+         <!--   <theme name="editfield" ref="editfield">
+                <param name="background"><image>innerframe.background</image></param>
+                <param name="border"><border>background.border</border></param>
+            </theme>-->
         </theme>
-    </theme>
+  <!--  </theme>-->
 </themes>

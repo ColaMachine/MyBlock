@@ -9,7 +9,7 @@
 -->
 <themes>
     <include filename="simple.xml"/>
-    
+
     <images file="simple.png" format="COLOR">
         <alias name="blockgame0" ref="none"/>
         <composed name="blockgame1">
@@ -190,4 +190,6 @@
         </theme>
     </theme>
     <include filename="../inventory/inventory2.xml"/>
+    <include filename="../chat/chat.xml"/>
+    <!--<include filename="../login/login.xml"/>-->
 </themes>

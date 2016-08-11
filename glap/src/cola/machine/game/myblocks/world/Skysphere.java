@@ -41,10 +41,10 @@ public class Skysphere {
 		// Draw the skysphere
 
         //drawSkysphereTexture();
-
-		drawSkysphere();
+		drawSkyCube();
+		//drawSkysphere();
 		drawSun();
-		// drawSkyCube();
+		//
 		/*
 		 * if (false) { glCullFace(GL_FRONT); } else { glCullFace(GL_BACK); }
 		 */

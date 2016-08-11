@@ -39,6 +39,7 @@ public class LWJGLHelper {
 		String envpath= System.getProperty("java.library.path");
 		//System.setProperty("java.library.path",path.toAbsolutePath().toString()+File.pathSeparator+ envpath);
         // envpath= System.getProperty("java.library.path");
+		//System.out.println(envpath);
 		try{
 		final Field usrPathField = ClassLoader.class.getDeclaredField("usr_paths");
 		usrPathField.setAccessible(true);

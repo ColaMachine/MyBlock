@@ -11,6 +11,7 @@ import java.net.URL;
 
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import de.matthiasmann.twl.GUI;
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
@@ -421,7 +422,7 @@ public class GLApp {
         }
         // Initialize the Window
         try {
-            Display.create(new PixelFormat(0, 0, 0));  // set bits per buffer: alpha, depth, stencil
+            Display.create(new PixelFormat(0, depthBufferBits, 8));  // set bits per buffer: alpha, depth, stencil
             Display.setTitle(window_title);
             Display.setFullscreen(fullScreen);
             Display.setVSyncEnabled(VSyncEnabled);

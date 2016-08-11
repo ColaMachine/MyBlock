@@ -107,12 +107,15 @@ public class ChunkImpl implements Chunk {
      * @return
      */
 	public boolean needToPaint(int selfType,int blockType){
-		if((selfType==6||selfType==3) && blockType==0){
+		if( blockType==0){
+			return true;
+		}
+		/*if((selfType==6||selfType==3) && blockType==0){
 			return true;
 		}
 		if(selfType!=6 && (blockType==0|| blockType==6|| blockType==3)){
 			return true;
-		}
+		}*/
 		
 		return false;
 	}

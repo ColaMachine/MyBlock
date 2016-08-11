@@ -29,6 +29,8 @@
  */
 package cola.machine.game.myblocks.ui.login;
 
+import cola.machine.game.myblocks.model.ui.NuiManager;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
@@ -158,6 +160,9 @@ public class LoginDemo extends Widget {
     }
     
     void emulateLogin() {
+
+        NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
+        nuiManager.startGame();
         GUI gui = getGUI();
         if(gui != null) {
             // step 1: disable all controls

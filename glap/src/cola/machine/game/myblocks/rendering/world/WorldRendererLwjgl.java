@@ -43,6 +43,7 @@ import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
 import com.google.common.collect.Lists;
 
+import sun.security.krb5.Config;
 import util.MathUtil;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -225,7 +226,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         }										// Draw The Ball
         GL11. glFlush();*/
 
-		skysphere.render();
+		//skysphere.render();
 	}
 
 	int vaoId, vbocId, vboId;
@@ -247,7 +248,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcPlayerChunkOffsetX();
 		int newChunkPosZ = calcPlayerChunkOffsetZ();
-		int viewingDistance =4;// config.getRendering().getViewDistance().getChunkDistance();
+		int viewingDistance = 15;//config.getInstance().getRendering().getViewDistance().getChunkDistance();
 
 		boolean chunksCurrentlyPending = false;
 

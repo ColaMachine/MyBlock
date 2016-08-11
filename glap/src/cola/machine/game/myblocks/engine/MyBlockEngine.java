@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.*;
 import glmodel.GL_Vector;
@@ -23,7 +24,7 @@ import com.google.common.collect.Lists;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.jvm.hotspot.utilities.Assert;
+//import sun.jvm.hotspot.utilities.Assert;
 import time.Time;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
@@ -131,7 +132,7 @@ public class MyBlockEngine extends GLApp {
             PathManager.getInstance().useDefaultHomePath();
 
 
-
+            LWJGLHelper.initNativeLibs();
             //System.out.println(System.getProperty("java.library.path"));
             Collection<EngineSubsystem> subsystemList;
 
@@ -194,6 +195,7 @@ public class MyBlockEngine extends GLApp {
         for (EngineSubsystem subsystem : subsystemList) {
             subsystem.preInitialise();
         }
+
         setPerspective();
         /*
 		 * setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new
@@ -364,7 +366,7 @@ public class MyBlockEngine extends GLApp {
        // drawAllBlock();
         //drawColorBlocks();
         try {
-            Thread.sleep(100);
+          //  Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -389,6 +391,7 @@ public class MyBlockEngine extends GLApp {
     }
 
     public void drawAllBlock() {
+
         worldRenderer.render();
 		/*java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -649,13 +652,39 @@ public class MyBlockEngine extends GLApp {
             e.printStackTrace();
         }
 */
-        /*try {
 
-            animationManager.update();
-        } catch (Exception e) {
-            e.printStackTrace();
-            exit();
-        }*/
+        if(Switcher.gameState==0){
+            CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();
+        }else if(Switcher.gameState==1){
+
+            try {
+
+                animationManager.update();
+            } catch (Exception e) {
+                e.printStackTrace();
+                exit();
+            }
+            GL11.glScaled(0.1,0.1,0.1);
+            worldRenderer.render();
+            GL11.glScaled(10,10,10);
+            TextureInfo ti = TextureManager.getTextureInfo("human");
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+
+            GL11.glPushMatrix();
+            {
+                if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
+                    human.render();
+                } else
+                    human.renderPart();
+
+            }
+
+            GL11.glPopMatrix();
+            CoreRegistry.get(NuiManager.class).render();
+        }else if(Switcher.gameState==2){
+
+        }
+
         //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 
@@ -665,25 +694,16 @@ public class MyBlockEngine extends GLApp {
         GL11. glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);*/
        // TextureInfo ti1 = TextureManager.getTextureInfo("human");
        // GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti1.textureHandle);
-        //worldRenderer.render();
+       // GL11.glScaled(0.1,0.1,0.1);
+
+
+      //  GL11.glScaled(10,10,10);
         //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
        // GL11. glFlush();
-        TextureInfo ti = TextureManager.getTextureInfo("human");
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
 
-        GL11.glPushMatrix();
-        {
-            if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
-                human.render();
-            } else
-                human.renderPart();
+      // testDraw();
 
-        }
-
-        GL11.glPopMatrix();
-       testDraw();
-
-        player.render();
+       // player.render();
 		/*
 		 * ti = TextureManager.getTextureInfo("gold_armor");
 		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
@@ -706,7 +726,7 @@ public class MyBlockEngine extends GLApp {
        // GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
       // GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-      CoreRegistry.get(NuiManager.class).render();
+
 
         //
 
