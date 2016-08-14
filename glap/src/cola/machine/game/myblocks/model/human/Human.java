@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.Connector;
@@ -45,7 +46,7 @@ public class Human extends AABB{
     public GL_Vector oldPosition=new GL_Vector();
 	public float RotatedX, RotatedY, RotatedZ;
 	public float camSpeedR = 1; // degrees per second
-	public float camSpeedXZ = 0.4f; // units per second
+	public float camSpeedXZ = 2.4f; // units per second
 	public float camSpeedY = 0.1f; // units per second
 
     public MovementMode movementMode=MovementMode.NONE;
@@ -375,10 +376,10 @@ public class Human extends AABB{
         GL_Vector vd = M.transform(ViewDir);
         ViewDir = vd;
 
-		if(ViewDir.y<=-0.5  )
-			ViewDir.y=-0.5f;
-		if(ViewDir.y>=0.9  )
-			ViewDir.y=0.9f;
+        if(ViewDir.y<=Switcher.FUJIAO  )
+            ViewDir.y=Switcher.FUJIAO ;
+        if(ViewDir.y>=Switcher.YANGJIAO  )
+            ViewDir.y=Switcher.YANGJIAO;
       //  System.out.println(vd);
     }
     public void bodyRotate(float updownDegree,float leftRightDegree){
@@ -494,7 +495,7 @@ public class Human extends AABB{
 	}
 
 	public void MoveForward(float Distance) {// System.out.printf("%f %f %f
-												// \r\n",ViewDir.x,ViewDir.y,ViewDir.z);
+//        LogUtil.println("MoveForward");							// \r\n",ViewDir.x,ViewDir.y,ViewDir.z);
 		//if (this.stable) {
 		this.move( GL_Vector.add(Position, GL_Vector.multiplyWithoutY(ViewDir,
 					Distance)));

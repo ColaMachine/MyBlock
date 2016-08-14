@@ -330,7 +330,7 @@ try {
                 dcc.check(human);
             }
 
-       // mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
+       mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
         // cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -847,19 +847,19 @@ chunk =new ChunkImpl();
             P2,P3,P7,P6,
             P4,P1,P5,P8
     };
-/*
+
     public void keyDown(int keycode) {
-		*//*
-		 * if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
-		 * camera1)? camera2 : camera1); }
-		 *//*
+
+		/*  if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
+		 camera1)? camera2 : camera1); }*/
+
         mouseControlCenter.keyDown(keycode);
     }
 
     public void keyUp(int keycode) {
-        mouseControlCenter.keyUp(keycode);
+       // mouseControlCenter.keyUp(keycode);
     }
-
+/*
     *//**
      * Add last mouse motion to the line, only if left mouse button is down.
      *//*

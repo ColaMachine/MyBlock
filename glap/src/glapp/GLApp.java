@@ -268,6 +268,8 @@ public class GLApp {
             }
         }
         // Handle key hits
+
+
         if(Keyboard.isCreated()) {
             while (Keyboard.next()) {
                 // check for exit key
@@ -291,7 +293,7 @@ public class GLApp {
                     keyDown(Keyboard.getEventKey());
                    // LogUtil.println("key presseds");
                 } else {
-                    keyUp(Keyboard.getEventKey());    // key was released
+                    //keyUp(Keyboard.getEventKey());    // key was released
                 }
             }
         }

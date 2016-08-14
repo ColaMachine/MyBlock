@@ -9,4 +9,11 @@ public class Switcher {
     public static int CAMERA_MODEL=1;
 
     public static int gameState=0;//0菜单 1游戏 2暂停 -1 退出
+
+    public static int yangjiao_d=89;
+    public static int fujiao_d=-89;
+
+    public static float YANGJIAO=yangjiao_d/90f;
+
+    public static float FUJIAO=fujiao_d/90f;
 }
