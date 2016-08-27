@@ -4,6 +4,8 @@ package cola.machine.game.myblocks.animation;
  * Created by colamachine on 16_7_27.
  */
 public class Animation {
+    Integer allTime ;
+    Integer oneTime;
     String domName;
     String action;
     String animation_name;

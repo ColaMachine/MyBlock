@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
+import cola.machine.game.myblocks.switcher.Switcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +61,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 			
 			Path chunkPath =
                         PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
-				if(Files.isRegularFile(chunkPath)&&1==2){
+				if(!Switcher.test&&Files.isRegularFile(chunkPath)){
 					
 					ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
 						try {

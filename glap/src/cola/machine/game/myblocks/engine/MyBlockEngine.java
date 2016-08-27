@@ -120,7 +120,7 @@ public class MyBlockEngine extends GLApp {
     public BlockRepository blockRepository = new BlockRepository(this);
     BulletPhysics bulletPhysics;
     public Human human;
-    private Human human2;
+   // private Human human2;
     private Skysphere skysphere = new Skysphere();
     /**
      * Start the application. run() calls setup(), handles mouse and keyboard
@@ -573,7 +573,7 @@ try {
     Player player;
     private void initEntities(){
          player =new Player(CoreRegistry.get(TextureManager.class));
-
+          human.setPlayer(player);
         CoreRegistry.put(Player.class,player);
     }
     private void initManagers() {

@@ -22,6 +22,7 @@ public class Animator {
     KeyFrame[] frames ;
     int slot=0;
     public Animator(Animation animation,Component component){
+        LogUtil.println("创建新的animator");
         this.component=component;
         this.animation=animation;
         this.frames = animation.keyFrames.frames.toArray(new KeyFrame[animation.keyFrames.frames.size()]);
@@ -83,9 +84,11 @@ public class Animator {
         }
         if(toFrame.transform.rotateY!=null){
             //TODO
+            rotateY_speed=(toFrame.transform.rotateY-component.rotateY)/betweenTime;
         }
         if(toFrame.transform.rotateZ!=null){
             //TODO
+            rotateZ_speed=(toFrame.transform.rotateZ-component.rotateZ)/betweenTime;
         }
 
     }
@@ -101,17 +104,24 @@ public class Animator {
      * @throws Exception
      */
     boolean direction =true;
+
+
     public void process(Long nowTime) throws Exception {
         synchronized (this) {
             //LogUtil.println("nowTime" + nowTime);
             if (slot >= frames.length) {
                 complete = true;
+                LogUtil.println("动画结束x'd");
                 return;
             }
-            float jiange = nowTime - startTime;//算出本轮的运行时间
-           // LogUtil.println(jiange+":"+animation.animation_duration*1000*(count+1));
-            if(count >= animation.animation_iteration_count){//如果超出了运行的轮次
+            int timeInterval =  (int)(nowTime - startTime);
+            int nowCount = timeInterval/animation.oneTime;
 
+             int jiange =timeInterval%animation.oneTime;//算出本轮的运行时间
+
+          //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
+            if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
+                //表示运行结束
                 if(animation.animation_fill_mode.equals("forwards"))
                 {
                     //保留最后动画
@@ -140,7 +150,7 @@ public class Animator {
 
                 }
 
-                //LogUtil.println("动画结束");
+                LogUtil.println("动画结束");
                 //是不是在本次时间范围内
                 complete=true;
                 return;
@@ -150,26 +160,29 @@ public class Animator {
                 //是不是在本次时间范围内
                 complete=true;
                 return;
-            }*/else if(jiange<animation.animation_duration*1000/**(count+1)*/){//判断本轮的运行是否完成
+            }*/else if(nowCount==count/*jiange<animation.oneTime*//**(count+1)*/){//判断本轮的运行是否完成
                 //LogUtil.println("--------------又进入了");
                 if(direction) {//判断方向 如果是正向
                     if (slot >= timeSlice.length - 1) {
                         throw new Exception("数组越界");
                     }
-                    if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
+                    if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
                         if (rotateX_speed != null) {
                             component.rotateX += rotateX_speed * (nowTime - lastTime);
                             //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
                             //System.out.println("component.rotateX:" + component.rotateX);
                         }
                         if (rotateY_speed != null) {
-                            component.rotateY += rotateY_speed;
+                            component.rotateY += rotateY_speed * (nowTime - lastTime);
                         }
                         if (rotateZ_speed != null) {
-                            component.rotateZ += rotateZ_speed;
+                            component.rotateZ += rotateZ_speed * (nowTime - lastTime);
                         }
                         lastTime = nowTime;
-                    } else {//超过制定时间了
+                    } else if(jiange<timeSlice[slot ]) {
+                        LogUtil.println("slot 不在本轮周期中");
+
+                    }else {//超过制定时间了
                         //需要变更到下一个frame 区域里了
                         //lastTime = nowTime;
                         if (slot+2 >= frames.length) {
@@ -178,6 +191,7 @@ public class Animator {
 
                         }
                         slot++;
+                        LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
                         //重新计算
                         accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
                     }
@@ -191,10 +205,13 @@ public class Animator {
                            // System.out.println("component.rotateX:" + component.rotateX);
                         }
                         if (rotateY_speed != null) {
-                            component.rotateY += rotateY_speed;
+                            component.rotateY += rotateY_speed * (nowTime - lastTime);
+                            //component.rotateY += rotateY_speed;
                         }
                         if (rotateZ_speed != null) {
-                            component.rotateZ += rotateZ_speed;
+                            //component.rotateZ += rotateZ_speed;
+                            component.rotateZ += rotateZ_speed * (nowTime - lastTime);
+                            LogUtil.println("rotateZ"+component.rotateZ);
                         }
                         lastTime = nowTime;
                     } else {//超过制定时间了
@@ -214,9 +231,11 @@ public class Animator {
 
                 if(animation.animation_direction.equals("alternate")){
                     direction=!direction;
+                    LogUtil.println("反向运动"+direction);
                 }else{
 
                 }
+                count =nowCount;
                if(direction){
                    slot=0;
                    accSpeed(frames[0],frames[1],timeSlice[1]-timeSlice[0]);
@@ -226,7 +245,7 @@ public class Animator {
 
                    //slot不用变;
                }
-                count++;startTime=nowTime;
+                //count++;startTime=nowTime;
 
                 //LogUtil.println("count++:"+count);
 

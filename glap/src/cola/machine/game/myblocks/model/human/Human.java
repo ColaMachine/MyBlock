@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.model.Component;
@@ -36,7 +37,7 @@ public class Human extends AABB{
 
 
 
-
+    Player player ;
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
     public GL_Vector WalkDir;
@@ -58,7 +59,7 @@ public class Human extends AABB{
     public byte armor_hand=0;
 
 	int height = 2;
-    Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
+    //Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 	public HumanHead head = new HumanHead();
 	public HumanHand LHand = new HumanHand(true);
 	public HumanHand RHand = new HumanHand(false);
@@ -69,8 +70,11 @@ public class Human extends AABB{
 	public Item item;
 	BlockRepository blockRepository;
 	public boolean stable = true;
+    public void setPlayer(Player player){
+        this.player=player;
+    }
 	public Human(	BlockRepository blockRepository){
-
+/*
 
        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         Connector body_lhand = new Connector(lHandComponent,new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
@@ -78,7 +82,7 @@ public class Human extends AABB{
         bodyComponent.addConnector(body_lhand);
         Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         Connector body_rhand = new Connector(lHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
-        bodyComponent.addConnector(body_rhand);
+        bodyComponent.addConnector(body_rhand);*/
 
         this.blockRepository=blockRepository;
 
@@ -238,7 +242,7 @@ public class Human extends AABB{
         
         GL11.glRotatef(angle, 0, 1, 0);
         GL11.glScalef(0.5f,0.5f,0.5f);
-		LLeg.render();
+		/*LLeg.render();
 
 		RLeg.render();
 	
@@ -250,7 +254,8 @@ public class Human extends AABB{
 
         RHand.render();
 
-        LHand.render();
+        LHand.render();*/
+        player.render();
         GL11.glScalef(2,2,2);
 		GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
@@ -270,12 +275,13 @@ public class Human extends AABB{
         GL11.glTranslatef(Position.x,Position.y,Position.z);
 
         GL11.glRotatef(angle, 0, 1, 0);
+        player.render();
 
 //        LLeg.render();
 //
 //        RLeg.render();
 //
-         LHand.render();
+        // LHand.render();
 //
         //RHand.render();
 //
@@ -365,8 +371,7 @@ public class Human extends AABB{
     /**
      * x 是俯仰角度
      * y 是左右角度
-     * @param x
-     * @param y
+
      */
 
 	public void headRotate(float leftRightDegree,float updownDegree){
@@ -487,6 +492,9 @@ public class Human extends AABB{
 	}*/
 
 	public void StrafeRight(float Distance) {
+
+        AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+        manager.apply(player.bodyComponent,"walkerLeft");
 		//if (this.stable) {
 			lastMoveTime = Sys.getTime();
 			this.move( GL_Vector.add(Position, GL_Vector.multiply(RightVector,
@@ -497,7 +505,11 @@ public class Human extends AABB{
 	public void MoveForward(float Distance) {// System.out.printf("%f %f %f
 //        LogUtil.println("MoveForward");							// \r\n",ViewDir.x,ViewDir.y,ViewDir.z);
 		//if (this.stable) {
-		this.move( GL_Vector.add(Position, GL_Vector.multiplyWithoutY(ViewDir,
+
+        //Player player= CoreRegistry.get(Player.class);
+        AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+        manager.apply(player.bodyComponent,"walkerFoward");
+		this.move( GL_Vector.add(Position, GL_Vector.multiplyWithoutY(WalkDir,
 					Distance)));
 			lastMoveTime = Sys.getTime();
 			// System.out.printf("position: %f %f %f viewdir: %f %f %f

@@ -169,9 +169,7 @@ public class InventoryPanel extends Widget {
                 if(dropItem==null){
                     dropSlot.setItemWrap(dragItem);
                     dragSlot.setItemWrap(null);
-                    Player player= CoreRegistry.get(Player.class);
-                    AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-                    manager.apply(player.bodyComponent,"walker");
+
                 }else
                 if(dropItem.getItem().equals(dragItem.getItem())){
                     dropItem.setNum(dropItem.getNum()+dragItem.getNum());

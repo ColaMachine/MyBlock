@@ -4,6 +4,7 @@ package cola.machine.game.myblocks.ui.chat;
  * Created by colamachine on 16-6-24.
  */
 
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.textarea.HTMLTextAreaModel;
 import org.lwjgl.Sys;
@@ -23,7 +24,7 @@ public class ChatFrame extends ResizableFrame {
         this.textAreaModel = new HTMLTextAreaModel();
         this.textArea = new TextArea(textAreaModel);
         this.editField = new EditField();
-
+        CoreRegistry.put(ChatFrame.class , this);
         editField.addCallback(new EditField.Callback() {
             public void callback(int key) {//调用顺序 gui的 handlekey
                 System.out.println(key);
@@ -32,6 +33,8 @@ public class ChatFrame extends ResizableFrame {
                     appendRow("color"+curColor, editField.getText());
                     editField.setText("");
                     curColor = (curColor + 1) % 3;
+                    editField.giveupKeyboardFocus();
+                  //  hide();
                 }
             }
         });
@@ -53,6 +56,9 @@ public class ChatFrame extends ResizableFrame {
         add(l);
 
         appendRow("default", "Welcome to the chat demo. Type your messages below :)");
+    }
+    public void setFocus(){
+        this.editField.requestKeyboardFocus();
     }
 
     private void appendRow(String font, String text) {
@@ -102,7 +108,12 @@ public class ChatFrame extends ResizableFrame {
             scrollPane.setScrollPositionY(scrollPane.getMaxScrollPosY());
         }
     }
+//public void hide(){
+  //  this.fadeToHide(5);
 
+    //this.fadeTo(Color.,1000);
+    //this.setTheme(null);
+//}
     private boolean isURLChar(char ch) {
         return (ch == '.') || (ch == '/') || (ch == '%') ||
                 (ch >= '0' && ch <= '9') ||

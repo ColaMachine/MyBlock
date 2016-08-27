@@ -12,9 +12,13 @@ import java.util.regex.Pattern;
  * Created by colamachine on 16-7-25.
  */
 public class AnimationManager {
+    //componentid:action ==> animation animation 是绑定在一个节点上的一类动画
     HashMap<String,Animation> domAnimationsMap=new HashMap<>();
+    //framesName ==> keyframes 是animation对应的关键帧
     HashMap<String ,KeyFrames > keyFramesMap= new HashMap<>();
+    //animator 是动画的执行过程
     List<Animator> animators =new ArrayList<>();
+    //id:action==>animator
     HashMap<String,Animator> animatorMap = new HashMap<>();
 
     public AnimationManager(){
@@ -22,14 +26,23 @@ public class AnimationManager {
 
     }
     public void apply(Component component , String action){
+
+
         Animation animation = domAnimationsMap.get(component.id+":"+action);
+
+
         if(animation!=null){
-        Animator animator = new Animator(animation,component);
-            animators.add(animator);
-            if(animatorMap.get(component.id)!=null){
-                animatorMap.get(component.id).complete=true;
+
+            if(animatorMap.get(component.id+":"+action)!=null ){
+
+                return;
+                //animatorMap.get(component.id).complete=true;
+            }else{
+                Animator animator = new Animator(animation,component);
+                animators.add(animator);
+                animatorMap.put(animator.component.id+":"+action,animator);
             }
-            animatorMap.put(animator.component.id,animator);
+
         }
         if(component.connectors.size()>0){
             for(int i=0;i<component.connectors.size();i++){
@@ -47,7 +60,10 @@ public class AnimationManager {
            // LogUtil.println("画完前:"+animator.component.rotateX);
 
             if(animator.complete){
+                animatorMap.put(animator.component.id+":"+animator.animation.action,null);
+                LogUtil.println("移除动画"+animators.get(i).animation.action);
                 animators.remove(i);
+
             }else {
                 animator.process(now);
             }
@@ -167,6 +183,11 @@ public class AnimationManager {
             }
 
         }
+
+        //计算全周期时间
+        animation.oneTime=animation.animation_duration*1000;
+        animation.allTime=animation.animation_iteration_count*animation.oneTime;
+
         return animation;
     }
 

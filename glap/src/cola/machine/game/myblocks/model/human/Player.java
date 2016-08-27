@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class Player {
     TextureManager textureManager ;
-    float HAND_HEIGHT=1.5f;
+    float HAND_HEIGHT=0.75f;
     float HAND_WIDTH=0.5f;
     float HAND_THICK=0.5f;
 
@@ -22,7 +22,7 @@ public class Player {
     float BODY_THICK=0.5f;
 
 
-    float LEG_HEIGHT=1.5f;
+    float LEG_HEIGHT=0.75f;
     float LEG_WIDTH=0.5f;
     float LEG_THICK=0.5f;
 
@@ -40,19 +40,34 @@ public class Player {
         bodyComponent.setEightFace("humanBody",textureManager);
         //body
     //lhand
-        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        lHandComponent.setEightFace("humanHand", textureManager);
-        lHandComponent.id="lHumanHand";
-        Connector body_lhand = new Connector(lHandComponent,new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
+        Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        rHandComponent.setEightFace("humanHand", textureManager);
+        rHandComponent.id="rHumanHand";
+        Connector body_rhand = new Connector(rHandComponent,new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
 
-        bodyComponent.addConnector(body_lhand);
+        bodyComponent.addConnector(body_rhand);
+
+        //小手
+        Component rh= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        rh.setEightFace("humanHand", textureManager);
+        rh.id="rh";
+        Connector rhc = new Connector(rh,new GL_Vector(HAND_WIDTH/2,0,HAND_THICK/2),new GL_Vector(HAND_WIDTH/2,HAND_HEIGHT,HAND_THICK/2));
+
+        rHandComponent.addConnector(rhc);
 
         //rhand
-        Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        rHandComponent.setEightFace("humanHand",textureManager);
-        rHandComponent.id="rHumanHand";
-        Connector body_rhand = new Connector(rHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
-        bodyComponent.addConnector(body_rhand);
+        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        lHandComponent.setEightFace("humanHand",textureManager);
+        lHandComponent.id="lHumanHand";
+        Connector body_lhand = new Connector(lHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addConnector(body_lhand);
+
+        Component lh= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        lh.setEightFace("humanHand", textureManager);
+        lh.id="lh";
+        Connector lhc = new Connector(lh,new GL_Vector(HAND_WIDTH/2,0,HAND_THICK/2),new GL_Vector(HAND_WIDTH/2,HAND_HEIGHT,HAND_THICK/2));
+
+        lHandComponent.addConnector(lhc);
 
        //lleg
         Component lleg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
@@ -62,6 +77,14 @@ public class Player {
         bodyComponent.addConnector(body_lleg);
 
 
+        Component ll= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        ll.setEightFace("humanLeg", textureManager);
+        ll.id="ll";
+        Connector llc = new Connector(ll,new GL_Vector(LEG_WIDTH/2,0,LEG_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
+
+        lleg.addConnector(llc);
+
+
         //rleg
         Component rleg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
         rleg.setEightFace("humanLeg",textureManager);
@@ -69,6 +92,13 @@ public class Player {
         Connector body_rleg = new Connector(rleg,new GL_Vector(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
         bodyComponent.addConnector(body_rleg);
 
+
+        Component rl= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        rl.setEightFace("humanLeg", textureManager);
+        rl.id="rl";
+        Connector rlc = new Connector(rl,new GL_Vector(LEG_WIDTH/2,0,LEG_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
+
+        rleg.addConnector(rlc);
         //head
 
         Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);

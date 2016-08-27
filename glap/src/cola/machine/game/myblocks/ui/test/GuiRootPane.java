@@ -190,6 +190,7 @@
                     (evt.getModifiers() & Event.MODIFIER_CTRL) != 0 &&
                     (evt.getModifiers() & Event.MODIFIER_SHIFT) != 0) {
                 reduceLag ^= true;
+
                 System.out.println("reduceLag = " + reduceLag);
             }
 
@@ -225,6 +226,9 @@
                 }else if(evt.isKeyPressedEvent()){
                     //System.out.println("key pressed "+evt.getType());
                    // mouseControlCenter.keyDown(evt.getKeyCode());
+                    if(evt.getKeyCode()==Event.KEY_RETURN){
+                        CoreRegistry.get(ChatFrame.class).setFocus();
+                    }
                     return true;
                 }else if(evt.isKeyRepeated()){
                    // mouseControlCenter.keyDown(evt.getKeyCode());

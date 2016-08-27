@@ -3,6 +3,8 @@ package cola.machine.game.myblocks.world.generator;
 import java.util.Arrays;
 import java.util.List;
 
+import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.generator.ChunkGenerators.SimpleGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +75,11 @@ public abstract class AbstractBaseWorldGenerator  implements WorldGenerator{
     	/*PerlinTerrainGenerator generator = new PerlinTerrainGenerator();
     	generator.setWorldSeed("-3977122335882919370");
     	 generator.generateChunk(chunk);*/
+        if(Switcher.test){
+            firstPassGenerators.clear();
+            firstPassGenerators.add(new SimpleGenerator());
+
+        }
         for (final FirstPassGenerator generator : firstPassGenerators) {
             generator.generateChunk(chunk);
         }
