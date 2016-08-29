@@ -238,7 +238,7 @@ public class Human extends AABB{
 		this.walk();
 		this.dropControl();
 
-        GL11.glTranslatef(Position.x,Position.y,Position.z);
+        GL11.glTranslatef(Position.x,Position.y+0.75f,Position.z);
         
         GL11.glRotatef(angle, 0, 1, 0);
         GL11.glScalef(0.5f,0.5f,0.5f);

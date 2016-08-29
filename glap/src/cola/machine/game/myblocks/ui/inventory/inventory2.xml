@@ -88,6 +88,10 @@
     <theme name="itemslot" ref="-defaults" allowWildcard="true">
         <param name="background"><image>itemslot.background</image></param>
         <param name="border"><border>background.border</border></param>
+        <param name="minWidth"><int>40</int></param>
+        <param name="minHeight"><int>40</int></param>
+        <param name="maxWidth"><int>40</int></param>
+        <param name="maxHeight"><int>40</int></param>
         <param name="icons"><map>
             <param name=""><image>icon.*</image></param>
         </map></param>

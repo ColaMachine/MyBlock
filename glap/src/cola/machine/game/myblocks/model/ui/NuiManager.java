@@ -7,6 +7,8 @@ import cola.machine.game.myblocks.ui.chat.ChatDemo;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import cola.machine.game.myblocks.ui.inventory.InventoryDemo;
 import cola.machine.game.myblocks.ui.inventory.InventoryDialog;
+import cola.machine.game.myblocks.ui.inventory.InventoryPanel;
+import cola.machine.game.myblocks.ui.inventory.PersonPanel;
 import cola.machine.game.myblocks.ui.login.LoginDemo;
 import cola.machine.game.myblocks.ui.test.*;
 import de.matthiasmann.twl.CallbackWithReason;
@@ -31,7 +33,7 @@ public class NuiManager {
     Cross cross;
     Bag bag;
     PauseMenu PauseMenu;
-    protected boolean closeRequested;
+
     //protected final DisplayMode desktopMode;
     protected VideoSettings.CallbackReason vidDlgCloseReason;
     LWJGLRenderer renderer;
@@ -53,12 +55,12 @@ public class NuiManager {
         Display.setVSyncEnabled(true);//垂直同步
 
         Mouse.setClipMouseCoordinatesToWindow(false);//修建鼠标位置对应于窗口*/
-            root = new GuiRootPane();//创建root pane
+
             //InventoryDemo demo = new InventoryDemo();//创建包裹实力
 
             renderer = new LWJGLRenderer();//调用lwjgl能力
             renderer.setUseSWMouseCursors(true);
-            gameGui = new GUI(root, renderer);//创建gui
+
             //ChatDemo chat = new ChatDemo();
 
            LoginDemo loginDemo = new LoginDemo();
@@ -79,127 +81,7 @@ public class NuiManager {
          CoreRegistry.put(GUI.class,startGui);
     }
 
-    private void addComponent(){
-        /*WidgetsDemoDialog1 dlg1 = new WidgetsDemoDialog1();
-        root.desk.add(dlg1);
-        dlg1.adjustSize();
-        dlg1.center(0.35f, 0.5f);
 
-        GraphDemoDialog1 fMS = new GraphDemoDialog1();
-        root.desk.add(fMS);
-        fMS.adjustSize();
-        fMS.center(1f, 0.8f);
-
-        ScrollPaneDemoDialog1 fScroll = new ScrollPaneDemoDialog1();
-        root.desk.add(fScroll);
-        fScroll.adjustSize();
-        fScroll.center(0f, 0f);
-        fScroll.addCloseCallback();
-        fScroll.centerScrollPane();
-
-        TableDemoDialog1 fTable = new TableDemoDialog1();
-        root.desk.add(fTable);
-        fTable.adjustSize();
-        fTable.center(0f, 0.5f);
-        //fTable.addCloseCallback();
-
-        PropertySheetDemoDialog fPropertySheet = new PropertySheetDemoDialog();
-        fPropertySheet.setHardVisible(false);
-        root.desk.add(fPropertySheet);
-        fPropertySheet.setSize(400, 400);
-        fPropertySheet.center(0f, 0.25f);
-        fPropertySheet.addCloseCallback();
-
-        TextAreaDemoDialog1 fInfo = new TextAreaDemoDialog1();
-        root.desk.add(fInfo);
-        fInfo.setSize(gui.getWidth()*2/3, gui.getHeight()*2/3);
-        fInfo.center(0.5f, 0.5f);
-        fInfo.addCloseCallback();*/
-
-        InventoryDialog inventoryPanel = new InventoryDialog();//10行5列
-        root.desk.add(inventoryPanel);
-        inventoryPanel.adjustSize();
-        inventoryPanel.center(0.5f, 0.5f);
-        inventoryPanel.addCloseCallback();
-
-/*
-        InventoryDialog inventoryPanel2 = new InventoryDialog();//10行5列
-        root.desk.add(inventoryPanel2);
-        inventoryPanel2.adjustSize();
-        inventoryPanel2.center(0.5f, 0.5f);
-        inventoryPanel2.addCloseCallback();*/
-
-        TextAreaDemoDialog2 fTextAreaTest = new TextAreaDemoDialog2();
-
-        inventoryPanel.setVisible(false);
-       /* TextAreaDemoDialog2 fTextAreaTest = new TextAreaDemoDialog2();
->>>>>>> 0ee979ac5e533853303ebca53ea6238e474ff593
-        fTextAreaTest.setHardVisible(false);
-        root.desk.add(fTextAreaTest);
-        fTextAreaTest.setSize(gui.getWidth()*2/3, gui.getHeight()*2/3);
-        fTextAreaTest.center(0.5f, 0.5f);
-        fTextAreaTest.addCloseCallback();
-
-        ColorSelectorDemoDialog1 fCS = new ColorSelectorDemoDialog1();
-        fCS.setHardVisible(false);
-        root.desk.add(fCS);
-        fCS.adjustSize();
-        fCS.center(0.5f, 0.5f);
-        fCS.addCloseCallback();
-
-        final PopupWindow settingsDlg = new PopupWindow(root);
-        final VideoSettings settings = new VideoSettings(
-                AppletPreferences.userNodeForPackage(VideoSettings.class),
-                desktopMode);
-        settingsDlg.setTheme("settingdialog");
-        settingsDlg.add(settings);
-        settingsDlg.setCloseOnClickedOutside(false);
-        settings.setTheme("settings");
-        settings.addCallback(new CallbackWithReason<VideoSettings.CallbackReason>() {
-            public void callback(VideoSettings.CallbackReason reason) {
-                vidDlgCloseReason = reason;
-                settingsDlg.closePopup();
-            }
-        });*/
-
-        root.addButton("Exit", new Runnable() {
-            public void run() {
-                closeRequested = true;
-            }
-        });
-
-
-
-        /*root.addButton("Info", "Shows TWL license", new ToggleFadeFrame(fInfo)).setTooltipContent(makeComplexTooltip());
-        */root.addButton("inventory", "inventory", new ToggleFadeFrame(inventoryPanel)).setTooltipContent(makeComplexTooltip());
-        /*root.addButton("TA", "Shows a text area test", new ToggleFadeFrame(fTextAreaTest));
-
-
-            root.addButton("Settings", "Opens a dialog which might be used to change video settings", new Runnable() {
-                public void run() {
-                    settings.readSettings();
-                    settingsDlg.openPopupCentered();
-                }
-            });
-*/
-
-      /*  root.addButton("ScrollPane", new ToggleFadeFrame(fScroll));
-        root.addButton("Properties", new ToggleFadeFrame(fPropertySheet));
-        root.addButton("Color", new ToggleFadeFrame(fCS));
-
-        root.addButton("Game", new Runnable() {
-            public void run() {
-                BlockGame game = new BlockGame();
-                game.setTheme("/blockgame");
-                PopupWindow popup = new PopupWindow(root);
-                popup.setTheme("settingdialog");
-                popup.add(game);
-                popup.openPopupCentered();
-            }
-        });*/
-
-        //fInfo.requestKeyboardFocus();
-    }
 
     private void loadTheme() throws IOException {
         renderer.syncViewportSize();
@@ -231,9 +113,9 @@ public class NuiManager {
         }
         long duration = System.nanoTime() - startTime;
         System.out.println("Loaded theme in " + (duration/1000) + " us");
-
-
-        this.addComponent();
+        root = new GuiRootPane();//创建root pane
+        gameGui = new GUI(root, renderer);//创建gui
+        //this.root.addGamingComponent();
         gameGui.setSize();
         gameGui.applyTheme(newTheme);
         gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
@@ -241,6 +123,8 @@ public class NuiManager {
         gameGui.adjustSize();
         CoreRegistry.put(GUI.class,gameGui);
         Switcher.gameState=1;
+root.reAdjust();
+        //root.personPanel.adjustSize();
     }
 
     public void render(){

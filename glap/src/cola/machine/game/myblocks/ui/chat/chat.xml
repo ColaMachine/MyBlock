@@ -2,9 +2,10 @@
 <!DOCTYPE themes PUBLIC "-//www.matthiasmann.de//TWL-Theme//EN" "http://hg.l33tlabs.org/twl/raw-file/tip/src/de/matthiasmann/twl/theme/theme.dtd">
 <themes>
 
+
     <images file="chat.png" format="RGBA" filter="linear">
 
-        <grid name="frame.background" weightsX="0,0,1,0" weightsY="0,1,0" border="20,4,4,4" tint="#DFFF">
+        <grid name="frame.background1" weightsX="0,0,1,0" weightsY="0,1,0" border="20,4,4,4" tint="#DFFF">
             <area xywh="1,1,2,17"/>
             <area sizeOverwriteH="40" xywh="4,1,1,17"/>
             <area xywh="8,1,1,17"/>
@@ -18,11 +19,24 @@
             <area xywh="8,21,1,2"/>
             <area xywh="13,21,2,2"/>
         </grid>
-
+        <grid name="frame.background" weightsX="0,0,1,0" weightsY="0,1,0" border="20,4,4,4" tint="#DFFF">
+            <area xywh="61,1,2,17"/>
+            <area sizeOverwriteH="40" xywh="64,1,1,17"/>
+            <area xywh="68,1,1,17"/>
+            <area xywh="63,1,2,17"/>
+            <area xywh="61,19,2,1"/>
+            <area sizeOverwriteH="40" xywh="64,19,1,1"/>
+            <area xywh="68,19,1,1"/>
+            <area xywh="63,19,2,1"/>
+            <area xywh="61,21,2,2"/>
+            <area sizeOverwriteH="40" xywh="64,21,1,2"/>
+            <area xywh="68,21,1,2"/>
+            <area xywh="63,21,2,2"/>
+        </grid>
         <area name="smiley" center="true" xywh="24,1,14,14"/>
         <area name="chat.evilframe.background" border="27,10,10,10" xywh="40,1,20,29" splitx="L5,R5" splity="T19,B5"/>
 
-        <area name="-chat.innerframe.background" splitx="2,3" splity="2,3" xywh="17,1,5,5"/>
+        <area name="-chat.innerframe.background" splitx="2,3" splity="2,3" xywh="17,11,5,5"/>
         <select name="chat.innerframe.background" border="2">
             <alias ref="-chat.innerframe.background" if="disabled" tint="#888"/>
             <alias ref="-chat.innerframe.background"/>
@@ -56,11 +70,12 @@
         <fontParam if="disabled" color="gray"/>
         <fontParam if="textSelection" color="blue"/>
     </fontDef>-->
-<!--    <fontDef name="black" filename="../test/font.fnt" color="black"/>-->
-    <fontDef name="red" filename="../test/font.fnt" color="red"/>
-    <fontDef name="green" filename="../test/font.fnt" color="green"/>
-    <fontDef name="blue" filename="../test/font.fnt" color="blue"/>
-    <fontDef name="link" filename="../test/font.fnt" color="blue" underlineOffset="1">
+<!--   <fontDef name="black" filename="../test/font.fnt" color="black"/> -->
+
+    <fontDef name="red" filename="../test/font.fnt" color="yellow"/>
+    <fontDef name="green" filename="../test/font.fnt" color="yellow"/>
+    <fontDef name="blue" filename="../test/font.fnt" color="yellow"/>
+    <fontDef name="link" filename="../test/font.fnt" color="yellow" underlineOffset="1">
         <fontParam if="hover" color="blue" underline="true"/>
     </fontDef>
 

@@ -3,6 +3,10 @@
     import cola.machine.game.myblocks.control.MouseControlCenter;
     import cola.machine.game.myblocks.registry.CoreRegistry;
     import cola.machine.game.myblocks.ui.chat.ChatFrame;
+    import cola.machine.game.myblocks.ui.inventory.InventoryDemo;
+    import cola.machine.game.myblocks.ui.inventory.InventoryDialog;
+    import cola.machine.game.myblocks.ui.inventory.PersonDialog;
+    import cola.machine.game.myblocks.ui.inventory.PersonPanel;
     import de.matthiasmann.twl.*;
     import de.matthiasmann.twl.model.SimpleBooleanModel;
     import org.lwjgl.opengl.Display;
@@ -11,13 +15,15 @@
      * Created by luying on 16/7/3.
      */
     public class GuiRootPane extends Widget {
+        protected boolean closeRequested;
         MouseControlCenter mouseControlCenter;
         public  final DesktopArea desk;
         private boolean dragActive;
         final BoxLayout btnBox;
         final BoxLayout vsyncBox;
         boolean reduceLag = true;
-
+        final InventoryDialog inventoryDialog;
+        public PersonDialog personDialog ;
         public GuiRootPane() {
             //setTheme("");
 
@@ -52,6 +58,23 @@
             add(desk);
             add(btnBox);
             add(vsyncBox);
+
+             personDialog = new PersonDialog();
+            add(personDialog);
+            personDialog.setPosition(100,200);
+
+             inventoryDialog = new InventoryDialog();//10行5列
+           // desk.add(inventoryPanel);
+            add(inventoryDialog);
+            //inventoryPanel.adjustSize();
+            inventoryDialog.center(0.5f, 0.5f);
+            inventoryDialog.addCloseCallback();
+
+
+
+            // personPanel.validateLayout();
+           // personPanel.setMinSize(personPanel.getPreferredInnerWidth(),personPanel.getPreferredInnerHeight());
+           // personPanel.setMinSize(200,500);
 
 
            /* loginPanel = new DialogLayout();
@@ -114,6 +137,11 @@
         final Button btnLogin;*/
 
 
+        public void reAdjust(){
+            this.chatFrame.adjustSize();
+            this.inventoryDialog.adjustSize();
+            this.personDialog.adjustSize();
+        }
         private final ChatFrame chatFrame;
         public Button addButton(String text, Runnable cb) {
             Button btn = new Button(text);
@@ -195,6 +223,7 @@
             }
 
 
+
             boolean handled =super.handleEvent(evt);
             if(!handled)
                 if(evt.isMouseEventNoWheel()) {
@@ -224,9 +253,21 @@
                     }
                     return true;
                 }else if(evt.isKeyPressedEvent()){
+
+                    if(evt.getType()==Event.Type.KEY_PRESSED){
+                        if(evt.getKeyCode() == Event.KEY_B){
+
+                           // InventoryDialog inventoryDialog= CoreRegistry.get(InventoryDialog.class);
+                            inventoryDialog.setVisible(!inventoryDialog.isVisible());
+                            inventoryDialog.validateLayout();
+                            inventoryDialog.adjustSize();
+                        }
+                    }
                     //System.out.println("key pressed "+evt.getType());
-                   // mouseControlCenter.keyDown(evt.getKeyCode());
+                    mouseControlCenter.keyDown(evt.getKeyCode());
                     if(evt.getKeyCode()==Event.KEY_RETURN){
+
+                        CoreRegistry.get(ChatFrame.class).showEdit();
                         CoreRegistry.get(ChatFrame.class).setFocus();
                     }
                     return true;
@@ -241,6 +282,128 @@
 
         public void addGame(){
 
+        }
+
+        public void addGamingComponent(){
+        /*WidgetsDemoDialog1 dlg1 = new WidgetsDemoDialog1();
+        root.desk.add(dlg1);
+        dlg1.adjustSize();
+        dlg1.center(0.35f, 0.5f);
+
+        GraphDemoDialog1 fMS = new GraphDemoDialog1();
+        root.desk.add(fMS);
+        fMS.adjustSize();
+        fMS.center(1f, 0.8f);
+
+        ScrollPaneDemoDialog1 fScroll = new ScrollPaneDemoDialog1();
+        root.desk.add(fScroll);
+        fScroll.adjustSize();
+        fScroll.center(0f, 0f);
+        fScroll.addCloseCallback();
+        fScroll.centerScrollPane();
+
+        TableDemoDialog1 fTable = new TableDemoDialog1();
+        root.desk.add(fTable);
+        fTable.adjustSize();
+        fTable.center(0f, 0.5f);
+        //fTable.addCloseCallback();
+
+        PropertySheetDemoDialog fPropertySheet = new PropertySheetDemoDialog();
+        fPropertySheet.setHardVisible(false);
+        root.desk.add(fPropertySheet);
+        fPropertySheet.setSize(400, 400);
+        fPropertySheet.center(0f, 0.25f);
+        fPropertySheet.addCloseCallback();
+
+        TextAreaDemoDialog1 fInfo = new TextAreaDemoDialog1();
+        root.desk.add(fInfo);
+        fInfo.setSize(gui.getWidth()*2/3, gui.getHeight()*2/3);
+        fInfo.center(0.5f, 0.5f);
+        fInfo.addCloseCallback();*/
+
+       /* InventoryDialog inventoryPanel = new InventoryDialog();//10行5列
+        root.desk.add(inventoryPanel);
+
+
+        inventoryPanel.center(0.23f, 0.36f);
+        //inventoryPanel.addCloseCallback();
+        inventoryPanel.adjustSize();
+        inventoryPanel.setVisible(false);
+        CoreRegistry.put(InventoryDialog.class,inventoryPanel);*/
+
+
+           // TextAreaDemoDialog2 fTextAreaTest = new TextAreaDemoDialog2();
+
+
+
+
+       /* TextAreaDemoDialog2 fTextAreaTest = new TextAreaDemoDialog2();
+>>>>>>> 0ee979ac5e533853303ebca53ea6238e474ff593
+        fTextAreaTest.setHardVisible(false);
+        root.desk.add(fTextAreaTest);
+        fTextAreaTest.setSize(gui.getWidth()*2/3, gui.getHeight()*2/3);
+        fTextAreaTest.center(0.5f, 0.5f);
+        fTextAreaTest.addCloseCallback();
+
+        ColorSelectorDemoDialog1 fCS = new ColorSelectorDemoDialog1();
+        fCS.setHardVisible(false);
+        root.desk.add(fCS);
+        fCS.adjustSize();
+        fCS.center(0.5f, 0.5f);
+        fCS.addCloseCallback();
+
+        final PopupWindow settingsDlg = new PopupWindow(root);
+        final VideoSettings settings = new VideoSettings(
+                AppletPreferences.userNodeForPackage(VideoSettings.class),
+                desktopMode);
+        settingsDlg.setTheme("settingdialog");
+        settingsDlg.add(settings);
+        settingsDlg.setCloseOnClickedOutside(false);
+        settings.setTheme("settings");
+        settings.addCallback(new CallbackWithReason<VideoSettings.CallbackReason>() {
+            public void callback(VideoSettings.CallbackReason reason) {
+                vidDlgCloseReason = reason;
+                settingsDlg.closePopup();
+            }
+        });*/
+
+        /*    addButton("Exit", new Runnable() {
+                public void run() {
+                    //closeRequested = true;
+                }
+            });*/
+
+
+
+        /*root.addButton("Info", "Shows TWL license", new ToggleFadeFrame(fInfo)).setTooltipContent(makeComplexTooltip());
+        *///root.addButton("inventory", "inventory", new ToggleFadeFrame(inventoryPanel)).setTooltipContent(makeComplexTooltip());
+        /*root.addButton("TA", "Shows a text area test", new ToggleFadeFrame(fTextAreaTest));
+
+
+            root.addButton("Settings", "Opens a dialog which might be used to change video settings", new Runnable() {
+                public void run() {
+                    settings.readSettings();
+                    settingsDlg.openPopupCentered();
+                }
+            });
+*/
+
+      /*  root.addButton("ScrollPane", new ToggleFadeFrame(fScroll));
+        root.addButton("Properties", new ToggleFadeFrame(fPropertySheet));
+        root.addButton("Color", new ToggleFadeFrame(fCS));
+
+        root.addButton("Game", new Runnable() {
+            public void run() {
+                BlockGame game = new BlockGame();
+                game.setTheme("/blockgame");
+                PopupWindow popup = new PopupWindow(root);
+                popup.setTheme("settingdialog");
+                popup.add(game);
+                popup.openPopupCentered();
+            }
+        });*/
+
+            //fInfo.requestKeyboardFocus();
         }
 
     }

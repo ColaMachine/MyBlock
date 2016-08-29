@@ -25,6 +25,7 @@ public class ChatFrame extends ResizableFrame {
         this.textArea = new TextArea(textAreaModel);
         this.editField = new EditField();
         CoreRegistry.put(ChatFrame.class , this);
+
         editField.addCallback(new EditField.Callback() {
             public void callback(int key) {//调用顺序 gui的 handlekey
                 System.out.println(key);
@@ -34,6 +35,7 @@ public class ChatFrame extends ResizableFrame {
                     editField.setText("");
                     curColor = (curColor + 1) % 3;
                     editField.giveupKeyboardFocus();
+                    editField.setVisible(false);
                   //  hide();
                 }
             }
@@ -60,7 +62,9 @@ public class ChatFrame extends ResizableFrame {
     public void setFocus(){
         this.editField.requestKeyboardFocus();
     }
-
+    public void showEdit(){
+        this.editField.setVisible(true);
+    }
     private void appendRow(String font, String text) {
         sb.append("<div style=\"word-wrap: break-word; font-family: ").append(font).append("; \">");
         // not efficient but simple

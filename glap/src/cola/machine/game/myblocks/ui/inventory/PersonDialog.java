@@ -31,7 +31,6 @@ package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
-import de.matthiasmann.twl.ResizableFrame;
 
 
 /**
@@ -39,19 +38,19 @@ import de.matthiasmann.twl.ResizableFrame;
  * 
  * @author Matthias Mann
  */
-public class InventoryDialog extends FadeFrame {
+public class PersonDialog extends FadeFrame {
 
 
 
 
-    final InventoryPanel inventoryPanel;
+    final PersonPanel inventoryPanel;
 
     boolean quit;
 
-    public InventoryDialog() {
+    public PersonDialog() {
 
         
-        inventoryPanel = new InventoryPanel(Constants.BAG_NUM_SLOTS_X, Constants.BAG_NUM_SLOTS_Y);//10行5列
+        inventoryPanel = new PersonPanel();//10行5列
         
 
         setTitle("Inventory");//整个包裹的标题

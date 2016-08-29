@@ -495,20 +495,20 @@ public class MouseControlCenter {
         } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
             human.headRotate(human.camSpeedXZ * seconds, 0);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-           // human.bodyRotate(0, human.camSpeedR * seconds);
+            human.bodyRotate(0, human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_E)) {// Turn right
 
-            //human.bodyRotate(0, -human.camSpeedR * seconds);
+            human.bodyRotate(0, -human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-           // human.StrafeRight(-human.camSpeedXZ * seconds);
+           human.StrafeRight(-human.camSpeedXZ * seconds);
             //LogUtil.println("walk left");
         } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
-           // human.StrafeRight(human.camSpeedXZ * seconds);
+            human.StrafeRight(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-           // human.MoveForward(-human.camSpeedXZ * seconds);
+            human.MoveForward(-human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_W)) { // tilt up
 
-           // human.MoveForward(human.camSpeedXZ * seconds);
+            human.MoveForward(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             human.Position.y = human.Position.y - 3 * seconds;
             human.move(human.Position);

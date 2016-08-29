@@ -30,17 +30,13 @@
 package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.action.BagController;
-import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.bean.ItemEntity;
 import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.Font;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,38 +44,38 @@ import java.util.Set;
  *
  * @author Matthias Mann
  */
-public class InventoryPanel extends Widget {
+public class PersonPanel extends Widget {
     private BagEntity bagEntity;
     private BagController bagController;
-    private int numSlotsX;
-    private int numSlotsY;
-    private final ItemSlot[] slot;
-    
+    private int numSlotsX=1;
+    private int numSlotsY=4;
+
+    private final ItemSlot[] slot;//head body pairs shooe
+
     private int slotSpacing;
 
     private ItemSlot dragSlot;
     private ItemSlot dropSlot;
-    
-    public InventoryPanel(int numSlotsX, int numSlotsY) {
+
+    public PersonPanel() {
         this.bagController = CoreRegistry.get(BagController.class);
         assert bagController!=null:"bagController miss in CoreRegistry";
         //Assert.checkNonNull(bagController,"bagController miss in CoreRegistry");
 
        // this.bagEntity = CoreRegistry.get(BagEntity.class);
         //Assert.checkNonNull(bagEntity,"bagEntity miss in CoreRegistry");
-        this.numSlotsX = numSlotsX;
-        this.numSlotsY = numSlotsY;
-        this.slot = new ItemSlot[numSlotsX * numSlotsY];//数组
+
+        this.slot = new ItemSlot[numSlotsX*numSlotsY];//数组
         //创建listener
         ItemSlot.DragListener listener = new ItemSlot.DragListener() {//创建listener
             public void dragStarted(ItemSlot slot, Event evt) {
-                InventoryPanel.this.dragStarted(slot, evt);
+                PersonPanel.this.dragStarted(slot, evt);
             }
             public void dragging(ItemSlot slot, Event evt) {
-                InventoryPanel.this.dragging(slot, evt);
+                PersonPanel.this.dragging(slot, evt);
             }
             public void dragStopped(ItemSlot slot, Event evt) {
-                InventoryPanel.this.dragStopped(slot, evt);
+                PersonPanel.this.dragStopped(slot, evt);
             }
         };
 
@@ -90,8 +86,8 @@ public class InventoryPanel extends Widget {
         }
         Map<Integer,ItemEntity> itemEntityMap=bagController.getAllItemEntity();
         Set<Integer> set = itemEntityMap.keySet();
-        for(int key:set){
-            slot[key].setItemWrap(new ItemWrap(itemEntityMap.get(key)));
+        for(int i=0;i<4;i++){
+            slot[i].setItemWrap(new ItemWrap(itemEntityMap.get(i)));
         }
        /* for(int i=0;i<itemEntitys.length;i++){
             slot[0].setItem(itemEntitys[i].getName(),itemEntitys[i].getNum());
@@ -101,16 +97,12 @@ public class InventoryPanel extends Widget {
       //  slot[12].setItem("blue");
       //  slot[13].setItem("yellow");
 
-        KeyStroke ks = KeyStroke.parse("ctrl A", "copy");
 
-        InputMap inputMap = InputMap.empty();
-        inputMap.addKeyStroke(ks);
-        //setCanAcceptKeyboardFocus(true);
-        this.setInputMap(inputMap);
     }
 
     @Override
     public int getPreferredInnerWidth() {
+        LogUtil.println(""+slot[0].getWidth());
         return (slot[0].getPreferredWidth() + slotSpacing)*numSlotsX - slotSpacing;
     }
 
@@ -151,11 +143,8 @@ public class InventoryPanel extends Widget {
     void dragging(ItemSlot slot, Event evt) {
         if(dragSlot != null) {
             Widget w = this.getParent().getParent().getWidgetAt(evt.getMouseX(), evt.getMouseY());
-            if(w.getParent() instanceof PersonPanel) {
-                LogUtil.println("拖到了person上");
-            }
             if(w instanceof ItemSlot) {
-                System.out.println(1);
+                //System.out.println(1);
                 setDropSlot((ItemSlot)w);
             } else {
                 setDropSlot(null);
