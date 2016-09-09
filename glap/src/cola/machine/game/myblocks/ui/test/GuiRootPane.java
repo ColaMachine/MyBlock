@@ -398,7 +398,7 @@
                 game.setTheme("/blockgame");
                 PopupWindow popup = new PopupWindow(root);
                 popup.setTheme("settingdialog");
-                popup.add(game);
+                popup.add(game);ç∂   x'x
                 popup.openPopupCentered();
             }
         });*/

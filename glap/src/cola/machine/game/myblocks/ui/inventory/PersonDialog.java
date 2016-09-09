@@ -43,19 +43,19 @@ public class PersonDialog extends FadeFrame {
 
 
 
-    final PersonPanel inventoryPanel;
+    final PersonPanel personPanel;
 
     boolean quit;
 
     public PersonDialog() {
 
-        
-        inventoryPanel = new PersonPanel();//10行5列
+
+        personPanel = new PersonPanel();//10行5列
         
 
         setTitle("Inventory");//整个包裹的标题
         setResizableAxis(ResizableAxis.NONE);//是否可以调整大小
-        add(inventoryPanel);//添加panel
+        add(personPanel);//添加panel
         addCloseCallback(new Runnable() {
             @Override
             public void run() {
@@ -63,7 +63,7 @@ public class PersonDialog extends FadeFrame {
             }
         });
 
-        setTheme("inventorydemo");
+        setTheme("person");
        /* this.positionFrame();*/
     }
 

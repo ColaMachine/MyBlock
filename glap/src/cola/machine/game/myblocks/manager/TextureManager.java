@@ -1,14 +1,35 @@
 package cola.machine.game.myblocks.manager;
 
+import cola.machine.game.myblocks.config.BindsConfig;
+import cola.machine.game.myblocks.config.SecurityConfig;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.input.Input;
+import cola.machine.game.myblocks.model.textture.ImageInfo;
+import cola.machine.game.myblocks.model.textture.TextureCfgBean;
+import cola.machine.game.myblocks.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
+import cola.machine.game.myblocks.utilities.gson.InputHandler;
+import cola.machine.game.myblocks.utilities.gson.SetMultimapTypeAdapter;
+import cola.machine.game.myblocks.utilities.gson.UriTypeAdapterFactory;
+import com.alibaba.fastjson.JSON;
+import com.dozenx.util.FileUtil;
+import com.google.common.collect.SetMultimap;
+import com.google.gson.*;
 import glapp.GLApp;
 import glapp.GLImage;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.CharBuffer;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import org.lwjgl.opengl.PixelFormat;
 
 import javax.imageio.ImageIO;
 
@@ -21,26 +42,26 @@ public class TextureManager {
     public static HashMap<String, GLImage> imageMap = new HashMap<String, GLImage>();
 
     public static HashMap<String, TextureInfo> textureMap = new HashMap<String, TextureInfo>();
-
+    public HashMap<String,ImageInfo> ImageInfoMap =new HashMap<>();
     public TextureManager() {
         installPath = PathManager.getInstance().getInstallPath();
-        this.put("grass_top", "assets/blockTiles/plant/Grass.png");
-        this.put(
+        this.putImage("grass_top", "assets/blockTiles/plant/Grass.png");
+        this.putImage(
                 "human", "images/char.png"
         );
         textureMap.put("human", new TextureInfo("human"));
-        this.put("heightmap", "images/gray.png");
+        this.putImage("heightmap", "images/gray.png");
         textureMap.put("heightmap", new TextureInfo("heightmap"));
-        this.put("background", "images/background.png");
+        this.putImage("background", "images/background.png");
 
         textureMap.put("background", new TextureInfo("background"));
-        this.put("gui", "images/gui.png");
+        this.putImage("gui", "images/gui.png");
         textureMap.put("cross", new TextureInfo("gui", 1 / 12f + 0.01f, 10 / 12f, 1 / 12f, 1 / 12f, true));
 
         textureMap.put("selectBox", new TextureInfo("gui", 0, 210, 23, 23));
 
 
-        this.put("widgets", "assets/minecraft/textures/gui/widgets.png");
+        this.putImage("widgets", "assets/minecraft/textures/gui/widgets.png");
         textureMap.put("toolbar", new TextureInfo("widgets", 0, 469, 362, 43));
 
         //this.put("night", "images/night.jpg");
@@ -48,29 +69,29 @@ public class TextureManager {
 
         //this.put("most","images/fewest.tif");
         //textureMap.put("most",new TextureInfo("most"));
-        this.put("sun", "assets/minecraft/textures/environment/sun.png");
+        this.putImage("sun", "assets/minecraft/textures/environment/sun.png");
         textureMap.put("sun", new TextureInfo("sun"));
 
-        this.put("inventory", "assets/minecraft/textures/gui/container/inventory.png");
+        this.putImage("inventory", "assets/minecraft/textures/gui/container/inventory.png");
         textureMap.put("bag", new TextureInfo("inventory", 0, 179, 352, 332));
 
-        this.put("human", "images/2000.png");
+        this.putImage("human", "images/2000.png");
         //textureMap.put("bag",new TextureInfo("inventory",0,179,352,332));
 
-        this.put("apple_golden", "assets/minecraft/textures/items/apple_golden.png");
+        this.putImage("apple_golden", "assets/minecraft/textures/items/apple_golden.png");
 
-        this.put("items", "images/items.png");
+        this.putImage("items", "images/items.png");
 
 
         textureMap.put("apple_golden", new TextureInfo("apple_golden"));
 
-        this.put("terrain", "assets/minecraft/textures/terrain.png");
+        this.putImage("terrain", "assets/minecraft/textures/terrain.png");
         textureMap.put("water", new TextureInfo("terrain", 14, 2, 1, 1, 16, 16));
 
-       this.put("gold_armor","assets/minecraft/textures/models/armor/gold_layer_2.png");
+       this.putImage("gold_armor","assets/minecraft/textures/models/armor/gold_layer_2.png");
         textureMap.put("gold_armor", new TextureInfo("gold_armor"));
       
-        this.put("particle","images/Particle.bmp");
+        this.putImage("particle","images/Particle.bmp");
         textureMap.put("particle", new TextureInfo("particle"));
       
        
@@ -139,7 +160,7 @@ public class TextureManager {
 
     }
 
-    public void put(String name, String textureImagePath) {
+    public void putImage(String name, String textureImagePath) {
         int textureHandle = 0;
 
         GLImage textureImg;
@@ -163,6 +184,93 @@ public class TextureManager {
     public void preInit() {
 
     }
+    public void loadImage(String fromFile) throws Exception {
+
+        try  {
+           String json = FileUtil.readFile2Str(fromFile) ;
+            List<ImageInfo> imageInfoList=  JSON.parseArray(json,ImageInfo.class);
+            for(int i=0;i<imageInfoList.size();i++){
+                ImageInfo imageInfo = imageInfoList.get(i);
+                this.putImage(imageInfo.getName(),imageInfo.getUri());
+
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Failed to load config", e);
+        }
+    }
+
+    public void loadTexture()throws Exception{
+
+        try  {
+            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/texture.cfg").toString()) ;
+            List<TextureCfgBean> textureCfgBeanList=  JSON.parseArray(json,TextureCfgBean.class);
+            for(int i=0;i<textureCfgBeanList.size();i++){
+                TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
+                String xywh = textureCfgBean.getXywh();
+                String ary[] = xywh.split(" ");
+
+                textureMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0]),
+                        Integer.valueOf(ary[1]),
+                        Integer.valueOf(ary[2]),
+                        Integer.valueOf(ary[3])
+                        ));
+
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Failed to load config", e);
+        }
+
+    }
+    public void loadWear()throws Exception{
+
+        try  {
+            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/texture.cfg").toString()) ;
+            List<TextureCfgBean> textureCfgBeanList=  JSON.parseArray(json,TextureCfgBean.class);
+            for(int i=0;i<textureCfgBeanList.size();i++){
+                TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
+                String xywh = textureCfgBean.getXywh();
+                String ary[] = xywh.split(" ");
+
+                textureMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0]),
+                        Integer.valueOf(ary[1]),
+                        Integer.valueOf(ary[2]),
+                        Integer.valueOf(ary[3])
+                ));
+
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Failed to load config", e);
+        }
+
+    }
+    public void loadItem()throws Exception{
+
+        try  {
+            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/texture.cfg").toString()) ;
+            List<TextureCfgBean> textureCfgBeanList=  JSON.parseArray(json,TextureCfgBean.class);
+            for(int i=0;i<textureCfgBeanList.size();i++){
+                TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
+                String xywh = textureCfgBean.getXywh();
+                String ary[] = xywh.split(" ");
+
+                textureMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0]),
+                        Integer.valueOf(ary[1]),
+                        Integer.valueOf(ary[2]),
+                        Integer.valueOf(ary[3])
+                ));
+
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Failed to load config", e);
+        }
+
+    }
+
+
 
     public static TextureInfo getTextureInfo(String name) {
         return textureMap.get(name);
