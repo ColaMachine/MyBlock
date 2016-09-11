@@ -264,7 +264,7 @@
                         }
                     }
                     //System.out.println("key pressed "+evt.getType());
-                    mouseControlCenter.keyDown(evt.getKeyCode());
+                   // mouseControlCenter.keyDown(evt.getKeyCode());
                     if(evt.getKeyCode()==Event.KEY_RETURN){
 
                         CoreRegistry.get(ChatFrame.class).showEdit();

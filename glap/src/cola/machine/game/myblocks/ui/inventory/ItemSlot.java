@@ -29,6 +29,8 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 import de.matthiasmann.twl.renderer.Font;
@@ -63,6 +65,7 @@ public class ItemSlot extends Widget {
        /* if(itemWrap == null ){
             this.allChildrenRemoved();
         }*/
+
         this.itemWrap = itemWrap;
 
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){
@@ -206,10 +209,11 @@ public class ItemSlot extends Widget {
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
         if(!dragActive && itemWrap != null) {
-            itemWrap.getIcon().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            itemWrap.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
             //font.drawText(null,getInnerX(), getInnerY(),"10");
             //this.paintChild(gui,label);
             //this.paintChild(gui,itemWrap);
+           // itemWrap.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
             font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,itemWrap.getNum()+"");
         }
 
@@ -221,7 +225,11 @@ public class ItemSlot extends Widget {
             final int innerWidth = getInnerWidth();
             final int innerHeight = getInnerHeight();
 
-            itemWrap.getIcon().draw(getAnimationState(),
+            /*itemWrap.getIcon().draw(getAnimationState(),
+                    mouseX - innerWidth/2,
+                    mouseY - innerHeight/2,
+                    innerWidth, innerHeight);*/
+            itemWrap.getIcon2().draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
                     innerWidth, innerHeight);
@@ -239,12 +247,13 @@ public class ItemSlot extends Widget {
         font = themeInfo.getFont("black");
         findIcon();
     }
-    
+    private TextureInfo icon2;
     private void findIcon() {
         if(itemWrap == null || icons == null) {
             //icon = null;
         } else {
             //icon = icons.getImage(item)
+            //icon2= TextureManager.getTextureInfo(itemWrap.getItem());
            itemWrap.setIcon(icons.getImage(itemWrap.getItem())) ;
         }
     }

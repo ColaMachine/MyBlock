@@ -26,14 +26,14 @@
         <area name="icon.yellow" xywh="97,0,28,31" center="true"/>
     </images>
     <images file="../test/items.png">
-        <area name="icon.wood_helmet" xywh="0,0,16,16" nocenter="true"/>
-        <area name="icon.wood_armour" xywh="0,16,16,16" nocenter="true"/>
-        <area name="icon.wood_pants" xywh="0,32,16,16" nocenter="true"/>
-        <area name="icon.wood_shoe" xywh="0,48,16,16" nocenter="true"/>
-        <area name="icon.wood_sword" xywh="0,64,16,16" nocenter="true"/>
-        <area name="icon.wood_pickax" xywh="0,80,16,16" nocenter="true"/>
-        <area name="icon.wood_axe" xywh="0,96,16,16" nocenter="true"/>
-        <area name="icon.wood_hoe" xywh="0,112,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_helmet" xywh="0,0,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_armour" xywh="0,16,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_pants" xywh="0,32,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_shoe" xywh="0,48,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_sword" xywh="0,64,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_pickax" xywh="0,80,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_axe" xywh="0,96,16,16" nocenter="true"/>
+        <area name="icon.icon.wood_hoe" xywh="0,112,16,16" nocenter="true"/>
     </images>
     <include filename="../test/cursors.xml"/>
     <fontDef name="black" filename="../test/font.fnt" color="black"/>

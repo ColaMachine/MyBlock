@@ -30,6 +30,9 @@
 package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.bean.ItemEntity;
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 import de.matthiasmann.twl.renderer.Font;
@@ -46,6 +49,8 @@ public class ItemWrap extends Widget {
 
     private Image icon;
 
+    private  TextureInfo icon2;
+
     private Label label;
 
 
@@ -53,10 +58,11 @@ public class ItemWrap extends Widget {
 
     public ItemWrap(ItemEntity itemEntity) {
         this.itemEntity=itemEntity;
-        label =new Label();
-       label.setText(""+itemEntity.getNum());
-        add(label);
-        label.setPosition(30,30);
+       // label =new Label();
+      // label.setText(""+itemEntity.getNum());
+       // add(label);
+        //label.setPosition(30,30);
+        icon2= TextureManager.getTextureInfo(itemEntity.getName());
 
     }
     public int getNum(){
@@ -80,32 +86,40 @@ public class ItemWrap extends Widget {
     public Image getIcon() {
         return icon;
     }
+    public TextureInfo getIcon2() {
+        return icon2;
+    }
     public void setIcon(Image icon) {
         this. icon=icon;
     }
-    @Override//静态绘制
-    protected void paintWidget(GUI gui) {
-
-            icon.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
-
-            //font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,num+"");
-
+    public void setIcon(TextureInfo icon) {
+        this. icon2=icon;
     }
 
+  //  @Override//静态绘制
+   /* protected void paintWidget(GUI gui) {
 
-    @Override
+            //icon.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            icon2.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            //font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,num+"");
+
+    }*/
+
+
+    //@Override
     protected void applyTheme(ThemeInfo themeInfo) {
         super.applyTheme(themeInfo);
         icons = themeInfo.getParameterMap("icons");
 
         findIcon();
-        this.setBackground(icon);
+      //  this.setBackground(icon);
     }
     
     private void findIcon() {
         if(itemEntity == null || icons == null) {
             icon = null;
         } else {
+            icon2= TextureManager.getTextureInfo(itemEntity.getName());
             icon = icons.getImage(itemEntity.getName());
         }
     }
