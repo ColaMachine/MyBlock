@@ -32,4 +32,15 @@ public class Constants {
 
     }
 
+
+    /** item type **/
+    public static final int  ITEM_TYPE_WEAR =1;
+    public static final int ITEM_TYPE_FOOD =2;
+
+
+    public static final int WEAR_POSI_HEAD =1;
+    public static final int WEAR_POSI_BODY =2;
+    public static final int WEAR_POSI_LEG =3;
+    public static final int WEAR_POSI_FOOT =4;
+
 }

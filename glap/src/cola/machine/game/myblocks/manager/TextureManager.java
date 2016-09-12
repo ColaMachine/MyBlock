@@ -5,8 +5,8 @@ import cola.machine.game.myblocks.config.SecurityConfig;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.input.Input;
-import cola.machine.game.myblocks.model.textture.ImageInfo;
-import cola.machine.game.myblocks.model.textture.TextureCfgBean;
+import cola.machine.game.myblocks.item.Item;
+import cola.machine.game.myblocks.model.textture.*;
 import cola.machine.game.myblocks.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
 import cola.machine.game.myblocks.utilities.gson.InputHandler;
 import cola.machine.game.myblocks.utilities.gson.SetMultimapTypeAdapter;
@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cola.machine.game.myblocks.model.textture.TextureInfo;
 import org.lwjgl.opengl.PixelFormat;
 
 import javax.imageio.ImageIO;
@@ -46,6 +45,8 @@ public class TextureManager {
 
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
+    public static HashMap<String, ItemCfgBean> itemMap = new HashMap<String, ItemCfgBean>();
+    public static HashMap<String, Shape> shapeMap = new HashMap<String, Shape>();
 
     public HashMap<String,ImageInfo> ImageInfoMap =new HashMap<>();
     public TextureManager() {
@@ -55,6 +56,8 @@ public class TextureManager {
         try {
             loadImage();
             loadTexture();
+            loadShape();
+            loadItem();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -172,14 +175,21 @@ public class TextureManager {
 //        textureInfoMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
 
     }
-    Texture texture;
+
+
+    public void putItem(String name,ItemCfgBean item){
+        this.itemMap.put(name,item);
+    }
+    public static ItemCfgBean getItem(String name,ItemCfgBean item){
+       return itemMap.get(name);
+    }
     public void putImage(String name, String textureImagePath) {
         int textureHandle = 0;
 
         GLImage textureImg;
         try {
             LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
-             texture = renderer.loadTexture(new URL(installPath.toUri().toURL(), textureImagePath),"RGBA","linear");
+           Texture texture = renderer.loadTexture(new URL(installPath.toUri().toURL(), textureImagePath),"RGBA","linear");
             textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
@@ -224,7 +234,7 @@ public class TextureManager {
                 TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
                 String xywh = textureCfgBean.getXywh();
                 String ary[] = xywh.split(",");
-System.out.println(i);
+
                 textureInfoMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0]),
                         Integer.valueOf(ary[1]),
                         Integer.valueOf(ary[2]),
@@ -238,44 +248,98 @@ System.out.println(i);
         }
 
     }
-    public void loadWear()throws Exception{
-
-        try  {
-            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/texture.cfg").toString()) ;
-            List<TextureCfgBean> textureCfgBeanList=  JSON.parseArray(json,TextureCfgBean.class);
-            for(int i=0;i<textureCfgBeanList.size();i++){
-                TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
-                String xywh = textureCfgBean.getXywh();
-                String ary[] = xywh.split(",");
-
-                textureInfoMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0]),
-                        Integer.valueOf(ary[1]),
-                        Integer.valueOf(ary[2]),
-                        Integer.valueOf(ary[3])
-                ));
-
-            }
-
-        } catch (Exception e) {
-            throw new Exception("Failed to load config", e);
-        }
-
-    }
     public void loadItem()throws Exception{
 
         try  {
-            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/texture.cfg").toString()) ;
-            List<TextureCfgBean> textureCfgBeanList=  JSON.parseArray(json,TextureCfgBean.class);
+            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/item.cfg").toString()) ;
+            List<HashMap> textureCfgBeanList=  JSON.parseArray(json,HashMap.class);
             for(int i=0;i<textureCfgBeanList.size();i++){
-                TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
-                String xywh = textureCfgBean.getXywh();
-                String ary[] = xywh.split(",");
+                HashMap map = textureCfgBeanList.get(i);
+                ItemCfgBean item = new ItemCfgBean();
+                String name = (String)map.get("name");
+                String icon = (String)map.get("icon");
+                item.setName(name);
+                item.setIcon(this.getTextureInfo(icon));
+                String type = (String)map.get("icon");
+                if(type.equals("wear")){
+                    item.setType(Constants.ITEM_TYPE_WEAR);
+                    String position = (String)map.get("position");
+                    if(position.equals("head")){
+                        item.setPosition(Constants.WEAR_POSI_HEAD);
+                    }else if(position.equals("body")){
+                        item.setPosition(Constants.WEAR_POSI_BODY);
+                    }else if(position.equals("leg")){
+                        item.setPosition(Constants.WEAR_POSI_LEG);
+                    }else if(position.equals("foot")){
+                        item.setPosition(Constants.WEAR_POSI_FOOT);
+                    }
+                    int spirit = (int) map.get("icon");
+                    item.setSpirit(spirit);
+                    int agile = (int) map.get("agile");
+                    item.setAgile(agile);
 
-                textureInfoMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0]),
-                        Integer.valueOf(ary[1]),
-                        Integer.valueOf(ary[2]),
-                        Integer.valueOf(ary[3])
-                ));
+                    int intelli = (int) map.get("intelli");
+                    item.setIntelli(intelli);
+
+                    int strenth = (int) map.get("strenth");
+                    item.setStrenth(strenth);
+
+                    String shapeName = (String ) map.get("shape");
+                    Shape shape =this.getShape(shapeName);
+                    item.setShape(shape);
+                    this.putItem(name,item);
+                }else if(type.equals("food")){
+                    item.setType(Constants.ITEM_TYPE_FOOD);
+                }
+
+
+            }
+
+
+        } catch (Exception e) {
+            throw new Exception("Failed to load config", e);
+        }
+
+    }
+
+
+    public void loadShape()throws Exception{
+
+        try  {
+            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/shape.cfg").toString()) ;
+            List<HashMap> list=  JSON.parseArray(json,HashMap.class);
+            for(int i=0;i<list.size();i++){
+
+                HashMap map = list.get(i);
+                Shape shape = new Shape();
+                String name = (String)map.get("name");
+                shape.setName(name);
+                String front = (String)map.get("front");
+                String back = (String)map.get("back");
+                String left = (String)map.get("left");
+                String right = (String)map.get("right");
+                String top = (String)map.get("top");
+                String bottom = (String)map.get("bottom");
+                if(!isEmpty(front)){
+                    shape.setFront(this.getShape("front"));
+                }
+                if(!isEmpty(back)){
+                    shape.setBack(this.getShape("back"));
+                }
+                if(!isEmpty(left)){
+                    shape.setLeft(this.getShape("left"));
+                }
+                if(!isEmpty(right)){
+                    shape.setRight(this.getShape("right"));
+                }
+                if(!isEmpty(top)){
+                    shape.setTop(this.getShape("top"));
+                }
+                if(!isEmpty(bottom)){
+                    shape.setBottom(this.getShape("bottom"));
+                }
+
+                this.shapeMap.put(name,shape);
 
             }
 
@@ -284,7 +348,13 @@ System.out.println(i);
         }
 
     }
-
+    public boolean isEmpty(String name){
+    if(name==null || name.equals("")){
+        return true;
+    }else{
+        return false;
+    }
+    }
 
 
     public static TextureInfo getTextureInfo(String name) {
@@ -297,5 +367,9 @@ System.out.println(i);
 
     public static Texture getTexture(String name) {
         return textureMap.get(name);
+    }
+
+    public static Shape getShape(String name) {
+        return shapeMap.get(name);
     }
 }
