@@ -34,13 +34,19 @@ public class Constants {
 
 
     /** item type **/
-    public static final int  ITEM_TYPE_WEAR =1;
+    public static final int  ITEM_TYPE_WEAR =2;
     public static final int ITEM_TYPE_FOOD =2;
 
+    public static final int SLOT_TYPE_HEAD=1<<0;
+    public static final int SLOT_TYPE_BODY=1<<1;
+    public static final int SLOT_TYPE_LEG=1<<2;
+    public static final int SLOT_TYPE_FOOT=1<<3;
+    public static final int SLOT_TYPE_HAND=1<<4;
 
-    public static final int WEAR_POSI_HEAD =1;
-    public static final int WEAR_POSI_BODY =2;
-    public static final int WEAR_POSI_LEG =3;
-    public static final int WEAR_POSI_FOOT =4;
+    public static final int WEAR_POSI_HEAD =1<<0;
+    public static final int WEAR_POSI_BODY =1<<1;
+    public static final int WEAR_POSI_LEG =1<<2;
+    public static final int WEAR_POSI_FOOT =1<<3;
+    public static final int WEAR_POSI_HAND =1<<4;
 
 }

@@ -29,13 +29,12 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
-import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.model.textture.ItemCfgBean;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 import de.matthiasmann.twl.renderer.Font;
-import de.matthiasmann.twl.renderer.Image;
-import de.matthiasmann.twl.renderer.lwjgl.LWJGLFont;
 //import org.apache.log4j.Logger;
 //import org.apache.log4j.spi.LoggerFactory;
 //
@@ -54,19 +53,19 @@ public class ItemSlot extends Widget {
         public void dragging(ItemSlot slot, Event evt);
         public void dragStopped(ItemSlot slot, Event evt);
     }
-    private ItemWrap itemWrap;
+    private ItemWidget itemWidget;
 
-    public ItemWrap getItemWrap() {
-        return itemWrap;
+    public ItemWidget getItemWidget() {
+        return itemWidget;
     }
 
-    public void setItemWrap(ItemWrap itemWrap) {
+    public void setItemWidget(ItemWidget itemWidget) {
        // this.allChildrenRemoved();
        /* if(itemWrap == null ){
             this.allChildrenRemoved();
         }*/
 
-        this.itemWrap = itemWrap;
+        this.itemWidget = itemWidget;
 
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){
             itemWrap.getParent().removeChild(itemWrap);
@@ -86,8 +85,18 @@ public class ItemSlot extends Widget {
     private DragListener listener;
     private boolean dragActive;
     private ParameterMap icons;
+    private int itemType ;
 
-    public ItemSlot() {
+    public int getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
+
+    public ItemSlot(int type) {
+        this.itemType=type;
       //   label =new Label();
        // label.setText("");
        // add(label);
@@ -124,8 +133,23 @@ public class ItemSlot extends Widget {
         findIcon();//根据name 查找
     }*/
 
-    public boolean canDrop() {
+   /* public boolean canDrop() {
         return true;//itemWrap == null;
+    }*/
+
+    public boolean canDrop(ItemCfgBean itemCfgBean) {
+        if(this.itemType==0){
+            return true;
+        }
+        try {
+            if (this.itemType != 0 && itemCfgBean.getType() != 0 && (this.itemType & itemCfgBean.getPosition()) != 0)
+                return true;//itemWrap == null;
+            else
+                return false;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
     
    /* public Image getIcon() {
@@ -208,20 +232,23 @@ public class ItemSlot extends Widget {
 
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
-        if(!dragActive && itemWrap != null) {
-            itemWrap.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+        if(!dragActive && itemWidget != null) {
+            if(itemWidget.getIcon2()==null){
+                LogUtil.println("icon2 is null");
+            }
+            itemWidget.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
             //font.drawText(null,getInnerX(), getInnerY(),"10");
             //this.paintChild(gui,label);
             //this.paintChild(gui,itemWrap);
            // itemWrap.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
-            font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,itemWrap.getNum()+"");
+            font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15, itemWidget.getNum()+"");
         }
 
     }
 
     @Override//绘制拖动过程
     protected void paintDragOverlay(GUI gui, int mouseX, int mouseY, int modifier) {
-        if(itemWrap != null) {
+        if(itemWidget != null) {
             final int innerWidth = getInnerWidth();
             final int innerHeight = getInnerHeight();
 
@@ -229,14 +256,14 @@ public class ItemSlot extends Widget {
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
                     innerWidth, innerHeight);*/
-            itemWrap.getIcon2().draw(getAnimationState(),
+            itemWidget.getIcon2().draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
                     innerWidth, innerHeight);
            // itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
             //this.paintChild(gui,itemWrap);
            // label.setOffscreenExtra(mouseX,mouseY,label.getWidth(),label.getHeight());
-            font.drawText(getAnimationState(),mouseX+5,mouseY+5,itemWrap.getNum()+"");
+            font.drawText(getAnimationState(),mouseX+5,mouseY+5, itemWidget.getNum()+"");
         }
     }
 
@@ -249,12 +276,12 @@ public class ItemSlot extends Widget {
     }
     private TextureInfo icon2;
     private void findIcon() {
-        if(itemWrap == null || icons == null) {
+        if(itemWidget == null || icons == null) {
             //icon = null;
         } else {
             //icon = icons.getImage(item)
             //icon2= TextureManager.getTextureInfo(itemWrap.getItem());
-           itemWrap.setIcon(icons.getImage(itemWrap.getItem())) ;
+           itemWidget.setIcon(icons.getImage(itemWidget.getItem())) ;
         }
     }
 }

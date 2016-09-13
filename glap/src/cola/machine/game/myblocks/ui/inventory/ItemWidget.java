@@ -31,6 +31,7 @@ package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.bean.ItemEntity;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.ItemCfgBean;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import de.matthiasmann.twl.*;
@@ -42,8 +43,45 @@ import de.matthiasmann.twl.renderer.Image;
  *
  * @author Matthias Mann
  */
-public class ItemWrap extends Widget {
+public class ItemWidget extends Widget {
 
+    private ItemCfgBean itemCfg;
+
+    public ItemCfgBean getItemCfg() {
+        return itemCfg;
+    }
+
+    public void setItemCfg(ItemCfgBean itemCfg) {
+        this.itemCfg = itemCfg;
+    }
+
+    public ItemEntity getItemEntity() {
+        return itemEntity;
+    }
+
+    public void setItemEntity(ItemEntity itemEntity) {
+        this.itemEntity = itemEntity;
+    }
+
+    public void setIcon2(TextureInfo icon2) {
+        this.icon2 = icon2;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    public ParameterMap getIcons() {
+        return icons;
+    }
+
+    public void setIcons(ParameterMap icons) {
+        this.icons = icons;
+    }
 
     private ItemEntity itemEntity;
 
@@ -56,13 +94,21 @@ public class ItemWrap extends Widget {
 
     private ParameterMap icons;
 
-    public ItemWrap(ItemEntity itemEntity) {
+    public ItemWidget(ItemEntity itemEntity) {
         this.itemEntity=itemEntity;
        // label =new Label();
       // label.setText(""+itemEntity.getNum());
        // add(label);
         //label.setPosition(30,30);
         icon2= TextureManager.getTextureInfo(itemEntity.getName());
+        if(icon2==  null){
+            assert icon2!=null;
+        }
+        this.itemCfg = TextureManager.getItem(itemEntity.getName());
+        if(itemCfg==  null) {
+            assert this.itemCfg!=null;
+        }
+
 
     }
     public int getNum(){

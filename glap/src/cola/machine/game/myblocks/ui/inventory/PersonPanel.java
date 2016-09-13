@@ -32,6 +32,7 @@ package cola.machine.game.myblocks.ui.inventory;
 import cola.machine.game.myblocks.action.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.bean.ItemEntity;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
@@ -48,7 +49,7 @@ public class PersonPanel extends Widget {
     private BagEntity bagEntity;
     private BagController bagController;
     private int numSlotsX=1;
-    private int numSlotsY=4;
+    private int numSlotsY=5;
 
     private final ItemSlot[] slot;//head body pairs shooe
 
@@ -79,15 +80,39 @@ public class PersonPanel extends Widget {
             }
         };
 
-        for(int i=0 ; i<slot.length ; i++) {
-            slot[i] = new ItemSlot();
+        slot[0] = new ItemSlot(Constants.SLOT_TYPE_HEAD);
+        slot[0].setListener(listener);//所有的slot都绑定了一个listener
+        add(slot[0]);
+
+        slot[1] = new ItemSlot(Constants.SLOT_TYPE_BODY);
+        slot[1].setListener(listener);//所有的slot都绑定了一个listener
+        add(slot[1]);
+
+        slot[2] = new ItemSlot(Constants.SLOT_TYPE_LEG);
+        slot[2].setListener(listener);//所有的slot都绑定了一个listener
+        add(slot[2]);
+
+        slot[3] = new ItemSlot(Constants.SLOT_TYPE_FOOT);
+        slot[3].setListener(listener);//所有的slot都绑定了一个listener
+        add(slot[3]);
+
+        slot[4] = new ItemSlot(Constants.SLOT_TYPE_HAND);
+        slot[4].setListener(listener);//所有的slot都绑定了一个listener
+        add(slot[4]);
+
+
+
+
+
+        /*for(int i=0 ; i<slot.length ; i++) {
+            slot[i] = new ItemSlot(Constants.SLOT_TYPE_BODY);
             slot[i].setListener(listener);//所有的slot都绑定了一个listener
             add(slot[i]);
-        }
+        }*/
         Map<Integer,ItemEntity> itemEntityMap=bagController.getAllItemEntity();
         Set<Integer> set = itemEntityMap.keySet();
         for(int i=0;i<4;i++){
-            slot[i].setItemWrap(new ItemWrap(itemEntityMap.get(i)));
+            slot[i].setItemWidget(new ItemWidget(itemEntityMap.get(i)));
         }
        /* for(int i=0;i<itemEntitys.length;i++){
             slot[0].setItem(itemEntitys[i].getName(),itemEntitys[i].getNum());
@@ -134,7 +159,7 @@ public class PersonPanel extends Widget {
     }
     
     void dragStarted(ItemSlot slot, Event evt) {
-        if(slot.getItemWrap() != null) {
+        if(slot.getItemWidget() != null) {
             dragSlot = slot;
             dragging(slot, evt);
         }
@@ -155,21 +180,21 @@ public class PersonPanel extends Widget {
     void dragStopped(ItemSlot slot, Event evt) {
         if(dragSlot != null) {
             dragging(slot, evt);
-            if(dropSlot != null && dropSlot.canDrop() && dropSlot != dragSlot) {
-              ItemWrap dropItem = dropSlot.getItemWrap();
-                ItemWrap dragItem = dragSlot.getItemWrap();
+            if(dropSlot != null && dropSlot.canDrop(dragSlot.getItemWidget().getItemCfg()) && dropSlot != dragSlot) {
+              ItemWidget dropItem = dropSlot.getItemWidget();
+                ItemWidget dragItem = dragSlot.getItemWidget();
                 //如果是相同的元素 允许堆叠
                 if(dropItem==null){
-                    dropSlot.setItemWrap(dragItem);
-                    dragSlot.setItemWrap(null);
+                    dropSlot.setItemWidget(dragItem);
+                    dragSlot.setItemWidget(null);
 
                 }else
                 if(dropItem.getItem().equals(dragItem.getItem())){
                     dropItem.setNum(dropItem.getNum()+dragItem.getNum());
-                    dragSlot.setItemWrap(null);
+                    dragSlot.setItemWidget(null);
                 }else{
-                    dropSlot.setItemWrap(dragItem);
-                    dragSlot.setItemWrap(dropItem);
+                    dropSlot.setItemWidget(dragItem);
+                    dragSlot.setItemWidget(dropItem);
                 }
 
             /*    slot.setItemWrap(null);
@@ -182,42 +207,42 @@ public class PersonPanel extends Widget {
         }
     }
 
-    private void setDropSlot(ItemSlot slot) {
+    private void setDropSlot(ItemSlot slot) {//设置
         if(slot != dropSlot) {
             if(dropSlot != null) {
                 dropSlot.setDropState(false, false);
             }
             dropSlot = slot;
             if(dropSlot != null) {
-                dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop());
+                dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop(dragSlot.getItemWidget().getItemCfg()));
             }
         }
     }
     boolean dragActive=false;
-    ItemWrap itemWrap = null;
+    ItemWidget itemWidget = null;
     int mouseX = 0;
     int mouseY =0;
     Font font;
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
-        if(itemWrap != null) {
+        if(itemWidget != null) {
             final int innerWidth = 40;
             final int innerHeight = 40;
 
-            itemWrap.getIcon().draw(getAnimationState(),
+            itemWidget.getIcon().draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
                     innerWidth, innerHeight);
             // itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
             //this.paintChild(gui,itemWrap);
             // label.setOffscreenExtra(mouseX,mouseY,label.getWidth(),label.getHeight());
-            font.drawText(getAnimationState(),mouseX+5,mouseY+5,itemWrap.getNum()+"");
+            font.drawText(getAnimationState(),mouseX+5,mouseY+5, itemWidget.getNum()+"");
         }
 
     }
     protected boolean handleEvent(Event evt) {
 
-            if(itemWrap!=null) {//如果正在拖动
+            if(itemWidget !=null) {//如果正在拖动
 
                 if (evt.getType()==Event.Type.MOUSE_CLICKED ) {//如果是鼠标单击事件
 
@@ -225,9 +250,9 @@ public class PersonPanel extends Widget {
                     if(w instanceof ItemSlot ) {
                         ItemSlot slot = (ItemSlot)w;
                        // ItemWrap oldItemWrap = slot.getItemWrap();
-                        ItemWrap oldItemWrap= slot.getItemWrap();
-                        slot.setItemWrap(itemWrap);
-                        this. itemWrap=oldItemWrap;
+                        ItemWidget oldItemWidget = slot.getItemWidget();
+                        slot.setItemWidget(itemWidget);
+                        this.itemWidget = oldItemWidget;
                         /*if(oldItemWrap !=null){
                             itemWrap=oldItemWrap;
                         }*/
@@ -261,10 +286,10 @@ public class PersonPanel extends Widget {
                 if(w instanceof ItemSlot) {
                     ItemSlot slot = (ItemSlot)w;
 
-                       itemWrap = slot.getItemWrap();
+                       itemWidget = slot.getItemWidget();
 
-                    if(itemWrap!=null) {
-                        slot.setItemWrap(null);
+                    if(itemWidget !=null) {
+                        slot.setItemWidget(null);
                         System.out.println("拿起");
                         mouseX=evt.getMouseX();
                         mouseY=evt.getMouseY();

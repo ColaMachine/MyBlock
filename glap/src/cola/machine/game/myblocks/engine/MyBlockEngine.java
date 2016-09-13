@@ -543,7 +543,7 @@ try {
         try {
             initConfig();
 
-            initManagers();
+           // initManagers();
 
             // load assets
             // initAssets();

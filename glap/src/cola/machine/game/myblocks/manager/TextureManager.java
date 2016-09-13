@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.input.Input;
 import cola.machine.game.myblocks.item.Item;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
 import cola.machine.game.myblocks.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
 import cola.machine.game.myblocks.utilities.gson.InputHandler;
@@ -60,6 +61,7 @@ public class TextureManager {
             loadItem();
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(0);
         }
         this.putImage("grass_top", "assets/blockTiles/plant/Grass.png");
         this.putImage(
@@ -180,8 +182,14 @@ public class TextureManager {
     public void putItem(String name,ItemCfgBean item){
         this.itemMap.put(name,item);
     }
-    public static ItemCfgBean getItem(String name,ItemCfgBean item){
-       return itemMap.get(name);
+    public static ItemCfgBean getItem(String name){
+
+        ItemCfgBean itemCfg = itemMap.get(name);
+        if(itemCfg==null){
+            LogUtil.println("itemCfg 为null:"+name);
+            System.exit(0);
+        }
+       return itemCfg;
     }
     public void putImage(String name, String textureImagePath) {
         int textureHandle = 0;
@@ -260,7 +268,7 @@ public class TextureManager {
                 String icon = (String)map.get("icon");
                 item.setName(name);
                 item.setIcon(this.getTextureInfo(icon));
-                String type = (String)map.get("icon");
+                String type = (String)map.get("type");
                 if(type.equals("wear")){
                     item.setType(Constants.ITEM_TYPE_WEAR);
                     String position = (String)map.get("position");
@@ -272,8 +280,10 @@ public class TextureManager {
                         item.setPosition(Constants.WEAR_POSI_LEG);
                     }else if(position.equals("foot")){
                         item.setPosition(Constants.WEAR_POSI_FOOT);
+                    }else if(position.equals("hand")){
+                        item.setPosition(Constants.WEAR_POSI_HAND);
                     }
-                    int spirit = (int) map.get("icon");
+                    int spirit = (int) map.get("spirit");
                     item.setSpirit(spirit);
                     int agile = (int) map.get("agile");
                     item.setAgile(agile);
@@ -358,7 +368,11 @@ public class TextureManager {
 
 
     public static TextureInfo getTextureInfo(String name) {
-        return textureInfoMap.get(name);
+        TextureInfo textureInfo= textureInfoMap.get(name);
+        if(textureInfo==null){
+            assert textureInfo!=null;
+        }
+        return textureInfo;
     }
 
     public static GLImage getImage(String name) {
