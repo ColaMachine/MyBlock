@@ -109,11 +109,11 @@ public class PersonPanel extends Widget {
             slot[i].setListener(listener);//所有的slot都绑定了一个listener
             add(slot[i]);
         }*/
-        Map<Integer,ItemEntity> itemEntityMap=bagController.getAllItemEntity();
+       /* Map<Integer,ItemEntity> itemEntityMap=bagController.getAllItemEntity();
         Set<Integer> set = itemEntityMap.keySet();
         for(int i=0;i<4;i++){
             slot[i].setItemWidget(new ItemWidget(itemEntityMap.get(i)));
-        }
+        }*/
        /* for(int i=0;i<itemEntitys.length;i++){
             slot[0].setItem(itemEntitys[i].getName(),itemEntitys[i].getNum());
         }*/

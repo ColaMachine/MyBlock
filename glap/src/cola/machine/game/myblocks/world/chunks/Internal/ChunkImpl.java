@@ -386,51 +386,44 @@ boolean flat =true;
 		switch (this.currentBlockType) {
         case 1:
 			ti = TextureManager.getTextureInfo("stone");
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);DrawVetext();
+
+					ti.bind();
+			DrawVetext();
 			break;
 		case 3:
 			if (faceIndex == 1) {
 				ti = TextureManager.getTextureInfo("grass_top");
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-						ti.textureHandle);
+				ti.bind();
 			} else if (faceIndex == 2) {
 				ti = TextureManager.getTextureInfo("soil");
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-						ti.textureHandle);
+				ti.bind();
 			} else {
 				ti = TextureManager.getTextureInfo("grass_side");
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-						ti.textureHandle);
+				ti.bind();
 			}DrawVetext();
 			break;
 		case 20:
 			ti = TextureManager.getTextureInfo("glass");
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);DrawVetext();
+			ti.bind();;DrawVetext();
 			break;
         case 8:
                 ti = TextureManager.getTextureInfo("water");
                 if (faceIndex == 1) {
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                            ti.textureHandle);DrawVetext();
+					ti.bind();;DrawVetext();
                 }
                 break;
 		case 12:
 			ti = TextureManager.getTextureInfo("sand");
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);DrawVetext();
+			ti.bind();;DrawVetext();
 			break;
 		case 7:
 			ti = TextureManager.getTextureInfo("mantle");
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					ti.textureHandle);DrawVetext();
+			ti.bind();;DrawVetext();
 			break;
 
 		case 5:
 			ti = TextureManager.getTextureInfo("wood");
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-						ti.textureHandle);DrawVetext();
+			ti.bind();;DrawVetext();
 			break;
 		default:
 			System.out.println("添纹理的时候 什么都没对应上");

@@ -128,8 +128,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
             chunk.preRender();
 
         }
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                TextureManager.getTextureInfo("soil").textureHandle);
+
+                TextureManager.getTextureInfo("soil").bind();
 
         GL11.glEnable(GL11.GL_BLEND);
         for (ChunkImpl chunk : chunksInProximity) {

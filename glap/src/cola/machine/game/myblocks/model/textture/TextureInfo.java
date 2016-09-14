@@ -16,7 +16,7 @@ public class TextureInfo extends RegionArea{
 	public float maxX=0;
 	public float maxY=0;*/
     public  GLImage img;
-    public int textureHandle= 0;
+    private int textureHandle= 0;
 	public TextureInfo(float minX,float minY,float maxX,float maxY){
 		this.minX=minX;
 		this.minY=minY;
@@ -107,7 +107,13 @@ public float x1;
             }
 
     }
-
+    public void bind(){
+        try {
+            ((LWJGLTexture) texture).bind();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     void drawQuad(int x, int y, int w, int h) {
         GL11.glTexCoord2f(minX, minY); GL11.glVertex2i(x    , y    );
         GL11.glTexCoord2f(minX, maxY); GL11.glVertex2i(x    , y + h);

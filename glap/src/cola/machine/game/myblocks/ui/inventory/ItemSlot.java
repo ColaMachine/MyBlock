@@ -29,9 +29,12 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.textture.ItemCfgBean;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 import de.matthiasmann.twl.renderer.Font;
@@ -66,6 +69,11 @@ public class ItemSlot extends Widget {
         }*/
 
         this.itemWidget = itemWidget;
+
+        if(this.getItemType()== Constants.SLOT_TYPE_HEAD){
+            Human human = CoreRegistry.get(Human.class);
+            human.addHeadEquip(itemWidget.getItemCfg());
+        }
 
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){
             itemWrap.getParent().removeChild(itemWrap);

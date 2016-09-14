@@ -36,8 +36,8 @@ public class Cross extends RegionArea {
         // activate the image texture
 
         // draw a textured quad
+        textureInfo.bind();
 
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
         GL11.glBegin(GL11.GL_QUADS);
 
         GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z

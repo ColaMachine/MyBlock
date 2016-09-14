@@ -680,8 +680,8 @@ try {
             //GL11.glScaled(0.1,0.1,0.1);
             worldRenderer.render();
             //GL11.glScaled(10,10,10);
-            TextureInfo ti = TextureManager.getTextureInfo("human");
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+           /* TextureInfo ti = TextureManager.getTextureInfo("human");
+            ti.bind();*/
 
             GL11.glPushMatrix();
             {
@@ -763,7 +763,7 @@ chunk =new ChunkImpl();
     }
     public void testChunk(){
         TextureInfo ti = TextureManager.getTextureInfo("soil");
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+        ti.bind();
         GL11.glBegin(GL11.GL_QUADS);
         chunk.render();
         GL11.glEnd();

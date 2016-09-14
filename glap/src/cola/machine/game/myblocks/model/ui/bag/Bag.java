@@ -231,7 +231,7 @@ Div div;
 
         this.withWH(100,100,500,400);
         this.textureInfo= TextureManager.getTextureInfo("bag");
-        this.humanTextureHandle= TextureManager.getTextureInfo("human").textureHandle;
+        //this.humanTextureHandle= TextureManager.getTextureInfo("human").textureHandle;
         this.earthHandle= TextureManager.getImage("background").textureHandle;
         this.human= CoreRegistry.get(MyBlockEngine.class).human;
         //this.block= new BaseBlock(0,0,0);

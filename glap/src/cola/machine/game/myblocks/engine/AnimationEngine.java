@@ -648,7 +648,7 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
         GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(0-_x,  _y,  _z);	// Top Left
         GL11.glEnd();*/
         TextureInfo ti = TextureManager.getTextureInfo("human");
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+		ti.bind();
           GL11.glPushMatrix();
         {
             if(Switcher.CAMERA_2_PLAYER<-2|| Switcher.CAMERA_2_PLAYER>2){

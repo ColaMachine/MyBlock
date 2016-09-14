@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.PixelFormat;
+import util.MapUtil;
 
 import javax.imageio.ImageIO;
 
@@ -242,12 +243,16 @@ public class TextureManager {
                 TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
                 String xywh = textureCfgBean.getXywh();
                 String ary[] = xywh.split(",");
-
-                textureInfoMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0]),
-                        Integer.valueOf(ary[1]),
-                        Integer.valueOf(ary[2]),
-                        Integer.valueOf(ary[3])
-                        ));
+try {
+    textureInfoMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0].trim()),
+            Integer.valueOf(ary[1].trim()),
+            Integer.valueOf(ary[2].trim()),
+            Integer.valueOf(ary[3].trim())
+    ));
+}catch(Exception e){
+    e.printStackTrace();
+    System.exit(0);
+}
 
             }
 
@@ -296,6 +301,9 @@ public class TextureManager {
 
                     String shapeName = (String ) map.get("shape");
                     Shape shape =this.getShape(shapeName);
+                  /*  if(shapeName.equals("iron_helmet")){
+                        System.out.println(shape==null);
+                    }*/
                     item.setShape(shape);
                     this.putItem(name,item);
                 }else if(type.equals("food")){
@@ -330,23 +338,51 @@ public class TextureManager {
                 String right = (String)map.get("right");
                 String top = (String)map.get("top");
                 String bottom = (String)map.get("bottom");
+
+                float width = MapUtil.getFloatValue(map,"width");
+                float height = MapUtil.getFloatValue(map,"height");
+                float thick = MapUtil.getFloatValue(map,"thick");
+
+                String parent =  MapUtil.getStringValue(map,"parent");
+                if(!parent.equals("root")){
+                    String p_posi_xStr =  MapUtil.getStringValue(map,"p_posi_x");
+                    String p_posi_yStr =  MapUtil.getStringValue(map,"p_posi_y");
+                    String p_posi_zStr =  MapUtil.getStringValue(map,"p_posi_z");
+
+                Shape parentShape =this.getShape(parent);
+
+                String c_posi_xStr =  MapUtil.getStringValue(map,"c_posi_x");
+
+                shape.setC_posi_x(Shape.parsePosition(c_posi_xStr,width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+
+                String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
+                    shape.setC_posi_y(Shape.parsePosition(c_posi_yStr,width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+
+                    shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map,"c_posi_z"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+
+                   shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map,"p_posi_x"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+                    shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map,"p_posi_y"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+                    shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map,"p_posi_z"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+
+                }
+
                 if(!isEmpty(front)){
-                    shape.setFront(this.getShape("front"));
+                    shape.setFront(this.getTextureInfo(front));
                 }
                 if(!isEmpty(back)){
-                    shape.setBack(this.getShape("back"));
+                    shape.setBack(this.getTextureInfo(back));
                 }
                 if(!isEmpty(left)){
-                    shape.setLeft(this.getShape("left"));
+                    shape.setLeft(this.getTextureInfo(left));
                 }
                 if(!isEmpty(right)){
-                    shape.setRight(this.getShape("right"));
+                    shape.setRight(this.getTextureInfo(right));
                 }
                 if(!isEmpty(top)){
-                    shape.setTop(this.getShape("top"));
+                    shape.setTop(this.getTextureInfo(top));
                 }
                 if(!isEmpty(bottom)){
-                    shape.setBottom(this.getShape("bottom"));
+                    shape.setBottom(this.getTextureInfo(bottom));
                 }
 
                 this.shapeMap.put(name,shape);

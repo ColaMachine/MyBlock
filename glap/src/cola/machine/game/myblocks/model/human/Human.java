@@ -6,6 +6,8 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.Connector;
+import cola.machine.game.myblocks.model.textture.ItemCfgBean;
+import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
@@ -579,6 +581,16 @@ this.stable=false;
 			lastTime = Sys.getTime();
 			
 	}
+public void addHeadEquip(ItemCfgBean itemCfg)  {
+	Shape shape = itemCfg.getShape();
+
+	Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+	component.setShape(itemCfg.getShape());
+	component.id=itemCfg.getName();
+	Component parent = 	player.bodyComponent.findChild("human_head");
+	Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+	parent.addConnector(connector);
+}
 
     public  Vector3f  velocity=new Vector3f();
 

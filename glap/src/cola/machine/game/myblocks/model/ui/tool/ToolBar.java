@@ -136,8 +136,8 @@ public class ToolBar extends RegionArea {
 		// activate the image texture
 
 		// draw a textured quad
+		textureInfo.bind();
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
 		GL11.glBegin(GL11.GL_QUADS);
 
 		GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
@@ -161,7 +161,7 @@ public class ToolBar extends RegionArea {
 				// GL11.glEnable(GL11.GL_TEXTURE_2D);
 				TextureInfo ti = TextureManager
 						.getTextureInfo(slots[27 + i].item.name);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+				ti.bind();
 
 				GL11.glBegin(GL11.GL_QUADS);
 				{
@@ -208,7 +208,7 @@ public class ToolBar extends RegionArea {
 
 		if (this.selectedIndex > 0) {
 			TextureInfo ti = TextureManager.getTextureInfo("selectBox");
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+		ti.bind();
 
 			GL11.glBegin(GL11.GL_QUADS);
 			{

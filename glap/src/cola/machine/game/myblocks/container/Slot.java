@@ -45,8 +45,8 @@ public class Slot extends RegionArea{
 
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             TextureInfo ti = TextureManager.getTextureInfo(item.name);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D,ti.textureHandle);
 
+ti.bind();
             GL11.glBegin(GL11.GL_QUADS);
             {
                 GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
