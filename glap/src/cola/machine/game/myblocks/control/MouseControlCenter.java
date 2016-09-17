@@ -5,6 +5,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 
+import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
@@ -41,6 +42,7 @@ public class MouseControlCenter {
     public Robot robot;
     public float centerX = 0;
     public float centerY = 0;
+    public LivingThingManager livingThingManager;
 
     public float prevMouseX = 0;
     public float prevMouseY = 0;
@@ -55,6 +57,7 @@ public class MouseControlCenter {
         this.engine = engine;
         this.human = human;
         this.camera = camera;
+        this.livingThingManager = engine.livingThingManager;
         centerX = Display.getX() + GLApp.displayWidth / 2;
 
         centerY = Display.getY() + GLApp.displayWidth / 2;
@@ -248,6 +251,9 @@ public class MouseControlCenter {
                 .get(ChunkProvider.class);
         GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
                 20, engine.currentObject, false);
+
+        //livingThingManger.findTarget(camera.Position, viewdir,
+              //  20);
         if (hitPoint != null) {
             // Block block=new
             // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);

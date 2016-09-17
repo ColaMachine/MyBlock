@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
+import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -160,7 +161,7 @@ public class MyBlockEngine extends GLApp {
      */
     int handleId;
    // GLShadowOnPlane airplaneShadow;
-
+   public LivingThingManager livingThingManager;
     public void setup() {
         //开启胜读测试
 
@@ -178,6 +179,8 @@ public class MyBlockEngine extends GLApp {
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         CoreRegistry.put(BagController.class,bagController);
         human = new Human(blockRepository);
+
+
         //sword=new Sword(0,0,0);
         //human2 = new Human(blockRepository);
         CoreRegistry.put(MyBlockEngine.class, this);
@@ -596,7 +599,7 @@ try {
         // AssetManager assetManager =
         // CoreRegistry.putPermanently(AssetManager.class, new
         // AssetManager(moduleManager.getEnvironment()));
-
+        livingThingManager =new LivingThingManager();
     }
 
     public void initConfig() throws IOException {
@@ -697,7 +700,7 @@ try {
         }else if(Switcher.gameState==2){
 
         }
-
+        livingThingManager.render();
         //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 
@@ -772,7 +775,8 @@ chunk =new ChunkImpl();
     public void testBeginDisplayList(){
 
         TextureInfo ti = TextureManager.getTextureInfo("human");
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+      //  GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+        ti.bind();
         GLApp.callDisplayList(this.testDisplayId);
 
     }

@@ -40,10 +40,16 @@ public class RegionArea {
     }*/
     public void withWH(float minX,float minY,float width,float height){
         this.minX=minX;
-        this.minY=minY;
+        this.minY=1-minY-height;
         this.maxX = minX+ width;
-        this.maxY = minY+height;
+        this.maxY = this.minY+height;
     }
+    /*public void withWH(float minX,float minY,float width,float height){
+        this.minX=minX;
+        this.maxY=minY;
+        this.maxX = minX+ width;
+        this.minY = minY+height;
+    }*/
     public void render(){
         GL11.glBegin(GL11.GL_LINE_LOOP);
         GL11.glVertex3f(minX, minY, 0);

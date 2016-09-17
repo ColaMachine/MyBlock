@@ -49,6 +49,32 @@ public class Sword {
 		}
 	}
 
+    public void init1 () {
+        List<Block> list = new ArrayList<Block>();
+        try {
+            Color[][] colors = ImageUtil.getGrayPicture("images/items.png", 64,
+                    64, 80, 80);
+            for (int i = 0; i < 16; i++)
+                for (int j = 0; j < 16; j++) {
+                    Color color = colors[i][j];
+                    if (color != null)
+                    {
+
+                        Block soil = new ColorBlock(i, 0, j, color);
+                        list.add(soil);
+                    }
+                }
+            swords = list.toArray(new Block[list.size()]);
+
+        } catch (FileNotFoundException e) {
+            // VIP Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // VIP Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 	public void render() {
 		// 先缩小
 		//GL11.glRotated(180, 0, 1, 0);

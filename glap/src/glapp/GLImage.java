@@ -50,6 +50,7 @@ public class GLImage {
     }
     public GLImage(URI uri)
     {
+        this.uri=uri;
 		BufferedImage img = loadJavaImage(uri);
         if (makeGLImage(img,true,false)) {
 			GLApp.msg("GLImage(String): loaded " + uri + ", width=" + w + " height=" + h);
@@ -195,8 +196,11 @@ public class GLImage {
     	}
     	return tmpi;
 	}
+    public BufferedImage tmpi;
+    public URI uri;
     public BufferedImage loadJavaImage(URI uri) {
-    	BufferedImage tmpi = null;
+
+    	 tmpi = null;
     	try {
     		tmpi = ImageIO.read(new File(uri));
     	}

@@ -82,7 +82,9 @@ public class ToolBarContainer extends RegionArea{
 
         // draw a textured quad
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
+		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
+        textureInfo.bind();
+
 		GL11.glBegin(GL11.GL_QUADS);
 
         GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z
@@ -107,7 +109,8 @@ public class ToolBarContainer extends RegionArea{
 
 				           // GL11.glEnable(GL11.GL_TEXTURE_2D);
 				            TextureInfo ti = TextureManager.getTextureInfo(slots[27+i].item.name);
-				            GL11.glBindTexture(GL11.GL_TEXTURE_2D,ti.textureHandle);
+				           // GL11.glBindTexture(GL11.GL_TEXTURE_2D,ti.textureHandle);
+                            ti.bind();
 
 				            GL11.glBegin(GL11.GL_QUADS);
 				            {

@@ -97,7 +97,7 @@ public class ChunkImpl implements Chunk {
 		return blockManager.getBlock((short) oldValue);
 	}
 
-	TextureInfo ti = TextureManager.getTextureInfo("soil");
+	TextureInfo ti = TextureManager.getTextureInfo("mantle");
 
     /**
      * 判断对方和自己 如果一个是alpha 一个是非透明的 就需要

@@ -13,7 +13,7 @@
             <alias ref="-innerframe.background"/>
         </select>
 
-        <composed name="itemslot.background" border="5" sizeOverwriteH="40" sizeOverwriteV="40">
+        <composed name="itemslot.background" border="5" sizeOverwriteH="40" sizeOverwriteV="40"><!-- 如果不用minx miny限制 就采用sizeOverwriteH-->
             <alias ref="-innerframe.background"/>
             <alias ref="white" if="dropOk" tint="#80FFFFFF"/>
             <alias ref="white" if="dropBlocked" tint="#80FF0000"/>
@@ -50,6 +50,37 @@
 
 
     <theme name="inventorydemo" ref="-defaults" allowWildcard="true">
+        <param name="background"><image>evilframe.background</image></param>
+        <param name="border"><border>background.border</border></param>
+        <param name="titleAreaTop"><int>1</int></param>
+        <param name="titleAreaLeft"><int>8</int></param>
+        <param name="titleAreaRight"><int>-8</int></param>
+        <param name="titleAreaBottom"><int>15</int></param>
+        <param name="hasCloseButton"><bool>true</bool></param>
+        <param name="closeButtonX"><int>0</int></param>
+        <param name="closeButtonY"><int>0</int></param>
+        <param name="hasResizeHandle"><bool>false</bool></param>
+        <param name="resizeHandleX"><int>0</int></param>
+        <param name="resizeHandleY"><int>0</int></param>
+        <param name="fadeColorInactive"><color>white</color></param>
+        <param name="fadeDurationActivate"><int>0</int></param>
+        <param name="fadeDurationDeactivate"><int>0</int></param>
+        <param name="fadeDurationShow"><int>0</int></param>
+        <param name="fadeDurationHide"><int>0</int></param>
+        <param name="mouseCursor"><cursor>arrow.*</cursor></param>
+        <theme name="title" ref="-defaults">
+            <param name="textAlignment"><enum type="alignment">left</enum></param>
+            <param name="font"><font>black</font></param>
+        </theme>
+        <theme  name="closeButton" ref="-defaults" allowWildcard="true">
+
+            <param name="border"><border>background.border</border></param>
+            <param name="font"><font>button</font></param>
+        </theme>
+        <theme name="resizeHandle" ref="-defaults"/>
+    </theme>
+
+    <theme name="toolbar" ref="-defaults" allowWildcard="true">
         <param name="background"><image>evilframe.background</image></param>
         <param name="border"><border>background.border</border></param>
         <param name="titleAreaTop"><int>1</int></param>

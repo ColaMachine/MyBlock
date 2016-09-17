@@ -35,7 +35,8 @@ public class Item {
             {
                 // Front Face
                 TextureInfo ti=TextureManager.getTextureInfo(this.name);
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D,ti.textureHandle);
+                //GL11.glBindTexture(GL11.GL_TEXTURE_2D,ti.textureHandle);
+                ti.bind();
                 GL11.glBegin(GL11.GL_QUADS);
                 GL11.glNormal3f( 0.0f, 0.0f, 0.6f);
                 GL11.glTexCoord2f(ti.minX,ti.minY); GL11.glVertex3f(-0.6f, -0.6f,  0.6f);	// Bottom Left

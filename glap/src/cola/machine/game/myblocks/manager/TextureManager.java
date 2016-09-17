@@ -47,7 +47,7 @@ public class TextureManager {
 
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
-    public static HashMap<String, ItemCfgBean> itemMap = new HashMap<String, ItemCfgBean>();
+    public static HashMap<String, ItemCfgBean> itemCfgMap = new HashMap<String, ItemCfgBean>();
     public static HashMap<String, Shape> shapeMap = new HashMap<String, Shape>();
 
     public HashMap<String,ImageInfo> ImageInfoMap =new HashMap<>();
@@ -64,24 +64,24 @@ public class TextureManager {
             e.printStackTrace();
             System.exit(0);
         }
-        this.putImage("grass_top", "assets/blockTiles/plant/Grass.png");
+      /*  this.putImage("grass_top", "assets/blockTiles/plant/Grass.png");
         this.putImage(
                 "human", "images/char.png"
-        );
-        textureInfoMap.put("human", new TextureInfo("human"));
-        this.putImage("heightmap", "images/gray.png");
-        textureInfoMap.put("heightmap", new TextureInfo("heightmap"));
-        this.putImage("background", "images/background.png");
+        );*/
+        //textureInfoMap.put("human", new TextureInfo("human"));
+        //this.putImage("heightmap", "images/gray.png");
+       // textureInfoMap.put("heightmap", new TextureInfo("heightmap"));
+       // this.putImage("background", "images/background.png");
 
-        textureInfoMap.put("background", new TextureInfo("background"));
-        this.putImage("gui", "images/gui.png");
-        textureInfoMap.put("cross", new TextureInfo("gui", 1 / 12f + 0.01f, 10 / 12f, 1 / 12f, 1 / 12f, true));
+       // textureInfoMap.put("background", new TextureInfo("background"));
+       // this.putImage("gui", "images/gui.png");
+       // textureInfoMap.put("cross", new TextureInfo("gui", 1 / 12f + 0.01f, 10 / 12f, 1 / 12f, 1 / 12f, true));
 
-        textureInfoMap.put("selectBox", new TextureInfo("gui", 0, 210, 23, 23));
+        //textureInfoMap.put("selectBox", new TextureInfo("gui", 0, 210, 23, 23));
 
 
-        this.putImage("widgets", "assets/minecraft/textures/gui/widgets.png");
-        textureInfoMap.put("toolbar", new TextureInfo("widgets", 0, 469, 362, 43));
+       // this.putImage("widgets", "assets/minecraft/textures/gui/widgets.png");
+       // textureInfoMap.put("toolbar", new TextureInfo("widgets", 0, 469, 362, 43));
 
         //this.put("night", "images/night.jpg");
         //textureInfoMap.put("night", new TextureInfo("night"));
@@ -91,13 +91,13 @@ public class TextureManager {
         this.putImage("sun", "assets/minecraft/textures/environment/sun.png");
         textureInfoMap.put("sun", new TextureInfo("sun"));
 
-        this.putImage("inventory", "assets/minecraft/textures/gui/container/inventory.png");
-        textureInfoMap.put("bag", new TextureInfo("inventory", 0, 179, 352, 332));
+        //this.putImage("inventory", "assets/minecraft/textures/gui/container/inventory.png");
+        //textureInfoMap.put("bag", new TextureInfo("inventory", 0, 179, 352, 332));
 
-        this.putImage("human", "images/2000.png");
+     //   this.putImage("human", "images/2000.png");
         //textureInfoMap.put("bag",new TextureInfo("inventory",0,179,352,332));
 
-        this.putImage("apple_golden", "assets/minecraft/textures/items/apple_golden.png");
+        /*this.putImage("apple_golden", "assets/minecraft/textures/items/apple_golden.png");
 
         this.putImage("items", "images/items.png");
 
@@ -169,7 +169,7 @@ public class TextureManager {
         textureInfoMap.put("humanHead-left", new TextureInfo("human", 16, 16, 8, 8, 64, 32));
         textureInfoMap.put("humanHead-right", new TextureInfo("human", 0, 16, 8, 8, 64, 32));
         textureInfoMap.put("humanHead-top", new TextureInfo("human", 8, 24, 8, 8, 64, 32));
-        textureInfoMap.put("humanHead-bottom", new TextureInfo("human", 16, 16, 8, 8, 64, 32));
+        textureInfoMap.put("humanHead-bottom", new TextureInfo("human", 16, 16, 8, 8, 64, 32));*/
 
 //        textureInfoMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
 //        textureInfoMap.put("gold_sword", new TextureInfo("items", 4, 10, 1, 1, 16, 16));
@@ -180,12 +180,15 @@ public class TextureManager {
     }
 
 
-    public void putItem(String name,ItemCfgBean item){
-        this.itemMap.put(name,item);
+    public void putItemCfg(String name,ItemCfgBean item){
+        this.itemCfgMap.put(name,item);
+        if(name.equals("fur_helmet")){
+            LogUtil.println("fur_helmet");
+        }
     }
-    public static ItemCfgBean getItem(String name){
+    public static ItemCfgBean getItemCfg(String name){
 
-        ItemCfgBean itemCfg = itemMap.get(name);
+        ItemCfgBean itemCfg = itemCfgMap.get(name);
         if(itemCfg==null){
             LogUtil.println("itemCfg 为null:"+name);
             System.exit(0);
@@ -195,10 +198,12 @@ public class TextureManager {
     public void putImage(String name, String textureImagePath) {
         int textureHandle = 0;
 
+
         GLImage textureImg;
         try {
             LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
            Texture texture = renderer.loadTexture(new URL(installPath.toUri().toURL(), textureImagePath),"RGBA","linear");
+
             textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
@@ -247,7 +252,7 @@ try {
     textureInfoMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), Integer.valueOf(ary[0].trim()),
             Integer.valueOf(ary[1].trim()),
             Integer.valueOf(ary[2].trim()),
-            Integer.valueOf(ary[3].trim())
+            Integer.valueOf(ary[3].trim()),textureCfgBean.getName()
     ));
 }catch(Exception e){
     e.printStackTrace();
@@ -270,6 +275,7 @@ try {
                 HashMap map = textureCfgBeanList.get(i);
                 ItemCfgBean item = new ItemCfgBean();
                 String name = (String)map.get("name");
+
                 String icon = (String)map.get("icon");
                 item.setName(name);
                 item.setIcon(this.getTextureInfo(icon));
@@ -305,7 +311,8 @@ try {
                         System.out.println(shape==null);
                     }*/
                     item.setShape(shape);
-                    this.putItem(name,item);
+                    this.putItemCfg(name,item);
+                    //item.init();
                 }else if(type.equals("food")){
                     item.setType(Constants.ITEM_TYPE_FOOD);
                 }
@@ -342,7 +349,9 @@ try {
                 float width = MapUtil.getFloatValue(map,"width");
                 float height = MapUtil.getFloatValue(map,"height");
                 float thick = MapUtil.getFloatValue(map,"thick");
-
+                shape.setWidth(width);
+                shape.setHeight(height);
+                shape.setThick(thick);
                 String parent =  MapUtil.getStringValue(map,"parent");
                 if(!parent.equals("root")){
                     String p_posi_xStr =  MapUtil.getStringValue(map,"p_posi_x");
@@ -351,14 +360,14 @@ try {
 
                 Shape parentShape =this.getShape(parent);
 
-                String c_posi_xStr =  MapUtil.getStringValue(map,"c_posi_x");
+               // String c_posi_xStr =  MapUtil.getStringValue(map,"c_posi_x");
 
-                shape.setC_posi_x(Shape.parsePosition(c_posi_xStr,width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+                shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map,"c_posi_x"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
 
-                String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
-                    shape.setC_posi_y(Shape.parsePosition(c_posi_yStr,width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+                //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
+                    shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map,"c_posi_y"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
 
-                    shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map,"c_posi_z"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
+                    shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map,"c_posi_z"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
 
                    shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map,"p_posi_x"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
                     shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map,"p_posi_y"),width,height,thick,parentShape.getWidth(),parentShape.getHeight(),parentShape.getThick()));
@@ -390,6 +399,7 @@ try {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("Failed to load config", e);
         }
 
@@ -407,6 +417,8 @@ try {
         TextureInfo textureInfo= textureInfoMap.get(name);
         if(textureInfo==null){
             assert textureInfo!=null;
+            LogUtil.println("textureinfo 为空"+name);
+            System.exit(0);
         }
         return textureInfo;
     }

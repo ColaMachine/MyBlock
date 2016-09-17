@@ -61,7 +61,7 @@ public class AnimationManager {
 
             if(animator.complete){
                 animatorMap.put(animator.component.id+":"+animator.animation.action,null);
-                LogUtil.println("移除动画"+animators.get(i).animation.action);
+//                LogUtil.println("移除动画"+animators.get(i).animation.action);
                 animators.remove(i);
 
             }else {
@@ -213,7 +213,7 @@ public class AnimationManager {
                 Matcher m=p.matcher(arr[1].trim());
                 while(m.find()){
                     //LogUtil.println("总数:"+m.groupCount()+"找到一条transform value:"+m.group(1));
-                    LogUtil.println(m.group(1) + ":" + m.group(2));
+//                    LogUtil.println(m.group(1) + ":" + m.group(2));
                     if (m.group(1).equals("X")) {
                         transform.rotateX = Integer.valueOf(m.group(2));
                     } else if (m.group(1).equals("Y")) {

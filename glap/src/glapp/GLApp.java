@@ -2025,6 +2025,7 @@ public class GLApp {
         return null;
     }
     public static GLImage loadImage(URI uri) {
+
         GLImage img = new GLImage(uri);
         if (img.isLoaded()) {
             return img;

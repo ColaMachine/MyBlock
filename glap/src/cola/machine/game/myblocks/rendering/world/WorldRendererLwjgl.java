@@ -129,7 +129,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
         }
 
-                TextureManager.getTextureInfo("soil").bind();
+                TextureManager.getTextureInfo("mantle").bind();
 
         GL11.glEnable(GL11.GL_BLEND);
         for (ChunkImpl chunk : chunksInProximity) {

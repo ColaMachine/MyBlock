@@ -22,7 +22,7 @@ public class Animator {
     KeyFrame[] frames ;
     int slot=0;
     public Animator(Animation animation,Component component){
-        LogUtil.println("创建新的animator");
+//        LogUtil.println("创建新的animator");
         this.component=component;
         this.animation=animation;
         this.frames = animation.keyFrames.frames.toArray(new KeyFrame[animation.keyFrames.frames.size()]);
@@ -150,7 +150,7 @@ public class Animator {
 
                 }
 
-                LogUtil.println("动画结束");
+//                LogUtil.println("动画结束");
                 //是不是在本次时间范围内
                 complete=true;
                 return;
@@ -191,7 +191,7 @@ public class Animator {
 
                         }
                         slot++;
-                        LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
+                       // LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
                         //重新计算
                         accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
                     }

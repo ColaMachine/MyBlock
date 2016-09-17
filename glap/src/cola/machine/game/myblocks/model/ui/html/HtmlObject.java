@@ -153,7 +153,8 @@ public class HtmlObject extends RegionArea{
             TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
             GL11.glColor3f(1, 1, 1);
            // GL11.glClear(GL11.GL_COLOR);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
+            textureInfo.bind();
+            //GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
 
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
             GL11.glBegin(GL11.GL_QUADS);

@@ -69,12 +69,24 @@ public class ItemSlot extends Widget {
         }*/
 
         this.itemWidget = itemWidget;
-
-        if(this.getItemType()== Constants.SLOT_TYPE_HEAD){
-            Human human = CoreRegistry.get(Human.class);
-            human.addHeadEquip(itemWidget.getItemCfg());
+        if(itemWidget !=null ) {
+            if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
+                Human human = CoreRegistry.get(Human.class);
+                human.addHeadEquip(itemWidget.getItemCfg());
+            }
+            if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
+                Human human = CoreRegistry.get(Human.class);
+                human.addLegEquip(itemWidget.getItemCfg());
+            }
+            if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
+                Human human = CoreRegistry.get(Human.class);
+                human.addBodyEquip(itemWidget.getItemCfg());
+            }
+            if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
+                Human human = CoreRegistry.get(Human.class);
+                human.addHandEquip(itemWidget.getItemCfg());
+            }
         }
-
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){
             itemWrap.getParent().removeChild(itemWrap);
 
@@ -105,6 +117,7 @@ public class ItemSlot extends Widget {
 
     public ItemSlot(int type) {
         this.itemType=type;
+        this.setTheme("itemslot");
       //   label =new Label();
        // label.setText("");
        // add(label);
@@ -146,7 +159,7 @@ public class ItemSlot extends Widget {
     }*/
 
     public boolean canDrop(ItemCfgBean itemCfgBean) {
-        if(this.itemType==0){
+        if(this.itemType==0|| this.itemType ==Constants.SLOT_TYPE_HAND){
             return true;
         }
         try {
@@ -280,7 +293,7 @@ public class ItemSlot extends Widget {
         super.applyTheme(themeInfo);
         icons = themeInfo.getParameterMap("icons");
         font = themeInfo.getFont("black");
-        findIcon();
+        //findIcon();
     }
     private TextureInfo icon2;
     private void findIcon() {
@@ -289,7 +302,7 @@ public class ItemSlot extends Widget {
         } else {
             //icon = icons.getImage(item)
             //icon2= TextureManager.getTextureInfo(itemWrap.getItem());
-           itemWidget.setIcon(icons.getImage(itemWidget.getItem())) ;
+           //itemWidget.setIcon(icons.getImage(itemWidget.getItem())) ;
         }
     }
 }

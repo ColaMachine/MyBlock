@@ -588,10 +588,56 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 	component.setShape(itemCfg.getShape());
 	component.id=itemCfg.getName();
 	Component parent = 	player.bodyComponent.findChild("human_head");
+    if(parent==null){
+        LogUtil.println("未找到子component");
+        System.exit(0);
+    }
 	Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
 	parent.addConnector(connector);
 }
+    public void addLegEquip(ItemCfgBean itemCfg)  {
+        Shape shape = itemCfg.getShape();
 
+        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+        component.setShape(itemCfg.getShape());
+        component.id=itemCfg.getName();
+        Component parent = 	player.bodyComponent.findChild("human_l_b_leg");
+        if(parent==null){
+            LogUtil.println("未找到子component");
+            System.exit(0);
+        }
+        Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        parent.addConnector(connector);
+    }
+    public void addBodyEquip(ItemCfgBean itemCfg)  {
+        Shape shape = itemCfg.getShape();
+
+        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+        component.setShape(itemCfg.getShape());
+        component.id=itemCfg.getName();
+        Component parent = 	player.bodyComponent.findChild("human_body");
+        if(parent==null){
+            LogUtil.println("未找到子component");
+            System.exit(0);
+        }
+        Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        parent.addConnector(connector);
+    }
+    public void addHandEquip(ItemCfgBean itemCfg)  {
+        //Shape shape = itemCfg.getShape();
+
+        Component component= new Component(0.01f,1,1);
+        itemCfg.init();
+        component.setItem(itemCfg);
+        component.id=itemCfg.getName();
+        Component parent = 	player.bodyComponent.findChild("rHumanHand");
+        if(parent==null){
+            LogUtil.println("未找到子component");
+            System.exit(0);
+        }
+        Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
+        parent.addConnector(connector);
+    }
     public  Vector3f  velocity=new Vector3f();
 
 

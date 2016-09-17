@@ -85,7 +85,7 @@ public class ImageUtil {
 		Color[][] heights=new Color[maxX-minX ][maxY-minY ];
 		for(int i = minX;i < maxX ;i++)
 			{
-				for(int j = minY;j < maxX ;j++)
+				for(int j = minY;j < maxY ;j++)
 				{
 //ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
 					Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
@@ -102,6 +102,37 @@ public class ImageUtil {
 		return heights;
 		   
 	}
+
+
+    public static Color[][] getGrayPicture(BufferedImage originalImage,int minX,int minY,int maxX,int maxY) throws FileNotFoundException, IOException
+    {
+        //ImageIO.read( ImageIO.read(PathManager.getInstance().getInstallPath().resolve(filename).toUri())));
+        originalImage.getColorModel();
+        System.out.println(originalImage.getColorModel());
+
+        int green=0,red=0,blue=0,rgb;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+        Color[][] heights=new Color[maxX-minX ][maxY-minY ];
+        for(int i = minX;i < maxX ;i++)
+        {
+            for(int j = minY;j < maxY ;j++)
+            {
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+                Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+
+                red = originalImage.getColorModel().getRed(data);
+                if(red!=0){
+                    blue = originalImage.getColorModel().getBlue(data);
+                    green = originalImage.getColorModel().getGreen(data);
+                    heights[i-minX][j-minY]=new Color(red,blue,green);
+                }
+            }
+
+        }
+        return heights;
+
+    }
 	
 	public static int[][] getColorPicture(String filename) throws FileNotFoundException, IOException
 	{	

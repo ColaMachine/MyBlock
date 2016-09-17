@@ -100,11 +100,11 @@ public class ItemWidget extends Widget {
       // label.setText(""+itemEntity.getNum());
        // add(label);
         //label.setPosition(30,30);
-        icon2= TextureManager.getTextureInfo(itemEntity.getName());
+        icon2= TextureManager.getItemCfg(itemEntity.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }
-        this.itemCfg = TextureManager.getItem(itemEntity.getName());
+        this.itemCfg = TextureManager.getItemCfg(itemEntity.getName());
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }

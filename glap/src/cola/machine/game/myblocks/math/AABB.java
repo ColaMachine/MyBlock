@@ -434,4 +434,19 @@ public final class AABB {
 
         return true;
     }
+
+
+    public boolean xiangjiao(Vector3f form,Vector3f vector){
+    //先得到方程
+
+        float x0 = min.x;
+        float x1=max.x;
+        return false;
+    }
+    public static void main(String args[]){
+        AABB aabb = new AABB(new Vector3f(1,0,0) ,new Vector3f(2,1,1));
+      Vector3f from = new Vector3f(0,0,0);
+        Vector3f vector3f=new Vector3f(1,0.5f,1);
+        System.out.print(aabb.intersectRectangle(from,vector3f));
+    }
 }

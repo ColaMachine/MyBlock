@@ -37,6 +37,10 @@ public class Constants {
     public static final int  ITEM_TYPE_WEAR =2;
     public static final int ITEM_TYPE_FOOD =2;
 
+
+    public static final int SLOT_TYPE_ALL=0;
+
+
     public static final int SLOT_TYPE_HEAD=1<<0;
     public static final int SLOT_TYPE_BODY=1<<1;
     public static final int SLOT_TYPE_LEG=1<<2;

@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.textture;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import de.matthiasmann.twl.renderer.AnimationState;
@@ -41,17 +42,27 @@ public float x1;
         textureHandle= img.textureHandle;
 
     }*/
-    Texture texture;
-    public TextureInfo(String imgName,float minX,float minY,float width,float height){
+    public Texture texture;
+    String imageName;
+    String name;
+    public TextureInfo(String imgName,float minX,float minY,float width,float height,String name){
         this.x1=minX;
+        this.name=name;
         this.y1=minY;
+        this.imageName=imgName;
         this.owidth=width;
         this.oheight=height;
         this.x2=x1+owidth;
         this.y2=y2+oheight;
         img=TextureManager.getImage(imgName);
         texture = TextureManager.getTexture(imgName);
-        withWH(minX / img.w, minY / img.h, width / img.w, height / img.h);//(img.h - minY -
+        try {
+            withWH(minX / texture.getWidth(),minY / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
+        }catch(Exception e){
+            LogUtil.println("error");
+            System.exit(1);
+        }
+        // withWH(minX / img.w, minY / img.h, width / img.w, height / img.h);//(img.h - minY -
         textureHandle= img.textureHandle;
 
     }
@@ -60,13 +71,14 @@ public float x1;
         GLImage img=TextureManager.getImage(imgName);
         withWH(0, 0, 1, 1);
         textureHandle= img.textureHandle;
-
+        texture = TextureManager.getTexture(imgName);
     }
 
     public TextureInfo(String imgName,float minX,float minY,float width,float height,boolean flag){
         GLImage img=TextureManager.getImage(imgName);
         withWH(minX, minY, width, height);
         textureHandle= img.textureHandle;
+        texture = TextureManager.getTexture(imgName);
 
     }
 
@@ -79,11 +91,13 @@ public float x1;
         GLImage img=TextureManager.getImage(imgName);
         withWH((float)x/totalWidth, (float)y/totalHeight, (float)width/totalWidth, (float)height/totalHeight);
         textureHandle= img.textureHandle;
+        texture = TextureManager.getTexture(imgName);
     }
     public TextureInfo(String imgName, float x, float y, float width, float height, float w, float h,float offset) {
         GLImage img=TextureManager.getImage(imgName);
         withWH((x+offset)/w, (y+offset)/h, (width-offset)/w, (height-offset)/h);
         textureHandle= img.textureHandle;
+        texture = TextureManager.getTexture(imgName);
     }
 	public void render(){
 
@@ -92,7 +106,9 @@ public float x1;
 
     public void draw(de.matthiasmann.twl.renderer.AnimationState animationState, int x, int y, int w, int h){
 
-            if(  ( (LWJGLTexture) texture ).bind()) {
+           // if(  ( (LWJGLTexture) texture ).bind()) {
+
+        if(bind()){
                /* GL11.glBindTexture(GL11.GL_TEXTURE_2D,
                         textureHandle);*/
                 //System.out.println(0.003921568859368563f*-1f);
@@ -107,17 +123,31 @@ public float x1;
             }
 
     }
-    public void bind(){
+    public boolean bind(){
         try {
-            ((LWJGLTexture) texture).bind();
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D,
+                    textureHandle);
+            return true;
+           // ((LWJGLTexture) texture).bind();
         }catch(Exception e){
             e.printStackTrace();
+            throw e;
         }
     }
-    void drawQuad(int x, int y, int w, int h) {
-        GL11.glTexCoord2f(minX, minY); GL11.glVertex2i(x    , y    );
+    /*void drawQuad(int x, int y, int w, int h) {
+
+        GL11.glTexCoord2f(minX, minY); GL11.glVertex2i(x   , y    );
         GL11.glTexCoord2f(minX, maxY); GL11.glVertex2i(x    , y + h);
         GL11.glTexCoord2f(maxX, maxY); GL11.glVertex2i(x + w, y + h);
         GL11.glTexCoord2f(maxX, minY); GL11.glVertex2i(x + w, y    );
+    }*/
+
+    void drawQuad(int x, int y, int w, int h) {
+
+
+        GL11.glTexCoord2f(minX, minY); GL11.glVertex2i(x    , y + h);
+        GL11.glTexCoord2f(maxX, minY); GL11.glVertex2i(x + w, y + h);
+        GL11.glTexCoord2f(maxX, maxY); GL11.glVertex2i(x + w, y    );
+        GL11.glTexCoord2f(minX, maxY); GL11.glVertex2i(x   , y    );
     }
 }

@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.ItemCfgBean;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glmodel.GL_Vector;
@@ -186,9 +187,35 @@ public class Component {
         GL11.glTranslatef(-offsetPosition.x,-offsetPosition.y,-offsetPosition.z);
     }
 
-    public void render(){ GL11. glEnable(GL11.GL_DEPTH_TEST);
+    public void render(){
+
+        if(this.itemCfgBean!=null){
+            this.itemCfgBean.render();
+            return;
+        }
+        GL11. glEnable(GL11.GL_DEPTH_TEST);
        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,front.textureHandle);
-        front.bind();
+        if(front!=null) {
+            front.bind();
+        }else if(left!=null){
+            left.bind();
+        }
+        else if(right!=null){
+            right.bind();
+        }
+        else if(back!=null){
+            back.bind();
+        }
+        else if(top!=null){
+            top.bind();
+        }else if(bottom!=null){
+            bottom.bind();
+        }
+
+
+        /*if(this.id.equals("fur_helmet")){
+            LogUtil.println("iron_helmet");
+        }*/
         GL11.glTranslatef(offsetPosition.x, offsetPosition.y, offsetPosition.z);
 //        GL11.glRotatef(rotateX, rotateY, rotateZ, 0);
         GL11.glBegin(GL11.GL_QUADS);
@@ -316,7 +343,26 @@ public class Component {
         this.top= textureManager.getTextureInfo(name+"_top");
         this.bottom= textureManager.getTextureInfo(name+"_bottom");
     }
-
+    public void setEightFace(String name){
+        this.id= name;
+        this.front= TextureManager.getTextureInfo(name+"_front");
+        this.back= TextureManager.getTextureInfo(name+"_back");
+        this.left= TextureManager.getTextureInfo(name+"_left");
+        this.right= TextureManager.getTextureInfo(name+"_right");
+        this.top= TextureManager.getTextureInfo(name+"_top");
+        this.bottom= TextureManager.getTextureInfo(name+"_bottom");
+    }
+    public ItemCfgBean itemCfgBean;
+    public void setItem(ItemCfgBean itemCfgBean){
+    this.itemCfgBean=itemCfgBean;
+        this.id= itemCfgBean.getName();
+       // this.front= itemCfgBean.getIcon();
+       // this.back= itemCfgBean.getIcon();
+        //this.left=itemCfgBean.getIcon();
+        //this.right=itemCfgBean.getIcon();
+        //this.top= itemCfgBean.getIcon();
+       // this.bottom= itemCfgBean.getIcon();
+    }
     public void setShape(Shape shape){
 
         this.id= shape.getName();
@@ -332,15 +378,24 @@ public class Component {
     }
 
     public Component findChild(String nodeName)  {
+        if(this.id.equals(nodeName))
+            return this;
         if(connectors.size()>0){
             for(int i=0;i<connectors.size();i++){
                 if(connectors.get(i).child.id.equals(nodeName)){
                     return connectors.get(i).child;
+                }else{
+                    Component child = connectors.get(i).child.findChild(nodeName);
+                    if(child!=null){
+                        return child;
+                    }
+
                 }
+
+
             }
         }
-        LogUtil.println("未找到子component"+nodeName);
-       System.exit(0);
+
         return null;
 
     }

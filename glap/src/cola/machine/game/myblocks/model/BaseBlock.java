@@ -8,7 +8,66 @@ import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 
 public class BaseBlock extends AABB implements Block{
-	public int id=0;
+
+    public boolean zh=true;
+    public boolean zl=true;
+    public boolean yl=true;
+
+
+
+    public boolean yh=true;
+    public boolean xl=true;
+    public boolean xh=true;
+
+    public boolean isZh() {
+        return zh;
+    }
+
+    public void setZh(boolean zh) {
+        this.zh = zh;
+    }
+
+    public boolean isZl() {
+        return zl;
+    }
+
+    public void setZl(boolean zl) {
+        this.zl = zl;
+    }
+
+    public boolean isYl() {
+        return yl;
+    }
+
+    public void setYl(boolean yl) {
+        this.yl = yl;
+    }
+
+    public boolean isYh() {
+        return yh;
+    }
+
+    public void setYh(boolean yh) {
+        this.yh = yh;
+    }
+
+    public boolean isXl() {
+        return xl;
+    }
+
+    public void setXl(boolean xl) {
+        this.xl = xl;
+    }
+
+    public boolean isXh() {
+        return xh;
+    }
+
+    public void setXh(boolean xh) {
+        this.xh = xh;
+    }
+
+    public int id=0;
 	public int x=0;
 	public int y=0;
 	public int z=0;
@@ -221,6 +280,15 @@ public class BaseBlock extends AABB implements Block{
 	public int r() {
 		return red;
 	}
+    public float rf(){
+        return this.r()*1f;
+    }
+    public float bf(){
+        return this.r()*1f;
+    }
+    public float gf(){
+        return this.r()*1f;
+    }
 	@Override
 	public int b() {
 		return blue;

@@ -29,8 +29,8 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
-import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
+import de.matthiasmann.twl.Widget;
 
 
 /**
@@ -38,34 +38,34 @@ import cola.machine.game.myblocks.ui.test.FadeFrame;
  * 
  * @author Matthias Mann
  */
-public class PersonDialog extends FadeFrame {
+public class ToolbarDialog extends FadeFrame {
 
 
 
 
-    final PersonPanel personPanel;
+    final ToolbarPanel toobarPanel;
 
     boolean quit;
 
-    public PersonDialog() {
+    public ToolbarDialog() {
 
 
-        personPanel = new PersonPanel();//10行5列
+        toobarPanel = new ToolbarPanel();//10行5列
         
         setTheme("inventorydemo");
-        setTitle("Inventory");//整个包裹的标题
+        setTitle("toobar");//整个包裹的标题
         setResizableAxis(ResizableAxis.NONE);//是否可以调整大小
-        add(personPanel);//添加panel
+        add(toobarPanel);//添加panel
         addCloseCallback(new Runnable() {
             @Override
             public void run() {
                 setVisible(false);
             }
         });
+        //setPosition(0,400);
+
 
         //setTheme("person");
-        setPosition(100,200);
-        //this.center();
        /* this.positionFrame();*/
     }
 
@@ -74,12 +74,16 @@ public class PersonDialog extends FadeFrame {
         frame.setPosition(
                 getInnerX() + (getInnerWidth() - frame.getWidth())/2,
                 getInnerY() + (getInnerHeight() - frame.getHeight())/2);//调整位置
-    }
+    }*/
 
     @Override
     protected void layout() {
         super.layout();
+        Widget p = getParent();
+        setPosition(
+                0,
+                p.getInnerY() + (int)((p.getInnerHeight() - getHeight()) ));
 
     }
-    */
+
 }

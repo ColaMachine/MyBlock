@@ -123,7 +123,7 @@ public class NuiManager {
         gameGui.adjustSize();
         CoreRegistry.put(GUI.class,gameGui);
         Switcher.gameState=1;
-root.reAdjust();
+        //root.reAdjust();
         //root.personPanel.adjustSize();
     }
 
