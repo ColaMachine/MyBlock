@@ -236,8 +236,10 @@ public class MouseControlCenter {
 //       System.out.println("x:" + x + "y:" + y);
 //                                    /* GL_Vector from =camera.Position; */
 //        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
+
+
         GL_Vector viewdir = OpenglUtil.getLookAtDirection(x, y);
-        viewdir.y=-viewdir.y;
+        //viewdir.y=-viewdir.y;
 //        // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
 //
 //        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
@@ -251,7 +253,7 @@ public class MouseControlCenter {
 //                .get(ChunkProvider.class);
 //        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
 //                20, engine.currentObject, false);
-
+       // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
               //  20);
 //        if (hitPoint != null) {
