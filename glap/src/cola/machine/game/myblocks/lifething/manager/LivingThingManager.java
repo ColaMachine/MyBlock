@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.lifething.manager;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
@@ -13,6 +14,7 @@ import glmodel.GL_Vector;
 import util.MathUtil;
 
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,14 +54,23 @@ public class LivingThingManager {
     }
 
     public LivingThing chooseObject(GL_Vector from, GL_Vector direction){
+        LogUtil.println("开始选择");
+        Vector3f fromV= new Vector3f(from.x,from.y,from.z);
+        Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
         for(int i=0;i<livingThings.size();i++){
             LivingThing livingThing=livingThings.get(i);
-            AABB aabb = new AABB(new Vector3f(livingThing.position.x-0.5f,),new Vector3f());
+            AABB aabb = new AABB(new Vector3f(livingThing.position.x-0.5f,livingThing.position.y,livingThing.position.z-0.5f),new Vector3f(livingThing.position.x+0.5f,livingThing.position.y+1.5f,livingThing.position.z+0.5f));
 
-           livingThing.intersectRectangle(from,direction);
+            LogUtil.println(fromV.toString() );
+            LogUtil.println(directionV.toString() );
+           if( aabb.intersectRectangle(fromV,directionV)){
+               LogUtil.println("选中了");
+                return livingThing;
+           }
 
 
         }
+        LogUtil.println("未选中");
         return null;
     }
     public void findWay(){

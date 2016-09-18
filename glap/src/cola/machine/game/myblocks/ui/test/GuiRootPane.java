@@ -158,12 +158,19 @@
                         }
 
                     } else if(evt.isMouseDragEvent()) {
+
+
                         dragActive = true;
                         mouseControlCenter.prevMouseX=evt.getMouseX();
                         mouseControlCenter.prevMouseY=evt.getMouseY();
                         //System.out.println("开始拖动");
                     }else if(evt.getType()== Event.Type.MOUSE_CLICKED){
-
+                        mouseControlCenter.mouseLClick(evt.getMouseX(), evt.getMouseY());
+                      /*  if(evt.getModifiers()==64){
+                            mouseControlCenter.mouseLClick(evt.getMouseX(), evt.getMouseY());
+                        }else if(evt.getModifiers()==128) {
+                            mouseControlCenter.mouseRClick(evt.getMouseX(), evt.getMouseY());
+                        }*/
                         // System.out.println("ctrlframe:"+evt.getKeyCode());
                     }
                     return true;

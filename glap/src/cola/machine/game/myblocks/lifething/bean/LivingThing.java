@@ -15,7 +15,7 @@ import javax.vecmath.Point3f;
  */
 public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
-    public AABB aabb;
+   // public AABB aabb;
     float HAND_HEIGHT=1.5f;
     float HAND_WIDTH=0.5f;
     float HAND_THICK=0.5f;
@@ -46,11 +46,11 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
 
 
+
     }
     public void render(){
         GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
         float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-
         GL11.glRotatef(angle, 0, 1, 0);
         GL11.glScalef(0.5f,0.5f,0.5f);
         bodyComponent.render();
@@ -59,7 +59,7 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GL11.glTranslatef(-position.x,-position.y,-position.z);
     }
     public LivingThing(){
-
+        this.WalkDir=new  GL_Vector(0,0,-1);
         //bodyComponent.setOffsetPosition(new GL_Vector(0,4,0));
         bodyComponent.id="human_body";
         bodyComponent.setEightFace("human_body");

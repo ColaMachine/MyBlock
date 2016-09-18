@@ -42,7 +42,7 @@ public final class AABB {
 
     private Vector3f[] vertices;
 
-    private AABB(Vector3f min, Vector3f max) {
+    public AABB(Vector3f min, Vector3f max) {
         this.min = min;
         this.max = max;
     }
@@ -444,9 +444,10 @@ public final class AABB {
         return false;
     }
     public static void main(String args[]){
-        AABB aabb = new AABB(new Vector3f(1,0,0) ,new Vector3f(2,1,1));
-      Vector3f from = new Vector3f(0,0,0);
-        Vector3f vector3f=new Vector3f(1,0.5f,1);
+        AABB aabb = new AABB(new Vector3f(-0.5f,4,-0.5f) ,new Vector3f(0.5f,5.5f,0.5f));
+      Vector3f from = new Vector3f(-0.37008464f, 3.0f, 6.9974623f);
+        Vector3f vector3f=new Vector3f(-0.110462874f, 3.7768552f, -21.9966764f);
+
         System.out.print(aabb.intersectRectangle(from,vector3f));
     }
 }

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Collection;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
@@ -95,7 +96,7 @@ public class MyBlockEngine extends GLApp {
 
     // two cameras and a cam to move them around scene
     GLCamera camera1 = new GLCamera();
-    GLCamera camera2 = new GLCamera();
+   // GLCamera camera2 = new GLCamera();
     GLCam cam = new GLCam(camera1);
     DropControlCenter dcc = new DropControlCenter();
 
@@ -193,6 +194,7 @@ public class MyBlockEngine extends GLApp {
 
 
         this.initManagers();
+        mouseControlCenter.livingThingManager=this.livingThingManager;
         this.initEntities();
         Collection<EngineSubsystem> subsystemList;
         subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
@@ -668,7 +670,7 @@ try {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/
+*/drawLine();
 
         if(Switcher.gameState==0){
             CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();
@@ -854,9 +856,11 @@ chunk =new ChunkImpl();
 
     public void keyDown(int keycode) {
 
-		/*  if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
+		 /* if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
 		 camera1)? camera2 : camera1); }*/
-
+        if(Keyboard.KEY_W == keycode||Keyboard.KEY_S == keycode||Keyboard.KEY_A == keycode ||Keyboard.KEY_D == keycode){
+            return;
+        }
         mouseControlCenter.keyDown(keycode);
     }
 
@@ -880,8 +884,8 @@ chunk =new ChunkImpl();
 
     *//**
      * Add last mouse motion to the line, only if left mouse button is down.
-     *//*
-    public void mouseDown(int x, int y) {
+     */
+  /*  public void mouseDown(int x, int y) {
         msg("DX=" + x + " DY=" + y);
         if (this.mouseButtonDown(0)) {
             mouseControlCenter.mouseLClick(x, y);

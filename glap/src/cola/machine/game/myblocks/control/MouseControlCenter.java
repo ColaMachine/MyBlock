@@ -226,53 +226,53 @@ public class MouseControlCenter {
         Switcher.MOUSE_CANCELBUBLE = false;
 
 
-        CoreRegistry.get(Bag.class).click(x, y);
+//        CoreRegistry.get(Bag.class).click(x, y);
 
         if (Switcher.MOUSE_CANCELBUBLE)
             return;
-        CoreRegistry.get(PauseMenu.class).click(x, y);
-        if (Switcher.MOUSE_CANCELBUBLE)
-            return;
+      //  CoreRegistry.get(PauseMenu.class).click(x, y);
 
-        System.out.println("x:" + x + "y:" + y);
-                                    /* GL_Vector from =camera.Position; */
-        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
+
+//       System.out.println("x:" + x + "y:" + y);
+//                                    /* GL_Vector from =camera.Position; */
+//        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
         GL_Vector viewdir = OpenglUtil.getLookAtDirection(x, y);
-        // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
-
-        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
-        // viewdir.x,viewdir.y,viewdir.z);
-
-        GL_Vector to = GL_Vector.add(camera.Position,
+        viewdir.y=-viewdir.y;
+//        // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
+//
+//        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
+//        // viewdir.x,viewdir.y,viewdir.z);
+//
+       GL_Vector to = GL_Vector.add(camera.Position,
                 GL_Vector.multiply(viewdir, 10));
         this.engine.lineStart = camera.Position;
         this.engine.mouseEnd = to;
-        ChunkProvider localChunkProvider = CoreRegistry
-                .get(ChunkProvider.class);
-        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
-                20, engine.currentObject, false);
+//        ChunkProvider localChunkProvider = CoreRegistry
+//                .get(ChunkProvider.class);
+//        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
+//                20, engine.currentObject, false);
 
-        //livingThingManger.findTarget(camera.Position, viewdir,
+        livingThingManager.chooseObject(camera.Position, viewdir);
               //  20);
-        if (hitPoint != null) {
-            // Block block=new
-            // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
-                                        /*
-                                         * if("wood".equals(engine.currentObject)){ block =new
-                                         * Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-                                         * if("glass".equals(engine.currentObject)){ block =new
-                                         * Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-                                         * if("soil".equals(engine.currentObject)){ block =new
-                                         * Soil((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-                                         * if("water".equals(engine.currentObject)){ block =new
-                                         * Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }
-                                         */
-                                        /*
-                                         * if(block!=null){ bulletPhysics.blockRepository.put(block);
-                                         * this.engine.blockRepository.reBuild(engine.currentObject); }
-                                         */
-
-        }
+//        if (hitPoint != null) {
+//            // Block block=new
+//            // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+//                                        /*
+//                                         * if("wood".equals(engine.currentObject)){ block =new
+//                                         * Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+//                                         * if("glass".equals(engine.currentObject)){ block =new
+//                                         * Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+//                                         * if("soil".equals(engine.currentObject)){ block =new
+//                                         * Soil((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+//                                         * if("water".equals(engine.currentObject)){ block =new
+//                                         * Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }
+//                                         */
+//                                        /*
+//                                         * if(block!=null){ bulletPhysics.blockRepository.put(block);
+//                                         * this.engine.blockRepository.reBuild(engine.currentObject); }
+//                                         */
+//
+//        }
         //CoreRegistry.get(Bag.class).click(x, y);
         // CoreRegistry.get(PauseMenu.class).click(x, y);
     }
@@ -315,7 +315,7 @@ public class MouseControlCenter {
                                          */
 
         }
-        CoreRegistry.get(Bag.class).click(x, y);
+//        CoreRegistry.get(Bag.class).click(x, y);
 
 
     }
