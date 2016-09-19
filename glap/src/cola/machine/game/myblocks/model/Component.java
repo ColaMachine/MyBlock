@@ -8,6 +8,7 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Point3f;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,13 @@ import java.util.List;
  * Created by luying on 16/7/23.
  */
 public class Component {
+
+    Point3f parentLocation =new Point3f();
+    public void setOffset(Point3f parentLocation ,Point3f childLocation ){
+        this.parentLocation = parentLocation;
+        this.childLocation= childLocation;
+    }
+    Point3f childLocation =new Point3f();
     public String id;
 
     TextureInfo front;
@@ -36,12 +44,15 @@ public class Component {
     GL_Vector P6;
     GL_Vector P7;
     GL_Vector P8;
-    public List<Connector> connectors =new ArrayList<Connector>();
-
-    public void addConnector(Connector connector){
+   // public List<Connector> connectors =new ArrayList<Connector>();
+   public List<Component> children =new ArrayList<Component>();
+ /*   public void addConnector(Connector connector){
         connectors.add(connector);
-    }
+    }*/
 
+    public void addChild(Component component){
+        children.add(component);
+    }
     float width;
     float height;
 
@@ -100,100 +111,27 @@ public class Component {
     GL_Vector[] arr2;
     GL_Vector[] arr3;
     GL_Vector[] arr4;
-    public void renderWanqu(){ GL11. glEnable(GL11.GL_DEPTH_TEST);
-        front.bind();
-        GL11.glTranslatef(offsetPosition.x, offsetPosition.y, offsetPosition.z);
-//        GL11.glRotatef(rotateX, rotateY, rotateZ, 0);
-        GL11.glBegin(GL11.GL_TRIANGLES);
-        // Front Face
-        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
-        if(front!=null) {
-            GL11.glTexCoord2f(front.minX, front.minY);
-            glVertex3fv(P1);    // Bottom Left ǰ����
-            GL11.glTexCoord2f(front.maxX, front.minY);
-            glVertex3fv(P2);    // Bottom Right ǰ����
-            GL11.glTexCoord2f(front.maxX, front.maxY);
-            glVertex3fv(P6);    // Top Right ǰ����
-            GL11.glTexCoord2f(front.minX, front.maxY);
-            glVertex3fv(P5);    // Top Left	ǰ����
-        }
-        // Back Face
-        if(back!=null) {
-            GL11.glNormal3f(0.0f, 0.0f, -1.0f);
-            GL11.glTexCoord2f(back.minX, back.minY);
-            glVertex3fv(P3);    // Bottom Right ������
-            GL11.glTexCoord2f(back.maxX, back.minY);
-            glVertex3fv(P4);    // Top Right ������
-            GL11.glTexCoord2f(back.maxX, back.maxY);
-            glVertex3fv(P8);    // Top Left ������
-            GL11.glTexCoord2f(back.minX, back.maxY);
-            glVertex3fv(P7);    // Bottom Left ������
-        }
-        // Top Face
-        if(top!=null) {
-            GL11.glNormal3f(0.0f, 1.0f, 0.0f);
-            GL11.glTexCoord2f(top.minX, top.minY);
-            glVertex3fv(P5);    // Top Left
-            GL11.glTexCoord2f(top.maxX, top.minY);
-            glVertex3fv(P6);// Bottom Left
-            GL11.glTexCoord2f(top.maxX, top.maxY);
-            glVertex3fv(P7);    // Bottom Right
-            GL11.glTexCoord2f(top.minX, top.maxY);
-            glVertex3fv(P8);    // Top Right
-        }
-        if(bottom!=null) {
-            // Bottom Face
-            GL11.glNormal3f(0.0f, -1.0f, 0.0f);
-            GL11.glTexCoord2f(bottom.minX, bottom.minY);
-            glVertex3fv(P4);    // Top Right ������
-            GL11.glTexCoord2f(bottom.maxX, bottom.minY);
-            glVertex3fv(P3);    // Top Left ������
-            GL11.glTexCoord2f(bottom.maxX, bottom.maxY);
-            glVertex3fv(P2);    // Bottom Left ǰ����
-            GL11.glTexCoord2f(bottom.minX, bottom.maxY);
-            glVertex3fv(P1);// Bottom Right ǰ����
-        }
-        // left face
-        if(left!=null) {
-            GL11.glNormal3f(1.0f, 0.0f, 0.0f);
-            GL11.glTexCoord2f(left.minX, right.minY);
-            glVertex3fv(P2);    // Bottom Right ������
-            GL11.glTexCoord2f(left.maxX, right.minY);
-            glVertex3fv(P3);        // Top Right ������
-            GL11.glTexCoord2f(left.maxX, right.maxY);
-            glVertex3fv(P7);        // Top Left ǰ����
-            GL11.glTexCoord2f(left.minX, right.maxY);
-            glVertex3fv(P6);    // Bottom Left ǰ����
-        }
-        // right Face
-        if(right!=null) {
-            GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
-            GL11.glTexCoord2f(right.minX, left.minY);
-            glVertex3fv(P4);    // Bottom Left ������
-            GL11.glTexCoord2f(right.maxX, left.minY);
-            glVertex3fv(P1);    // Bottom Right ǰ����
-            GL11.glTexCoord2f(right.maxX, left.maxY);
-            glVertex3fv(P5);    // Top Right ǰ����
-            GL11.glTexCoord2f(right.minX, left.maxY);
-            glVertex3fv(P8);// Top Left
-        }
-        GL11.glEnd();
-        for(int i=0;i<connectors.size();i++){
-            connectors.get(i).render();
-        }
 
-
-//        GL11.glRotatef(-rotateX, -rotateY, -rotateZ, 0);
-        GL11.glTranslatef(-offsetPosition.x,-offsetPosition.y,-offsetPosition.z);
-    }
 
     public void render(){
 
+
+        GL11.glTranslatef(parentLocation.x, parentLocation.y, parentLocation.z);
+        if(rotateZ!=0){
+            GL11.glRotatef(rotateZ, 0, 0, 1);
+        }
+        if(rotateX!=0){
+            GL11.glRotatef(rotateX, 1, 0, 0);
+        }
+        //GL11.glRotatef(child.rotateX, child.rotateY, 90, 0);
+        GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
+
+        GL11. glEnable(GL11.GL_DEPTH_TEST);
         if(this.itemCfgBean!=null){
             this.itemCfgBean.render();
-            return;
+           // return;
         }
-        GL11. glEnable(GL11.GL_DEPTH_TEST);
+
        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,front.textureHandle);
         if(front!=null) {
             front.bind();
@@ -294,13 +232,25 @@ public class Component {
             glVertex3fv(P8);// Top Left
         }
         GL11.glEnd();
-        for(int i=0;i<connectors.size();i++){
-            connectors.get(i).render();
+        for(int i=0;i<children.size();i++){
+            children.get(i).render();
         }
 
 
 //        GL11.glRotatef(-rotateX, -rotateY, -rotateZ, 0);
         GL11.glTranslatef(-offsetPosition.x,-offsetPosition.y,-offsetPosition.z);
+
+        GL11.glTranslatef(childLocation.x, childLocation.y, childLocation.z);
+        // GL11.glRotatef(-child.rotateX, -child.rotateY, -90, 0);
+        if(rotateX!=0){
+            GL11.glRotatef(-rotateX, 1, 0, 0);
+        }
+        if(rotateZ!=0){
+            GL11.glRotatef(-rotateZ, 0, 0, 1);
+        }
+        GL11.glTranslatef(-parentLocation.x, -parentLocation.y, -parentLocation.z);
+
+
     }
 
     public void setOffsetPosition(GL_Vector vector){
@@ -376,8 +326,29 @@ public class Component {
     public void glVertex3fv(GL_Vector p){
         GL11.glVertex3f(p.x,p.y,p.z);
     }
-
     public Component findChild(String nodeName)  {
+        if(this.id.equals(nodeName))
+            return this;
+        if(children.size()>0){
+            for(int i=0;i<children.size();i++){
+                if(children.get(i).id.equals(nodeName)){
+                    return children.get(i);
+                }else{
+                    Component child = children.get(i).findChild(nodeName);
+                    if(child!=null){
+                        return child;
+                    }
+
+                }
+
+
+            }
+        }
+
+        return null;
+
+    }
+    /*public Component findChild(String nodeName)  {
         if(this.id.equals(nodeName))
             return this;
         if(connectors.size()>0){
@@ -398,6 +369,6 @@ public class Component {
 
         return null;
 
-    }
+    }*/
 
 }

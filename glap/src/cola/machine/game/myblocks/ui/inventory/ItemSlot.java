@@ -86,6 +86,26 @@ public class ItemSlot extends Widget {
                 Human human = CoreRegistry.get(Human.class);
                 human.addHandEquip(itemWidget.getItemCfg());
             }
+        }else{
+            if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
+                Human human = CoreRegistry.get(Human.class);
+                human.addHeadEquip(null);
+            }
+            if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
+                Human human = CoreRegistry.get(Human.class);
+                human.addLegEquip(null);
+
+            }
+            if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
+                Human human = CoreRegistry.get(Human.class);
+                human.addBodyEquip(null);
+
+            }
+            if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
+                Human human = CoreRegistry.get(Human.class);
+
+                human.addHandEquip(null);
+            }
         }
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){
             itemWrap.getParent().removeChild(itemWrap);

@@ -59,7 +59,13 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GL11.glTranslatef(-position.x,-position.y,-position.z);
     }
     public LivingThing(){
+  
         this.WalkDir=new  GL_Vector(0,0,-1);
+        //bodyComponent.setOffsetPosition(new GL_Vector(0,4,0));
+        bodyComponent.id="human_body";
+        bodyComponent.setEightFace("human_body");
+
+
         //bodyComponent.setOffsetPosition(new GL_Vector(0,4,0));
         bodyComponent.id="human_body";
         bodyComponent.setEightFace("human_body");
@@ -68,9 +74,10 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         rHandComponent.setEightFace("human_hand");
         rHandComponent.id="rHumanHand";
-        Connector body_rhand = new Connector(rHandComponent,new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
-
-        bodyComponent.addConnector(body_rhand);
+        rHandComponent.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
+        //Connector body_rhand = new Connector(rHandComponent,new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addChild(rHandComponent);
+        // bodyComponent.addConnector(body_rhand);
 
         //小手
        /* Component rh= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
@@ -84,8 +91,10 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         lHandComponent.setEightFace("human_hand");
         lHandComponent.id="lHumanHand";
-        Connector body_lhand = new Connector(lHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
-        bodyComponent.addConnector(body_lhand);
+        lHandComponent.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addChild(lHandComponent);
+        //Connector body_lhand = new Connector(lHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
+        //bodyComponent.addConnector(body_lhand);
 
         /*Component lh= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         lh.setEightFace("human_hand", textureManager);
@@ -98,8 +107,12 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         Component human_l_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
         human_l_b_leg.setEightFace("human_leg");
         human_l_b_leg.id="human_l_b_leg";
-        Connector human_l_b_leg_con = new Connector(human_l_b_leg,new GL_Vector(LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
-        bodyComponent.addConnector(human_l_b_leg_con);
+
+        human_l_b_leg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
+        bodyComponent.addChild(human_l_b_leg);
+
+//        Connector human_l_b_leg_con = new Connector(human_l_b_leg,new GL_Vector(LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
+//        bodyComponent.addConnector(human_l_b_leg_con);
 
 
        /* Component human_l_s_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
@@ -114,8 +127,11 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         Component human_r_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
         human_r_b_leg.setEightFace("human_leg");
         human_r_b_leg.id="human_r_b_leg";
-        Connector human_r_b_leg_con = new Connector(human_r_b_leg,new GL_Vector(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
-        bodyComponent.addConnector(human_r_b_leg_con);
+        human_r_b_leg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
+        bodyComponent.addChild(human_r_b_leg);
+
+//        Connector human_r_b_leg_con = new Connector(human_r_b_leg,new GL_Vector(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
+//        bodyComponent.addConnector(human_r_b_leg_con);
 
 
         /*Component human_r_s_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
@@ -128,8 +144,13 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
         Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
         head.setEightFace("human_head");
-        Connector body_head= new Connector(head,new GL_Vector(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new GL_Vector(HEAD_WIDTH/2,0,HEAD_THICK/2));
-        bodyComponent.addConnector(body_head);
+
+        head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
+        bodyComponent.addChild(head);
+
+//        Connector body_head= new Connector(head,new GL_Vector(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new GL_Vector(HEAD_WIDTH/2,0,HEAD_THICK/2));
+//        bodyComponent.addConnector(body_head);
+
 
 
 

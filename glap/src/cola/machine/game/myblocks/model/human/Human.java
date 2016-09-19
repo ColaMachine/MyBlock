@@ -25,6 +25,7 @@ import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import cola.machine.game.myblocks.switcher.Switcher;
 
+import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 public class Human extends AABB{
@@ -582,61 +583,86 @@ this.stable=false;
 			
 	}
 public void addHeadEquip(ItemCfgBean itemCfg)  {
+	Component parent = 	player.bodyComponent.findChild("human_head");
+	if(itemCfg==null){
+		parent.children.remove(parent.children.size()-1);
+		return;
+	}
 	Shape shape = itemCfg.getShape();
 
 	Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
 	component.setShape(itemCfg.getShape());
 	component.id=itemCfg.getName();
-	Component parent = 	player.bodyComponent.findChild("human_head");
+
     if(parent==null){
         LogUtil.println("未找到子component");
         System.exit(0);
     }
-	Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-	parent.addConnector(connector);
+	component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+	//Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+	parent.addChild(component);
 }
     public void addLegEquip(ItemCfgBean itemCfg)  {
+		Component parent = 	player.bodyComponent.findChild("human_l_b_leg");
+		if(itemCfg==null){
+			parent.children.remove(parent.children.size()-1);
+			return;
+		}
         Shape shape = itemCfg.getShape();
 
         Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
         component.setShape(itemCfg.getShape());
         component.id=itemCfg.getName();
-        Component parent = 	player.bodyComponent.findChild("human_l_b_leg");
-        if(parent==null){
-            LogUtil.println("未找到子component");
-            System.exit(0);
-        }
-        Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        parent.addConnector(connector);
+
+		component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+
+		//Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        //parent.addConnector(connector);
+		parent.addChild(component);
     }
     public void addBodyEquip(ItemCfgBean itemCfg)  {
+		Component parent = 	player.bodyComponent.findChild("human_body");
+		if(itemCfg==null){
+			parent.children.remove(parent.children.size()-1);
+			return;
+		}
+
         Shape shape = itemCfg.getShape();
 
         Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
         component.setShape(itemCfg.getShape());
         component.id=itemCfg.getName();
-        Component parent = 	player.bodyComponent.findChild("human_body");
+
         if(parent==null){
             LogUtil.println("未找到子component");
             System.exit(0);
         }
-        Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        parent.addConnector(connector);
+		component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+		parent.addChild(component);
     }
+
     public void addHandEquip(ItemCfgBean itemCfg)  {
         //Shape shape = itemCfg.getShape();
+		Component parent = 	player.bodyComponent.findChild("rHumanHand");
+		if(itemCfg==null){
+			parent.children.clear();
+			return;
+		}
+
 
         Component component= new Component(0.01f,1,1);
         itemCfg.init();
         component.setItem(itemCfg);
         component.id=itemCfg.getName();
-        Component parent = 	player.bodyComponent.findChild("rHumanHand");
+
         if(parent==null){
             LogUtil.println("未找到子component");
             System.exit(0);
         }
-        Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
-        parent.addConnector(connector);
+		component.setOffset(new Point3f(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new Point3f(0,0,0));
+
+		// Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
+        parent.addChild(component);
     }
     public  Vector3f  velocity=new Vector3f();
 

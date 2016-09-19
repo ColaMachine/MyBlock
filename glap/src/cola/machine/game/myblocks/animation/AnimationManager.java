@@ -44,9 +44,9 @@ public class AnimationManager {
             }
 
         }
-        if(component.connectors.size()>0){
-            for(int i=0;i<component.connectors.size();i++){
-                apply(component.connectors.get(i).child,action);
+        if(component.children.size()>0){
+            for(int i=0;i<component.children.size();i++){
+                apply(component.children.get(i),action);
             }
         }
     }
