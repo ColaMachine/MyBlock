@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.chat.ChatDemo;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
+import cola.machine.game.myblocks.ui.gameui.GameUIDemo;
 import cola.machine.game.myblocks.ui.inventory.InventoryDemo;
 import cola.machine.game.myblocks.ui.inventory.InventoryDialog;
 import cola.machine.game.myblocks.ui.inventory.InventoryPanel;
@@ -62,7 +63,7 @@ public class NuiManager {
             renderer.setUseSWMouseCursors(true);
 
             //ChatDemo chat = new ChatDemo();
-
+            //GameUIDemo gameUI = new GameUIDemo();
            LoginDemo loginDemo = new LoginDemo();
              startGui = new GUI(loginDemo, renderer);
 

@@ -29,6 +29,7 @@
  */
 package cola.machine.game.myblocks.ui.gameui;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
@@ -46,7 +47,8 @@ public class GameUIDemo2 extends DialogLayout {
 
     public static void main(String[] args) {
         try {
-            String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
+            String library_path = System.setProperty("org.lwjgl.librarypath", PathManager.getInstance().getHomePath().resolve("natives/macosx").toString());
+            String library_path2= System.setProperty("java.lib.path", PathManager.getInstance().getHomePath().resolve("natives/macosx").toString());
 
             Display.setDisplayMode(new DisplayMode(800, 600));
             Display.create();

@@ -541,7 +541,8 @@ public class GLApp {
             // How to handle transparency: average colors together
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-            // Enable alpha test so the transparent backgrounds in texture images don't draw.
+            // Enable alpha test so the transparent backgrounds in texture images don't
+            // draw.
             // This prevents transparent areas from affecting the depth or stencil buffer.
             // alpha func will accept only fragments with alpha greater than 0
             GL11.glEnable(GL11.GL_ALPHA_TEST);

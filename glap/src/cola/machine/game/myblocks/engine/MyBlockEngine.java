@@ -727,7 +727,7 @@ try {
 		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
 		 * GL11.glPushMatrix(); { if(Switcher.CAMERA_2_PLAYER<-2){
 		 * human.render(); }else human.renderPart();
-		 * 
+		 *
 		 * } GL11.glPopMatrix();
 		 */
 		/*
@@ -737,7 +737,7 @@ try {
 
 		/*
 		 * GL11.glPushMatrix(); {
-		 * 
+		 *
 		 * human2.render(); } GL11.glPopMatrix();
 		 */
         //firework.render(human);

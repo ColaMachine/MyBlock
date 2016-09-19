@@ -73,6 +73,8 @@
             addButton("toolbar", "toolbar", new ToggleFadeFrame(toolbar));
             addButton("person","person", new ToggleFadeFrame(personDialog));
             addButton("inventory","inventory", new ToggleFadeFrame(inventoryDialog));
+
+            add(new HeadDialog());
         }
 
 
