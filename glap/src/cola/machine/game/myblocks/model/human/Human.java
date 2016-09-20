@@ -43,8 +43,8 @@ public class Human extends LivingThing {
 
     //Player player ;
 	static final float PIdiv180 = 0.0174532925f;
-	public GL_Vector ViewDir;
-    public GL_Vector WalkDir;
+	//public GL_Vector ViewDir;
+   // public GL_Vector WalkDir;
 	public GL_Vector RightVector;
 	public GL_Vector UpVector;
 	//public GL_Vector position;
