@@ -68,6 +68,7 @@ public class BlockRepository {
 		int _z = MathUtil.getNearOdd(z );
 		 return map.get(x*10000+z*100+y);
 	}*/
+	@Deprecated
 	public void reBuild(){
 		
 		

@@ -25,7 +25,7 @@ public class LivingThingManager {
     public static List<LivingThing> livingThings = new ArrayList<>();
     public LivingThingManager(){
         LivingThing livingThing =new LivingThing();
-        livingThing.position=new Point3f(0,4,0);
+        livingThing.position=new GL_Vector(0,4,0);
         livingThings.add(livingThing);
 
     }

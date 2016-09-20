@@ -69,19 +69,19 @@ public class MyBlockEngine extends GLApp {
     private Logger logger = LoggerFactory.getLogger(MyBlockEngine.class);
 
     // Handle for texture
-    int sphereTextureHandle = 0;
-    int groundTextureHandle = 0;
-    int humanTextureHandle = 0;
+    //int sphereTextureHandle = 0;
+    // int groundTextureHandle = 0;
+    // int humanTextureHandle = 0;
     public String currentObject = "water";
-    int skyTextureHandle = 0;
-    int waterTextureHandle = 0;
-    int crossTextureHandle = 0;
-    GLImage textureImg;
+    // int skyTextureHandle = 0;
+    //  int waterTextureHandle = 0;
+    //  int crossTextureHandle = 0;
+    // GLImage textureImg;
 
     //String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
 
 
-   // String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
+    // String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
 
     Time time = new Time();
     MouseControlCenter mouseControlCenter;
@@ -96,22 +96,22 @@ public class MyBlockEngine extends GLApp {
 
     // two cameras and a cam to move them around scene
     GLCamera camera1 = new GLCamera();
-   // GLCamera camera2 = new GLCamera();
+    // GLCamera camera2 = new GLCamera();
     GLCam cam = new GLCam(camera1);
     DropControlCenter dcc = new DropControlCenter();
 
     // vectors used to orient airplane motion
-    GL_Vector UP = new GL_Vector(0, 1, 0);
-    GL_Vector ORIGIN = new GL_Vector(0, 0, 0);
+    // GL_Vector UP = new GL_Vector(0, 1, 0);
+    //  GL_Vector ORIGIN = new GL_Vector(0, 0, 0);
 
     // for earth rotation
-    float degrees = 0;
+    // float degrees = 0;
 
     // model of airplane and sphere displaylist for earth
     // GLModel airplane;
     public int earth;
-    public int waterDisplay;
-    public Sword sword;
+    // public int waterDisplay;
+    //public Sword sword;
     // shadow handler will draw a shadow on floor plane
     // GLShadowOnPlane airplaneShadow;
 
@@ -119,10 +119,10 @@ public class MyBlockEngine extends GLApp {
 
     FloatBuffer bbmatrix = GLApp.allocFloats(16);
 
-    public BlockRepository blockRepository = new BlockRepository(this);
+    // public BlockRepository blockRepository = new BlockRepository(this);
     BulletPhysics bulletPhysics;
     public Human human;
-   // private Human human2;
+    // private Human human2;
     private Skysphere skysphere = new Skysphere();
     /**
      * Start the application. run() calls setup(), handles mouse and keyboard
@@ -144,7 +144,7 @@ public class MyBlockEngine extends GLApp {
 
             // create the app
             MyBlockEngine demo = new MyBlockEngine();
-           // System.out.println(System.getProperty("java.library.path"));
+            // System.out.println(System.getProperty("java.library.path"));
             demo.VSyncEnabled = true;
             demo.fullScreen = false;
             demo.displayWidth = 800;
@@ -161,41 +161,36 @@ public class MyBlockEngine extends GLApp {
      * will be fine, so no code here.
      */
     int handleId;
-   // GLShadowOnPlane airplaneShadow;
-   public LivingThingManager livingThingManager;
+    // GLShadowOnPlane airplaneShadow;
+    public LivingThingManager livingThingManager;
     public void setup() {
         //开启胜读测试
 
-       // makeTexture("images/Particle.bmp", true, true);
-       // airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
-       // boat = new GLModel("glap/models/boat/botrbsm1.obj");
-      groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg", true, true);
-      //  boat.mesh.regenerateNormals();
-      //  boat.makeDisplayList();
-          GL11. glEnable(GL11.GL_POINT_SMOOTH);
-          GL11. glEnable( GL11. GL_LINE_SMOOTH);
-          GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
-          GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
+        // makeTexture("images/Particle.bmp", true, true);
+        // airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
+        // boat = new GLModel("glap/models/boat/botrbsm1.obj");
+        //groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg", true, true);
+        //  boat.mesh.regenerateNormals();
+        //  boat.makeDisplayList();
+        GL11. glEnable(GL11.GL_POINT_SMOOTH);
+        GL11. glEnable( GL11. GL_LINE_SMOOTH);
+        GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
+        GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         CoreRegistry.put(BagController.class,bagController);
-        human = new Human(blockRepository);
+
 
 
         //sword=new Sword(0,0,0);
         //human2 = new Human(blockRepository);
         CoreRegistry.put(MyBlockEngine.class, this);
-        CoreRegistry.put(Human.class, human);
-        dcc.blockRepository = blockRepository;
-        bulletPhysics = new BulletPhysics(blockRepository);
-
-        mouseControlCenter = new MouseControlCenter(human, camera1, this);
-        mouseControlCenter.bulletPhysics = bulletPhysics;
 
 
-        this.initManagers();
-        mouseControlCenter.livingThingManager=this.livingThingManager;
-        this.initEntities();
+
+
+
+
         Collection<EngineSubsystem> subsystemList;
         subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
         //, new LwjglTimer(), new LwjglAudio(), new LwjglInput()
@@ -273,7 +268,7 @@ public class MyBlockEngine extends GLApp {
 
         // GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Create texture for spere
-        sphereTextureHandle = makeTexture("images/background.png");
+        //sphereTextureHandle = makeTexture("images/background.png");
         //humanTextureHandle = makeTexture("images/2000.png");
         //skyTextureHandle = makeTexture("images/sky180.png");
         //crossTextureHandle = makeTexture("images/gui.png");
@@ -281,12 +276,12 @@ public class MyBlockEngine extends GLApp {
         //textureImg = loadImage("images/gui.png");
         // set camera 1 position
         camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-        human.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
+
         //human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
 //        human2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
 
-        human.startWalk();
+        // human.startWalk();
 
 
 
@@ -302,14 +297,18 @@ public class MyBlockEngine extends GLApp {
         // water=new Water();
         // water.setCenter(2, 2, 2);
         // org.lwjgl.input.Keyboard.enableRepeatEvents(true);
-try {
-    initSelf();
-}catch (Exception e){
-    e.printStackTrace();
-    exit();
-}
-       // initDisplayList();
-       // initChuck();
+        try {
+            this.initManagers();
+            this.initEntities();
+            this.initEvent();
+            mouseControlCenter.livingThingManager=this.livingThingManager;
+            initSelf();
+        }catch (Exception e){
+            e.printStackTrace();
+            exit();
+        }
+        // initDisplayList();
+        // initChuck();
     }
 
     /**
@@ -328,14 +327,21 @@ try {
     }
 
     Firework firework = new Firework();
+    public void initEvent(){
+        //dcc.blockRepository = blockRepository;
+        bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
+        mouseControlCenter = new MouseControlCenter(human, camera1, this);
+        CoreRegistry.put(MouseControlCenter.class,mouseControlCenter);
+        mouseControlCenter.bulletPhysics = bulletPhysics;
+    }
     public void draw() {
         if (!Switcher.IS_GOD)
             if (Math.random() > 0.5) {
                 dcc.check(human);
             }
 
-       mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
+        mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
         // cam.handleNavKeys((float)GLApp.getSecondsPerFrame());
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -343,9 +349,9 @@ try {
         GL11.glLoadIdentity();
 
 //        if(!camera1.fenli) {
-            GL_Vector camera_pos = GL_Vector.add(human.Position,
-                    GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
-            camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
+        GL_Vector camera_pos = GL_Vector.add(human.position,
+                GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
+        camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
 //        }
         // camera1.MoveTo(human.Position.x, human.Position.y + 4,
         // human.Position.z);
@@ -362,10 +368,10 @@ try {
 
 
         //}
-       // drawAllBlock();
+        // drawAllBlock();
         //drawColorBlocks();
         try {
-          //  Thread.sleep(100);
+            //  Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -377,7 +383,7 @@ try {
         //drawLine();
         //sword.y=human.Position.y+4;
         //sword.render();
-       // print( 30, viewportH- 45, "position x:"+human.oldPosition.x +" y:"+human.oldPosition.y+" z:"+human.oldPosition.z);
+        // print( 30, viewportH- 45, "position x:"+human.oldPosition.x +" y:"+human.oldPosition.y+" z:"+human.oldPosition.z);
       /*  print( 30, viewportH- 45, "Use arrow keys to navigate:");
         print( 30, viewportH- 80, "Left-Right arrows rotate camera", 1);
         print( 30, viewportH-100, "Up-Down arrows move camera forward and back", 1);
@@ -477,7 +483,7 @@ try {
 		GL11.glPopMatrix();
 	}*/
 
-  //  GLModel boat;
+    //  GLModel boat;
 
     public void drawShip() {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -499,18 +505,18 @@ try {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
-    public void DrawObject() {
+    public void DrawObject1() {
         //GL11.glPushMatrix();
         // draw the earth
-        { GL11.glColor3f(1.0f, 1.0f, 1.0f);
-            // GL11.glTranslated(0,-1.5,0);
-            //GL11.glRotatef(rotation, 0, 1, 0);  // rotate around Y axis
-            // GL11.glScalef(0.35f, 0.35f, 0.35f);          // scale up
-            // GL11. glRotatef(xrot, 1.0f, 0.0f, 0.0f);					// Rotate On The X Axis
-            // GL11. glRotatef(yrot, 0.0f, 1.0f, 0.0f);					// Rotate On The Y Axis
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
-            callDisplayList(earth);
-        }
+        // { GL11.glColor3f(1.0f, 1.0f, 1.0f);
+        // GL11.glTranslated(0,-1.5,0);
+        //GL11.glRotatef(rotation, 0, 1, 0);  // rotate around Y axis
+        // GL11.glScalef(0.35f, 0.35f, 0.35f);          // scale up
+        // GL11. glRotatef(xrot, 1.0f, 0.0f, 0.0f);					// Rotate On The X Axis
+        // GL11. glRotatef(yrot, 0.0f, 1.0f, 0.0f);					// Rotate On The Y Axis
+        // GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
+        // callDisplayList(earth);
+        //  }
         // GL11.glPopMatrix();
         // draw the earth
         // GL11.glPushMatrix();
@@ -527,8 +533,8 @@ try {
 
             GL11.glEnable( GL11.GL_TEXTURE_GEN_T);
 
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.groundTextureHandle);
-            callDisplayList(earth);
+            //  GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.groundTextureHandle);
+            // callDisplayList(earth);
         } //GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_GEN_S);
         GL11.glDisable(GL11.GL_TEXTURE_GEN_T);
@@ -548,14 +554,14 @@ try {
         try {
             initConfig();
 
-           // initManagers();
+            // initManagers();
 
             // load assets
             // initAssets();
             //
             // initOPFlow();
             //
-            initEntities();
+            //    initEntities();
 
             StorageManager storageManager = new StorageManagerInternal();
             PerlinWorldGenerator worldGenerator = new PerlinWorldGenerator();
@@ -575,29 +581,36 @@ try {
         }
 
     }
-    Player player;
+    //Player player;
     private void initEntities(){
-         player =new Player(CoreRegistry.get(TextureManager.class));
+        human = new Human();
+        human.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
+        CoreRegistry.put(Human.class, human);
+     /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
-        CoreRegistry.put(Player.class,player);
+        CoreRegistry.put(Player.class,player);*/
     }
     private void initManagers() {
 
 
-        CoreRegistry.put(MouseControlCenter.class,mouseControlCenter);
 
-       // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
+
+        // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
         TextureManager textureManager = CoreRegistry.put(TextureManager.class,
                 new TextureManager());
-        NuiManager nuiManager = CoreRegistry.put(NuiManager.class,
-                new NuiManager());
+        ;
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
         animationManager=  new AnimationManager();
         CoreRegistry.put(AnimationManager.class,
                 animationManager);
+
+
+        NuiManager nuiManager = CoreRegistry.put(NuiManager.class,
+                new NuiManager());
+
         // AssetManager assetManager =
         // CoreRegistry.putPermanently(AssetManager.class, new
         // AssetManager(moduleManager.getEnvironment()));
@@ -691,9 +704,9 @@ try {
             GL11.glPushMatrix();
             {
                 if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
+                    human.preRender();
                     human.render();
-                } else
-                    human.renderPart();
+                }
 
             }
 
@@ -710,18 +723,18 @@ try {
         GL11. glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11. glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);*/
-       // TextureInfo ti1 = TextureManager.getTextureInfo("human");
-       // GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti1.textureHandle);
-       // GL11.glScaled(0.1,0.1,0.1);
+        // TextureInfo ti1 = TextureManager.getTextureInfo("human");
+        // GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti1.textureHandle);
+        // GL11.glScaled(0.1,0.1,0.1);
 
 
-      //  GL11.glScaled(10,10,10);
+        //  GL11.glScaled(10,10,10);
         //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-       // GL11. glFlush();
+        // GL11. glFlush();
 
-      // testDraw();
+        // testDraw();
 
-       // player.render();
+        // player.render();
 		/*
 		 * ti = TextureManager.getTextureInfo("gold_armor");
 		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
@@ -741,8 +754,8 @@ try {
 		 * human2.render(); } GL11.glPopMatrix();
 		 */
         //firework.render(human);
-       // GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-      // GL11.glDisable(GL11.GL_DEPTH_TEST);
+        // GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+        // GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 
         if (Switcher.PRINT_SWITCH)
@@ -752,7 +765,7 @@ try {
     }
     ChunkImpl chunk ;
     public void initChuck(){
-chunk =new ChunkImpl();
+        chunk =new ChunkImpl();
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         //Block block =blockManager .getBlock("soil");
         for (int x = 0; x < chunk.getChunkSizeX(); x+=2) {
@@ -762,7 +775,7 @@ chunk =new ChunkImpl();
             }
         }
 
-       // chunk.setBlock(0,0,-2,block);
+        // chunk.setBlock(0,0,-2,block);
 
         chunk.build();
     }
@@ -777,7 +790,7 @@ chunk =new ChunkImpl();
     public void testBeginDisplayList(){
 
         TextureInfo ti = TextureManager.getTextureInfo("human");
-      //  GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
+        //  GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
         ti.bind();
         GLApp.callDisplayList(this.testDisplayId);
 
@@ -865,7 +878,7 @@ chunk =new ChunkImpl();
     }
 
     public void keyUp(int keycode) {
-       // mouseControlCenter.keyUp(keycode);
+        // mouseControlCenter.keyUp(keycode);
     }
 /*
     *//**

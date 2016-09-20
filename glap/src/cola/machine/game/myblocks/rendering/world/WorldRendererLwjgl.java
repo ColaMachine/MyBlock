@@ -358,8 +358,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	}
 
 	private int calcPlayerChunkOffsetX() {
-		return (int) ((player.Position.x < 0 ? (player.Position.x - ChunkConstants.SIZE_X)
-				: player.Position.x) / ChunkConstants.SIZE_X);
+		return (int) ((player.position.x < 0 ? (player.position.x - ChunkConstants.SIZE_X)
+				: player.position.x) / ChunkConstants.SIZE_X);
 	}
 
 	public static void main(String args[]) {
@@ -375,8 +375,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	}
 
 	private int calcPlayerChunkOffsetZ() {
-		return (int) ((player.Position.z < 0 ? (player.Position.z - ChunkConstants.SIZE_Z)
-				: player.Position.z) / ChunkConstants.SIZE_Z);
+		return (int) ((player.position.z < 0 ? (player.position.z - ChunkConstants.SIZE_Z)
+				: player.position.z) / ChunkConstants.SIZE_Z);
 	}
 
 	public void renderWorld(Camera camera) {

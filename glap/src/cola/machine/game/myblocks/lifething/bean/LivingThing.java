@@ -58,34 +58,32 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-position.x,-position.y,-position.z);
     }
+    public void adjust(float posx, float posy, float posz) {
+        this.minX=posx-0.5f;
+        this.minY=posy;
+        this.minZ=posz-0.5f;
+
+        this.maxX=posx+0.5f;
+        this.maxY=posy+4;
+        this.maxZ=posz+0.5f;
+        position = new GL_Vector(posx, posy, posz);
+    }
     public LivingThing(){
-  
+
         this.WalkDir=new  GL_Vector(0,0,-1);
-        //bodyComponent.setOffsetPosition(new GL_Vector(0,4,0));
         bodyComponent.id="human_body";
         bodyComponent.setEightFace("human_body");
 
 
-        //bodyComponent.setOffsetPosition(new GL_Vector(0,4,0));
         bodyComponent.id="human_body";
         bodyComponent.setEightFace("human_body");
-        //body
-        //lhand
         Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         rHandComponent.setEightFace("human_hand");
         rHandComponent.id="rHumanHand";
         rHandComponent.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
-        //Connector body_rhand = new Connector(rHandComponent,new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
         bodyComponent.addChild(rHandComponent);
-        // bodyComponent.addConnector(body_rhand);
 
         //小手
-       /* Component rh= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        rh.setEightFace("human_hand", textureManager);
-        rh.id="rh";
-        Connector rhc = new Connector(rh,new GL_Vector(HAND_WIDTH/2,0,HAND_THICK/2),new GL_Vector(HAND_WIDTH/2,HAND_HEIGHT,HAND_THICK/2));
-
-        rHandComponent.addConnector(rhc);*/
 
         //rhand
         Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
@@ -93,15 +91,6 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         lHandComponent.id="lHumanHand";
         lHandComponent.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
         bodyComponent.addChild(lHandComponent);
-        //Connector body_lhand = new Connector(lHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
-        //bodyComponent.addConnector(body_lhand);
-
-        /*Component lh= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        lh.setEightFace("human_hand", textureManager);
-        lh.id="lh";
-        Connector lhc = new Connector(lh,new GL_Vector(HAND_WIDTH/2,0,HAND_THICK/2),new GL_Vector(HAND_WIDTH/2,HAND_HEIGHT,HAND_THICK/2));
-
-        lHandComponent.addConnector(lhc);*/
 
         //lleg
         Component human_l_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
@@ -111,16 +100,7 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         human_l_b_leg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
         bodyComponent.addChild(human_l_b_leg);
 
-//        Connector human_l_b_leg_con = new Connector(human_l_b_leg,new GL_Vector(LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
-//        bodyComponent.addConnector(human_l_b_leg_con);
 
-
-       /* Component human_l_s_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        human_l_s_leg.setEightFace("human_leg", textureManager);
-        human_l_s_leg.id="human_l_s_leg";
-        Connector human_l_s_leg_con = new Connector(human_l_s_leg,new GL_Vector(LEG_WIDTH/2,0,LEG_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
-
-        human_l_b_leg.addConnector(human_l_s_leg_con);*/
 
 
         //rleg
@@ -130,16 +110,6 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         human_r_b_leg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
         bodyComponent.addChild(human_r_b_leg);
 
-//        Connector human_r_b_leg_con = new Connector(human_r_b_leg,new GL_Vector(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
-//        bodyComponent.addConnector(human_r_b_leg_con);
-
-
-        /*Component human_r_s_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        human_r_s_leg.setEightFace("human_leg", textureManager);
-        human_r_s_leg.id="human_r_s_leg";
-        Connector human_r_s_leg_con = new Connector(human_r_s_leg,new GL_Vector(LEG_WIDTH/2,0,LEG_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
-
-        human_r_b_leg.addConnector(human_r_s_leg_con);*/
         //head
 
         Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
@@ -148,8 +118,6 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
         bodyComponent.addChild(head);
 
-//        Connector body_head= new Connector(head,new GL_Vector(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new GL_Vector(HEAD_WIDTH/2,0,HEAD_THICK/2));
-//        bodyComponent.addConnector(body_head);
 
 
 
@@ -158,40 +126,29 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
     }
 
     Component main;
-    int blood;
-    int energy;
-    int sight;
-
-    int baseStrenth;
-    int basePower;
-    int baseIntell;
-    int baseAgility;
-    int baseSpirit;
-
-    int level;
-    int string;
-    int power;
-    int Intell;
-    int agility;
-    int spirit;
+    int blood;  //  血量
+    int energy; //  能量
+    int sight;  //  视力
 
 
+    int basePower;      //  基础力量
+    int baseIntell;     //  基础智力
+    int baseAgility;    //  基础敏捷
+    int baseSpirit;     //  基础精神
 
-    public GL_Vector ViewDir;
-    public GL_Vector WalkDir;
+    int level;          //  现在的等级
 
-    public Point3f position;
-    public Point3f oldPosition=new Point3f();
-    public void findTarget(){
-        //LivingThingManager.getEnemy(position );
-    }
-    public void findWay(){
+    int power;          //  现在的力量值
+    int Intell;         //  智力值
+    int agility;        //  敏捷值
+    int spirit;         //  精神值
 
-    }
-    public void attack(){
 
-    }
-    public void beAttack(){
 
-    }
+    public GL_Vector ViewDir;   //  观察方向
+    public GL_Vector WalkDir;   //  行走方向
+
+    public GL_Vector position;    //  位置
+    public GL_Vector oldPosition=new GL_Vector();   //  旧位置
+
 }

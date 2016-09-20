@@ -67,8 +67,8 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	private BlockRepository blockRepository = new BlockRepository(null);
 
-	private Human human = new Human(blockRepository);
-	private Human human2 = new Human(blockRepository);
+	private Human human = new Human();
+	private Human human2 = new Human();
 
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -104,7 +104,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 				new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, // specular
 				new float[] { 0.0f, -10f, 0.0f, 0f }); // direction (pointing
 														// up)
-		dcc.blockRepository = blockRepository;
+		//dcc.blockRepository = blockRepository;
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
@@ -199,7 +199,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	
 		// ������ﱳ��ĵ�
-		GL_Vector camera_pos = GL_Vector.add(human.Position,
+		GL_Vector camera_pos = GL_Vector.add(human.position,
 				GL_Vector.multiply(human.ViewDir, -10));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
 		camera1.viewDir(human.ViewDir);

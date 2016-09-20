@@ -17,10 +17,10 @@ import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
 public class BulletPhysics  {
 
-	public BlockRepository blockRepository=null;
+	//public BlockRepository blockRepository=null;
 
-    public BulletPhysics(BlockRepository blockRepository) {
-    	this.blockRepository=blockRepository;
+    public BulletPhysics(/*BlockRepository blockRepository*/) {
+    //	this.blockRepository=blockRepository;
     	
     }
 

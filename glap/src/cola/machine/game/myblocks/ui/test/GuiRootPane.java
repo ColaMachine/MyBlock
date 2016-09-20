@@ -2,6 +2,7 @@
 
     import cola.machine.game.myblocks.control.MouseControlCenter;
     import cola.machine.game.myblocks.manager.TextureManager;
+    import cola.machine.game.myblocks.model.human.Human;
     import cola.machine.game.myblocks.registry.CoreRegistry;
     import cola.machine.game.myblocks.ui.chat.ChatFrame;
     import cola.machine.game.myblocks.ui.inventory.*;

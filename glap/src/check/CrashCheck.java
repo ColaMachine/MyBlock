@@ -23,9 +23,9 @@ public class CrashCheck {
     int blockZ= 0;
     public boolean check(){
 
-        float plr_pos_x=player.Position.x;
-        float plr_pos_y=player.Position.y;
-        float plr_pos_z=player.Position.z;
+        float plr_pos_x=player.position.x;
+        float plr_pos_y=player.position.y;
+        float plr_pos_z=player.position.z;
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//这个人的碰撞体积厚度
@@ -85,9 +85,9 @@ public class CrashCheck {
     }
     public boolean haveBlock2(){//检测当前人的宽度和厚度 还有高度带入公式用来判断是否有碰撞
         boolean isswim=false;
-        float plr_pos_x=player.Position.x;
-        float plr_pos_y=player.Position.y;
-        float plr_pos_z=player.Position.z;
+        float plr_pos_x=player.position.x;
+        float plr_pos_y=player.position.y;
+        float plr_pos_z=player.position.z;
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//厚度的大小

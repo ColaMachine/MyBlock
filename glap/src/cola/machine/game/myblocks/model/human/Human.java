@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.model.Component;
@@ -28,7 +29,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-public class Human extends AABB{
+public class Human extends LivingThing {
 
     float HAND_HEIGHT=1.5f;
     float HAND_WIDTH=0.5f;
@@ -40,14 +41,14 @@ public class Human extends AABB{
 
 
 
-    Player player ;
+    //Player player ;
 	static final float PIdiv180 = 0.0174532925f;
 	public GL_Vector ViewDir;
     public GL_Vector WalkDir;
 	public GL_Vector RightVector;
 	public GL_Vector UpVector;
-	public GL_Vector Position;
-    public GL_Vector oldPosition=new GL_Vector();
+	//public GL_Vector position;
+   // public GL_Vector oldposition=new GL_Vector();
 	public float RotatedX, RotatedY, RotatedZ;
 	public float camSpeedR = 1; // degrees per second
 	public float camSpeedXZ = 2.4f; // units per second
@@ -71,12 +72,10 @@ public class Human extends AABB{
 	public HumanLeg RLeg = new HumanLeg();
 	public HumanBody body = new HumanBody();
 	public Item item;
-	BlockRepository blockRepository;
+	/*BlockRepository blockRepository;*/
 	public boolean stable = true;
-    public void setPlayer(Player player){
-        this.player=player;
-    }
-	public Human(	BlockRepository blockRepository){
+
+	public Human(/*	BlockRepository blockRepository*/){
 /*
 
        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
@@ -87,7 +86,7 @@ public class Human extends AABB{
         Connector body_rhand = new Connector(lHandComponent,new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
         bodyComponent.addConnector(body_rhand);*/
 
-        this.blockRepository=blockRepository;
+        /*this.blockRepository=blockRepository;*/
 
 
 
@@ -117,11 +116,11 @@ public class Human extends AABB{
 		mark = limit = 0;
 	}
 
-	public void nextMotion() {
+/*	public void nextMotion() {
 		if (!this.stable) {
-			this.Position.y -= 0.1;
+			this.position.y -= 0.1;
 		}
-	}
+	}*/
 
     //判断人的当前状态 是在固体block上还是在液体block上 还是在液体中 还是在空气中
 	public void setHuman(float posx, float posy, float posz, float dirx,
@@ -140,7 +139,7 @@ public class Human extends AABB{
 			diry = 0;
 			dirz = -1;
 		}
-		Position = new GL_Vector(posx, posy, posz);
+		position = new GL_Vector(posx, posy, posz);
 		ViewDir = new GL_Vector(dirx, diry, dirz);
 		WalkDir = new GL_Vector(dirx, diry, dirz);
 		UpVector = new GL_Vector(upx, upy, upz);
@@ -150,7 +149,7 @@ public class Human extends AABB{
 		RightVector = GL_Vector.crossProduct(ViewDir, UpVector);
 		RotatedX = RotatedY = RotatedZ = 0.0f; // TO DO: should set these to
 												// correct values
-		
+
 		head.setHead(0,  3, 0, dirx, diry, dirz, upx, upy, upz);
 		LLeg.setHead(0 - 0.25f, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy,
 				upz);
@@ -164,26 +163,7 @@ public class Human extends AABB{
 
 	}
 
-	public void adjust(float posx, float posy, float posz) {
-		this.minX=posx-0.5f;
-		this.minY=posy;
-		this.minZ=posz-0.5f;
-		
-		this.maxX=posx+0.5f;
-		this.maxY=posy+4;
-		this.maxZ=posz+0.5f;
-		
-		
-		Position = new GL_Vector(posx, posy, posz);
-		//RightVector = GL_Vector.crossProduct(ViewDir, UpVector);
 
-		/*head.adjust(posx, posy + 3, posz);
-		LLeg.adjust(posx - 0.25f, posy + 1.5f, posz);
-		RLeg.adjust(posx + 0.25f, posy + 1.5f, posz);
-		LHand.adjust(posx - 0.75f, posy + 2.75f, posz);
-		RHand.adjust(posx + 0.75f, posy + 2.75f, posz);
-		body.adjust(posx, posy + 1.5f, posz);*/
-	}
 
 	int preY = 0;
 
@@ -206,15 +186,15 @@ public class Human extends AABB{
 			long t = Sys.getTime() - this.lastTime;//�˶���ʱ��
 
 			s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
-			// this.Position.y+=s;
+			// this.position.y+=s;
 			// System.out.println("time:"+t+" weiyi:"+s);
 			// GL11.glTranslated(0, s, 0);
-			this.Position.y = preY + s;//��Ӧy��䶯
-			//System.out.println("��ǰ�˵�y���:"+this.Position.y);
-			if (this.Position.y <= mark) {
+			this.position.y = preY + s;//��Ӧy��䶯
+			//System.out.println("��ǰ�˵�y���:"+this.position.y);
+			if (this.position.y <= mark) {
 				//
 		//System.out.println("��ǰ��y" + mark);
-				this.Position.y = mark;
+				this.position.y = mark;
 				this.stable = true;
 				mark = 0;
 				preY = 0;
@@ -229,79 +209,24 @@ public class Human extends AABB{
 //		float s = v * t / 1000 - 0.5f * (9.8f) * t * t / 1000000;
 //		// System.out.println("time: weiyi:"+(s));
 //	}
+	public void preRender(){
+		adjust(this.position.x, this.position.y, this.position.z);
 
-	public void render() {
-		adjust(this.Position.x, this.Position.y, this.Position.z);
-		//GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
-		float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-		//System.out.println("glRotatef angle :"+angle);
-		//System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
-		
-	//	GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
 		this.walk();
 		this.dropControl();
-
-        GL11.glTranslatef(Position.x,Position.y+0.75f,Position.z);
-        
-        GL11.glRotatef(angle, 0, 1, 0);
-        GL11.glScalef(0.5f,0.5f,0.5f);
-		/*LLeg.render();
-
-		RLeg.render();
-	
-
-		
-		body.render();
-		head.render();
-
-
-        RHand.render();
-
-        LHand.render();*/
-        player.render();
-        GL11.glScalef(2,2,2);
-		GL11.glRotatef(-angle, 0, 1, 0);
-        GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
 	}
 
-
-    public void renderPart() {
-        adjust(this.Position.x, this.Position.y, this.Position.z);
-        //GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
-        float angle=GL_Vector.angleXZ(this.WalkDir, new GL_Vector(0,0,-1));//得到两个向量在xz平面上的角度
-        //System.out.println("glRotatef angle :"+angle);
-        //System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
-
-        //	GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
-        this.walk();
-        this.dropControl();
-        GL11.glTranslatef(Position.x,Position.y,Position.z);
-
-        GL11.glRotatef(angle, 0, 1, 0);
-        player.render();
-
-//        LLeg.render();
-//
-//        RLeg.render();
-//
-        // LHand.render();
-//
-        //RHand.render();
-//
-//        body.render();
-//        head.render();
-        GL11.glRotatef(-angle, 0, 1, 0);
-        GL11.glTranslatef(-Position.x,-Position.y,-Position.z);
-    }
-
+	public void render(){
+		super.render();
+	}
     public void renderInMirror() {
-       // adjust(this.Position.x, this.Position.y, this.Position.z);
-      //  GL11.glTranslatef(this.Position.x, this.Position.y, this.Position.z);
+       // adjust(this.position.x, this.position.y, this.position.z);
+      //  GL11.glTranslatef(this.position.x, this.position.y, this.position.z);
         //float angle=GL_Vector.angleXZ(this.ViewDir, new GL_Vector(0,0,-1));
         //System.out.println("glRotatef angle :"+angle);
         //System.out.printf("%f %f %f \r\n",this.ViewDir.x,this.ViewDir.y,this.ViewDir.z);
        // GL11.glRotatef(angle, 0, 1, 0);
-        //GL11.glTranslatef(-this.Position.x, -this.Position.y, -this.Position.z);
+        //GL11.glTranslatef(-this.position.x, -this.position.y, -this.position.z);
         //this.walk();
        // this.dropControl();
 
@@ -318,15 +243,15 @@ public class Human extends AABB{
     }
 
 	public void move(float x, float y, float z) {
-        if(GL_Vector.length(GL_Vector.sub(oldPosition,Position))>0.1){
-            this.oldPosition.copy(this.Position);
+        if(GL_Vector.length(GL_Vector.sub(oldPosition,position))>0.1){
+            this.oldPosition.copy(this.position);
         }
 
 
-		this.Position.set(x,y,z);
+		this.position.set(x,y,z);
 		if(!Switcher.IS_GOD)
        if(CoreRegistry.get(CrashCheck.class).check()){
-           this.Position.copy(oldPosition);
+           this.position.copy(oldPosition);
        }
         //this.stable=false;
 	}
@@ -336,11 +261,11 @@ public class Human extends AABB{
 		float y =vector.y;
 		float z =vector.z;
 		this.move(x, y, z);
-		
+
 	}
 
     public void moveOld(){
-        this.Position=oldPosition;
+        this.position=oldPosition;
         //make some adjust for float not Precision
     }
 	/**
@@ -348,7 +273,7 @@ public class Human extends AABB{
 	 * the cameras Y axis. This simulates a person looking up or down and
 	 * rotating in place. You will rotate your body around the vertical axis,
 	 * while your head remains tilted at the same angle.
-	 * 
+	 *
 	 * @param Angle
 	 *            the angle to rotate around the vertical axis in degrees
 	 */
@@ -406,7 +331,7 @@ public class Human extends AABB{
 				0);
 		//System.out.println(Angle);
 		// rotate the view vector
-		
+
 		GL_Vector vd = M.transform(ViewDir);
 		// the up vector is perpendicular to the old view and the new view
 		// UpVector = (Angle > 0)? GL_Vector.crossProduct(ViewDir,vd) :
@@ -497,10 +422,10 @@ public class Human extends AABB{
 	public void StrafeRight(float Distance) {
 
         AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-        manager.apply(player.bodyComponent,"walkerLeft");
+        manager.apply(bodyComponent,"walkerLeft");
 		//if (this.stable) {
 			lastMoveTime = Sys.getTime();
-			this.move( GL_Vector.add(Position, GL_Vector.multiply(RightVector,
+			this.move( GL_Vector.add(position, GL_Vector.multiply(RightVector,
 					Distance)));
 		//}
 	}
@@ -511,12 +436,12 @@ public class Human extends AABB{
 
         //Player player= CoreRegistry.get(Player.class);
         AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-        manager.apply(player.bodyComponent,"walkerFoward");
-		this.move( GL_Vector.add(Position, GL_Vector.multiplyWithoutY(WalkDir,
+        manager.apply(bodyComponent,"walkerFoward");
+		this.move( GL_Vector.add(position, GL_Vector.multiplyWithoutY(WalkDir,
 					Distance)));
 			lastMoveTime = Sys.getTime();
 			// System.out.printf("position: %f %f %f viewdir: %f %f %f
-			// \r\n",Position.x,Position.y,Position.z,ViewDir.x,ViewDir.y,ViewDir.z);
+			// \r\n",position.x,position.y,position.z,ViewDir.x,ViewDir.y,ViewDir.z);
 		//}
 	}
 
@@ -551,39 +476,39 @@ public class Human extends AABB{
 
 
 	public void jumpHigh() {
-		
+
 		// ��¼��ǰ��ʱ��
 		if (this.stable) {
 			this.v=12.6f;
-			preY = (int) this.Position.y;
+			preY = (int) this.position.y;
 			lastTime = Sys.getTime();
 			this.stable = false;
 		}
 	}
 	public void jump() {
-		//this.Position.y+=1;
+		//this.position.y+=1;
 		// ��¼��ǰ��ʱ��
 		if(Switcher.IS_GOD){
-			this.Position.y+=2;
+			this.position.y+=2;
 		}else
 		if (this.stable) {
 			this.v=10.2f;
-			preY = (int) this.Position.y;
+			preY = (int) this.position.y;
 			lastTime = Sys.getTime();
 			this.stable = false;
 		}
 	}
 	public void drop() {
-		
+
 		// ��¼��ǰ��ʱ��
 this.stable=false;
 		this.v=0f;
-			preY = (int) this.Position.y;
+			preY = (int) this.position.y;
 			lastTime = Sys.getTime();
 			
 	}
 public void addHeadEquip(ItemCfgBean itemCfg)  {
-	Component parent = 	player.bodyComponent.findChild("human_head");
+	Component parent = 	bodyComponent.findChild("human_head");
 	if(itemCfg==null){
 		parent.children.remove(parent.children.size()-1);
 		return;
@@ -603,7 +528,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 	parent.addChild(component);
 }
     public void addLegEquip(ItemCfgBean itemCfg)  {
-		Component parent = 	player.bodyComponent.findChild("human_l_b_leg");
+		Component parent = 	bodyComponent.findChild("human_l_b_leg");
 		if(itemCfg==null){
 			parent.children.remove(parent.children.size()-1);
 			return;
@@ -621,7 +546,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 		parent.addChild(component);
     }
     public void addBodyEquip(ItemCfgBean itemCfg)  {
-		Component parent = 	player.bodyComponent.findChild("human_body");
+		Component parent = 	bodyComponent.findChild("human_body");
 		if(itemCfg==null){
 			parent.children.remove(parent.children.size()-1);
 			return;
@@ -643,7 +568,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 
     public void addHandEquip(ItemCfgBean itemCfg)  {
         //Shape shape = itemCfg.getShape();
-		Component parent = 	player.bodyComponent.findChild("rHumanHand");
+		Component parent = 	bodyComponent.findChild("rHumanHand");
 		if(itemCfg==null){
 			parent.children.clear();
 			return;
@@ -659,7 +584,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
             LogUtil.println("未找到子component");
             System.exit(0);
         }
-		component.setOffset(new Point3f(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new Point3f(0,0,0));
+		component.setOffset(new Point3f(this.HAND_WIDTH/2,0,this.HAND_THICK/2),new Point3f(0,0,0));
 
 		// Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
         parent.addChild(component);

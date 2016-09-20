@@ -29,6 +29,7 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
 import de.matthiasmann.twl.GUI;
@@ -47,13 +48,13 @@ public class HeadDialog extends FadeFrame {
 
 
 
-
+    LivingThing livingThing;
     final HeadPanel headPanel;
 
     boolean quit;
 
-    public HeadDialog() {
-
+    public HeadDialog(/*LivingThing livingThing*/) {
+    /*this.livingThing=livingThing;*/
 
         headPanel = new HeadPanel();//10行5列
         

@@ -134,9 +134,9 @@ public class AnimationEngine extends MyBlockEngine {
       //  GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
         //GL11.glEnable(GL11.GL_DEPTH_TEST);
        // GL11.glDepthFunc(GL11.GL_LEQUAL);
-		human = new Human(blockRepository);
+		human = new Human(/*blockRepository*/);
 		//sword=new Sword(0,0,0);
-		human2 = new Human(blockRepository);
+		human2 = new Human(/*blockRepository*/);
 		CoreRegistry.put(MyBlockEngine.class, this);
 		CoreRegistry.put(Human.class, human);
 		this.initManagers();
@@ -202,8 +202,8 @@ public class AnimationEngine extends MyBlockEngine {
 		//GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11.GL_FALSE);
 //		
 		//GL11.glEnable(GL11.GL_AUTO_NORMAL);
-		dcc.blockRepository = blockRepository;
-		bulletPhysics = new BulletPhysics(blockRepository);
+		//dcc.blockRepository = blockRepository;
+		//bulletPhysics = new BulletPhysics(blockRepository);
 		
 
 		// Enable alpha transparency (so text will have transparent background)
@@ -451,7 +451,7 @@ public class AnimationEngine extends MyBlockEngine {
             GL11.glLoadIdentity();
 
 
-            GL_Vector camera_pos = GL_Vector.add(human.Position,
+            GL_Vector camera_pos = GL_Vector.add(human.position,
                     GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
             camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
             // camera1.MoveTo(human.Position.x, human.Position.y + 4,
@@ -653,8 +653,8 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
         {
             if(Switcher.CAMERA_2_PLAYER<-2|| Switcher.CAMERA_2_PLAYER>2){
                 human.render();
-            }else
-            human.renderPart();
+            }/*else
+            human.renderPart();*/
 
         }
         GL11.glPopMatrix();

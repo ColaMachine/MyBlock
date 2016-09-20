@@ -84,32 +84,31 @@ public class MouseControlCenter {
             human.headRotate(human.camSpeedXZ * seconds, 0);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
             human.bodyRotate(0, human.camSpeedR * seconds);
-        } else
+        } else  if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             // Turn right
-            if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 
-                human.bodyRotate(0, -human.camSpeedR * seconds);
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                human.StrafeRight(-human.camSpeedXZ * seconds);
-            } else
-                // Pan right
-                if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                    human.StrafeRight(human.camSpeedXZ * seconds);
-                } else
-                    // tilt down
-                    if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-                        human.MoveForward(-human.camSpeedXZ * seconds);
-                    } else
-                        // tilt up
-                        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-                            human.MoveForward(human.camSpeedXZ * seconds);
-                        } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-                            human.Position.y = human.Position.y - 3 * seconds;
-                            human.move(human.Position);
-                        } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
-                            human.Position.y = human.Position.y + 3 * seconds;
-                            human.move(human.Position);
-                        }
+            human.bodyRotate(0, -human.camSpeedR * seconds);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            human.StrafeRight(-human.camSpeedXZ * seconds);
+        } else
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
+            human.StrafeRight(human.camSpeedXZ * seconds);
+        } else
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
+            human.MoveForward(-human.camSpeedXZ * seconds);
+        } else
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
+            human.MoveForward(human.camSpeedXZ * seconds);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+            human.position.y = human.position.y - 3 * seconds;
+            human.move(human.position);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
+            human.position.y = human.position.y + 3 * seconds;
+            human.move(human.position);
+        }
                                                         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
                                                             CoreRegistry.get(ToolBar.class).keyDown(1);
                                                         } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
@@ -230,7 +229,7 @@ public class MouseControlCenter {
 
         if (Switcher.MOUSE_CANCELBUBLE)
             return;
-      //  CoreRegistry.get(PauseMenu.class).click(x, y);
+        //  CoreRegistry.get(PauseMenu.class).click(x, y);
 
 
 //       System.out.println("x:" + x + "y:" + y);
@@ -245,7 +244,7 @@ public class MouseControlCenter {
 //        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
 //        // viewdir.x,viewdir.y,viewdir.z);
 //
-       GL_Vector to = GL_Vector.add(camera.Position,
+        GL_Vector to = GL_Vector.add(camera.Position,
                 GL_Vector.multiply(viewdir, 10));
         this.engine.lineStart = camera.Position;
         this.engine.mouseEnd = to;
@@ -253,9 +252,9 @@ public class MouseControlCenter {
 //                .get(ChunkProvider.class);
 //        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
 //                20, engine.currentObject, false);
-       // camera.getViewDir().add();
+        // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
-              //  20);
+        //  20);
 //        if (hitPoint != null) {
 //            // Block block=new
 //            // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
@@ -508,7 +507,7 @@ public class MouseControlCenter {
 
             human.bodyRotate(0, -human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-           human.StrafeRight(-human.camSpeedXZ * seconds);
+            human.StrafeRight(-human.camSpeedXZ * seconds);
             //LogUtil.println("walk left");
         } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
             human.StrafeRight(human.camSpeedXZ * seconds);
@@ -518,11 +517,11 @@ public class MouseControlCenter {
 
             human.MoveForward(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-            human.Position.y = human.Position.y - 3 * seconds;
-            human.move(human.Position);
+            human.position.y = human.position.y - 3 * seconds;
+            human.move(human.position);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
-            human.Position.y = human.Position.y + 3 * seconds;
-            human.move(human.Position);
+            human.position.y = human.position.y + 3 * seconds;
+            human.move(human.position);
         }
                                                         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
                                                             CoreRegistry.get(ToolBar.class).keyDown(1);
