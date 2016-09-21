@@ -29,6 +29,8 @@
  */
 package cola.machine.game.myblocks.ui.test;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.model.PersistentIntegerModel;
 import de.matthiasmann.twl.model.SimpleBooleanModel;
@@ -91,6 +93,7 @@ public class SimpleTest {
     protected PersistentIntegerModel curThemeIdx;
 
     public SimpleTest() {
+        LWJGLHelper.addLibraryPath(PathManager.getInstance().getHomePath().resolve("natives/windows"));
         desktopMode = Display.getDisplayMode();
         curThemeIdx = new PersistentIntegerModel(
                 AppletPreferences.userNodeForPackage(SimpleTest.class),

@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Player;
@@ -301,6 +302,7 @@ public class MyBlockEngine extends GLApp {
             this.initManagers();
             this.initEntities();
             this.initEvent();
+
             mouseControlCenter.livingThingManager=this.livingThingManager;
             initSelf();
         }catch (Exception e){
@@ -338,7 +340,9 @@ public class MyBlockEngine extends GLApp {
     public void draw() {
         if (!Switcher.IS_GOD)
             if (Math.random() > 0.5) {
-                dcc.check(human);
+                //dcc.check(human);
+                livingThingManager.CrashCheck(dcc);
+
             }
 
         mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
@@ -586,15 +590,16 @@ public class MyBlockEngine extends GLApp {
         human = new Human();
         human.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
+
+        LivingThing livingThing =new LivingThing();
+        livingThing.position=new GL_Vector(10,4,0);
+        livingThingManager.add(human);
+        livingThingManager.add(livingThing);
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
         CoreRegistry.put(Player.class,player);*/
     }
     private void initManagers() {
-
-
-
-
         // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
@@ -683,7 +688,7 @@ public class MyBlockEngine extends GLApp {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/drawLine();
+*/      drawLine();
 
         if(Switcher.gameState==0){
             CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();
@@ -704,8 +709,8 @@ public class MyBlockEngine extends GLApp {
             GL11.glPushMatrix();
             {
                 if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
-                    human.preRender();
-                    human.render();
+                   // human.preRender();
+                 //   human.render();
                 }
 
             }

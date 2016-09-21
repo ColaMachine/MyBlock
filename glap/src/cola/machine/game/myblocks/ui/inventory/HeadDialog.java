@@ -33,6 +33,7 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
 import de.matthiasmann.twl.GUI;
+import de.matthiasmann.twl.ProgressBar;
 import org.lwjgl.opengl.GL11;
 import util.OpenglUtil;
 
@@ -55,13 +56,15 @@ public class HeadDialog extends FadeFrame {
 
     public HeadDialog(/*LivingThing livingThing*/) {
     /*this.livingThing=livingThing;*/
-
+    ProgressBar pro =new ProgressBar();
         headPanel = new HeadPanel();//10行5列
         
-        setTheme("head");
+        setTheme("chat");
         setTitle("head");//整个包裹的标题
         setResizableAxis(ResizableAxis.NONE);//是否可以调整大小
         add(headPanel);//添加panel
+        pro.setTheme("progressbar");
+        add(pro);
 setMinSize(200,40);
 
 

@@ -123,7 +123,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 		human2.setHuman(20, 2, 20, 0, 0, 1, 0, 1, 0);
 
-		human.startWalk();
+		/*human.startWalk();*/
 		
 		mouseControlCenter= new MouseControlCenter(human,cam.camera,null);
 		mouseControlCenter.centerX=this.displayWidth/2;

@@ -245,7 +245,7 @@ public class ToolBar extends RegionArea {
 		this.selectedIndex = key-1;
 		if ( key <= slots.length && slots[selectedIndex].item != null) {
 			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[selectedIndex].item.name;
-            CoreRegistry.get(Human.class).item=slots[selectedIndex].item;
+           // CoreRegistry.get(Human.class).item=slots[selectedIndex].item;
         }
 		select_div.left=(div.maxX-div.minX )*selectedIndex/9;
 		select_div.refresh();

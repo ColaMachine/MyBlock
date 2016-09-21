@@ -184,7 +184,7 @@ public class MouseControlCenter {
 
                                         } */
         // tilt up
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+        else if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             double timenow = GLApp.getTimeInSeconds();
 
             if ((timenow - preKeyTime) < 1) {

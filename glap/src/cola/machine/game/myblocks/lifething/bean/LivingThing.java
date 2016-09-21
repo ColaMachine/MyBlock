@@ -4,7 +4,9 @@ import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.Connector;
+import cola.machine.game.myblocks.switcher.Switcher;
 import glmodel.GL_Vector;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import sun.plugin.viewer.LifeCycleManager;
 import cola.machine.game.myblocks.math.AABB;
@@ -14,24 +16,59 @@ import javax.vecmath.Point3f;
  * Created by luying on 16/9/16.
  */
 public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
+    public boolean stable = true;
+    public void setStable(boolean flag) {
+        this.stable = flag;
+    }
 
+    public long lastTime = 0;
+    public long lastMoveTime = 0;
+    public float v = 6.2f;
+    public float g = 19.6f;
+    public float s = 0;
+    public float nextZ = 0;
+    public int limit = 0;
+    public int mark = 0;
+    public
+    int preY = 0;
+
+    public void drop() {
+
+        // ��¼��ǰ��ʱ��
+        this.stable=false;
+        this.v=0f;
+        preY = (int) this.position.y;
+        lastTime = Sys.getTime();
+
+    }
+    public void flip(int y) {
+        mark = y;
+        limit = 0;
+    }
+
+    public void reset() {
+        mark = limit = 0;
+    }
    // public AABB aabb;
-    float HAND_HEIGHT=1.5f;
-    float HAND_WIDTH=0.5f;
-    float HAND_THICK=0.5f;
+   protected  float HAND_HEIGHT=1.5f;
+    protected float HAND_WIDTH=0.5f;
+    protected float HAND_THICK=0.5f;
 
-    float BODY_HEIGHT=1.5f;
-    float BODY_WIDTH=1f;
-    float BODY_THICK=0.5f;
+    protected  float BODY_HEIGHT=1.5f;
+    protected float BODY_WIDTH=1f;
+    protected  float BODY_THICK=0.5f;
 
 
-    float LEG_HEIGHT=1.5f;
-    float LEG_WIDTH=0.5f;
-    float LEG_THICK=0.5f;
+    protected float LEG_HEIGHT=1.5f;
+    protected float LEG_WIDTH=0.5f;
+    protected  float LEG_THICK=0.5f;
 
-    float HEAD_HEIGHT=1f;
-    float HEAD_WIDTH=1f;
-    float HEAD_THICK=1f;
+    protected float HEAD_HEIGHT=1f;
+    protected float HEAD_WIDTH=1f;
+    protected  float HEAD_THICK=1f;
+
+    public float RotatedX, RotatedY, RotatedZ;
+
     public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 
     public void setPosition(float posx, float posy, float posz) {
@@ -48,7 +85,31 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
 
     }
+    public void dropControl() {
+        if(!Switcher.IS_GOD)
+            if (!this.stable) {
+                long t = Sys.getTime() - this.lastTime;//�˶���ʱ��
+
+                s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
+                // this.position.y+=s;
+                // System.out.println("time:"+t+" weiyi:"+s);
+                // GL11.glTranslated(0, s, 0);
+                this.position.y = preY + s;//��Ӧy��䶯
+                //System.out.println("��ǰ�˵�y���:"+this.position.y);
+                if (this.position.y <= mark) {
+                    //
+                    //System.out.println("��ǰ��y" + mark);
+                    this.position.y = mark;
+                    this.stable = true;
+                    mark = 0;
+                    preY = 0;
+                }
+
+            }
+    }
     public void render(){
+        GL11.glPushMatrix();
+        this.dropControl();
         GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
         float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
         GL11.glRotatef(angle, 0, 1, 0);
@@ -57,6 +118,7 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GL11.glScalef(2,2,2);
         GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-position.x,-position.y,-position.z);
+        GL11.glPopMatrix();
     }
     public void adjust(float posx, float posy, float posz) {
         this.minX=posx-0.5f;

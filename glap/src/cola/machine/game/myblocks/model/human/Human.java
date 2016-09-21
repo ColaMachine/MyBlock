@@ -31,13 +31,7 @@ import javax.vecmath.Vector3f;
 
 public class Human extends LivingThing {
 
-    float HAND_HEIGHT=1.5f;
-    float HAND_WIDTH=0.5f;
-    float HAND_THICK=0.5f;
 
-    float BODY_HEIGHT=1.5f;
-    float BODY_WIDTH=1f;
-    float BODY_THICK=0.5f;
 
 
 
@@ -49,31 +43,35 @@ public class Human extends LivingThing {
 	public GL_Vector UpVector;
 	//public GL_Vector position;
    // public GL_Vector oldposition=new GL_Vector();
-	public float RotatedX, RotatedY, RotatedZ;
+
+
 	public float camSpeedR = 1; // degrees per second
 	public float camSpeedXZ = 2.4f; // units per second
 	public float camSpeedY = 0.1f; // units per second
 
-    public MovementMode movementMode=MovementMode.NONE;
 
+ /*   public MovementMode movementMode=MovementMode.NONE;*/
+
+/*
     public byte armor_head=0;
     public byte armor_leg=0;
     public byte armor_foot=0;
     public byte armor_body=0;
     public byte armor_hand=0;
+*/
 
-	int height = 2;
+/*	int height = 2;*/
     //Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
-	public HumanHead head = new HumanHead();
+	/*public HumanHead head = new HumanHead();
 	public HumanHand LHand = new HumanHand(true);
 	public HumanHand RHand = new HumanHand(false);
 
 	public HumanLeg LLeg = new HumanLeg();
 	public HumanLeg RLeg = new HumanLeg();
-	public HumanBody body = new HumanBody();
-	public Item item;
+	public HumanBody body = new HumanBody();*/
+/*	public Item item;*/
 	/*BlockRepository blockRepository;*/
-	public boolean stable = true;
+
 
 	public Human(/*	BlockRepository blockRepository*/){
 /*
@@ -90,31 +88,11 @@ public class Human extends LivingThing {
 
 
 
-        RHand.human= this;
-        LHand.human= this;
+    /*    RHand.human= this;
+        LHand.human= this;*/
 		//sword=new Sword(0,0,0);
 	}//Sword sword;
-	public void setStable(boolean flag) {
-		this.stable = flag;
-	}
 
-	long lastTime = 0;
-	long lastMoveTime = 0;
-	float v = 6.2f;
-	float g = 19.6f;
-	float s = 0;
-	float nextZ = 0;
-	int limit = 0;
-	public int mark = 0;
-
-	public void flip(int y) {
-		mark = y;
-		limit = 0;
-	}
-
-	public void reset() {
-		mark = limit = 0;
-	}
 
 /*	public void nextMotion() {
 		if (!this.stable) {
@@ -150,7 +128,7 @@ public class Human extends LivingThing {
 		RotatedX = RotatedY = RotatedZ = 0.0f; // TO DO: should set these to
 												// correct values
 
-		head.setHead(0,  3, 0, dirx, diry, dirz, upx, upy, upz);
+		/*head.setHead(0,  3, 0, dirx, diry, dirz, upx, upy, upz);
 		LLeg.setHead(0 - 0.25f, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy,
 				upz);
 		RLeg.setHead(0 + 0.25f, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy,
@@ -159,49 +137,26 @@ public class Human extends LivingThing {
 				upy, upz);
 		RHand.setHead(0 + 0.75f, 0 + 2.75f, 0, dirx, diry, dirz, upx,
 				upy, upz);
-		body.setHead(0, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy, upz);
+		body.setHead(0, 0 + 1.5f, 0, dirx, diry, dirz, upx, upy, upz);*/
 
 	}
 
 
-
-	int preY = 0;
-
+/*
     public static void main(String args[]){
 
         System.out.println(16>>4);
-    }
+    }*/
 
     //走路的判断过程  先判断 当前状态 然后再走动
 
-    public boolean judge;
-    public MovementMode mode = MovementMode.WALKING;
+   // public boolean judge;
+ //   public MovementMode mode = MovementMode.WALKING;
 
     public void update(){
 
     }
-	public void dropControl() {
-		if(!Switcher.IS_GOD)
-		if (!this.stable) {
-			long t = Sys.getTime() - this.lastTime;//�˶���ʱ��
 
-			s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
-			// this.position.y+=s;
-			// System.out.println("time:"+t+" weiyi:"+s);
-			// GL11.glTranslated(0, s, 0);
-			this.position.y = preY + s;//��Ӧy��䶯
-			//System.out.println("��ǰ�˵�y���:"+this.position.y);
-			if (this.position.y <= mark) {
-				//
-		//System.out.println("��ǰ��y" + mark);
-				this.position.y = mark;
-				this.stable = true;
-				mark = 0;
-				preY = 0;
-			}
-
-		}
-	}
 
 //	public static void main(String args[]) {
 //		long t = 1024;
@@ -212,8 +167,8 @@ public class Human extends LivingThing {
 	public void preRender(){
 		adjust(this.position.x, this.position.y, this.position.z);
 
-		this.walk();
-		this.dropControl();
+		//this.walk();
+
 	}
 
 	public void render(){
@@ -230,7 +185,7 @@ public class Human extends LivingThing {
         //this.walk();
        // this.dropControl();
 
-        LLeg.render();
+        /*LLeg.render();
         RLeg.render();
 
         body.render();
@@ -239,7 +194,7 @@ public class Human extends LivingThing {
 
         RHand.render();
 
-        LHand.render();
+        LHand.render();*/
     }
 
 	public void move(float x, float y, float z) {
@@ -250,12 +205,12 @@ public class Human extends LivingThing {
 
 		this.position.set(x,y,z);
 		if(!Switcher.IS_GOD)
-       if(CoreRegistry.get(CrashCheck.class).check()){
+       if(CoreRegistry.get(CrashCheck.class).check(this)){
            this.position.copy(oldPosition);
        }
         //this.stable=false;
 	}
-	public boolean needJudgeCrash=false;
+	//public boolean needJudgeCrash=false;
 	public void move(GL_Vector vector) {
 		float x =vector.x;
 		float y =vector.y;
@@ -367,7 +322,7 @@ public class Human extends LivingThing {
 		/*UpVector = GL_Vector.multiply(GL_Vector.crossProduct(ViewDir,
 				RightVector), -1);*/
 	}
-	public void ViewRotateX1(float Angle) {
+	public void ViewRotateX111(float Angle) {
 	//	System.out.println("angle" + Angle);
 		RotatedX += Angle;
 		// Rotate viewdir around the right vector:
@@ -445,14 +400,14 @@ public class Human extends LivingThing {
 		//}
 	}
 
-	public void startWalk() {
+	/*public void startWalk() {
 		LLeg.angle = 0;
 		RLeg.angle = -0;
-	}
+	}*/
 
 	int du = 30;
 
-	public void walk() {
+	/*public void walk() {
 		if (Sys.getTime() - this.lastMoveTime > 1000) {
 			this.stop();
 			return;
@@ -467,12 +422,12 @@ public class Human extends LivingThing {
 		RHand.angle += du * GLApp.getSecondsPerFrame();
 		LHand.angle -= du * GLApp.getSecondsPerFrame();
 
-	}
+	}*/
 
-	public void stop() {
+	/*public void stop() {
 		LLeg.angle = 0;
 		RLeg.angle = -0;
-	}
+	}*/
 
 
 	public void jumpHigh() {
@@ -498,15 +453,7 @@ public class Human extends LivingThing {
 			this.stable = false;
 		}
 	}
-	public void drop() {
 
-		// ��¼��ǰ��ʱ��
-this.stable=false;
-		this.v=0f;
-			preY = (int) this.position.y;
-			lastTime = Sys.getTime();
-			
-	}
 public void addHeadEquip(ItemCfgBean itemCfg)  {
 	Component parent = 	bodyComponent.findChild("human_head");
 	if(itemCfg==null){
@@ -589,7 +536,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 		// Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
         parent.addChild(component);
     }
-    public  Vector3f  velocity=new Vector3f();
+    //public  Vector3f  velocity=new Vector3f();
 
 
 }

@@ -1,5 +1,6 @@
 package check;
 
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
@@ -12,20 +13,20 @@ import java.util.List;
  * Created by luying on 14-10-2.
  */
 public class CrashCheck {
-    Human player;
+    //Human player;
     List<ChunkImpl> chunksInProximity;
-    public CrashCheck(Human player,List<ChunkImpl> chunksInProximity){
-        this.player=player;
+    public CrashCheck(/*Human player,*/List<ChunkImpl> chunksInProximity){
+       // this.player=player;
         this.chunksInProximity=chunksInProximity;
     }
     int blockX= 0;
     int blockY= 0;
     int blockZ= 0;
-    public boolean check(){
+    public boolean check(LivingThing livingThing){
 
-        float plr_pos_x=player.position.x;
-        float plr_pos_y=player.position.y;
-        float plr_pos_z=player.position.z;
+        float plr_pos_x=livingThing.position.x;
+        float plr_pos_y=livingThing.position.y;
+        float plr_pos_z=livingThing.position.z;
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//这个人的碰撞体积厚度
@@ -83,11 +84,11 @@ public class CrashCheck {
         //if all block checked is air then needjdegecrash is false
     return false;
     }
-    public boolean haveBlock2(){//检测当前人的宽度和厚度 还有高度带入公式用来判断是否有碰撞
+    public boolean haveBlock2(LivingThing livingThing){//检测当前人的宽度和厚度 还有高度带入公式用来判断是否有碰撞
         boolean isswim=false;
-        float plr_pos_x=player.position.x;
-        float plr_pos_y=player.position.y;
-        float plr_pos_z=player.position.z;
+        float plr_pos_x=livingThing.position.x;
+        float plr_pos_y=livingThing.position.y;
+        float plr_pos_z=livingThing.position.z;
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//厚度的大小

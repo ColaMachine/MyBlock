@@ -29,6 +29,8 @@
  */
 package cola.machine.game.myblocks.ui.test;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
@@ -44,6 +46,7 @@ public class SimpleGameMenu extends Widget {
 
     public static void main(String[] args) {
         try {
+            LWJGLHelper.addLibraryPath(PathManager.getInstance().getHomePath().resolve("natives/windows"));
             Display.setDisplayMode(new DisplayMode(800, 600));
             Display.create();
             Display.setTitle("TWL Simple Game Menu Demo");

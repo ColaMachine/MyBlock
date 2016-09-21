@@ -95,7 +95,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		this.localPlayerSystem = localPlayerSystem;
 		
 		skysphere = new Skysphere(this);
-        CoreRegistry.put(CrashCheck.class,new CrashCheck(player,chunksInProximity));
+        CoreRegistry.put(CrashCheck.class,new CrashCheck(/*player,*/chunksInProximity));
         CoreRegistry.put(WorldRendererLwjgl.class,this);
 		this.player = player;
 		this.setup();

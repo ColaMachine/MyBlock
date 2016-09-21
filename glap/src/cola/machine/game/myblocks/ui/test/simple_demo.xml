@@ -189,6 +189,7 @@
             </theme>
         </theme>
     </theme>
+
     <include filename="../inventory/inventory2.xml"/>
     <include filename="../chat/chat.xml"/>
     <!--<include filename="../login/login.xml"/>-->

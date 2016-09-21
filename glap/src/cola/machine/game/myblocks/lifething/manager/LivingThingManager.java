@@ -1,11 +1,15 @@
 package cola.machine.game.myblocks.lifething.manager;
 
+import check.CrashCheck;
+import cola.machine.game.myblocks.control.DropControlCenter;
+import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
@@ -27,7 +31,11 @@ public class LivingThingManager {
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(0,4,0);
         livingThings.add(livingThing);
+    // livingThings.add(CoreRegistry.get(Human.class));
 
+    }
+    public void add(LivingThing livingThing){
+        livingThings.add(livingThing);
     }
     public void render(){
         for(LivingThing livingThing:livingThings){
@@ -36,6 +44,13 @@ public class LivingThingManager {
     }
     public void cycle(){
 
+    }
+
+    public void CrashCheck(  DropControlCenter dcc){
+        for(LivingThing livingThing:livingThings){
+            dcc.check(livingThing);
+
+        }
     }
 
     public LivingThing findTarget(Point3f position){
