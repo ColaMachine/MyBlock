@@ -79,26 +79,43 @@ public class MouseControlCenter {
         //let put the key in a group that need cooling
 
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            human.headRotate(-human.camSpeedXZ * seconds, 0);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            human.headRotate(human.camSpeedXZ * seconds, 0);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            human.bodyRotate(0, human.camSpeedR * seconds);
-        } else  if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+            human.headRotate(0, -human.camSpeedXZ * seconds*100);
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+            human.headRotate(-human.camSpeedXZ * seconds*100,0 );
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+            human.headRotate(human.camSpeedXZ * seconds*100,0 );
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+            human.headRotate(0, human.camSpeedXZ * seconds*100);
+        }  else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+            Switcher.CAMERA_2_PLAYER++;
+            if (Switcher.CAMERA_2_PLAYER > 10) {
+                Switcher.CAMERA_2_PLAYER = 10;
+            }
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+            Switcher.CAMERA_2_PLAYER--;
+            if (Switcher.CAMERA_2_PLAYER < 0) {
+                Switcher.CAMERA_2_PLAYER = 0;
+            }
+        } if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+            human.bodyRotate(0, human.camSpeedR * seconds*100);
+        }   if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             // Turn right
 
-            human.bodyRotate(0, -human.camSpeedR * seconds);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            human.bodyRotate(0, -human.camSpeedR * seconds*100);
+        }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             human.StrafeRight(-human.camSpeedXZ * seconds);
-        } else
+        }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
             human.StrafeRight(human.camSpeedXZ * seconds);
-        } else
+        }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
             human.MoveForward(-human.camSpeedXZ * seconds);
-        } else
+        }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
             human.MoveForward(human.camSpeedXZ * seconds);
@@ -108,6 +125,19 @@ public class MouseControlCenter {
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
             human.position.y = human.position.y + 3 * seconds;
             human.move(human.position);
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            double timenow = GLApp.getTimeInSeconds();
+
+            if ((timenow - preKeyTime) < 1) {
+                return;
+            }
+            preKeyTime = timenow;
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                human.jumpHigh();
+            // System.out.println("ͬʱ������w��");
+            human.jump();
+            // System.out.println("jump");
         }
                                                         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
                                                             CoreRegistry.get(ToolBar.class).keyDown(1);
@@ -184,19 +214,7 @@ public class MouseControlCenter {
 
                                         } */
         // tilt up
-        else if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            double timenow = GLApp.getTimeInSeconds();
-
-            if ((timenow - preKeyTime) < 1) {
-                return;
-            }
-            preKeyTime = timenow;
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-                human.jumpHigh();
-            // System.out.println("ͬʱ������w��");
-            human.jump();
-            // System.out.println("jump");
-        } /*else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+         /*else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                                                 {
                                                     double timenow = GLApp.getTimeInSeconds();
 
@@ -495,7 +513,7 @@ public class MouseControlCenter {
                 Switcher.CAMERA_2_PLAYER = 10;
             }
         }
-        int seconds = 1;
+        int seconds = 100;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             human.headRotate(0, -human.camSpeedXZ * seconds);
@@ -504,7 +522,7 @@ public class MouseControlCenter {
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
             human.bodyRotate(0, human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_E)) {// Turn right
-
+            System.out.println("key_e");
             human.bodyRotate(0, -human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             human.StrafeRight(-human.camSpeedXZ * seconds);

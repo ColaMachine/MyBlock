@@ -879,7 +879,7 @@ public class MyBlockEngine extends GLApp {
         if(Keyboard.KEY_W == keycode||Keyboard.KEY_S == keycode||Keyboard.KEY_A == keycode ||Keyboard.KEY_D == keycode){
             return;
         }
-        mouseControlCenter.keyDown(keycode);
+       // mouseControlCenter.keyDown(keycode);
     }
 
     public void keyUp(int keycode) {

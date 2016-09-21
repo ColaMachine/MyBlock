@@ -45,7 +45,7 @@ public class Human extends LivingThing {
    // public GL_Vector oldposition=new GL_Vector();
 
 
-	public float camSpeedR = 1; // degrees per second
+	public float camSpeedR = 5; // degrees per second
 	public float camSpeedXZ = 2.4f; // units per second
 	public float camSpeedY = 0.1f; // units per second
 
