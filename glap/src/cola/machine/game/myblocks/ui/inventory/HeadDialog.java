@@ -56,20 +56,28 @@ public class HeadDialog extends FadeFrame {
 
     public HeadDialog(/*LivingThing livingThing*/) {
     /*this.livingThing=livingThing;*/
-    ProgressBar pro =new ProgressBar();
+    //ProgressBar pro =new ProgressBar();
         headPanel = new HeadPanel();//10行5列
         
         setTheme("chat");
         setTitle("head");//整个包裹的标题
         setResizableAxis(ResizableAxis.NONE);//是否可以调整大小
         add(headPanel);//添加panel
-        pro.setTheme("progressbar");
-        add(pro);
-setMinSize(200,40);
+       // pro.setTheme("progressbar");
+       // add(pro);
+        setMinSize(200,40);
 
 
         setPosition(0,0);
     }
+    public HeadDialog bind(LivingThing livingThing){
+        this.livingThing=livingThing;
+        return this;
+    }
+    public void show(){
+        this.setVisible(true);
+    }
+
     final int headWidth =40;
     final int headHeight=40;
     final int space=2;
@@ -82,10 +90,10 @@ setMinSize(200,40);
     byte[] blue=new byte[]{(byte)0,(byte)0,(byte)250};
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
-        TextureManager.getTextureInfo("human_head_front").draw(null,0,0,headWidth,headHeight);
+        TextureManager.getTextureInfo("human_head_front").draw(null,this.getInnerX(),this.getInnerY(),headWidth,headHeight);
 
-        OpenglUtil.glFillRect(44,4,150,10,lineWdith,borderColor,redColor);
-        OpenglUtil.glFillRect(44,20,150,10,lineWdith,borderColor,blue);
+        OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+4,150,10,lineWdith,borderColor,redColor);
+        OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+20,150,10,lineWdith,borderColor,blue);
     }
 
 }

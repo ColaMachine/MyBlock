@@ -593,7 +593,7 @@ public class MyBlockEngine extends GLApp {
 
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(10,4,0);
-        livingThingManager.add(human);
+        livingThingManager.setPlayer(human);
         livingThingManager.add(livingThing);
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);

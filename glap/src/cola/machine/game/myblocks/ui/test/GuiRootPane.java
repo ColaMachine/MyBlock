@@ -74,13 +74,18 @@
             addButton("toolbar", "toolbar", new ToggleFadeFrame(toolbar));
             addButton("person","person", new ToggleFadeFrame(personDialog));
             addButton("inventory","inventory", new ToggleFadeFrame(inventoryDialog));
-
-            add(new HeadDialog());
+             playerHeadDialog = new HeadDialog();
+            add(playerHeadDialog);
+             targetHeadDialog =new HeadDialog();
+            add(targetHeadDialog);
+            targetHeadDialog.setPosition(210,0);
+            targetHeadDialog.setVisible(false);
+            CoreRegistry.put(HeadDialog.class,targetHeadDialog);
         }
 
+        HeadDialog targetHeadDialog;
 
-
-
+        HeadDialog playerHeadDialog ;
        /* public void reAdjust(){
 
         }*/
@@ -106,10 +111,11 @@
             btnBox.adjustSize();
             btnBox.setPosition(200, getParent().getHeight() - btnBox.getHeight());
             desk.setSize(getParent().getWidth(), getParent().getHeight());
-
+            targetHeadDialog.setPosition(210,0);
+            playerHeadDialog.setPosition(0,0);
            // this.adjustSize();
             this.chatFrame.adjustSize();
-            chatFrame.setSize(400,200);
+            chatFrame.setSize(400, 200);
             this.inventoryDialog.adjustSize();
             this.personDialog.adjustSize();
             this.toolbar.adjustSize();

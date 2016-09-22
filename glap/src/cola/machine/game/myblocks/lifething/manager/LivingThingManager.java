@@ -12,6 +12,7 @@ import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.ui.inventory.HeadDialog;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glmodel.GL_Vector;
@@ -27,12 +28,19 @@ import java.util.List;
  */
 public class LivingThingManager {
     public static List<LivingThing> livingThings = new ArrayList<>();
+
+    LivingThing target ;
+    LivingThing player;
+
     public LivingThingManager(){
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(0,4,0);
         livingThings.add(livingThing);
     // livingThings.add(CoreRegistry.get(Human.class));
 
+    }
+    public void setPlayer(LivingThing livingThing){
+        this.player=livingThing;
     }
     public void add(LivingThing livingThing){
         livingThings.add(livingThing);
@@ -41,6 +49,7 @@ public class LivingThingManager {
         for(LivingThing livingThing:livingThings){
             livingThing.render();
         }
+        this.player.render();
     }
     public void cycle(){
 
@@ -51,6 +60,7 @@ public class LivingThingManager {
             dcc.check(livingThing);
 
         }
+        dcc.check(player);
     }
 
     public LivingThing findTarget(Point3f position){
@@ -80,6 +90,8 @@ public class LivingThingManager {
             LogUtil.println(directionV.toString() );
            if( aabb.intersectRectangle(fromV,directionV)){
                LogUtil.println("选中了");
+               this.target=livingThing;
+               CoreRegistry.get(HeadDialog.class).bind(livingThing).show();
                 return livingThing;
            }
 
