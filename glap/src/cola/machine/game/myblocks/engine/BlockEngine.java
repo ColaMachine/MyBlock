@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.engine;
 
 import cola.machine.game.myblocks.engine.modes.GameState;
+import cola.machine.game.myblocks.engine.modes.StateMainMenu;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
@@ -77,7 +78,7 @@ public class BlockEngine implements GameEngine{
 
           try{
               engine.init();
-        	 // engine.run(new StateMainMenu());
+        	 engine.run(new StateMainMenu());
           }finally {
               try {
                   engine.dispose();

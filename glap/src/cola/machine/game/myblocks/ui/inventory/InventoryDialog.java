@@ -55,7 +55,7 @@ public class InventoryDialog extends FadeFrame {
         
 
         setTitle("Inventory");//整个包裹的标题
-        setResizableAxis(ResizableAxis.NONE);//是否可以调整大小
+        setResizableAxis(ResizableAxis.BOTH);//是否可以调整大小
         add(inventoryPanel);//添加panel
         addCloseCallback(new Runnable() {
             @Override

@@ -30,6 +30,7 @@ public class OpenglUtil {
         //GL11.glRecti(leftX+lineWidth/2,leftY-lineWidth/2,leftX+width-lineWidth/2,leftY+height+lineWidth/2);
        glRect(leftX+lineWidth/2,leftY+lineWidth/2,leftX+width-lineWidth/2,leftY+height-lineWidth/2,GL11.GL_POLYGON);
         GL11.glFlush ();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
     public static void //画矩形，传入的是左下角XY坐标和右上角XY坐标
      glRect(int minX,int minY,int maxX,int maxY,int MODE){

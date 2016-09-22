@@ -47,7 +47,7 @@
             chatFrame = new ChatFrame();
             add(chatFrame);
 
-            chatFrame.setSize(400, 200);
+            chatFrame.setSize(100, 100);
             chatFrame.setPosition(10, 350);
 
 
@@ -109,6 +109,7 @@
 
            // this.adjustSize();
             this.chatFrame.adjustSize();
+            chatFrame.setSize(400,200);
             this.inventoryDialog.adjustSize();
             this.personDialog.adjustSize();
             this.toolbar.adjustSize();
