@@ -5,6 +5,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
@@ -241,8 +242,9 @@ public class MouseControlCenter {
 
     public void mouseLClick(int x, int y) {
         Switcher.MOUSE_CANCELBUBLE = false;
-
-
+        AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+        manager.apply(human.bodyComponent,"walkerFoward");
+       livingThingManager.attack();
 //        CoreRegistry.get(Bag.class).click(x, y);
 
         if (Switcher.MOUSE_CANCELBUBLE)

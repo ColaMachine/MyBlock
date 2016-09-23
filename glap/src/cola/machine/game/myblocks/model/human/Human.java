@@ -457,7 +457,7 @@ public class Human extends LivingThing {
 public void addHeadEquip(ItemCfgBean itemCfg)  {
 	Component parent = 	bodyComponent.findChild("human_head");
 	if(itemCfg==null){
-		parent.children.remove(parent.children.size()-1);
+		parent.children.remove(parent.children.size()-1);	changeProperty();
 		return;
 	}
 	Shape shape = itemCfg.getShape();
@@ -472,12 +472,12 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
     }
 	component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
 	//Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-	parent.addChild(component);
+	parent.addChild(component);	changeProperty();
 }
     public void addLegEquip(ItemCfgBean itemCfg)  {
 		Component parent = 	bodyComponent.findChild("human_l_b_leg");
 		if(itemCfg==null){
-			parent.children.remove(parent.children.size()-1);
+			parent.children.remove(parent.children.size()-1);	changeProperty();
 			return;
 		}
         Shape shape = itemCfg.getShape();
@@ -490,12 +490,12 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 
 		//Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
         //parent.addConnector(connector);
-		parent.addChild(component);
+		parent.addChild(component);	changeProperty();
     }
     public void addBodyEquip(ItemCfgBean itemCfg)  {
 		Component parent = 	bodyComponent.findChild("human_body");
 		if(itemCfg==null){
-			parent.children.remove(parent.children.size()-1);
+			parent.children.remove(parent.children.size()-1);	changeProperty();
 			return;
 		}
 
@@ -510,14 +510,14 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
             System.exit(0);
         }
 		component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-		parent.addChild(component);
+		parent.addChild(component);	changeProperty();
     }
 
     public void addHandEquip(ItemCfgBean itemCfg)  {
         //Shape shape = itemCfg.getShape();
 		Component parent = 	bodyComponent.findChild("rHumanHand");
 		if(itemCfg==null){
-			parent.children.clear();
+			parent.children.clear();	changeProperty();
 			return;
 		}
 
@@ -535,6 +535,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 
 		// Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
         parent.addChild(component);
+		changeProperty();
     }
     //public  Vector3f  velocity=new Vector3f();
 

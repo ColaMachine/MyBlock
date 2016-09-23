@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.lifething.manager;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
@@ -91,6 +92,7 @@ public class LivingThingManager {
            if( aabb.intersectRectangle(fromV,directionV)){
                LogUtil.println("选中了");
                this.target=livingThing;
+               player.target=livingThing;
                CoreRegistry.get(HeadDialog.class).bind(livingThing).show();
                 return livingThing;
            }
@@ -109,6 +111,16 @@ public class LivingThingManager {
 
     }
     public void attack(){
+        if(player.target!=null)
+        if(GL_Vector.length(GL_Vector.sub(player.target.position,player.position))<4){
+            player.target.nowBlood-=5;
+            if(player.target.nowBlood<0){
+                player.target.died();
+                AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+                manager.clear(player.target.bodyComponent);
+                manager.apply(player.target.bodyComponent,"died");
+            }
+        }
 
     }
     public void beAttack(){

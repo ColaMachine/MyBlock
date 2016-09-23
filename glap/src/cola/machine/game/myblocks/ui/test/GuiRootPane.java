@@ -72,9 +72,10 @@
             add(toolbar);
 
             addButton("toolbar", "toolbar", new ToggleFadeFrame(toolbar));
-            addButton("person","person", new ToggleFadeFrame(personDialog));
-            addButton("inventory","inventory", new ToggleFadeFrame(inventoryDialog));
+            addButton("person","person", new ToggleFadeFrame(personDialog));personDialog.hide();
+            addButton("inventory","inventory", new ToggleFadeFrame(inventoryDialog));inventoryDialog.hide();
              playerHeadDialog = new HeadDialog();
+            playerHeadDialog.bind(CoreRegistry.get(Human.class));
             add(playerHeadDialog);
              targetHeadDialog =new HeadDialog();
             add(targetHeadDialog);
@@ -191,8 +192,24 @@
 
                            // InventoryDialog inventoryDialog= CoreRegistry.get(InventoryDialog.class);
                             inventoryDialog.setVisible(!inventoryDialog.isVisible());
-                            inventoryDialog.validateLayout();
-                            inventoryDialog.adjustSize();
+                          /*  inventoryDialog.validateLayout();
+                            inventoryDialog.adjustSize();*/
+                        }else
+                        if(evt.getKeyCode() == Event.KEY_C){
+
+                            // InventoryDialog inventoryDialog= CoreRegistry.get(InventoryDialog.class);
+                            personDialog.setVisible(!personDialog.isVisible());
+                           /* inventoryDialog.validateLayout();
+                            inventoryDialog.adjustSize();*/
+                        }else if(evt.getKeyCode() == Event.KEY_ESCAPE){
+                            if(personDialog.isVisible()){
+                                personDialog.setVisible(false);
+                            }else if(inventoryDialog.isVisible()){
+                                inventoryDialog.setVisible(false);
+                            }else if(targetHeadDialog.isVisible()){
+                                targetHeadDialog.setVisible(false);
+                                CoreRegistry.get(Human.class).target=null;
+                            }
                         }
                     }
                     //System.out.println("key pressed "+evt.getType());

@@ -702,6 +702,7 @@ public class MyBlockEngine extends GLApp {
             }
             //GL11.glScaled(0.1,0.1,0.1);
             worldRenderer.render();
+            livingThingManager.render();
             //GL11.glScaled(10,10,10);
            /* TextureInfo ti = TextureManager.getTextureInfo("human");
             ti.bind();*/
@@ -709,8 +710,8 @@ public class MyBlockEngine extends GLApp {
             GL11.glPushMatrix();
             {
                 if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
-                   // human.preRender();
-                 //   human.render();
+                    // human.preRender();
+                    //   human.render();
                 }
 
             }
@@ -720,7 +721,7 @@ public class MyBlockEngine extends GLApp {
         }else if(Switcher.gameState==2){
 
         }
-        livingThingManager.render();
+
         //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 
@@ -879,7 +880,7 @@ public class MyBlockEngine extends GLApp {
         if(Keyboard.KEY_W == keycode||Keyboard.KEY_S == keycode||Keyboard.KEY_A == keycode ||Keyboard.KEY_D == keycode){
             return;
         }
-       // mouseControlCenter.keyDown(keycode);
+        // mouseControlCenter.keyDown(keycode);
     }
 
     public void keyUp(int keycode) {

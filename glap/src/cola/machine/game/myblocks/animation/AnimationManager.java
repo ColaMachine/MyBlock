@@ -25,6 +25,9 @@ public class AnimationManager {
         this.init();
 
     }
+    public void clear(Component component){
+      
+    }
     public void apply(Component component , String action){
 
 

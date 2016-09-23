@@ -115,7 +115,7 @@ public class Component {
 
     public void render(){
 
-
+        GL11. glEnable(GL11.GL_DEPTH_TEST);
         GL11.glTranslatef(parentLocation.x, parentLocation.y, parentLocation.z);
         if(rotateZ!=0){
             GL11.glRotatef(rotateZ, 0, 0, 1);
@@ -126,7 +126,7 @@ public class Component {
         //GL11.glRotatef(child.rotateX, child.rotateY, 90, 0);
         GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
 
-       // GL11. glEnable(GL11.GL_DEPTH_TEST);
+
         if(this.itemCfgBean!=null){
             this.itemCfgBean.render();
            // return;

@@ -34,6 +34,8 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.ProgressBar;
+import de.matthiasmann.twl.ThemeInfo;
+import de.matthiasmann.twl.renderer.*;
 import org.lwjgl.opengl.GL11;
 import util.OpenglUtil;
 
@@ -84,16 +86,39 @@ public class HeadDialog extends FadeFrame {
     final int bloodWdith=150;
     final int bloodHeight=20;
     final int heightSpace = 10;
-    int lineWdith=4;
+    int lineWdith=1;
     byte[] borderColor=new byte[]{0,0,0};
     byte[] redColor=new byte[]{(byte)245,(byte)0,(byte)0};
+    byte[] whiteColor=new byte[]{(byte)245,(byte)245,(byte)245};
     byte[] blue=new byte[]{(byte)0,(byte)0,(byte)250};
+    de.matthiasmann.twl.renderer.Font font;
+
+    @Override
+    protected void applyTheme(ThemeInfo themeInfo) {
+        super.applyTheme(themeInfo);
+
+        font = themeInfo.getFont("black");
+        //findIcon();
+    }
+
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
-        TextureManager.getTextureInfo("human_head_front").draw(null,this.getInnerX(),this.getInnerY(),headWidth,headHeight);
+        if(livingThing!=null){
+            TextureManager.getTextureInfo("human_head_front").draw(null,this.getInnerX(),this.getInnerY(),headWidth,headHeight);
 
-        OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+4,150,10,lineWdith,borderColor,redColor);
-        OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+20,150,10,lineWdith,borderColor,blue);
+
+
+            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+4,150,20,lineWdith,borderColor,whiteColor);
+            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+4,150*livingThing.nowBlood/livingThing.blood,20,lineWdith,borderColor,redColor);
+
+            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+30,150,20,lineWdith,borderColor,whiteColor);
+            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+30,150*livingThing.nowEnergy/livingThing.energy,20,lineWdith,borderColor,blue);
+
+            font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+4,livingThing.nowBlood+"/"+livingThing.blood);
+            font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+30,livingThing.nowEnergy+"/"+livingThing.energy);
+
+        }
+
     }
 
 }

@@ -10,12 +10,54 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import sun.plugin.viewer.LifeCycleManager;
 import cola.machine.game.myblocks.math.AABB;
+
+import javax.management.RuntimeErrorException;
 import javax.vecmath.Point3f;
 
 /**
  * Created by luying on 16/9/16.
  */
 public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
+
+
+
+
+    public int blood;  //  血量
+    public int energy; //  能量
+    public int sight;  //  视力
+
+
+    public int nowBlood;
+    public int nowEnergy;
+
+
+
+    public int basePower=100;      //  基础力量
+    public int baseIntell=100;     //  基础智力
+    public int baseAgility=100;    //  基础敏捷
+    public int baseSpirit=100;     //  基础精神
+
+
+    public int totalPower;
+    public int totalIntell;
+    public int totalAgility;
+    public int totalSpirit;
+
+    public int level;          //  现在的等级
+
+    public int power;          //  现在的力量值
+    public int Intell;         //  智力值
+    public int agility;        //  敏捷值
+    public int spirit;         //  精神值
+
+
+
+    public GL_Vector ViewDir;   //  观察方向
+    public GL_Vector WalkDir;   //  行走方向
+
+    public GL_Vector position;    //  位置
+    public GL_Vector oldPosition=new GL_Vector();   //  旧位置
+
     public boolean stable = true;
     public void setStable(boolean flag) {
         this.stable = flag;
@@ -28,6 +70,9 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
     public float s = 0;
     public float nextZ = 0;
     public int limit = 0;
+
+    public LivingThing target;
+
     public int mark = 0;
     public
     int preY = 0;
@@ -40,6 +85,49 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         preY = (int) this.position.y;
         lastTime = Sys.getTime();
 
+    }
+    public boolean died=false;
+    public void died(){
+        this.nowBlood=0;
+        died=true;
+        
+    }
+    public void changeProperty( ){
+   // totalPower = basePower+
+
+        acculateProperty(this.bodyComponent);
+
+        this.totalPower+=this.basePower;
+
+        totalAgility+=this.baseAgility;
+        totalIntell+=this.baseIntell;
+
+        totalSpirit+=this.baseSpirit;
+
+        this.blood=this.totalPower;
+        this.energy=this.totalIntell;
+
+
+
+    }
+
+    public void acculateProperty(Component component){
+        //try{
+        if(component!=null && component.children!=null)
+        for(int i=component.children.size()-1;i>=0;i--){
+            Component child = component.children.get(i);
+            if(child.itemCfgBean!=null){
+                totalPower +=child.itemCfgBean.getStrenth();
+                totalAgility+=child.itemCfgBean.getAgile();
+                totalIntell+=child.itemCfgBean.getIntelli();
+                totalSpirit+=child.itemCfgBean.getSpirit();
+            }
+            if(child.children!=null){
+                acculateProperty(child);
+            }
+        }/*}catch(StackOverflowError e ){
+            e.printStackTrace();
+        }*/
     }
     public void flip(int y) {
         mark = y;
@@ -181,36 +269,12 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         bodyComponent.addChild(head);
 
 
+        changeProperty();
 
-
-
+        this.nowBlood=this.blood;
+        this.nowEnergy=this.energy;
 
     }
 
-    Component main;
-    int blood;  //  血量
-    int energy; //  能量
-    int sight;  //  视力
-
-
-    int basePower;      //  基础力量
-    int baseIntell;     //  基础智力
-    int baseAgility;    //  基础敏捷
-    int baseSpirit;     //  基础精神
-
-    int level;          //  现在的等级
-
-    int power;          //  现在的力量值
-    int Intell;         //  智力值
-    int agility;        //  敏捷值
-    int spirit;         //  精神值
-
-
-
-    public GL_Vector ViewDir;   //  观察方向
-    public GL_Vector WalkDir;   //  行走方向
-
-    public GL_Vector position;    //  位置
-    public GL_Vector oldPosition=new GL_Vector();   //  旧位置
 
 }
