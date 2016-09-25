@@ -1,17 +1,12 @@
 package cola.machine.game.myblocks.lifething.bean;
 
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
-import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
-import cola.machine.game.myblocks.model.Connector;
 import cola.machine.game.myblocks.switcher.Switcher;
+import glapp.GLApp;
 import glmodel.GL_Vector;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
-import sun.plugin.viewer.LifeCycleManager;
-import cola.machine.game.myblocks.math.AABB;
 
-import javax.management.RuntimeErrorException;
 import javax.vecmath.Point3f;
 
 /**
@@ -116,11 +111,11 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         if(component!=null && component.children!=null)
         for(int i=component.children.size()-1;i>=0;i--){
             Component child = component.children.get(i);
-            if(child.itemCfgBean!=null){
-                totalPower +=child.itemCfgBean.getStrenth();
-                totalAgility+=child.itemCfgBean.getAgile();
-                totalIntell+=child.itemCfgBean.getIntelli();
-                totalSpirit+=child.itemCfgBean.getSpirit();
+            if(child.itemDefinition !=null){
+                totalPower +=child.itemDefinition.getStrenth();
+                totalAgility+=child.itemDefinition.getAgile();
+                totalIntell+=child.itemDefinition.getIntelli();
+                totalSpirit+=child.itemDefinition.getSpirit();
             }
             if(child.children!=null){
                 acculateProperty(child);
@@ -207,7 +202,40 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-position.x,-position.y,-position.z);
         GL11.glPopMatrix();
+
+
+
+        GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
+
+
+
+        //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
+
+       // GLApp.setOrthoOn();
+        vector[1]=600-vector[1]-45;
+        /*TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0],(int)vector[1],40,40);
+
+        GLApp.glFillRect((int)vector[0],(int)vector[1], 150, 20, 4, borderColor, whiteColor);
+        GLApp.glFillRect((int)vector[0],(int)vector[1]+4,150*nowBlood/blood,20,lineWdith,borderColor,redColor);
+
+        GLApp.glFillRect((int)vector[0],(int)vector[1]+30,150,20,lineWdith,borderColor,whiteColor);
+        GLApp.glFillRect((int)vector[0],(int)vector[1]+30,150*nowEnergy/energy,20,lineWdith,borderColor,blue);
+
+        GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
+        GLApp.setOrthoOff();*/
     }
+    final int headWidth =40;
+    final int headHeight=40;
+    final int space=2;
+    final int bloodWdith=150;
+    final int bloodHeight=20;
+    final int heightSpace = 10;
+    int lineWdith=1;
+   public  float[] vector=new float[3];
+    byte[] borderColor=new byte[]{0,0,0};
+    byte[] redColor=new byte[]{(byte)255,(byte)255,(byte)51};
+    byte[] whiteColor=new byte[]{(byte)245,(byte)245,(byte)245};
+    byte[] blue=new byte[]{(byte)0,(byte)0,(byte)250};
     public void adjust(float posx, float posy, float posz) {
         this.minX=posx-0.5f;
         this.minY=posy;
@@ -275,6 +303,8 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         this.nowEnergy=this.energy;
 
     }
-
+    public void beAttack(int damage){
+        this.nowBlood-=damage;
+    }
 
 }

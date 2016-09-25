@@ -11,6 +11,8 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
+import cola.machine.game.myblocks.skill.AttackManager;
+import cola.machine.game.myblocks.skill.Ball;
 import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import glapp.GLApp;
 import glapp.GLCamera;
@@ -244,7 +246,7 @@ public class MouseControlCenter {
         Switcher.MOUSE_CANCELBUBLE = false;
         AnimationManager manager = CoreRegistry.get(AnimationManager.class);
         manager.apply(human.bodyComponent,"walkerFoward");
-       livingThingManager.attack();
+
 //        CoreRegistry.get(Bag.class).click(x, y);
 
         if (Switcher.MOUSE_CANCELBUBLE)
@@ -274,6 +276,10 @@ public class MouseControlCenter {
 //                20, engine.currentObject, false);
         // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
+        livingThingManager.attack();
+        Ball ball =new Ball(this.camera.Position,viewdir,1.3f);
+
+        AttackManager.add(ball);
         //  20);
 //        if (hitPoint != null) {
 //            // Block block=new

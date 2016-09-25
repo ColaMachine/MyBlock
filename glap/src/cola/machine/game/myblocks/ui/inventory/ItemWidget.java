@@ -31,12 +31,9 @@ package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.bean.ItemEntity;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.textture.ItemCfgBean;
+import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import de.matthiasmann.twl.*;
-import de.matthiasmann.twl.renderer.AnimationState.StateKey;
-import de.matthiasmann.twl.renderer.Font;
 import de.matthiasmann.twl.renderer.Image;
 
 /**
@@ -45,13 +42,13 @@ import de.matthiasmann.twl.renderer.Image;
  */
 public class ItemWidget extends Widget {
 
-    private ItemCfgBean itemCfg;
+    private ItemDefinition itemCfg;
 
-    public ItemCfgBean getItemCfg() {
+    public ItemDefinition getItemCfg() {
         return itemCfg;
     }
 
-    public void setItemCfg(ItemCfgBean itemCfg) {
+    public void setItemCfg(ItemDefinition itemCfg) {
         this.itemCfg = itemCfg;
     }
 

@@ -93,7 +93,7 @@ public class SimpleTest {
     protected PersistentIntegerModel curThemeIdx;
 
     public SimpleTest() {
-        LWJGLHelper.addLibraryPath(PathManager.getInstance().getHomePath().resolve("natives/windows"));
+        LWJGLHelper.initNativeLibs();
         desktopMode = Display.getDisplayMode();
         curThemeIdx = new PersistentIntegerModel(
                 AppletPreferences.userNodeForPackage(SimpleTest.class),

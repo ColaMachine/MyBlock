@@ -1,6 +1,7 @@
 package util;
 
 import cola.machine.game.myblocks.log.LogUtil;
+import glapp.GLApp;
 import glmodel.GL_Vector;
 
 import java.nio.ByteBuffer;
@@ -12,6 +13,41 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 public class OpenglUtil {
+    public static void WorldToScreen(GL_Vector worldPoint){
+        IntBuffer viewport = ByteBuffer.allocateDirect((Integer.SIZE / 8) * 16)
+                .order(ByteOrder.nativeOrder()).asIntBuffer();
+        FloatBuffer modelview = ByteBuffer
+                .allocateDirect((Float.SIZE / 8) * 16)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer projection = ByteBuffer
+                .allocateDirect((Float.SIZE / 8) * 16)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer pickingRayBuffer = ByteBuffer
+                .allocateDirect((Float.SIZE / 8) * 3)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer zBuffer = ByteBuffer.allocateDirect((Float.SIZE / 8) * 1)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
+        GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
+
+
+
+
+        //   GL11.glReadPixels( (int)(cursorX), (int)(winY), 1, 1, GL11.GL_DEPTH_COMPONENT,GL11. GL_FLOAT,pickingRayBuffer );
+        //float  winZ= pickingRayBuffer.get(0);
+        // pickingRayBuffer.rewind();
+        GLU.gluProject(worldPoint.x, worldPoint.y, worldPoint.z, modelview, projection, viewport,
+                pickingRayBuffer);
+        GL_Vector nearVector = new GL_Vector(pickingRayBuffer.get(0),
+                pickingRayBuffer.get(1), pickingRayBuffer.get(2));
+
+        LogUtil.println("viewport3 x:"+pickingRayBuffer.get(0)+"y:"+pickingRayBuffer.get(1)+"y:"+pickingRayBuffer.get(2));
+
+
+
+
+    }
 
     public static void glFillRect(int leftX,int leftY,int width,int height,int lineWidth,byte[] borderColor,byte color[]){
         //GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -62,11 +98,12 @@ public class OpenglUtil {
 				.order(ByteOrder.nativeOrder()).asFloatBuffer();
 		FloatBuffer zBuffer = ByteBuffer.allocateDirect((Float.SIZE / 8) * 1)
 				.order(ByteOrder.nativeOrder()).asFloatBuffer();
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
-		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
-		GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
+        GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
 		float winX = (float) cursorX;
-        LogUtil.println("viewport3"+viewport.get(3));
+        LogUtil.println("viewport3 x:"+viewport.get(0)+"y:"+viewport.get(1)+"y:"+viewport.get(2));
+
 		float winY = viewport.get(3)-(float) cursorY;
      //   GL11.glReadPixels( (int)(cursorX), (int)(winY), 1, 1, GL11.GL_DEPTH_COMPONENT,GL11. GL_FLOAT,pickingRayBuffer );
        //float  winZ= pickingRayBuffer.get(0);

@@ -36,6 +36,8 @@ import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.ProgressBar;
 import de.matthiasmann.twl.ThemeInfo;
 import de.matthiasmann.twl.renderer.*;
+import glapp.GLApp;
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 import util.OpenglUtil;
 
@@ -89,6 +91,7 @@ public class HeadDialog extends FadeFrame {
     int lineWdith=1;
     byte[] borderColor=new byte[]{0,0,0};
     byte[] redColor=new byte[]{(byte)245,(byte)0,(byte)0};
+    byte[] yellow=new byte[]{(byte)255,(byte)255,(byte)0};
     byte[] whiteColor=new byte[]{(byte)245,(byte)245,(byte)245};
     byte[] blue=new byte[]{(byte)0,(byte)0,(byte)250};
     de.matthiasmann.twl.renderer.Font font;
@@ -100,12 +103,25 @@ public class HeadDialog extends FadeFrame {
         font = themeInfo.getFont("black");
         //findIcon();
     }
-
+    float[] result=new float[4];
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
-        if(livingThing!=null){
-            TextureManager.getTextureInfo("human_head_front").draw(null,this.getInnerX(),this.getInnerY(),headWidth,headHeight);
+//GL11.glPushMatrix();
+        /*GLApp.project(livingThing.position.x, livingThing.position.y + 2, livingThing.position.z, result);
+        GL11.glPopMatrix();
+        GL_Vector.*/
+//GLApp.getViewport();
+        //OpenglUtil.WorldToScreen(new GL_Vector(livingThing.position.x, livingThing.position.y + 2, livingThing.position.z) );
+        //result=GLApp.project((int)livingThing.position.x,(int)livingThing.position.y+2,livingThing.position.z);
 
+        //float[] vector=new float[3];
+       // GLApp.project(livingThing.position.x, livingThing.position.y + 2, livingThing.position.z,result);
+        // LogUtil.println("x:"+vector[0]+"x:"+vector[1]+"x:"+vector[2]);
+
+        if(livingThing!=null){
+                       TextureManager.getTextureInfo("human_head_front").draw(null,this.getInnerX(),this.getInnerY(),headWidth,headHeight);
+
+            //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
 
 
             OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+4,150,20,lineWdith,borderColor,whiteColor);
@@ -116,6 +132,20 @@ public class HeadDialog extends FadeFrame {
 
             font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+4,livingThing.nowBlood+"/"+livingThing.blood);
             font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+30,livingThing.nowEnergy+"/"+livingThing.energy);
+
+
+float vector[]= livingThing.vector;
+        TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0],(int)vector[1],40,40);
+
+        GLApp.glFillRect((int)vector[0]-75,(int)vector[1], 150, 10, 4, borderColor, whiteColor);
+        GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+lineWdith,150*livingThing.nowBlood/livingThing.blood,10,lineWdith,borderColor,yellow);
+
+        GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150,10,lineWdith,borderColor,whiteColor);
+        GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150*livingThing.nowEnergy/livingThing.energy,10,lineWdith,borderColor,blue);
+
+        GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
+
+
 
         }
 

@@ -1,41 +1,22 @@
 package cola.machine.game.myblocks.manager;
 
-import cola.machine.game.myblocks.config.BindsConfig;
-import cola.machine.game.myblocks.config.SecurityConfig;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.input.Input;
-import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
-import cola.machine.game.myblocks.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
-import cola.machine.game.myblocks.utilities.gson.InputHandler;
-import cola.machine.game.myblocks.utilities.gson.SetMultimapTypeAdapter;
-import cola.machine.game.myblocks.utilities.gson.UriTypeAdapterFactory;
 import com.alibaba.fastjson.JSON;
 import com.dozenx.util.FileUtil;
-import com.google.common.collect.SetMultimap;
-import com.google.gson.*;
 import de.matthiasmann.twl.renderer.Texture;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import glapp.GLApp;
 import glapp.GLImage;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
 import java.net.URL;
-import java.nio.CharBuffer;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.lwjgl.opengl.PixelFormat;
 import util.MapUtil;
-
-import javax.imageio.ImageIO;
 
 
 /**
@@ -47,7 +28,7 @@ public class TextureManager {
 
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
-    public static HashMap<String, ItemCfgBean> itemCfgMap = new HashMap<String, ItemCfgBean>();
+    public static HashMap<String, ItemDefinition> itemCfgMap = new HashMap<String, ItemDefinition>();
     public static HashMap<String, Shape> shapeMap = new HashMap<String, Shape>();
 
     public HashMap<String,ImageInfo> ImageInfoMap =new HashMap<>();
@@ -180,15 +161,15 @@ public class TextureManager {
     }
 
 
-    public void putItemCfg(String name,ItemCfgBean item){
+    public void putItemCfg(String name,ItemDefinition item){
         this.itemCfgMap.put(name,item);
         if(name.equals("fur_helmet")){
             LogUtil.println("fur_helmet");
         }
     }
-    public static ItemCfgBean getItemCfg(String name){
+    public static ItemDefinition getItemCfg(String name){
 
-        ItemCfgBean itemCfg = itemCfgMap.get(name);
+        ItemDefinition itemCfg = itemCfgMap.get(name);
         if(itemCfg==null){
             LogUtil.println("itemCfg 为null:"+name);
             System.exit(0);
@@ -273,7 +254,7 @@ try {
             List<HashMap> textureCfgBeanList=  JSON.parseArray(json,HashMap.class);
             for(int i=0;i<textureCfgBeanList.size();i++){
                 HashMap map = textureCfgBeanList.get(i);
-                ItemCfgBean item = new ItemCfgBean();
+                ItemDefinition item = new ItemDefinition();
                 String name = (String)map.get("name");
 
                 String icon = (String)map.get("icon");

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemCfgBean {
+public class ItemDefinition {
 
 
     String name;

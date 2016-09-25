@@ -4,30 +4,18 @@ import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.model.Component;
-import cola.machine.game.myblocks.model.Connector;
-import cola.machine.game.myblocks.model.textture.ItemCfgBean;
+import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
-import util.MathUtil;
-import cola.machine.game.myblocks.item.Item;
-import cola.machine.game.myblocks.item.weapons.Sword;
-import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.AABB.AABB;
-import cola.machine.game.myblocks.repository.BlockRepository;
 import cola.machine.game.myblocks.switcher.Switcher;
 
 import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
 
 public class Human extends LivingThing {
 
@@ -454,7 +442,7 @@ public class Human extends LivingThing {
 		}
 	}
 
-public void addHeadEquip(ItemCfgBean itemCfg)  {
+public void addHeadEquip(ItemDefinition itemCfg)  {
 	Component parent = 	bodyComponent.findChild("human_head");
 	if(itemCfg==null){
 		parent.children.remove(parent.children.size()-1);	changeProperty();
@@ -474,7 +462,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 	//Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
 	parent.addChild(component);	changeProperty();
 }
-    public void addLegEquip(ItemCfgBean itemCfg)  {
+    public void addLegEquip(ItemDefinition itemCfg)  {
 		Component parent = 	bodyComponent.findChild("human_l_b_leg");
 		if(itemCfg==null){
 			parent.children.remove(parent.children.size()-1);	changeProperty();
@@ -492,7 +480,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
         //parent.addConnector(connector);
 		parent.addChild(component);	changeProperty();
     }
-    public void addBodyEquip(ItemCfgBean itemCfg)  {
+    public void addBodyEquip(ItemDefinition itemCfg)  {
 		Component parent = 	bodyComponent.findChild("human_body");
 		if(itemCfg==null){
 			parent.children.remove(parent.children.size()-1);	changeProperty();
@@ -513,7 +501,7 @@ public void addHeadEquip(ItemCfgBean itemCfg)  {
 		parent.addChild(component);	changeProperty();
     }
 
-    public void addHandEquip(ItemCfgBean itemCfg)  {
+    public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
 		Component parent = 	bodyComponent.findChild("rHumanHand");
 		if(itemCfg==null){

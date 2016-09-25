@@ -951,6 +951,8 @@ public class GLApp {
     {
         bufferViewport.clear();
         GL11.glGetInteger(GL11.GL_VIEWPORT, bufferViewport);
+       // LogUtil.println("viewport3 x:"+bufferViewport.get(0)+"y:"+bufferViewport.get(1)+"y:"+bufferViewport.get(2));
+
         return bufferViewport;
     }
 
@@ -2463,6 +2465,45 @@ public class GLApp {
         drawRectZ(x,y,0,w,h);
         // restore the previous perspective and model views
         setOrthoOff();
+    }
+
+    public static void glFillRect(int leftX,int leftY,int width,int height,int lineWidth,byte[] borderColor,byte color[]){
+        //setOrthoOn();
+        //GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glLineWidth(lineWidth);
+
+        GL11.glColor3ub(borderColor[0],borderColor[1],borderColor[2]);
+
+        GL11. glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+
+        //GL11.glColor3ub(borderColor[0],borderColor[1],borderColor[2]);
+        glRect(leftX,leftY,leftX+width,leftY+height,GL11.GL_LINE_LOOP);
+        GL11.glColor3ub(color[0],color[1],color[2]);
+        // GL11.glRectf(-25.0f, 25.0f, 25.0f, -25.0f);
+        //GL11.glRecti(leftX+lineWidth/2,leftY-lineWidth/2,leftX+width-lineWidth/2,leftY+height+lineWidth/2);
+        glRect(leftX+lineWidth/2,leftY+lineWidth/2,leftX+width-lineWidth/2,leftY+height-lineWidth/2,GL11.GL_POLYGON);
+      //  GL11.glFlush ();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+       // setOrthoOff();
+    }
+
+    public static void //画矩形，传入的是左下角XY坐标和右上角XY坐标
+    glRect(int minX,int minY,int maxX,int maxY,int MODE){
+        //画封闭曲线
+        GL11.glBegin(MODE);
+        //左下角
+        GL11.glVertex3i(minX,minY,0);
+        //右下角
+        GL11.glVertex3i(minX,maxY,0);
+        //右上角
+        GL11.glVertex3i(maxX,maxY,0);
+        //左上角
+        GL11.glVertex3i(maxX,minY,0);
+        //结束画线
+        GL11.glEnd();
+
     }
 
     /**

@@ -8,10 +8,12 @@ import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
+import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.*;
@@ -56,6 +58,7 @@ import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
+import util.OpenglUtil;
 
 /**
  * Run a bare-bones GLApp. Draws one white triangle centered on screen.
@@ -371,7 +374,6 @@ public class MyBlockEngine extends GLApp {
         cam.render();
 
 
-        //}
         // drawAllBlock();
         //drawColorBlocks();
         try {
@@ -394,7 +396,13 @@ public class MyBlockEngine extends GLApp {
         print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
         print( 30, viewportH-140, "SPACE key switches cameras", 1);*/
 
-
+        float[] vector=new float[3];
+        GLApp.project(0,0,-5,vector);
+       //  LogUtil.println("x:"+vector[0]+"x:"+vector[1]+"x:"+vector[2]);
+       // GLApp.drawCircle((int)vector[0],(int)vector[1],10,5);
+        //GLApp.print((int)vector[0],(int)vector[1],"nihao");
+        //OpenglUtil.glFillRect(int)vector[0],(int)vector[1],);
+        //}
         //CoreRegistry.get(NuiManager.class).render();
 
     }
@@ -703,6 +711,9 @@ public class MyBlockEngine extends GLApp {
             //GL11.glScaled(0.1,0.1,0.1);
             worldRenderer.render();
             livingThingManager.render();
+
+            AttackManager.update();
+            AttackManager.render();
             //GL11.glScaled(10,10,10);
            /* TextureInfo ti = TextureManager.getTextureInfo("human");
             ti.bind();*/

@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
@@ -16,8 +17,10 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import glapp.GLApp;
 import glmodel.GL_Vector;
 import util.MathUtil;
+import util.OpenglUtil;
 
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
@@ -49,9 +52,13 @@ public class LivingThingManager {
     public void render(){
         for(LivingThing livingThing:livingThings){
             livingThing.render();
+            //livingThing.renderBloodBar();
         }
         this.player.render();
+
     }
+
+
     public void cycle(){
 
     }
@@ -114,11 +121,13 @@ public class LivingThingManager {
         if(player.target!=null)
         if(GL_Vector.length(GL_Vector.sub(player.target.position,player.position))<4){
             player.target.nowBlood-=5;
-            if(player.target.nowBlood<0){
+            if(player.target.nowBlood<=0){
                 player.target.died();
                 AnimationManager manager = CoreRegistry.get(AnimationManager.class);
                 manager.clear(player.target.bodyComponent);
                 manager.apply(player.target.bodyComponent,"died");
+                player.target=null;
+                target=null;
             }
         }
 

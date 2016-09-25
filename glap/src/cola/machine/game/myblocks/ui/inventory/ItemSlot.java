@@ -32,7 +32,7 @@ package cola.machine.game.myblocks.ui.inventory;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.textture.ItemCfgBean;
+import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
@@ -178,12 +178,12 @@ public class ItemSlot extends Widget {
         return true;//itemWrap == null;
     }*/
 
-    public boolean canDrop(ItemCfgBean itemCfgBean) {
+    public boolean canDrop(ItemDefinition itemDefinition) {
         if(this.itemType==0|| this.itemType ==Constants.SLOT_TYPE_HAND){
             return true;
         }
         try {
-            if (this.itemType != 0 && itemCfgBean.getType() != 0 && (this.itemType & itemCfgBean.getPosition()) != 0)
+            if (this.itemType != 0 && itemDefinition.getType() != 0 && (this.itemType & itemDefinition.getPosition()) != 0)
                 return true;//itemWrap == null;
             else
                 return false;

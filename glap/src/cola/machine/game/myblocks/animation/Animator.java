@@ -122,7 +122,7 @@ public class Animator {
           //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
             if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
                 //表示运行结束
-                if(animation.animation_fill_mode.equals("forwards"))
+              /*  if(animation.animation_fill_mode.equals("forwards"))
                 {
                     //保留最后动画
                     //LogUtil.println("forward");
@@ -148,7 +148,7 @@ public class Animator {
                     }
                 }else if(animation.animation_fill_mode.equals("normal")){
 
-                }
+                }*/
 
 //                LogUtil.println("动画结束");
                 //是不是在本次时间范围内

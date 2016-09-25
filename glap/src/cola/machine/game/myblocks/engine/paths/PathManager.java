@@ -66,6 +66,7 @@ public class PathManager {
                 System.out.println("Failed to find the natives dir - unable to launch!");
                 throw new RuntimeException("Failed to find natives from likely IDE launch");
             }
+            nativesPath=installPath.resolve("natives");
         }
         homePath = installPath;
     }

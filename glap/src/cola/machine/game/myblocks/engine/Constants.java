@@ -53,4 +53,17 @@ public class Constants {
     public static final int WEAR_POSI_FOOT =1<<3;
     public static final int WEAR_POSI_HAND =1<<4;
 
+
+
+    public static byte[] borderColor=new byte[]{0,0,0};
+    public static byte[] redColor=new byte[]{(byte)245,(byte)0,(byte)0};
+    public static byte[] yellow=new byte[]{(byte)255,(byte)255,(byte)0};
+    public static byte[] whiteColor=new byte[]{(byte)245,(byte)245,(byte)245};
+    public static byte[] blue=new byte[]{(byte)0,(byte)0,(byte)250};
+
+    public static final int SKILL_TYPE_DAMAGE=1;
+    public static final int SKILL_TYPE_HEAL=2;
+    public static final int SKILL_DAMAGE_TYPE_PHYSIC=1;
+    public static final int SKILL_DAMAGE_TYPE_MAGIC=2;
+
 }

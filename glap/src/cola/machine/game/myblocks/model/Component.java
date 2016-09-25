@@ -1,8 +1,7 @@
 package cola.machine.game.myblocks.model;
 
-import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.textture.ItemCfgBean;
+import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glmodel.GL_Vector;
@@ -127,8 +126,8 @@ public class Component {
         GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
 
 
-        if(this.itemCfgBean!=null){
-            this.itemCfgBean.render();
+        if(this.itemDefinition !=null){
+            this.itemDefinition.render();
            // return;
         }
 
@@ -302,10 +301,10 @@ public class Component {
         this.top= TextureManager.getTextureInfo(name+"_top");
         this.bottom= TextureManager.getTextureInfo(name+"_bottom");
     }
-    public ItemCfgBean itemCfgBean;
-    public void setItem(ItemCfgBean itemCfgBean){
-    this.itemCfgBean=itemCfgBean;
-        this.id= itemCfgBean.getName();
+    public ItemDefinition itemDefinition;
+    public void setItem(ItemDefinition itemDefinition){
+    this.itemDefinition = itemDefinition;
+        this.id= itemDefinition.getName();
        // this.front= itemCfgBean.getIcon();
        // this.back= itemCfgBean.getIcon();
         //this.left=itemCfgBean.getIcon();
