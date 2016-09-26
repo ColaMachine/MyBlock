@@ -33,6 +33,7 @@ import cola.machine.game.myblocks.bean.ItemEntity;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.skill.SkillDefinition;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.Image;
 
@@ -40,45 +41,28 @@ import de.matthiasmann.twl.renderer.Image;
  *
  * @author Matthias Mann
  */
-public class ItemWidget extends Widget {
+public class IconWidget extends Widget {
+    public int type ;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public SkillDefinition getSkillDefinition() {
+        return skillDefinition;
+    }
+
+    public void setSkillDefinition(SkillDefinition skillDefinition) {
+        this.skillDefinition = skillDefinition;
+    }
 
     private ItemDefinition itemCfg;
+    private SkillDefinition skillDefinition;
 
-    public ItemDefinition getItemCfg() {
-        return itemCfg;
-    }
-
-    public void setItemCfg(ItemDefinition itemCfg) {
-        this.itemCfg = itemCfg;
-    }
-
-    public ItemEntity getItemEntity() {
-        return itemEntity;
-    }
-
-    public void setItemEntity(ItemEntity itemEntity) {
-        this.itemEntity = itemEntity;
-    }
-
-    public void setIcon2(TextureInfo icon2) {
-        this.icon2 = icon2;
-    }
-
-    public Label getLabel() {
-        return label;
-    }
-
-    public void setLabel(Label label) {
-        this.label = label;
-    }
-
-    public ParameterMap getIcons() {
-        return icons;
-    }
-
-    public void setIcons(ParameterMap icons) {
-        this.icons = icons;
-    }
 
     private ItemEntity itemEntity;
 
@@ -91,7 +75,7 @@ public class ItemWidget extends Widget {
 
     private ParameterMap icons;
 
-    public ItemWidget(ItemEntity itemEntity) {
+    public IconWidget(ItemEntity itemEntity) {
         this.itemEntity=itemEntity;
        // label =new Label();
       // label.setText(""+itemEntity.getNum());
@@ -105,8 +89,21 @@ public class ItemWidget extends Widget {
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
-
-
+    }
+    public IconWidget(SkillDefinition skillDefinition) {
+        this.skillDefinition=skillDefinition;
+        // label =new Label();
+        // label.setText(""+itemEntity.getNum());
+        // add(label);
+        //label.setPosition(30,30);
+        icon2= TextureManager.getItemCfg(skillDefinition.getIcon().getName()).getIcon();
+        if(icon2==  null){
+            assert icon2!=null;
+        }
+        this.itemCfg = TextureManager.getItemCfg(itemEntity.getName());
+        if(itemCfg==  null) {
+            assert this.itemCfg!=null;
+        }
     }
     public int getNum(){
         return itemEntity.getNum();
@@ -165,5 +162,42 @@ public class ItemWidget extends Widget {
             icon2= TextureManager.getTextureInfo(itemEntity.getName());
             icon = icons.getImage(itemEntity.getName());
         }
+    }
+
+
+    public ItemDefinition getItemCfg() {
+        return itemCfg;
+    }
+
+    public void setItemCfg(ItemDefinition itemCfg) {
+        this.itemCfg = itemCfg;
+    }
+
+    public ItemEntity getItemEntity() {
+        return itemEntity;
+    }
+
+    public void setItemEntity(ItemEntity itemEntity) {
+        this.itemEntity = itemEntity;
+    }
+
+    public void setIcon2(TextureInfo icon2) {
+        this.icon2 = icon2;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    public ParameterMap getIcons() {
+        return icons;
+    }
+
+    public void setIcons(ParameterMap icons) {
+        this.icons = icons;
     }
 }

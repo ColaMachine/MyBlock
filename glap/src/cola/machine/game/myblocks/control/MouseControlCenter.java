@@ -549,80 +549,83 @@ public class MouseControlCenter {
             human.position.y = human.position.y + 3 * seconds;
             human.move(human.position);
         }
-                                                        /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(1);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(2);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
-                                                            double timenow = GLApp.getTimeInSeconds();
+        else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+            CoreRegistry.get(ToolBar.class).keyDown(1);
+        }
+        /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+            CoreRegistry.get(ToolBar.class).keyDown(1);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+            CoreRegistry.get(ToolBar.class).keyDown(2);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+            double timenow = GLApp.getTimeInSeconds();
 
-                                                            if ((timenow - preKeyTime) < 500) {
-                                                                return;
-                                                            }
-                                                            preKeyTime = timenow;
-
-
-                                                            Switcher.PRINT_SWITCH = !Switcher.PRINT_SWITCH;
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_F4)) {
-                                                            double timenow = GLApp.getTimeInSeconds();
-
-                                                            if ((timenow - preKeyTime) < 1) {
-                                                                return;
-                                                            }
-                                                            System.out.println("pretime:"
-                                                                    + preKeyTime + " time:" + timenow + " seconds:" + seconds);
-                                                            preKeyTime = timenow;
-                                                            Switcher.IS_GOD = !Switcher.IS_GOD;
-                                                            System.out.println("god mode:" + Switcher.IS_GOD);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-
-                                                            double timenow = GLApp.getTimeInSeconds();
-                                                            if ((timenow - preKeyTime) < 1) {
-                                                                return;
-                                                            }
-                                                            preKeyTime = timenow;
-                                                            CoreRegistry.get(Bag.class).changeShow();
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(3);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(4);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(5);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(6);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(7);
-                                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
-                                                            CoreRegistry.get(ToolBar.class).keyDown(8);
-                                                        }
-                                        if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
-                                            CoreRegistry.get(ToolBar.class).keyDown(9);
-                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-                                            double timenow = GLApp.getTimeInSeconds();
-                                            if ((timenow - preKeyTime) < 1) {
-                                                return;
-                                            }
-                                            preKeyTime = timenow;
-                                            Switcher.CAMERA_2_PLAYER++;
-                                            if (Switcher.CAMERA_2_PLAYER > 0) {
-                                                Switcher.CAMERA_2_PLAYER = 0;
-                                            }
-                                        } else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
-
-                                            if (!Keyboard.getEventKeyState()) {
-                                                Switcher.CAMERA_2_PLAYER--;
-                                                if (Switcher.CAMERA_2_PLAYER < -10) {
-                                                    Switcher.CAMERA_2_PLAYER = -10;
-                                                }
-                                            }
-                                            double timenow = GLApp.getTimeInSeconds();
-                                            if ((timenow - preKeyTime) < 1) {
-                                                return;
-                                            }
-                                            preKeyTime = timenow;
+            if ((timenow - preKeyTime) < 500) {
+                return;
+            }
+            preKeyTime = timenow;
 
 
-                                        } */
+            Switcher.PRINT_SWITCH = !Switcher.PRINT_SWITCH;
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_F4)) {
+            double timenow = GLApp.getTimeInSeconds();
+
+            if ((timenow - preKeyTime) < 1) {
+                return;
+            }
+            System.out.println("pretime:"
+                    + preKeyTime + " time:" + timenow + " seconds:" + seconds);
+            preKeyTime = timenow;
+            Switcher.IS_GOD = !Switcher.IS_GOD;
+            System.out.println("god mode:" + Switcher.IS_GOD);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+
+            double timenow = GLApp.getTimeInSeconds();
+            if ((timenow - preKeyTime) < 1) {
+                return;
+            }
+            preKeyTime = timenow;
+            CoreRegistry.get(Bag.class).changeShow();
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+            CoreRegistry.get(ToolBar.class).keyDown(3);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+            CoreRegistry.get(ToolBar.class).keyDown(4);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
+            CoreRegistry.get(ToolBar.class).keyDown(5);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
+            CoreRegistry.get(ToolBar.class).keyDown(6);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
+            CoreRegistry.get(ToolBar.class).keyDown(7);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+            CoreRegistry.get(ToolBar.class).keyDown(8);
+        }
+if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+CoreRegistry.get(ToolBar.class).keyDown(9);
+} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+double timenow = GLApp.getTimeInSeconds();
+if ((timenow - preKeyTime) < 1) {
+return;
+}
+preKeyTime = timenow;
+Switcher.CAMERA_2_PLAYER++;
+if (Switcher.CAMERA_2_PLAYER > 0) {
+Switcher.CAMERA_2_PLAYER = 0;
+}
+} else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+
+if (!Keyboard.getEventKeyState()) {
+Switcher.CAMERA_2_PLAYER--;
+if (Switcher.CAMERA_2_PLAYER < -10) {
+    Switcher.CAMERA_2_PLAYER = -10;
+}
+}
+double timenow = GLApp.getTimeInSeconds();
+if ((timenow - preKeyTime) < 1) {
+return;
+}
+preKeyTime = timenow;
+
+
+} */
         // tilt up
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             double timenow = GLApp.getTimeInSeconds();

@@ -41,226 +41,36 @@ import de.matthiasmann.twl.renderer.Font;
  *
  * @author Matthias Mann
  */
-public class ToolbarPanel extends Widget {
-    //private BagEntity bagEntity;
-   // private BagController bagController;
-    private int numSlotsX=10;
-    private int numSlotsY=1;
+public class ToolbarPanel extends SlotPanel {
 
-    private final ItemSlot[] slot;//head body pairs shooe
 
-    private int slotSpacing;
-
-    private ItemSlot dragSlot;
-    private ItemSlot dropSlot;
-
-    public ToolbarPanel() {
-   // setTitle("工具栏");
-       // this.setTheme("inventorydemo");
-        this.slot = new ItemSlot[numSlotsX*numSlotsY];//数组
-        //创建listener
-
-        ItemSlot.DragListener listener = new ItemSlot.DragListener() {//创建listener
-            public void dragStarted(ItemSlot slot, Event evt) {
-                ToolbarPanel.this.dragStarted(slot, evt);
-            }
-            public void dragging(ItemSlot slot, Event evt) {
-                ToolbarPanel.this.dragging(slot, evt);
-            }
-            public void dragStopped(ItemSlot slot, Event evt) {
-                ToolbarPanel.this.dragStopped(slot, evt);
-            }
-        };
+    public ToolbarPanel(int numSlotsX, int numSlotsY) {
+        super( numSlotsX,  numSlotsY);
 
 
 
-       for(int i=0 ; i<slot.length ; i++) {
-            slot[i] = new ItemSlot(Constants.SLOT_TYPE_ALL);
-            slot[i].setListener(listener);//所有的slot都绑定了一个listener
-            add(slot[i]);
-        }
+
 
 
     }
 
-    @Override
-    public int getPreferredInnerWidth() {
-        LogUtil.println(""+slot[0].getWidth());
-        return (slot[0].getPreferredWidth() + slotSpacing)*numSlotsX - slotSpacing;
-    }
 
-    @Override
-    public int getPreferredInnerHeight() {
-        return (slot[0].getPreferredHeight() + slotSpacing)*numSlotsY - slotSpacing;
-    }
-
-    @Override
-    protected void layout() {
-        int slotWidth  = slot[0].getPreferredWidth();
-        int slotHeight = slot[0].getPreferredHeight();
-        
-        for(int row=0,y=getInnerY(),i=0 ; row<numSlotsY ; row++) {
-            for(int col=0,x=getInnerX() ; col<numSlotsX ; col++,i++) {
-                slot[i].adjustSize();
-                slot[i].setPosition(x, y);
-                x += slotWidth + slotSpacing;
-            }
-            y += slotHeight + slotSpacing;
-        }
-    }
-
-    @Override
-    protected void applyTheme(ThemeInfo themeInfo) {
-        super.applyTheme(themeInfo);
-        slotSpacing = themeInfo.getParameter("slotSpacing", 5);
-        font = themeInfo.getFont("black");
-    }
-    
-    void dragStarted(ItemSlot slot, Event evt) {
-        if(slot.getItemWidget() != null) {
-            dragSlot = slot;
-            dragging(slot, evt);
-        }
-    }
-    
-    void dragging(ItemSlot slot, Event evt) {
-        if(dragSlot != null) {
-            Widget w = this.getParent().getParent().getWidgetAt(evt.getMouseX(), evt.getMouseY());
-            if(w instanceof ItemSlot) {
-                //System.out.println(1);
-                setDropSlot((ItemSlot)w);
-            } else {
-                setDropSlot(null);
-            }
-        }
-    }
-    
-    void dragStopped(ItemSlot slot, Event evt) {
-        if(dragSlot != null) {
-            dragging(slot, evt);
-            if(dropSlot != null && dropSlot.canDrop(dragSlot.getItemWidget().getItemCfg()) && dropSlot != dragSlot) {
-              ItemWidget dropItem = dropSlot.getItemWidget();
-                ItemWidget dragItem = dragSlot.getItemWidget();
-                //如果是相同的元素 允许堆叠
-                if(dropItem==null){
-                    dropSlot.setItemWidget(dragItem);
-                    dragSlot.setItemWidget(null);
-
-                }else
-                if(dropItem.getItem().equals(dragItem.getItem())){
-                    dropItem.setNum(dropItem.getNum()+dragItem.getNum());
-                    dragSlot.setItemWidget(null);
-                }else{
-                    dropSlot.setItemWidget(dragItem);
-                    dragSlot.setItemWidget(dropItem);
-                }
-
-            /*    slot.setItemWrap(null);
-                dropSlot.setItemWrap(dragSlot.getItemWrap());
-                dragSlot.setItemWrap(null);*/
-              // dropSlot.setNum(dragSlot.getNum());
-            }
-            setDropSlot(null);
-            dragSlot = null;
-        }
-    }
-
-    private void setDropSlot(ItemSlot slot) {//设置
-        if(slot != dropSlot) {
-            if(dropSlot != null) {
-                dropSlot.setDropState(false, false);
-            }
-            dropSlot = slot;
-            if(dropSlot != null) {
-                dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop(dragSlot.getItemWidget().getItemCfg()));
-            }
-        }
-    }
-    boolean dragActive=false;
-    ItemWidget itemWidget = null;
-    int mouseX = 0;
-    int mouseY =0;
-    Font font;
-    @Override//静态绘制
-    protected void paintWidget(GUI gui) {
-        if(itemWidget != null) {
-            final int innerWidth = 40;
-            final int innerHeight = 40;
-
-            itemWidget.getIcon().draw(getAnimationState(),
-                    mouseX - innerWidth/2,
-                    mouseY - innerHeight/2,
-                    innerWidth, innerHeight);
-            // itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
-            //this.paintChild(gui,itemWrap);
-            // label.setOffscreenExtra(mouseX,mouseY,label.getWidth(),label.getHeight());
-            font.drawText(getAnimationState(),mouseX+5,mouseY+5, itemWidget.getNum()+"");
-        }
-
-    }
     protected boolean handleEvent(Event evt) {
+        super.handleEvent(evt);
+        if (evt.getType()==Event.Type.KEY_PRESSED ) {
+           if(evt.getKeyCode()==Event.KEY_1 && slot[0].getIconWidget().getType()==Constants.ICON_TYPE_SKILL ){
+               
 
-            if(itemWidget !=null) {//如果正在拖动
-
-                if (evt.getType()==Event.Type.MOUSE_CLICKED ) {//如果是鼠标单击事件
-
-                    Widget w = getWidgetAt(evt.getMouseX(), evt.getMouseY());//判断有没有点击到slot上
-                    if(w instanceof ItemSlot ) {
-                        ItemSlot slot = (ItemSlot)w;
-                       // ItemWrap oldItemWrap = slot.getItemWrap();
-                        ItemWidget oldItemWidget = slot.getItemWidget();
-                        slot.setItemWidget(itemWidget);
-                        this.itemWidget = oldItemWidget;
-                        /*if(oldItemWrap !=null){
-                            itemWrap=oldItemWrap;
-                        }*/
-                        setDropSlot((ItemSlot)w);
-                        System.out.println("InventoryPanel 放下");
-                        int eventModifiers= evt.getModifiers();
-                        if((eventModifiers & Event.MODIFIER_CTRL) != 0) {
-                            System.out.println("ctrl DOWN");
-                        }
-                       /*     String name =this.getInputMap().mapEvent(evt);
-                            if(name!=null ) {
-                                name =this.getInputMap().mapEvent(evt);
-                                System.out.println("ctrl DOWN");
-                            }*/
-                    } else {
-                        setDropSlot(null);
-                    }
+           }
+        }
 
 
 
-                    //dragActive = false;
-
-                }else{
-                    mouseX=evt.getMouseX();
-                    mouseY=evt.getMouseY();
-
-//                    listener.dragging(this, evt);
-                }
-            }else if(evt.getType()==Event.Type.MOUSE_CLICKED){
-                Widget w = getWidgetAt(evt.getMouseX(), evt.getMouseY());
-                if(w instanceof ItemSlot) {
-                    ItemSlot slot = (ItemSlot)w;
-
-                       itemWidget = slot.getItemWidget();
-
-                    if(itemWidget !=null) {
-                        slot.setItemWidget(null);
-                        System.out.println("拿起");
-                        mouseX=evt.getMouseX();
-                        mouseY=evt.getMouseY();
-                    }
-
-                }
-
-            }
-            return true;
 
 
-
-//        return super.handleEvent(evt);
     }
+
+
+
     
 }

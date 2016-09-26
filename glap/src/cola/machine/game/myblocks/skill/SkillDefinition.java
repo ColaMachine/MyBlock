@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.skill;
 
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 
 /**
  * Created by luying on 16/9/25.
@@ -22,6 +23,15 @@ public class SkillDefinition {
     String desc;//description
     String showName;
     int type;
+
+    public TextureInfo getIcon() {
+        return icon;
+    }
+
+    public void setIcon(TextureInfo icon) {
+        this.icon = icon;
+    }
+
     int damageType;
     String buff;
 
@@ -35,7 +45,7 @@ public class SkillDefinition {
 
     int castTime;
     int coolDown;
-    ItemDefinition icon;
+    TextureInfo icon;
     Shape shape;
     int speed;
     int animation;
@@ -103,13 +113,7 @@ public class SkillDefinition {
         this.coolDown = coolDown;
     }
 
-    public ItemDefinition getIcon() {
-        return icon;
-    }
 
-    public void setIcon(ItemDefinition icon) {
-        this.icon = icon;
-    }
 
     public Shape getShape() {
         return shape;

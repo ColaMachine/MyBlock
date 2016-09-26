@@ -56,35 +56,35 @@ public class ItemSlot extends Widget {
         public void dragging(ItemSlot slot, Event evt);
         public void dragStopped(ItemSlot slot, Event evt);
     }
-    private ItemWidget itemWidget;
+    private IconWidget iconWidget;
 
-    public ItemWidget getItemWidget() {
-        return itemWidget;
+    public IconWidget getIconWidget() {
+        return iconWidget;
     }
 
-    public void setItemWidget(ItemWidget itemWidget) {
+    public void setIconWidget(IconWidget iconWidget) {
        // this.allChildrenRemoved();
        /* if(itemWrap == null ){
             this.allChildrenRemoved();
         }*/
 
-        this.itemWidget = itemWidget;
-        if(itemWidget !=null ) {
+        this.iconWidget = iconWidget;
+        if(iconWidget !=null ) {
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addHeadEquip(itemWidget.getItemCfg());
+                human.addHeadEquip(iconWidget.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addLegEquip(itemWidget.getItemCfg());
+                human.addLegEquip(iconWidget.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addBodyEquip(itemWidget.getItemCfg());
+                human.addBodyEquip(iconWidget.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addHandEquip(itemWidget.getItemCfg());
+                human.addHandEquip(iconWidget.getItemCfg());
             }
         }else{
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
@@ -273,23 +273,23 @@ public class ItemSlot extends Widget {
 
     @Override//静态绘制
     protected void paintWidget(GUI gui) {
-        if(!dragActive && itemWidget != null) {
-            if(itemWidget.getIcon2()==null){
+        if(!dragActive && iconWidget != null) {
+            if(iconWidget.getIcon2()==null){
                 LogUtil.println("icon2 is null");
             }
-            itemWidget.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            iconWidget.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
             //font.drawText(null,getInnerX(), getInnerY(),"10");
             //this.paintChild(gui,label);
             //this.paintChild(gui,itemWrap);
            // itemWrap.getIcon2().draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
-            font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15, itemWidget.getNum()+"");
+            font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15, iconWidget.getNum()+"");
         }
 
     }
 
     @Override//绘制拖动过程
     protected void paintDragOverlay(GUI gui, int mouseX, int mouseY, int modifier) {
-        if(itemWidget != null) {
+        if(iconWidget != null) {
             final int innerWidth = getInnerWidth();
             final int innerHeight = getInnerHeight();
 
@@ -297,14 +297,14 @@ public class ItemSlot extends Widget {
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
                     innerWidth, innerHeight);*/
-            itemWidget.getIcon2().draw(getAnimationState(),
+            iconWidget.getIcon2().draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
                     innerWidth, innerHeight);
            // itemWrap.setPosition(mouseX - innerWidth/2, mouseY - innerHeight/2);
             //this.paintChild(gui,itemWrap);
            // label.setOffscreenExtra(mouseX,mouseY,label.getWidth(),label.getHeight());
-            font.drawText(getAnimationState(),mouseX+5,mouseY+5, itemWidget.getNum()+"");
+            font.drawText(getAnimationState(),mouseX+5,mouseY+5, iconWidget.getNum()+"");
         }
     }
 
@@ -317,7 +317,7 @@ public class ItemSlot extends Widget {
     }
     private TextureInfo icon2;
     private void findIcon() {
-        if(itemWidget == null || icons == null) {
+        if(iconWidget == null || icons == null) {
             //icon = null;
         } else {
             //icon = icons.getImage(item)

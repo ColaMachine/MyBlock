@@ -50,7 +50,7 @@ public class ToolbarDialog extends FadeFrame {
     public ToolbarDialog() {
 
 
-        toobarPanel = new ToolbarPanel();//10行5列
+        toobarPanel = new ToolbarPanel(10,1);//10行5列
         
         setTheme("inventorydemo");
         setTitle("toobar");//整个包裹的标题

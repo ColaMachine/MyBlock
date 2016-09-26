@@ -50,7 +50,7 @@ public class PersonDialog extends FadeFrame {
     public PersonDialog() {
 
 
-        personPanel = new PersonPanel();//10行5列
+        personPanel = new PersonPanel(5,1);//10行5列
         
         setTheme("inventorydemo");
         setTitle("Inventory");//整个包裹的标题
