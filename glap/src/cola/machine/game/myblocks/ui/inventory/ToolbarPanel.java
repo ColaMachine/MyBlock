@@ -64,7 +64,7 @@ public class ToolbarPanel extends SlotPanel {
            }
         }
 
-
+    return true;
 
 
 

@@ -262,7 +262,7 @@ try {
                 item.setIcon(this.getTextureInfo(icon));
                 String type = (String)map.get("type");
                 if(type.equals("wear")){
-                    item.setType(Constants.ITEM_TYPE_WEAR);
+                    item.setType(Constants.ICON_TYPE_WEAR);
                     String position = (String)map.get("position");
                     if(position.equals("head")){
                         item.setPosition(Constants.WEAR_POSI_HEAD);
@@ -295,7 +295,7 @@ try {
                     this.putItemCfg(name,item);
                     //item.init();
                 }else if(type.equals("food")){
-                    item.setType(Constants.ITEM_TYPE_FOOD);
+                    item.setType(Constants.ICON_TYPE_FOOD);
                 }
 
 

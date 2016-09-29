@@ -2471,6 +2471,7 @@ public class GLApp {
         //setOrthoOn();
         //GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         // GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glLineWidth(lineWidth);
 

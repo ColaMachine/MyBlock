@@ -96,7 +96,7 @@ public class IconWidget extends Widget {
         // label.setText(""+itemEntity.getNum());
         // add(label);
         //label.setPosition(30,30);
-        icon2= TextureManager.getItemCfg(skillDefinition.getIcon().getName()).getIcon();
+       // icon2= TextureManager.getItemCfg(skillDefinition.getIcon().getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }

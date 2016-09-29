@@ -133,6 +133,7 @@ public class HeadDialog extends FadeFrame {
             font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+4,livingThing.nowBlood+"/"+livingThing.blood);
             font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+30,livingThing.nowEnergy+"/"+livingThing.energy);
 
+/*
 
 float vector[]= livingThing.vector;
         TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0],(int)vector[1],40,40);
@@ -144,6 +145,7 @@ float vector[]= livingThing.vector;
         GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150*livingThing.nowEnergy/livingThing.energy,10,lineWdith,borderColor,blue);
 
         GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
+*/
 
 
 

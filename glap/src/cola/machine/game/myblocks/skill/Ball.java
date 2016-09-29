@@ -15,7 +15,8 @@ import javax.vecmath.Point3f;
 public class Ball  {
     GL_Vector position;
     GL_Vector direction;
-    int distance=3;
+   float sumDistance=0;
+    int distance=23;
     boolean died=false;
     int width;
     float speed;
@@ -34,10 +35,11 @@ startTime=System.currentTimeMillis();
         Long nowTime=System.currentTimeMillis()-startTime;
         startTime= System.currentTimeMillis();
         float _distance = speed*nowTime/1000;
+        sumDistance+=_distance;
         this.position.x+= this.direction.x*_distance;
         this.position.y+= this.direction.y*_distance;
         this.position.z+= this.direction.z*_distance;
-        if(_distance>distance){
+        if(sumDistance>distance){
             this.died=true;
         }
     }

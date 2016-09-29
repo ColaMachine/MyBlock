@@ -1,6 +1,9 @@
 package cola.machine.game.myblocks.lifething.bean;
 
+import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import glapp.GLApp;
 import glmodel.GL_Vector;
@@ -210,10 +213,10 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
 
         //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
-
-       // GLApp.setOrthoOn();
+        GLApp.pushAttrib();
+       GLApp.setOrthoOn();
         vector[1]=600-vector[1]-45;
-        /*TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0],(int)vector[1],40,40);
+        TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0],(int)vector[1],40,40);
 
         GLApp.glFillRect((int)vector[0],(int)vector[1], 150, 20, 4, borderColor, whiteColor);
         GLApp.glFillRect((int)vector[0],(int)vector[1]+4,150*nowBlood/blood,20,lineWdith,borderColor,redColor);
@@ -222,7 +225,8 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GLApp.glFillRect((int)vector[0],(int)vector[1]+30,150*nowEnergy/energy,20,lineWdith,borderColor,blue);
 
         GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
-        GLApp.setOrthoOff();*/
+        GLApp.setOrthoOff();
+        GLApp.popAttrib();
     }
     final int headWidth =40;
     final int headHeight=40;
@@ -305,6 +309,12 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
     }
     public void beAttack(int damage){
         this.nowBlood-=damage;
+        if(this.nowBlood<=0){
+            this.nowBlood=0;
+            AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+            manager.clear(bodyComponent);
+            manager.apply(bodyComponent,"died");
+        }
     }
 
 }

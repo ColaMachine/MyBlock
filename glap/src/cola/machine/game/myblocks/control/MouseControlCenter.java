@@ -277,7 +277,7 @@ public class MouseControlCenter {
         // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
         livingThingManager.attack();
-        Ball ball =new Ball(this.camera.Position,viewdir,1.3f);
+        Ball ball =new Ball(this.camera.Position,viewdir,7.3f);
 
         AttackManager.add(ball);
         //  20);

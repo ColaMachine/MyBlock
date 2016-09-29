@@ -26,7 +26,7 @@ public class AnimationManager {
 
     }
     public void clear(Component component){
-      
+
     }
     public void apply(Component component , String action){
 
