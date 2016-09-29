@@ -1,6 +1,9 @@
     package cola.machine.game.myblocks.ui.test;
 
     import cola.machine.game.myblocks.control.MouseControlCenter;
+    import cola.machine.game.myblocks.lifething.bean.LivingThing;
+    import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+    import cola.machine.game.myblocks.log.LogUtil;
     import cola.machine.game.myblocks.manager.TextureManager;
     import cola.machine.game.myblocks.model.human.Human;
     import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -9,7 +12,9 @@
     import de.matthiasmann.twl.*;
     import de.matthiasmann.twl.model.SimpleBooleanModel;
     import de.matthiasmann.twl.renderer.Texture;
+    import glapp.GLApp;
     import org.lwjgl.opengl.Display;
+    import org.lwjgl.opengl.GL11;
 
     /**
      * Created by luying on 16/7/3.
@@ -99,6 +104,53 @@
             return btn;
         }
 
+        final int headWidth =40;
+        final int headHeight=40;
+        final int space=2;
+        final int bloodWdith=150;
+        final int bloodHeight=20;
+        final int heightSpace = 10;
+        int lineWdith=1;
+        byte[] borderColor=new byte[]{0,0,0};
+        byte[] redColor=new byte[]{(byte)245,(byte)0,(byte)0};
+        byte[] yellow=new byte[]{(byte)255,(byte)255,(byte)0};
+        byte[] whiteColor=new byte[]{(byte)245,(byte)245,(byte)245};
+        byte[] blue=new byte[]{(byte)0,(byte)0,(byte)250};
+        @Override//静态绘制
+    public void paintWidget(GUI gui){
+
+
+                for(LivingThing livingThing:LivingThingManager.livingThings){
+                    float vector[]= livingThing.vector;
+                    LogUtil.println(vector[2]+"");
+                    if(vector[2]>1)continue;
+                    //GL11.glPushMatrix();
+                    //GL11.glScalef((1-(vector[2]-0.9f)*10),(vector[2]-0.9f)*10 ,1 );
+
+                    TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0]-115,(int)vector[1],40,40);
+
+                   /* GLApp.glFillRect((int) vector[0] - 75, (int) vector[1], 150, 10, 4, borderColor, whiteColor);
+                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+lineWdith,150*livingThing.nowBlood/livingThing.blood,10,lineWdith,borderColor,yellow);
+
+                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150,10,lineWdith,borderColor,whiteColor);
+                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150*livingThing.nowEnergy/livingThing.energy,10,lineWdith,borderColor,blue);
+
+                    GLApp.print((int)vector[0],600-(int)vector[1],"hello");*/
+
+                    float scale = 1-(vector[2]-startValue)/(1-startValue);
+                    GLApp.glFillRect((int) vector[0] - 75, (int) vector[1], 150*scale, 10*scale, 4*scale, borderColor, whiteColor);
+                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+lineWdith,150*livingThing.nowBlood/livingThing.blood*scale,10*scale,lineWdith*scale,borderColor,yellow);
+
+                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150*scale,10*scale,lineWdith*scale,borderColor,whiteColor);
+                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150*scale*livingThing.nowEnergy/livingThing.energy,10*scale,lineWdith*scale,borderColor,blue);
+
+                    GLApp.print((int)vector[0],600-(int)vector[1],"hello");
+                    //GL11.glPopMatrix();
+
+                }
+
+    }
+        public float startValue=0.9f;
         public Button addButton(String text, String ttolTip, Runnable cb) {
             Button btn = addButton(text, cb);
            // btn.setBackground(TextureManager.getTextureInfo("fur_helmet").

@@ -27,7 +27,7 @@
       <sourceFolder url="file://$MODULE_DIR$/glap" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="module-library" exported="">
       <library name="groovy-2.1.7.jar">
         <CLASSES>
@@ -166,15 +166,6 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/glap/lib/TWL.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../newTWL/external-libs/xpp3-1.1.4c.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -199,19 +190,28 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../newTWL/TWLEffects.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.1.39/fastjson-1.1.39.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.1.39/fastjson-1.1.39.jar!/" />
+          <root url="jar://$MODULE_DIR$/glap/lib/TWL.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/glap/lib/TWLEffects.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

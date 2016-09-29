@@ -210,12 +210,12 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
         GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
 
-
+        vector[1]=600-vector[1]-45;
 
         //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
-        GLApp.pushAttrib();
+       /* GLApp.pushAttrib();
        GLApp.setOrthoOn();
-        vector[1]=600-vector[1]-45;
+
         TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0],(int)vector[1],40,40);
 
         GLApp.glFillRect((int)vector[0],(int)vector[1], 150, 20, 4, borderColor, whiteColor);
@@ -226,7 +226,7 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
         GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
         GLApp.setOrthoOff();
-        GLApp.popAttrib();
+        GLApp.popAttrib();*/
     }
     final int headWidth =40;
     final int headHeight=40;
