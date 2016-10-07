@@ -21,7 +21,7 @@ public class Client extends Thread{
     public  void send(String message){
     if(pw!=null){
         System.out.println(" send message"+message);
-        pw.print(message);
+        pw.println(message);
         pw.flush();
     }
     }
@@ -66,7 +66,7 @@ public class Client extends Thread{
                     socket.getOutputStream())));
             //pw.println("1");pw.flush();
            // pw.println("2");pw.flush();
-           /* for(int i=0;i<10;i++){
+           /*for(int i=0;i<10;i++){
                 //send("hello"+i);
                 pw.println(i);pw.flush();
                 try {
@@ -74,8 +74,8 @@ public class Client extends Thread{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            pw.flush();*/
+            }*/
+            //pw.flush();
             while(true){//不断读取数据 然后压入到messages里 由界面端显示出stack
                 String str = br.readLine();
                 if(str==null){

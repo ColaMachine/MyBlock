@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.log.LogUtil;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Stack;
 
 /**
  * Created by luying on 16/10/7.
@@ -11,8 +12,10 @@ import java.net.Socket;
 public class Worker extends Thread {
     private Socket socket;
     public boolean end=false;
-    public Worker(Socket socket){
+    Stack<String> messages;
+    public Worker(Socket socket,Stack<String> messages){
         this.socket =socket;
+        this.messages=messages;
     }
     BufferedReader br = null;
     PrintWriter pw = null;
@@ -42,6 +45,8 @@ public class Worker extends Thread {
                 if("END".equals(str)){
                     break;
                 }
+
+                messages.push(str);
                 System.out.println("Client Socket Message:"+str);
                 Thread.sleep(1000);
                 //pw.println("Message Received");

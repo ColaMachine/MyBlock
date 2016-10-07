@@ -31,7 +31,7 @@ public class ChatServer {
 
             while(true){
                 Socket socket = s.accept();
-                Worker worker =new Worker(socket);
+                Worker worker =new Worker(socket,messages);
                 worker.start();
                 workerMap.put(worker.hashCode(),worker);
             }
