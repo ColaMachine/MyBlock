@@ -11,6 +11,7 @@ import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -33,13 +34,20 @@ import java.util.List;
 public class LivingThingManager {
     public static List<LivingThing> livingThings = new ArrayList<>();
 
-    LivingThing target ;
-    LivingThing player;
-
+    public LivingThing target ;
+    public static LivingThing player;
+    Component component;
     public LivingThingManager(){
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(0,4,0);
         livingThings.add(livingThing);
+         component =new Component(2,16,2);
+        component.bend(180,50);
+        component.setShape(TextureManager.getShape("human_body"));
+
+       // Thread thread = new Thread(behaviorManager);
+
+        //behaviorManager.run();
     // livingThings.add(CoreRegistry.get(Human.class));
 
     }
@@ -49,12 +57,17 @@ public class LivingThingManager {
     public void add(LivingThing livingThing){
         livingThings.add(livingThing);
     }
+
     public void render(){
         for(LivingThing livingThing:livingThings){
             livingThing.render();
             //livingThing.renderBloodBar();
+           livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
+
         }
         this.player.render();
+        component.renderBend();
+
 
     }
 

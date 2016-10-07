@@ -119,7 +119,18 @@ public class HeadDialog extends FadeFrame {
         // LogUtil.println("x:"+vector[0]+"x:"+vector[1]+"x:"+vector[2]);
 
         if(livingThing!=null){
-                       TextureManager.getTextureInfo("human_head_front").draw(null,this.getInnerX(),this.getInnerY(),headWidth,headHeight);
+            //GL11.glDisable(GL11.GL_LIGHTING); // no lighting
+            // GL11.glDisable(GL11.GL_DEPTH_TEST); // no depth test
+            //GL11.glClearColor(0,0,0,0);
+            // GL11.glDisable(GL11.GL_BLEND); // enable transparency
+             //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); //
+           // GL11.glDisable(GL11.glre);
+
+            //GL11.glClearColor(255,255,255,0);
+            //GL11.glClearColor(1,1,1,0);
+            GL11.glColor4f(1f,1f,1f,1f);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            TextureManager.getTextureInfo("human_head_front").draw(null,this.getInnerX(),this.getInnerY(),headWidth,headHeight);
 
             //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
 

@@ -19,7 +19,7 @@ public class AnimationManager {
     //animator 是动画的执行过程
     List<Animator> animators =new ArrayList<>();
     //id:action==>animator
-    HashMap<String,Animator> animatorMap = new HashMap<>();
+    HashMap<String,Animator> id2animatorMap = new HashMap<>();
 
     public AnimationManager(){
         this.init();
@@ -36,14 +36,14 @@ public class AnimationManager {
 
         if(animation!=null){
 
-            if(animatorMap.get(component.id+":"+action)!=null ){
+            if(id2animatorMap.get(component.hashCode()+component.id+":"+action)!=null ){
 
                 return;
                 //animatorMap.get(component.id).complete=true;
             }else{
                 Animator animator = new Animator(animation,component);
                 animators.add(animator);
-                animatorMap.put(animator.component.id+":"+action,animator);
+                id2animatorMap.put(component.hashCode()+component.id+":"+action,animator);
             }
 
         }
@@ -63,7 +63,8 @@ public class AnimationManager {
            // LogUtil.println("画完前:"+animator.component.rotateX);
 
             if(animator.complete){
-                animatorMap.put(animator.component.id+":"+animator.animation.action,null);
+                id2animatorMap.remove(animator.component.hashCode()+animator.component.id+":"+animator.animation.action);
+               // id2animatorMap.put(animator.component.id+":"+animator.animation.action,null);
 //                LogUtil.println("移除动画"+animators.get(i).animation.action);
                 animators.remove(i);
 

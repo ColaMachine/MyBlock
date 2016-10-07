@@ -398,7 +398,10 @@ public class GL_Vector
 		A.y=B.y;
 		A.z=B.z;
 	}
-
+    public static GL_Vector rotateWithZ(GL_Vector  A, float degree){
+        degree= degree/180*3.1415926f;
+        return new GL_Vector((float)(A.x*Math.cos(degree)-A.y*Math.sin(degree)),(float)(A.x*Math.sin(degree)+A.y*Math.cos(degree)),A.z);
+    }
 
 	public static GL_Vector multiplyWithoutY(GL_Vector v, float r) {
 		return new GL_Vector(v.x*r, 0, v.z*r);

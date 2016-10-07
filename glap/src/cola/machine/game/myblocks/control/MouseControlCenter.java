@@ -80,7 +80,9 @@ public class MouseControlCenter {
         //i think it's something  could be repeat something only receive down up as a signal;
 
         //let put the key in a group that need cooling
-
+        if( Switcher.isChat){
+            return;
+        }
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             human.headRotate(0, -human.camSpeedXZ * seconds*100);
         }

@@ -5,6 +5,7 @@ package cola.machine.game.myblocks.ui.chat;
  */
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.textarea.HTMLTextAreaModel;
 import org.lwjgl.Sys;
@@ -28,7 +29,7 @@ public class ChatFrame extends ResizableFrame {
 
         editField.addCallback(new EditField.Callback() {
             public void callback(int key) {//调用顺序 gui的 handlekey
-                System.out.println(key);
+                //System.out.println(key);
                 if(key == Event.KEY_RETURN) {
                     // cycle through 3 different colors/font styles
                     appendRow("color"+curColor, editField.getText());
@@ -36,6 +37,7 @@ public class ChatFrame extends ResizableFrame {
                     curColor = (curColor + 1) % 3;
                     editField.giveupKeyboardFocus();
                     editField.setVisible(false);
+                    Switcher.isChat=false;
                   //  hide();
                 }
             }

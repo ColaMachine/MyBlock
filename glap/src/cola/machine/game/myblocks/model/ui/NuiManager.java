@@ -144,12 +144,15 @@ public class NuiManager {
       //  GLApp. popAttrib();
         //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         // System.out.println();
+       //if(Math.random()>0.5){
+
+
         if(Switcher.gameState==0){
             startGui.update();
         }else if(Switcher.gameState==1) {
             gameGui.update();//刷新gui
         }
-
+      // }
 
         // GLApp.setFog(true);
     }

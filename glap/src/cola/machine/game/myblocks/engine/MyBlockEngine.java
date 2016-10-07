@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
@@ -308,6 +309,9 @@ public class MyBlockEngine extends GLApp {
 
             mouseControlCenter.livingThingManager=this.livingThingManager;
             initSelf();
+
+            thread  =new BehaviorManager();
+            thread.start();
         }catch (Exception e){
             e.printStackTrace();
             exit();
@@ -315,7 +319,7 @@ public class MyBlockEngine extends GLApp {
         // initDisplayList();
         // initChuck();
     }
-
+    Thread thread;
     /**
      * set the field of view and view depth.
      */
@@ -396,8 +400,8 @@ public class MyBlockEngine extends GLApp {
         print( 30, viewportH-120, "PageUp-PageDown move vertically", 1);
         print( 30, viewportH-140, "SPACE key switches cameras", 1);*/
 
-        float[] vector=new float[3];
-        GLApp.project(0,0,-5,vector);
+       // float[] vector=new float[3];
+        //GLApp.project(0,0,-5,vector);
        //  LogUtil.println("x:"+vector[0]+"x:"+vector[1]+"x:"+vector[2]);
        // GLApp.drawCircle((int)vector[0],(int)vector[1],10,5);
         //GLApp.print((int)vector[0],(int)vector[1],"nihao");
@@ -696,7 +700,7 @@ public class MyBlockEngine extends GLApp {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/      drawLine();
+*/     // drawLine();
 
         if(Switcher.gameState==0){
             CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();

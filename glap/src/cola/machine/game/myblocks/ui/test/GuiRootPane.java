@@ -7,6 +7,7 @@
     import cola.machine.game.myblocks.manager.TextureManager;
     import cola.machine.game.myblocks.model.human.Human;
     import cola.machine.game.myblocks.registry.CoreRegistry;
+    import cola.machine.game.myblocks.switcher.Switcher;
     import cola.machine.game.myblocks.ui.chat.ChatFrame;
     import cola.machine.game.myblocks.ui.inventory.*;
     import de.matthiasmann.twl.*;
@@ -109,7 +110,7 @@
         final int space=2;
         final int bloodWdith=150;
         final int bloodHeight=20;
-        final int heightSpace = 10;
+        final int heightSpace = 0;
         int lineWdith=1;
         byte[] borderColor=new byte[]{0,0,0};
         byte[] redColor=new byte[]{(byte)245,(byte)0,(byte)0};
@@ -122,12 +123,11 @@
 
                 for(LivingThing livingThing:LivingThingManager.livingThings){
                     float vector[]= livingThing.vector;
-                    LogUtil.println(vector[2]+"");
-                    if(vector[2]>1)continue;
+//                    LogUtil.println(vector[2]+"");
+                    if(vector[2]>1 || livingThing.distance>50)continue;
                     //GL11.glPushMatrix();
                     //GL11.glScalef((1-(vector[2]-0.9f)*10),(vector[2]-0.9f)*10 ,1 );
 
-                    TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0]-115,(int)vector[1],40,40);
 
                    /* GLApp.glFillRect((int) vector[0] - 75, (int) vector[1], 150, 10, 4, borderColor, whiteColor);
                     GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+lineWdith,150*livingThing.nowBlood/livingThing.blood,10,lineWdith,borderColor,yellow);
@@ -137,12 +137,17 @@
 
                     GLApp.print((int)vector[0],600-(int)vector[1],"hello");*/
 
-                    float scale = 1-(vector[2]-startValue)/(1-startValue);
-                    GLApp.glFillRect((int) vector[0] - 75, (int) vector[1], 150*scale, 10*scale, 4*scale, borderColor, whiteColor);
-                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+lineWdith,150*livingThing.nowBlood/livingThing.blood*scale,10*scale,lineWdith*scale,borderColor,yellow);
+                    float scale = (50-livingThing.distance)/50;
+                    GL11.glColor4f(1f,1f,1f,1f);
+                    TextureManager.getTextureInfo("human_head_front").draw(null,(int)(vector[0]-bloodWdith*scale/2-40*scale),(int)vector[1],(int)(40*scale),(int)(40*scale));
 
-                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150*scale,10*scale,lineWdith*scale,borderColor,whiteColor);
-                    GLApp.glFillRect((int)vector[0]-75,(int)vector[1]+12,150*scale*livingThing.nowEnergy/livingThing.energy,10*scale,lineWdith*scale,borderColor,blue);
+
+                    //LogUtil.println(scale+"");
+                    GLApp.glFillRect((int) vector[0] - bloodWdith*scale/2, (int) vector[1], bloodWdith*scale, bloodHeight*scale, lineWdith*scale, borderColor, whiteColor);
+                    GLApp.glFillRect((int)vector[0]-bloodWdith*scale/2,(int)vector[1]+lineWdith,bloodWdith*livingThing.nowBlood/livingThing.blood*scale,bloodHeight*scale,lineWdith*scale,borderColor,yellow);
+
+                    GLApp.glFillRect((int)vector[0]-bloodWdith*scale/2,(int)vector[1]+heightSpace*scale+lineWdith*scale*2+bloodHeight*scale,bloodWdith*scale,bloodHeight*scale,lineWdith*scale,borderColor,whiteColor);
+                    GLApp.glFillRect((int)vector[0]-bloodWdith*scale/2,(int)vector[1]+heightSpace*scale+lineWdith*scale*2+bloodHeight*scale,bloodWdith*scale*livingThing.nowEnergy/livingThing.energy,bloodHeight*scale,lineWdith*scale,borderColor,blue);
 
                     GLApp.print((int)vector[0],600-(int)vector[1],"hello");
                     //GL11.glPopMatrix();
@@ -267,7 +272,7 @@
                     //System.out.println("key pressed "+evt.getType());
                    // mouseControlCenter.keyDown(evt.getKeyCode());
                     if(evt.getKeyCode()==Event.KEY_RETURN){
-
+                        Switcher.isChat=true;
                         CoreRegistry.get(ChatFrame.class).showEdit();
                         CoreRegistry.get(ChatFrame.class).setFocus();
                     }

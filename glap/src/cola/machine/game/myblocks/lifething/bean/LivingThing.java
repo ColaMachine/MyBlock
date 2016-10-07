@@ -18,11 +18,11 @@ import javax.vecmath.Point3f;
 public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
 
-
+public float distance;
 
     public int blood;  //  血量
     public int energy; //  能量
-    public int sight;  //  视力
+    public int sight=5;  //  视力
 
 
     public int nowBlood;
@@ -48,12 +48,13 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
     public int agility;        //  敏捷值
     public int spirit;         //  精神值
 
-
+    public float speed=1;
 
     public GL_Vector ViewDir;   //  观察方向
     public GL_Vector WalkDir;   //  行走方向
-
+    public float attackDistance=1;
     public GL_Vector position;    //  位置
+    public GL_Vector nextPosition;    //  位置
     public GL_Vector oldPosition=new GL_Vector();   //  旧位置
 
     public boolean stable = true;
@@ -200,6 +201,7 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
         GL11.glRotatef(angle, 0, 1, 0);
         GL11.glScalef(0.5f,0.5f,0.5f);
+
         bodyComponent.render();
         GL11.glScalef(2,2,2);
         GL11.glRotatef(-angle, 0, 1, 0);
