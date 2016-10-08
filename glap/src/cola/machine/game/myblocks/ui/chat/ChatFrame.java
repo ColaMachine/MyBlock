@@ -4,6 +4,7 @@ package cola.machine.game.myblocks.ui.chat;
  * Created by colamachine on 16-6-24.
  */
 
+import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import de.matthiasmann.twl.*;
@@ -17,7 +18,7 @@ public class ChatFrame extends ResizableFrame {
     private final EditField editField;
     private final ScrollPane scrollPane;
     private int curColor;
-
+    private final Client client ;
     public ChatFrame() {
         setTitle("Chat");
 
@@ -26,13 +27,17 @@ public class ChatFrame extends ResizableFrame {
         this.textArea = new TextArea(textAreaModel);
         this.editField = new EditField();
         CoreRegistry.put(ChatFrame.class , this);
-
+         client =new Client();
+        client.start();
         editField.addCallback(new EditField.Callback() {
             public void callback(int key) {//调用顺序 gui的 handlekey
                 //System.out.println(key);
                 if(key == Event.KEY_RETURN) {
+
                     // cycle through 3 different colors/font styles
-                    appendRow("color"+curColor, editField.getText());
+                    client.send(editField.getText());
+
+                   // appendRow("color"+curColor, editField.getText());
                     editField.setText("");
                     curColor = (curColor + 1) % 3;
                     editField.giveupKeyboardFocus();
@@ -59,7 +64,13 @@ public class ChatFrame extends ResizableFrame {
 
         add(l);
 
-        appendRow("default", "Welcome to the chat demo. Type your messages below :)");
+       // appendRow("default", "Welcome to the chat demo. Type your messages below :)");
+    }
+    public void paintWidget(GUI gui){
+        while(client.messages.size()>0 && client.messages.peek()!=null){
+            String msg = client.messages.pop();
+            appendRow("color"+curColor, msg);
+        }
     }
     public void setFocus(){
         this.editField.requestKeyboardFocus();
@@ -67,7 +78,7 @@ public class ChatFrame extends ResizableFrame {
     public void showEdit(){
         this.editField.setVisible(true);
     }
-    private void appendRow(String font, String text) {
+    public  void appendRow(String font, String text) {
         sb.append("<div style=\"word-wrap: break-word; font-family: ").append(font).append("; \">");
         // not efficient but simple
         for(int i=0,l=text.length() ; i<l ; i++) {

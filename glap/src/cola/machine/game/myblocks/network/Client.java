@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.network;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.ui.chat.ChatFrame;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,8 +14,9 @@ import java.util.Stack;
  */
 public class Client extends Thread{
     public static Stack<String> messages=new Stack<String>();
+    ChatFrame chatFrame;
     public Client(){
-
+         chatFrame =  CoreRegistry.get(ChatFrame.class );
     }
     Socket socket = null;
     BufferedReader br = null;
@@ -53,7 +56,7 @@ public class Client extends Thread{
 
     }
     public void run(){
-
+        int curColor=0;
         try {
             //客户端socket指定服务器的地址和端口号
             socket = new Socket("127.0.0.1", Constants.serverPort);
@@ -80,10 +83,12 @@ public class Client extends Thread{
                 String str = br.readLine();
                 if(str==null){
                     LogUtil.println("失去连接 正在重新连接");
-                    Thread.sleep(1000);
+                    //Thread.sleep(1000);
                     continue;
                 }
                 messages.push(str);
+                /* curColor = (curColor + 1) % 3;
+                chatFrame.appendRow("color"+curColor ,str);*/
                 if(str.equals("END")){
                     break;
                 }
