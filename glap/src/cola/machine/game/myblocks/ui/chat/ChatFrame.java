@@ -4,6 +4,7 @@ package cola.machine.game.myblocks.ui.chat;
  * Created by colamachine on 16-6-24.
  */
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -12,7 +13,7 @@ import de.matthiasmann.twl.textarea.HTMLTextAreaModel;
 import org.lwjgl.Sys;
 
 public class ChatFrame extends ResizableFrame {
-    private final StringBuilder sb;
+    public  final StringBuilder sb;
     private final HTMLTextAreaModel textAreaModel;
     private final TextArea textArea;
     private final EditField editField;
@@ -21,21 +22,21 @@ public class ChatFrame extends ResizableFrame {
     private final Client client ;
     public ChatFrame() {
         setTitle("Chat");
-
+        CoreRegistry.put(ChatFrame.class,this);
         this.sb = new StringBuilder();
         this.textAreaModel = new HTMLTextAreaModel();
         this.textArea = new TextArea(textAreaModel);
         this.editField = new EditField();
         CoreRegistry.put(ChatFrame.class , this);
-         client =new Client();
-        client.start();
+         client =CoreRegistry.get(Client.class);
+        //client.start();
         editField.addCallback(new EditField.Callback() {
             public void callback(int key) {//调用顺序 gui的 handlekey
                 //System.out.println(key);
                 if(key == Event.KEY_RETURN) {
 
                     // cycle through 3 different colors/font styles
-                    client.send(editField.getText());
+                    client.send("say:"+Constants.userName+":"+editField.getText());
 
                    // appendRow("color"+curColor, editField.getText());
                     editField.setText("");
@@ -124,6 +125,10 @@ public class ChatFrame extends ResizableFrame {
             scrollPane.validateLayout();
             scrollPane.setScrollPositionY(scrollPane.getMaxScrollPosY());
         }
+    }
+
+    public void appendString(String message){
+        sb.append(message);
     }
 //public void hide(){
   //  this.fadeToHide(5);

@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.network;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 
@@ -14,6 +15,8 @@ import java.util.Stack;
  */
 public class Client extends Thread{
     public static Stack<String> messages=new Stack<String>();
+    public static Stack<String[]> movements=new Stack<String[]>();
+    public static Stack<String[]> newborns=new Stack<String[]>();
     ChatFrame chatFrame;
     public Client(){
          chatFrame =  CoreRegistry.get(ChatFrame.class );
@@ -60,7 +63,7 @@ public class Client extends Thread{
         try {
             //客户端socket指定服务器的地址和端口号
             socket = new Socket("127.0.0.1", Constants.serverPort);
-            socket.setTcpNoDelay(true);
+            //socket.setTcpNoDelay(true);
             System.out.println("Socket=" + socket);
             //同服务器原理一样
             br = new BufferedReader(new InputStreamReader(
@@ -86,14 +89,26 @@ public class Client extends Thread{
                     //Thread.sleep(1000);
                     continue;
                 }
-                messages.push(str);
+                if(str.startsWith("say:")) {
+                    messages.push(str.substring(4));
+                }else if(str.startsWith("move:")) {
+
+
+                    movements.push(str.substring(5).split(","));
+                }
+                else if(str.startsWith("newborn:")) {
+
+
+                    newborns.push(str.substring(8).split(","));
+                }
+
                 /* curColor = (curColor + 1) % 3;
                 chatFrame.appendRow("color"+curColor ,str);*/
                 if(str.equals("END")){
                     break;
                 }
                 System.out.println("Client Socket Message:"+str);
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
             }
 
         } catch (Exception e) {

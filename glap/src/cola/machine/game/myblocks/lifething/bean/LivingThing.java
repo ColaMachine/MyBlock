@@ -17,8 +17,9 @@ import javax.vecmath.Point3f;
  */
 public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
-
-public float distance;
+    public int id;
+    public String name;
+    public float distance;
 
     public int blood;  //  血量
     public int energy; //  能量
@@ -53,8 +54,8 @@ public float distance;
     public GL_Vector ViewDir;   //  观察方向
     public GL_Vector WalkDir;   //  行走方向
     public float attackDistance=1;
-    public GL_Vector position;    //  位置
-    public GL_Vector nextPosition;    //  位置
+    public GL_Vector position= new GL_Vector(0,0,0);    //  位置
+    public GL_Vector nextPosition= new GL_Vector(0,0,0);    //  位置
     public GL_Vector oldPosition=new GL_Vector();   //  旧位置
 
     public boolean stable = true;
@@ -75,6 +76,7 @@ public float distance;
     public int mark = 0;
     public
     int preY = 0;
+
 
     public void drop() {
 
@@ -167,7 +169,10 @@ public float distance;
         this.maxY=posy+4;
         this.maxZ=posz+0.5f;
      //
-
+        position = new GL_Vector(posx, posy, posz);
+       /* this.position.x=posx;
+        this.position.y=posy;
+        this.position.z=posz;*/
 
 
 
@@ -253,7 +258,7 @@ public float distance;
         position = new GL_Vector(posx, posy, posz);
     }
     public LivingThing(){
-
+            this.id=(int)(Math.random()*1000000);
         this.WalkDir=new  GL_Vector(0,0,-1);
         bodyComponent.id="human_body";
         bodyComponent.setEightFace("human_body");

@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -31,7 +32,7 @@ public class Human extends LivingThing {
 	public GL_Vector UpVector;
 	//public GL_Vector position;
    // public GL_Vector oldposition=new GL_Vector();
-
+    public final Client client;
 
 	public float camSpeedR = 5; // degrees per second
 	public float camSpeedXZ = 2.4f; // units per second
@@ -62,6 +63,8 @@ public class Human extends LivingThing {
 
 
 	public Human(/*	BlockRepository blockRepository*/){
+        super();
+        client =CoreRegistry.get(Client.class);
 /*
 
        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
@@ -192,10 +195,14 @@ public class Human extends LivingThing {
 
 
 		this.position.set(x,y,z);
+
+
 		if(!Switcher.IS_GOD)
        if(CoreRegistry.get(CrashCheck.class).check(this)){
            this.position.copy(oldPosition);
        }
+
+        //client.send("move:");
         //this.stable=false;
 	}
 	//public boolean needJudgeCrash=false;
@@ -204,6 +211,7 @@ public class Human extends LivingThing {
 		float y =vector.y;
 		float z =vector.z;
 		this.move(x, y, z);
+        //client.send("move:"+this.id+","+this.position.x+","+this.position.y+","+this.position.z+"");
 
 	}
 

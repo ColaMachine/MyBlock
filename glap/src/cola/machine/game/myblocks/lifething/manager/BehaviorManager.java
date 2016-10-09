@@ -88,9 +88,9 @@ public class BehaviorManager extends    Thread{
     public void run(){
         while(true) {
             try {
-                this.findThing();
-                this.changeDir();
-                this.moveOrAttack();
+                //this.findThing();
+                //this.changeDir();
+                //this.moveOrAttack();
                 try {
                     Thread.sleep(300);
                 } catch (Exception e) {

@@ -48,7 +48,7 @@ public class Worker extends Thread {
 
                 messages.push(str);
                 System.out.println("Client Socket Message:"+str);
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
                 //pw.println("Message Received");
             }
         } catch (Exception e) {

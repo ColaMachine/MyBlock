@@ -29,7 +29,10 @@
  */
 package cola.machine.game.myblocks.ui.login;
 
+import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
+import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.EditField.Callback;
@@ -174,7 +177,12 @@ public class LoginDemo extends Widget {
             String name = efName.getText();
             String pasword = efPassword.getText();
             System.out.println("Name: " + name + " with a " + pasword.length() + " character password");
-            
+
+            Constants.userName = name;
+            Client client =CoreRegistry.get(Client.class);
+            client.send("newborn:1,1,1,1,1");
+            //UserService action =new UserAction();
+           // action.
             // step 3: start a timer to simulate the process of talking to a remote server
             Timer timer = gui.createTimer();
             timer.setCallback(new Runnable() {

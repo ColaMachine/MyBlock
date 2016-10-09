@@ -13,6 +13,8 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.network.Client;
+import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
@@ -171,6 +173,9 @@ public class MyBlockEngine extends GLApp {
     public void setup() {
         //开启胜读测试
 
+        Client client =new Client();
+        client.start();
+        CoreRegistry.put(Client.class,client);
         // makeTexture("images/Particle.bmp", true, true);
         // airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
         // boat = new GLModel("glap/models/boat/botrbsm1.obj");
@@ -607,6 +612,8 @@ public class MyBlockEngine extends GLApp {
         livingThing.position=new GL_Vector(10,4,0);
         livingThingManager.setPlayer(human);
         livingThingManager.add(livingThing);
+        SynchronTask task =new SynchronTask();
+        task.start();
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
         CoreRegistry.put(Player.class,player);*/
@@ -714,6 +721,7 @@ public class MyBlockEngine extends GLApp {
             }
             //GL11.glScaled(0.1,0.1,0.1);
             worldRenderer.render();
+//            livingThingManager.update();
             livingThingManager.render();
 
             AttackManager.update();

@@ -14,6 +14,8 @@ import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.human.Player;
+import cola.machine.game.myblocks.network.Client;
+import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
 import cola.machine.game.myblocks.world.block.BlockManager;
@@ -26,7 +28,9 @@ import util.OpenglUtil;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by luying on 16/9/17.
@@ -38,17 +42,19 @@ public class LivingThingManager {
     public static LivingThing player;
     Component component;
     public LivingThingManager(){
+
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(0,4,0);
         livingThings.add(livingThing);
          component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));
-
+CoreRegistry.put(LivingThingManager.class,this);
        // Thread thread = new Thread(behaviorManager);
 
         //behaviorManager.run();
     // livingThings.add(CoreRegistry.get(Human.class));
+
 
     }
     public void setPlayer(LivingThing livingThing){
@@ -56,7 +62,12 @@ public class LivingThingManager {
     }
     public void add(LivingThing livingThing){
         livingThings.add(livingThing);
+        livingThingsMap.put(livingThing.id,livingThing);
     }
+    public LivingThing getLivingThingById(int id){
+return livingThingsMap.get(id);
+    }
+    public Map<Integer,LivingThing> livingThingsMap =new HashMap();
 
     public void render(){
         for(LivingThing livingThing:livingThings){
@@ -66,7 +77,7 @@ public class LivingThingManager {
 
         }
         this.player.render();
-        component.renderBend();
+       // component.renderBend();
 
 
     }
@@ -84,7 +95,7 @@ public class LivingThingManager {
         dcc.check(player);
     }
 
-    public LivingThing findTarget(Point3f position){
+    /*public LivingThing findTarget(Point3f position){
         for(int i=0;i<livingThings.size();i++){
             LivingThing livingThing=livingThings.get(i);
             if(Math.sqrt((livingThing.position.x-position.x)*(livingThing.position.x-position.x) +
@@ -97,7 +108,7 @@ public class LivingThingManager {
 
         }
         return null;
-    }
+    }*/
 
     public LivingThing chooseObject(GL_Vector from, GL_Vector direction){
         LogUtil.println("开始选择");
@@ -130,7 +141,62 @@ public class LivingThingManager {
     public void move(){
 
     }
-    public void attack(){
+    Client client =CoreRegistry.get(Client.class);
+
+    public void update(){
+
+        while(client.movements.size()>0 && client.movements.peek()!=null){
+            String[] msg = client.movements.pop();
+            int id = Integer.valueOf(msg[0]);
+
+
+            float x = Float.valueOf(msg[1]);
+            float y = Float.valueOf(msg[2]);
+            float z = Float.valueOf(msg[3]);
+            if(player.id == id){
+                player.setPosition(x,y,z);
+                continue;
+            }
+            //appendRow("color"+curColor, msg);
+            LivingThing livingThing = this.getLivingThingById(id);
+            if(livingThing==null ){
+                 livingThing =new LivingThing();
+                livingThing.id=id;
+               // livingThing.name=name;
+                livingThing.setPosition(x,y,z);
+
+                this.add(livingThing);
+            }
+            livingThing.setPosition(x,y,z);
+
+        }
+       /* while(client.newborns.size()>0 && client.newborns.peek()!=null){
+            String[] msg = client.movements.pop();
+            int id = Integer.getInteger(msg[0]);
+            String name = msg[1];
+            float x = Float.valueOf(msg[2]);
+            float y = Float.valueOf(msg[3]);
+            float z = Float.valueOf(msg[4]);
+            if(id== player.id){
+
+                player.id=id;
+                player.name=name;
+                player.setPosition(x,y,z);
+                continue;
+            }
+
+            //appendRow("color"+curColor, msg);
+            LivingThing livingThing =new LivingThing();
+            livingThing.id=id;
+            livingThing.name=name;
+            livingThing.setPosition(x,y,z);
+
+           this.add(livingThing);
+
+        }*/
+
+    }
+   /* public void attack(){
         if(player.target!=null)
         if(GL_Vector.length(GL_Vector.sub(player.target.position,player.position))<4){
             player.target.nowBlood-=5;
@@ -144,7 +210,7 @@ public class LivingThingManager {
             }
         }
 
-    }
+    }*/
     public void beAttack(){
 
     }
