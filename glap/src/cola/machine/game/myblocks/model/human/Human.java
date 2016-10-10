@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.model.human;
 import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
@@ -189,29 +190,39 @@ public class Human extends LivingThing {
     }
 
 	public void move(float x, float y, float z) {
-        if(GL_Vector.length(GL_Vector.sub(oldPosition,position))>0.1){
+        if(GL_Vector.length(GL_Vector.sub(oldPosition,position))>0.2){
             this.oldPosition.copy(this.position);
+
+
+
+
+		/*	if(!Switcher.IS_GOD)
+				if(CoreRegistry.get(CrashCheck.class).check(this)){
+					this.position.copy(oldPosition);
+				}*/
+
+			//client.send("move:");
+			//this.stable=false;
+			//client.send("move:"+this.id+","+this.position.x+","+this.position.y+","+this.position.z+"");
+
         }
 
-
 		this.position.set(x,y,z);
+		this.updateTime=System.currentTimeMillis();
+	/*	String message = "move:"+ id+","+position.x
+				+","+position.y
+				+","+position.z+","+WalkDir.x+","+WalkDir.y+","+WalkDir.z;
+		client.send(message);*/
 
-
-		if(!Switcher.IS_GOD)
-       if(CoreRegistry.get(CrashCheck.class).check(this)){
-           this.position.copy(oldPosition);
-       }
-
-        //client.send("move:");
-        //this.stable=false;
 	}
+
 	//public boolean needJudgeCrash=false;
 	public void move(GL_Vector vector) {
 		float x =vector.x;
 		float y =vector.y;
 		float z =vector.z;
 		this.move(x, y, z);
-        //client.send("move:"+this.id+","+this.position.x+","+this.position.y+","+this.position.z+"");
+
 
 	}
 

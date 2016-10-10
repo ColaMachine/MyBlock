@@ -208,6 +208,7 @@ public class TextureManager {
 
         try  {
            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/image.cfg").toString()) ;
+           LogUtil.println("homepath:"+PathManager.getInstance().getHomePath());
             List<ImageInfo> imageInfoList=  JSON.parseArray(json,ImageInfo.class);
             for(int i=0;i<imageInfoList.size();i++){
                 ImageInfo imageInfo = imageInfoList.get(i);
@@ -303,6 +304,7 @@ try {
 
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("Failed to load config", e);
         }
 

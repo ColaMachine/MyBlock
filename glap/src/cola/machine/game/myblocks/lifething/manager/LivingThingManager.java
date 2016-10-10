@@ -153,8 +153,16 @@ return livingThingsMap.get(id);
             float x = Float.valueOf(msg[1]);
             float y = Float.valueOf(msg[2]);
             float z = Float.valueOf(msg[3]);
+
+            float x1 = Float.valueOf(msg[4]);
+            float y1 = Float.valueOf(msg[5]);
+            float z1 = Float.valueOf(msg[6]);
+
             if(player.id == id){
-                player.setPosition(x,y,z);
+               /* player.setPosition(x,y,z);
+                player.WalkDir.x= x1;
+                player.WalkDir.y= y1;
+                player.WalkDir.z= z1;*/
                 continue;
             }
             //appendRow("color"+curColor, msg);
@@ -168,6 +176,9 @@ return livingThingsMap.get(id);
                 this.add(livingThing);
             }
             livingThing.setPosition(x,y,z);
+            livingThing.WalkDir.x= x1;
+            livingThing.WalkDir.y= y1;
+            livingThing.WalkDir.z= z1;
 
         }
        /* while(client.newborns.size()>0 && client.newborns.peek()!=null){

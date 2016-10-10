@@ -17,6 +17,7 @@ import javax.vecmath.Point3f;
  */
 public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
+    public long updateTime;
     public int id;
     public String name;
     public float distance;

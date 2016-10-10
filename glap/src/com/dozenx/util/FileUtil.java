@@ -10,19 +10,21 @@ package com.dozenx.util;
 
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.log.LogUtil;
 
 import java.io.*;
 
 public class FileUtil {
     public static String readFile2Str(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
-
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+        BufferedReader br = new BufferedReader(isr);
         String s;
         StringBuffer templateStr = new StringBuffer();
         while ((s = br.readLine()) != null) {
             templateStr.append(s + "\r\n");
         }
+        LogUtil.println(s);
         return templateStr.toString();
     }
     public static void writeFile(File file ,String content) throws IOException {
