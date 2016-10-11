@@ -4,6 +4,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -158,7 +161,7 @@ public class ShaderTest {
         // and we use the OpenGL target GL_ELEMENT_ARRAY_BUFFER instead
         // of GL_ARRAY_BUFFER.
 
-        int IndicesArray[] = {
+        int IndicesArray[] = {//顶点顺序
             // Top
             0, 1, 3,
             0, 3, 2,
@@ -272,7 +275,7 @@ public class ShaderTest {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode("shaders/chap2.vert");
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("shaders/chap2.vert").toString());
 
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -291,7 +294,7 @@ public class ShaderTest {
         //==========================================================
         // Load and compile fragment shader
 
-        String FragmentShader = readShaderSourceCode("shaders/chap2.frag");
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("shaders/chap2.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();
@@ -480,6 +483,7 @@ public class ShaderTest {
     }
 
     public static void main(String[] args) {
+        LWJGLHelper.initNativeLibs();
         ShaderTest main = null;
         try {
             main = new ShaderTest();
