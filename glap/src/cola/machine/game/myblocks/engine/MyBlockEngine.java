@@ -23,6 +23,8 @@ import glapp.*;
 import glmodel.GL_Vector;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Collection;
 
@@ -229,12 +231,38 @@ public class MyBlockEngine extends GLApp {
 
         // position
         // Create a light (diffuse light, ambient light, position)
-        setLight(GL11.GL_LIGHT1,
-                new float[]{1f, 1f, 1f, 1f},
-                new float[]{0.5f, 0.5f, .53f, 1f},
-                new float[]{1f, 1f, 1f, 1f},
+      /*  setLight(GL11.GL_LIGHT1,
+                new float[]{0.5f, 0.5f, 0.0f, 1.0f},//diffuseGL_AMBIENT表示各种光线照射到该材质上，经过很多次反射后最终遗留在环境中的光线强度（颜色）。
+                new float[]{1.0f, 1.0f, 1.0f, 1.0f},//ambient GL_DIFFUSE表示光线照射到该材质上，经过漫反射后形成的光线强度（颜色）。
+                new float[]{1f, 1f, 1f, 1f},//GL_SPECULAR表示光线照射到该材质上，经过镜面反射后形成的光线强度（颜色）
                 humanLightPosition);
+*///GL_SHININESS属性。该属性只有一个值，称为“镜面指数”，取值范围是0到128。该值越小，表示材质越粗糙，点光源发射的光线照射到上面，也可以产生较大的亮点。该值越大，表示材质越类似于镜面，光源照射到上面后，产生较小的亮点。
+        /*setSpotLight(GL11.GL_LIGHT1,
+                new float[]{0.5f, 0.5f, 0.0f, 1.0f},//diffuseGL_AMBIENT表示各种光线照射到该材质上，经过很多次反射后最终遗留在环境中的光线强度（颜色）。
+                new float[]{1.0f, 1.0f, 1.0f, 1.0f},//ambient GL_DIFFUSE表示光线照射到该材质上，经过漫反射后形成的光线强度（颜色）。
+                humanLightPosition,new float[]{0,0,-1,0},30);*/
+        //GL_EMISSION属性。该属性由四个值组成，表示一种颜色。OpenGL认为该材质本身就微微的向外发射光线，以至于眼睛感觉到它有这样的颜色，但这光线又比较微弱，以至于不会影响到其它物体的颜色。
 
+        FloatBuffer mat_ambient = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        mat_ambient.put(1.0f).put(1.0f).put(0f).put(1.0f);
+        mat_ambient.flip();
+        GL11.glMaterial(GL11.GL_FRONT,GL11.GL_AMBIENT,mat_ambient);
+        FloatBuffer mat_diffuse = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        mat_diffuse.put(new float[]{0.5f,0.5f,0f,1.0f});mat_diffuse.flip();
+        FloatBuffer mat_specular = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        mat_diffuse.put(new float[]{1.0f,1.0f,0f,1.0f});mat_diffuse.flip();
+
+        FloatBuffer mat_emission = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        mat_emission.put(1.0f).put(1.0f).put(0f).put(1.0f);
+        mat_emission.flip();
+
+
+        float mat_shininess =128.0f;
+       /* GL11.glMaterial(GL11.GL_FRONT,GL11.GL_DIFFUSE,mat_diffuse);
+        GL11.glMaterial(GL11.GL_FRONT,GL11.GL_SPECULAR,mat_specular);
+        GL11.glMaterialf (GL11.GL_FRONT, GL11.GL_SHININESS, mat_shininess);
+        GL11.glMaterial (GL11.GL_FRONT, GL11.GL_EMISSION, mat_emission);*/
+        //定义材质特性
         // Create a directional light (light green, to simulate reflection off grass)
 //        setLight( GL11.GL_LIGHT2,
 //                new float[] { 0.15f, 0.4f, 0.1f, 1.0f },  // diffuse color

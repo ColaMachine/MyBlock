@@ -25,24 +25,24 @@ public class SynchronTask extends Thread{
     public void run(){
 
 
-while (true) {
-    try {
+        while (true) {
+            try {
 
-    livingThingManager.update();
+            livingThingManager.update();
 
-       //Thread.sleep(100);
+               //Thread.sleep(100);
 
-        if(LivingThingManager.player.updateTime>=lastUpdateTime-1000) {
-            lastUpdateTime=System.currentTimeMillis();
-            String message = "move:" + LivingThingManager.player.id + "," + LivingThingManager.player.position.x
-                    + "," + LivingThingManager.player.position.y
-                    + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;
-            client.send(message);
+                if(LivingThingManager.player.updateTime>=lastUpdateTime-1000) {
+                    lastUpdateTime=System.currentTimeMillis();
+                    String message = "move:" + LivingThingManager.player.id + "," + LivingThingManager.player.position.x
+                            + "," + LivingThingManager.player.position.y
+                            + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;
+                    client.send(message);
+                }
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        Thread.sleep(100);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-}
     }
 }

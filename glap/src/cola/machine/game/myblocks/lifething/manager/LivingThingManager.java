@@ -111,17 +111,17 @@ return livingThingsMap.get(id);
     }*/
 
     public LivingThing chooseObject(GL_Vector from, GL_Vector direction){
-        LogUtil.println("开始选择");
+       // LogUtil.println("开始选择");
         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
         Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
         for(int i=0;i<livingThings.size();i++){
             LivingThing livingThing=livingThings.get(i);
             AABB aabb = new AABB(new Vector3f(livingThing.position.x-0.5f,livingThing.position.y,livingThing.position.z-0.5f),new Vector3f(livingThing.position.x+0.5f,livingThing.position.y+1.5f,livingThing.position.z+0.5f));
 
-            LogUtil.println(fromV.toString() );
-            LogUtil.println(directionV.toString() );
+           // LogUtil.println(fromV.toString() );
+           // LogUtil.println(directionV.toString() );
            if( aabb.intersectRectangle(fromV,directionV)){
-               LogUtil.println("选中了");
+            //   LogUtil.println("选中了");
                this.target=livingThing;
                player.target=livingThing;
                CoreRegistry.get(HeadDialog.class).bind(livingThing).show();
@@ -130,7 +130,7 @@ return livingThingsMap.get(id);
 
 
         }
-        LogUtil.println("未选中");
+       // LogUtil.println("未选中");
         return null;
     }
     public void findWay(){

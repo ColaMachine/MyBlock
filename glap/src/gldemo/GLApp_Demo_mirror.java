@@ -1,5 +1,6 @@
         package gldemo;
 
+        import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
         import glapp.GLApp;
         import glapp.GLCam;
         import glapp.GLCamera;
@@ -10,6 +11,7 @@
         import org.lwjgl.input.Keyboard;
         import org.lwjgl.opengl.GL11;
         import org.lwjgl.util.glu.GLU;
+        import util.OpenglUtil;
 
         import java.nio.ByteBuffer;
         import java.nio.ByteOrder;
@@ -82,6 +84,7 @@
              * Initialize application and run main loop.
              */
             public static void main(String args[]) {
+                LWJGLHelper.initNativeLibs();
                 GLApp_Demo_mirror demo = new GLApp_Demo_mirror();
                 demo.VSyncEnabled = true;
                 demo.fullScreen = false;
@@ -106,11 +109,11 @@
 
 
                 // Create a directional light (light green, to simulate reflection off grass)
-               /* setLight( GL11.GL_LIGHT2,
+                setLight( GL11.GL_LIGHT2,
                         new float[] { 0.15f, 0.4f, 0.1f, 1.0f },  // diffuse color
                         new float[] { 0.0f, 0.0f, 0.0f, 1.0f },   // ambient
                         new float[] { 0.0f, 0.0f, 0.0f, 1.0f },   // specular
-                        new float[] { 0.0f, -10f, 0.0f, 0f } );   // direction (pointing up)*/
+                        new float[] { 0.0f, -10f, 0.0f, 0f } );   // direction (pointing up)
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 GL11.glClearColor(0.2f, 0.5f, 1.0f, 1.0f);
                 GL11.glClearDepth(1.0f);
@@ -131,10 +134,10 @@
                         new float[] { 1f, 1f, 1f, 1f },
                         lightPosition );*/
 
-                setLight( GL11.GL_LIGHT0,
+                /*setLight( GL11.GL_LIGHT0,
                         LightAmb,
                         LightDif , LightDif ,
-                        LightPos );
+                        LightPos );*/
 
                 // enable lighting and texture rendering
                 GL11.glEnable(GL11.GL_LIGHTING);

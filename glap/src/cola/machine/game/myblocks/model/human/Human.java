@@ -10,12 +10,14 @@ import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import org.lwjgl.Sys;
 
 import cola.machine.game.myblocks.switcher.Switcher;
+import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Point3f;
 
@@ -285,6 +287,11 @@ public class Human extends LivingThing {
         WalkDir = vd;
         ViewDir.x= vd.x;
         ViewDir.z = vd.z;
+
+        GLApp.setSpotLight(GL11.GL_LIGHT1,
+                new float[]{0f, 0f, 0f, 0.0f},//diffuseGL_AMBIENT表示各种光线照射到该材质上，经过很多次反射后最终遗留在环境中的光线强度（颜色）。
+                new float[]{0.5f, 0.5f, 0.0f, 1.0f},//ambient GL_DIFFUSE表示光线照射到该材质上，经过漫反射后形成的光线强度（颜色）。
+                new float[]{position.x,position.y+5,position.z,0}, new float[]{WalkDir.x,WalkDir.y,WalkDir.z,0}, 50);
         headRotate(0,-updownDegree);
     }
 	public void ViewRotateV1(float Angle) {
