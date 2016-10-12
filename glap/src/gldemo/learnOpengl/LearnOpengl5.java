@@ -40,7 +40,15 @@ public class LearnOpengl5 {
     public static final int DISPLAY_WIDTH = 600; // window height
     public static final int POSITION_INDEX = 0; // index of vertex attribute "in_Position"
     public static final int COLOR_INDEX = 1; // index of vertex attribute "in_Color"
+    public static final int FLOAT_NUM_BYTES; // sizeof(float) in bytes
+    public static final int INT_NUM_BYTES; // sizeof(int) in bytes
+    public static final int VEC4_BYTES; // sizeof(vec4) in bytes
 
+    static {
+        FLOAT_NUM_BYTES = Float.SIZE / Byte.SIZE;
+        INT_NUM_BYTES = Integer.SIZE / Byte.SIZE;
+        VEC4_BYTES = 4 * FLOAT_NUM_BYTES;
+    }
 
     public void create() throws LWJGLException, Exception {
 
@@ -72,86 +80,18 @@ public class LearnOpengl5 {
         glDisable(GL_LIGHTING);
 
         CreateVertShaders();
-        CreateColorShaders();
+        CreateFragShaders();
         CreateProgram();
         CreateVBO();
     }
-    void CreateVBO(){
-
-        glVertexAttribPointer(0,3,GL_FLOAT,false,3*4,0);
-
-        glEnableVertexAttribArray(0);
-    }
-
-    int ProgramId;
-    void CreateProgram(){
-        ProgramId = glCreateProgram();
-        Util.checkGLError();
-
-        // Attach vertex shader
-        glAttachShader(ProgramId, VertexShaderId);
-        Util.checkGLError();
-
-        // Attach fragment shader
-        glAttachShader(ProgramId, FragmentShaderId);
-        Util.checkGLError();
-
-        // We tell the program how the vertex attribute indices will map
-        // to named "in" variables in the vertex shader. This must be done
-        // before compiling.
-       // glBindAttribLocation(ProgramId, POSITION_INDEX, "in_Position");
-       // glBindAttribLocation(ProgramId, COLOR_INDEX, "in_Color");
-
-        glLinkProgram(ProgramId);
-        Util.checkGLError();
-
-        // Print possible compile errors
-        System.out.println("Program linking:");
-        printProgramLog(ProgramId);
-
-        Util.checkGLError();
-        glUseProgram(ProgramId);
-        Util.checkGLError();
-
-    }
-
-    /**
-     * Print log of program object
-     *
-     * @param programId
-     */
-    public static void printProgramLog(int programId) {
-        int logLength = glGetProgram(programId, GL_INFO_LOG_LENGTH);
-        Util.checkGLError();
-
-        System.out.println("  Log (length " + logLength + " chars)");
-        String log = glGetProgramInfoLog(programId, logLength);
-        Util.checkGLError();
-        for (String line : log.split("\n")) {
-            System.out.println("  " + line);
-        }
-        System.out.println("");
-    }
-
+    int VaoId;
 
 
 
     //创建顶点着色器
     void CreateVertShaders() throws IOException {
 
-        //顶点 vbo
-        //create vbo 创建vbo  vertex buffer objects
-        float VerticesArray[]= {-0.5f,-0.5f,0.0f,
-                0.5f,-0,5f,0f,
-                0.0f,0.5f,0.0f
-        };
-        Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
-        Vertices.put(VerticesArray);
-        Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
-        VboId=glGenBuffers();//create vbo
 
-        glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
-        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
 
         //顶点着色器
         //编译顶点着色器
@@ -183,7 +123,7 @@ public class LearnOpengl5 {
 
 
     }
-    void CreateColorShaders() throws IOException {
+    void CreateFragShaders() throws IOException {
         String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
@@ -201,6 +141,96 @@ public class LearnOpengl5 {
 
 
     }
+    int ProgramId;
+    void CreateProgram(){
+        ProgramId = glCreateProgram();
+        Util.checkGLError();
+
+        // Attach vertex shader
+        glAttachShader(ProgramId, VertexShaderId);
+        Util.checkGLError();
+
+        // Attach fragment shader
+        glAttachShader(ProgramId, FragmentShaderId);
+        Util.checkGLError();
+
+        // We tell the program how the vertex attribute indices will map
+        // to named "in" variables in the vertex shader. This must be done
+        // before compiling.
+        // glBindAttribLocation(ProgramId, POSITION_INDEX, "in_Position");
+        // glBindAttribLocation(ProgramId, COLOR_INDEX, "in_Color");
+
+        glLinkProgram(ProgramId);
+        Util.checkGLError();
+
+        // Print possible compile errors
+        System.out.println("Program linking:");
+        printProgramLog(ProgramId);
+
+        Util.checkGLError();
+        glUseProgram(ProgramId);
+        Util.checkGLError();
+
+
+
+    }
+
+    void CreateVBO(){
+        VaoId = glGenVertexArrays();
+        Util.checkGLError();
+
+        glBindVertexArray(VaoId);
+        Util.checkGLError();
+
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        float VerticesArray[]= {-0.5f,-0.5f,0.0f,
+                0.5f,-0,5f,0f,
+                0.0f,0.5f,0.0f
+        };
+        Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+        Vertices.put(VerticesArray);
+        Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
+        VboId=glGenBuffers();//create vbo
+
+        glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+
+
+        System.out.println("float.size:"+Float.SIZE);
+        glVertexAttribPointer(0,3,GL_FLOAT,false,3*4,0);
+
+        glEnableVertexAttribArray(0);
+
+        glBindVertexArray(0);
+        Util.checkGLError();
+
+
+
+
+    }
+
+
+    /**
+     * Print log of program object
+     *
+     * @param programId
+     */
+    public static void printProgramLog(int programId) {
+        int logLength = glGetProgram(programId, GL_INFO_LOG_LENGTH);
+        Util.checkGLError();
+
+        System.out.println("  Log (length " + logLength + " chars)");
+        String log = glGetProgramInfoLog(programId, logLength);
+        Util.checkGLError();
+        for (String line : log.split("\n")) {
+            System.out.println("  " + line);
+        }
+        System.out.println("");
+    }
+
+
+
 
 
     /**
@@ -234,25 +264,22 @@ public class LearnOpengl5 {
 
     public void render() throws LWJGLException {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        Util.checkGLError();
 
-        // Use the vertex array object. This will automatically cause OpenGL
-        // to read our vertex position/color data and the indices data.
-        glBindVertexArray(VboId);
 
-        // The glDrawElements function will the vertex attribute object
-        // that we have bound.
-        glDrawElements(
-                GL_TRIANGLES,
-                3, // = use all 48 indices from the indices buffer
-                GL_UNSIGNED_INT,
-                0);
+
+
+        glUseProgram(this.ProgramId);
+        glBindVertexArray(VaoId);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glBindVertexArray(0);
+
         Util.checkGLError();
     }
 
 
     public static void main(String[] args) {
-        LWJGLHelper.initNativeLibs();
+        LWJGLHelper.initNativeLibs();//加载lib包
         LearnOpengl5 main = null;
         try {
             main = new LearnOpengl5();

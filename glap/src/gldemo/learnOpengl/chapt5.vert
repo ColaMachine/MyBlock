@@ -1,11 +1,8 @@
-#version 140
- 
-in vec4 in_Position;
-in vec4 in_Color;
-out vec4 ex_Color;
- 
-void main(void)
+#version 330 core
+
+layout (location = 0) in vec3 position;
+
+void main()
 {
-   gl_Position = in_Position;
-   ex_Color = in_Color;
+    gl_Position = vec4(position.x, position.y, position.z, 1.0);
 }

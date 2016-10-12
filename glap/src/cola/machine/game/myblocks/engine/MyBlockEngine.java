@@ -20,6 +20,7 @@ import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.*;
+import gldemo.learnOpengl.LearnOpengl5;
 import glmodel.GL_Vector;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Collection;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -170,11 +172,17 @@ public class MyBlockEngine extends GLApp {
      * will be fine, so no code here.
      */
     int handleId;
+    LearnOpengl5 shaderTest;
     // GLShadowOnPlane airplaneShadow;
     public LivingThingManager livingThingManager;
     public void setup() {
         //开启胜读测试
-
+         shaderTest= new LearnOpengl5();
+        try {
+            shaderTest.initGL();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Client client =new Client();
         client.start();
         CoreRegistry.put(Client.class,client);
@@ -736,7 +744,11 @@ public class MyBlockEngine extends GLApp {
             e.printStackTrace();
         }
 */     // drawLine();
-
+        try {
+            shaderTest.render();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
         if(Switcher.gameState==0){
             CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();
         }else if(Switcher.gameState==1){
