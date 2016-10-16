@@ -15,15 +15,15 @@ public class TcpSocketServer {
         List<SocketHandler> serverHandlers = new CopyOnWriteArrayList<SocketHandler>();
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(8090, 5);
+            serverSocket = new ServerSocket(8090, 5);//创建tcp 监听socket
             while(true)
             {
-                Socket clientSocket = serverSocket.accept();
-                if(clientSocket.isConnected())
+                Socket clientSocket = serverSocket.accept();//获取client过来的socket
+                if(clientSocket.isConnected())//如果客户端socket 连接了的话
                 {
-                    SocketHandler serverHandler = new SocketHandler(clientSocket);
-                    serverHandlers.add(serverHandler);
-                    serverHandler.listen(true);
+                    SocketHandler serverHandler = new SocketHandler(clientSocket);//用这个socket 生成sockethandler 类似worker
+                    serverHandlers.add(serverHandler);//放入队列
+                    serverHandler.listen(true);//worker 里含有一个task 线程 不停的读取socket 数据
 
                     serverHandler.sendMessage("Host:"+serverSocket.getInetAddress().getHostAddress()+"\r\n");
 

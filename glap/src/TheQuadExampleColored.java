@@ -4,21 +4,17 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.ContextAttribs;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
 
 public class TheQuadExampleColored {
 	// Entry point for the application
 	public static void main(String[] args) {
+        LWJGLHelper.initNativeLibs();
 		new TheQuadExampleColored();
 	}
 	
@@ -39,11 +35,12 @@ public class TheQuadExampleColored {
 	
 	public TheQuadExampleColored() {
 		// Initialize OpenGL (Display)
-		this.setupOpenGL();
+        this.setupOpenGL();
 		
-		this.setupQuad();
+
+
 		this.setupShaders();
-		
+        this.setupQuad();
 		while (!Display.isCloseRequested()) {
 			// Do a single loop (logic/render)
 			this.loopCycle();
@@ -143,13 +140,13 @@ public class TheQuadExampleColored {
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	
-	private void setupShaders() {/*
+	private void setupShaders() {
 		int errorCheckValue = GL11.glGetError();
 		
 		// Load the vertex shader
-		vsId = this.loadShader("src/thequad/vertex.glsl", GL20.GL_VERTEX_SHADER);
+		vsId = this.loadShader(PathManager.getInstance().getInstallPath().resolve("src/thequad/vertex.glsl").toString(), GL20.GL_VERTEX_SHADER);
 		// Load the fragment shader
-		fsId = this.loadShader("src/thequad/fragment.glsl", GL20.GL_FRAGMENT_SHADER);
+		fsId = this.loadShader(PathManager.getInstance().getInstallPath().resolve("src/thequad/fragment.glsl").toString(), GL20.GL_FRAGMENT_SHADER);
 		
 		// Create a new shader program that links both shaders
 		pId = GL20.glCreateProgram();
@@ -169,7 +166,7 @@ public class TheQuadExampleColored {
 			System.out.println("ERROR - Could not create the shaders:" + GLU.gluErrorString(errorCheckValue));
 			System.exit(-1);
 		}
-	*/}
+	}
 	
 	public void loopCycle() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -225,7 +222,7 @@ public class TheQuadExampleColored {
 		
 		Display.destroy();
 	}
-	
+
 	public int loadShader(String filename, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 		int shaderID = 0;
@@ -245,6 +242,7 @@ public class TheQuadExampleColored {
 		
 		shaderID = GL20.glCreateShader(type);
 		GL20.glShaderSource(shaderID, shaderSource);
+        Util.checkGLError();
 		GL20.glCompileShader(shaderID);
 		
 		return shaderID;

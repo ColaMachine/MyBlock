@@ -8,35 +8,31 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glBindAttribLocation;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.*;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
+ * 索引缓冲对象
  * Created by dozen.zhang on 2016/10/11.
  */
-public class LearnOpengl5 {
+public class LearnOpengl51 {
 
     int VboId;
     int VertexShaderId;
     FloatBuffer Vertices ;
 
     int FragmentShaderId;
-    public static final int DISPLAY_HEIGHT = 600; // window width
-    public static final int DISPLAY_WIDTH = 600; // window height
+    public static final int DISPLAY_HEIGHT = 320; // window width
+    public static final int DISPLAY_WIDTH = 320; // window height
     public static final int POSITION_INDEX = 0; // index of vertex attribute "in_Position"
     public static final int COLOR_INDEX = 1; // index of vertex attribute "in_Color"
     public static final int FLOAT_NUM_BYTES; // sizeof(float) in bytes
@@ -62,17 +58,17 @@ public class LearnOpengl5 {
             Display.setTitle(WINDOW_TITLE);
             Display.create(pixelFormat, contextAtrributes);
 
-            GL11.glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+           // GL11.glViewport(0, 0, WIDTH, HEIGHT);
         } catch (LWJGLException e) {
             e.printStackTrace();
             System.exit(-1);
         }
-       // GL11.glMatrixMode(GL11.GL_PROJECTION);
+
         // Setup an XNA like background color
         GL11.glClearColor(0.4f, 0.6f, 0.9f, 0f);
 
         // Map the internal OpenGL coordinate system to the entire screen
-        //GL11.glViewport(0, 0, WIDTH, HEIGHT);
+        GL11.glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
         //OpenGL
         initGL();
@@ -99,7 +95,6 @@ public class LearnOpengl5 {
 
     //创建顶点着色器
     void CreateVertShaders() throws IOException {
-
 
 
         //顶点着色器
@@ -148,7 +143,6 @@ public class LearnOpengl5 {
         System.out.println("Fragment shader compilation:");
         printShaderLog(FragmentShaderId);
 
-
     }
     int ProgramId;
     void CreateProgram(){
@@ -178,13 +172,15 @@ public class LearnOpengl5 {
 
         Util.checkGLError();
         //glUseProgram(ProgramId);
-       // Util.checkGLError();
+        // Util.checkGLError();
 
 
 
     }
 
     void CreateVBO(){
+
+
         VaoId = glGenVertexArrays();
         Util.checkGLError();
 
@@ -193,15 +189,16 @@ public class LearnOpengl5 {
 
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
-        float VerticesArray[]= {-0.5f,-0.5f,0,
-                0.5f,-0,5f,0,
-                0,0.5f,0,
+        float VerticesArray[]= {// 第一个三角形
+                0.5f, 0.5f, 0.0f,   // 右上角
+                0.5f, -0.5f, 0.0f,  // 右下角
+                -0.5f, -0.5f, 0.0f, // 左下角
+                -0.5f, 0.5f, 0.0f   // 左上角
         };
-        System.out.println(VerticesArray.length);
-        /*float VerticesArray[]= {-0.5f,-0.5f,0,
-                0.5f,-0.5f,0,
-                0,0.5f,0,
-        };*/
+        int[] indices={
+            0,1,3,
+                1,2,3
+        };
         Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
         Vertices.put(VerticesArray);
         Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
@@ -210,21 +207,25 @@ public class LearnOpengl5 {
         glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
         glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
 
-
         System.out.println("float.size:"+Float.SIZE);
+
+        IntBuffer Indices = BufferUtils.createIntBuffer(indices.length);
+        Indices.put(indices);
+        Indices.rewind();
+
+        eboId = glGenBuffers();
+        Util.checkGLError();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,eboId);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,Indices,GL_STATIC_DRAW);
+
         glVertexAttribPointer(0,3,GL_FLOAT,false,3*4,0);
 
-        Util.checkGLError();
         glEnableVertexAttribArray(0);
-        Util.checkGLError();
         glBindVertexArray(0);
-        Util.checkGLError();
-
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-       // Util.checkGLError();
 
 
     }
+    int eboId;
 
 
     /**
@@ -286,8 +287,8 @@ public class LearnOpengl5 {
 
         glUseProgram(this.ProgramId);
         glBindVertexArray(VaoId);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
+       // glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
         glBindVertexArray(0);
 
         Util.checkGLError();
@@ -296,9 +297,9 @@ public class LearnOpengl5 {
 
     public static void main(String[] args) {
         LWJGLHelper.initNativeLibs();//加载lib包
-        LearnOpengl5 main = null;
+        LearnOpengl51 main = null;
         try {
-            main = new LearnOpengl5();
+            main = new LearnOpengl51();
             main.create();
             main.run();
         } catch (Exception ex) {

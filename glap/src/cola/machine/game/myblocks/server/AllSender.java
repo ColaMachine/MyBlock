@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.server;
 
+import cola.machine.game.myblocks.log.LogUtil;
+
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,7 +29,12 @@ public class AllSender extends Thread{
                         Map.Entry entry = (Map.Entry) iter.next();
 
                         Worker val = (Worker) entry.getValue();
-                        val.send(message);
+                        if(!val.isAlive()){
+                            LogUtil.println("删除socket成功");
+                            workerMap.remove(entry.getKey());
+                        }else {
+                            val.send(message);
+                        }
                     }
                 }
 

@@ -1,3 +1,12 @@
+package gldemo.learnOpengl;
+
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -5,18 +14,10 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.*;
 
 /**
  * @author TJ
@@ -31,7 +32,7 @@ import org.lwjgl.opengl.*;
  * how to set up buffer objects, vertex arrays, how to link buffers to the shader,
  * etc.
  */
-public class ShaderTest {
+public class ShaderTest3 {
 
     public static final int DISPLAY_HEIGHT = 600; // window width
     public static final int DISPLAY_WIDTH = 600; // window height
@@ -57,7 +58,7 @@ public class ShaderTest {
             VboId,
             IndexBufferId;
 
-    public ShaderTest() {
+    public ShaderTest3() {
     }
 
     public void create() throws LWJGLException, Exception {
@@ -72,13 +73,11 @@ public class ShaderTest {
         //Display.create();
         Display.create(pixelFormat, contextAtrributes);
 
-        //Keyboard
-        Keyboard.create();
+        // Setup an XNA like background color
+        GL11.glClearColor(0.4f, 0.6f, 0.9f, 0f);
 
-        //Mouse
-        Mouse.setGrabbed(false);
-        Mouse.create();
-
+        // Map the internal OpenGL coordinate system to the entire screen
+        GL11.glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
         //OpenGL
         initGL();
         resizeGL();
@@ -107,29 +106,38 @@ public class ShaderTest {
         // In the array below, we interleave the position and color data:
         // first vec4 for position, then vec4 for color, vec4 for position, etc.
 
-        float[] VerticesArray = new float[]{//4个代表位置 4个代表颜色 再4个代表位置 循环
-            0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-            // Top
-            -0.2f, 0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-            0.2f, 0.8f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-            0.0f, 0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-            // Bottom
-            -0.2f, -0.8f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-            0.2f, -0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-            0.0f, -0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-            // Left
-            -0.8f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-            -0.8f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-            -0.8f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-            // Right
-            0.8f, -0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-            0.8f, 0.2f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-            0.8f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
+        float[] VerticesArray = new float[]{// 第一个三角形
+                0.5f, 0.5f, 0.0f,   // 右上角
+                0.5f, -0.5f, 0.0f,  // 右下角
+                -0.5f, -0.5f, 0.0f, // 左下角
+                -0.5f, 0.5f, 0.0f ,  // 左上角
         };
+/*
+        VerticesArray = new float[]{
+                0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                // Top
+                -0.2f, 0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+                0.2f, 0.8f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                0.0f, 0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+                0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+                // Bottom
+                -0.2f, -0.8f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                0.2f, -0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+                0.0f, -0.8f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+                0.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+                // Left
+                -0.8f, -0.2f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+                -0.8f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                -0.8f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+                -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+                // Right
+                0.8f, -0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                0.8f, 0.2f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+                0.8f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+                1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
+        };*/
+
+
 
         // Now we put this data in a FloatBuffer, that will be passed to LWJGL.
         // Importantly: use the class BufferUtils, because then your FloatBuffer
@@ -164,27 +172,31 @@ public class ShaderTest {
         // of GL_ARRAY_BUFFER.
 
         int IndicesArray[] = {//顶点顺序
+                0,1,3,
+                1,2,3
+        };
+      /* int[] IndicesArray = {//顶点顺序
             // Top
             0, 1, 3,
-            0, 3, 2,
-            3, 1, 4,
-            3, 4, 2,
-            // Bottom
-            0, 5, 7,
-            0, 7, 6,
-            7, 5, 8,
-            7, 8, 6,
-            // Left
-            0, 9, 11,
-            0, 11, 10,
-            11, 9, 12,
-            11, 12, 10,
-            // Right
-            0, 13, 15,
-            0, 15, 14,
-            15, 13, 16,
-            15, 16, 14
-        };
+                    0, 3, 2,
+                    3, 1, 4,
+                    3, 4, 2,
+                    // Bottom
+                    0, 5, 7,
+                    0, 7, 6,
+                    7, 5, 8,
+                    7, 8, 6,
+                    // Left
+                    0, 9, 11,
+                    0, 11, 10,
+                    11, 9, 12,
+                    11, 12, 10,
+                    // Right
+                    0, 13, 15,
+                    0, 15, 14,
+                    15, 13, 16,
+                    15, 16, 14
+        };*/
 
         IntBuffer Indices = BufferUtils.createIntBuffer(IndicesArray.length);
         Indices.put(IndicesArray);
@@ -208,22 +220,32 @@ public class ShaderTest {
             // array object from above.
             glEnableVertexAttribArray(POSITION_INDEX);
             Util.checkGLError();
+           /* glEnableVertexAttribArray(POSITION_INDEX);
+            Util.checkGLError();
+
 
             glEnableVertexAttribArray(COLOR_INDEX);
-            Util.checkGLError();
+            Util.checkGLError();*/
 
             // Then we tell OpenGL how it should read the GL_ARRAY_BUFFER
             // (to which we have bound our vertex data, see above).
 
             // The position data starts at the beginning of the vertex data
+            /*glVertexAttribPointer(POSITION_INDEX, 4, GL_FLOAT, false,
+                    2*VEC4_BYTES, 0);
+            Util.checkGLError();
+            */
+
             glVertexAttribPointer(POSITION_INDEX, 3, GL_FLOAT, false,
-                    2 * VEC4_BYTES, 0);
+                    3*4, 0);
             Util.checkGLError();
 
+
             // The color data starts after the first 4 floats of position data
-            glVertexAttribPointer(COLOR_INDEX, 3, GL_FLOAT, false,
-                    2 * VEC4_BYTES, 3*4);
-            Util.checkGLError();
+            /*glVertexAttribPointer(COLOR_INDEX, 3, GL_FLOAT, false,
+                    2 * VEC4_BYTES, VEC4_BYTES);
+            Util.checkGLError();*/
+
         }
 
         // Just to be VERY clean, we will unbind the vertex attribute object
@@ -235,11 +257,11 @@ public class ShaderTest {
         // Only after the vertex array is disabled, we unbind the buffers
         // to the GL_ARRAY_BUFFER and GL_ELEMENT_ARRAY_BUFFER targets, because
         // otherwise the vertex array object would become invalid again.
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        /*glBindBuffer(GL_ARRAY_BUFFER, 0);
         Util.checkGLError();
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        Util.checkGLError();
+        Util.checkGLError();*/
     }
 
     void DestroyVBO() {
@@ -277,7 +299,7 @@ public class ShaderTest {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("shaders/chap2.vert").toString());
+        String VertexShader = readShaderSourceCode(  PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.vert"/*"shaders/chap2.vert"*/).toString());
 
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -296,7 +318,7 @@ public class ShaderTest {
         //==========================================================
         // Load and compile fragment shader
 
-        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("shaders/chap2.frag").toString());
+        String FragmentShader = readShaderSourceCode(  PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.frag"/*"shaders/chap2.frag"*/).toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();
@@ -324,12 +346,15 @@ public class ShaderTest {
         // Attach fragment shader
         glAttachShader(ProgramId, FragmentShaderId);
         Util.checkGLError();
+        glBindAttribLocation(ProgramId, POSITION_INDEX, "in_Position");
+        glBindAttribLocation(ProgramId, COLOR_INDEX, "in_Color");
+
 
         // We tell the program how the vertex attribute indices will map
         // to named "in" variables in the vertex shader. This must be done
         // before compiling.
-        glBindAttribLocation(ProgramId, POSITION_INDEX, "in_Position");
-        glBindAttribLocation(ProgramId, COLOR_INDEX, "in_Color");
+        /*glBindAttribLocation(ProgramId, POSITION_INDEX, "in_Position");
+        glBindAttribLocation(ProgramId, COLOR_INDEX, "in_Color");*/
 
         glLinkProgram(ProgramId);
         Util.checkGLError();
@@ -349,7 +374,7 @@ public class ShaderTest {
      * Read shader source code from a file.
      * @param file
      * @return
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static String readShaderSourceCode(String file) throws IOException {
         String code = "";
@@ -423,8 +448,8 @@ public class ShaderTest {
 
     public void initGL() throws IOException {
 
-       /* glClearColor(0, 0, 0, 0);
-        glDisable(GL_DEPTH_TEST);
+    // GL11. glClearColor(1, 0, 0, 0);
+       /* glDisable(GL_DEPTH_TEST);
         glDisable(GL_LIGHTING);*/
 
         CreateShaders();
@@ -438,9 +463,11 @@ public class ShaderTest {
     }
 
     public void render() throws LWJGLException {
+
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         Util.checkGLError();
-
+       // glUseProgram(this.ProgramId);
         // Use the vertex array object. This will automatically cause OpenGL
         // to read our vertex position/color data and the indices data.
         glBindVertexArray(VaoId);
@@ -449,7 +476,7 @@ public class ShaderTest {
         // that we have bound.
         glDrawElements(
                 GL_TRIANGLES,
-                48, // = use all 48 indices from the indices buffer
+                6 ,// = use all 48 indices from the indices buffer
                 GL_UNSIGNED_INT,
                 0);
         Util.checkGLError();
@@ -486,13 +513,10 @@ public class ShaderTest {
 
     public static void main(String[] args) {
         LWJGLHelper.initNativeLibs();
-        ShaderTest main = null;
+        ShaderTest3 main = null;
         try {
-            PixelFormat pixelFormat = new PixelFormat();
-            ContextAttribs contextAtrributes = new ContextAttribs(3, 3)
-                    .withForwardCompatible(true)
-                    .withProfileCore(true);
-            main = new ShaderTest();
+
+            main = new ShaderTest3();
             main.create();
             main.run();
         } catch (Exception ex) {

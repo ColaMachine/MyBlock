@@ -23,7 +23,9 @@ public class ChatServer {
     public Stack<String> livingThings=new Stack<>();
     public  void start(){
         ServerSocket s = null;
+
         Thread allSender =new AllSender(messages,workerMap);allSender.start();
+        //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {
             //设定服务端的端口号
             s = new ServerSocket(Constants.serverPort);

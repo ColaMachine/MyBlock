@@ -136,6 +136,7 @@ public class GLApp {
     //========================================================================
 
     public static void main(String args[]) {
+        LWJGLHelper.initNativeLibs();
         GLApp demo = new GLApp();
         demo.run();
     }
@@ -424,6 +425,9 @@ public class GLApp {
         }
         // Initialize the Window
         try {
+            ContextAttribs contextAtrributes = new ContextAttribs(3, 2)
+                    .withForwardCompatible(true)
+                    .withProfileCore(true);
             Display.create(new PixelFormat(0, depthBufferBits, 8));  // set bits per buffer: alpha, depth, stencil
             Display.setTitle(window_title);
             Display.setFullscreen(fullScreen);

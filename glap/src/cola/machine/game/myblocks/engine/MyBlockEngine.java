@@ -31,7 +31,9 @@ import java.util.Collection;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 import com.google.common.collect.Lists;
@@ -144,6 +146,7 @@ public class MyBlockEngine extends GLApp {
     AnimationManager animationManager;
     public static void main(String args[]) {
         try {
+
             PathManager.getInstance().useDefaultHomePath();
 
 
@@ -176,6 +179,7 @@ public class MyBlockEngine extends GLApp {
     // GLShadowOnPlane airplaneShadow;
     public LivingThingManager livingThingManager;
     public void setup() {
+
         //开启胜读测试
          shaderTest= new LearnOpengl5();
         try {
@@ -744,11 +748,11 @@ public class MyBlockEngine extends GLApp {
             e.printStackTrace();
         }
 */     // drawLine();
-        try {
+        /*try {
             shaderTest.render();
         } catch (LWJGLException e) {
             e.printStackTrace();
-        }
+        }*/
         if(Switcher.gameState==0){
             CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();
         }else if(Switcher.gameState==1){

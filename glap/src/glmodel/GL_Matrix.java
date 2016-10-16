@@ -1,5 +1,7 @@
 package glmodel;
 
+import org.lwjgl.BufferUtils;
+
 import java.nio.FloatBuffer;
 
 /**
@@ -149,8 +151,10 @@ public class GL_Matrix
 	///////////////////////////////////////////////////////////
 	// Public Methods
 	///////////////////////////////////////////////////////////
-	
-	public void translate(float dx, float dy, float dz)
+
+
+
+    public void translate(float dx, float dy, float dz)
 	{
 		transform(translateMatrix(dx,dy,dz));
 	}
@@ -374,4 +378,95 @@ public class GL_Matrix
 		matrix.put(14, pos.z);
 		matrix.put(15, 1);
 	}
+
+    /**
+     * 透视投影
+     */
+    public static GL_Matrix ortho(float left, float right,float bottom,float top ,float near ,float far)
+    {
+        GL_Matrix m = new GL_Matrix();
+        m.m00=2*near/(right-left);
+        m.m01=0;
+        m.m02=(right+left)/(right-left);
+        m.m03=0;
+
+        m.m10=0;
+        m.m11=2*near/(top-bottom);
+        m.m12=(top+bottom)/(top-bottom);
+        m.m13=0;
+
+        m.m20=0;
+        m.m21=0;
+        m.m22=-(far+near)/(far-near);
+        m.m23=-2*far*near/(far-near);
+
+        m.m30=0;
+        m.m31=0;
+        m.m32=-1;
+        m.m33=0;
+
+        return m;
+    }
+    /**
+     * 透视投影
+     */
+    public static GL_Matrix ortho(float fov, float aspect,float zn,float zf )
+    {
+        GL_Matrix m = new GL_Matrix();
+       m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
+        m.m11=(float)(1/(Math.tan(fov*0.5f)));
+        m.m22=(float)(zf/(zf-zn));
+        m.m23=1.0f;
+        m.m32=(float)(zn*zf/(zn-zf));
+        return m;
+    }
+
+    /**
+     * 正交投影
+     */
+    public static GL_Matrix perspective(float left, float right,float bottom,float top ,float near ,float far)
+    {
+        GL_Matrix m = new GL_Matrix();
+        m.m00=2/(right-left);
+        m.m01=0;
+        m.m02=0;
+        m.m03=-(right+left)/(right-left);
+
+        m.m10=0;
+        m.m11=2/(top-bottom);
+        m.m12=0;
+        m.m13=-(top+bottom)/(top-bottom);
+
+        m.m20=0;
+        m.m21=0;
+        m.m22=-2/(far-near);
+        m.m23=-(far+near)/(far-near);
+
+        m.m30=0;
+        m.m31=0;
+        m.m32=0;
+        m.m33=1;
+
+        return m;
+    }
+
+    public FloatBuffer toFloatBuffer(){
+       FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+        float[][] arr= this.exportToArray();
+       /* matrixBuffer.put(1).put(0).put(0).put(0)
+                .put(0).put(1).put(0).put(0).
+                put(0).put(0).put(1).put(0).
+                put(0).put(0).put(0).put(1);*/
+        for(int i = 0;i<4;i++) {//数据居然要从上往下算第一列 再第二列传数据
+            for (int j = 0; j < 4; j++) {
+                matrixBuffer.put(arr[j][i]);
+            }
+        }
+        matrixBuffer.rewind();
+        return matrixBuffer;
+
+
+
+    }
+
 }

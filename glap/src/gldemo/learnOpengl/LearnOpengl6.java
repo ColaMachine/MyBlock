@@ -8,31 +8,26 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glBindAttribLocation;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.*;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * Created by dozen.zhang on 2016/10/11.
  */
-public class LearnOpengl5 {
+public class LearnOpengl6 {
 
     int VboId;
     int VertexShaderId;
-    FloatBuffer Vertices ;
+   FloatBuffer Vertices ;
 
     int FragmentShaderId;
     public static final int DISPLAY_HEIGHT = 600; // window width
@@ -114,7 +109,7 @@ public class LearnOpengl5 {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.vert").toString());
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt6.vert").toString());
         //创建着色器
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -133,7 +128,7 @@ public class LearnOpengl5 {
 
     }
     void CreateFragShaders() throws IOException {
-        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.frag").toString());
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt6.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();
@@ -194,14 +189,9 @@ public class LearnOpengl5 {
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
         float VerticesArray[]= {-0.5f,-0.5f,0,
-                0.5f,-0,5f,0,
-                0,0.5f,0,
-        };
-        System.out.println(VerticesArray.length);
-        /*float VerticesArray[]= {-0.5f,-0.5f,0,
                 0.5f,-0.5f,0,
                 0,0.5f,0,
-        };*/
+        };
         Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
         Vertices.put(VerticesArray);
         Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
@@ -211,11 +201,12 @@ public class LearnOpengl5 {
         glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
 
 
-        System.out.println("float.size:"+Float.SIZE);
-        glVertexAttribPointer(0,3,GL_FLOAT,false,3*4,0);
+       // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * 4, 0);
 
         Util.checkGLError();
         glEnableVertexAttribArray(0);
+
         Util.checkGLError();
         glBindVertexArray(0);
         Util.checkGLError();
@@ -282,9 +273,12 @@ public class LearnOpengl5 {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-
+        Long time =System.currentTimeMillis();
+        float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
+        glUniform4f(0, 0.0f, greenValue, 0.0f, 1.0f);
+
         glBindVertexArray(VaoId);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -296,9 +290,9 @@ public class LearnOpengl5 {
 
     public static void main(String[] args) {
         LWJGLHelper.initNativeLibs();//加载lib包
-        LearnOpengl5 main = null;
+        LearnOpengl6 main = null;
         try {
-            main = new LearnOpengl5();
+            main = new LearnOpengl6();
             main.create();
             main.run();
         } catch (Exception ex) {

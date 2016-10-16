@@ -61,7 +61,7 @@ public class ReaderTask extends Thread{
                 listening = false;
                 if(socketStatusListener!=null)
                 {
-                    int status = parseSocketStatus(e);
+                    int status = parseSocketStatus(e);//解析错误
                     socketStatusListener.onSocketStatusChanged(socket, status, e);
                 }
                 e.printStackTrace();

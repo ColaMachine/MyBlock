@@ -2,37 +2,35 @@ package gldemo.learnOpengl;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
+import glapp.GLApp;
+import glapp.GLImage;
+import glmodel.GL_Matrix;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glBindAttribLocation;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.*;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * Created by dozen.zhang on 2016/10/11.
  */
-public class LearnOpengl5 {
+public class LearnOpengl9 {
 
     int VboId;
     int VertexShaderId;
-    FloatBuffer Vertices ;
+   FloatBuffer Vertices ;
 
     int FragmentShaderId;
     public static final int DISPLAY_HEIGHT = 600; // window width
@@ -90,8 +88,76 @@ public class LearnOpengl5 {
 
         CreateVertShaders();
         CreateFragShaders();
+        //CreateMatrix();
         CreateProgram();
         CreateVBO();
+        CreateTexture();
+    }
+    FloatBuffer matrixBuffer;
+    public void CreateMatrix(){
+        GL_Matrix matrix ;
+
+        GL_Matrix matrix1= GL_Matrix.rotateMatrix(0,0,45);
+        GL_Matrix matrix2=GL_Matrix.translateMatrix(0.5f,0.5f,0.5f);
+        matrix= GL_Matrix.multiply(matrix2,matrix1);
+       // matrix=matrix1;
+         matrixBuffer =BufferUtils.createFloatBuffer(16);
+        float[][] arr= matrix.exportToArray();
+       /* matrixBuffer.put(1).put(0).put(0).put(0)
+                .put(0).put(1).put(0).put(0).
+                put(0).put(0).put(1).put(0).
+                put(0).put(0).put(0).put(1);*/
+        for(int i = 0;i<4;i++){//数据居然要从上往下算第一列 再第二列传数据
+            for(int j=0;j<4;j++){
+            matrixBuffer.put(arr[j][i]);
+            }
+
+        }
+        matrixBuffer.rewind();
+    }
+
+
+    int textureHandle = 0;
+    public  void CreateTexture(){
+
+
+
+        GLImage textureImg;
+        try {
+
+            textureImg = GLApp.loadImage(PathManager.getInstance().getHomePath().resolve("images/items.png").toUri());//
+            //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
+            if (textureImg != null) {
+
+                textureHandle=GL11.glGenTextures();
+
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D,textureHandle);
+                // set texture parameters
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); //GL11.GL_NEAREST);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST); //GL11.GL_NEAREST);
+
+
+               // textureImg.textureHandle = GLApp.makeTexture(textureImg);
+
+                GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
+                        0, 						// level of detail
+                        GL11.GL_RGBA8,			// internal format for texture is RGB with Alpha
+                        textureImg.w, textureImg.h, 					// size of texture image
+                        0,						// no border
+                        GL11.GL_RGBA, 			// incoming pixel format: 4 bytes in RGBA order
+                        GL11.GL_UNSIGNED_BYTE,	// incoming pixel data type: unsigned bytes
+                        textureImg.pixelBuffer);
+
+               // GLApp.makeTextureMipMap(textureHandle, textureImg);
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.exit(0);
+        }
     }
     int VaoId;
 
@@ -114,7 +180,7 @@ public class LearnOpengl5 {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.vert").toString());
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt9.vert").toString());
         //创建着色器
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -125,6 +191,7 @@ public class LearnOpengl5 {
         glCompileShader(VertexShaderId);
         Util.checkGLError();
         //打印日志
+
         // Print possible compile errors
         //System.out.println("Vertex shader compilation:");
         printShaderLog(VertexShaderId);
@@ -133,7 +200,7 @@ public class LearnOpengl5 {
 
     }
     void CreateFragShaders() throws IOException {
-        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.frag").toString());
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt8.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();
@@ -176,6 +243,8 @@ public class LearnOpengl5 {
         System.out.println("Program linking:");
         printProgramLog(ProgramId);
 
+
+        //System.out.println("transformLoc:"+transformLoc);
         Util.checkGLError();
         //glUseProgram(ProgramId);
        // Util.checkGLError();
@@ -183,6 +252,7 @@ public class LearnOpengl5 {
 
 
     }
+    int eboId;
 
     void CreateVBO(){
         VaoId = glGenVertexArrays();
@@ -193,15 +263,11 @@ public class LearnOpengl5 {
 
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
-        float VerticesArray[]= {-0.5f,-0.5f,0,
-                0.5f,-0,5f,0,
-                0,0.5f,0,
+        float VerticesArray[]= {0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top Right
+                0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
+                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
+                -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
         };
-        System.out.println(VerticesArray.length);
-        /*float VerticesArray[]= {-0.5f,-0.5f,0,
-                0.5f,-0.5f,0,
-                0,0.5f,0,
-        };*/
         Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
         Vertices.put(VerticesArray);
         Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
@@ -210,16 +276,50 @@ public class LearnOpengl5 {
         glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
         glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
 
+        int[] indices={
+                0,1,3,
+                1,2,3
+        };
+        IntBuffer Indices = BufferUtils.createIntBuffer(indices.length);
+        Indices.put(indices);
+        Indices.rewind();
 
-        System.out.println("float.size:"+Float.SIZE);
-        glVertexAttribPointer(0,3,GL_FLOAT,false,3*4,0);
+        eboId = glGenBuffers();
+        Util.checkGLError();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,eboId);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,Indices,GL_STATIC_DRAW);
+
+       // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * 4, 0);
 
         Util.checkGLError();
         glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 8* 4, 3*4);
+
+        Util.checkGLError();
+        glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, 8* 4, 6*4);
+
+        Util.checkGLError();
+        glEnableVertexAttribArray(2);
+
         Util.checkGLError();
         glBindVertexArray(0);
         Util.checkGLError();
 
+        glUseProgram(ProgramId);
+
+
+
+        int modelLoc= glGetUniformLocation(ProgramId,"model");
+        int viewLoc= glGetUniformLocation(ProgramId,"view");
+        int projectionLoc= glGetUniformLocation(ProgramId,"projection");
+        //glUniformMatrix4(modelLoc,  false,GL_Matrix.rotateMatrix(-5.0f,0,0).toFloatBuffer() );
+       // glUniformMatrix4(viewLoc,  false,GL_Matrix.translateMatrix(0.0f,-3,0f).toFloatBuffer() );
+        glUniformMatrix4(projectionLoc,  false,GL_Matrix.ortho(45.0f,600/600,-0.1f,-100.0f).toFloatBuffer() );
+       // matrixBuffer.rewind();
         //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
        // Util.checkGLError();
 
@@ -279,14 +379,21 @@ public class LearnOpengl5 {
     }
 
     public void render() throws LWJGLException {
+
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-
+        Long time =System.currentTimeMillis();
+        float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
+       /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
+        glUniformMatrix4(0,  false,matrixBuffer );
+        matrixBuffer.rewind();*/
+        glBindTexture(GL_TEXTURE_2D, this.textureHandle);
         glBindVertexArray(VaoId);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glBindVertexArray(0);
 
@@ -296,9 +403,9 @@ public class LearnOpengl5 {
 
     public static void main(String[] args) {
         LWJGLHelper.initNativeLibs();//加载lib包
-        LearnOpengl5 main = null;
+        LearnOpengl9 main = null;
         try {
-            main = new LearnOpengl5();
+            main = new LearnOpengl9();
             main.create();
             main.run();
         } catch (Exception ex) {

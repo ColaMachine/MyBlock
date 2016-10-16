@@ -34,7 +34,7 @@ public  class SocketHandler implements SocketStatusListener {
 
     public void listen(boolean isListen)
     {
-        reader.startListener(this);
+        reader.startListener(this);//开始线程
 
     }
 
