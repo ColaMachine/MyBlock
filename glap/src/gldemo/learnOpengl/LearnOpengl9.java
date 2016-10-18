@@ -315,16 +315,29 @@ public class LearnOpengl9 {
         int projectionLoc= glGetUniformLocation(ProgramId,"projection");
         int modelLoc= glGetUniformLocation(ProgramId,"model");
         int viewLoc= glGetUniformLocation(ProgramId,"view");
+       // projectionLoc=0;
+        //modelLoc=1;
+       // viewLoc=2;
+        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0);
 
-       // glUniformMatrix4(0,  false,GL_Matrix.translateMatrix(0,0,-13).toFloatBuffer() );
-       glUniformMatrix4(0,  false,GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0).toFloatBuffer() );
+        GL_Matrix view= GL_Matrix.translateMatrix(0,0,-3);
+        GL_Matrix projection= GL_Matrix.perspective3(90.0f,600/600,0.1f,100.0f);
+        GL_Matrix finalMatrix =  GL_Matrix.multiply(GL_Matrix.multiply(projection,view),model);
+        finalMatrix.multiply(finalMatrix , )
+        glUniformMatrix4(modelLoc,  false,new GL_Matrix().toFloatBuffer() );
+       //glUniformMatrix4(modelLoc,  false,GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0).toFloatBuffer() );
        // glUniformMatrix4(modelLoc,  false,GL_Matrix.multiply(GL_Matrix.translateMatrix(0.0f,0f,-100),GL_Matrix.rotateMatrix((float)(45*3.14/180),0,0)).toFloatBuffer() );
-      // glUniformMatrix4(1,  false,new GL_Matrix().toFloatBuffer() );
-      glUniformMatrix4(1,  false,GL_Matrix.translateMatrix(0.0f,0f,-8).toFloatBuffer() );
+       glUniformMatrix4(viewLoc,  false,new GL_Matrix().toFloatBuffer() );
+      //glUniformMatrix4(viewLoc,  false,GL_Matrix.translateMatrix(0.0f,0f,-1.2f).toFloatBuffer() );
        //glUniformMatrix4(projectionLoc,  false,GL_Matrix.perspective2(45.0f,600/600,-0.1f,-100.0f).toReverseFloatBuffer() );
 
-     glUniformMatrix4(2,  false,GL_Matrix.perspective3(45.0f,600/600,0.1f,100.0f).toFloatBuffer() );
-
+     glUniformMatrix4(projectionLoc,  false,GL_Matrix.perspective3(90.0f,600/600,0.1f,100.0f).toFloatBuffer() );
+      /*  <Matrix:
+        1.0007966,0.0,0.0,0.0,
+                0.0,1.0007966,0.0,0.0,
+                0.0,0.0,-1.101001,-1.0,
+                0.0,0.0,-0.2002002,0.0>
+*/
         // matrixBuffer.rewind();
         //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
        // Util.checkGLError();
@@ -394,6 +407,22 @@ public class LearnOpengl9 {
         float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
+
+        int projectionLoc= glGetUniformLocation(ProgramId,"projection");
+        int modelLoc= glGetUniformLocation(ProgramId,"model");
+        int viewLoc= glGetUniformLocation(ProgramId,"view");
+        // projectionLoc=0;
+        //modelLoc=1;
+        // viewLoc=2;
+       // glUniformMatrix4(modelLoc,  false,new GL_Matrix().toFloatBuffer() );
+        glUniformMatrix4(modelLoc,  false,GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0).toFloatBuffer() );
+        // glUniformMatrix4(modelLoc,  false,GL_Matrix.multiply(GL_Matrix.translateMatrix(0.0f,0f,-100),GL_Matrix.rotateMatrix((float)(45*3.14/180),0,0)).toFloatBuffer() );
+        //glUniformMatrix4(viewLoc,  false,new GL_Matrix().toFloatBuffer() );
+        glUniformMatrix4(viewLoc,  false,GL_Matrix.translateMatrix(0.0f,0f,-3f).toFloatBuffer() );
+        //glUniformMatrix4(projectionLoc,  false,GL_Matrix.perspective2(45.0f,600/600,-0.1f,-100.0f).toReverseFloatBuffer() );
+
+        glUniformMatrix4(projectionLoc,  false,GL_Matrix.perspective3(90.0f,600/600,0.1f,100.0f).toFloatBuffer() );
+
        /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
         glUniformMatrix4(0,  false,matrixBuffer );
         matrixBuffer.rewind();*/

@@ -494,7 +494,7 @@ public class GL_Matrix
     }
 
     public FloatBuffer toReverseFloatBuffer(){
-       FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16+1);
+       FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
         float[][] arr= this.exportToArray();
 
         for(int j = 0;j<4;j++) {//数据居然要从上往下算第一列 再第二列传数据
@@ -509,7 +509,7 @@ public class GL_Matrix
 
     }
 	public FloatBuffer toFloatBuffer(){
-		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16+1);
+		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 		float[][] arr= this.exportToArray();
        /* matrixBuffer.put(1).put(0).put(0).put(0)
                 .put(0).put(1).put(0).put(0).
