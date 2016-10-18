@@ -380,7 +380,7 @@ public class GL_Matrix
 	}
 
     /**
-     * 透视投影
+     * 正交投影
      */
     public static GL_Matrix ortho(float left, float right,float bottom,float top ,float near ,float far)
     {
@@ -410,16 +410,59 @@ public class GL_Matrix
     /**
      * 透视投影
      */
-    public static GL_Matrix ortho(float fov, float aspect,float zn,float zf )
-    {
+    public static GL_Matrix perspective(float fov, float aspect,float zn,float zf )
+    {fov=(float)(3.14*fov/180);
         GL_Matrix m = new GL_Matrix();
        m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
         m.m11=(float)(1/(Math.tan(fov*0.5f)));
         m.m22=(float)(zf/(zf-zn));
         m.m23=1.0f;
+		m.m33=0f;
         m.m32=(float)(zn*zf/(zn-zf));
         return m;
     }
+	public static GL_Matrix perspective3(float fov, float aspect,float zn,float zf )
+	{fov=(float)(3.14*fov/180);
+		GL_Matrix m = new GL_Matrix();
+		m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
+		m.m11=(float)(1/(Math.tan(fov*0.5f)));
+		m.m22=(float)(-zn-zf/(zf-zn));
+		m.m23=-1.0f;
+
+		m.m32=(float)(-2*zn*zf/(zf-zn));
+		m.m33=0f;
+		return m;
+	}
+	public static GL_Matrix  perspective2(float fov, float aspect,float zn,float zf )
+	{GL_Matrix m = new GL_Matrix();
+		 float ar = aspect;
+		 float zNear = zn;
+		 float zFar = zf;
+		 float zRange = zn - zf;
+		double radi= 3.14*(fov / 2.0)/180;
+		 float tanHalfFOV =(float)( Math.tan((float)radi));
+
+		m.m00 = 1.0f / (tanHalfFOV * ar);
+		m.m01 = 0.0f;
+		m.m02 = 0.0f;
+		m.m03 = 0.0f;
+
+		m.m10 = 0.0f;
+		m.m11 = 1.0f / tanHalfFOV;
+		m.m12 = 0.0f;
+		m.m13 = 0.0f;
+
+		m.m20 = 0.0f;
+		m.m21 = 0.0f;
+		m.m22 = (-zNear - zFar) / zRange;
+		m.m23= 2.0f * zFar * zNear / zRange;
+
+		m.m30= 0.0f;
+		m.m31 = 0.0f;
+		m.m32 = 1.0f;
+		m.m33 = 0.0f;
+		return m;
+	}
 
     /**
      * 正交投影
@@ -450,16 +493,13 @@ public class GL_Matrix
         return m;
     }
 
-    public FloatBuffer toFloatBuffer(){
-       FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+    public FloatBuffer toReverseFloatBuffer(){
+       FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16+1);
         float[][] arr= this.exportToArray();
-       /* matrixBuffer.put(1).put(0).put(0).put(0)
-                .put(0).put(1).put(0).put(0).
-                put(0).put(0).put(1).put(0).
-                put(0).put(0).put(0).put(1);*/
-        for(int i = 0;i<4;i++) {//数据居然要从上往下算第一列 再第二列传数据
-            for (int j = 0; j < 4; j++) {
-                matrixBuffer.put(arr[j][i]);
+
+        for(int j = 0;j<4;j++) {//数据居然要从上往下算第一列 再第二列传数据
+            for (int i = 0; i < 4; i++) {
+                matrixBuffer.put(arr[i][j]);
             }
         }
         matrixBuffer.rewind();
@@ -468,5 +508,23 @@ public class GL_Matrix
 
 
     }
+	public FloatBuffer toFloatBuffer(){
+		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16+1);
+		float[][] arr= this.exportToArray();
+       /* matrixBuffer.put(1).put(0).put(0).put(0)
+                .put(0).put(1).put(0).put(0).
+                put(0).put(0).put(1).put(0).
+                put(0).put(0).put(0).put(1);*/
+		for(int i = 0;i<4;i++) {//数据居然要从上往下算第一列 再第二列传数据
+			for (int j = 0; j < 4; j++) {
+				matrixBuffer.put(arr[i][j]);
+			}
+		}
+		matrixBuffer.rewind();
+		return matrixBuffer;
+
+
+
+	}
 
 }
