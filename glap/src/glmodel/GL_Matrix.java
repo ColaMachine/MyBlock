@@ -282,7 +282,36 @@ public class GL_Matrix
 		m.m23 = m1.m20*m2.m03 + m1.m21*m2.m13 + m1.m22*m2.m23 + m1.m23;
 		return m;
 	}
-	
+	/**
+	 * Multiply the two matrices.  Return m1 x m2
+	 */
+	public static GL_Vector multiply(GL_Matrix m1, GL_Vector vector)
+	{
+		GL_Vector newVector = new GL_Vector();
+		newVector.x=  m1.m00*vector.x + m1.m01*vector.y + m1.m02*vector.z+ m1.m03;
+		newVector.y=  m1.m10*vector.x + m1.m11*vector.y + m1.m12*vector.z+ m1.m13;
+		newVector.z=  m1.m20*vector.x + m1.m21*vector.y + m1.m22*vector.z+ m1.m23;
+		//newVector.w=  m1.m30*vector.x + m1.m31*vector.x + m1.m32*vector.x+ m1.m33;
+
+
+		return newVector;
+	}
+
+	/**
+	 * Multiply the two matrices.  Return m1 x m2
+	 */
+	public static GL_Vector multiply(GL_Vector vector,GL_Matrix m1 )
+	{
+		GL_Vector newVector = new GL_Vector();
+		newVector.x=  m1.m00*vector.x + m1.m10*vector.y + m1.m20*vector.z+ m1.m30;
+		newVector.y= m1.m01*vector.x + m1.m11*vector.y + m1.m21*vector.z+ m1.m31;
+		newVector.z=  m1.m02*vector.x + m1.m12*vector.y + m1.m22*vector.z+ m1.m32;
+		//newVector.w=  m1.m30*vector.x + m1.m31*vector.x + m1.m32*vector.x+ m1.m33;
+
+
+		return newVector;
+	}
+
 	/**
 	 * return a string representation of this matrix
 	 */
@@ -524,6 +553,35 @@ public class GL_Matrix
 		return matrixBuffer;
 
 
+
+	}
+
+	public static void main(String args[]){
+		GL_Matrix model= GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0);
+
+		GL_Matrix view= GL_Matrix.translateMatrix(0,0,3);
+		GL_Matrix projection= GL_Matrix.perspective(90,600/600,2f,1000.0f);
+		GL_Matrix finalMatrix =  GL_Matrix.multiply(GL_Matrix.multiply(projection,view),model);
+		// GL_Vector vector = finalMatrix.multiply(projection,new GL_Vector(0f,4f,-4f));
+
+
+		int width=4;
+		int height=4;
+		int z=-4;
+		for(int i=-width/2;i<width/2;i++){
+			for(int j=-height/2;j<height/2;j++){
+				GL_Vector neVector =new GL_Vector(i,j,z);
+
+				GL_Vector vector = GL_Matrix.multiply(neVector,projection);
+				vector.x=vector.x/4;
+				vector.y=vector.y/4;
+				vector.z=vector.z/4;
+				if(vector.x>1 ||vector. x<-1  || vector.y<-1 ||vector. y>1 || vector.z>1 || vector.z<-1){
+					System.out.print("x:"+i+"y:"+j+"z:"+z +" ====> "+vector+"\n");
+				}
+				//System.out.print("x:"+i+"y:"+j+"z:"+z +" ====> "+vector+"\n");
+			}
+		}
 
 	}
 

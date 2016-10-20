@@ -27,7 +27,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 /**
  * Created by dozen.zhang on 2016/10/11.
  */
-public class LearnOpengl8 {
+public class LearnOpengl91 {
 
     int VboId;
     int VertexShaderId;
@@ -89,7 +89,7 @@ public class LearnOpengl8 {
 
         CreateVertShaders();
         CreateFragShaders();
-        CreateMatrix();
+        //CreateMatrix();
         CreateProgram();
         CreateVBO();
         CreateTexture();
@@ -181,7 +181,7 @@ public class LearnOpengl8 {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt8.vert").toString());
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt91.vert").toString());
         //创建着色器
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -201,7 +201,7 @@ public class LearnOpengl8 {
 
     }
     void CreateFragShaders() throws IOException {
-        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt8.frag").toString());
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt91.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();
@@ -243,10 +243,9 @@ public class LearnOpengl8 {
         // Print possible compile errors
         System.out.println("Program linking:");
         printProgramLog(ProgramId);
-        int transformLoc= glGetUniformLocation(ProgramId,"transform");
 
 
-        System.out.println("transformLoc:"+transformLoc);
+        //System.out.println("transformLoc:"+transformLoc);
         Util.checkGLError();
         //glUseProgram(ProgramId);
        // Util.checkGLError();
@@ -265,43 +264,47 @@ public class LearnOpengl8 {
 
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
-       /* float VerticesArray[]= {0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top Right
-                0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
-                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
-                -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
-        };*/
-       float z=-0.5f;
-       float multi=0.12509957f/0.5f;
-//       float z=4f;
-//        float multi=7/5;
+        float z=0f;
+        float multi=1;
         float VerticesArray[]= {0.5f*multi, 0.5f*multi,z, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top Right
                 0.5f*multi, -0.5f*multi, z, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
                 -0.5f*multi, -0.5f*multi,z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
                 -0.5f*multi, 0.5f*multi, z, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
         };
-//        GL_Matrix projection= GL_Matrix.perspective(90,600/600,2f,1000.0f);
+        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
+
+        GL_Matrix view= GL_Matrix.translateMatrix(0,0,3);
+        GL_Matrix projection= GL_Matrix.perspective3(45,600/600,1f,1000.0f);
 //        for(int i=0;i<4;i++){
 //            GL_Vector neVector =new GL_Vector(VerticesArray[0+i*8],VerticesArray[1+i*8],VerticesArray[2+i*8]);
+//            GL_Vector vector2 =  GL_Matrix.multiply(model,neVector);
+//            GL_Vector vector3 =  GL_Matrix.multiply(view,vector2);
+//            GL_Vector vector =  GL_Matrix.multiply(projection,vector3);
+//            vector.x=vector.x/vector3.z;
+//            vector.y=vector.y/vector3.z;
+//            vector.z=-1*vector.z/vector3.z;
+//        /*    GL_Vector vector =  GL_Matrix.multiply(neVector,projection);
+//            vector.x=vector.x/neVector.z;
+//            vector.y=vector.y/neVector.z;
+//            vector.z=-1*vector.z/neVector.z;
+//               vector =  GL_Matrix.multiply(model,vector);
+//             vector =  GL_Matrix.multiply(view,vector);*/
 //
-//            GL_Vector vector = GL_Matrix.multiply(neVector,projection);
-//            vector.x=vector.x/VerticesArray[2+i*8];
-//            vector.y=vector.y/VerticesArray[2+i*8];
-//            vector.z=vector.z/VerticesArray[2+i*8];
+//
+//
 //            if(vector.x>1 ||vector. x<-1  || vector.y<-1 ||vector. y>1 || vector.z>1 || vector.z<-1){
 //                System.out.print("x:"+VerticesArray[0+i*8]+"y:"+VerticesArray[1+i*8]+"z:"+VerticesArray[2+i*8] +" ====> "+vector+"\n");
 //            }
 //            VerticesArray[0+i*8]= vector.x;
 //            VerticesArray[1+i*8]= vector.y;
-//            VerticesArray[2+i*8]= vector.z;
-//            if( VerticesArray[2+i*8]>0.5){
-//               // VerticesArray[2+i*8]=0.5f;
-//            }
+//            VerticesArray[2+i*8]=vector.z;
+//
 //        }
-
         Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
         Vertices.put(VerticesArray);
         Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
         VboId=glGenBuffers();//create vbo
+
 
         glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
         glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
@@ -340,9 +343,39 @@ public class LearnOpengl8 {
         Util.checkGLError();
 
         glUseProgram(ProgramId);
-        int transformLoc= glGetUniformLocation(ProgramId,"transform");
-        glUniformMatrix4(0,  false,matrixBuffer );
-       // matrixBuffer.rewind();
+
+
+        int projectionLoc= glGetUniformLocation(ProgramId,"projection");
+        int modelLoc= glGetUniformLocation(ProgramId,"model");
+        int viewLoc= glGetUniformLocation(ProgramId,"view");
+       // projectionLoc=0;
+        //modelLoc=1;
+       // viewLoc=2;
+      //  GL_Matrix model= GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0);
+
+       // GL_Matrix view= GL_Matrix.translateMatrix(0,0,0);
+       // GL_Matrix projection= GL_Matrix.perspective(90,600/600,1f,1000.0f);
+       //GL_Matrix finalMatrix =  GL_Matrix.multiply(GL_Matrix.multiply(projection,view),model);
+       // GL_Vector vector = finalMatrix.multiply(projection,new GL_Vector(0f,4f,-4f));
+      /*  GL_Vector vector = GL_Matrix.multiply(new GL_Vector(0f,4f,4f),projection);
+        vector.x=vector.x/4;
+        vector.y=vector.y/4;
+        vector.z=vector.z/4;*/
+        glUniformMatrix4(modelLoc,  false,model.toFloatBuffer() );
+       //glUniformMatrix4(modelLoc,  false,GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0).toFloatBuffer() );
+       // glUniformMatrix4(modelLoc,  false,GL_Matrix.multiply(GL_Matrix.translateMatrix(0.0f,0f,-100),GL_Matrix.rotateMatrix((float)(45*3.14/180),0,0)).toFloatBuffer() );
+       glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
+      //glUniformMatrix4(viewLoc,  false,GL_Matrix.translateMatrix(0.0f,0f,-1.2f).toFloatBuffer() );
+       //glUniformMatrix4(projectionLoc,  false,GL_Matrix.perspective2(45.0f,600/600,-0.1f,-100.0f).toReverseFloatBuffer() );
+
+     glUniformMatrix4(projectionLoc,  false,projection.toFloatBuffer() );
+      /*  <Matrix:
+        1.0007966,0.0,0.0,0.0,
+                0.0,1.0007966,0.0,0.0,
+                0.0,0.0,-1.101001,-1.0,
+                0.0,0.0,-0.2002002,0.0>
+*/
+        // matrixBuffer.rewind();
         //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
        // Util.checkGLError();
 
@@ -411,6 +444,22 @@ public class LearnOpengl8 {
         float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
+
+        int projectionLoc= glGetUniformLocation(ProgramId,"projection");
+        int modelLoc= glGetUniformLocation(ProgramId,"model");
+        int viewLoc= glGetUniformLocation(ProgramId,"view");
+        // projectionLoc=0;
+        //modelLoc=1;
+        // viewLoc=2;
+       // glUniformMatrix4(modelLoc,  false,new GL_Matrix().toFloatBuffer() );
+        glUniformMatrix4(modelLoc,  false,GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0).toFloatBuffer() );
+        // glUniformMatrix4(modelLoc,  false,GL_Matrix.multiply(GL_Matrix.translateMatrix(0.0f,0f,-100),GL_Matrix.rotateMatrix((float)(45*3.14/180),0,0)).toFloatBuffer() );
+        //glUniformMatrix4(viewLoc,  false,new GL_Matrix().toFloatBuffer() );
+        glUniformMatrix4(viewLoc,  false,GL_Matrix.translateMatrix(0.0f,0f,-3f).toFloatBuffer() );
+        //glUniformMatrix4(projectionLoc,  false,GL_Matrix.perspective2(45.0f,600/600,-0.1f,-100.0f).toReverseFloatBuffer() );
+
+        glUniformMatrix4(projectionLoc,  false,GL_Matrix.perspective3(90.0f,600/600,0.1f,100.0f).toFloatBuffer() );
+
        /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
         glUniformMatrix4(0,  false,matrixBuffer );
         matrixBuffer.rewind();*/
@@ -426,9 +475,9 @@ public class LearnOpengl8 {
 
     public static void main(String[] args) {
         LWJGLHelper.initNativeLibs();//加载lib包
-        LearnOpengl8 main = null;
+        LearnOpengl91 main = null;
         try {
-            main = new LearnOpengl8();
+            main = new LearnOpengl91();
             main.create();
             main.run();
         } catch (Exception ex) {
