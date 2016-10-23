@@ -2,6 +2,7 @@ package glmodel;
 
 import org.lwjgl.BufferUtils;
 
+import javax.vecmath.Point4f;
 import java.nio.FloatBuffer;
 
 /**
@@ -268,19 +269,30 @@ public class GL_Matrix
 	{
 		GL_Matrix m = new GL_Matrix();
 		
-		m.m00 = m1.m00*m2.m00 + m1.m01*m2.m10 + m1.m02*m2.m20;
-		m.m01 = m1.m00*m2.m01 + m1.m01*m2.m11 + m1.m02*m2.m21;
-		m.m02 = m1.m00*m2.m02 + m1.m01*m2.m12 + m1.m02*m2.m22;
-		m.m03 = m1.m00*m2.m03 + m1.m01*m2.m13 + m1.m02*m2.m23 + m1.m03;
-		m.m10 = m1.m10*m2.m00 + m1.m11*m2.m10 + m1.m12*m2.m20;
-		m.m11 = m1.m10*m2.m01 + m1.m11*m2.m11 + m1.m12*m2.m21;
-		m.m12 = m1.m10*m2.m02 + m1.m11*m2.m12 + m1.m12*m2.m22;
-		m.m13 = m1.m10*m2.m03 + m1.m11*m2.m13 + m1.m12*m2.m23 + m1.m13;
-		m.m20 = m1.m20*m2.m00 + m1.m21*m2.m10 + m1.m22*m2.m20;
-		m.m21 = m1.m20*m2.m01 + m1.m21*m2.m11 + m1.m22*m2.m21;
-		m.m22 = m1.m20*m2.m02 + m1.m21*m2.m12 + m1.m22*m2.m22;
-		m.m23 = m1.m20*m2.m03 + m1.m21*m2.m13 + m1.m22*m2.m23 + m1.m23;
-		return m;
+		m.m00 = m1.m00*m2.m00 + m1.m01*m2.m10 + m1.m02*m2.m20 + m1.m03*m2.m30;
+		m.m01 = m1.m00*m2.m01 + m1.m01*m2.m11 + m1.m02*m2.m21   + m1.m03*m2.m31;
+		m.m02 = m1.m00*m2.m02 + m1.m01*m2.m12 + m1.m02*m2.m22   + m1.m03*m2.m32;
+		m.m03 = m1.m00*m2.m03 + m1.m01*m2.m13 + m1.m02*m2.m23 + m1.m03*m2.m33;
+
+		m.m10 = m1.m10*m2.m00 + m1.m11*m2.m10 + m1.m12*m2.m20   + m1.m13*m2.m30;
+		m.m11 = m1.m10*m2.m01 + m1.m11*m2.m11 + m1.m12*m2.m21   + m1.m13*m2.m31;;
+		m.m12 = m1.m10*m2.m02 + m1.m11*m2.m12 + m1.m12*m2.m22    + m1.m13*m2.m32;;
+		m.m13 = m1.m10*m2.m03 + m1.m11*m2.m13 + m1.m12*m2.m23 + m1.m13*m2.m33;
+
+		m.m20 = m1.m20*m2.m00 + m1.m21*m2.m10 + m1.m22*m2.m20   + m1.m23*m2.m30;
+		m.m21 = m1.m20*m2.m01 + m1.m21*m2.m11 + m1.m22*m2.m21   + m1.m23*m2.m31;;
+		m.m22 = m1.m20*m2.m02 + m1.m21*m2.m12 + m1.m22*m2.m22        + m1.m23*m2.m32;;
+		m.m23 = m1.m20*m2.m03 + m1.m21*m2.m13 + m1.m22*m2.m23 + m1.m23*m2.m33;
+
+        m.m30 = m1.m30*m2.m00 + m1.m31*m2.m10 + m1.m32*m2.m20   + m1.m33*m2.m30;
+        m.m31 = m1.m30*m2.m01 + m1.m31*m2.m11 + m1.m32*m2.m21   + m1.m33*m2.m31;;
+        m.m32 = m1.m30*m2.m02 + m1.m31*m2.m12 + m1.m32*m2.m22        + m1.m33*m2.m32;;
+        m.m33 = m1.m30*m2.m03 + m1.m31*m2.m13 + m1.m32*m2.m23 + m1.m33*m2.m33;
+
+
+
+
+        return m;
 	}
 	/**
 	 * Multiply the two matrices.  Return m1 x m2
@@ -297,6 +309,21 @@ public class GL_Matrix
 		return newVector;
 	}
 
+    /**
+     * Multiply the two matrices.  Return m1 x m2
+     */
+    public static Point4f multiply(GL_Matrix m1, Point4f vector)
+    {
+        Point4f newVector = new Point4f();
+        newVector.x=  m1.m00*vector.x + m1.m01*vector.y + m1.m02*vector.z+ vector.w*m1.m03;
+        newVector.y=  m1.m10*vector.x + m1.m11*vector.y + m1.m12*vector.z+ m1.m13*vector.w;
+        newVector.z=  m1.m20*vector.x + m1.m21*vector.y + m1.m22*vector.z+ m1.m23*vector.w;
+        newVector.w=  m1.m30*vector.x + m1.m31*vector.y + m1.m32*vector.z+ m1.m33*vector.w;
+
+
+        return newVector;
+    }
+
 	/**
 	 * Multiply the two matrices.  Return m1 x m2
 	 */
@@ -311,6 +338,22 @@ public class GL_Matrix
 
 		return newVector;
 	}
+
+    /**
+     * Multiply the two matrices.  Return m1 x m2
+     */
+    public static Point4f multiply(Point4f vector,GL_Matrix m1 )
+    {
+        Point4f point4f = new Point4f();
+        point4f.x=  m1.m00*vector.x + m1.m10*vector.y + m1.m20*vector.z+vector.w* m1.m30;
+        point4f.y= m1.m01*vector.x + m1.m11*vector.y + m1.m21*vector.z+ vector.w*m1.m31;
+        point4f.z=  m1.m02*vector.x + m1.m12*vector.y + m1.m22*vector.z+ vector.w*m1.m32;
+        point4f.w=  m1.m03*vector.x + m1.m13*vector.y + m1.m23*vector.z+ vector.w*m1.m33;
+        //newVector.w=  m1.m30*vector.x + m1.m31*vector.x + m1.m32*vector.x+ m1.m33;
+
+
+        return point4f;
+    }
 
 	/**
 	 * return a string representation of this matrix
@@ -450,15 +493,48 @@ public class GL_Matrix
         m.m32=(float)(zn*zf/(zn-zf));
         return m;
     }
+
+    public static GL_Matrix
+         LookAt (GL_Vector camera,GL_Vector direction1){
+        //GL_Vector direction =  GL_Vector.sub(camera,target).normalize();
+
+        GL_Vector direction = new GL_Vector( -direction1.x,-direction1.y,-direction1.z);
+
+        GL_Vector up = new GL_Vector( 0,1,0);
+        GL_Vector cameraRight = GL_Vector.crossProduct(up,direction).normalize();
+        up = GL_Vector.crossProduct(direction,cameraRight).normalize();
+        GL_Matrix left = new GL_Matrix();
+        left.m00 = cameraRight.x;
+        left.m01=cameraRight.y;
+        left.m02=cameraRight.z;
+
+        left.m10 = up.x;
+        left.m11=up.y;
+        left.m12=up.z;
+
+        left.m20 = direction.x;
+        left.m21=direction.y;
+        left.m22=direction.z;
+
+        GL_Matrix right = new GL_Matrix();
+        right.m03 = -camera.x;
+
+        right.m13 = -camera.y;
+        right.m23 = -camera.z;
+
+        return GL_Matrix.multiply(left,right);
+    }
 	public static GL_Matrix perspective3(float fov, float aspect,float zn,float zf )
-	{fov=(float)(3.14*fov/180);
+	{
+
+        fov=(float)(3.14*fov/180);
 		GL_Matrix m = new GL_Matrix();
 		m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
 		m.m11=(float)(1/(Math.tan(fov*0.5f)));
-		m.m22=(float)(-zn-zf/(zf-zn));
-		m.m23=-1.0f;
+		m.m22=(float)(-zn-zf)/(zf-zn);
+		m.m32=-1.0f;
 
-		m.m32=(float)(-2*zn*zf/(zf-zn));
+		m.m23=(float)(-2*zn*zf/(zf-zn));
 		m.m33=0f;
 		return m;
 	}
@@ -492,6 +568,36 @@ public class GL_Matrix
 		m.m33 = 0.0f;
 		return m;
 	}
+    public static GL_Matrix  perspective4   (float fov, float aspect,float zn,float zf )
+    {GL_Matrix m = new GL_Matrix();
+        float ar = aspect;
+        float zNear = zn;
+        float zFar = zf;
+        float zRange = zn - zf;
+        double radi= 3.14*(fov / 2.0)/180;
+        float tanHalfFOV =(float)( Math.tan((float)radi));
+
+        m.m00 = 1.0f / (tanHalfFOV * ar);
+        m.m01 = 0.0f;
+        m.m02 = 0.0f;
+        m.m03 = 0.0f;
+
+        m.m10 = 0.0f;
+        m.m11 = 1.0f / tanHalfFOV;
+        m.m12 = 0.0f;
+        m.m13 = 0.0f;
+
+        m.m20 = 0.0f;
+        m.m21 = 0.0f;
+        m.m22 = (-zNear - zFar) / zRange;
+        m.m23= 2.0f * zFar * zNear / zRange;
+
+        m.m30= 0.0f;
+        m.m31 = 0.0f;
+        m.m32 = 1.0f;
+        m.m33 = 0.0f;
+        return m;
+    }
 
     /**
      * 正交投影
@@ -546,10 +652,11 @@ public class GL_Matrix
                 put(0).put(0).put(0).put(1);*/
 		for(int i = 0;i<4;i++) {//数据居然要从上往下算第一列 再第二列传数据
 			for (int j = 0; j < 4; j++) {
-				matrixBuffer.put(arr[i][j]);
+				matrixBuffer.put(arr[j][i]);
 			}
 		}
-		matrixBuffer.rewind();
+		matrixBuffer.flip();
+        System.out.println();
 		return matrixBuffer;
 
 
@@ -560,28 +667,52 @@ public class GL_Matrix
 		GL_Matrix model= GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0);
 
 		GL_Matrix view= GL_Matrix.translateMatrix(0,0,3);
-		GL_Matrix projection= GL_Matrix.perspective(90,600/600,2f,1000.0f);
+		GL_Matrix projection= GL_Matrix.perspective3(45, 600 / 600, 1f, 1000.0f);
 		GL_Matrix finalMatrix =  GL_Matrix.multiply(GL_Matrix.multiply(projection,view),model);
 		// GL_Vector vector = finalMatrix.multiply(projection,new GL_Vector(0f,4f,-4f));
 
 
-		int width=4;
-		int height=4;
-		int z=-4;
-		for(int i=-width/2;i<width/2;i++){
-			for(int j=-height/2;j<height/2;j++){
-				GL_Vector neVector =new GL_Vector(i,j,z);
+        float z=-13f;
+        float multi=1;
+        float VerticesArray[]= {0.5f*multi, 0.5f*multi,z, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top Right
+                0.5f*multi, -0.5f*multi, z, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
+                -0.5f*multi, -0.5f*multi,z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
+                -0.5f*multi, 0.5f*multi, z, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
+        };
+        //
+        float n =1f;
 
-				GL_Vector vector = GL_Matrix.multiply(neVector,projection);
-				vector.x=vector.x/4;
-				vector.y=vector.y/4;
-				vector.z=vector.z/4;
-				if(vector.x>1 ||vector. x<-1  || vector.y<-1 ||vector. y>1 || vector.z>1 || vector.z<-1){
-					System.out.print("x:"+i+"y:"+j+"z:"+z +" ====> "+vector+"\n");
-				}
-				//System.out.print("x:"+i+"y:"+j+"z:"+z +" ====> "+vector+"\n");
-			}
-		}
+
+        for(int i=0;i<4;i++){
+            Point4f eyeVector =new Point4f(VerticesArray[0+i*8],VerticesArray[1+i*8],VerticesArray[2+i*8],1);
+            //Point4f
+           // GL_Vector vector2 =  GL_Matrix.multiply(model,neVector);
+           // GL_Vector vector3 =  GL_Matrix.multiply(view,vector2);
+            //Point4f vector3=neVector;
+            Point4f clipVector =  GL_Matrix.multiply(projection,eyeVector);
+            Point4f nVector= new Point4f();
+            nVector.x=-1*clipVector.x/eyeVector.z;
+            nVector.y=-1*clipVector.y/eyeVector.z;
+            nVector.z=-1*clipVector.z/eyeVector.z;
+            nVector.w=-1*clipVector.w/ eyeVector.z; //eyeVector.z;
+
+            float xp =-1*n*eyeVector.x/eyeVector.z;
+            float yp =-1*n*eyeVector.y/eyeVector.z;
+            //vector.z=vector.z/vector.w;
+            //vector.w=vector.w/vector.w;
+        /*    GL_Vector vector =  GL_Matrix.multiply(neVector,projection);
+            vector.x=vector.x/neVector.z;
+            vector.y=vector.y/neVector.z;
+            vector.z=-1*vector.z/neVector.z;
+               vector =  GL_Matrix.multiply(model,vector);
+             vector =  GL_Matrix.multiply(view,vector);*/
+
+
+            System.out.print(eyeVector+" ====> "+clipVector+"=====>"+nVector+"\n");
+
+
+
+        }
 
 	}
 

@@ -181,12 +181,12 @@ public class MyBlockEngine extends GLApp {
     public void setup() {
 
         //开启胜读测试
-         shaderTest= new LearnOpengl5();
+        /* shaderTest= new LearnOpengl5();
         try {
             shaderTest.initGL();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         Client client =new Client();
         client.start();
         CoreRegistry.put(Client.class,client);
