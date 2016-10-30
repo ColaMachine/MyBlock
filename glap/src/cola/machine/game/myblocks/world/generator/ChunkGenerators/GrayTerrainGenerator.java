@@ -1,8 +1,6 @@
 package cola.machine.game.myblocks.world.generator.ChunkGenerators;
 import glapp.GLImage;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.Map;
@@ -13,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import util.ImageUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.WorldBiomeProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
@@ -57,7 +54,7 @@ public class GrayTerrainGenerator implements FirstPassGenerator{
 	    int height=image.h;
 	      heightmap =new float[width][height];
 	      try {
-	    	  heightmap = ImageUtil.getGrayPicturef("images/gray.png");
+	    	  heightmap = ImageUtil.getGrayPicturef("assets/images/gray.png");
 			} catch (Exception e) {
 				// VIP Auto-generated catch block
 				e.printStackTrace();

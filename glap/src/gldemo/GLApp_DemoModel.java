@@ -67,7 +67,7 @@ public class GLApp_DemoModel extends GLApp {
 
         setAmbientLight(new float[] { .6f, .6f, .9f, 1f });
 
-        sky = loadImage("images/sky.jpg");
+        sky = loadImage("assets/images/sky.jpg");
 
         // Load the model
         object = new GLModel("models/JetFire/JetFire.obj");

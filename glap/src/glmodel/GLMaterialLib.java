@@ -11,7 +11,7 @@ import glapp.*;
  */
 public class GLMaterialLib {
     // path to the .mtl file (loadMaterial() will set these)
-    // we'll load texture images from same folder as material file
+    // we'll load texture assets.images from same folder as material file
     public String filepath = "";
     public String filename = "";
 

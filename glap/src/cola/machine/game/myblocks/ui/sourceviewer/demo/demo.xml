@@ -301,7 +301,7 @@
                                 <param name="codeString"><fontDef filename="../../textarea/code.fnt" color="#ce7b00"/></param>
                                 <param name="codeKeyword"><fontDef filename="../../textarea/code.fnt" color="#0000e6"/></param>
                             </map></param>
-                            <param name="images"><map>
+                            <param name="assets.images"><map>
                                 <param name="ul-bullet"><image>textarea.ul-bullet</image></param>
                             </map></param>
                             <param name="mouseCursor.link"><cursor>cursor.finger</cursor></param>

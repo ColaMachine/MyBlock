@@ -6,7 +6,6 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.input.*;
 import org.lwjgl.util.glu.*;
 
-import cola.machine.game.myblocks.manager.TextureManager;
 import glapp.*;
 import glmodel.*;
 
@@ -118,7 +117,7 @@ public class GLApp_Demo19 extends GLApp {
         // Enable alpha transparency (so text will have transparent background)
 
         // Create texture for spere
-        sphereTextureHandle = makeTexture("images/Particle.bmp");
+        sphereTextureHandle = makeTexture("assets/images/Particle.bmp");
 
 
         // set camera 1 position

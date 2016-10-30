@@ -554,7 +554,7 @@
         <param name="fonts"><map>
             <param name="default"><font>normal</font></param>
         </map></param>
-        <param name="images"><map>
+        <param name="assets.images"><map>
         </map></param>
         <param name="classes"><map>
         </map></param>

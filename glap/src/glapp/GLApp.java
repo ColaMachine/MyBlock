@@ -9,13 +9,13 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
-import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import de.matthiasmann.twl.GUI;
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.input.*;
+import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.*;
 
 /**
@@ -26,7 +26,7 @@ import org.lwjgl.util.glu.*;
  *        Run main loop of application <BR>
  *        Buffer allocation -- manage IntBuffer, ByteBuffer calls. <BR>
  *        OpenGL functions  -- convert screen/world coords, set modes, lights, etc. <BR>
- *        Utility functions -- load images, convert pixels, getTimeInMillis, etc. <BR>
+ *        Utility functions -- load assets.images, convert pixels, getTimeInMillis, etc. <BR>
  * <P>
  * Has a main() function to run as an application, though this class has only
  * minimal placeholder functionality.  It is meant to be subclassed,
@@ -150,7 +150,7 @@ public class GLApp {
      * handleEvents() calls:  mouseMove(), mouseDown(), mouseUp(), keyDown(), keyUp()
      */
     public void run() {
-        // hold onto application class in case we need to load images from jar (see getInputStream())
+        // hold onto application class in case we need to load assets.images from jar (see getInputStream())
         setRootClass();
         try {
             // Init Display, Keyboard, Mouse, OpenGL, load config file
@@ -223,7 +223,7 @@ public class GLApp {
             }
             if (cursorY < 0) {
                 cursorY = 0;
-            }
+            }77uy
             else if (cursorY > displayMode.getHeight()) {
                 cursorY = displayMode.getHeight();
             }
@@ -545,7 +545,7 @@ public class GLApp {
             // How to handle transparency: average colors together
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-            // Enable alpha test so the transparent backgrounds in texture images don't
+            // Enable alpha test so the transparent backgrounds in texture assets.images don't
             // draw.
             // This prevents transparent areas from affecting the depth or stencil buffer.
             // alpha func will accept only fragments with alpha greater than 0
@@ -1210,7 +1210,7 @@ public class GLApp {
         // get a new empty texture
         int textureHandle = allocateTexture();
         // preserve currently bound texture, so glBindTexture() below won't affect anything)
-        GL11.glPushAttrib(GL11.GL_TEXTURE_BIT);
+//        GL11.glPushAttrib(GL11.GL_TEXTURE_BIT);
         // 'select' the new texture by it's handle
         GL11.glBindTexture(GL11.GL_TEXTURE_2D,textureHandle);
         // set texture parameters
@@ -1240,7 +1240,7 @@ public class GLApp {
                 pixels);				// incoming pixels
 
         // restore previous texture settings
-        GL11.glPopAttrib();
+//        GL11.glPopAttrib();
 
         return textureHandle;
     }
@@ -1302,15 +1302,16 @@ public class GLApp {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
             ret = GLU.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D, GL11.GL_RGBA8,
                     textureImg.w, textureImg.h,
-                    GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, textureImg.getPixelBytes());
+                    GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, textureImg.getPixelBytes());Util.checkGLError();
             if (ret != 0) {
                 err("GLApp.makeTextureMipMap(): Error occured while building mip map, ret=" + ret + " error=" + GLU.gluErrorString(ret) );
             }
 //            GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 //                    GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
             // Assign the mip map levels and texture info
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
-            GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);Util.checkGLError();
+            //GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+            Util.checkGLError();
         }
         return ret;
     }
@@ -1533,7 +1534,7 @@ public class GLApp {
      * and height to exactly match the screen pixel width and height (it uses
      * the viewport size, which is typically the exact same size as the opengl window).
      * This makes it easy to map screen positions to the world space.  Text positions,
-     * images and mouse coordinates map pixel-for-pixel to the screen.
+     * assets.images and mouse coordinates map pixel-for-pixel to the screen.
      * <P>
      * The drawback is that the ortho world space will change size on different
      * resolution screens. In low-res screens the ortho world may be 800x600 while
@@ -2007,7 +2008,7 @@ public class GLApp {
     }
 
     //========================================================================
-    // Load images
+    // Load assets.images
     //========================================================================
 
     /**
@@ -2065,7 +2066,7 @@ public class GLApp {
      *    int cursorTxtr;
      *
      *    public void setup() {
-     *        cursorTxtr = makeTexture("images/cursorCrosshair32.gif"); // image must be 32x32
+     *        cursorTxtr = makeTexture("assets.images/cursorCrosshair32.gif"); // image must be 32x32
      *    }
      *
      *    public void draw() {
@@ -2134,7 +2135,7 @@ public class GLApp {
      *    int cursorTxtr;
      *
      *    public void setup() {
-     *        cursorTxtr = makeTexture("images/cursorCrosshair32.gif"); // image must be 32x32
+     *        cursorTxtr = makeTexture("assets.images/cursorCrosshair32.gif"); // image must be 32x32
      *    }
      *
      *    public void draw() {
@@ -3053,7 +3054,7 @@ public class GLApp {
     {
         // if font is not initiallized, try loading default font
         if (fontListBase == -1 || fontTextureHandle == -1) {
-            if (!buildFont("glap/images/font_tahoma.png", 12)) {
+            if (!buildFont("glap/assets/images/font_tahoma.png", 12)) {
                 err("GLApp.print(): character set has not been created -- see buildFont()");
                 return;
             }
@@ -3092,7 +3093,7 @@ public class GLApp {
         int offset;
         if (fontListBase == -1 || fontTextureHandle == -1) {
             // font is not initiallized, try this default
-            if (!buildFont("images/font_tahoma.png", 12)) {
+            if (!buildFont("assets/images/font_tahoma.png", 12)) {
                 err("GLApp.printZ(): character set has not been created -- see buildFont()");
                 return;
             }
@@ -3120,7 +3121,7 @@ public class GLApp {
     //
     // Pbuffers are offscreen buffers that can be rendered into just like
     // the regular framebuffer.  A pbuffer can be larger than the screen,
-    // which allows for the creation of higher resolution images.
+    // which allows for the creation of higher resolution assets.images.
     //
     //========================================================================
 
@@ -3223,7 +3224,7 @@ public class GLApp {
 
     /**
      * Save the current frame buffer to a PNG image. Can also
-     * be used with the PBuffer class to copy large images or textures that
+     * be used with the PBuffer class to copy large assets.images or textures that
      * have been rendered into the offscreen pbuffer.
      */
     public static void screenShot(String imageFilename) {
@@ -3243,7 +3244,7 @@ public class GLApp {
     /**
      * Save a region of the current render buffer to a PNG image.  If the current
      * buffer is the framebuffer then this will work as a screen capture.  Can
-     * also be used with the PBuffer class to copy large images or textures that
+     * also be used with the PBuffer class to copy large assets.images or textures that
      * have been rendered into the offscreen pbuffer.
      * <P>
      * WARNING: this function hogs memory!  Call java with more memory
@@ -3288,7 +3289,7 @@ public class GLApp {
      * keeping the function here for reference.
      * <P>
      * If the current buffer is the framebuffer then this will work as a screen capture.
-     * Can also be used with the PBuffer class to copy large images or textures that
+     * Can also be used with the PBuffer class to copy large assets.images or textures that
      * have been rendered into the offscreen pbuffer.
      * <P>
      * WARNING: this function hogs memory!  Call java with more memory
@@ -3742,7 +3743,7 @@ public class GLApp {
      * <PRE>
      *      MyGame.class
      *      models (folder)
-     *      images (folder)
+     *      assets.images (folder)
      *      sounds (folder)
      *  </PRE>
      *  In this case setRootClass() will set the rootClass to MyGame.  If MyGame

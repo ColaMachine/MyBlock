@@ -127,7 +127,7 @@ public class LearnOpengl912 {
         GLImage textureImg;
         try {
 
-            textureImg = GLApp.loadImage(PathManager.getInstance().getHomePath().resolve("images/items.png").toUri());//
+            textureImg = GLApp.loadImage(PathManager.getInstance().getHomePath().resolve("assets/images/items.png").toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
 

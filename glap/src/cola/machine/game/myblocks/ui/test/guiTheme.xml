@@ -203,7 +203,7 @@
         <param name="fonts"><map>
             <param name="default"><font>normal</font></param>
         </map></param>
-        <param name="images"><map>
+        <param name="assets.images"><map>
         </map></param>
     </theme>
 
@@ -388,8 +388,8 @@
         <param name="background"><image>none</image></param>
         <theme name="" ref="*"/>
         <theme name="checkmark" ref="checkbox">
-            <param name="text"><string>Animate images</string></param>
-            <param name="tooltip"><string>Animate the images while they are displayed</string></param>
+            <param name="text"><string>Animate assets.images</string></param>
+            <param name="tooltip"><string>Animate the assets.images while they are displayed</string></param>
         </theme>
         <theme name="scrollpane" ref="scrollpane">
             <param name=""><image>editfield.*</image></param>
@@ -431,7 +431,7 @@
 
     <theme name="licenseTextArea" ref="textarea">
         <param name="border"><border>0,0,0,10</border></param>
-        <param name="images"><map>
+        <param name="assets.images"><map>
             <param name="twl-logo"><image>twl-logo</image></param>
             <param name="ul-bullet"><image>textarea.ul-bullet</image></param>
         </map></param>

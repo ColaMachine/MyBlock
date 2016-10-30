@@ -14,7 +14,7 @@ import javax.imageio.*;
 
 /**
  * Loads an image from file, stores pixels as ARGB int array, and RGBA ByteBuffer for
- * use in OpenGL.  Can convert images to power-of-2 dimensions for textures.
+ * use in OpenGL.  Can convert assets.images to power-of-2 dimensions for textures.
  * <P>
  * Static functions are included to load, flip and convert pixel arrays.
  * <P>
@@ -400,7 +400,7 @@ public class GLImage {
 	}
 
     //========================================================================
-    // Static functions to flip and scale images
+    // Static functions to flip and scale assets.images
     //========================================================================
 
     /**

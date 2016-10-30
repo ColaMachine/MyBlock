@@ -463,10 +463,10 @@ public class GLApp_Demo_mirror2 extends GLApp {
         // GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         // Create texture for spere
-        sphereTextureHandle = makeTexture("glap/images/earth.gif");
+        sphereTextureHandle = makeTexture("glap/assets.images/earth.gif");
 
         // Create texture for ground plane
-        groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg",true,true);
+        groundTextureHandle = makeTexture("glap/assets.images/grass_1_512.jpg",true,true);
 
         camera1.setCamera(0,4,15, 0,-.3f,-1, 0,1,0);
 

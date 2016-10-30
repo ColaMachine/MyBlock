@@ -9,7 +9,12 @@ import cola.machine.game.myblocks.engine.subsystem.DisplayDevice;
 import cola.machine.game.myblocks.engine.subsystem.RenderingSubsystemFactory;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
+import cola.machine.game.myblocks.ui.login.LoginDemo;
+import de.matthiasmann.twl.GUI;
+import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
+import de.matthiasmann.twl.theme.ThemeManager;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
@@ -111,7 +116,11 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
             } catch (IOException | IllegalArgumentException e) {
                 logger.warn("Could not set icon", e);
             }
-            Display.create( rc.getPixelFormat());
+            ContextAttribs contextAtrributes = new ContextAttribs(3, 2)
+                    .withForwardCompatible(true)
+                    .withProfileCore(true);
+
+            Display.create( rc.getPixelFormat(),contextAtrributes);
             Display.setVSyncEnabled(rc.isVSync());//确定是否垂直同步
         } catch (LWJGLException e) {
             throw new RuntimeException("Can not initialize graphics device.", e);
@@ -182,7 +191,9 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
         assetManager.addResolver(AssetType.MESH, new IconMeshResolver());
         CoreRegistry.putPermanently(ShaderManager.class, new ShaderManagerLwjgl());
         CoreRegistry.get(ShaderManager.class).initShaders();*/
+
     }
+
 
     private void checkOpenGL() {//校验是否支持
         boolean canRunGame = GLContext.getCapabilities().OpenGL11
@@ -198,16 +209,16 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
             String message = "Your GPU driver is not supporting the mandatory versions or extensions of OpenGL. Considered updating your GPU drivers? Exiting...";
             logger.error(message);
             JOptionPane.showMessageDialog(null, message, "Mandatory OpenGL version(s) or extension(s) not supported", JOptionPane.ERROR_MESSAGE);
-            throw new RuntimeException(message);
+            //throw new RuntimeException(message);
         }
 
     }
 
     public void initOpenGLParams() {
-        glEnable(GL_CULL_FACE);
+      //  glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_NORMALIZE);
-        glDepthFunc(GL_LEQUAL);
+      //  glEnable(GL_NORMALIZE);
+      //  glDepthFunc(GL_LEQUAL);
     }
 
     public void registerSystems(ComponentSystemManager componentSystemManager) {

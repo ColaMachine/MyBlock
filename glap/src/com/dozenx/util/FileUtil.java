@@ -17,6 +17,10 @@ import java.io.*;
 public class FileUtil {
     public static String readFile2Str(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
+        if(!file.exists()){
+            LogUtil.println("not exsits "+path);
+            System.exit(0);
+        }
         InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
         BufferedReader br = new BufferedReader(isr);
         String s;
@@ -24,7 +28,11 @@ public class FileUtil {
         while ((s = br.readLine()) != null) {
             templateStr.append(s + "\r\n");
         }
-        LogUtil.println(s);
+        if(templateStr==null || templateStr.toString().length()==0){
+            LogUtil.println("file is empty: "+path);
+            System.exit(0);
+        }
+        LogUtil.println(templateStr.toString());
         return templateStr.toString();
     }
     public static void writeFile(File file ,String content) throws IOException {

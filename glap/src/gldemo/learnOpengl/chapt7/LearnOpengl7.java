@@ -77,6 +77,8 @@ public class LearnOpengl7 {
     }
     public void resizeGL() {
         glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
+        int i = glGenLists(1);
     }
 
     public void initGL() throws IOException {
@@ -99,7 +101,7 @@ public class LearnOpengl7 {
         GLImage textureImg;
         try {
 
-            textureImg = GLApp.loadImage(PathManager.getInstance().getHomePath().resolve("images/items.png").toUri());//
+            textureImg = GLApp.loadImage(PathManager.getInstance().getHomePath().resolve("assets/images/items.png").toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
 
@@ -154,7 +156,7 @@ public class LearnOpengl7 {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt7.vert").toString());
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt7/chapt7.vert").toString());
         //创建着色器
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -173,7 +175,7 @@ public class LearnOpengl7 {
 
     }
     void CreateFragShaders() throws IOException {
-        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt7.frag").toString());
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt7/chapt7.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();

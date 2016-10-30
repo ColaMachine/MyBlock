@@ -3,18 +3,14 @@ package cola.machine.game.myblocks.item.weapons;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
 import util.ImageUtil;
 import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.textture.TextureInfo;
 
 public class Sword {
 	public Block[] swords;
@@ -26,7 +22,7 @@ public class Sword {
 	public void init() {
 		List<Block> list = new ArrayList<Block>();
 		try {
-			Color[][] colors = ImageUtil.getGrayPicture("images/items.png", 64,
+			Color[][] colors = ImageUtil.getGrayPicture("assets/images/items.png", 64,
 					64, 80, 80);
 			for (int i = 0; i < 16; i++)
 				for (int j = 0; j < 16; j++) {
@@ -52,7 +48,7 @@ public class Sword {
     public void init1 () {
         List<Block> list = new ArrayList<Block>();
         try {
-            Color[][] colors = ImageUtil.getGrayPicture("images/items.png", 64,
+            Color[][] colors = ImageUtil.getGrayPicture("assets/images/items.png", 64,
                     64, 80, 80);
             for (int i = 0; i < 16; i++)
                 for (int j = 0; j < 16; j++) {

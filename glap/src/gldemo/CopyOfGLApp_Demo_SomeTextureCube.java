@@ -87,10 +87,10 @@ public class CopyOfGLApp_Demo_SomeTextureCube extends GLApp {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		// Create texture for spere
-		sphereTextureHandle = makeTexture("images/background.png");
+		sphereTextureHandle = makeTexture("assets/images/background.png");
 
 		// Create texture for ground plane
-		groundTextureHandle = makeTexture("images/background.png", true, true);
+		groundTextureHandle = makeTexture("assets/images/background.png", true, true);
 
 		// set camera 1 position
 		camera1.setCamera(0, 4, 15, 0, -.3f, -1, 0, 1, 0);
@@ -103,7 +103,7 @@ public class CopyOfGLApp_Demo_SomeTextureCube extends GLApp {
 		// make a sphere display list
 		earth = beginDisplayList();
 		/*{
-			// Ñ­»·´¦Àí
+			// Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			Block block = new Block();
 			for (int j = 0; j < 10; j++)
 				for (int i = 0; i < 10; i++) {

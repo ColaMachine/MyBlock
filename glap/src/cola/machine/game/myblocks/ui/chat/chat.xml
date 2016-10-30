@@ -43,9 +43,9 @@
       -->
     </images>
 
-    <!--<images file="../test/chaos_sphere_blue_800x600.png" format="RGB" filter="linear">
+    <!--<assets.images file="../test/chaos_sphere_blue_800x600.png" format="RGB" filter="linear">
         <area name="background-image" xywh="0,0,800,600"/>
-    </images>
+    </assets.images>
 -->
     <include filename="../test/cursors.xml"/>
 
@@ -192,7 +192,7 @@
                         <param name="color2"><font>blue</font></param>
                         <param name="link"><font>link</font></param>
                     </map></param>
-                    <param name="images"><map>
+                    <param name="assets.images"><map>
                         <param name="smiley"><image>smiley</image></param>
                     </map></param>
                     <param name="classes"><map>

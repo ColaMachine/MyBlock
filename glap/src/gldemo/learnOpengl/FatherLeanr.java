@@ -1,6 +1,7 @@
 package gldemo.learnOpengl;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import com.dozenx.util.FileUtil;
 import glapp.GLApp;
 import glapp.GLImage;
 import glmodel.GL_Matrix;
@@ -291,7 +292,7 @@ public class FatherLeanr {
         GLImage textureImg;
         try {
 
-            textureImg = GLApp.loadImage(PathManager.getInstance().getHomePath().resolve("images/items.png").toUri());//
+            textureImg = GLApp.loadImage(PathManager.getInstance().getHomePath().resolve("assets/images/items.png").toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
 
@@ -369,13 +370,8 @@ public class FatherLeanr {
     }
 
     public String readShaderSourceCode(String filePath) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        String str="";
-        String content ="";
-        while((str = reader.readLine()) !=null){
-            content+= str+"\n";
-        }
-        return content;
+        return  FileUtil.readFile2Str(filePath);
+
 
     }
 

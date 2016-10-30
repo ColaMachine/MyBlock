@@ -127,7 +127,7 @@ public class demo_shadow extends GLApp {
     public void setup() {
         airplaneShadow = new GLShadowOnPlane(lightPosition, new float[] {0f,1f,0f,3f}, null, this, method(this,"drawObjects"));
 		  boat = new GLModel("glap/models/boat/botrbsm1.obj");
-        groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg",true,true);
+        groundTextureHandle = makeTexture("glap/assets.images/grass_1_512.jpg",true,true);
 		  boat.mesh.regenerateNormals();
 		  boat.makeDisplayList();
      //  GL11. glEnable(GL11.GL_POINT_SMOOTH);
@@ -218,12 +218,12 @@ public class demo_shadow extends GLApp {
 		
 		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		// Create texture for spere
-		//sphereTextureHandle = makeTexture("images/background.png");
-		//humanTextureHandle = makeTexture("images/2000.png");
-		//skyTextureHandle = makeTexture("images/sky180.png");
-		//crossTextureHandle = makeTexture("images/gui.png");
+		//sphereTextureHandle = makeTexture("assets.images/background.png");
+		//humanTextureHandle = makeTexture("assets.images/2000.png");
+		//skyTextureHandle = makeTexture("assets.images/sky180.png");
+		//crossTextureHandle = makeTexture("assets.images/gui.png");
 		//waterTextureHandle = TextureManager.getIcon("water").textureHandle;
-		//textureImg = loadImage("images/gui.png");
+		//textureImg = loadImage("assets.images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
 		human.setHuman(1, 1, 5, 0, 0, -1, 0, 1, 0);
@@ -275,7 +275,7 @@ public class demo_shadow extends GLApp {
             }
         }
         // Create texture for spere
-        sphereTextureHandle = makeTexture("glap/images/earth.gif");
+        sphereTextureHandle = makeTexture("glap/assets.images/earth.gif");
        // GL11.glEnd();
         GL11.glBegin(GL11.GL_TRIANGLES);
         for( x=-xrange;x<xrange-1.0/acc;x+=1.0/acc){

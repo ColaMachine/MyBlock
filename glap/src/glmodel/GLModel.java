@@ -4,10 +4,10 @@ import org.lwjgl.opengl.GL11;
 
 /** 
  *  This class loads and renders a mesh from an OBJ file format.  The mesh can have
- *  multiple materials, including texture images.
+ *  multiple materials, including texture assets.images.
  *
  *  Uses GL_Mesh to load a .obj file and GLMaterialLIb to load the .mtl file.  It
- *  assumes the .obj .mtl and any texture images are present in the same folder.
+ *  assumes the .obj .mtl and any texture assets.images are present in the same folder.
  *
  *  Also has a function, renderTextured() to draw a mesh with no groups or materials.
  *  The entire mesh will be drawn as one group of triangles with one texture.

@@ -44,7 +44,7 @@ public class GLApp_DemoLine extends GLApp {
     	L = new GLLine(10f);
     	L.setUVfactor(200);
     	
-    	marble = makeTexture("images/marble.jpg");
+    	marble = makeTexture("assets/images/marble.jpg");
 
     	// turn on 2D drawing
     	setOrtho();    	

@@ -1,11 +1,7 @@
 package gldemo;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.*;
 
@@ -16,8 +12,6 @@ import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import glapp.*;
-import glmodel.GLModel;
-import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 /**
@@ -113,9 +107,9 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		// Create texture for spere
-		sphereTextureHandle = makeTexture("images/background.png");
-		humanTextureHandle = makeTexture("images/2000.png");
-		groundTextureHandle = makeTexture("images/background.png", true, true);
+		sphereTextureHandle = makeTexture("assets/images/background.png");
+		humanTextureHandle = makeTexture("assets/images/2000.png");
+		groundTextureHandle = makeTexture("assets/images/background.png", true, true);
 
 		// set camera 1 position
 		camera1.setCamera(0, 4, 15, 0, 0f, -1, 0, 1, 0);
@@ -125,7 +119,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 		/*human.startWalk();*/
 		
-		mouseControlCenter= new MouseControlCenter(human,cam.camera,null);
+		mouseControlCenter= new MouseControlCenter(human,cam.camera);
 		mouseControlCenter.centerX=this.displayWidth/2;
 		mouseControlCenter.centerY=this.displayHeight/2;
 		mouseControlCenter.human= human;

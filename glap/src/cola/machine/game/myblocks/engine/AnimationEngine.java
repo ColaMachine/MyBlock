@@ -5,7 +5,6 @@ import glapp.*;
 import glmodel.GLModel;
 import glmodel.GL_Vector;
 
-import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
@@ -15,10 +14,7 @@ import time.Time;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.item.weapons.Sword;
-import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -26,7 +22,6 @@ import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
-import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.Skysphere;
@@ -36,8 +31,6 @@ import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
-import cola.machine.game.myblocks.world.generator.WorldGenerator;
-import cola.machine.game.myblocks.world.generator.ChunkGenerators.HeightMapWorldGenerator;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import util.MathUtil;
@@ -125,7 +118,7 @@ public class AnimationEngine extends MyBlockEngine {
     public void setup() {
         airplaneShadow = new GLShadowOnPlane(lightPosition, new float[] {0f,1f,0f,3f}, null, this, method(this,"drawObjects"));
 		  boat = new GLModel("models/boat/botrbsm1.obj");
-        groundTextureHandle = makeTexture("images/grass_1_512.jpg",true,true);
+        groundTextureHandle = makeTexture("assets/images/grass_1_512.jpg",true,true);
 		  boat.mesh.regenerateNormals();
 		  boat.makeDisplayList();
      //  GL11. glEnable(GL11.GL_POINT_SMOOTH);
@@ -210,12 +203,12 @@ public class AnimationEngine extends MyBlockEngine {
 		
 		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		// Create texture for spere
-		//sphereTextureHandle = makeTexture("images/background.png");
-		//humanTextureHandle = makeTexture("images/2000.png");
-		//skyTextureHandle = makeTexture("images/sky180.png");
-		//crossTextureHandle = makeTexture("images/gui.png");
+		//sphereTextureHandle = makeTexture("assets.images/background.png");
+		//humanTextureHandle = makeTexture("assets.images/2000.png");
+		//skyTextureHandle = makeTexture("assets.images/sky180.png");
+		//crossTextureHandle = makeTexture("assets.images/gui.png");
 		//waterTextureHandle = TextureManager.getIcon("water").textureHandle;
-		//textureImg = loadImage("images/gui.png");
+		//textureImg = loadImage("assets.images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
 		human.setHuman(1, 34, 5, 0, 0, -1, 0, 1, 0);
@@ -225,7 +218,7 @@ public class AnimationEngine extends MyBlockEngine {
 
 		/*human.startWalk();*/
 
-		mouseControlCenter = new MouseControlCenter(human, camera1, this);
+		mouseControlCenter = new MouseControlCenter(human, camera1);
 		mouseControlCenter.bulletPhysics = bulletPhysics;
 
 
@@ -267,7 +260,7 @@ public class AnimationEngine extends MyBlockEngine {
             }
         }
         // Create texture for spere
-        sphereTextureHandle = makeTexture("images/earth.gif");
+        sphereTextureHandle = makeTexture("assets/images/earth.gif");
        // GL11.glEnd();
         GL11.glBegin(GL11.GL_TRIANGLES);
         for( x=-xrange;x<xrange-1.0/acc;x+=1.0/acc){

@@ -364,9 +364,9 @@
         <alias name="colorselector.cursor" ref="-selH"/>
     </images>
 
-    <!--    <images file="../test/simple.png" format="RGBA">
+    <!--    <assets.images file="../test/simple.png" format="RGBA">
             <area name="closeimage" border="3" xywh="0,16,9,9" />
-        </images>-->
+        </assets.images>-->
     <images file="../test/chaos_sphere_blue_800x600.png" format="RGB" filter="linear">
         <area name="background-image" xywh="0,0,800,600"/>
     </images>
@@ -562,7 +562,7 @@
                             <param name="color2"><font>blue</font></param>
                             <param name="link"><font>link</font></param>
                         </map></param>
-                        <param name="images"><map>
+                        <param name="assets.images"><map>
                             <param name="smiley"><image>smiley</image></param>
                         </map></param>
                         <param name="classes"><map>

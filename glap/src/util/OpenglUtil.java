@@ -1,16 +1,23 @@
 package util;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
+import com.dozenx.util.FileUtil;
 import glapp.GLApp;
 import glmodel.GL_Vector;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
+
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glCompileShader;
 
 public class OpenglUtil {
     public static void WorldToScreen(GL_Vector worldPoint){
@@ -126,4 +133,125 @@ public class OpenglUtil {
 
 
 	}
+
+    public static int CreateProgram(String vertexPath,String fragPath)throws Exception {
+        int vertShaderId =CreateVertShaders(vertexPath);
+        int fragShaderId = CreateFragShaders(fragPath);
+        int programId = CreateProgram(vertShaderId,fragShaderId);
+        return programId;
+
+    }
+
+
+    public static int CreateProgram(int vertexShaderId, int fragmentShaderId){
+        int newProgramId = glCreateProgram();
+        Util.checkGLError();
+
+        // Attach vertex shader
+        glAttachShader(newProgramId, vertexShaderId);
+        Util.checkGLError();
+
+        // Attach fragment shader
+        glAttachShader(newProgramId, fragmentShaderId);
+        Util.checkGLError();
+
+        // We tell the program how the vertex attribute indices will map
+        // to named "in" variables in the vertex shader. This must be done
+        // before compiling.
+        // glBindAttribLocation(ProgramId, POSITION_INDEX, "in_Position");
+        // glBindAttribLocation(ProgramId, COLOR_INDEX, "in_Color");
+
+        glLinkProgram(newProgramId);
+        Util.checkGLError();
+
+        // Print possible compile errors
+        System.out.println("Program linking:");
+        printProgramLog(newProgramId);
+
+
+        //System.out.println("transformLoc:"+transformLoc);
+        Util.checkGLError();
+        //glUseProgram(ProgramId);
+        // Util.checkGLError();
+        return newProgramId;
+
+
+    }
+
+    public static int  CreateVertShaders(String path) throws IOException {
+
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/"+path).toString());
+        //创建着色器
+        int  newShaderId = glCreateShader(GL_VERTEX_SHADER);
+        Util.checkGLError();
+        //源码
+        glShaderSource(newShaderId, VertexShader);
+        Util.checkGLError();
+        //编译
+        glCompileShader(newShaderId);
+        Util.checkGLError();
+        //打印日志
+        printShaderLog(newShaderId);
+        Util.checkGLError();
+        return newShaderId;
+    }
+    public static int CreateFragShaders(String path) throws IOException {
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/"+path).toString());
+
+        int newFragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+        Util.checkGLError();
+
+        glShaderSource(newFragmentShaderId, FragmentShader);
+        Util.checkGLError();
+
+        glCompileShader(newFragmentShaderId);
+        Util.checkGLError();
+
+        // Print possible compile errors
+        System.out.println("Fragment shader compilation:");
+        printShaderLog(newFragmentShaderId);
+        return newFragmentShaderId;
+
+    }
+
+    public static String readShaderSourceCode(String filePath) throws IOException {
+        return  FileUtil.readFile2Str(filePath);
+
+
+    }
+    /**
+     * Print log of shader object.
+     *
+     * @param id
+     */
+    public static void printShaderLog(int id) {
+        int logLength = glGetShader(id, GL_INFO_LOG_LENGTH);
+        Util.checkGLError();
+
+        System.out.println("  Log (length " + logLength + " chars)");
+        String log = glGetShaderInfoLog(id, logLength);
+        Util.checkGLError();
+        for (String line : log.split("\n")) {
+            System.out.println("  " + line);
+        }
+        System.out.println("");
+    }
+
+    /**
+     * Print log of program object
+     *
+     * @param programId
+     */
+    public static void printProgramLog(int programId) {
+        int logLength = glGetProgram(programId, GL_INFO_LOG_LENGTH);
+        Util.checkGLError();
+
+        System.out.println("  Log (length " + logLength + " chars)");
+        String log = glGetProgramInfoLog(programId, logLength);
+        Util.checkGLError();
+        for (String line : log.split("\n")) {
+            System.out.println("  " + line);
+        }
+        System.out.println("");
+    }
 }

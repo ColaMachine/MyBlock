@@ -88,13 +88,13 @@ public class GLApp_DemoSound extends GLApp {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         // Create texture and mipmap for frog sphere
-        sphereTextureHandle = makeTexture("images/tree_frog_1_512.jpg");
+        sphereTextureHandle = makeTexture("assets/images/tree_frog_1_512.jpg");
 
         // Create texture and mipmap for marble sphere
-        marbleTextureHandle = makeTexture("images/marble.jpg");
+        marbleTextureHandle = makeTexture("assets/images/marble.jpg");
 
         // Create texture with anisotropic filtering and mipmap for ground plane
-        groundTextureHandle = makeTexture("images/grass_1_512.jpg", true, true);
+        groundTextureHandle = makeTexture("assets/images/grass_1_512.jpg", true, true);
 
         //---------------------------------------------------------------
         // Make sphere display list (for performance)

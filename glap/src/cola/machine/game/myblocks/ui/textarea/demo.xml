@@ -229,7 +229,7 @@
                         <param name="code"><fontDef filename="code.fnt"/></param>
                         <param name="codeBold"><fontDef filename="codeBold.fnt"/></param>
                     </map></param>
-                    <param name="images"><map>
+                    <param name="assets.images"><map>
                         <param name="frame"><image>evilframe.background</image></param>
                         <param name="smiley"><image>smiley</image></param>
                         <param name="ul-bullet"><image>textarea.ul-bullet</image></param>

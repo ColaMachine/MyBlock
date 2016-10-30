@@ -11,11 +11,13 @@ import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import glapp.GLApp;
 import glapp.GLImage;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lwjgl.opengl.Util;
 import util.MapUtil;
 
 
@@ -36,7 +38,7 @@ public class TextureManager {
 
 
         installPath = PathManager.getInstance().getInstallPath();
-        try {
+        try {Util.checkGLError();
             loadImage();
             loadTexture();
             loadShape();
@@ -47,15 +49,15 @@ public class TextureManager {
         }
       /*  this.putImage("grass_top", "assets/blockTiles/plant/Grass.png");
         this.putImage(
-                "human", "images/char.png"
+                "human", "assets.images/char.png"
         );*/
         //textureInfoMap.put("human", new TextureInfo("human"));
-        //this.putImage("heightmap", "images/gray.png");
+        //this.putImage("heightmap", "assets.images/gray.png");
        // textureInfoMap.put("heightmap", new TextureInfo("heightmap"));
-       // this.putImage("background", "images/background.png");
+       // this.putImage("background", "assets.images/background.png");
 
        // textureInfoMap.put("background", new TextureInfo("background"));
-       // this.putImage("gui", "images/gui.png");
+       // this.putImage("gui", "assets.images/gui.png");
        // textureInfoMap.put("cross", new TextureInfo("gui", 1 / 12f + 0.01f, 10 / 12f, 1 / 12f, 1 / 12f, true));
 
         //textureInfoMap.put("selectBox", new TextureInfo("gui", 0, 210, 23, 23));
@@ -64,10 +66,10 @@ public class TextureManager {
        // this.putImage("widgets", "assets/minecraft/textures/gui/widgets.png");
        // textureInfoMap.put("toolbar", new TextureInfo("widgets", 0, 469, 362, 43));
 
-        //this.put("night", "images/night.jpg");
+        //this.put("night", "assets.images/night.jpg");
         //textureInfoMap.put("night", new TextureInfo("night"));
 
-        //this.put("most","images/fewest.tif");
+        //this.put("most","assets.images/fewest.tif");
         //textureInfoMap.put("most",new TextureInfo("most"));
         this.putImage("sun", "assets/minecraft/textures/environment/sun.png");
         textureInfoMap.put("sun", new TextureInfo("sun"));
@@ -75,12 +77,12 @@ public class TextureManager {
         //this.putImage("inventory", "assets/minecraft/textures/gui/container/inventory.png");
         //textureInfoMap.put("bag", new TextureInfo("inventory", 0, 179, 352, 332));
 
-     //   this.putImage("human", "images/2000.png");
+     //   this.putImage("human", "assets.images/2000.png");
         //textureInfoMap.put("bag",new TextureInfo("inventory",0,179,352,332));
 
         /*this.putImage("apple_golden", "assets/minecraft/textures/items/apple_golden.png");
 
-        this.putImage("items", "images/items.png");
+        this.putImage("items", "assets.images/items.png");
 
 
         textureInfoMap.put("apple_golden", new TextureInfo("apple_golden"));
@@ -91,7 +93,7 @@ public class TextureManager {
        this.putImage("gold_armor","assets/minecraft/textures/models/armor/gold_layer_2.png");
         textureInfoMap.put("gold_armor", new TextureInfo("gold_armor"));
       
-       // this.putImage("particle","images/Particle.bmp");
+       // this.putImage("particle","assets.images/Particle.bmp");
        // textureInfoMap.put("particle", new TextureInfo("particle"));
       
        
@@ -177,6 +179,11 @@ public class TextureManager {
        return itemCfg;
     }
     public void putImage(String name, String textureImagePath) {
+        File file =installPath.resolve(textureImagePath).toFile();
+        if(!file.exists()){
+            LogUtil.println("not exists:"+textureImagePath);
+            System.exit(0);
+        }
         int textureHandle = 0;
 
 
@@ -184,12 +191,13 @@ public class TextureManager {
         try {
             LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
            Texture texture = renderer.loadTexture(new URL(installPath.toUri().toURL(), textureImagePath),"RGBA","linear");
-
+            Util.checkGLError();
             textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
-                textureImg.textureHandle = GLApp.makeTexture(textureImg);
+                textureImg.textureHandle = GLApp.makeTexture(textureImg);Util.checkGLError();
                 GLApp.makeTextureMipMap(textureHandle, textureImg);
+                Util.checkGLError();
             }
             textureMap.put(name,texture);
             imageMap.put(name, textureImg);
@@ -205,7 +213,7 @@ public class TextureManager {
 
     }
     public void loadImage() throws Exception {
-
+        Util.checkGLError();
         try  {
            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/image.cfg").toString()) ;
            LogUtil.println("homepath:"+PathManager.getInstance().getHomePath());

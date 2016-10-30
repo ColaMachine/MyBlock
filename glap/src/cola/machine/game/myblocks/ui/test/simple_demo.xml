@@ -50,7 +50,7 @@
     </images>
     <theme name="licenseTextArea" ref="textarea">
         <param name="background"><image>none</image></param>
-        <param name="images"><map>
+        <param name="assets.images"><map>
             <param name="twl-logo"><image>twl-logo</image></param>
             <param name="ul-bullet"><image>textarea.ul-bullet</image></param>
         </map></param>
@@ -68,7 +68,7 @@
 
     <theme name="htmlTooltip" ref="textarea">
         <param name="background"><image>none</image></param>
-        <param name="images"><map>
+        <param name="assets.images"><map>
             <param name="twl-logo"><image>twl-logo</image></param>
             <param name="ul-bullet"><image>textarea.ul-bullet</image></param>
         </map></param>

@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Robot;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
@@ -40,7 +41,7 @@ import util.OpenglUtil;
 public class MouseControlCenter {
     public Human human;
     public GLCamera camera;
-    public MyBlockEngine engine;
+    //public MyBlockEngine engine;
     public double preKeyTime = 0;
     public Robot robot;
     public float centerX = 0;
@@ -56,11 +57,11 @@ public class MouseControlCenter {
      */
     Point mousepoint;
 
-    public MouseControlCenter(Human human, GLCamera camera, MyBlockEngine engine) {
-        this.engine = engine;
+    public MouseControlCenter(Human human, GLCamera camera) {
+        //this.engine = engine;
         this.human = human;
         this.camera = camera;
-        this.livingThingManager = engine.livingThingManager;
+        this.livingThingManager = CoreRegistry.get(LivingThingManager.class);
         centerX = Display.getX() + GLApp.displayWidth / 2;
 
         centerY = Display.getY() + GLApp.displayWidth / 2;
@@ -270,8 +271,8 @@ public class MouseControlCenter {
 //
         GL_Vector to = GL_Vector.add(camera.Position,
                 GL_Vector.multiply(viewdir, 10));
-        this.engine.lineStart = camera.Position;
-        this.engine.mouseEnd = to;
+        //this.engine.lineStart = camera.Position;
+        //this.engine.mouseEnd = to;
 //        ChunkProvider localChunkProvider = CoreRegistry
 //                .get(ChunkProvider.class);
 //        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
@@ -319,12 +320,12 @@ public class MouseControlCenter {
 
         GL_Vector to = GL_Vector.add(camera.Position,
                 GL_Vector.multiply(viewdir, 10));
-        this.engine.lineStart = camera.Position;
-        this.engine.mouseEnd = to;
+       // this.engine.lineStart = camera.Position;
+       // this.engine.mouseEnd = to;
         ChunkProvider localChunkProvider = CoreRegistry
                 .get(ChunkProvider.class);
         GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
-                20, engine.currentObject, true);
+                20, StartMenuState.catchThing, true);
         if (hitPoint != null) {
             // Block block=new
             // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);

@@ -643,6 +643,29 @@ public class GL_Matrix
 
 
     }
+
+    public void fillFloatBuffer(FloatBuffer matrixBuffer){
+        matrixBuffer.rewind();
+        matrixBuffer.put(m00);
+        matrixBuffer.put(m10);
+        matrixBuffer.put(m20);
+        matrixBuffer.put(m30);
+        matrixBuffer.put(m01);
+        matrixBuffer.put(m11);
+        matrixBuffer.put(m21);
+        matrixBuffer.put(m31);
+        matrixBuffer.put(m02);
+        matrixBuffer.put(m12);
+        matrixBuffer.put(m22);
+        matrixBuffer.put(m32);
+        matrixBuffer.put(m03);
+        matrixBuffer.put(m13);
+        matrixBuffer.put(m23);
+        matrixBuffer.put(m33);
+
+        matrixBuffer.rewind();
+
+    }
 	public FloatBuffer toFloatBuffer(){
 		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 		float[][] arr= this.exportToArray();

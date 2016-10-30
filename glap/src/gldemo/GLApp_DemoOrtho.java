@@ -67,13 +67,13 @@ public class GLApp_DemoOrtho extends GLApp {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        sphereTextureHandle = makeTexture("images/eye.jpg");
+        sphereTextureHandle = makeTexture("assets/images/eye.jpg");
 
         // Load a cursor image and make it a texture
-        cursorTextureHandle = makeTexture("images/cursorCrosshair32.gif");
+        cursorTextureHandle = makeTexture("assets/images/cursorCrosshair32.gif");
 
         // Load the image for 2D overlay and make it a texture
-        overlayImage = loadImage("images/frame_ornate3.gif");
+        overlayImage = loadImage("assets/images/frame_ornate3.gif");
         overlayTextureHandle = makeTexture(overlayImage);
     }
 

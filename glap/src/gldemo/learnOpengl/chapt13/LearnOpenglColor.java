@@ -1,7 +1,12 @@
 package gldemo.learnOpengl.chapt13;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.ui.chat.ChatDemo;
+import cola.machine.game.myblocks.ui.login.LoginDemo;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
+import de.matthiasmann.twl.GUI;
+import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
+import de.matthiasmann.twl.theme.ThemeManager;
 import gldemo.learnOpengl.FatherLeanr;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -10,6 +15,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Util;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -38,9 +44,21 @@ public class LearnOpenglColor extends FatherLeanr{
 
     int lightVertexShaderId;
     int lightFragmentShaderId;
-
+    GUI gui;
     GL_Vector lightPos=new GL_Vector(5,0,2);
     public void CreateVBO(){
+
+        LoginDemo demo = new LoginDemo();
+
+        LWJGLRenderer renderer = null;
+        try {
+            renderer = new LWJGLRenderer();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+         gui = new GUI(demo, renderer);
+
+       // demo.efName.requestKeyboardFocus();
 
 
 
@@ -97,7 +115,14 @@ public class LearnOpenglColor extends FatherLeanr{
 
         GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
 
-        GL_Matrix view= GL_Matrix.translateMatrix(0,0,-3);
+        //GL_Matrix view= GL_Matrix.translateMatrix(0,0,-3);
+
+
+        GL_Matrix view=
+                GL_Matrix.LookAt(cameraPos,viewDir);
+        view.fillFloatBuffer(cameraViewBuffer);
+
+
         GL_Matrix projection= GL_Matrix.perspective3(45,600/600,1f,1000.0f);
         Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
         Vertices.put(VerticesArray);
@@ -131,18 +156,30 @@ public class LearnOpenglColor extends FatherLeanr{
         //glUseProgram(ProgramId);
         glUseProgram(ProgramId);
         //unifrom赋值===========================================================
+        //投影矩阵
         int projectionLoc= glGetUniformLocation(ProgramId, "projection");
-        Util.checkGLError();
-        int modelLoc= glGetUniformLocation(ProgramId, "model");
-        Util.checkGLError();
-        int viewLoc= glGetUniformLocation(ProgramId, "view");
-        Util.checkGLError();
-        glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
-        Util.checkGLError();
-        glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
         Util.checkGLError();
         glUniformMatrix4(projectionLoc,  false,projection.toFloatBuffer() );
         Util.checkGLError();
+
+        //相机位置
+        viewLoc = glGetUniformLocation(ProgramId,"view");
+        viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+        Util.checkGLError();
+        glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
+        Util.checkGLError();
+
+        int modelLoc= glGetUniformLocation(ProgramId, "model");
+        Util.checkGLError();
+        glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
+        Util.checkGLError();
+
+
+        viewLoc= glGetUniformLocation(ProgramId, "view");
+        Util.checkGLError();
+
+
+
         //物体颜色
         int objectColorLoc= glGetUniformLocation(ProgramId, "objectColor");
         glUniform3f(objectColorLoc,1.0f,0.5f,0.31f);
@@ -196,28 +233,41 @@ public class LearnOpenglColor extends FatherLeanr{
         Util.checkGLError();
         glBindVertexArray(0);
         Util.checkGLError();
-try {
-    LightProgramId = this.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
-}catch(Exception e){
-    e.printStackTrace();
-    System.exit(0);
-}
+
+        try {
+            LightProgramId = this.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
+        }catch(Exception e){
+            e.printStackTrace();
+            System.exit(0);
+        }
         glUseProgram(LightProgramId);
          projectionLoc= glGetUniformLocation(LightProgramId, "projection");
-         modelLoc= glGetUniformLocation(LightProgramId, "model");
-         viewLoc= glGetUniformLocation(LightProgramId, "view");
-
-
-
-
-        glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
-        glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
-
         glUniformMatrix4(projectionLoc,  false,projection.toFloatBuffer() );
+        Util.checkGLError();
+
+         modelLoc= glGetUniformLocation(LightProgramId, "model");
+        glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
+        Util.checkGLError();
+
+         lightViewLoc= glGetUniformLocation(LightProgramId, "view");
+            glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
+        Util.checkGLError();
+
+
+
+
+
+
+
 
 
     }
+    public void intLocation(){
 
+    }
+    public void uniform(){
+
+    }
     int LightProgramId;
     public void render() throws LWJGLException {
 
@@ -259,23 +309,40 @@ try {
 //        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDrawArrays(GL_TRIANGLES,0,36);
         glBindVertexArray(0);
+        //gui.update();
     }
+    int viewLoc;//glGetUniformLocation(ProgramId,"view");
+    int lightViewLoc;// glGetUniformLocation(LightProgramId,"view");
+    FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
     public void cameraPosChangeListener(GL_Vector cameraPos){
         GL_Matrix view=
                 GL_Matrix.LookAt(cameraPos,viewDir);
-
+        view.fillFloatBuffer(cameraViewBuffer);
 
          glUseProgram(ProgramId);
-        int viewLoc= glGetUniformLocation(ProgramId,"view");
 
 
-        glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
+
+        glUniformMatrix4(viewLoc,  false,cameraViewBuffer);
+        Util.checkGLError();
+         //viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+
+
+        glUniform3f(viewPosLoc,  cameraPos.x,cameraPos.y,cameraPos.z);
+        Util.checkGLError();
+
+
         glUseProgram(LightProgramId);
-         viewLoc= glGetUniformLocation(LightProgramId,"view");
+        Util.checkGLError();
+          //lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
-        glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
+        glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
+
+        Util.checkGLError();
+
     }
+    int viewPosLoc;
 
     public static void main(String[] args) {
         LWJGLHelper.initNativeLibs();//加载lib包

@@ -86,9 +86,9 @@ public class GLApp_Demo_texturecube extends GLApp {
           //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
           // Create texture for spere
-          sphereTextureHandle = makeTexture("images/background.png");
+          sphereTextureHandle = makeTexture("assets/images/background.png");
           
-          groundTextureHandle = makeTexture("images/background.png",true,true);
+          groundTextureHandle = makeTexture("assets/images/background.png",true,true);
 
           camera1.setCamera(0,4,15, 0,-.3f,-1, 0,1,0);
           

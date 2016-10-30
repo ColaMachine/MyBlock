@@ -1,12 +1,13 @@
 package cola.machine.game.myblocks.engine;
 
 import cola.machine.game.myblocks.engine.modes.GameState;
-import cola.machine.game.myblocks.engine.modes.StateMainMenu;
+import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.EngineSubsystem;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglInput;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglTimer;
+import cola.machine.game.myblocks.input.InputSystem;
 import cola.machine.game.myblocks.utilities.concurrency.Task;
 import cola.machine.game.myblocks.utilities.concurrency.TaskMaster;
 
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.lwjgl.Sys;
@@ -77,8 +79,8 @@ public class BlockEngine implements GameEngine{
             BlockEngine engine = new BlockEngine(subsystemList);
 
           try{
-              engine.init();
-        	 engine.run(new StateMainMenu());
+            engine.init();
+            engine.run(new StartMenuState());
           }finally {
               try {
                   engine.dispose();
@@ -115,6 +117,7 @@ public class BlockEngine implements GameEngine{
     	 for(EngineSubsystem subsystem:subsystems){
     		 subsystem.preInitialise();//预先初始化各种设备
     	 }
+        time = (EngineTime) CoreRegistry.get(Time.class);
     	 System.out.println((Sys.getTime()*1000)/Sys.getTimerResolution());
     	 try {
 			Thread.sleep(1000);
@@ -126,11 +129,46 @@ public class BlockEngine implements GameEngine{
     	 for(EngineSubsystem subsystem:subsystems){
     		 subsystem.postInitialise(config);//预先初始化各种设备
     	 }
+        initialised = true;
     }
 
     @Override
     public void run(GameState initialState) {
+        CoreRegistry.putPermanently(GameEngine.class, this);
+        if (!initialised) {//if hasn't been initialised
+            init();
+        }
+        running = true;
+        changeState(initialState);
+        mainLoop();
 
+
+    }
+    public void mainLoop(){
+
+        while(true) {
+            Iterator<Float> updateCycles = time.tick();
+
+            //networkSystem.update();
+
+            long totalDelta = 0;
+            while (updateCycles.hasNext()) {
+                float delta = updateCycles.next();
+                totalDelta += time.getDeltaInMs();
+                currentState.update(delta);//statemainmenu
+            }
+            float delta = totalDelta / 1000f;
+
+            for (EngineSubsystem subsystem : getSubsystems()) {
+                subsystem.preUpdate(currentState, delta);
+            }
+
+
+
+            for (EngineSubsystem subsystem : subsystems) {
+                subsystem.postUpdate(currentState, delta);
+            }
+        }
     }
 
     @Override
@@ -160,7 +198,26 @@ public class BlockEngine implements GameEngine{
 
     @Override
     public void changeState(GameState newState) {
+        if (currentState != null) {
+            pendingState = newState;
+        } else {
+            switchState(newState);
+        }
+    }
 
+    private void switchState(GameState newState) {//what's this
+        if (currentState != null) {
+            currentState.dispose();
+        }
+        currentState = newState;
+        newState.init(this);
+        for (StateChangeSubscriber subscriber : stateChangeSubscribers) {
+            subscriber.onStateChange();
+        }
+        // drain input queues
+        InputSystem inputSystem = CoreRegistry.get(InputSystem.class);
+        inputSystem.getMouseDevice().getInputQueue();
+        inputSystem.getKeyboard().getInputQueue();
     }
 
     @Override

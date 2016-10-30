@@ -12,12 +12,12 @@ import glmodel.*;
  * scene and is incorporated into the scene as a texture on an object.
  * <P>
  * The GLApp.buildfont() function creates a character set by texture-mapping
- * images of characters onto quads.
+ * assets.images of characters onto quads.
  * <P>
  * GLApp.print(String) renders text strings as a series of texture-mapped quads.
  * <P>
  * The GLFont class takes a similar approach, but builds a character set
- * dynamically using the Java Font class.  Character images can drawn using
+ * dynamically using the Java Font class.  Character assets.images can drawn using
  * any font that your system supports, with italics, bold, and in a wide
  * ranges of sizes.
  * <P>
@@ -172,7 +172,7 @@ public class GLApp_DemoText extends GLApp {
     }
 
     /**
-     * Use GLFont to make texture images of the last 7 characters typed
+     * Use GLFont to make texture assets.images of the last 7 characters typed
      */
     public void keyDown(int keycode) {
     	if (keyChar() >= 32) {   // only printable characters

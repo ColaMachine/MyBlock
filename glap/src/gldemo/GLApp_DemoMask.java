@@ -101,16 +101,16 @@
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
                 // Create texture for spere
-                sphereTextureHandle = makeTexture("glap/images/earth.gif");
+                sphereTextureHandle = makeTexture("glap/assets.images/earth.gif");
 
                 // Create texture for ground plane
-                groundTextureHandle = makeTexture("glap/images/grass_1_512.jpg",true,true);
+                groundTextureHandle = makeTexture("glap/assets.images/grass_1_512.jpg",true,true);
 
-                h0=  makeTexture("glap/images/logo.bmp",true,true);
-                h1=  makeTexture("glap/images/mask1.bmp",true,true);
-                h2=  makeTexture("glap/images/image1.bmp",true,true);
-                h3=  makeTexture("glap/images/mask2.bmp",true,true);
-                h4=  makeTexture("glap/images/image2.bmp",true,true);
+                h0=  makeTexture("glap/assets.images/logo.bmp",true,true);
+                h1=  makeTexture("glap/assets.images/mask1.bmp",true,true);
+                h2=  makeTexture("glap/assets.images/image1.bmp",true,true);
+                h3=  makeTexture("glap/assets.images/mask2.bmp",true,true);
+                h4=  makeTexture("glap/assets.images/image2.bmp",true,true);
 
                 // set camera 1 position
                 camera1.setCamera(0,4,15, 0,-.3f,-1, 0,1,0);
