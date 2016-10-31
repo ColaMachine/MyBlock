@@ -120,7 +120,7 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
                     .withForwardCompatible(true)
                     .withProfileCore(true);
 
-            Display.create( rc.getPixelFormat());
+            Display.create( rc.getPixelFormat(),contextAtrributes);
             Display.setVSyncEnabled(rc.isVSync());//确定是否垂直同步
         } catch (LWJGLException e) {
             throw new RuntimeException("Can not initialize graphics device.", e);

@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.block.BlockDefManager;
+import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.world.chunks.*;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
 
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -30,6 +32,18 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
+
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class ChunkImpl implements Chunk {
 	int currentBlockType = 0;
@@ -339,11 +353,171 @@ public class ChunkImpl implements Chunk {
 		//System.out.println(this.count);
 		GLApp.endDisplayList();
 	}
+    int VaoId;
+    int VboId;
+    public void CreateTerrainVBO(){
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+
+
+        veticesBuffer.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
+        VboId=glGenBuffers();//create vbo
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, veticesBuffer, GL_STATIC_DRAW);//put data
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * 4, 0);
+
+        Util.checkGLError();
+        glEnableVertexAttribArray(0);
+        Util.checkGLError();
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * 4, 3*4);
+
+        Util.checkGLError();
+        glEnableVertexAttribArray(1);
+        Util.checkGLError();
+
+
+
+
+    }
+    public void CreateTerrainVAO(){
+
+
+        VaoId = glGenVertexArrays();
+        Util.checkGLError();
+
+        glBindVertexArray(VaoId);
+        Util.checkGLError();
+        this.CreateTerrainVBO();
+
+        glBindVertexArray(0);
+        Util.checkGLError();
+    }
+    public void buildShaderBuffer() {
+
+
+        ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
+        ChunkImpl leftChunk = (ChunkImpl)chunkProvider.getChunk(this.chunkPos.x-1,this.chunkPos.y,this.chunkPos.z);
+        ChunkImpl rightChunk = (ChunkImpl)chunkProvider.getChunk(this.chunkPos.x+1,this.chunkPos.y,this.chunkPos.z);
+        ChunkImpl frontChunk = (ChunkImpl)chunkProvider.getChunk(this.chunkPos.x,this.chunkPos.y,this.chunkPos.z+1);
+        ChunkImpl backChunk =(ChunkImpl) chunkProvider.getChunk(this.chunkPos.x,this.chunkPos.y,this.chunkPos.z-1);
+
+        // block.render();
+        //GL11.glBegin(GL11.GL_QUADS);
+
+        for (int x = 0; x < this.getChunkSizeX(); x++) {
+            for (int z = 0; z < this.getChunkSizeZ(); z++) {
+                for (int y = 0; y < this.getChunkSizeY(); y++) {
+                    int i =0;
+                    try{
+                        i = blockData.get(x, y, z);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    /*if(i==6||i==3)
+                        continue;*/
+                    currentBlockType = i;
+
+                    if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
+                        // 判断上面
+                        if (y < this.getChunkSizeY() - 1) {
+                            if (needToPaint(i,blockData.get(x, y + 1, z) )) {
+                                addThisTop2(x, y, z);
+                                // System.out.println("top");
+                            } else {
+
+                            }
+                        } else {
+                            addThisTop2(x, y, z);//System.out.println("top");
+                        }
+
+                        // 判断下面
+                        if (y > 0) {
+                            if (needToPaint(i,blockData.get(x, y - 1, z) )) {
+                                addThisBottom2(x, y, z);//System.out.println("Bottom");
+                            }
+                        } else {
+                            //addThisBottom(x, y, z);//System.out.println("Bottom");
+                        }
+
+                        // 判断左面
+                        if (x > 0) {
+                            if (needToPaint(i,blockData.get(x - 1, y, z) )) {
+                                addThisLeft2(x, y, z);//System.out.println("left");
+                            }
+                        } else {
+                            // TODO//x
+                            if(leftChunk!=null)
+                                if (needToPaint(i,  leftChunk.blockData.get(leftChunk.getChunkSizeX()-1,y,z))) {
+                                    addThisLeft2(x, y, z);//System.out.println("left");
+                                }else{
+                                    //LogUtil.println("bu xu yao hui zhi");
+                                }
+
+
+                        }
+
+                        // 判断右面
+
+                        if (x < this.getChunkSizeX() - 1) {
+                            if (needToPaint(i,blockData.get(x + 1, y, z))) {
+                                addThisRight2(x, y, z);//System.out.println("Right");
+                            }
+                        } else {// TODO
+
+                            if(rightChunk!=null)
+                                if (needToPaint(i,  rightChunk.blockData.get(0,y,z))) {
+                                    addThisRight2(x, y, z);//System.out.println("left");
+                                }
+                            //addThisRight(x, y, z);//System.out.println("Right");
+                        }
+
+                        // 前面
+
+                        if (z < this.getChunkSizeZ() - 1) {
+                            if (needToPaint(i,blockData.get(x, y, z + 1) )) {
+                                addThisFront2(x, y, z);//System.out.println("Front");
+                            }
+                        } else {// TODO
+                            if(frontChunk!=null)
+                                if (needToPaint(i,  frontChunk.blockData.get(x,y,0))) {
+                                    addThisFront2(x, y, z);//System.out.println("left");
+                                }
+                            //addThisFront(x, y, z);//System.out.println("Front");
+                        }
+
+                        // 后面
+
+                        if (z > 0) {
+                            if (needToPaint(i,blockData.get(x, y, z - 1) )) {
+                                addThisBack2(x, y, z);//System.out.println("back");
+                            }
+                        } else {// TODO z==0
+                            if(backChunk!=null)
+                                if (needToPaint(i,  backChunk.blockData.get(x,y,this.getChunkSizeZ()-1))) {
+                                    addThisBack2(x, y, z);//System.out.println("left");
+                                }
+                            //addThisBack(x, y, z);//System.out.println("back");
+                        }
+
+                    }
+
+                }
+            }
+        }
+        CreateTerrainVAO();
+        // GL11.glEnd();
+        //System.out.println(this.count);
+    }
 
 	public IntBuffer vetices = BufferUtils.createIntBuffer(14);
 	public int count = 0;
 	public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
-	public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(14);
+	public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
 	public void addThisTop2(int x, int y, int z){
 		this.faceIndex = 1;
 		count++;//left front top
@@ -526,27 +700,27 @@ boolean flat =true;
 		veticesBuffer.put(ti.minX);
 		veticesBuffer.put(ti.minY);
 
-		vetices.put(x + 1);
-		vetices.put(y);
-		vetices.put(z);
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z);
 		veticesBuffer.put(0);
 		veticesBuffer.put(-1);
 		veticesBuffer.put(0);
 		veticesBuffer.put(ti.maxX);
 		veticesBuffer.put(ti.minY);
 
-		vetices.put(x + 1);
-		vetices.put(y);
-		vetices.put(z + 1);
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z + 1);
 		veticesBuffer.put(0);
 		veticesBuffer.put(-1);
 		veticesBuffer.put(0);
 		veticesBuffer.put(ti.maxX);
 		veticesBuffer.put(ti.maxY);
 
-		vetices.put(x);
-		vetices.put(y);
-		vetices.put(z + 1);
+        veticesBuffer.put(x);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z + 1);
 		veticesBuffer.put(0);
 		veticesBuffer.put(-1);
 		veticesBuffer.put(0);
@@ -563,9 +737,9 @@ boolean flat =true;
 		veticesBuffer.put(ti.minX);
 		veticesBuffer.put(ti.minY);
 
-		vetices.put(x + 1);
-		vetices.put(y);
-		vetices.put(z + 1);
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z + 1);
 		veticesBuffer.put(0);
 		veticesBuffer.put(-1);
 		veticesBuffer.put(0);
@@ -647,28 +821,45 @@ boolean flat =true;
 		veticesBuffer.put(ti.maxX);
 		veticesBuffer.put(ti.minY);
 
-		vetices.put(x + 1);
-		vetices.put(y + 1);
-		vetices.put(z + 1);
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
 		veticesBuffer.put(0);
 		veticesBuffer.put(0);
 		veticesBuffer.put(1);
 		veticesBuffer.put(ti.maxX);
 		veticesBuffer.put(ti.maxY);
 
-		vetices.put(x);
-		vetices.put(y + 1);
-		vetices.put(z + 1);
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
 		veticesBuffer.put(0);
 		veticesBuffer.put(0);
 		veticesBuffer.put(1);
 		veticesBuffer.put(ti.minX);
 		veticesBuffer.put(ti.maxY);
 
-		normalizes.put(0);
-		normalizes.put(0);
-		normalizes.put(1);
-		Draw();
+        veticesBuffer.put(x);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+
+		//Draw();
 	}
 
 	public void addThisBack(int x, int y, int z) {
@@ -696,6 +887,67 @@ boolean flat =true;
 		normalizes.put(-1);
 		Draw();
 	}
+    public void addThisBack2(int x, int y, int z) {
+        this.faceIndex = 6;
+        count++;
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.maxY);
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+        vetices.put(x + 1);
+        vetices.put(y + 1);
+        vetices.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.maxY);
+
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+    }
 
 	public void addThisLeft(int x, int y, int z) {
 		this.faceIndex = 3;
@@ -720,6 +972,65 @@ boolean flat =true;
 		normalizes.put(0);
 		Draw();
 	}
+    public void addThisLeft2(int x, int y, int z) {
+        this.faceIndex = 3;
+        count++;
+        veticesBuffer.put(x);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.minY);
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+        vetices.put(x);
+        vetices.put(y + 1);
+        vetices.put(z);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.maxY);
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(-1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+    }
 
 	public void addThisRight(int x, int y, int z) {
 		this.faceIndex = 4;
@@ -728,6 +1039,7 @@ boolean flat =true;
 		vetices.put(x + 1);
 		vetices.put(y);
 		vetices.put(z + 1);
+
 
 		vetices.put(x + 1);
 		vetices.put(y);
@@ -747,6 +1059,66 @@ boolean flat =true;
 		Draw();
 
 	}
+    public void addThisRight2(int x, int y, int z) {
+        this.faceIndex = 4;
+        count++;
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.minY);
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.maxY);
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+        veticesBuffer.put(x + 1);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+    }
 
 	/*
 	 * public List<Integer> list = new ArrayList(); public int count = 0; public
@@ -954,7 +1326,19 @@ boolean flat =true;
 			System.out.println("为什么要对没有初始化的chunkimpl取消");
 		}
 	}
-
+    public void preRender2() {
+        if (this.disposed) {
+            // if(this.displayId==0){
+            this.buildShaderBuffer();//this.buildAlpha();
+            this.disposed = false;
+        }
+        if (this.VaoId == 0) {
+            int error = GL11.glGetError();
+            System.out.println("error: " + GLU.gluErrorString(error));
+            System.out.println("displayId should not be 0 in preRender");
+        }
+        // GLApp.callDisplayList(this.displayId);
+    }
 	public void preRender() {
 		if (this.disposed) {
 			// if(this.displayId==0){
@@ -969,6 +1353,23 @@ boolean flat =true;
 		// GLApp.callDisplayList(this.displayId);
 	}
 
+
+    public void render2() {
+        if (this.VaoId == 0) {
+            // int error =GL11.glGetError();
+            System.out.println(this.chunkPos+"displayId should not be 0 in render");
+        } else {
+
+
+            glUseProgram(StartMenuState.ProgramId);
+            Util.checkGLError();
+            glBindVertexArray(VaoId);
+            Util.checkGLError();
+            glDrawArrays(GL_TRIANGLES,0,this.count*6);
+            Util.checkGLError();
+            glBindVertexArray(0);
+        }
+    }
 	public void render() {
 		if (this.displayId == 0) {
 			// int error =GL11.glGetError();

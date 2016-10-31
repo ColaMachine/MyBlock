@@ -125,7 +125,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         this.updateChunksInProximity(false);
         for (ChunkImpl chunk : chunksInProximity) {
 
-            chunk.preRender();
+            chunk.preRender2();
 
         }
 
@@ -133,104 +133,16 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
         GL11.glEnable(GL11.GL_BLEND);
         for (ChunkImpl chunk : chunksInProximity) {
-            GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                    chunk.getChunkWorldPosZ());
-            GL11.glBegin(GL11.GL_QUADS);
-            chunk.render();
-            GL11.glEnd();
-            GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-                    -chunk.getChunkWorldPosZ());
+            //GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
+                    //chunk.getChunkWorldPosZ());
+            //GL11.glBegin(GL11.GL_QUADS);
+            chunk.render2();
+          //  GL11.glEnd();
+           // GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
+            //        -chunk.getChunkWorldPosZ());
         }
 
-       /* for (ChunkImpl chunk : chunksInProximity) {
-            GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                    chunk.getChunkWorldPosZ());
-            GL11.glBegin(GL11.GL_QUADS);
-            chunk.renderAlpha();
-            GL11.glEnd();
-            GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-                    -chunk.getChunkWorldPosZ());
-        }*/
-        GL11.glDisable(GL11.GL_BLEND);
-/*
-        GL11.glLoadIdentity();
 
-        GL11.glColorMask(false, false, false, false);// forbit the specify color be written to frame buffer
-
-        GL11. glEnable(GL11.GL_STENCIL_TEST);
-
-        GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 1);			// 设置蒙板测试总是通过，参考值设为1，掩码值也设为1
-
-        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);		// 设置当深度测试不通过时，保留蒙板中的值不变。如果通过则使用参考值替换蒙板值
-
-        GL11.glDisable(GL11.GL_DEPTH_TEST);				// 禁用深度测试
-        for (ChunkImpl chunk : chunksInProximity) {
-            GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                    chunk.getChunkWorldPosZ());
-            GL11.glBegin(GL11.GL_QUADS);
-            chunk.renderAlpha();
-            GL11.glEnd();
-            GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-                    -chunk.getChunkWorldPosZ());
-        }
-
-        GL11.glEnable(GL11.GL_DEPTH_TEST);						//启用深度测试
-
-        GL11.glColorMask(true, true, true, true);						// 可以绘制颜色
-
-        GL11.glStencilFunc(GL11.GL_EQUAL, 1, 1);					//下面的设置指定当我们绘制时，不改变蒙板缓存区的值
-
-        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
-        eqr.position(0);
-        GL11.glEnable(GL11.GL_CLIP_PLANE0);						// 使用剪切平面
-        GL11.glClipPlane(GL11.GL_CLIP_PLANE0, eqr);					// 设置剪切平面为地面，并设置它的法线为向下
-
-        GL11. glPushMatrix();							// 保存当前的矩阵
-
-        GL11.glScalef(1.0f, -1.0f, 1.0f);
-
-
-        for (ChunkImpl chunk : chunksInProximity) {
-            GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                    chunk.getChunkWorldPosZ());
-            GL11.glBegin(GL11.GL_QUADS);
-            chunk.render();
-            GL11.glEnd();
-            GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-                    -chunk.getChunkWorldPosZ());
-        }
-        GL11.glPopMatrix();
-
-        // Pop The Matrix Off The Stack
-        GL11.glDisable( GL11.GL_CLIP_PLANE0);							// Disable Clip Plane For Drawing The Floor
-        GL11. glDisable( GL11.GL_STENCIL_TEST);							// We Don't Need The Stencil Buffer Any More (Disable)
-        GL11. glEnable( GL11.GL_BLEND);									// Enable Blending (Otherwise The Reflected Object Wont Show)
-        GL11. glDisable( GL11.GL_LIGHTING);								// Since We Use Blending, We Disable Lighting
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 0.8f);					// Set Color To White With 80% Alpha
-        GL11.glBlendFunc( GL11.GL_SRC_ALPHA,  GL11.GL_ONE_MINUS_SRC_ALPHA);	// Blending Based On Source Alpha And 1 Minus Dest Alpha
-        for (ChunkImpl chunk : chunksInProximity) {
-            GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                    chunk.getChunkWorldPosZ());
-            GL11.glBegin(GL11.GL_QUADS);
-            chunk.renderAlpha();
-            GL11.glEnd();
-            GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-                    -chunk.getChunkWorldPosZ());
-        }
-        								// Draw The Floor To The Screen
-        GL11.glEnable( GL11.GL_LIGHTING);								// Enable Lighting
-        GL11.glDisable( GL11.GL_BLEND);								// Disable Blending
-
-        for (ChunkImpl chunk : chunksInProximity) {
-            GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                    chunk.getChunkWorldPosZ());
-            GL11.glBegin(GL11.GL_QUADS);
-            chunk.render();
-            GL11.glEnd();
-            GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-                    -chunk.getChunkWorldPosZ());
-        }										// Draw The Ball
-        GL11. glFlush();*/
 
 		//skysphere.render();
 	}
@@ -254,7 +166,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcPlayerChunkOffsetX();
 		int newChunkPosZ = calcPlayerChunkOffsetZ();
-		int viewingDistance = config.getRendering().getViewDistance().getChunkDistance();
+		int viewingDistance = 1;//config.getRendering().getViewDistance().getChunkDistance();
 
 		boolean chunksCurrentlyPending = false;
 

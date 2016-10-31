@@ -74,7 +74,7 @@ public class StartMenuState implements GameState{
 
     GL_Vector lightPos = new GL_Vector(5,0,2);
     //shader constants
-    int ProgramId;
+    public static int ProgramId;
     int VaoId;
     int VboId;
     int viewPosLoc;
@@ -290,6 +290,8 @@ public class StartMenuState implements GameState{
                 -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
                 -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f};
          FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+
+
         Vertices.put(VerticesArray);
         Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
         VboId=glGenBuffers();//create vbo
@@ -396,7 +398,7 @@ public class StartMenuState implements GameState{
         Util.checkGLError();
 
 
-        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
+        GL_Matrix model= GL_Matrix.rotateMatrix((float)(0*3.14/180.0),0,0);
         int modelLoc= glGetUniformLocation(ProgramId, "model");
         Util.checkGLError();
         glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
