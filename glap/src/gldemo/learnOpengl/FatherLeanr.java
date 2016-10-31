@@ -67,7 +67,7 @@ public class FatherLeanr {
 
             Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
             Display.setTitle(WINDOW_TITLE);
-            Display.create(pixelFormat, contextAtrributes);
+            Display.create(pixelFormat);
 
             GL11.glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
         } catch (LWJGLException e) {
@@ -91,7 +91,7 @@ public class FatherLeanr {
     }
 
     public void initGL() throws IOException {
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+       // GL11.glEnable(GL11.GL_DEPTH_TEST);
      /*   glClearColor(0, 0, 0, 0);
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_LIGHTING);*/

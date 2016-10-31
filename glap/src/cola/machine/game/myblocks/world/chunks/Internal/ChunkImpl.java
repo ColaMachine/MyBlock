@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -342,7 +343,67 @@ public class ChunkImpl implements Chunk {
 	public IntBuffer vetices = BufferUtils.createIntBuffer(14);
 	public int count = 0;
 	public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
+	public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(14);
+	public void addThisTop2(int x, int y, int z){
+		this.faceIndex = 1;
+		count++;//left front top
+		veticesBuffer.put(x);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.minY);
 
+		veticesBuffer.put(x + 1); //left front right
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.minY);
+
+		veticesBuffer.put(x + 1);//left behind right
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.maxY);
+
+		veticesBuffer.put(x);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.maxY);
+
+		veticesBuffer.put(x);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.minY);
+
+
+		veticesBuffer.put(x + 1); //left behind right
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.maxY);
+	}
 	public void addThisTop(int x, int y, int z) {
 		this.faceIndex = 1;
 		count++;
@@ -453,7 +514,67 @@ boolean flat =true;
 		// vetices.flip();
 		
 	}
+	public void addThisBottom2(int x, int y, int z) {
+		this.faceIndex = 2;
+		count++;
+		veticesBuffer.put(x);
+		veticesBuffer.put(y);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(-1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.minY);
 
+		vetices.put(x + 1);
+		vetices.put(y);
+		vetices.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(-1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.minY);
+
+		vetices.put(x + 1);
+		vetices.put(y);
+		vetices.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(-1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.maxY);
+
+		vetices.put(x);
+		vetices.put(y);
+		vetices.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(-1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.maxY);
+
+
+		veticesBuffer.put(x);
+		veticesBuffer.put(y);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(-1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.minY);
+
+		vetices.put(x + 1);
+		vetices.put(y);
+		vetices.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(-1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.maxY);
+
+
+
+	}
 	public void addThisBottom(int x, int y, int z) {
 		this.faceIndex = 2;
 		count++;
@@ -498,6 +619,51 @@ boolean flat =true;
 		vetices.put(x);
 		vetices.put(y + 1);
 		vetices.put(z + 1);
+
+		normalizes.put(0);
+		normalizes.put(0);
+		normalizes.put(1);
+		Draw();
+	}
+	public void addThisFront2(int x, int y, int z) {
+		this.faceIndex = 5;
+		count++;
+
+		veticesBuffer.put(x);
+		veticesBuffer.put(y);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.minY);
+
+		veticesBuffer.put(x + 1);
+		veticesBuffer.put(y);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.minY);
+
+		vetices.put(x + 1);
+		vetices.put(y + 1);
+		vetices.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.maxY);
+
+		vetices.put(x);
+		vetices.put(y + 1);
+		vetices.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.maxY);
 
 		normalizes.put(0);
 		normalizes.put(0);

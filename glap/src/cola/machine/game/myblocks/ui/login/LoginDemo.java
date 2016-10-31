@@ -34,14 +34,18 @@ import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
+import gldemo.learnOpengl.chapt12.LearnOpenglColor;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import cola.machine.game.myblocks.ui.test.TestUtils;
+
+import java.io.IOException;
 
 /**
  * A simple login panel
@@ -49,9 +53,10 @@ import cola.machine.game.myblocks.ui.test.TestUtils;
  * @author Matthias Mann
  */
 public class LoginDemo extends Widget {
-    
+    LearnOpenglColor color =new LearnOpenglColor();
     public static void main(String[] args) {
         try {
+            LWJGLHelper.initNativeLibs();
             Display.setDisplayMode(new DisplayMode(800, 600));
             Display.create();
             Display.setTitle("TWL Login Panel Demo");
@@ -92,6 +97,7 @@ public class LoginDemo extends Widget {
     boolean quit;
 
     public LoginDemo() {
+
         fpsCounter = new FPSCounter();
         
         loginPanel = new DialogLayout();
@@ -105,6 +111,11 @@ public class LoginDemo extends Widget {
                 }
             }
         });
+        try {
+            color.initGL();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         efPassword = new EditField();
         efPassword.setPasswordMasking(true);
@@ -145,8 +156,16 @@ public class LoginDemo extends Widget {
         
         add(fpsCounter);
         add(loginPanel);
-    }
 
+    }
+   /* @Override
+    public void paintWidget(GUI gui){
+        try {
+            color.render();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
     @Override
     protected void layout() {
         // fpsCounter is bottom right

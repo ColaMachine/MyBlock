@@ -72,7 +72,7 @@ public class StartMenuState implements GameState{
     public BulletPhysics bulletPhysics;
     GLCamera camera = new GLCamera();
 
-    GL_Vector lightPos = new GL_Vector(0,5,0);
+    GL_Vector lightPos = new GL_Vector(5,0,2);
     //shader constants
     int ProgramId;
     int VaoId;
@@ -227,51 +227,7 @@ public class StartMenuState implements GameState{
         }
 
 	}
-    FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
-    public void lightPosChangeListener(){
 
-        glUseProgram(ProgramId);
-
-        GL_Matrix model = GL_Matrix.translateMatrix(lightPos.x,lightPos.y,lightPos.z);
-        glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
-        Util.checkGLError();
-
-        glUseProgram(LightProgramId);
-
-        GL_Matrix model = GL_Matrix.translateMatrix(lightPos.x,lightPos.y,lightPos.z);
-        glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
-        Util.checkGLError();
-
-
-    }
-    public void cameraPosChangeListener(){
-        GL_Matrix view=
-                GL_Matrix.LookAt(camera.Position,camera.ViewDir);
-        view.fillFloatBuffer(cameraViewBuffer);
-
-        glUseProgram(ProgramId);
-
-
-
-        glUniformMatrix4(viewLoc,  false,cameraViewBuffer);
-        Util.checkGLError();
-        //viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
-
-
-        glUniform3f(viewPosLoc,  camera.Position.x,camera.Position.y,camera.Position.z);
-        Util.checkGLError();
-
-
-        glUseProgram(LightProgramId);
-        Util.checkGLError();
-        //lightViewLoc= glGetUniformLocation(LightProgramId,"view");
-
-
-        glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
-
-        Util.checkGLError();
-
-    }
 
 	public void update(float delta){
 
@@ -360,16 +316,65 @@ public class StartMenuState implements GameState{
 
     }
     GL_Matrix projection= GL_Matrix.perspective3(45,600/600,1f,1000.0f);
-    public void uniformTerrian(){
+    FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
+    public void lightPosChangeListener(){
 
-        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
+        glUseProgram(ProgramId);
+
+        glUniform3f(lightPosInTerrainLoc,lightPos.x,lightPos.y,lightPos.z);
+        Util.checkGLError();
+
+        glUseProgram(LightProgramId);
+
+        GL_Matrix model = GL_Matrix.translateMatrix(lightPos.x,lightPos.y,lightPos.z);
+        glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
+        Util.checkGLError();
+
+
+    }
+    public void cameraPosChangeListener(){
+        GL_Matrix view=
+                GL_Matrix.LookAt(camera.Position,camera.ViewDir);
+        view.fillFloatBuffer(cameraViewBuffer);
+
+        glUseProgram(ProgramId);
+
+
+
+        glUniformMatrix4(viewLoc,  false,cameraViewBuffer);
+        Util.checkGLError();
+        //viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+
+
+        glUniform3f(viewPosLoc,  camera.Position.x,camera.Position.y,camera.Position.z);
+        Util.checkGLError();
+
+
+        glUseProgram(LightProgramId);
+        Util.checkGLError();
+        //lightViewLoc= glGetUniformLocation(LightProgramId,"view");
+
+
+        glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
+
+        Util.checkGLError();
+
+    }
+    public void uniformTerrian(){
+        /*
+        uniform mat4 projection;
+        uniform mat4 view;
+        uniform mat4 model;
+        uniform vec3 objectColor;物体的颜色
+        uniform vec3 lightColor;灯光的颜色
+        uniform vec3 lightPos;灯光的位置
+        uniform vec3 viewPos;相机的位置*/
+
 
         //GL_Matrix view= GL_Matrix.translateMatrix(0,0,-3);
 
 
-        GL_Matrix view=
-                GL_Matrix.LookAt(camera.Position,camera.ViewDir);
-        view.fillFloatBuffer(cameraViewBuffer);
+
 
         //glUseProgram(ProgramId);
         glUseProgram(ProgramId);
@@ -381,12 +386,17 @@ public class StartMenuState implements GameState{
         Util.checkGLError();
 
         //相机位置
+        GL_Matrix view=
+                GL_Matrix.LookAt(camera.Position,camera.ViewDir);
+        view.fillFloatBuffer(cameraViewBuffer);
         viewLoc = glGetUniformLocation(ProgramId,"view");
-        viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+
         Util.checkGLError();
         glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
         Util.checkGLError();
 
+
+        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
         int modelLoc= glGetUniformLocation(ProgramId, "model");
         Util.checkGLError();
         glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
@@ -413,6 +423,9 @@ public class StartMenuState implements GameState{
         glUniform3f(lightPosInTerrainLoc,lightPos.x,lightPos.y,lightPos.z);
         Util.checkGLError();
 
+        viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+        glUniform3f(viewPosLoc,lightPos.x,lightPos.y,lightPos.z);
+        Util.checkGLError();
 
     }
     int lightColorLoc;
@@ -515,7 +528,7 @@ public class StartMenuState implements GameState{
 //        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDrawArrays(GL_TRIANGLES,0,36);
         glBindVertexArray(0);
-
+        worldRenderer.render();
     }
 
 	public boolean isHibernationAllowed(){
