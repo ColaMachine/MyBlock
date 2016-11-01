@@ -215,7 +215,7 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
     }
 
     public void initOpenGLParams() {
-      //  glEnable(GL_CULL_FACE);
+      glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
       //  glEnable(GL_NORMALIZE);
       //  glDepthFunc(GL_LEQUAL);

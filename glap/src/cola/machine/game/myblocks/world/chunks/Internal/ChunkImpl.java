@@ -376,9 +376,14 @@ public class ChunkImpl implements Chunk {
 
         glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * 4, 3*4);
 
-        Util.checkGLError();
-        glEnableVertexAttribArray(1);
-        Util.checkGLError();
+		Util.checkGLError();
+		glEnableVertexAttribArray(1);
+		Util.checkGLError();
+		glVertexAttribPointer(2,2, GL_FLOAT, false, 8 * 4, 6*4);
+
+		Util.checkGLError();
+		glEnableVertexAttribArray(2);
+		Util.checkGLError();
 
 
 
@@ -423,6 +428,7 @@ public class ChunkImpl implements Chunk {
                     currentBlockType = i;
 
                     if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
+						Draw2();
                         // 判断上面
                         if (y < this.getChunkSizeY() - 1) {
                             if (needToPaint(i,blockData.get(x, y + 1, z) )) {
@@ -518,67 +524,9 @@ public class ChunkImpl implements Chunk {
 	public int count = 0;
 	public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
 	public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
-	public void addThisTop2(int x, int y, int z){
-		this.faceIndex = 1;
-		count++;//left front top
-		veticesBuffer.put(x);
-		veticesBuffer.put(y + 1);
-		veticesBuffer.put(z + 1);
-		veticesBuffer.put(0);
-		veticesBuffer.put(1);
-		veticesBuffer.put(0);
-		veticesBuffer.put(ti.minX);
-		veticesBuffer.put(ti.minY);
 
-		veticesBuffer.put(x + 1); //left front right
-		veticesBuffer.put(y + 1);
-		veticesBuffer.put(z + 1);
-		veticesBuffer.put(0);
-		veticesBuffer.put(1);
-		veticesBuffer.put(0);
-		veticesBuffer.put(ti.maxX);
-		veticesBuffer.put(ti.minY);
-
-		veticesBuffer.put(x + 1);//left behind right
-		veticesBuffer.put(y + 1);
-		veticesBuffer.put(z);
-		veticesBuffer.put(0);
-		veticesBuffer.put(1);
-		veticesBuffer.put(0);
-		veticesBuffer.put(ti.maxX);
-		veticesBuffer.put(ti.maxY);
-
-		veticesBuffer.put(x);
-		veticesBuffer.put(y + 1);
-		veticesBuffer.put(z);
-		veticesBuffer.put(0);
-		veticesBuffer.put(1);
-		veticesBuffer.put(0);
-
-		veticesBuffer.put(ti.minX);
-		veticesBuffer.put(ti.maxY);
-
-		veticesBuffer.put(x);
-		veticesBuffer.put(y + 1);
-		veticesBuffer.put(z + 1);
-		veticesBuffer.put(0);
-		veticesBuffer.put(1);
-		veticesBuffer.put(0);
-
-		veticesBuffer.put(ti.minX);
-		veticesBuffer.put(ti.minY);
-
-
-		veticesBuffer.put(x + 1); //left behind right
-		veticesBuffer.put(y + 1);
-		veticesBuffer.put(z);
-		veticesBuffer.put(0);
-		veticesBuffer.put(1);
-		veticesBuffer.put(0);
-		veticesBuffer.put(ti.maxX);
-		veticesBuffer.put(ti.maxY);
-	}
 	public void addThisTop(int x, int y, int z) {
+
 		this.faceIndex = 1;
 		count++;
 		vetices.put(x);
@@ -614,6 +562,61 @@ public class ChunkImpl implements Chunk {
 		System.out.println(vetices1.get());
 	}
 BlockDefManager blockDefManager;
+	public void Draw2() {// up down left right front back
+
+		boolean flat =true;
+		//blockDefManager.getBlockById()
+		switch (this.currentBlockType) {
+			case 1:
+				ti = TextureManager.getTextureInfo("stone");
+
+				break;
+			case 3:
+				if (faceIndex == 1) {
+					ti = TextureManager.getTextureInfo("grass_top");
+
+				} else if (faceIndex == 2) {
+					ti = TextureManager.getTextureInfo("soil");
+
+				} else {
+					ti = TextureManager.getTextureInfo("grass_side");
+
+				}
+				break;
+			case 20:
+				ti = TextureManager.getTextureInfo("glass");
+
+				break;
+			case 8:
+				ti = TextureManager.getTextureInfo("water");
+				if (faceIndex == 1) {
+
+				}
+				break;
+			case 12:
+				ti = TextureManager.getTextureInfo("sand");
+
+				break;
+			case 7:
+				ti = TextureManager.getTextureInfo("mantle");
+
+				break;
+
+			case 5:
+				ti = TextureManager.getTextureInfo("wood");
+
+				break;
+			default:
+				System.out.println("添纹理的时候 什么都没对应上");
+		}
+		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
+		// GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		// GL11.glBegin(GL11.GL_QUADS);
+
+		// GL11.glEnd();
+		//normalizes.position(0);
+		//vetices.position(0);
+	}
 	public void Draw() {// up down left right front back
 
 boolean flat =true;
@@ -688,7 +691,71 @@ boolean flat =true;
 		// vetices.flip();
 		
 	}
+	public void addThisTop2(int x, int y, int z){
+		x+=this.chunkPos.x*getChunkSizeX();
+		z+=this.chunkPos.z*getChunkSizeZ();
+		this.faceIndex = 1;
+		count++;//left front top
+		veticesBuffer.put(x);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.minY);
+
+		veticesBuffer.put(x + 1); //left front right
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.minY);
+
+		veticesBuffer.put(x + 1);//left behind right
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.maxY);
+
+		veticesBuffer.put(x);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.maxY);
+
+		veticesBuffer.put(x);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z + 1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+
+		veticesBuffer.put(ti.minX);
+		veticesBuffer.put(ti.minY);
+
+
+		veticesBuffer.put(x + 1); //left behind right
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
+		veticesBuffer.put(0);
+		veticesBuffer.put(1);
+		veticesBuffer.put(0);
+		veticesBuffer.put(ti.maxX);
+		veticesBuffer.put(ti.maxY);
+	}
 	public void addThisBottom2(int x, int y, int z) {
+		x+=this.chunkPos.x*getChunkSizeX();
+		z+=this.chunkPos.z*getChunkSizeZ();
 		this.faceIndex = 2;
 		count++;
 		veticesBuffer.put(x);
@@ -800,6 +867,8 @@ boolean flat =true;
 		Draw();
 	}
 	public void addThisFront2(int x, int y, int z) {
+		x+=this.chunkPos.x*getChunkSizeX();
+		z+=this.chunkPos.z*getChunkSizeZ();
 		this.faceIndex = 5;
 		count++;
 
@@ -888,6 +957,8 @@ boolean flat =true;
 		Draw();
 	}
     public void addThisBack2(int x, int y, int z) {
+		x+=this.chunkPos.x*getChunkSizeX();
+		z+=this.chunkPos.z*getChunkSizeZ();
         this.faceIndex = 6;
         count++;
 
@@ -918,9 +989,9 @@ boolean flat =true;
         veticesBuffer.put(ti.maxX);
         veticesBuffer.put(ti.maxY);
 
-        vetices.put(x + 1);
-        vetices.put(y + 1);
-        vetices.put(z);
+		veticesBuffer.put(x + 1);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
         veticesBuffer.put(0);
         veticesBuffer.put(0);
         veticesBuffer.put(-1);
@@ -973,6 +1044,8 @@ boolean flat =true;
 		Draw();
 	}
     public void addThisLeft2(int x, int y, int z) {
+		x+=this.chunkPos.x*getChunkSizeX();
+		z+=this.chunkPos.z*getChunkSizeZ();
         this.faceIndex = 3;
         count++;
         veticesBuffer.put(x);
@@ -1003,9 +1076,9 @@ boolean flat =true;
         veticesBuffer.put(ti.maxX);
         veticesBuffer.put(ti.maxY);
 
-        vetices.put(x);
-        vetices.put(y + 1);
-        vetices.put(z);
+		veticesBuffer.put(x);
+		veticesBuffer.put(y + 1);
+		veticesBuffer.put(z);
         veticesBuffer.put(-1);
         veticesBuffer.put(0);
         veticesBuffer.put(0);
@@ -1060,6 +1133,8 @@ boolean flat =true;
 
 	}
     public void addThisRight2(int x, int y, int z) {
+		x+=this.chunkPos.x*getChunkSizeX();
+		z+=this.chunkPos.z*getChunkSizeZ();
         this.faceIndex = 4;
         count++;
 
@@ -1302,8 +1377,8 @@ boolean flat =true;
 
 		// if(this.displayId!=0){
 		if (!disposed) {
-			GL11.glDeleteLists(this.displayId, 1);
-            GL11.glDeleteLists(this.alphaDisplayId, 1);
+			//GL11.glDeleteLists(this.displayId, 1);
+            //GL11.glDeleteLists(this.alphaDisplayId, 1);
 			// this.displayId=0;
 			this.disposed = true;
 			
@@ -1368,6 +1443,7 @@ boolean flat =true;
             glDrawArrays(GL_TRIANGLES,0,this.count*6);
             Util.checkGLError();
             glBindVertexArray(0);
+
         }
     }
 	public void render() {

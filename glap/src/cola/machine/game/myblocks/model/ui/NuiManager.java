@@ -59,16 +59,16 @@ public class NuiManager {
 
             //InventoryDemo demo = new InventoryDemo();//创建包裹实力
 
-            renderer = new LWJGLRenderer();//调用lwjgl能力
-            renderer.setUseSWMouseCursors(true);
+            //renderer = new LWJGLRenderer();//调用lwjgl能力
+            //renderer.setUseSWMouseCursors(true);
 
             //ChatDemo chat = new ChatDemo();
             //GameUIDemo gameUI = new GameUIDemo();
-           LoginDemo loginDemo = new LoginDemo();
-             startGui = new GUI(loginDemo, renderer);
+         //  LoginDemo loginDemo = new LoginDemo();
+           //  startGui = new GUI(loginDemo, renderer);
 
 
-            this.loadTheme();//加载主题
+//            this.loadTheme();//加载主题
 
        /* ThemeManager theme = ThemeManager.createThemeManager(
                 InventoryDemo.class.getResource("inventory.xml"), renderer);//加载主体
@@ -79,7 +79,7 @@ public class NuiManager {
         }catch(Exception e) {
             e.printStackTrace();
         }
-         CoreRegistry.put(GUI.class,startGui);
+         //CoreRegistry.put(GUI.class,startGui);
     }
 
 

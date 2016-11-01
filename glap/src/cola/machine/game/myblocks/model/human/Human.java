@@ -267,9 +267,12 @@ public class Human extends LivingThing {
      */
 
 	public void headRotate(float leftRightDegree,float updownDegree){
-        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float) Math.toRadians(leftRightDegree)/5,
+		//LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
+        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float) Math.toRadians(leftRightDegree),
                 0);
-		ViewDir.y-=updownDegree/100;
+
+
+		ViewDir.y+=updownDegree/100;
         GL_Vector vd = M.transform(ViewDir);
         ViewDir = vd;
 
@@ -277,6 +280,7 @@ public class Human extends LivingThing {
             ViewDir.y=Switcher.FUJIAO ;
         if(ViewDir.y>=Switcher.YANGJIAO  )
             ViewDir.y=Switcher.YANGJIAO;
+		ViewDir.normalize();
       //  System.out.println(vd);
     }
     public void bodyRotate(float updownDegree,float leftRightDegree){
@@ -288,11 +292,12 @@ public class Human extends LivingThing {
         ViewDir.x= vd.x;
         ViewDir.z = vd.z;
 
-        GLApp.setSpotLight(GL11.GL_LIGHT1,
+/*        GLApp.setSpotLight(GL11.GL_LIGHT1,
                 new float[]{0f, 0f, 0f, 0.0f},//diffuseGL_AMBIENT表示各种光线照射到该材质上，经过很多次反射后最终遗留在环境中的光线强度（颜色）。
                 new float[]{0.5f, 0.5f, 0.0f, 1.0f},//ambient GL_DIFFUSE表示光线照射到该材质上，经过漫反射后形成的光线强度（颜色）。
-                new float[]{position.x,position.y+5,position.z,0}, new float[]{WalkDir.x,WalkDir.y,WalkDir.z,0}, 50);
+                new float[]{position.x,position.y+5,position.z,0}, new float[]{WalkDir.x,WalkDir.y,WalkDir.z,0}, 50);*/
         headRotate(0,-updownDegree);
+
     }
 	public void ViewRotateV1(float Angle) {
 		// Make a matrix to rotate the given number of degrees around Y axis

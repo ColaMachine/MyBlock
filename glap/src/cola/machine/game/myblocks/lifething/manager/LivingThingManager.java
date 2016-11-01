@@ -40,15 +40,15 @@ public class LivingThingManager {
 
     public LivingThing target ;
     public static LivingThing player;
-    Component component;
+    Component bendComponent;
     public LivingThingManager(){
 
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(0,4,0);
         livingThings.add(livingThing);
-         component =new Component(2,16,2);
+      /*   component =new Component(2,16,2);
         component.bend(180,50);
-        component.setShape(TextureManager.getShape("human_body"));
+        component.setShape(TextureManager.getShape("human_body"));*/
 CoreRegistry.put(LivingThingManager.class,this);
        // Thread thread = new Thread(behaviorManager);
 

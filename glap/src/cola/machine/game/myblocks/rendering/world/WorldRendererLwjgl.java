@@ -129,9 +129,9 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
         }
 
-                TextureManager.getTextureInfo("mantle").bind();
+		TextureManager.getTextureInfo("mantle").bind();
 
-        GL11.glEnable(GL11.GL_BLEND);
+        //GL11.glEnable(GL11.GL_BLEND);
         for (ChunkImpl chunk : chunksInProximity) {
             //GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
                     //chunk.getChunkWorldPosZ());
@@ -166,7 +166,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	public boolean updateChunksInProximity(boolean force) {
 		int newChunkPosX = calcPlayerChunkOffsetX();
 		int newChunkPosZ = calcPlayerChunkOffsetZ();
-		int viewingDistance = 1;//config.getRendering().getViewDistance().getChunkDistance();
+		int viewingDistance =config.getRendering().getViewDistance().getChunkDistance();
 
 		boolean chunksCurrentlyPending = false;
 

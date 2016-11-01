@@ -200,6 +200,29 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
             }
     }
+
+    public void render2(){
+        GL11.glPushMatrix();
+        this.dropControl();
+        GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
+        float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
+        GL11.glRotatef(angle, 0, 1, 0);
+        GL11.glScalef(0.5f,0.5f,0.5f);
+
+        bodyComponent.render();
+        GL11.glScalef(2,2,2);
+        GL11.glRotatef(-angle, 0, 1, 0);
+        GL11.glTranslatef(-position.x,-position.y,-position.z);
+        GL11.glPopMatrix();
+
+
+
+        GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
+
+        vector[1]=600-vector[1]-45;
+
+
+    }
     public void render(){
         GL11.glPushMatrix();
         this.dropControl();

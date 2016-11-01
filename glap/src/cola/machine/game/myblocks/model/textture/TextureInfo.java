@@ -57,7 +57,7 @@ public float x1;
         img=TextureManager.getImage(imgName);
         texture = TextureManager.getTexture(imgName);
         try {
-            withWH(minX / texture.getWidth(),minY / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
+            withWH(minX / texture.getWidth(),(img.h - minY -height) / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
         }catch(Exception e){
             LogUtil.println("error");
             System.exit(1);

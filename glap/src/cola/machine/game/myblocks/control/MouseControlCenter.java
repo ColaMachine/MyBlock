@@ -35,6 +35,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import sun.rmi.runtime.Log;
 import util.MathUtil;
 import util.OpenglUtil;
 
@@ -377,9 +378,37 @@ public class MouseControlCenter {
                                                                      * + "", mouseDir.x, mouseDir.y, //
                                                                      * mouseDir.z);
                                                                      */
+        mouseLeftPressed=true;
     }
 
+    public void mouseLeftDown(int x, int y) {
+        prevMouseX=x;
+        prevMouseY=y;
+        mouseLeftPressed=true;
+    }
+    public void mouseLeftUp(int x, int y) {
+        mouseLeftPressed=false;
+    }
+    public void mouseRightDown(int x, int y) {
+        mouseRightPressed=true;
+    }
+    public void mouseRightUp(int x, int y) {
+        mouseRightPressed=false;
+    }
+    boolean mouseRightPressed=false;
+    boolean mouseLeftPressed=false;
+
     public void mouseMove(int x, int y) {
+        if(mouseRightPressed){
+            this.mouseRightDrag(x,y);
+            camera.ViewDir.x= human.ViewDir.x;
+            camera.ViewDir.y= human.ViewDir.y;
+            camera.ViewDir.z= human.ViewDir.z;
+        }
+        if(mouseLeftPressed){
+            this.mouseLeftDrag(x,y);
+        }
+
         // add mouse motion to line if left button is down, and mouse has moved
         // more than 10 pixels
         // add a segment to the line
@@ -390,7 +419,7 @@ public class MouseControlCenter {
         // canDetectMove=true;
         // }
         // }else
-        mousepoint = MouseInfo.getPointerInfo().getLocation();
+       /* mousepoint = MouseInfo.getPointerInfo().getLocation();
         if (MathUtil.distance(centerX, centerY, mousepoint.x, mousepoint.y) > 10f) {
             // System.out.println("now mouse position x:"+x+" y :"+y);
 
@@ -413,7 +442,58 @@ public class MouseControlCenter {
             // System.out.println("move x distance:"+(-x +
             // centerX)+" y distance:"+(y - centerY));
         }
-        CoreRegistry.get(Bag.class).move(x, y);
+        CoreRegistry.get(Bag.class).move(x, y);*/
+
+    }
+
+    public void mouseMove(int x, int y,StartMenuState state) {
+        if(mouseRightPressed){
+            this.mouseRightDrag(x,y);
+
+        }
+        if(mouseLeftPressed){
+            this.mouseLeftDrag(x,y);
+            camera.ViewDir.x= human.ViewDir.x;
+            camera.ViewDir.y= human.ViewDir.y;
+            camera.ViewDir.z= human.ViewDir.z;
+            state.cameraPosChangeListener();
+
+        }
+
+        // add mouse motion to line if left button is down, and mouse has moved
+        // more than 10 pixels
+        // add a segment to the line
+        // /System.out.println("����ת��");
+        // System.out.println(x-prevMouseX);
+        // if(!canDetectMove){
+        // if (MathUtil. distance(400, 300, x, y)< 10f){
+        // canDetectMove=true;
+        // }
+        // }else
+       /* mousepoint = MouseInfo.getPointerInfo().getLocation();
+        if (MathUtil.distance(centerX, centerY, mousepoint.x, mousepoint.y) > 10f) {
+            // System.out.println("now mouse position x:"+x+" y :"+y);
+
+
+            if (Switcher.MOUSE_AUTO_CENTER) {
+                human.headRotate((float) (-(mousepoint.x - centerX)
+                        * 4 * GLApp.getSecondsPerFrame()), (float) (-(mousepoint.y - centerY)
+                        * 4 * GLApp.getSecondsPerFrame()));
+                // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
+                // human.RotateX();
+
+                //robot.mouseMove(mousepoint.x-(x-400), mousepoint.y-(y-300));
+                // robot.mouseMove(Display.getX()+400, Display.getY()+300);
+                robot.mouseMove((int) centerX, (int) centerY);
+                // System.out.println("move to position x :"+(mousepoint.x-(x-400))+" y :"+(mousepoint.y-(y-300)));
+
+            }
+
+            canDetectMove = false;
+            // System.out.println("move x distance:"+(-x +
+            // centerX)+" y distance:"+(y - centerY));
+        }
+        CoreRegistry.get(Bag.class).move(x, y);*/
 
     }
 
@@ -442,8 +522,9 @@ public class MouseControlCenter {
     }
 
     public void mouseLeftDrag(int x, int y) {
-        if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 1f
-                && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 2000) {
+
+        if (/*MathUtil.distance(prevMouseX, prevMouseY, x, y) > 0.1f
+                &&*/ MathUtil.distance(prevMouseX, prevMouseY, x, y) < 2000) {
             // add a segment to the line
             // System.out.println("ͷ��ת��");
             // System.out.println(x-prevMouseX);

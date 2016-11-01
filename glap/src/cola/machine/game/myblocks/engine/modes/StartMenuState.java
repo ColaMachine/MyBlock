@@ -18,6 +18,7 @@ import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
+import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.login.LoginDemo;
 import cola.machine.game.myblocks.world.WorldProvider;
@@ -72,7 +73,7 @@ public class StartMenuState implements GameState{
     public BulletPhysics bulletPhysics;
     GLCamera camera = new GLCamera();
 
-    GL_Vector lightPos = new GL_Vector(5,0,2);
+    GL_Vector lightPos = new GL_Vector(5,5,2);
     //shader constants
     public static int ProgramId;
     int VaoId;
@@ -129,8 +130,47 @@ public class StartMenuState implements GameState{
         this.uniformLight();
 
     }
+    int cursorX;
+    int cursorY;
 	public void handleInput(float delta){
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+        cursorX=Mouse.getEventX();
+        cursorY=Mouse.getEventY();
+        int mouseDW = Mouse.getDWheel();
+        if (mouseDW != 0) {
+            //mouseControlCenter.mousewmouseWheel(mouseDW);
+        }
+
+        mouseControlCenter.mouseMove(cursorX,cursorY,this);
+
+        if(Mouse.isCreated())
+        {
+            while (Mouse.next()) {
+
+
+
+                int wheelDelta = Mouse.getEventDWheel();
+                if (wheelDelta != 0) {
+                    //gui.handleMouseWheel(wheelDelta / 120);
+                }
+                if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
+                    mouseControlCenter.mouseLeftDown(cursorX, cursorY);
+                }
+                if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
+                    mouseControlCenter. mouseLeftUp(cursorX, cursorY);
+                }
+                if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
+                    mouseControlCenter. mouseRightDown(cursorX, cursorY);
+                }
+                if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
+                    mouseControlCenter. mouseRightUp(cursorX, cursorY);
+                }
+
+
+            }
+        }
+
+        mouseControlCenter.handleNavKeys(delta);
+       if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(camera.ViewDir,
                     -0.1f));
             cameraPosChangeListener();
@@ -184,7 +224,16 @@ public class StartMenuState implements GameState{
             cameraPosChangeListener();
 
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            camera.Position.y+=0.1;
+            cameraPosChangeListener();
 
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+            camera.Position.y-=0.1;
+            cameraPosChangeListener();
+
+        }
 
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
@@ -230,8 +279,13 @@ public class StartMenuState implements GameState{
 
 
 	public void update(float delta){
-
-	}
+        AttackManager.update();
+        try {
+            animationManager.update();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void CreateTerrainVAO(){
 
 
@@ -503,21 +557,17 @@ public class StartMenuState implements GameState{
 
 
         Long time =System.currentTimeMillis();
-        float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
+       /* float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
         Util.checkGLError();
-       /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
-        glUniformMatrix4(0,  false,matrixBuffer );
-        matrixBuffer.rewind();*/
-        //glBindTexture(GL_TEXTURE_2D, this.textureHandle);
         glBindVertexArray(VaoId);
         Util.checkGLError();
-//        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDrawArrays(GL_TRIANGLES,0,36);
+
         Util.checkGLError();
         glBindVertexArray(0);
-        Util.checkGLError();
+        Util.checkGLError();*/
 
         glUseProgram(this.LightProgramId);
         Util.checkGLError();
@@ -531,6 +581,8 @@ public class StartMenuState implements GameState{
         glDrawArrays(GL_TRIANGLES,0,36);
         glBindVertexArray(0);
         worldRenderer.render();
+
+        //livingThingManager.render();
     }
 
 	public boolean isHibernationAllowed(){
