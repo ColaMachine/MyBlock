@@ -62,13 +62,13 @@ public class OpenglUtil {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glLineWidth(lineWidth);
 
-        GL11.glColor3ub(borderColor[0],borderColor[1],borderColor[2]);
+//        GL11.glColor3ub(borderColor[0],borderColor[1],borderColor[2]);
 
        GL11. glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
 
         //GL11.glColor3ub(borderColor[0],borderColor[1],borderColor[2]);
         glRect(leftX,leftY,leftX+width,leftY+height,GL11.GL_LINE_LOOP);
-        GL11.glColor3ub(color[0],color[1],color[2]);
+       // GL11.glColor3ub(color[0],color[1],color[2]);
        // GL11.glRectf(-25.0f, 25.0f, 25.0f, -25.0f);
         //GL11.glRecti(leftX+lineWidth/2,leftY-lineWidth/2,leftX+width-lineWidth/2,leftY+height+lineWidth/2);
        glRect(leftX+lineWidth/2,leftY+lineWidth/2,leftX+width-lineWidth/2,leftY+height-lineWidth/2,GL11.GL_POLYGON);

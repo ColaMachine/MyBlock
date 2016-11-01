@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
@@ -471,17 +472,50 @@ public class StartMenuState implements GameState{
 
         //环境光颜色
 
-         lightColorLoc= glGetUniformLocation(ProgramId, "lightColor");
+       /*  lightColorLoc= glGetUniformLocation(ProgramId, "lightColor");
         glUniform3f(lightColorLoc,1.0f,1f,1f);
-        Util.checkGLError();
+        Util.checkGLError();*/
 
-         lightPosInTerrainLoc= glGetUniformLocation(ProgramId, "lightPos");
+         lightPosInTerrainLoc= glGetUniformLocation(ProgramId, "light.position");
+        if(lightPosInTerrainLoc==-1){
+            LogUtil.println("light.position not found ");
+            System.exit(1);
+        }
         glUniform3f(lightPosInTerrainLoc,lightPos.x,lightPos.y,lightPos.z);
         Util.checkGLError();
 
         viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+        if(viewPosLoc==-1){
+            LogUtil.println("viewPos not found ");
+            System.exit(1);
+        }
         glUniform3f(viewPosLoc,lightPos.x,lightPos.y,lightPos.z);
         Util.checkGLError();
+
+
+        //int matAmbientLoc = glGetUniformLocation(ProgramId, "material.ambient");
+        //int matDiffuseLoc = glGetUniformLocation(ProgramId, "material.diffuse");
+        int matSpecularLoc = glGetUniformLocation(ProgramId, "material.specular");
+        int matShineLoc = glGetUniformLocation(ProgramId, "material.shininess");
+
+        //glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
+        //glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+        glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+        glUniform1f(matShineLoc, 32.0f);
+
+        int lightMatAmbientLoc = glGetUniformLocation(ProgramId, "light.ambient");
+        int lightMatDiffuseLoc = glGetUniformLocation(ProgramId, "light.diffuse");
+        int lightMatSpecularLoc = glGetUniformLocation(ProgramId, "light.specular");
+        int lightMatShineLoc = glGetUniformLocation(ProgramId, "light.shininess");
+
+        glUniform3f(lightMatAmbientLoc, 0.5f, 0.5f, 0.5f);
+        glUniform3f(lightMatDiffuseLoc, 0.5f, 0.5f, 0.5f);
+        glUniform3f(lightMatSpecularLoc, 0.5f, 0.5f, 0.5f);
+        glUniform1f(lightMatShineLoc, 32.0f);
+
+        glUniform1f(glGetUniformLocation(ProgramId, "light.constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(ProgramId, "light.linear"), 0.09f);
+        glUniform1f(glGetUniformLocation(ProgramId, "light.quadratic"), 0.032f);
 
     }
     int lightColorLoc;
@@ -491,7 +525,7 @@ public class StartMenuState implements GameState{
     int lightVaoId;
     public void CreateTerrainProgram(){
         try {
-            ProgramId = OpenglUtil.CreateProgram("chapt13/box.vert", "chapt13/box.frag");
+            ProgramId = OpenglUtil.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
         }catch(Exception e){
             e.printStackTrace();
             System.exit(0);
@@ -582,6 +616,8 @@ public class StartMenuState implements GameState{
         glBindVertexArray(0);
         worldRenderer.render();
 
+        //OpenglUtil.glFillRect(0,0,1,1,1,new byte[]{(byte)245,(byte)0,(byte)0},new byte[]{(byte)245,(byte)0,(byte)0});
+      //  GLApp.drawRect(1,1,1,1);
         //livingThingManager.render();
     }
 
