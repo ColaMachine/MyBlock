@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Robot;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
@@ -57,6 +58,10 @@ public class MouseControlCenter {
      * Add last mouse motion to the line, only if left mouse button is down.
      */
     Point mousepoint;
+    public MouseControlCenter(Human human, GLCamera camera,GameState gameState) {
+        this( human,  camera) ;
+        this.gameState=gameState;
+    }
 
     public MouseControlCenter(Human human, GLCamera camera) {
         //this.engine = engine;
@@ -453,10 +458,7 @@ public class MouseControlCenter {
         }
         if(mouseLeftPressed){
             this.mouseLeftDrag(x,y);
-            camera.ViewDir.x= human.ViewDir.x;
-            camera.ViewDir.y= human.ViewDir.y;
-            camera.ViewDir.z= human.ViewDir.z;
-            state.cameraPosChangeListener();
+
 
         }
 
@@ -516,11 +518,15 @@ public class MouseControlCenter {
             // save mouse position
             prevMouseX = x;
             prevMouseY = y;
+            camera.ViewDir.x= human.ViewDir.x;
+            camera.ViewDir.y= human.ViewDir.y;
+            camera.ViewDir.z= human.ViewDir.z;
+            gameState.cameraPosChangeListener();
 
             // �ƶ���ͷ
         }
     }
-
+    public GameState gameState;
     public void mouseLeftDrag(int x, int y) {
 
         if (/*MathUtil.distance(prevMouseX, prevMouseY, x, y) > 0.1f
@@ -539,7 +545,10 @@ public class MouseControlCenter {
             // save mouse position
             prevMouseX = x;
             prevMouseY = y;
-
+            camera.ViewDir.x= human.ViewDir.x;
+            camera.ViewDir.y= human.ViewDir.y;
+            camera.ViewDir.z= human.ViewDir.z;
+            gameState.cameraPosChangeListener();
             // �ƶ���ͷ
         }
     }

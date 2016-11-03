@@ -59,16 +59,16 @@ public class NuiManager {
 
             //InventoryDemo demo = new InventoryDemo();//创建包裹实力
 
-            //renderer = new LWJGLRenderer();//调用lwjgl能力
-            //renderer.setUseSWMouseCursors(true);
+            renderer = new LWJGLRenderer();//调用lwjgl能力
+            renderer.setUseSWMouseCursors(true);
 
             //ChatDemo chat = new ChatDemo();
             //GameUIDemo gameUI = new GameUIDemo();
-         //  LoginDemo loginDemo = new LoginDemo();
-           //  startGui = new GUI(loginDemo, renderer);
+            LoginDemo loginDemo = new LoginDemo();
+            startGui = new GUI(loginDemo, renderer);
 
 
-//            this.loadTheme();//加载主题
+            this.loadTheme();//加载主题
 
        /* ThemeManager theme = ThemeManager.createThemeManager(
                 InventoryDemo.class.getResource("inventory.xml"), renderer);//加载主体
@@ -79,7 +79,7 @@ public class NuiManager {
         }catch(Exception e) {
             e.printStackTrace();
         }
-         //CoreRegistry.put(GUI.class,startGui);
+        //CoreRegistry.put(GUI.class,startGui);
     }
 
 
@@ -133,18 +133,18 @@ public class NuiManager {
         //GLApp.pushAttribOrtho();
         // switch to 2D projection
         //GLApp. setOrthoOn();
-      //  cross.render();
-       // toolbarcontainer.render();
+        //  cross.render();
+        // toolbarcontainer.render();
         //bag.render();
 
-       // PauseMenu.render();
+        // PauseMenu.render();
 
-       // GLApp.setOrthoOff();
+        // GLApp.setOrthoOff();
         // return to previous settings
-      //  GLApp. popAttrib();
+        //  GLApp. popAttrib();
         //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         // System.out.println();
-       //if(Math.random()>0.5){
+        //if(Math.random()>0.5){
 
 
         if(Switcher.gameState==0){
@@ -152,7 +152,7 @@ public class NuiManager {
         }else if(Switcher.gameState==1) {
             gameGui.update();//刷新gui
         }
-      // }
+        // }
 
         // GLApp.setFog(true);
     }

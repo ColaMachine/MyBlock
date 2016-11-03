@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine.modes;
 
+import cola.machine.game.myblocks.action.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.control.MouseControlCenter;
@@ -12,6 +13,7 @@ import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
+import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
@@ -38,26 +40,24 @@ import glapp.GLCamera;
 import gldemo.learnOpengl.chapt13.LearnOpenglColor;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
+
+import org.lwjgl.util.glu.GLU;
 import util.OpenglUtil;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
@@ -76,29 +76,29 @@ public class StartMenuState implements GameState{
 
     GL_Vector lightPos = new GL_Vector(5,5,2);
     //shader constants
-    public static int ProgramId;
-    int VaoId;
-    int VboId;
-    int viewPosLoc;
-    int LightProgramId;
-    int viewLoc;//glGetUniformLocation(ProgramId,"view");
-    int lightViewLoc;// glGetUniformLocation(LightProgramId,"view");
+    public static int terrainProgramId;
+    public static int VaoId;
+    public static int VboId;
+    public static int viewPosLoc;
+    public static int LightProgramId;
+    public static int viewLoc;//glGetUniformLocation(ProgramId,"view");
+    public static int lightViewLoc;// glGetUniformLocation(LightProgramId,"view");
     public double preKeyTime = 0;
 
 
-	public void init(GameEngine engine){
+    public void init(GameEngine engine){
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
-         //learnOpenglColor=new LearnOpenglColor();
+        //learnOpenglColor=new LearnOpenglColor();
         try {
             initGL();
 
-                this.initManagers();
-                this.initEntities();
-                this.initEvent();
+            this.initManagers();
+            this.initEntities();
+            this.initEvent();
 
-                mouseControlCenter.livingThingManager=this.livingThingManager;
-                initSelf();
+            mouseControlCenter.livingThingManager=this.livingThingManager;
+            initSelf();
 
             behaviorManagerThread  =new BehaviorManager();
             behaviorManagerThread.start();
@@ -117,9 +117,9 @@ public class StartMenuState implements GameState{
 
     }
 
-	public void dispose(){
+    public void dispose(){
 
-	}
+    }
 
     public void initGL(){
         this.CreateTerrainProgram();
@@ -133,7 +133,7 @@ public class StartMenuState implements GameState{
     }
     int cursorX;
     int cursorY;
-	public void handleInput(float delta){
+    public void handleInput(float delta){
         cursorX=Mouse.getEventX();
         cursorY=Mouse.getEventY();
         int mouseDW = Mouse.getDWheel();
@@ -149,10 +149,13 @@ public class StartMenuState implements GameState{
 
 
 
-                int wheelDelta = Mouse.getEventDWheel();
+               int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
                     //gui.handleMouseWheel(wheelDelta / 120);
                 }
+                LogUtil.println("Mouse.getEventButton()"+Mouse.getEventButton());
+
+
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
                 }
@@ -165,13 +168,16 @@ public class StartMenuState implements GameState{
                 if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
                     mouseControlCenter. mouseRightUp(cursorX, cursorY);
                 }
-
+               /* GUI gui = CoreRegistry.get(GUI.class);
+                gui.handleMouse(
+                        Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
+                        Mouse.getEventButton(), Mouse.getEventButtonState());*/
 
             }
         }
 
         mouseControlCenter.handleNavKeys(delta);
-       if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(camera.ViewDir,
                     -0.1f));
             cameraPosChangeListener();
@@ -276,10 +282,10 @@ public class StartMenuState implements GameState{
 
         }
 
-	}
+    }
 
 
-	public void update(float delta){
+    public void update(float delta){
         AttackManager.update();
         try {
             animationManager.update();
@@ -344,7 +350,7 @@ public class StartMenuState implements GameState{
                 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
                 -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
                 -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f};
-         FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+        FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
 
 
         Vertices.put(VerticesArray);
@@ -376,7 +382,7 @@ public class StartMenuState implements GameState{
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
     public void lightPosChangeListener(){
 
-        glUseProgram(ProgramId);
+        glUseProgram(terrainProgramId);
 
         glUniform3f(lightPosInTerrainLoc,lightPos.x,lightPos.y,lightPos.z);
         Util.checkGLError();
@@ -394,7 +400,7 @@ public class StartMenuState implements GameState{
                 GL_Matrix.LookAt(camera.Position,camera.ViewDir);
         view.fillFloatBuffer(cameraViewBuffer);
 
-        glUseProgram(ProgramId);
+        glUseProgram(terrainProgramId);
 
 
 
@@ -434,10 +440,10 @@ public class StartMenuState implements GameState{
 
 
         //glUseProgram(ProgramId);
-        glUseProgram(ProgramId);
+        glUseProgram(terrainProgramId);
         //unifrom赋值===========================================================
         //投影矩阵
-        int projectionLoc= glGetUniformLocation(ProgramId, "projection");
+        int projectionLoc= glGetUniformLocation(terrainProgramId, "projection");
         Util.checkGLError();
         glUniformMatrix4(projectionLoc,  false,projection.toFloatBuffer() );
         Util.checkGLError();
@@ -446,7 +452,7 @@ public class StartMenuState implements GameState{
         GL_Matrix view=
                 GL_Matrix.LookAt(camera.Position,camera.ViewDir);
         view.fillFloatBuffer(cameraViewBuffer);
-        viewLoc = glGetUniformLocation(ProgramId,"view");
+        viewLoc = glGetUniformLocation(terrainProgramId,"view");
 
         Util.checkGLError();
         glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
@@ -454,19 +460,19 @@ public class StartMenuState implements GameState{
 
 
         GL_Matrix model= GL_Matrix.rotateMatrix((float)(0*3.14/180.0),0,0);
-        int modelLoc= glGetUniformLocation(ProgramId, "model");
+        int modelLoc= glGetUniformLocation(terrainProgramId, "model");
         Util.checkGLError();
         glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
         Util.checkGLError();
 
 
-        viewLoc= glGetUniformLocation(ProgramId, "view");
+        viewLoc= glGetUniformLocation(terrainProgramId, "view");
         Util.checkGLError();
 
 
 
         //物体颜色
-        int objectColorLoc= glGetUniformLocation(ProgramId, "objectColor");
+        int objectColorLoc= glGetUniformLocation(terrainProgramId, "objectColor");
         glUniform3f(objectColorLoc,1.0f,0.5f,0.31f);
         Util.checkGLError();
 
@@ -476,7 +482,7 @@ public class StartMenuState implements GameState{
         glUniform3f(lightColorLoc,1.0f,1f,1f);
         Util.checkGLError();*/
 
-         lightPosInTerrainLoc= glGetUniformLocation(ProgramId, "light.position");
+        lightPosInTerrainLoc= glGetUniformLocation(terrainProgramId, "light.position");
         if(lightPosInTerrainLoc==-1){
             LogUtil.println("light.position not found ");
             System.exit(1);
@@ -484,7 +490,7 @@ public class StartMenuState implements GameState{
         glUniform3f(lightPosInTerrainLoc,lightPos.x,lightPos.y,lightPos.z);
         Util.checkGLError();
 
-        viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+        viewPosLoc= glGetUniformLocation(terrainProgramId,"viewPos");
         if(viewPosLoc==-1){
             LogUtil.println("viewPos not found ");
             System.exit(1);
@@ -495,27 +501,27 @@ public class StartMenuState implements GameState{
 
         //int matAmbientLoc = glGetUniformLocation(ProgramId, "material.ambient");
         //int matDiffuseLoc = glGetUniformLocation(ProgramId, "material.diffuse");
-        int matSpecularLoc = glGetUniformLocation(ProgramId, "material.specular");
-        int matShineLoc = glGetUniformLocation(ProgramId, "material.shininess");
+        int matSpecularLoc = glGetUniformLocation(terrainProgramId, "material.specular");
+        int matShineLoc = glGetUniformLocation(terrainProgramId, "material.shininess");
 
         //glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
         //glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
         glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
         glUniform1f(matShineLoc, 32.0f);
 
-        int lightMatAmbientLoc = glGetUniformLocation(ProgramId, "light.ambient");
-        int lightMatDiffuseLoc = glGetUniformLocation(ProgramId, "light.diffuse");
-        int lightMatSpecularLoc = glGetUniformLocation(ProgramId, "light.specular");
-        int lightMatShineLoc = glGetUniformLocation(ProgramId, "light.shininess");
+        int lightMatAmbientLoc = glGetUniformLocation(terrainProgramId, "light.ambient");
+        int lightMatDiffuseLoc = glGetUniformLocation(terrainProgramId, "light.diffuse");
+        int lightMatSpecularLoc = glGetUniformLocation(terrainProgramId, "light.specular");
+        int lightMatShineLoc = glGetUniformLocation(terrainProgramId, "light.shininess");
 
         glUniform3f(lightMatAmbientLoc, 0.5f, 0.5f, 0.5f);
         glUniform3f(lightMatDiffuseLoc, 0.5f, 0.5f, 0.5f);
         glUniform3f(lightMatSpecularLoc, 0.5f, 0.5f, 0.5f);
         glUniform1f(lightMatShineLoc, 32.0f);
 
-        glUniform1f(glGetUniformLocation(ProgramId, "light.constant"), 1.0f);
-        glUniform1f(glGetUniformLocation(ProgramId, "light.linear"), 0.09f);
-        glUniform1f(glGetUniformLocation(ProgramId, "light.quadratic"), 0.032f);
+        glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
+        glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);
+        glUniform1f(glGetUniformLocation(terrainProgramId, "light.quadratic"), 0.017f);
 
     }
     int lightColorLoc;
@@ -525,7 +531,7 @@ public class StartMenuState implements GameState{
     int lightVaoId;
     public void CreateTerrainProgram(){
         try {
-            ProgramId = OpenglUtil.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+            terrainProgramId = OpenglUtil.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
         }catch(Exception e){
             e.printStackTrace();
             System.exit(0);
@@ -575,7 +581,7 @@ public class StartMenuState implements GameState{
         int lightProjectionLoc= glGetUniformLocation(LightProgramId, "projection");
         glUniformMatrix4(lightProjectionLoc,  false,projection.toFloatBuffer() );
         Util.checkGLError();
-         lightModelLoc= glGetUniformLocation(LightProgramId, "model");
+        lightModelLoc= glGetUniformLocation(LightProgramId, "model");
         glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
         Util.checkGLError();
 
@@ -584,11 +590,15 @@ public class StartMenuState implements GameState{
         Util.checkGLError();
 
     }
-	public void render(){
+    public void render(){
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+//        glMatrixMode( GL_MODELVIEW );
+        //GL11.glLoadIdentity();//.glLoadIdentity();
+
+        //glTranslatef( 0.0f, 0.0f, -5.0f );
 
         Long time =System.currentTimeMillis();
        /* float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
@@ -613,19 +623,48 @@ public class StartMenuState implements GameState{
         glBindVertexArray(lightVaoId);
 //        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDrawArrays(GL_TRIANGLES,0,36);
+
+        Util.checkGLError();
         glBindVertexArray(0);
         worldRenderer.render();
+        glUseProgram(0);
+
+
+        /*glBegin(GL_QUADS);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f( 0.5f, -0.5f);
+        glVertex2f( 0.5f,  0.5f);
+        glVertex2f(-0.5f,  0.5f);
+        glEnd();*/
+        CoreRegistry.get(NuiManager.class).render();
+
+
 
         //OpenglUtil.glFillRect(0,0,1,1,1,new byte[]{(byte)245,(byte)0,(byte)0},new byte[]{(byte)245,(byte)0,(byte)0});
-      //  GLApp.drawRect(1,1,1,1);
-        //livingThingManager.render();
+        //  GLApp.drawRect(1,1,1,1);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        // fovy, aspect ratio, zNear, zFar
+        GLU.gluPerspective(50f, // zoom in or out of view
+                1, // shape of viewport rectangle
+                .1f, // Min Z: how far from eye position does view start
+                1024f); // max Z: how far from eye position does view extend
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        GL11.glLoadIdentity();//.glLoadIdentity();
+        livingThingManager.render();
     }
 
-	public boolean isHibernationAllowed(){
-		return false;
-	}
+    public boolean isHibernationAllowed(){
+        return false;
+    }
 
     private void initManagers() {
+        Client client =new Client();
+        client.start();
+        CoreRegistry.put(Client.class,client);
+        BagController bagController =new BagController();
+        CoreRegistry.put(BagController.class,bagController);
         // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
@@ -666,7 +705,7 @@ public class StartMenuState implements GameState{
         //dcc.blockRepository = blockRepository;
         bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
-        mouseControlCenter = new MouseControlCenter(human, camera);
+        mouseControlCenter = new MouseControlCenter(human, camera,this);
         CoreRegistry.put(MouseControlCenter.class,mouseControlCenter);
         mouseControlCenter.bulletPhysics = bulletPhysics;
     }

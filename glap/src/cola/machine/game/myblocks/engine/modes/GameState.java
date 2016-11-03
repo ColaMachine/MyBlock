@@ -14,4 +14,7 @@ public interface GameState {
 	void render();
 	
 	boolean isHibernationAllowed();
+
+	void cameraPosChangeListener();
+
 }

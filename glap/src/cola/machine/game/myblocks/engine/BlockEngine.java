@@ -159,10 +159,10 @@ public class BlockEngine implements GameEngine{
             }
             float delta = totalDelta / 1000f;
 
+
             for (EngineSubsystem subsystem : getSubsystems()) {
                 subsystem.preUpdate(currentState, delta);
             }
-
 
 
             for (EngineSubsystem subsystem : subsystems) {

@@ -2,11 +2,21 @@ package glapp;
 
 import javax.vecmath.Vector3f;
 
+import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.*;
 
 import cola.machine.game.myblocks.rendering.cameras.Camera;
 import glmodel.GL_Vector;
 import glmodel.GL_Matrix;
+import org.lwjgl.util.glu.Util;
+
+import java.nio.FloatBuffer;
+
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 /**
  * Camera class by Philipp Crocoll at CodeColony (codecolony.de).
@@ -236,6 +246,33 @@ public class GLCamera {
 	public GL_Vector getViewDir() {
 		return ViewDir;
 	}
+	FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
+	public void changeCallBack(){
+		GL_Matrix view=
+				GL_Matrix.LookAt(Position,ViewDir);
+		view.fillFloatBuffer(cameraViewBuffer);
 
-	
+		glUseProgram(StartMenuState.terrainProgramId);
+
+
+
+		glUniformMatrix4(StartMenuState.viewLoc,  false,cameraViewBuffer);
+		org.lwjgl.opengl.Util.checkGLError();
+		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+
+
+		glUniform3f(StartMenuState.viewPosLoc,  Position.x,Position.y,Position.z);
+		org.lwjgl.opengl.Util.checkGLError();
+
+
+		glUseProgram(StartMenuState.LightProgramId);
+		org.lwjgl.opengl.Util.checkGLError();
+		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
+
+
+		glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
+
+		org.lwjgl.opengl.Util.checkGLError();
+
+	}
 }

@@ -75,11 +75,11 @@ public abstract class AbstractBaseWorldGenerator  implements WorldGenerator{
     	/*PerlinTerrainGenerator generator = new PerlinTerrainGenerator();
     	generator.setWorldSeed("-3977122335882919370");
     	 generator.generateChunk(chunk);*/
-      /*  if(Switcher.test){
+        if(Switcher.test){
             firstPassGenerators.clear();
-            firstPassGenerators.add(generator);//new SimpleGenerator()
+            firstPassGenerators.add(new SimpleGenerator());//
 
-        }*/
+        }
         for (final FirstPassGenerator generator : firstPassGenerators) {
             generator.generateChunk(chunk);
         }
