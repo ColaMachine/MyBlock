@@ -91,7 +91,10 @@ public class StartMenuState implements GameState{
         shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
         try {
-            initGL();
+
+                initGL();
+
+
 
             this.initManagers();
             this.initEntities();
@@ -122,13 +125,17 @@ public class StartMenuState implements GameState{
     }
 
     public void initGL(){
-        this.CreateTerrainProgram();
-        this.CreateTerrainVAO();
-        this.uniformTerrian();
+        if(Switcher.SHADER_ENABLE) {
+            this.CreateTerrainProgram();
+            this.CreateTerrainVAO();
+            this.uniformTerrian();
 
-        this.CreateLightProgram();
-        this.CreateLightVAO();
-        this.uniformLight();
+            this.CreateLightProgram();
+            this.CreateLightVAO();
+            this.uniformLight();
+        }else{
+
+        }
 
     }
     int cursorX;
@@ -180,7 +187,7 @@ public class StartMenuState implements GameState{
                 if (wheelDelta != 0) {
                     //gui.handleMouseWheel(wheelDelta / 120);
                 }
-                LogUtil.println("Mouse.getEventButton()"+Mouse.getEventButton());
+                //LogUtil.println("Mouse.getEventButton()"+Mouse.getEventButton());
 
 
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
@@ -639,35 +646,44 @@ public class StartMenuState implements GameState{
         Util.checkGLError();
         glBindVertexArray(0);
         Util.checkGLError();*/
-
+    if(Switcher.SHADER_ENABLE){
         glUseProgram(this.LightProgramId);
         Util.checkGLError();
-
-       /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
-        glUniformMatrix4(0,  false,matrixBuffer );
-        matrixBuffer.rewind();*/
-        // glBindTexture(GL_TEXTURE_2D, this.textureHandle);
         glBindVertexArray(lightVaoId);
-//        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glDrawArrays(GL_TRIANGLES,0,36);
-
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         Util.checkGLError();
         glBindVertexArray(0);
-
-       worldRenderer.render();
-        livingThingManager.render();
+        worldRenderer.render(); try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
+        livingThingManager.render(); try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
         glUseProgram(0);
-
-
-        /*glBegin(GL_QUADS);
-        glVertex2f(-0.5f, -0.5f);
-        glVertex2f( 0.5f, -0.5f);
-        glVertex2f( 0.5f,  0.5f);
-        glVertex2f(-0.5f,  0.5f);
-        glEnd();*/
+    }else{
+        worldRenderer.render();
+        livingThingManager.render();
+    }
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
         CoreRegistry.get(NuiManager.class).render();
 
-
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
 
         //OpenglUtil.glFillRect(0,0,1,1,1,new byte[]{(byte)245,(byte)0,(byte)0},new byte[]{(byte)245,(byte)0,(byte)0});
         //  GLApp.drawRect(1,1,1,1);

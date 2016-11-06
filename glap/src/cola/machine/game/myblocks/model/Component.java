@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
@@ -8,6 +9,8 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.Util;
+import util.OpenglUtil;
 
 import javax.vecmath.Point3f;
 import java.nio.FloatBuffer;
@@ -239,10 +242,21 @@ this.secnum =secnum;
 
     }
 
-    public void render(){
-
-        GL11. glEnable(GL11.GL_DEPTH_TEST);
+    public void render(){/*try{
+        Util.checkGLError();}catch (Exception e ){
+        e.printStackTrace();
+        LogUtil.println(e.getMessage());
+        throw e;
+    }
+*/
+        //GL11. glEnable(GL11.GL_DEPTH_TEST);
         GL11.glTranslatef(parentLocation.x, parentLocation.y, parentLocation.z);
+       /* try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
         if(rotateZ!=0){
             GL11.glRotatef(rotateZ, 0, 0, 1);
         }
@@ -251,7 +265,12 @@ this.secnum =secnum;
         }
         //GL11.glRotatef(child.rotateX, child.rotateY, 90, 0);
         GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
-
+        /*try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
 
         if(this.itemDefinition !=null){
             this.itemDefinition.render();
@@ -275,7 +294,12 @@ this.secnum =secnum;
         }else if(bottom!=null){
             bottom.bind();
         }
-
+        /*try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
 
         /*if(this.id.equals("fur_helmet")){
             LogUtil.println("iron_helmet");
@@ -284,84 +308,63 @@ this.secnum =secnum;
 //        GL11.glRotatef(rotateX, rotateY, rotateZ, 0);
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
-        GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
 
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
 
         if(front!=null) {
-            GL11.glTexCoord2f(front.minX, front.minY);
-            glVertex3fv(P1);    // Bottom Left ǰ����
-            GL11.glTexCoord2f(front.maxX, front.minY);
-            glVertex3fv(P2);    // Bottom Right ǰ����
-            GL11.glTexCoord2f(front.maxX, front.maxY);
-            glVertex3fv(P6);    // Top Right ǰ����
-            GL11.glTexCoord2f(front.minX, front.maxY);
-            glVertex3fv(P5);    // Top Left	ǰ����
+
+
+            OpenglUtil.glVertex3fv4rect(P1,P2,P6,P5, front,Constants.FRONT);
         }
         // Back Face
         if(back!=null) {
-            GL11.glNormal3f(0.0f, 0.0f, -1.0f);
-            GL11.glTexCoord2f(back.minX, back.minY);
-            glVertex3fv(P3);    // Bottom Right ������
-            GL11.glTexCoord2f(back.maxX, back.minY);
-            glVertex3fv(P4);    // Top Right ������
-            GL11.glTexCoord2f(back.maxX, back.maxY);
-            glVertex3fv(P8);    // Top Left ������
-            GL11.glTexCoord2f(back.minX, back.maxY);
-            glVertex3fv(P7);    // Bottom Left ������
+            OpenglUtil.glVertex3fv4rect(P3,P4,P8,P7, back,Constants.BACK);
+
         }
         // Top Face
         if(top!=null) {
-            GL11.glNormal3f(0.0f, 1.0f, 0.0f);
-            GL11.glTexCoord2f(top.minX, top.minY);
-            glVertex3fv(P5);    // Top Left
-            GL11.glTexCoord2f(top.maxX, top.minY);
-            glVertex3fv(P6);// Bottom Left
-            GL11.glTexCoord2f(top.maxX, top.maxY);
-            glVertex3fv(P7);    // Bottom Right
-            GL11.glTexCoord2f(top.minX, top.maxY);
-            glVertex3fv(P8);    // Top Right
+            OpenglUtil.glVertex3fv4rect(P5,P6,P7,P8, top,Constants.TOP);
+
         }
         if(bottom!=null) {
-            // Bottom Face
-            GL11.glNormal3f(0.0f, -1.0f, 0.0f);
-            GL11.glTexCoord2f(bottom.minX, bottom.minY);
-            glVertex3fv(P4);    // Top Right ������
-            GL11.glTexCoord2f(bottom.maxX, bottom.minY);
-            glVertex3fv(P3);    // Top Left ������
-            GL11.glTexCoord2f(bottom.maxX, bottom.maxY);
-            glVertex3fv(P2);    // Bottom Left ǰ����
-            GL11.glTexCoord2f(bottom.minX, bottom.maxY);
-            glVertex3fv(P1);// Bottom Right ǰ����
+            OpenglUtil.glVertex3fv4rect(P4,P3,P2,P1, bottom,Constants.BOTTOM);
         }
         // left face
         if(left!=null) {
-            GL11.glNormal3f(1.0f, 0.0f, 0.0f);
-            GL11.glTexCoord2f(left.minX, right.minY);
-            glVertex3fv(P2);    // Bottom Right ������
-            GL11.glTexCoord2f(left.maxX, right.minY);
-            glVertex3fv(P3);        // Top Right ������
-            GL11.glTexCoord2f(left.maxX, right.maxY);
-            glVertex3fv(P7);        // Top Left ǰ����
-            GL11.glTexCoord2f(left.minX, right.maxY);
-            glVertex3fv(P6);    // Bottom Left ǰ����
+
+            OpenglUtil.glVertex3fv4rect(P2,P3,P7,P8, left,Constants.LEFT);
         }
         // right Face
         if(right!=null) {
-            GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
-            GL11.glTexCoord2f(right.minX, left.minY);
-            glVertex3fv(P4);    // Bottom Left ������
-            GL11.glTexCoord2f(right.maxX, left.minY);
-            glVertex3fv(P1);    // Bottom Right ǰ����
-            GL11.glTexCoord2f(right.maxX, left.maxY);
-            glVertex3fv(P5);    // Top Right ǰ����
-            GL11.glTexCoord2f(right.minX, left.maxY);
-            glVertex3fv(P8);// Top Left
+            OpenglUtil.glVertex3fv4rect(P4,P1,P5,P8, right,Constants.RIGHT);
+        }
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
         }
         GL11.glEnd();
+        /*try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
         for(int i=0;i<children.size();i++){
             children.get(i).render();
         }
-
+       /* try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
 
 //        GL11.glRotatef(-rotateX, -rotateY, -rotateZ, 0);
         GL11.glTranslatef(-offsetPosition.x,-offsetPosition.y,-offsetPosition.z);

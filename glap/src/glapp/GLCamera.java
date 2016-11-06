@@ -3,6 +3,7 @@ package glapp;
 import javax.vecmath.Vector3f;
 
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import cola.machine.game.myblocks.switcher.Switcher;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.*;
@@ -248,6 +249,8 @@ public class GLCamera {
 	}
 	FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 	public void changeCallBack(){
+        if(!Switcher.SHADER_ENABLE)
+            return;
 		GL_Matrix view=
 				GL_Matrix.LookAt(Position,ViewDir);
 		view.fillFloatBuffer(cameraViewBuffer);

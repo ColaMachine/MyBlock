@@ -368,7 +368,11 @@ public class LWJGLRenderer implements Renderer, LineRenderer {
     }
 
     public Texture loadTexture(URL url, String formatStr, String filterStr) throws IOException {
-        Util.checkGLError();
+        try{
+        Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            throw e;
+        }
         LWJGLTexture.Format format = LWJGLTexture.Format.COLOR;
         LWJGLTexture.Filter filter = LWJGLTexture.Filter.LINEAR;
         if(formatStr != null) {

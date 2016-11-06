@@ -17,6 +17,7 @@ import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
@@ -71,7 +72,12 @@ return livingThingsMap.get(id);
 
     public void render(){
         for(LivingThing livingThing:livingThings){
-            livingThing.renderShader();
+            if(Switcher.SHADER_ENABLE){
+                livingThing.renderShader();
+            }else{
+                livingThing.render();
+            }
+
             //livingThing.renderBloodBar();
            livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
 

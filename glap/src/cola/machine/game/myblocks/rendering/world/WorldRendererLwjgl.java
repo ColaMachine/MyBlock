@@ -1,8 +1,10 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
+import cola.machine.game.myblocks.switcher.Switcher;
 import glapp.GLApp;
 import glapp.GLCamera;
 
@@ -17,10 +19,7 @@ import glmodel.GL_Vector;
 import math.Rect2i;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +45,11 @@ import com.google.common.collect.Lists;
 
 import cola.machine.game.myblocks.config.Config;
 import util.MathUtil;
+import util.OpenglUtil;
+
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class WorldRendererLwjgl implements WorldRenderer {
     private final Config config;
@@ -121,29 +124,69 @@ public class WorldRendererLwjgl implements WorldRenderer {
     private IntBuffer TextureIDBuffer = BufferUtils.createIntBuffer(1);
 
 	public void render() {
+
        // if(true)return;
         this.updateChunksInProximity(false);
         for (ChunkImpl chunk : chunksInProximity) {
+            if(Switcher.SHADER_ENABLE){
+                chunk.preRenderShader();
+            }else{
+                chunk.preRender();
+            }
 
-            chunk.preRender2();
 
         }
-
+        /*try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
 		TextureManager.getTextureInfo("mantle").bind();
+        if(Switcher.SHADER_ENABLE){
+            for (ChunkImpl chunk : chunksInProximity) {
+                glUseProgram(StartMenuState.terrainProgramId);
+                Util.checkGLError();
+                chunk.renderShader();
+                glBindVertexArray(0);
+                Util.checkGLError();
+            }
+        }else{
+            for (ChunkImpl chunk : chunksInProximity) {
+                GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
+                chunk.getChunkWorldPosZ());
+                GL11.glBegin(GL11.GL_QUADS);
+                 chunk.render();
 
-        //GL11.glEnable(GL11.GL_BLEND);
-        for (ChunkImpl chunk : chunksInProximity) {
-            //GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                    //chunk.getChunkWorldPosZ());
-            //GL11.glBegin(GL11.GL_QUADS);
-            chunk.render2();
-          //  GL11.glEnd();
-           // GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-            //        -chunk.getChunkWorldPosZ());
+               try{
+                    Util.checkGLError();}catch (Exception e ){
+                    e.printStackTrace();
+                    LogUtil.println(e.getMessage());
+                    throw e;
+                }
+                  GL11.glEnd();
+                try{
+                    Util.checkGLError();}catch (Exception e ){
+                    e.printStackTrace();
+                    LogUtil.println(e.getMessage());
+                    throw e;
+                }
+
+                 GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
+                        -chunk.getChunkWorldPosZ());/*try{
+                    Util.checkGLError();}catch (Exception e ){
+                    e.printStackTrace();
+                    LogUtil.println(e.getMessage());
+                    throw e;
+                }*/
+            }
         }
-
-
-
+       /* try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
 		//skysphere.render();
 	}
 

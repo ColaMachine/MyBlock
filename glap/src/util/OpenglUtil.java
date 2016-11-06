@@ -1,7 +1,9 @@
 package util;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.util.FileUtil;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
@@ -289,4 +291,82 @@ public class OpenglUtil {
     public static void drawRect(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, float minx, float miny , float maxx, float maxy){
 
     }
+
+    public static void glVertex3fv4rect(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  TextureInfo ti,int position){
+
+        switch (position){
+            case Constants.TOP:
+                GL11.glNormal3f( 0.0f, 1.0f, 0.0f);
+                break;
+            case Constants.BOTTOM:
+                GL11.glNormal3f( 0.0f, -1.0f, 0.0f);
+                break;
+            case Constants.LEFT:
+                GL11.glNormal3f( -1f, 0.0f, 0.0f);
+                break;
+            case Constants.RIGHT:
+                GL11.glNormal3f( 1.0f, 0.0f, 0.0f);
+                break;
+            case Constants.FRONT:
+                GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+                break;
+            case Constants.BACK:
+                GL11.glNormal3f( 0.0f, 0.0f, -1.0f);
+                break;
+
+        }
+
+        GL11.glTexCoord2f(ti.minX, ti.minY);
+        glVertex3fv(p1);    // Bottom Left ǰ����
+        GL11.glTexCoord2f(ti.maxX, ti.minY);
+        glVertex3fv(p2);    // Bottom Right ǰ����
+        GL11.glTexCoord2f(ti.maxX, ti.maxY);
+        glVertex3fv(p3);    // Top Right ǰ����
+        GL11.glTexCoord2f(ti.minX, ti.maxY);
+        glVertex3fv(p4);    // Top Left	ǰ����
+    }
+    public static void glVertex3fv(GL_Vector p){
+        GL11.glVertex3f(p.x,p.y,p.z);
+    }
+
+
+    public static void glVertex3fv4rect(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBuffer floatBuffer){
+        p1 =GL_Matrix.multiply(matrix,p1);
+
+        p2 =GL_Matrix.multiply(matrix,p2);
+        p3 =GL_Matrix.multiply(matrix,p3);
+        p4 =GL_Matrix.multiply(matrix,p4);
+        normal=GL_Matrix.multiply(matrix,normal);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);
+        floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);
+        floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY);
+    }
+    public static void glVertex3fv4triangle(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBuffer floatBuffer){
+        p1 =GL_Matrix.multiply(matrix,p1);
+
+        p2 =GL_Matrix.multiply(matrix,p2);
+        p3 =GL_Matrix.multiply(matrix,p3);
+        p4 =GL_Matrix.multiply(matrix,p4);
+        normal=GL_Matrix.multiply(matrix,normal);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);
+        floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);
+        floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);
+    }
+   /* public void drawLine() {
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glLineWidth(12f);
+        GL11.glColor3f(1f, 1f, 1f);
+        GL11.glBegin(GL11.GL_LINES); // draw triangles
+        GL11.glVertex3f(lineStart.x, lineStart.y,
+                lineStart.z); // A1-A2
+        GL11.glVertex3f(mouseEnd.x, mouseEnd.y, mouseEnd.z);
+        GL11.glEnd();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+    }*/
 }

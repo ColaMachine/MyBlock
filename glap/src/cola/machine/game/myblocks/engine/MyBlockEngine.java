@@ -33,6 +33,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
@@ -161,9 +162,9 @@ public class MyBlockEngine extends GLApp {
 
             LWJGLHelper.initNativeLibs();
             //System.out.println(System.getProperty("java.library.path"));
-            Collection<EngineSubsystem> subsystemList;
+            //Collection<EngineSubsystem> subsystemList;
 
-            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
+            //subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
 
             // create the app
             MyBlockEngine demo = new MyBlockEngine();
@@ -187,9 +188,7 @@ public class MyBlockEngine extends GLApp {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        Client client =new Client();
-        client.start();
-        CoreRegistry.put(Client.class,client);
+
         // makeTexture("assets.images/Particle.bmp", true, true);
         // airplaneShadow = new GLShadowOnPlane(lightPosition, new float[]{0f, 1f, 0f, 3f}, null, this, method(this, "drawObjects"));
         // boat = new GLModel("glap/models/boat/botrbsm1.obj");
@@ -202,36 +201,32 @@ public class MyBlockEngine extends GLApp {
         GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
-        CoreRegistry.put(BagController.class,bagController);
+
+
+
+
+        // Depth test setup
+        GL11.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
+        GL11.glDepthFunc(GL11.GL_LEQUAL);  // The Type Of Depth Testing To Do
 
 
 
         //sword=new Sword(0,0,0);
         //human2 = new Human(blockRepository);
-        CoreRegistry.put(MyBlockEngine.class, this);
 
 
 
 
 
 
+/*
         Collection<EngineSubsystem> subsystemList;
         subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
         //, new LwjglTimer(), new LwjglAudio(), new LwjglInput()
         for (EngineSubsystem subsystem : subsystemList) {
             subsystem.preInitialise();
-        }
+        }*/
 
-        setPerspective();
-        /*
-		 * setLight(GL11.GL_LIGHT1, new float[] { 100f, 100f, 100f, 1.0f}, new
-		 * float[] { 1f, 1f, 1f, 1f }, new float[] { 1f,1f, 1f, 1f },
-		 * lightPosition);
-		 */
-        // Create a directional light (light green, to simulate reflection off
-        // grass)
-        //setFog(true);
-        //setFog(new float[]{1f,1f,1f,0.2f},0.008f);
        setLight( GL11.GL_LIGHT1,
         		new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
         		new float[] { 0.2f, 0.2f, 0.2f, 1.0f },   // ambient
@@ -270,30 +265,18 @@ public class MyBlockEngine extends GLApp {
 
 
         float mat_shininess =128.0f;
-       /* GL11.glMaterial(GL11.GL_FRONT,GL11.GL_DIFFUSE,mat_diffuse);
-        GL11.glMaterial(GL11.GL_FRONT,GL11.GL_SPECULAR,mat_specular);
-        GL11.glMaterialf (GL11.GL_FRONT, GL11.GL_SHININESS, mat_shininess);
-        GL11.glMaterial (GL11.GL_FRONT, GL11.GL_EMISSION, mat_emission);*/
-        //定义材质特性
-        // Create a directional light (light green, to simulate reflection off grass)
-//        setLight( GL11.GL_LIGHT2,
-//                new float[] { 0.15f, 0.4f, 0.1f, 1.0f },  // diffuse color
-//                new float[] { 0.0f, 0.0f, 0.0f, 1.0f },   // ambient
-//                new float[] { 0.0f, 0.0f, 0.0f, 1.0f },   // specular
-//                new float[] { 0.0f, -10f, 0.0f, 0f } );   // direction (pointing up)
 
-        // enable lighting and texture rendering
         GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-        // Enable alpha transparency (so text will have transparent background)
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
 
 
         try {
+            CoreRegistry.put(MyBlockEngine.class, this);
+            Client client =new Client();
+            client.start();
+            CoreRegistry.put(Client.class,client);
+            CoreRegistry.put(BagController.class,bagController);
             this.initManagers();
             this.initEntities();
             this.initEvent();
@@ -314,17 +297,7 @@ public class MyBlockEngine extends GLApp {
     /**
      * set the field of view and view depth.
      */
-    public static void setPerspective() {
-        // select projection matrix (controls perspective)
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        // fovy, aspect ratio, zNear, zFar
-        GLU.gluPerspective(50f, // zoom in or out of view
-                aspectRatio, // shape of viewport rectangle
-                .1f, // Min Z: how far from eye position does view start
-                1024f); // max Z: how far from eye position does view extend
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    }
+
 
     Firework firework = new Firework();
     public void initEvent(){
@@ -336,6 +309,8 @@ public class MyBlockEngine extends GLApp {
         mouseControlCenter.bulletPhysics = bulletPhysics;
     }
     public void draw() {
+
+
         if (!Switcher.IS_GOD)
             if (Math.random() > 0.5) {
                 //dcc.check(human);
@@ -351,9 +326,9 @@ public class MyBlockEngine extends GLApp {
         GL11.glLoadIdentity();
 
 //        if(!camera1.fenli) {
-        GL_Vector camera_pos = GL_Vector.add(human.position,
+       /* GL_Vector camera_pos = GL_Vector.add(human.position,
                 GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
-        camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
+        camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);*/
 //        }
         // camera1.MoveTo(human.Position.x, human.Position.y + 4,
         // human.Position.z);
@@ -367,166 +342,21 @@ public class MyBlockEngine extends GLApp {
             camera1.viewDir(human.ViewDir);
         }
         cam.render();
-
-
-        // drawAllBlock();
-        //drawColorBlocks();
-        try {
-            //  Thread.sleep(100);
-        } catch (Exception e) {
-            e.printStackTrace();
+        GL11.glPushMatrix();
+        {
+            GL11.glRotatef(rotation, 0, 1, 0);
+            GL11.glColor4f(0f, .5f, 1f, 1f);
+            renderCube();
         }
+        GL11.glPopMatrix();
+
+
+
         mainDraw();
 
 
     }
 
-    public void drawAllBlock() {
-
-        worldRenderer.render();
-		/*java.util.Iterator it = blockRepository.handleMap.entrySet().iterator();
-		while (it.hasNext()) {
-
-			java.util.Map.Entry entry = (java.util.Map.Entry) it.next();
-			String name = (String) entry.getKey();
-			if(!name.equals("name"))
-			{
-			int displayandleId = (Integer) entry.getValue();
-			GL11.glPushMatrix();
-			{
-				GL11.glTranslated(0,30,0);
-
-				int texturehandleid=1;// TextureManager.getImage((String) entry.getKey()).textureHandle;
-				GL11.glBindTexture(
-						GL11.GL_TEXTURE_2D,
-						texturehandleid);
-				//GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
-				//		GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-				callDisplayList(displayandleId);
-                GL11.glTranslated(0,-30,0);
-			}GL11.glPopMatrix();
-			}
-
-		}*/
-
-    }
-
-
-    public void drawColorBlocks() {
-//先缩小
-
-        GL11.glPushMatrix();
-
-        // GL11.glTranslatef(1,30,1);
-        GL11.glTranslatef(
-                1, 1, 1
-        );
-        //GL11.glScalef(0.1f, 0.1f, 0.1f);
-        //GL11.glRotated(90, 1, 0, 0);
-
-
-        //GL11.glDisable(GL11.GL_TEXTURE_2D);
-        //GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 1);
-        GL11.glPointSize(4);
-        GL11.glColor4f(1f, 0f, 0f, 1f);
-        //GL11.glCullFace(GL11.GL_FRONT);
-        callDisplayList(handleId);
-        // GL11.glEnable(GL11.GL_LIGHTING);
-        //	GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        GL11.glTranslatef(1,-30,1);
-
-        GL11.glTranslatef(
-                -1, -1, -1
-        );
-        GL11.glPopMatrix();
-    }
-
-
-	/*
-	public void drawColorBlocks(){
-//先缩小
-	
-		GL11.glPushMatrix();	GL11.glTranslatef(human.Position.x,human.Position. y+4
-				, human.Position.z);
-		GL11.glScalef(0.1f, 0.1f, 0.1f);
-		GL11.glRotated(90, 1, 0, 0);
-		
-		HashMap<Integer,Block> map =blockRepository.kindBlockMap.get("color");
-		java.util.Iterator it1 = map.entrySet().iterator();
-		
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		while(it1.hasNext()){
-			
-		java.util.Map.Entry entry1 = (java.util.Map.Entry)it1.next();
-		Block block = (Block) entry1.getValue();
-		
-		GL11.glColor3f(block.r()/256f, block.b()/256f,block. g()/256f);
-		block.renderColor();
-		} GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glPopMatrix();
-	}*/
-
-    //  GLModel boat;
-
-    public void drawShip() {
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glPushMatrix();
-        {
-            // place plane at orbit point, and orient it toward origin
-            //billboardPoint(airplanePos, ORIGIN, UP);
-            // turn plane toward direction of motion
-            //  GL11.glRotatef(-90, 0, 1, 0);
-            // make it big
-            GL11.glTranslatef(-10, 35, 5);
-            GL11.glScalef(0.01f, 0.01f, 0.01f);
-            // GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
-            //boat.render();
-            // reset material, since model.render() will alter current material settings
-            setMaterial(new float[]{.8f, .8f, .7f, 1f}, .4f);
-        }
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
-
-    public void DrawObject1() {
-        //GL11.glPushMatrix();
-        // draw the earth
-        // { GL11.glColor3f(1.0f, 1.0f, 1.0f);
-        // GL11.glTranslated(0,-1.5,0);
-        //GL11.glRotatef(rotation, 0, 1, 0);  // rotate around Y axis
-        // GL11.glScalef(0.35f, 0.35f, 0.35f);          // scale up
-        // GL11. glRotatef(xrot, 1.0f, 0.0f, 0.0f);					// Rotate On The X Axis
-        // GL11. glRotatef(yrot, 0.0f, 1.0f, 0.0f);					// Rotate On The Y Axis
-        // GL11.glBindTexture(GL11.GL_TEXTURE_2D, sphereTextureHandle);
-        // callDisplayList(earth);
-        //  }
-        // GL11.glPopMatrix();
-        // draw the earth
-        // GL11.glPushMatrix();
-        {
-            GL11.glColor4f(1.0f, 1.0f, 1.0f, 0.4f);
-            // GL11.glScalef(0.35f, 0.35f, 0.35f);
-            // Rotate On The Y Axis
-            // scale up
-            GL11. glEnable( GL11.GL_BLEND);						// 启用混合
-
-            GL11. glBlendFunc( GL11.GL_SRC_ALPHA,  GL11.GL_ONE);					// 把原颜色的40%与目标颜色混合
-
-            GL11. glEnable( GL11.GL_TEXTURE_GEN_S);						// 使用球映射
-
-            GL11.glEnable( GL11.GL_TEXTURE_GEN_T);
-
-            //  GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.groundTextureHandle);
-            // callDisplayList(earth);
-        } //GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_TEXTURE_GEN_S);
-        GL11.glDisable(GL11.GL_TEXTURE_GEN_T);
-        GL11.glDisable(GL11.GL_BLEND);
-
-    }
 
 
 
@@ -630,34 +460,15 @@ public class MyBlockEngine extends GLApp {
 
     public GL_Vector mouseEnd = new GL_Vector(0, 5, 0);
 
-    public void drawLine() {
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth(12f);
-        GL11.glColor3f(1f, 1f, 1f);
-        GL11.glBegin(GL11.GL_LINES); // draw triangles
-        GL11.glVertex3f(lineStart.x, lineStart.y,
-                lineStart.z); // A1-A2
-        GL11.glVertex3f(mouseEnd.x, mouseEnd.y, mouseEnd.z);
-        GL11.glEnd();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-    }
 
     public void mainDraw() {
+        GL11.glPushMatrix();
+        GL11.glRotatef(rotation, 0, 1, 0);
+        GL11.glColor4f(0f, .5f, 1f, 1f);
+        renderCube();
+        GL11.glPopMatrix();
 
-
-      /*  try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-*/     // drawLine();
-        /*try {
-            shaderTest.render();
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-        }*/
         if(Switcher.gameState==0){
             CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();
         }else if(Switcher.gameState==1){
@@ -671,7 +482,7 @@ public class MyBlockEngine extends GLApp {
             //GL11.glScaled(0.1,0.1,0.1);
             worldRenderer.render();
 //            livingThingManager.update();
-            livingThingManager.render();
+            //livingThingManager.render();
 
             AttackManager.update();
             AttackManager.render();
@@ -679,126 +490,20 @@ public class MyBlockEngine extends GLApp {
            /* TextureInfo ti = TextureManager.getTextureInfo("human");
             ti.bind();*/
 
-            GL11.glPushMatrix();
-            {
-                if (Switcher.CAMERA_2_PLAYER < -2 || Switcher.CAMERA_2_PLAYER > 2) {
-                    // human.preRender();
-                    //   human.render();
-                }
 
-            }
 
-            GL11.glPopMatrix();
+            //GL11.glPopMatrix();
             CoreRegistry.get(NuiManager.class).render();
         }else if(Switcher.gameState==2){
 
         }
-
-        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-
-       /* GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11. glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
-        GL11. glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);*/
-        // TextureInfo ti1 = TextureManager.getTextureInfo("human");
-        // GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti1.textureHandle);
-        // GL11.glScaled(0.1,0.1,0.1);
-
-
-        //  GL11.glScaled(10,10,10);
-        //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        // GL11. glFlush();
-
-        // testDraw();
-
-        // player.render();
-		/*
-		 * ti = TextureManager.getTextureInfo("gold_armor");
-		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, ti.textureHandle);
-		 * GL11.glPushMatrix(); { if(Switcher.CAMERA_2_PLAYER<-2){
-		 * human.render(); }else human.renderPart();
-		 *
-		 * } GL11.glPopMatrix();
-		 */
-		/*
-		 * GL11.glTranslated(1,-5,1); GL11.glRotated(30,1,0,0);
-		 * GL11.glScaled(1,1,1);
-		 */
-
-		/*
-		 * GL11.glPushMatrix(); {
-		 *
-		 * human2.render(); } GL11.glPopMatrix();
-		 */
-        //firework.render(human);
-        // GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-        // GL11.glDisable(GL11.GL_DEPTH_TEST);
-
 
         if (Switcher.PRINT_SWITCH)
             printText();
         //
 
     }
-    ChunkImpl chunk ;
-    public void initChuck(){
-        chunk =new ChunkImpl();
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        //Block block =blockManager .getBlock("soil");
-        for (int x = 0; x < chunk.getChunkSizeX(); x+=2) {
-            for (int z = 0; z < chunk.getChunkSizeZ(); z+=2) {
-                Block block =blockManager .getBlock("soil");
-                chunk.setBlock(x, 0, z, block);
-            }
-        }
-
-        // chunk.setBlock(0,0,-2,block);
-
-        chunk.build();
-    }
 
 
-    public void keyDown(int keycode) {
-
-		 /* if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==
-		 camera1)? camera2 : camera1); }*/
-        if(Keyboard.KEY_W == keycode||Keyboard.KEY_S == keycode||Keyboard.KEY_A == keycode ||Keyboard.KEY_D == keycode){
-            return;
-        }
-        // mouseControlCenter.keyDown(keycode);
-    }
-
-    public void keyUp(int keycode) {
-        // mouseControlCenter.keyUp(keycode);
-    }
-/*
-    *//**
-     * Add last mouse motion to the line, only if left mouse button is down.
-     *//*
-    public void mouseMove(int x, int y) {
-        mouseControlCenter.mouseMove(x, y);
-    }
-
-    *//**
-     * Add last mouse motion to the line, only if left mouse button is down.
-     *//*
-    public void mouseUp(int x, int y) {
-        mouseControlCenter.mouseUp(x, y);
-    }
-
-    *//**
-     * Add last mouse motion to the line, only if left mouse button is down.
-     */
-  /*  public void mouseDown(int x, int y) {
-        msg("DX=" + x + " DY=" + y);
-        if (this.mouseButtonDown(0)) {
-            mouseControlCenter.mouseLClick(x, y);
-        }
-        if (this.mouseButtonDown(1)) {
-            mouseControlCenter.mouseRClick(x, y);
-        }
-
-    }*/
 
 }

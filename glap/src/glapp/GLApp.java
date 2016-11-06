@@ -600,6 +600,7 @@ public class GLApp {
      * function naming conventions.
      */
     public void draw() {
+
         render();
     }
 
@@ -638,6 +639,8 @@ public class GLApp {
             renderCube();
         }
         GL11.glPopMatrix();
+
+
     }
 
     /**
@@ -2569,7 +2572,7 @@ public class GLApp {
             GL11.glVertex3f( (float)x, (float)y+h, (float)z);
             GL11.glVertex3f( (float)x, (float)y, (float)z);
         }
-        GL11.glEnd();
+        GL11.glEnd(); Util.checkGLError();
         // draw points at the corners
         GL11.glBegin(GL11.GL_POINTS);
         {
@@ -2578,6 +2581,7 @@ public class GLApp {
             GL11.glVertex3f( (float)x+w, (float)y+h, (float)z);
             GL11.glVertex3f( (float)x, (float)y+h, (float)z);
         }
+        Util.checkGLError();
         GL11.glEnd();
         // re-enable settings
         popAttrib();
@@ -2687,6 +2691,7 @@ public class GLApp {
         GL11.glTexCoord2f(1.0f, 1.0f); GL11.glVertex3f(-1.0f,  1.0f,  1.0f);	// Top Right
         GL11.glTexCoord2f(0.0f, 1.0f); GL11.glVertex3f(-1.0f,  1.0f, -1.0f);	// Top Left
         GL11.glEnd();
+        Util.checkGLError();
     }
 
     /**

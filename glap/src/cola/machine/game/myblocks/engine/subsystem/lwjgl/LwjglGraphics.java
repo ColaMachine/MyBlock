@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.engine.subsystem.DisplayDevice;
 import cola.machine.game.myblocks.engine.subsystem.RenderingSubsystemFactory;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
+import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.login.LoginDemo;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
@@ -116,11 +117,15 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
             } catch (IOException | IllegalArgumentException e) {
                 logger.warn("Could not set icon", e);
             }
-            ContextAttribs contextAtrributes = new ContextAttribs(3, 2)
-                    .withForwardCompatible(true)
-                    .withProfileCore(true);
 
-            Display.create( rc.getPixelFormat()/*,contextAtrributes*/);
+            if(Switcher.SHADER_ENABLE){
+                ContextAttribs contextAtrributes = new ContextAttribs(3, 2)
+                        .withForwardCompatible(true)
+                        .withProfileCore(true);
+                Display.create( rc.getPixelFormat(),contextAtrributes);
+            }else {
+                Display.create(rc.getPixelFormat()/*,contextAtrributes*/);
+            }
             Display.setVSyncEnabled(rc.isVSync());//确定是否垂直同步
         } catch (LWJGLException e) {
             throw new RuntimeException("Can not initialize graphics device.", e);

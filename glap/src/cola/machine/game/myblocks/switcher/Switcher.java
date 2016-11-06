@@ -18,4 +18,6 @@ public class Switcher {
     public static float FUJIAO=fujiao_d/90f;
 
     public static boolean isChat =false;
+
+    public static boolean SHADER_ENABLE=false;
 }

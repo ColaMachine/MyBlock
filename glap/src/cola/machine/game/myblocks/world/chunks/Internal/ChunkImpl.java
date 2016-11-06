@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.block.BlockDefManager;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import glmodel.GL_Vector;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
@@ -32,6 +34,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
+import util.OpenglUtil;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -1401,7 +1404,7 @@ boolean flat =true;
 			System.out.println("为什么要对没有初始化的chunkimpl取消");
 		}
 	}
-    public void preRender2() {
+    public void preRenderShader() {
         if (this.disposed) {
             // if(this.displayId==0){
             this.buildShaderBuffer();//this.buildAlpha();
@@ -1429,31 +1432,44 @@ boolean flat =true;
 	}
 
 
-    public void render2() {
+    public void renderShader() {
         if (this.VaoId == 0) {
             // int error =GL11.glGetError();
             System.out.println(this.chunkPos+"displayId should not be 0 in render");
         } else {
 
 
-            glUseProgram(StartMenuState.terrainProgramId);
-            Util.checkGLError();
+
             glBindVertexArray(VaoId);
             Util.checkGLError();
-            glDrawArrays(GL_TRIANGLES,0,this.count*6);
+            glDrawArrays(GL_TRIANGLES, 0, this.count * 6);
             Util.checkGLError();
-            glBindVertexArray(0);
 
         }
     }
 	public void render() {
+
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
+//        GLApp.renderCube();
 		if (this.displayId == 0) {
 			// int error =GL11.glGetError();
 			System.out.println(this.chunkPos+"displayId should not be 0 in render");
 		} else {
 
+            //OpenglUtil.glVertex3fv4rect(P1, P2, P6, P5, ti, Constants.FRONT);
 			GLApp.callDisplayList(this.displayId);
 		}
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
 	}
 
     public void renderAlpha(){

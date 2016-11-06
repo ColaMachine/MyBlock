@@ -26,6 +26,7 @@ import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.Util;
 
 import java.io.IOException;
 
@@ -104,6 +105,11 @@ public class NuiManager {
         startGui.applyTheme(theme);
     }
     public void startGame()  {
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            throw e;
+        }
         long startTime = System.nanoTime();
         ThemeManager newTheme = null;
         try {

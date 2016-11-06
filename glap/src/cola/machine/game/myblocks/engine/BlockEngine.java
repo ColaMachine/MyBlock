@@ -8,6 +8,7 @@ import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglInput;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglTimer;
 import cola.machine.game.myblocks.input.InputSystem;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.utilities.concurrency.Task;
 import cola.machine.game.myblocks.utilities.concurrency.TaskMaster;
 
@@ -21,6 +22,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.lwjgl.Sys;
+import org.lwjgl.opengl.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.terasology.crashreporter.CrashReporter;
@@ -163,10 +165,22 @@ public class BlockEngine implements GameEngine{
             for (EngineSubsystem subsystem : getSubsystems()) {
                 subsystem.preUpdate(currentState, delta);
             }
+            try{
+                Util.checkGLError();}catch (Exception e ){
+                e.printStackTrace();
+                LogUtil.println(e.getMessage());
+                throw e;
+            }
 
 
             for (EngineSubsystem subsystem : subsystems) {
                 subsystem.postUpdate(currentState, delta);
+            }
+            try{
+                Util.checkGLError();}catch (Exception e ){
+                e.printStackTrace();
+                LogUtil.println(e.getMessage());
+                throw e;
             }
         }
     }

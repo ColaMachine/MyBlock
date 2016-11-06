@@ -257,6 +257,63 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         }
     }
     FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(10240);
+    public void render(){
+        /*GL11.glPushMatrix();try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
+        this.dropControl();
+        GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
+        float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
+        GL11.glRotatef(angle, 0, 1, 0);/*try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
+        GL11.glScalef(0.5f,0.5f,0.5f);/*try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
+*/
+        bodyComponent.render();
+        GL11.glScalef(2,2,2);
+        GL11.glRotatef(-angle, 0, 1, 0);
+        GL11.glTranslatef(-position.x,-position.y,-position.z);
+        GL11.glPopMatrix();
+
+
+
+        GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
+
+        vector[1]=600-vector[1]-45;
+
+        //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
+       /* GLApp.pushAttrib();
+       GLApp.setOrthoOn();
+
+        TextureManager.getTextureInfo("human_head_front").draw(null,(int)vector[0],(int)vector[1],40,40);
+
+        GLApp.glFillRect((int)vector[0],(int)vector[1], 150, 20, 4, borderColor, whiteColor);
+        GLApp.glFillRect((int)vector[0],(int)vector[1]+4,150*nowBlood/blood,20,lineWdith,borderColor,redColor);
+
+        GLApp.glFillRect((int)vector[0],(int)vector[1]+30,150,20,lineWdith,borderColor,whiteColor);
+        GLApp.glFillRect((int)vector[0],(int)vector[1]+30,150*nowEnergy/energy,20,lineWdith,borderColor,blue);
+
+        GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
+        GLApp.setOrthoOff();
+        GLApp.popAttrib();*/
+       /* try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
+    }
     public void renderShader(){
         if(vaoId<=0){
             preRenderShader();
@@ -278,24 +335,22 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         glBindVertexArray(0);
 
         glUseProgram(0);
-    }
-    public void render(){
-        GL11.glPushMatrix();
+        // GL11.glPushMatrix();
         this.dropControl();
         GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
         float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-        GL11.glRotatef(angle, 0, 1, 0);
-        GL11.glScalef(0.5f,0.5f,0.5f);
+        //GL11.glRotatef(angle, 0, 1, 0);
+       // GL11.glScalef(0.5f,0.5f,0.5f);
 
         bodyComponent.render();
-        GL11.glScalef(2,2,2);
+        /*GL11.glScalef(2,2,2);
         GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-position.x,-position.y,-position.z);
-        GL11.glPopMatrix();
+        GL11.glPopMatrix();*/
 
 
 
-        GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
+        //GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
 
         vector[1]=600-vector[1]-45;
 
