@@ -140,11 +140,38 @@ public class StartMenuState implements GameState{
         if (mouseDW != 0) {
             //mouseControlCenter.mousewmouseWheel(mouseDW);
         }
+        GUI gui = CoreRegistry.get(GUI.class);
 
-        mouseControlCenter.mouseMove(cursorX,cursorY,this);
+        if(Keyboard.isCreated()) {
+            while (Keyboard.next()) {
+                // check for exit key
+           /* if (Keyboard.getEventKey() == finishedKey) {
+                finished = true;
+            }*/
 
+                // pass key event to handler
+                //System.out.println("Character"+Keyboard.getEventCharacter());
+
+                // pass key event to handler
+                //LogUtil.println("Character"+Keyboard.getEventCharacter());
+
+
+                gui.handleKey(
+                        Keyboard.getEventKey(),
+                        Keyboard.getEventCharacter(),
+                        Keyboard.getEventKeyState());
+
+               /* if (Keyboard.getEventKeyState()) {    // key was just pressed, trigger keyDown()
+                    keyDown(Keyboard.getEventKey());
+                    // LogUtil.println("key presseds");
+                } else {
+                    //keyUp(Keyboard.getEventKey());    // key was released
+                }*/
+            }
+        }
         if(Mouse.isCreated())
         {
+            mouseControlCenter.mouseMove(cursorX,cursorY,this);
             while (Mouse.next()) {
 
 
@@ -168,10 +195,10 @@ public class StartMenuState implements GameState{
                 if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
                     mouseControlCenter. mouseRightUp(cursorX, cursorY);
                 }
-               /* GUI gui = CoreRegistry.get(GUI.class);
+                //GUI gui = CoreRegistry.get(GUI.class);
                 gui.handleMouse(
                         Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
-                        Mouse.getEventButton(), Mouse.getEventButtonState());*/
+                        Mouse.getEventButton(), Mouse.getEventButtonState());
 
             }
         }
@@ -180,13 +207,13 @@ public class StartMenuState implements GameState{
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(camera.ViewDir,
                     -0.1f));
-            cameraPosChangeListener();
+           camera.changeCallBack();// cameraPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(camera.ViewDir,
                     0.1f));
-            cameraPosChangeListener();
+            camera.changeCallBack();// cameraPosChangeListener();
 
         }
 
@@ -198,7 +225,7 @@ public class StartMenuState implements GameState{
             GL_Vector right = GL_Vector.crossProduct(camera.ViewDir,camera.UpVector);
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(right,
                     -0.1f));
-            cameraPosChangeListener();
+            camera.changeCallBack();//cameraPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(  Keyboard.KEY_D)) {
@@ -206,7 +233,7 @@ public class StartMenuState implements GameState{
             GL_Vector right = GL_Vector.crossProduct(camera.ViewDir,camera.UpVector);
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(right,
                     0.1f));
-            cameraPosChangeListener();
+            camera.changeCallBack();//cameraPosChangeListener();
 
         }
 
@@ -216,7 +243,7 @@ public class StartMenuState implements GameState{
                     0);
             camera.ViewDir = M.transform(camera.ViewDir);
 
-            cameraPosChangeListener();
+            camera.changeCallBack();//cameraPosChangeListener();
 
         }
 
@@ -228,17 +255,17 @@ public class StartMenuState implements GameState{
             camera.ViewDir = M.transform(camera.ViewDir);
 
 
-            cameraPosChangeListener();
+            camera.changeCallBack();// cameraPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             camera.Position.y+=0.1;
-            cameraPosChangeListener();
+            camera.changeCallBack();// cameraPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             camera.Position.y-=0.1;
-            cameraPosChangeListener();
+            camera.changeCallBack();// cameraPosChangeListener();
 
         }
 
@@ -395,7 +422,7 @@ public class StartMenuState implements GameState{
 
 
     }
-    public void cameraPosChangeListener(){
+    public void cameraPosChangeListener1(){
         GL_Matrix view=
                 GL_Matrix.LookAt(camera.Position,camera.ViewDir);
         view.fillFloatBuffer(cameraViewBuffer);
@@ -566,7 +593,7 @@ public class StartMenuState implements GameState{
         // model = GL_Matrix.multiply(view2,model);
         // VboId=glGenBuffers();//create vbo
         glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
-        //glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+       // glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
         Util.checkGLError();
@@ -626,7 +653,9 @@ public class StartMenuState implements GameState{
 
         Util.checkGLError();
         glBindVertexArray(0);
-        worldRenderer.render();
+
+       worldRenderer.render();
+        livingThingManager.render();
         glUseProgram(0);
 
 
@@ -642,7 +671,7 @@ public class StartMenuState implements GameState{
 
         //OpenglUtil.glFillRect(0,0,1,1,1,new byte[]{(byte)245,(byte)0,(byte)0},new byte[]{(byte)245,(byte)0,(byte)0});
         //  GLApp.drawRect(1,1,1,1);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        /*GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         // fovy, aspect ratio, zNear, zFar
         GLU.gluPerspective(50f, // zoom in or out of view
@@ -651,8 +680,8 @@ public class StartMenuState implements GameState{
                 1024f); // max Z: how far from eye position does view extend
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        GL11.glLoadIdentity();//.glLoadIdentity();
-        livingThingManager.render();
+        GL11.glLoadIdentity();//.glLoadIdentity();*/
+
     }
 
     public boolean isHibernationAllowed(){
@@ -694,7 +723,7 @@ public class StartMenuState implements GameState{
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(10,4,0);
         livingThingManager.setPlayer(human);
-        livingThingManager.add(livingThing);
+        //livingThingManager.add(livingThing);
         SynchronTask task =new SynchronTask();
         task.start();
      /*    player =new Player(CoreRegistry.get(TextureManager.class));

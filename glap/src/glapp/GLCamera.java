@@ -270,7 +270,7 @@ public class GLCamera {
 		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
-		glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
+		glUniformMatrix4(StartMenuState.lightViewLoc,  false,view.toFloatBuffer() );
 
 		org.lwjgl.opengl.Util.checkGLError();
 

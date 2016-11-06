@@ -1,6 +1,9 @@
 package glmodel;
 
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.GLApp;
+
+import java.nio.FloatBuffer;
 
 /**
  * A 3D vector, with functions to perform common vector math operations.
@@ -405,5 +408,47 @@ public class GL_Vector
 
 	public static GL_Vector multiplyWithoutY(GL_Vector v, float r) {
 		return new GL_Vector(v.x*r, 0, v.z*r);
+	}
+
+	public static void glVertex3fv(GL_Vector point, FloatBuffer floatBuffer){
+		floatBuffer.put(point.x).put(point.y).put(point.z);
+	}
+	public static void glVertex3fv4rect(GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Matrix matrix,GL_Vector normal,float minx,float miny ,float maxx,float maxy, FloatBuffer floatBuffer){
+		p1 =GL_Matrix.multiply(matrix,p1);
+
+		p2 =GL_Matrix.multiply(matrix,p2);
+		p3 =GL_Matrix.multiply(matrix,p3);
+		p4 =GL_Matrix.multiply(matrix,p4);
+		normal=GL_Matrix.multiply(matrix,normal);
+		floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(minx).put(miny);
+		floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(minx).put(maxy);
+		floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(maxx).put(maxy);
+		floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(minx).put(maxy);
+	}
+	public static void glVertex3fv4rect(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBuffer floatBuffer){
+		p1 =GL_Matrix.multiply(matrix,p1);
+
+		p2 =GL_Matrix.multiply(matrix,p2);
+		p3 =GL_Matrix.multiply(matrix,p3);
+		p4 =GL_Matrix.multiply(matrix,p4);
+		normal=GL_Matrix.multiply(matrix,normal);
+		floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);
+		floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY);
+		floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);
+		floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY);
+	}
+	public static void glVertex3fv4triangle(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBuffer floatBuffer){
+		p1 =GL_Matrix.multiply(matrix,p1);
+
+		p2 =GL_Matrix.multiply(matrix,p2);
+		p3 =GL_Matrix.multiply(matrix,p3);
+		p4 =GL_Matrix.multiply(matrix,p4);
+		normal=GL_Matrix.multiply(matrix,normal);
+		floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);
+		floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY);
+		floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);
+		floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY);
+		floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);
+		floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);
 	}
 }

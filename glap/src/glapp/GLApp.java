@@ -248,7 +248,7 @@ public class GLApp {
 
                 int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
-                    gui.handleMouseWheel(wheelDelta / 120);
+                    //gui.handleMouseWheel(wheelDelta / 120);
                 }
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     mouseDown(cursorX, cursorY);
@@ -262,7 +262,7 @@ public class GLApp {
                 if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
                     mouseUp(cursorX, cursorY);
                 }
-                gui.handleMouse(
+               gui.handleMouse(
                         Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
                         Mouse.getEventButton(), Mouse.getEventButtonState());
 
@@ -285,7 +285,7 @@ public class GLApp {
                 //LogUtil.println("Character"+Keyboard.getEventCharacter());
 
 
-                gui.handleKey(
+               gui.handleKey(
                         Keyboard.getEventKey(),
                         Keyboard.getEventCharacter(),
                         Keyboard.getEventKeyState());

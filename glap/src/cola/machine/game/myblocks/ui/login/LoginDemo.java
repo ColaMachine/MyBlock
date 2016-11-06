@@ -53,7 +53,7 @@ import java.io.IOException;
  * @author Matthias Mann
  */
 public class LoginDemo extends Widget {
-    LearnOpenglColor color =new LearnOpenglColor();
+    //LearnOpenglColor color =new LearnOpenglColor();
     public static void main(String[] args) {
         try {
             LWJGLHelper.initNativeLibs();
@@ -111,11 +111,11 @@ public class LoginDemo extends Widget {
                 }
             }
         });
-        try {
+        /*try {
             color.initGL();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         
         efPassword = new EditField();
         efPassword.setPasswordMasking(true);

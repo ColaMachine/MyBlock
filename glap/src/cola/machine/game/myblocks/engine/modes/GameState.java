@@ -15,6 +15,6 @@ public interface GameState {
 	
 	boolean isHibernationAllowed();
 
-	void cameraPosChangeListener();
+	//void cameraPosChangeListener();
 
 }

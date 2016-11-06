@@ -1436,7 +1436,7 @@ boolean flat =true;
         } else {
 
 
-            glUseProgram(StartMenuState.ProgramId);
+            glUseProgram(StartMenuState.terrainProgramId);
             Util.checkGLError();
             glBindVertexArray(VaoId);
             Util.checkGLError();

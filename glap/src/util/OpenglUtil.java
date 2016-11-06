@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.util.FileUtil;
 import glapp.GLApp;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import java.io.IOException;
@@ -13,13 +14,22 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
 
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class OpenglUtil {
+
+
     public static void WorldToScreen(GL_Vector worldPoint){
         IntBuffer viewport = ByteBuffer.allocateDirect((Integer.SIZE / 8) * 16)
                 .order(ByteOrder.nativeOrder()).asIntBuffer();
@@ -253,5 +263,30 @@ public class OpenglUtil {
             System.out.println("  " + line);
         }
         System.out.println("");
+    }
+
+    public static int createVAO(FloatBuffer floatBuffer){floatBuffer.flip();
+        int lightVaoId = glGenVertexArrays();
+        Util.checkGLError();
+
+        glBindVertexArray(lightVaoId);
+        Util.checkGLError();
+
+        CreateLightVBO(floatBuffer);
+        glBindVertexArray(0);
+        Util.checkGLError();
+        return lightVaoId;
+    }
+    public static void CreateLightVBO(FloatBuffer Vertices){
+        glBufferData(GL_ARRAY_BUFFER, Vertices, GL15.GL_STATIC_DRAW);//put data
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8* 4, 0);
+        Util.checkGLError();
+        glEnableVertexAttribArray(0);
+        Util.checkGLError();
+    }
+
+    public static void drawRect(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, float minx, float miny , float maxx, float maxy){
+
     }
 }

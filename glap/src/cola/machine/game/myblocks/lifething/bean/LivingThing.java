@@ -1,16 +1,28 @@
 package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import glapp.GLApp;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.Util;
+import util.OpenglUtil;
 
 import javax.vecmath.Point3f;
+import java.nio.FloatBuffer;
+
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 /**
  * Created by luying on 16/9/16.
@@ -222,6 +234,50 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         vector[1]=600-vector[1]-45;
 
 
+    }
+    int vaoId;
+    int trianglesCount =0;
+    public void preRenderShader(){
+        GL_Matrix translateMatrix=GL_Matrix.translateMatrix(position.x, position.y + 0.75f, position.z);
+        float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
+        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle,0);
+
+        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+
+        bodyComponent.renderShader(floatBuffer,rotateMatrix);
+        trianglesCount= floatBuffer.position()/8;
+        if(trianglesCount<=0){
+            LogUtil.println("trianglesCount can't be 0");
+            System.exit(1);
+        }
+         vaoId = OpenglUtil.createVAO(floatBuffer);
+        if(vaoId<=0){
+            LogUtil.println("vaoId can't be 0");
+            System.exit(1);
+        }
+    }
+    FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(10240);
+    public void renderShader(){
+        if(vaoId<=0){
+            preRenderShader();
+        }
+
+        glUseProgram(StartMenuState.terrainProgramId);
+        Util.checkGLError();
+
+       /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
+        glUniformMatrix4(0,  false,matrixBuffer );
+        matrixBuffer.rewind();*/
+        // glBindTexture(GL_TEXTURE_2D, this.textureHandle);
+        glBindVertexArray(vaoId);
+        TextureManager.getTextureInfo("human_head_right").bind();
+//        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL11.GL_TRIANGLES,0,trianglesCount);
+
+        Util.checkGLError();
+        glBindVertexArray(0);
+
+        glUseProgram(0);
     }
     public void render(){
         GL11.glPushMatrix();

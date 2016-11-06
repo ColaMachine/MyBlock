@@ -71,12 +71,12 @@ return livingThingsMap.get(id);
 
     public void render(){
         for(LivingThing livingThing:livingThings){
-            livingThing.render();
+            livingThing.renderShader();
             //livingThing.renderBloodBar();
            livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
 
         }
-        this.player.render();
+       // this.player.render();
        // component.renderBend();
 
 

@@ -153,6 +153,31 @@ public class MyBlockEngine extends GLApp {
     LearnOpengl5 shaderTest;
     // GLShadowOnPlane airplaneShadow;
     public LivingThingManager livingThingManager;
+
+    public static void main(String args[]) {
+        try {
+            PathManager.getInstance().useDefaultHomePath();
+
+
+            LWJGLHelper.initNativeLibs();
+            //System.out.println(System.getProperty("java.library.path"));
+            Collection<EngineSubsystem> subsystemList;
+
+            subsystemList = Lists.<EngineSubsystem>newArrayList(new LwjglGraphics());
+
+            // create the app
+            MyBlockEngine demo = new MyBlockEngine();
+            // System.out.println(System.getProperty("java.library.path"));
+            demo.VSyncEnabled = true;
+            demo.fullScreen = false;
+            demo.displayWidth = 800;
+            demo.displayHeight = 600;
+
+            demo.run(); // will call init(), render(), mouse functions
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     public void setup() {
 
         //开启胜读测试

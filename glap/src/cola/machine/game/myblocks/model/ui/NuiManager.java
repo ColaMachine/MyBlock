@@ -79,7 +79,7 @@ public class NuiManager {
         }catch(Exception e) {
             e.printStackTrace();
         }
-        //CoreRegistry.put(GUI.class,startGui);
+        CoreRegistry.put(GUI.class,startGui);
     }
 
 

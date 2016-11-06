@@ -187,9 +187,9 @@ public class GuiRootPane extends Widget {
                     }else{
                         //System.out.println(evt.getMouseButton()+":"+evt.getKeyChar()+":"+evt.getModifiers() );
                         if(evt.getModifiers()==64){
-                            mouseControlCenter.mouseLeftDrag(evt.getMouseX(), evt.getMouseY());
+                            //mouseControlCenter.mouseLeftDrag(evt.getMouseX(), evt.getMouseY());
                         }else if(evt.getModifiers()==128) {
-                            mouseControlCenter.mouseRightDrag(evt.getMouseX(), evt.getMouseY());
+                           // mouseControlCenter.mouseRightDrag(evt.getMouseX(), evt.getMouseY());
                         }
                     }
 
@@ -197,8 +197,8 @@ public class GuiRootPane extends Widget {
 
 
                     dragActive = true;
-                    mouseControlCenter.prevMouseX=evt.getMouseX();
-                    mouseControlCenter.prevMouseY=evt.getMouseY();
+                   // mouseControlCenter.prevMouseX=evt.getMouseX();
+                   // mouseControlCenter.prevMouseY=evt.getMouseY();
                     //System.out.println("开始拖动");
                 }else if(evt.getType()== Event.Type.MOUSE_CLICKED){
                     mouseControlCenter.mouseLClick(evt.getMouseX(), evt.getMouseY());

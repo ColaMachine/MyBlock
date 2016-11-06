@@ -562,7 +562,7 @@ public final class GUI extends Widget {
     public void update() {//全局的刷新
         setSize();
         updateTime();
-        handleInput();
+       // handleInput();
         handleKeyRepeat();
         handleTooltips();
         updateTimers();

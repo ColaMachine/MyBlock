@@ -521,8 +521,8 @@ public class MouseControlCenter {
             camera.ViewDir.x= human.ViewDir.x;
             camera.ViewDir.y= human.ViewDir.y;
             camera.ViewDir.z= human.ViewDir.z;
-            gameState.cameraPosChangeListener();
 
+            camera.changeCallBack();
             // �ƶ���ͷ
         }
     }
@@ -548,7 +548,8 @@ public class MouseControlCenter {
             camera.ViewDir.x= human.ViewDir.x;
             camera.ViewDir.y= human.ViewDir.y;
             camera.ViewDir.z= human.ViewDir.z;
-            gameState.cameraPosChangeListener();
+
+            camera.changeCallBack();
             // �ƶ���ͷ
         }
     }
