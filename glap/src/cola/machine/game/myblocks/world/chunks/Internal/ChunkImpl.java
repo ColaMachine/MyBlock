@@ -250,7 +250,7 @@ public class ChunkImpl implements Chunk {
         ChunkImpl backChunk =(ChunkImpl) chunkProvider.getChunk(this.chunkPos.x,this.chunkPos.y,this.chunkPos.z-1);
 
 		// block.render();
-        //GL11.glBegin(GL11.GL_QUADS);
+        GL11.glBegin(GL11.GL_QUADS);
 
 		for (int x = 0; x < this.getChunkSizeX(); x++) {
 			for (int z = 0; z < this.getChunkSizeZ(); z++) {
@@ -264,6 +264,7 @@ public class ChunkImpl implements Chunk {
                     /*if(i==6||i==3)
                         continue;*/
 					currentBlockType = i;
+                    //addThisTop(x, y, z);
 
 					if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
 						// 判断上面
@@ -352,9 +353,11 @@ public class ChunkImpl implements Chunk {
 				}
 			}
 		}
-       // GL11.glEnd();
+        GL11.glEnd();
 		//System.out.println(this.count);
 		GLApp.endDisplayList();
+        GLApp.callDisplayList(this.displayId);
+        Util.checkGLError();
 	}
     int VaoId;
     int VboId;
@@ -552,6 +555,8 @@ public class ChunkImpl implements Chunk {
 		normalizes.put(1);
 		normalizes.put(0);
 		Draw();
+        normalizes.position(0);
+        vetices.position(0);
 	}
 
 	public static void main(String[] args) {
@@ -628,54 +633,59 @@ boolean flat =true;
         case 1:
 			ti = TextureManager.getTextureInfo("stone");
 
-					ti.bind();
+					//ti.bind();
 			DrawVetext();
 			break;
 		case 3:
 			if (faceIndex == 1) {
 				ti = TextureManager.getTextureInfo("grass_top");
-				ti.bind();
+				//ti.bind();
 			} else if (faceIndex == 2) {
 				ti = TextureManager.getTextureInfo("soil");
-				ti.bind();
+				//ti.bind();
 			} else {
 				ti = TextureManager.getTextureInfo("grass_side");
-				ti.bind();
-			}DrawVetext();
+				//ti.bind();
+			}
+            DrawVetext();
 			break;
 		case 20:
 			ti = TextureManager.getTextureInfo("glass");
-			ti.bind();;DrawVetext();
+			//ti.bind();
+            DrawVetext();
 			break;
         case 8:
                 ti = TextureManager.getTextureInfo("water");
                 if (faceIndex == 1) {
-					ti.bind();;DrawVetext();
+					//ti.bind();
+                    DrawVetext();
                 }
                 break;
 		case 12:
 			ti = TextureManager.getTextureInfo("sand");
-			ti.bind();;DrawVetext();
+			//ti.bind();
+            DrawVetext();
 			break;
 		case 7:
 			ti = TextureManager.getTextureInfo("mantle");
-			ti.bind();;DrawVetext();
+			//ti.bind();
+            DrawVetext();
 			break;
 
 		case 5:
 			ti = TextureManager.getTextureInfo("wood");
-			ti.bind();;DrawVetext();
+			//ti.bind();
+            DrawVetext();
 			break;
 		default:
-			System.out.println("添纹理的时候 什么都没对应上");
+			LogUtil.println("添纹理的时候 什么都没对应上 currentBlockType"+this.currentBlockType);
 		}
 		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 		// GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		// GL11.glBegin(GL11.GL_QUADS);
 		
 		// GL11.glEnd();
-		normalizes.position(0);
-		vetices.position(0);
+
 	}
 	public void DrawVetext(){
 		vetices.position(vetices.position() - 12);
@@ -684,14 +694,22 @@ boolean flat =true;
 		GL11.glNormal3f(normalizes.get(), normalizes.get(), normalizes.get());
 
 		GL11.glTexCoord2f(ti.minX, ti.minY);
-		GL11.glVertex3d(vetices.get(), vetices.get(), vetices.get());
+		GL11.glVertex3f(vetices.get(), vetices.get(), vetices.get());
 		GL11.glTexCoord2f(ti.maxX, ti.minY);
-		GL11.glVertex3d(vetices.get(), vetices.get(), vetices.get());
+		GL11.glVertex3f(vetices.get(), vetices.get(), vetices.get());
 		GL11.glTexCoord2f(ti.maxX, ti.maxY);
-		GL11.glVertex3d(vetices.get(), vetices.get(), vetices.get());
+		GL11.glVertex3f(vetices.get(), vetices.get(), vetices.get());
 		GL11.glTexCoord2f(ti.minX, ti.maxY);
-		GL11.glVertex3d(vetices.get(), vetices.get(), vetices.get());
-		// vetices.flip();
+		GL11.glVertex3f(vetices.get(), vetices.get(), vetices.get());
+
+       /* GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+        GL11.glVertex3f(-1.0f, -1.0f,  1.0f);	// Bottom Left
+        GL11.glVertex3f( 1.0f, -1.0f,  1.0f);	// Bottom Right
+        GL11.glVertex3f( 1.0f,  1.0f,  1.0f);	// Top Right
+        GL11.glVertex3f(-1.0f,  1.0f,  1.0f);	// Top Left*/
+
+
+       // vetices.flip();
 		
 	}
 	public void addThisTop2(int x, int y, int z){
@@ -1449,12 +1467,7 @@ boolean flat =true;
     }
 	public void render() {
 
-        try{
-            Util.checkGLError();}catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
-        }
+
 //        GLApp.renderCube();
 		if (this.displayId == 0) {
 			// int error =GL11.glGetError();
@@ -1463,13 +1476,13 @@ boolean flat =true;
 
             //OpenglUtil.glVertex3fv4rect(P1, P2, P6, P5, ti, Constants.FRONT);
 			GLApp.callDisplayList(this.displayId);
+            /*GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+            GL11.glVertex3f(-1.0f, -1.0f,  1.0f);	// Bottom Left
+            GL11.glVertex3f( 1.0f, -1.0f,  1.0f);	// Bottom Right
+            GL11.glVertex3f( 1.0f,  1.0f,  1.0f);	// Top Right
+            GL11.glVertex3f(-1.0f,  1.0f,  1.0f);	// Top Left*/
 		}
-        try{
-            Util.checkGLError();}catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
-        }
+
 	}
 
     public void renderAlpha(){

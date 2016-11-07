@@ -31,10 +31,7 @@ import java.util.Collection;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.ContextAttribs;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
 
 import com.google.common.collect.Lists;
@@ -324,15 +321,16 @@ public class MyBlockEngine extends GLApp {
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
-
+        Util.checkGLError();
 //        if(!camera1.fenli) {
-       /* GL_Vector camera_pos = GL_Vector.add(human.position,
+       GL_Vector camera_pos = GL_Vector.add(human.position,
                 GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
-        camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);*/
+        camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
+
 //        }
         // camera1.MoveTo(human.Position.x, human.Position.y + 4,
         // human.Position.z);
-
+        Util.checkGLError();
 
         if (Switcher.CAMERA_MODEL == 2) {
             // camera1.ViewDir.reverse();
@@ -341,20 +339,15 @@ public class MyBlockEngine extends GLApp {
 
             camera1.viewDir(human.ViewDir);
         }
+        Util.checkGLError();
         cam.render();
-        GL11.glPushMatrix();
-        {
-            GL11.glRotatef(rotation, 0, 1, 0);
-            GL11.glColor4f(0f, .5f, 1f, 1f);
-            renderCube();
-        }
-        GL11.glPopMatrix();
+        Util.checkGLError();
 
 
 
         mainDraw();
 
-
+        Util.checkGLError();
     }
 
 
@@ -463,11 +456,6 @@ public class MyBlockEngine extends GLApp {
 
 
     public void mainDraw() {
-        GL11.glPushMatrix();
-        GL11.glRotatef(rotation, 0, 1, 0);
-        GL11.glColor4f(0f, .5f, 1f, 1f);
-        renderCube();
-        GL11.glPopMatrix();
 
         if(Switcher.gameState==0){
             CoreRegistry.get(NuiManager.class).render();//worldRenderer.render();
@@ -479,13 +467,12 @@ public class MyBlockEngine extends GLApp {
                 e.printStackTrace();
                 exit();
             }
-            //GL11.glScaled(0.1,0.1,0.1);
-            worldRenderer.render();
-//            livingThingManager.update();
-            //livingThingManager.render();
+           worldRenderer.render();Util.checkGLError();
+           livingThingManager.update();Util.checkGLError();
+            livingThingManager.render();Util.checkGLError();
 
-            AttackManager.update();
-            AttackManager.render();
+            AttackManager.update();Util.checkGLError();
+            AttackManager.render();Util.checkGLError();
             //GL11.glScaled(10,10,10);
            /* TextureInfo ti = TextureManager.getTextureInfo("human");
             ti.bind();*/
@@ -493,7 +480,7 @@ public class MyBlockEngine extends GLApp {
 
 
             //GL11.glPopMatrix();
-            CoreRegistry.get(NuiManager.class).render();
+            CoreRegistry.get(NuiManager.class).render();Util.checkGLError();
         }else if(Switcher.gameState==2){
 
         }

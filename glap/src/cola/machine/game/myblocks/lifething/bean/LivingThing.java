@@ -283,12 +283,12 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         bodyComponent.render();
         GL11.glScalef(2,2,2);
         GL11.glRotatef(-angle, 0, 1, 0);
-        GL11.glTranslatef(-position.x,-position.y,-position.z);
-        GL11.glPopMatrix();
+        GL11.glTranslatef(-position.x,-position.y-0.75f,-position.z);
+       // GL11.glPopMatrix();
 
 
 
-        GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
+        //GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
 
         vector[1]=600-vector[1]-45;
 
@@ -307,12 +307,12 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
         GLApp.setOrthoOff();
         GLApp.popAttrib();*/
-       /* try{
+       try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }
     }
     public void renderShader(){
         if(vaoId<=0){

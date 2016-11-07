@@ -82,7 +82,7 @@ return livingThingsMap.get(id);
            livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
 
         }
-       // this.player.render();
+        this.player.render();
        // component.renderBend();
 
 

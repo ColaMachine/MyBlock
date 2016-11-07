@@ -309,13 +309,13 @@ this.secnum =secnum;
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
 
-        try{
+        /*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
         }
-
+*/
         if(front!=null) {
 
 
@@ -343,12 +343,12 @@ this.secnum =secnum;
         if(right!=null) {
             OpenglUtil.glVertex3fv4rect(P4,P1,P5,P8, right,Constants.RIGHT);
         }
-        try{
+        /*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }
+        }*/
         GL11.glEnd();
         /*try{
             Util.checkGLError();}catch (Exception e ){

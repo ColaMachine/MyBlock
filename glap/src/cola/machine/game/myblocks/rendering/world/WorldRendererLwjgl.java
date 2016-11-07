@@ -136,12 +136,13 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 
         }
-        /*try{
+        try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }
+
 		TextureManager.getTextureInfo("mantle").bind();
         if(Switcher.SHADER_ENABLE){
             for (ChunkImpl chunk : chunksInProximity) {
@@ -155,16 +156,11 @@ public class WorldRendererLwjgl implements WorldRenderer {
             for (ChunkImpl chunk : chunksInProximity) {
                 GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
                 chunk.getChunkWorldPosZ());
-                GL11.glBegin(GL11.GL_QUADS);
+                //GL11.glBegin(GL11.GL_QUADS);
                  chunk.render();
 
-               try{
-                    Util.checkGLError();}catch (Exception e ){
-                    e.printStackTrace();
-                    LogUtil.println(e.getMessage());
-                    throw e;
-                }
-                  GL11.glEnd();
+
+                 // GL11.glEnd();
                 try{
                     Util.checkGLError();}catch (Exception e ){
                     e.printStackTrace();
