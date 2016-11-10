@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import util.ImageUtil;
+import com.dozenx.util.ImageUtil;
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;

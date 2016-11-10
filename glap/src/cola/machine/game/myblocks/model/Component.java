@@ -6,11 +6,10 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.Util;
-import util.OpenglUtil;
 
 import javax.vecmath.Point3f;
 import java.nio.FloatBuffer;
@@ -319,29 +318,29 @@ this.secnum =secnum;
         if(front!=null) {
 
 
-            OpenglUtil.glVertex3fv4rect(P1,P2,P6,P5, front,Constants.FRONT);
+            OpenglUtils.glVertex3fv4rect(P1, P2, P6, P5, front, Constants.FRONT);
         }
         // Back Face
         if(back!=null) {
-            OpenglUtil.glVertex3fv4rect(P3,P4,P8,P7, back,Constants.BACK);
+            OpenglUtils.glVertex3fv4rect(P3, P4, P8, P7, back, Constants.BACK);
 
         }
         // Top Face
         if(top!=null) {
-            OpenglUtil.glVertex3fv4rect(P5,P6,P7,P8, top,Constants.TOP);
+            OpenglUtils.glVertex3fv4rect(P5, P6, P7, P8, top, Constants.TOP);
 
         }
         if(bottom!=null) {
-            OpenglUtil.glVertex3fv4rect(P4,P3,P2,P1, bottom,Constants.BOTTOM);
+            OpenglUtils.glVertex3fv4rect(P4, P3, P2, P1, bottom, Constants.BOTTOM);
         }
         // left face
         if(left!=null) {
 
-            OpenglUtil.glVertex3fv4rect(P2,P3,P7,P8, left,Constants.LEFT);
+            OpenglUtils.glVertex3fv4rect(P2, P3, P7, P8, left, Constants.LEFT);
         }
         // right Face
         if(right!=null) {
-            OpenglUtil.glVertex3fv4rect(P4,P1,P5,P8, right,Constants.RIGHT);
+            OpenglUtils.glVertex3fv4rect(P4, P1, P5, P8, right, Constants.RIGHT);
         }
         /*try{
             Util.checkGLError();}catch (Exception e ){

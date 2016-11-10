@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package math;
+package com.dozenx.util.math;
 
 import org.lwjgl.BufferUtils;
 

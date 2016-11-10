@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.engine.modes;
 import cola.machine.game.myblocks.action.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
+import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
@@ -23,7 +24,6 @@ import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.switcher.Switcher;
-import cola.machine.game.myblocks.ui.login.LoginDemo;
 import cola.machine.game.myblocks.world.WorldProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
@@ -32,25 +32,17 @@ import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import de.matthiasmann.twl.GUI;
-import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
-import de.matthiasmann.twl.theme.ThemeManager;
-import glapp.GLApp;
 import glapp.GLCamera;
 import gldemo.learnOpengl.chapt13.LearnOpenglColor;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
-
-import org.lwjgl.util.glu.GLU;
-import util.OpenglUtil;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -565,7 +557,7 @@ public class StartMenuState implements GameState{
     int lightVaoId;
     public void CreateTerrainProgram(){
         try {
-            terrainProgramId = OpenglUtil.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+            terrainProgramId = OpenglUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
         }catch(Exception e){
             e.printStackTrace();
             System.exit(0);
@@ -573,7 +565,7 @@ public class StartMenuState implements GameState{
     }
     public void CreateLightProgram(){
         try {
-            LightProgramId = OpenglUtil.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
+            LightProgramId = OpenglUtils.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
         }catch(Exception e){
             e.printStackTrace();
             System.exit(0);
@@ -624,11 +616,17 @@ public class StartMenuState implements GameState{
         Util.checkGLError();
 
     }
+    DropControlCenter dcc = new DropControlCenter();
     public void render(){
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        if (!Switcher.IS_GOD)
+            if (Math.random() > 0.5) {
+                //dcc.check(human);
+                livingThingManager.CrashCheck(dcc);
 
+            }
 //        glMatrixMode( GL_MODELVIEW );
         //GL11.glLoadIdentity();//.glLoadIdentity();
 
@@ -670,24 +668,11 @@ public class StartMenuState implements GameState{
         worldRenderer.render();
         livingThingManager.render();
     }
-        try{
-            Util.checkGLError();}catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
-        }
-        CoreRegistry.get(NuiManager.class).render();
-
-        try{
-            Util.checkGLError();}catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
-        }
+      //  CoreRegistry.get(NuiManager.class).render();
 
         //OpenglUtil.glFillRect(0,0,1,1,1,new byte[]{(byte)245,(byte)0,(byte)0},new byte[]{(byte)245,(byte)0,(byte)0});
         //  GLApp.drawRect(1,1,1,1);
-        /*GL11.glMatrixMode(GL11.GL_PROJECTION);
+       /* GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         // fovy, aspect ratio, zNear, zFar
         GLU.gluPerspective(50f, // zoom in or out of view
@@ -696,7 +681,18 @@ public class StartMenuState implements GameState{
                 1024f); // max Z: how far from eye position does view extend
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        GL11.glLoadIdentity();//.glLoadIdentity();*/
+        GL11.glLoadIdentity();//.glLoadIdentity();
+        try{
+            Util.checkGLError();}catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }*/
+
+
+        OpenglUtils.checkGLError();
+
+
 
     }
 

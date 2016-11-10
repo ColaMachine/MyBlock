@@ -5,8 +5,6 @@ import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import cola.machine.game.myblocks.switcher.Switcher;
-import glapp.GLApp;
-import glapp.GLCamera;
 
 import java.nio.*;
 import java.util.Comparator;
@@ -15,8 +13,7 @@ import java.util.PriorityQueue;
 
 import javax.vecmath.Vector3f;
 
-import glmodel.GL_Vector;
-import math.Rect2i;
+import com.dozenx.util.math.Rect2i;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
@@ -26,28 +23,20 @@ import org.slf4j.LoggerFactory;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.GLBufferPool;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.cameras.Camera;
 import cola.machine.game.myblocks.world.Skysphere;
 import cola.machine.game.myblocks.world.WorldProvider;
-import cola.machine.game.myblocks.world.chunks.Chunk;
-import cola.machine.game.myblocks.world.chunks.ChunkBlockIterator;
 import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
-import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
 import com.google.common.collect.Lists;
 
 import cola.machine.game.myblocks.config.Config;
-import util.MathUtil;
-import util.OpenglUtil;
 
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 

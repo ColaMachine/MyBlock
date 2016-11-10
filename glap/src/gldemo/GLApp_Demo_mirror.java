@@ -4,14 +4,12 @@
         import glapp.GLApp;
         import glapp.GLCam;
         import glapp.GLCamera;
-        import glapp.GLShadowOnPlane;
         import glmodel.GLModel;
         import glmodel.GL_Matrix;
         import glmodel.GL_Vector;
         import org.lwjgl.input.Keyboard;
         import org.lwjgl.opengl.GL11;
         import org.lwjgl.util.glu.GLU;
-        import util.OpenglUtil;
 
         import java.nio.ByteBuffer;
         import java.nio.ByteOrder;

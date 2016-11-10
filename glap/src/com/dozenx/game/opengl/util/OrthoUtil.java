@@ -1,4 +1,4 @@
-package util;
+package com.dozenx.game.opengl.util;
 
 import org.lwjgl.opengl.GL11;
 

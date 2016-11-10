@@ -1,32 +1,15 @@
 package cola.machine.game.myblocks.lifething.manager;
 
-import check.CrashCheck;
-import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.control.DropControlCenter;
-import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
-import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.Component;
-import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.network.Client;
-import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
-import cola.machine.game.myblocks.world.block.BlockManager;
-import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
-import glapp.GLApp;
 import glmodel.GL_Vector;
-import util.MathUtil;
-import util.OpenglUtil;
 
-import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +65,15 @@ return livingThingsMap.get(id);
            livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
 
         }
-        this.player.render();
+
+        if(Switcher.SHADER_ENABLE){
+            this.player.renderShader();
+            //livingThing.renderShader();
+        }else{
+            this.player.render();
+            //livingThing.render();
+        }
+
        // component.renderBend();
 
 

@@ -1,4 +1,4 @@
-package util;
+package com.dozenx.util;
 
 
 import java.math.BigDecimal;

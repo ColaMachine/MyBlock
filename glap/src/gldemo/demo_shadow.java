@@ -36,7 +36,7 @@ import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
-import util.MathUtil;
+import com.dozenx.util.MathUtil;
 
 */
 /**

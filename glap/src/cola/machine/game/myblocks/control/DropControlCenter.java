@@ -2,10 +2,7 @@ package cola.machine.game.myblocks.control;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.repository.BlockRepository;
-import util.MathUtil;
 
 public class DropControlCenter {
 

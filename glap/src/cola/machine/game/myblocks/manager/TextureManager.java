@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.lwjgl.opengl.Util;
-import util.MapUtil;
+import com.dozenx.util.MapUtil;
 
 
 /**

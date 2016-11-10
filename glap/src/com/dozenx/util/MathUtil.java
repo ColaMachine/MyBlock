@@ -1,4 +1,4 @@
-package util;
+package com.dozenx.util;
 
 
 public class MathUtil {

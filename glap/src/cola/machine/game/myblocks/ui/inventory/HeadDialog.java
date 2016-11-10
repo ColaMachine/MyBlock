@@ -32,16 +32,10 @@ package cola.machine.game.myblocks.ui.inventory;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import de.matthiasmann.twl.GUI;
-import de.matthiasmann.twl.ProgressBar;
 import de.matthiasmann.twl.ThemeInfo;
-import de.matthiasmann.twl.renderer.*;
-import glapp.GLApp;
-import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
-import util.OpenglUtil;
-
-import java.awt.*;
 
 
 /**
@@ -135,11 +129,11 @@ public class HeadDialog extends FadeFrame {
             //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
 
 
-            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+4,150,20,lineWdith,borderColor,whiteColor);
-            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+4,150*livingThing.nowBlood/livingThing.blood,20,lineWdith,borderColor,redColor);
+            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 4, 150, 20, lineWdith, borderColor, whiteColor);
+            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 4, 150 * livingThing.nowBlood / livingThing.blood, 20, lineWdith, borderColor, redColor);
 
-            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+30,150,20,lineWdith,borderColor,whiteColor);
-            OpenglUtil.glFillRect(this.getInnerX()+44,this.getInnerY()+30,150*livingThing.nowEnergy/livingThing.energy,20,lineWdith,borderColor,blue);
+            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 30, 150, 20, lineWdith, borderColor, whiteColor);
+            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 30, 150 * livingThing.nowEnergy / livingThing.energy, 20, lineWdith, borderColor, blue);
 
             font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+4,livingThing.nowBlood+"/"+livingThing.blood);
             font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+30,livingThing.nowEnergy+"/"+livingThing.energy);

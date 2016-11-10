@@ -15,7 +15,7 @@
  */
 package cola.machine.game.myblocks.rendering.cameras;
 
-import math.MatrixUtils;
+import com.dozenx.util.math.MatrixUtils;
 
 import org.lwjgl.opengl.GL11;
 

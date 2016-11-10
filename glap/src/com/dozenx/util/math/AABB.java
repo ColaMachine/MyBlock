@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package math;
+package com.dozenx.util.math;
 
 //import com.bulletphysics.linearmath.AabbUtil2;
 //import com.bulletphysics.linearmath.Transform;
 import com.google.common.base.Objects;
 import gnu.trove.list.TFloatList;
 
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;

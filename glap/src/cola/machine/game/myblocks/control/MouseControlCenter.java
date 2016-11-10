@@ -1,7 +1,6 @@
 package cola.machine.game.myblocks.control;
 
 import java.awt.AWTException;
-import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 
@@ -9,13 +8,10 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.model.ui.Menu.PauseMenu;
-import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import glapp.GLApp;
 import glapp.GLCamera;
 import glmodel.GL_Vector;
@@ -23,22 +19,13 @@ import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
-import cola.machine.game.myblocks.block.Glass;
-import cola.machine.game.myblocks.block.Soil;
-import cola.machine.game.myblocks.block.Water;
-import cola.machine.game.myblocks.block.Wood;
-import cola.machine.game.myblocks.engine.MyBlockEngine;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
-import sun.rmi.runtime.Log;
-import util.MathUtil;
-import util.OpenglUtil;
+import com.dozenx.util.MathUtil;
 
 public class MouseControlCenter {
     public Human human;
@@ -268,7 +255,7 @@ public class MouseControlCenter {
 //        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
 
 
-        GL_Vector viewdir = OpenglUtil.getLookAtDirection(x, y);
+        GL_Vector viewdir = OpenglUtils.getLookAtDirection(x, y);
         //viewdir.y=-viewdir.y;
 //        // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
 //
@@ -318,7 +305,7 @@ public class MouseControlCenter {
         System.out.println("x:" + x + "y:" + y);
                                     /* GL_Vector from =camera.Position; */
         System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
-        GL_Vector viewdir = OpenglUtil.getLookAtDirection(x, y);
+        GL_Vector viewdir = OpenglUtils.getLookAtDirection(x, y);
         // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
 
         // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",

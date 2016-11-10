@@ -4,7 +4,7 @@ import glapp.GLApp;
 
 import org.lwjgl.opengl.GL11;
 
-import util.MathUtil;
+import com.dozenx.util.MathUtil;
 
 public class Heart {
 	int handleId;

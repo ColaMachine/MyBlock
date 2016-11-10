@@ -1,11 +1,9 @@
 package check;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.GLApp;
-import util.MathUtil;
+import com.dozenx.util.MathUtil;
 
 import java.util.List;
 

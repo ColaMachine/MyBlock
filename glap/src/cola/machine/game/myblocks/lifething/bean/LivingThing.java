@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -14,12 +15,10 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
-import util.OpenglUtil;
 
 import javax.vecmath.Point3f;
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -250,7 +249,7 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
             LogUtil.println("trianglesCount can't be 0");
             System.exit(1);
         }
-         vaoId = OpenglUtil.createVAO(floatBuffer);
+         vaoId = OpenglUtils.createVAO(floatBuffer);
         if(vaoId<=0){
             LogUtil.println("vaoId can't be 0");
             System.exit(1);
@@ -336,13 +335,13 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
         glUseProgram(0);
         // GL11.glPushMatrix();
-        this.dropControl();
-        GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
-        float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
+        //this.dropControl();
+       // GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
+       // float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
         //GL11.glRotatef(angle, 0, 1, 0);
        // GL11.glScalef(0.5f,0.5f,0.5f);
 
-        bodyComponent.render();
+       // bodyComponent.renderShader().render();
         /*GL11.glScalef(2,2,2);
         GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-position.x,-position.y,-position.z);
@@ -352,7 +351,7 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
 
         //GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
 
-        vector[1]=600-vector[1]-45;
+       // vector[1]=600-vector[1]-45;
 
         //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
        /* GLApp.pushAttrib();

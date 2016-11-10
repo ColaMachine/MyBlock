@@ -15,7 +15,7 @@
  */
 package cola.machine.game.myblocks.rendering.cameras;
 
-import math.AABB;
+import com.dozenx.util.math.AABB;
 
 import org.lwjgl.BufferUtils;
 

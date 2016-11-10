@@ -1,4 +1,4 @@
-package util;
+package com.dozenx.game.opengl.util;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
@@ -29,7 +29,7 @@ import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class OpenglUtil {
+public class OpenglUtils {
 
 
     public static void WorldToScreen(GL_Vector worldPoint){
@@ -355,6 +355,16 @@ public class OpenglUtil {
         floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY);
         floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);
+    }
+
+    public static void checkGLError() {
+        try{
+            Util.checkGLError();
+        }catch (Exception e ){
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+            throw e;
+        }
     }
    /* public void drawLine() {
 

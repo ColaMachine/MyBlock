@@ -16,13 +16,10 @@
 package cola.machine.game.myblocks.rendering.cameras;
 
 
-import cola.machine.game.myblocks.config.Config;
-import cola.machine.game.myblocks.registry.CoreRegistry;
-
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
-import math.MatrixUtils;
+import com.dozenx.util.math.MatrixUtils;
 
 /**
  * Provides global access to fonts.
