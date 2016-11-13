@@ -113,7 +113,7 @@ public class MouseControlCenter {
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-            human.MoveForward(-human.camSpeedXZ * seconds);
+            human.MoveForward(-human.camSpeedXZ * seconds*10);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up

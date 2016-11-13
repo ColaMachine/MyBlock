@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -26,7 +27,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 /**
  * Created by luying on 16/9/16.
  */
-public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
+public class LivingThing extends GameActor{
 
     public long updateTime;
     public int id;
@@ -306,19 +307,19 @@ public class LivingThing extends cola.machine.game.myblocks.model.AABB.AABB{
         GLApp.print((int)vector[0],(int)vector[1]+30,"hello");
         GLApp.setOrthoOff();
         GLApp.popAttrib();*/
-       try{
+       /*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }
+        }*/
     }
     public void renderShader(){
         if(vaoId<=0){
             preRenderShader();
         }
 
-        glUseProgram(StartMenuState.terrainProgramId);
+        glUseProgram(GamingState.terrainProgramId);
         Util.checkGLError();
 
        /* int transformLoc= glGetUniformLocation(ProgramId,"transform");

@@ -45,6 +45,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
  * napier at potatoland dot org
  */
 public class BlockEngine implements GameEngine{
+    public static GameEngine engine;
    private static final Logger logger =LoggerFactory.getLogger(BlockEngine.class);
 	
    private GameState currentState;
@@ -61,6 +62,7 @@ public class BlockEngine implements GameEngine{
   private Set<StateChangeSubscriber> stateChangeSubscribers =Sets.newLinkedHashSet();
    private Deque<EngineSubsystem> subsystems;
 	public BlockEngine(Collection<EngineSubsystem> subsystems){
+        BlockEngine.engine =this;
 		this.subsystems=Queues.newArrayDeque(subsystems);
 	}
 	
@@ -149,7 +151,10 @@ public class BlockEngine implements GameEngine{
     public void mainLoop(){
 
         while(true) {
+            if(pendingState!=null ){
 
+                this.switchState(pendingState);pendingState=null;
+            }
             Iterator<Float> updateCycles = time.tick();
 
             //networkSystem.update();
@@ -166,23 +171,23 @@ public class BlockEngine implements GameEngine{
             for (EngineSubsystem subsystem : getSubsystems()) {
                 subsystem.preUpdate(currentState, delta);
             }
-            try{
+           /* try{
                 Util.checkGLError();}catch (Exception e ){
                 e.printStackTrace();
                 LogUtil.println(e.getMessage());
                 throw e;
-            }
+            }*/
 
 
             for (EngineSubsystem subsystem : subsystems) {
                 subsystem.postUpdate(currentState, delta);
             }
-            try{
+            /*try{
                 Util.checkGLError();}catch (Exception e ){
                 e.printStackTrace();
                 LogUtil.println(e.getMessage());
                 throw e;
-            }
+            }*/
         }
     }
 

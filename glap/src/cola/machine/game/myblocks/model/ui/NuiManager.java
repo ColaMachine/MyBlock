@@ -162,7 +162,9 @@ public class NuiManager {
 
         // GLApp.setFog(true);
     }
+    public void handleInput(float delta){
 
+    }
     private Object makeComplexTooltip() {
         HTMLTextAreaModel tam = new HTMLTextAreaModel();
         tam.setHtml("Hello <img src=\"twl-logo\" alt=\"logo\"/> World");

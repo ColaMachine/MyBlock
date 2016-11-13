@@ -2,6 +2,7 @@ package glapp;
 
 import javax.vecmath.Vector3f;
 
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.switcher.Switcher;
 import org.lwjgl.BufferUtils;
@@ -255,25 +256,25 @@ public class GLCamera {
 				GL_Matrix.LookAt(Position,ViewDir);
 		view.fillFloatBuffer(cameraViewBuffer);
 
-		glUseProgram(StartMenuState.terrainProgramId);
+		glUseProgram(GamingState.terrainProgramId);
 
 
 
-		glUniformMatrix4(StartMenuState.viewLoc,  false,cameraViewBuffer);
+		glUniformMatrix4(GamingState.viewLoc,  false,cameraViewBuffer);
 		org.lwjgl.opengl.Util.checkGLError();
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
 
-		glUniform3f(StartMenuState.viewPosLoc,  Position.x,Position.y,Position.z);
+		glUniform3f(GamingState.viewPosLoc,  Position.x,Position.y,Position.z);
 		org.lwjgl.opengl.Util.checkGLError();
 
 
-		glUseProgram(StartMenuState.LightProgramId);
+		glUseProgram(GamingState.LightProgramId);
 		org.lwjgl.opengl.Util.checkGLError();
 		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
-		glUniformMatrix4(StartMenuState.lightViewLoc,  false,view.toFloatBuffer() );
+		glUniformMatrix4(GamingState.lightViewLoc,  false,view.toFloatBuffer() );
 
 		org.lwjgl.opengl.Util.checkGLError();
 

@@ -413,6 +413,7 @@ public class Human extends LivingThing {
         manager.apply(bodyComponent,"walkerFoward");
 		this.move( GL_Vector.add(position, GL_Vector.multiplyWithoutY(WalkDir,
 					Distance)));
+        LogUtil.println(position+"");
 			lastMoveTime = Sys.getTime();
 			// System.out.printf("position: %f %f %f viewdir: %f %f %f
 			// \r\n",position.x,position.y,position.z,ViewDir.x,ViewDir.y,ViewDir.z);

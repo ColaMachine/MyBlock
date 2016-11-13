@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
@@ -125,17 +126,17 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 
         }
-        try{
+      /*  try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }
+        }*/
 
 		TextureManager.getTextureInfo("mantle").bind();
         if(Switcher.SHADER_ENABLE){
             for (ChunkImpl chunk : chunksInProximity) {
-                glUseProgram(StartMenuState.terrainProgramId);
+                glUseProgram(GamingState.terrainProgramId);
                 Util.checkGLError();
                 chunk.renderShader();
                 glBindVertexArray(0);
@@ -150,13 +151,13 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 
                  // GL11.glEnd();
-                try{
+               /* try{
                     Util.checkGLError();}catch (Exception e ){
                     e.printStackTrace();
                     LogUtil.println(e.getMessage());
                     throw e;
                 }
-
+*/
                  GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
                         -chunk.getChunkWorldPosZ());/*try{
                     Util.checkGLError();}catch (Exception e ){
