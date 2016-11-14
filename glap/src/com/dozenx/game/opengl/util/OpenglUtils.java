@@ -361,10 +361,61 @@ public class OpenglUtils {
         try{
             Util.checkGLError();
         }catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
+            //e.printStackTrace();
+            //LogUtil.println(e.getMessage());
+            //throw e;
         }
+    }
+
+    public static void setPerspective()
+    {
+        // select projection matrix (controls perspective)
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GLU.gluPerspective(40f, 1, 1f, 1000f);
+        // return to modelview matrix
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+    }
+    static int rotation =0;
+
+    public static void setGlobalLight(){
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GLApp.setLight( GL11.GL_LIGHT1,
+                new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
+                new float[] { 1.0f,1.0f, 1.0f, 1.0f },   // ambient
+                new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
+                new float[]{0,5,0,1} );
+    }
+    public static void renderCubeTest(){
+
+        rotation += 5;
+        // gui.update();
+        //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        // select model view for subsequent transforms
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+
+        // set viewpoint 10 units from origin, looking at origin
+        GLU.gluLookAt(0, 0, 10, 0, 0, 0, 0, 1, 0);
+
+        // rotate, scale and draw cube
+        GL11.glPushMatrix();
+        {
+            GL11.glRotatef(rotation, 0, 1, 0);
+            GL11.glColor4f(0f, .5f, 1f, 1f);
+            GLApp.renderCube();
+        }
+        GL11.glPopMatrix();
+
+        // draw another overlapping cube
+        GL11.glPushMatrix();
+        {
+            GL11.glRotatef(rotation, 1, 1, 1);
+            GL11.glColor4f(.7f, .5f, 0f, 1f);
+            GLApp.renderCube();
+        }
+        GL11.glPopMatrix();
     }
    /* public void drawLine() {
 

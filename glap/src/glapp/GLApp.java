@@ -11,6 +11,7 @@ import java.net.URL;
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import de.matthiasmann.twl.GUI;
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
@@ -1511,21 +1512,21 @@ public class GLApp {
     public static void setOrthoOn()
     {
         // prepare projection matrix to render in 2D
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPushMatrix();                   // preserve perspective view
-        GL11.glLoadIdentity();                 // clear the perspective matrix
+        GL11.glMatrixMode(GL11.GL_PROJECTION); OpenglUtils.checkGLError();
+        GL11.glPushMatrix();      OpenglUtils.checkGLError();           // preserve perspective view
+        GL11.glLoadIdentity();   OpenglUtils.checkGLError();            // clear the perspective matrixUtil.checkGLError();
         GL11.glOrtho(                          // turn on 2D mode
                 ////viewportX,viewportX+viewportW,    // left, right
                 ////viewportY,viewportY+viewportH,    // bottom, top    !!!
                 0,viewportW,    // left, right
                 0,viewportH,    // bottom, top
-                -500,500);                        // Zfar, Znear
+                -500,500);    OpenglUtils.checkGLError();                   // Zfar, Znear
         // clear the modelview matrix
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPushMatrix();				   // Preserve the Modelview Matrix
-        GL11.glLoadIdentity();				   // clear the Modelview Matrix
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);Util.checkGLError();
+        GL11.glPushMatrix();	 OpenglUtils.checkGLError();			   // Preserve the Modelview Matrix
+        GL11.glLoadIdentity();	 OpenglUtils.checkGLError();			   // clear the Modelview Matrix
         // disable depth test so further drawing will go over the current scene
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_DEPTH_TEST); OpenglUtils.checkGLError();
     }
 
     /**
@@ -1579,11 +1580,12 @@ public class GLApp {
     {
         // restore the original positions and views
         GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPopMatrix();
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPopMatrix();
+        OpenglUtils.checkGLError();
+        GL11.glPopMatrix(); OpenglUtils.checkGLError();
+        GL11.glMatrixMode(GL11.GL_MODELVIEW); OpenglUtils.checkGLError();
+        GL11.glPopMatrix(); OpenglUtils.checkGLError();
         // turn Depth Testing back on
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_DEPTH_TEST); OpenglUtils.checkGLError();
     }
 
     /**
@@ -2559,10 +2561,10 @@ public class GLApp {
      */
     public static void  drawRectZ(int x, int y, int z, float w, float h) {
         // preserve current settings
-        GL11.glPushAttrib(GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT);
+        GL11.glPushAttrib(GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT);Util.checkGLError();
         // de-activate texture and light
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_LIGHTING); Util.checkGLError();
         // draw the rectangle
         GL11.glBegin(GL11.GL_LINE_STRIP);
         {

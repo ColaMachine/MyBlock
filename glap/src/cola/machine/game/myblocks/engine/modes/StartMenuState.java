@@ -37,6 +37,7 @@ import com.dozenx.game.opengl.util.OpenglUtils;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
+import glapp.GLApp;
 import glapp.GLCamera;
 import gldemo.learnOpengl.chapt13.LearnOpenglColor;
 import glmodel.GL_Matrix;
@@ -46,7 +47,10 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.Util;
+import org.lwjgl.util.glu.GLU;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -57,16 +61,18 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class StartMenuState implements GameState{
+public class StartMenuState implements GameState {
 
     public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
-    GUI gui ;
+    GUI gui;
 
-    public void init(GameEngine engine){
+    public void init(GameEngine engine) {
 
         try {
-            LWJGLRenderer renderer=new LWJGLRenderer();//调用lwjgl能力
+
+
+            LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
             renderer.setUseSWMouseCursors(true);
 
             //ChatDemo chat = new ChatDemo();
@@ -80,6 +86,7 @@ public class StartMenuState implements GameState{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // this.setPerspective();
 
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
@@ -87,16 +94,15 @@ public class StartMenuState implements GameState{
 
     }
 
-    public void dispose(){
+    public void dispose() {
 
     }
 
 
-    public void handleInput(float delta){
+    public void handleInput(float delta) {
 
 
-
-        if(Keyboard.isCreated()) {
+        if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
 
                 gui.handleKey(
@@ -107,8 +113,7 @@ public class StartMenuState implements GameState{
 
             }
         }
-        if(Mouse.isCreated())
-        {
+        if (Mouse.isCreated()) {
             while (Mouse.next()) {
                 gui.handleMouse(
                         Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
@@ -118,17 +123,25 @@ public class StartMenuState implements GameState{
         }
 
 
-
     }
 
 
-    public void update(float delta){
+    public void update(float delta) {
 
     }
+
+    public float rotation = 0f;
 
     @Override
     public void render() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         gui.update();
+        //print(30, viewportH - 135, "fps:" );
+        //  GLApp.drawRect(1,1,50,50);
     }
 
     @Override

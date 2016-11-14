@@ -330,7 +330,7 @@ public class MyBlockEngine extends GLApp {
 
         mainDraw();
 
-        Util.checkGLError();
+
     }
 
 
@@ -470,6 +470,9 @@ public class MyBlockEngine extends GLApp {
 
         if (Switcher.PRINT_SWITCH)
             printText();
+
+        Util.checkGLError();
+        GLApp.drawRect(1,1,50,50);Util.checkGLError();
         //
 
     }

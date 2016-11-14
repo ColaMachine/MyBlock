@@ -49,6 +49,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.Util;
+import org.lwjgl.util.glu.GLU;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -59,8 +60,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class GamingState implements GameState{
-    public static  Human human;//= new Human();
+public class GamingState implements GameState {
+    public static Human human;//= new Human();
     public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
     //GUI startGui;
@@ -72,7 +73,7 @@ public class GamingState implements GameState{
     public BulletPhysics bulletPhysics;
     GLCamera camera = new GLCamera();
 
-    GL_Vector lightPos = new GL_Vector(5,5,2);
+    GL_Vector lightPos = new GL_Vector(5, 5, 2);
     //shader constants
     public static int terrainProgramId;
     public static int VaoId;
@@ -83,25 +84,26 @@ public class GamingState implements GameState{
     public static int lightViewLoc;// glGetUniformLocation(LightProgramId,"view");
     public double preKeyTime = 0;
 
-GUI gameGui;
-    public void init(GameEngine engine){
+    GUI gameGui;
+
+    public void init(GameEngine engine) {
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
 
         try {
 
-                initGL();
+            initGL();
 
-
+            lastTime= System.currentTimeMillis();
             this.initManagers();
             this.initEntities();
             this.initEvent();
 
-            mouseControlCenter.livingThingManager=this.livingThingManager;
+            mouseControlCenter.livingThingManager = this.livingThingManager;
             initSelf();
 
-            behaviorManagerThread  =new BehaviorManager();
+            behaviorManagerThread = new BehaviorManager();
             behaviorManagerThread.start();
 
             /*LWJGLRenderer renderer = null;//调用lwjgl能力
@@ -118,13 +120,13 @@ GUI gameGui;
 
     }
 
-    public void dispose(){
+    public void dispose() {
 
     }
 
-    public void initGL(){
-        if(Switcher.SHADER_ENABLE) {
-            
+    public void initGL() {
+        if (Switcher.SHADER_ENABLE) {
+
             this.CreateTerrainProgram();
             this.CreateTerrainVAO();
             this.uniformTerrian();
@@ -132,65 +134,37 @@ GUI gameGui;
             this.CreateLightProgram();
             this.CreateLightVAO();
             this.uniformLight();
-        }else{
+        } else {
+            OpenglUtils.setGlobalLight();
 
-            try {
-                // Depth test setup
-                GL11.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
-                GL11.glDepthFunc(GL11.GL_LEQUAL);  // The Type Of Depth Testing To Do
-
-                // Some basic settings
-                GL11.glClearColor(0f, 0f, 0f, 1f); // Black Background
-                GL11.glEnable(GL11.GL_NORMALIZE);  // force normal lengths to 1
-                GL11.glEnable(GL11.GL_CULL_FACE);  // don't render hidden faces
-                GL11.glEnable(GL11.GL_TEXTURE_2D); // use textures
-                GL11.glEnable(GL11.GL_BLEND);      // enable transparency
-
-                // How to handle transparency: average colors together
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-                // Enable alpha test so the transparent backgrounds in texture assets.images don't
-                // draw.
-                // This prevents transparent areas from affecting the depth or stencil buffer.
-                // alpha func will accept only fragments with alpha greater than 0
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0f);
-
-                // Draw specular highlghts on top of textures
-                GL11.glLightModeli(GL12.GL_LIGHT_MODEL_COLOR_CONTROL, GL12.GL_SEPARATE_SPECULAR_COLOR );
-
-                // Perspective quality
-                GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-
-                // Set the size and shape of the screen area
-                GL11.glViewport(viewportX, viewportY, viewportW, viewportH);
-
-                // setup perspective (see setOrtho() for 2D)
-                setPerspective();
-
-                // select model view for subsequent transformations
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glLoadIdentity();
-            }
-            catch (Exception e) {
-                err("GLApp.initOpenGL(): " + e);
-            }
+            OpenglUtils.setPerspective();
 
         }
 
     }
+
+    public static void setPerspective() {
+        // select projection matrix (controls perspective)
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GLU.gluPerspective(40f, 800 / 600, 1f, 1000f);
+        // return to modelview matrix
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+    }
+
     int cursorX;
     int cursorY;
-    public void handleInput(float delta){
-        cursorX=Mouse.getEventX();
-        cursorY=Mouse.getEventY();
+
+    public void handleInput(float delta) {
+        cursorX = Mouse.getEventX();
+        cursorY = Mouse.getEventY();
         int mouseDW = Mouse.getDWheel();
         if (mouseDW != 0) {
             //mouseControlCenter.mousewmouseWheel(mouseDW);
         }
         GUI gui = CoreRegistry.get(GUI.class);
 
-        if(Keyboard.isCreated()) {
+        if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
                 // check for exit key
            /* if (Keyboard.getEventKey() == finishedKey) {
@@ -217,14 +191,12 @@ GUI gameGui;
                 }*/
             }
         }
-        if(Mouse.isCreated())
-        {
-            mouseControlCenter.mouseMove(cursorX,cursorY);
+        if (Mouse.isCreated()) {
+            mouseControlCenter.mouseMove(cursorX, cursorY);
             while (Mouse.next()) {
 
 
-
-               int wheelDelta = Mouse.getEventDWheel();
+                int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
                     //gui.handleMouseWheel(wheelDelta / 120);
                 }
@@ -235,13 +207,13 @@ GUI gameGui;
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
                 }
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
-                    mouseControlCenter. mouseLeftUp(cursorX, cursorY);
+                    mouseControlCenter.mouseLeftUp(cursorX, cursorY);
                 }
                 if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
-                    mouseControlCenter. mouseRightDown(cursorX, cursorY);
+                    mouseControlCenter.mouseRightDown(cursorX, cursorY);
                 }
                 if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == false) {
-                    mouseControlCenter. mouseRightUp(cursorX, cursorY);
+                    mouseControlCenter.mouseRightUp(cursorX, cursorY);
                 }
                 //GUI gui = CoreRegistry.get(GUI.class);
                 gui.handleMouse(
@@ -320,38 +292,38 @@ GUI gameGui;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 
-            lightPos.x+=-0.1;
+            lightPos.x += -0.1;
 
             lightPosChangeListener();
 
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            lightPos.x+=0.1;
+            lightPos.x += 0.1;
 
             lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            lightPos.z-=0.1;
+            lightPos.z -= 0.1;
 
             lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            lightPos.z+=0.1;
+            lightPos.z += 0.1;
 
             lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_I)) {
-            lightPos.y+=0.1;
+            lightPos.y += 0.1;
 
             lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-            lightPos.y-=0.1;
+            lightPos.y -= 0.1;
 
             lightPosChangeListener();
 
@@ -359,8 +331,17 @@ GUI gameGui;
 
     }
 
-
-    public void update(float delta){
+    long nowTime=0;
+    int fps=0;
+    public void update(float delta) {
+        nowTime=System.currentTimeMillis();
+        if((nowTime-lastTime)>1000){
+            fps =frameCount;
+            frameCount=0;
+            lastTime=nowTime;
+        }else{
+            frameCount++;
+        }
         AttackManager.update();
         try {
             animationManager.update();
@@ -368,7 +349,8 @@ GUI gameGui;
             e.printStackTrace();
         }
     }
-    public void CreateTerrainVAO(){
+
+    public void CreateTerrainVAO() {
 
 
         VaoId = glGenVertexArrays();
@@ -381,56 +363,57 @@ GUI gameGui;
         glBindVertexArray(0);
         Util.checkGLError();
     }
-    public void CreateTerrainVBO(){
+
+    public void CreateTerrainVBO() {
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
-        float VerticesArray[]= { -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        float VerticesArray[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
 
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
 
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
 
-                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
 
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+                0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+                -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
 
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f};
+                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+                0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+                -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f};
         FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
 
 
         Vertices.put(VerticesArray);
         Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
-        VboId=glGenBuffers();//create vbo
+        VboId = glGenBuffers();//create vbo
 
 
         glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
@@ -443,48 +426,48 @@ GUI gameGui;
         glEnableVertexAttribArray(0);
         Util.checkGLError();
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * 4, 3*4);
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * 4, 3 * 4);
 
         Util.checkGLError();
         glEnableVertexAttribArray(1);
         Util.checkGLError();
 
 
-
-
     }
-    GL_Matrix projection= GL_Matrix.perspective3(45,600/600,1f,1000.0f);
+
+    GL_Matrix projection = GL_Matrix.perspective3(45, 600 / 600, 1f, 1000.0f);
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
-    public void lightPosChangeListener(){
+
+    public void lightPosChangeListener() {
 
         glUseProgram(terrainProgramId);
 
-        glUniform3f(lightPosInTerrainLoc,lightPos.x,lightPos.y,lightPos.z);
+        glUniform3f(lightPosInTerrainLoc, lightPos.x, lightPos.y, lightPos.z);
         Util.checkGLError();
 
         glUseProgram(LightProgramId);
 
-        GL_Matrix model = GL_Matrix.translateMatrix(lightPos.x,lightPos.y,lightPos.z);
+        GL_Matrix model = GL_Matrix.translateMatrix(lightPos.x, lightPos.y, lightPos.z);
         glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
         Util.checkGLError();
 
 
     }
-    public void cameraPosChangeListener1(){
-        GL_Matrix view=
-                GL_Matrix.LookAt(camera.Position,camera.ViewDir);
+
+    public void cameraPosChangeListener1() {
+        GL_Matrix view =
+                GL_Matrix.LookAt(camera.Position, camera.ViewDir);
         view.fillFloatBuffer(cameraViewBuffer);
 
         glUseProgram(terrainProgramId);
 
 
-
-        glUniformMatrix4(viewLoc,  false,cameraViewBuffer);
+        glUniformMatrix4(viewLoc, false, cameraViewBuffer);
         Util.checkGLError();
         //viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
 
-        glUniform3f(viewPosLoc,  camera.Position.x,camera.Position.y,camera.Position.z);
+        glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z);
         Util.checkGLError();
 
 
@@ -493,12 +476,13 @@ GUI gameGui;
         //lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
-        glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
+        glUniformMatrix4(lightViewLoc, false, view.toFloatBuffer());
 
         Util.checkGLError();
 
     }
-    public void uniformTerrian(){
+
+    public void uniformTerrian() {
         /*
         uniform mat4 projection;
         uniform mat4 view;
@@ -512,43 +496,40 @@ GUI gameGui;
         //GL_Matrix view= GL_Matrix.translateMatrix(0,0,-3);
 
 
-
-
         //glUseProgram(ProgramId);
         glUseProgram(terrainProgramId);
         //unifrom赋值===========================================================
         //投影矩阵
-        int projectionLoc= glGetUniformLocation(terrainProgramId, "projection");
+        int projectionLoc = glGetUniformLocation(terrainProgramId, "projection");
         Util.checkGLError();
-        glUniformMatrix4(projectionLoc,  false,projection.toFloatBuffer() );
+        glUniformMatrix4(projectionLoc, false, projection.toFloatBuffer());
         Util.checkGLError();
 
         //相机位置
-        GL_Matrix view=
-                GL_Matrix.LookAt(camera.Position,camera.ViewDir);
+        GL_Matrix view =
+                GL_Matrix.LookAt(camera.Position, camera.ViewDir);
         view.fillFloatBuffer(cameraViewBuffer);
-        viewLoc = glGetUniformLocation(terrainProgramId,"view");
+        viewLoc = glGetUniformLocation(terrainProgramId, "view");
 
         Util.checkGLError();
-        glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
+        glUniformMatrix4(viewLoc, false, view.toFloatBuffer());
         Util.checkGLError();
 
 
-        GL_Matrix model= GL_Matrix.rotateMatrix((float)(0*3.14/180.0),0,0);
-        int modelLoc= glGetUniformLocation(terrainProgramId, "model");
+        GL_Matrix model = GL_Matrix.rotateMatrix((float) (0 * 3.14 / 180.0), 0, 0);
+        int modelLoc = glGetUniformLocation(terrainProgramId, "model");
         Util.checkGLError();
         glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
         Util.checkGLError();
 
 
-        viewLoc= glGetUniformLocation(terrainProgramId, "view");
+        viewLoc = glGetUniformLocation(terrainProgramId, "view");
         Util.checkGLError();
 
 
-
         //物体颜色
-        int objectColorLoc= glGetUniformLocation(terrainProgramId, "objectColor");
-        glUniform3f(objectColorLoc,1.0f,0.5f,0.31f);
+        int objectColorLoc = glGetUniformLocation(terrainProgramId, "objectColor");
+        glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
         Util.checkGLError();
 
         //环境光颜色
@@ -557,20 +538,20 @@ GUI gameGui;
         glUniform3f(lightColorLoc,1.0f,1f,1f);
         Util.checkGLError();*/
 
-        lightPosInTerrainLoc= glGetUniformLocation(terrainProgramId, "light.position");
-        if(lightPosInTerrainLoc==-1){
+        lightPosInTerrainLoc = glGetUniformLocation(terrainProgramId, "light.position");
+        if (lightPosInTerrainLoc == -1) {
             LogUtil.println("light.position not found ");
             System.exit(1);
         }
-        glUniform3f(lightPosInTerrainLoc,lightPos.x,lightPos.y,lightPos.z);
+        glUniform3f(lightPosInTerrainLoc, lightPos.x, lightPos.y, lightPos.z);
         Util.checkGLError();
 
-        viewPosLoc= glGetUniformLocation(terrainProgramId,"viewPos");
-        if(viewPosLoc==-1){
+        viewPosLoc = glGetUniformLocation(terrainProgramId, "viewPos");
+        if (viewPosLoc == -1) {
             LogUtil.println("viewPos not found ");
             System.exit(1);
         }
-        glUniform3f(viewPosLoc,lightPos.x,lightPos.y,lightPos.z);
+        glUniform3f(viewPosLoc, lightPos.x, lightPos.y, lightPos.z);
         Util.checkGLError();
 
 
@@ -599,28 +580,32 @@ GUI gameGui;
         glUniform1f(glGetUniformLocation(terrainProgramId, "light.quadratic"), 0.017f);
 
     }
+
     int lightColorLoc;
     int lightPosInTerrainLoc;
     int lightPosLoc;
 
     int lightVaoId;
-    public void CreateTerrainProgram(){
+
+    public void CreateTerrainProgram() {
         try {
             terrainProgramId = OpenglUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-    public void CreateLightProgram(){
+
+    public void CreateLightProgram() {
         try {
             LightProgramId = OpenglUtils.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-    public void CreateLightVAO(){
+
+    public void CreateLightVAO() {
         lightVaoId = glGenVertexArrays();
         Util.checkGLError();
 
@@ -632,7 +617,8 @@ GUI gameGui;
         Util.checkGLError();
 
     }
-    public void CreateLightVBO(){
+
+    public void CreateLightVBO() {
 
         //创建vao2=========================================================
         //顶点 vbo
@@ -641,32 +627,37 @@ GUI gameGui;
         // model = GL_Matrix.multiply(view2,model);
         // VboId=glGenBuffers();//create vbo
         glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
-       // glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+        // glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
         Util.checkGLError();
         glEnableVertexAttribArray(0);
         Util.checkGLError();
     }
+
     int lightModelLoc;
-    public void uniformLight(){
-        GL_Matrix model= GL_Matrix.translateMatrix(lightPos.x,lightPos.y,lightPos.z);
-        GL_Matrix view= GL_Matrix.translateMatrix(0,0,0);
+
+    public void uniformLight() {
+        GL_Matrix model = GL_Matrix.translateMatrix(lightPos.x, lightPos.y, lightPos.z);
+        GL_Matrix view = GL_Matrix.translateMatrix(0, 0, 0);
         glUseProgram(LightProgramId);
-        int lightProjectionLoc= glGetUniformLocation(LightProgramId, "projection");
-        glUniformMatrix4(lightProjectionLoc,  false,projection.toFloatBuffer() );
+        int lightProjectionLoc = glGetUniformLocation(LightProgramId, "projection");
+        glUniformMatrix4(lightProjectionLoc, false, projection.toFloatBuffer());
         Util.checkGLError();
-        lightModelLoc= glGetUniformLocation(LightProgramId, "model");
+        lightModelLoc = glGetUniformLocation(LightProgramId, "model");
         glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
         Util.checkGLError();
 
-        lightViewLoc= glGetUniformLocation(LightProgramId, "view");
-        glUniformMatrix4(lightViewLoc,  false,view.toFloatBuffer() );
+        lightViewLoc = glGetUniformLocation(LightProgramId, "view");
+        glUniformMatrix4(lightViewLoc, false, view.toFloatBuffer());
         Util.checkGLError();
 
     }
+
     DropControlCenter dcc = new DropControlCenter();
-    public void render(){
+    int frameCount=0;
+    long lastTime=0;
+    public void render() {
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -693,7 +684,7 @@ GUI gameGui;
 
         //glTranslatef( 0.0f, 0.0f, -5.0f );
 
-        Long time =System.currentTimeMillis();
+        Long time = System.currentTimeMillis();
        /* float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
@@ -705,38 +696,34 @@ GUI gameGui;
         Util.checkGLError();
         glBindVertexArray(0);
         Util.checkGLError();*/
-    if(Switcher.SHADER_ENABLE){
-        glUseProgram(this.LightProgramId);
-        Util.checkGLError();
-        glBindVertexArray(lightVaoId);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        Util.checkGLError();
-        glBindVertexArray(0);
-        worldRenderer.render();
-        try{
-            Util.checkGLError();}catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
+        if (Switcher.SHADER_ENABLE) {
+            glUseProgram(this.LightProgramId);
+            Util.checkGLError();
+            glBindVertexArray(lightVaoId);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+            Util.checkGLError();
+            glBindVertexArray(0);
+            worldRenderer.render();
+            OpenglUtils.checkGLError();
+            livingThingManager.render();
+            OpenglUtils.checkGLError();
+            glUseProgram(0);
+        } else {
+            camera.Render();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
+            worldRenderer.render();
+            livingThingManager.render();
+
+           // OpenglUtils.renderCubeTest();
         }
-        livingThingManager.render();
-        try{
-            Util.checkGLError();}catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
-        }
-        glUseProgram(0);
-    }else{
-        worldRenderer.render();
-        livingThingManager.render();
-        camera.Render();
-    }
-       // CoreRegistry.get(NuiManager.class).render();
+        OpenglUtils.checkGLError();
+        // CoreRegistry.get(NuiManager.class).render();
         gameGui.update();
-        printText();
+        //GLApp.print(10,10,"fps:"+fps);
+        LogUtil.println("fps:"+fps);
+        //printText();
         //OpenglUtil.glFillRect(0,0,1,1,1,new byte[]{(byte)245,(byte)0,(byte)0},new byte[]{(byte)245,(byte)0,(byte)0});
-          GLApp.drawRect(1,1,1,1);
+//          GLApp.drawRect(1,1,51,51);
        /* GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         // fovy, aspect ratio, zNear, zFar
@@ -757,20 +744,24 @@ GUI gameGui;
 
 //        OpenglUtils.checkGLError();
 
-
+        /*try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
 
     }
 
-    public boolean isHibernationAllowed(){
+    public boolean isHibernationAllowed() {
         return false;
     }
 
     private void initManagers() {
-        Client client =new Client();
+        Client client = new Client();
         client.start();
-        CoreRegistry.put(Client.class,client);
-        BagController bagController =new BagController();
-        CoreRegistry.put(BagController.class,bagController);
+        CoreRegistry.put(Client.class, client);
+        BagController bagController = new BagController();
+        CoreRegistry.put(BagController.class, bagController);
         // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
@@ -779,71 +770,73 @@ GUI gameGui;
 
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
-        animationManager=  new AnimationManager();
+        animationManager = new AnimationManager();
         CoreRegistry.put(AnimationManager.class,
                 animationManager);
 
-try {
+        try {
 
-    LWJGLRenderer renderer = new LWJGLRenderer();
-    ThemeManager newTheme = null;
-    try {
-        newTheme = ThemeManager.createThemeManager(
-                SimpleTest.class.getResource("simple_demo.xml"), renderer);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+            LWJGLRenderer renderer = new LWJGLRenderer();
+            ThemeManager newTheme = null;
+            try {
+                newTheme = ThemeManager.createThemeManager(
+                        SimpleTest.class.getResource("simple_demo.xml"), renderer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-    Long startTime = System.nanoTime();
-    long duration = System.nanoTime() - startTime;
-    System.out.println("Loaded theme in " + (duration / 1000) + " us");
-    GuiRootPane root = new GuiRootPane();//创建root pane
-    gameGui = new GUI(root, renderer);//创建gui
-    //this.root.addGamingComponent();
-    gameGui.setSize();
-    gameGui.applyTheme(newTheme);
-    gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
-    gameGui.validateLayout();
-    gameGui.adjustSize();
-    CoreRegistry.put(GUI.class, gameGui);
+            Long startTime = System.nanoTime();
+            long duration = System.nanoTime() - startTime;
+            System.out.println("Loaded theme in " + (duration / 1000) + " us");
+            GuiRootPane root = new GuiRootPane();//创建root pane
+            gameGui = new GUI(root, renderer);//创建gui
+            //this.root.addGamingComponent();
+            gameGui.setSize();
+            gameGui.applyTheme(newTheme);
+            gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
+            gameGui.validateLayout();
+            gameGui.adjustSize();
+            CoreRegistry.put(GUI.class, gameGui);
 
-}catch (Exception e ){
-    e.printStackTrace();
-    System.exit(1);
-}
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         /*NuiManager nuiManager = CoreRegistry.put(NuiManager.class,
                 new NuiManager());*/
 
         // AssetManager assetManager =
         // CoreRegistry.putPermanently(AssetManager.class, new
         // AssetManager(moduleManager.getEnvironment()));
-        livingThingManager =new LivingThingManager();
+        livingThingManager = new LivingThingManager();
     }
-    private void initEntities(){
+
+    private void initEntities() {
         human = new Human();
         human.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
 
-        LivingThing livingThing =new LivingThing();
-        livingThing.position=new GL_Vector(10,4,0);
+        LivingThing livingThing = new LivingThing();
+        livingThing.position = new GL_Vector(10, 4, 0);
         livingThingManager.setPlayer(human);
         //livingThingManager.add(livingThing);
-        SynchronTask task =new SynchronTask();
+        SynchronTask task = new SynchronTask();
         task.start();
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
         CoreRegistry.put(Player.class,player);*/
     }
-    public void initEvent(){
+
+    public void initEvent() {
         //dcc.blockRepository = blockRepository;
         bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
-        mouseControlCenter = new MouseControlCenter(human, camera,this);
-        CoreRegistry.put(MouseControlCenter.class,mouseControlCenter);
+        mouseControlCenter = new MouseControlCenter(human, camera, this);
+        CoreRegistry.put(MouseControlCenter.class, mouseControlCenter);
         mouseControlCenter.bulletPhysics = bulletPhysics;
     }
 
-    public void initSelf()  {
+    public void initSelf() {
         // TODO Auto-generated method stub
 
         // 暂时用默认的参数初始化manager 然后manager 放到corerepgistry里
@@ -874,15 +867,17 @@ try {
             WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, human);
 
             this.worldRenderer = worldRenderer;
-        }catch(Exception e ){
-            e.printStackTrace();;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ;
             System.exit(0);
         }
 
     }
+
     public void initConfig() throws IOException {
-        Config config =  Config.load(Config.getConfigFile());
-        CoreRegistry.put(Config.class,config );
+        Config config = Config.load(Config.getConfigFile());
+        CoreRegistry.put(Config.class, config);
         //
     }
 
@@ -894,7 +889,7 @@ try {
 //        print(30, viewportH - 90, "press space jump ");
 //        print(30, viewportH - 105, "press up down look up down ");
         GLApp.print(30, 600 - 120, "cam:" + human.ViewDir);
-       // GLApp.print(30, 600 - 135, "fps:" + time.tick());
+        // GLApp.print(30, 600 - 135, "fps:" + time.tick());
     }
 
 }
