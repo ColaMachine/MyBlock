@@ -4,6 +4,7 @@ import javax.vecmath.Vector3f;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.switcher.Switcher;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
@@ -227,7 +228,7 @@ public class GLCamera {
 	public void Render() {
 		//The point at which the camera looks:
 		GL_Vector ViewPoint = GL_Vector.add(Position, ViewDir);
-		
+		//LogUtil.println(Position+"");
 		//as we know the up vector, we can easily use gluLookAt:
 		GLU.gluLookAt(Position.x, Position.y, Position.z,
 				ViewPoint.x, ViewPoint.y, ViewPoint.z,
@@ -250,31 +251,32 @@ public class GLCamera {
 	}
 	FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 	public void changeCallBack(){
+
         if(!Switcher.SHADER_ENABLE)
             return;
 		GL_Matrix view=
 				GL_Matrix.LookAt(Position,ViewDir);
 		view.fillFloatBuffer(cameraViewBuffer);
 
-		glUseProgram(GamingState.terrainProgramId);
+		glUseProgram(GamingState.instance.shaderManager.terrainProgramId);
 
 
 
-		glUniformMatrix4(GamingState.viewLoc,  false,cameraViewBuffer);
+		glUniformMatrix4(GamingState.instance.shaderManager.viewLoc,  false,cameraViewBuffer);
 		org.lwjgl.opengl.Util.checkGLError();
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
 
-		glUniform3f(GamingState.viewPosLoc,  Position.x,Position.y,Position.z);
+		glUniform3f(GamingState.instance.shaderManager.viewPosLoc,  Position.x,Position.y,Position.z);
 		org.lwjgl.opengl.Util.checkGLError();
 
 
-		glUseProgram(GamingState.LightProgramId);
+		glUseProgram(GamingState.instance.shaderManager.LightProgramId);
 		org.lwjgl.opengl.Util.checkGLError();
 		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
-		glUniformMatrix4(GamingState.lightViewLoc,  false,view.toFloatBuffer() );
+		glUniformMatrix4(GamingState.instance.shaderManager.lightViewLoc,  false,view.toFloatBuffer() );
 
 		org.lwjgl.opengl.Util.checkGLError();
 

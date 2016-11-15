@@ -201,7 +201,7 @@ public class GuiRootPane extends Widget {
                    // mouseControlCenter.prevMouseY=evt.getMouseY();
                     //System.out.println("开始拖动");
                 }else if(evt.getType()== Event.Type.MOUSE_CLICKED){
-                    mouseControlCenter.mouseLClick(evt.getMouseX(), evt.getMouseY());
+                    //mouseControlCenter.mouseLClick(evt.getMouseX(), evt.getMouseY());
                       /*  if(evt.getModifiers()==64){
                             mouseControlCenter.mouseLClick(evt.getMouseX(), evt.getMouseY());
                         }else if(evt.getModifiers()==128) {

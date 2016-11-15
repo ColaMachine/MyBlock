@@ -136,7 +136,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 		TextureManager.getTextureInfo("mantle").bind();
         if(Switcher.SHADER_ENABLE){
             for (ChunkImpl chunk : chunksInProximity) {
-                glUseProgram(GamingState.terrainProgramId);
+                glUseProgram(GamingState.instance.shaderManager.terrainProgramId);
                 Util.checkGLError();
                 chunk.renderShader();
                 glBindVertexArray(0);

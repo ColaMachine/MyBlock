@@ -80,7 +80,7 @@ public class StartMenuState implements GameState {
             LoginDemo loginDemo = new LoginDemo();
             gui = new GUI(loginDemo, renderer);
 
-            ThemeManager theme = ThemeManager.createThemeManager(
+                    ThemeManager theme = ThemeManager.createThemeManager(
                     LoginDemo.class.getResource("login.xml"), renderer);
             gui.applyTheme(theme);
         } catch (Exception e) {
@@ -139,6 +139,8 @@ public class StartMenuState implements GameState {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        glUseProgram(0);
         gui.update();
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);

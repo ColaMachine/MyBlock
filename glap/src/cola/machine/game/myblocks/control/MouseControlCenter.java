@@ -8,6 +8,7 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
@@ -74,6 +75,7 @@ public class MouseControlCenter {
         //i think it's something  could be repeat something only receive down up as a signal;
 
         //let put the key in a group that need cooling
+        //LogUtil.println(seconds+"");
         if( Switcher.isChat){
             return;
         }
@@ -99,11 +101,11 @@ public class MouseControlCenter {
                 Switcher.CAMERA_2_PLAYER = 0;
             }
         } if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            human.bodyRotate(0, human.camSpeedR * seconds*100);
+            human.bodyRotate(0, human.camSpeedR * seconds);
         }   if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             // Turn right
 
-            human.bodyRotate(0, -human.camSpeedR * seconds*100);
+            human.bodyRotate(0, -human.camSpeedR * seconds);
         }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             human.StrafeRight(-human.camSpeedXZ * seconds);
         }
@@ -113,7 +115,7 @@ public class MouseControlCenter {
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-            human.MoveForward(-human.camSpeedXZ * seconds*10);
+            human.MoveForward(-human.camSpeedXZ * seconds);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up

@@ -29,6 +29,7 @@
  */
 package de.matthiasmann.twl.renderer.lwjgl;
 
+import com.dozenx.game.opengl.util.OpenglUtils;
 import de.matthiasmann.twl.Color;
 import de.matthiasmann.twl.renderer.MouseCursor;
 import de.matthiasmann.twl.renderer.Image;
@@ -149,8 +150,8 @@ public class LWJGLTexture implements Texture, Resource, QueriablePixels {
                     fmt.glInternalFormat, texWidth, texHeight,
                     0, fmt.glFormat, GL11.GL_UNSIGNED_BYTE, buf);
         }
-
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
+       // Util.checkGLError();
 
         this.width = width;
         this.height = height;

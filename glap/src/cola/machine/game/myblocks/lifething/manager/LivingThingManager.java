@@ -70,6 +70,9 @@ return livingThingsMap.get(id);
             this.player.renderShader();
             //livingThing.renderShader();
         }else{
+           /* this.player.position.x+=0.01;
+            if(this.player.position.x>10)
+                this.player.position.x=0;*/
             this.player.render();
             //livingThing.render();
         }

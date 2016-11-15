@@ -184,9 +184,12 @@ public class LoginDemo extends Widget {
     }
     
     void emulateLogin() {
-       BlockEngine.engine.changeState(new GamingState());
-        /*NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
-        nuiManager.startGame();*/
+        if(BlockEngine.engine!=null ){
+       BlockEngine.engine.changeState(new GamingState());}
+        else {
+            NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
+            nuiManager.startGame();
+        }
         GUI gui = getGUI();
         if(gui != null) {
             // step 1: disable all controls

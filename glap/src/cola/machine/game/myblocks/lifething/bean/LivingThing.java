@@ -318,8 +318,8 @@ public class LivingThing extends GameActor{
         if(vaoId<=0){
             preRenderShader();
         }
-
-        glUseProgram(GamingState.terrainProgramId);
+        TextureManager.getTextureInfo("human_head_right").bind();
+        glUseProgram(GamingState.instance.shaderManager.terrainProgramId);
         Util.checkGLError();
 
        /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
@@ -327,7 +327,7 @@ public class LivingThing extends GameActor{
         matrixBuffer.rewind();*/
         // glBindTexture(GL_TEXTURE_2D, this.textureHandle);
         glBindVertexArray(vaoId);
-        TextureManager.getTextureInfo("human_head_right").bind();
+
 //        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDrawArrays(GL11.GL_TRIANGLES,0,trianglesCount);
 
