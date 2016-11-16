@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import glapp.GLApp;
 import org.lwjgl.opengl.GL11;
 import org.slf4j.Logger;
@@ -150,6 +151,8 @@ public class HtmlObject extends RegionArea{
         	/*if(this.background_image.equals("toolbar")){
         		System.out.println("toolbar render");
         	}*/
+
+            OpenglUtils.draw2DImageShader();
             TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
             GL11.glColor3f(1, 1, 1);
            // GL11.glClear(GL11.GL_COLOR);

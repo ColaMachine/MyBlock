@@ -173,7 +173,7 @@ public class LearnOpengl7test {
 
     }
     void CreateFragShaders() throws IOException {
-        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt7.frag").toString());
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/twodimg.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();

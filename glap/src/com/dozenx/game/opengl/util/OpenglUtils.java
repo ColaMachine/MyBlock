@@ -292,6 +292,10 @@ public class OpenglUtils {
 
     }
 
+    public static void drawRectWithShader(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, float minx, float miny , float maxx, float maxy){
+
+    }
+
     public static void glVertex3fv4rect(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  TextureInfo ti,int position){
 
         switch (position){
@@ -380,11 +384,11 @@ public class OpenglUtils {
 
     public static void setGlobalLight(){
         GL11.glEnable(GL11.GL_LIGHTING);
-        GLApp.setLight( GL11.GL_LIGHT1,
-                new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // diffuse color
-                new float[] { 1.0f,1.0f, 1.0f, 1.0f },   // ambient
-                new float[] { 1.0f, 1.0f, 1.0f, 1.0f },   // specular
-                new float[]{0,5,0,1} );
+        GLApp.setLight(GL11.GL_LIGHT1,
+                new float[]{1.0f, 1.0f, 1.0f, 1.0f},   // diffuse color
+                new float[]{1.0f, 1.0f, 1.0f, 1.0f},   // ambient
+                new float[]{1.0f, 1.0f, 1.0f, 1.0f},   // specular
+                new float[]{0, 5, 0, 1});
     }
     public static void renderCubeTest(){
 
@@ -416,6 +420,22 @@ public class OpenglUtils {
             GLApp.renderCube();
         }
         GL11.glPopMatrix();
+    }
+    public static int image2DShaderProgram;
+    public static void draw2DImageShader(int textureHandle,int minX,int topY,int width,int height) {
+
+        if(image2DShaderProgram==0 ){
+            this.createImage2DShaderProgram();
+        }
+
+    }
+    public static void createImage2DShaderProgram(){
+        try {
+            image2DShaderProgram = OpenglUtils.CreateProgram("twodimg/twodimg.vert", "twodimg/twodimg.frag");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
     }
    /* public void drawLine() {
 

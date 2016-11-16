@@ -14,6 +14,7 @@ import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
+import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -66,12 +67,12 @@ public class StartMenuState implements GameState {
     public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
     GUI gui;
-
+    Div div =new Div();
     public void init(GameEngine engine) {
 
         try {
 
-
+            div.
             LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
             renderer.setUseSWMouseCursors(true);
 
@@ -134,14 +135,15 @@ public class StartMenuState implements GameState {
 
     @Override
     public void render() {
-        try {
+       /* try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        glUseProgram(0);
-        gui.update();
+        //glUseProgram(0);
+       //gui.update();
+        //OpenglUtils.drawRect();
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);
     }
