@@ -72,7 +72,7 @@ public class StartMenuState implements GameState {
 
         try {
 
-            div.
+
             LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
             renderer.setUseSWMouseCursors(true);
 
@@ -142,7 +142,7 @@ public class StartMenuState implements GameState {
         }*/
 
         //glUseProgram(0);
-       //gui.update();
+       gui.update();
         //OpenglUtils.drawRect();
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);

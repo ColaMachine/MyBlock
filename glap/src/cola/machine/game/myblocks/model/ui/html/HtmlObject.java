@@ -152,8 +152,9 @@ public class HtmlObject extends RegionArea{
         		System.out.println("toolbar render");
         	}*/
 
-            OpenglUtils.draw2DImageShader();
+
             TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
+            //OpenglUtils.draw2DImageShader(textureInfo.textureHandle,1,1,50,50);
             GL11.glColor3f(1, 1, 1);
            // GL11.glClear(GL11.GL_COLOR);
             textureInfo.bind();

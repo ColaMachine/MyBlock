@@ -17,7 +17,7 @@ public class TextureInfo extends RegionArea{
 	public float maxX=0;
 	public float maxY=0;*/
     public  GLImage img;
-    private int textureHandle= 0;
+    public int textureHandle= 0;
 	public TextureInfo(float minX,float minY,float maxX,float maxY){
 		this.minX=minX;
 		this.minY=minY;

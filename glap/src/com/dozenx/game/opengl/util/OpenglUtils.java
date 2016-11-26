@@ -425,7 +425,7 @@ public class OpenglUtils {
     public static void draw2DImageShader(int textureHandle,int minX,int topY,int width,int height) {
 
         if(image2DShaderProgram==0 ){
-            this.createImage2DShaderProgram();
+            createImage2DShaderProgram();
         }
 
     }
