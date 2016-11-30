@@ -145,6 +145,52 @@ public class HtmlObject extends RegionArea{
             this.childNodes.get(i).refresh();
         }
     }
+
+    public void  shaderRender(){
+        if("none".equals(display))return;
+        if(this.background_image!=null){
+
+
+            /*if(this.background_image.equals("toolbar")){
+        		System.out.println("toolbar render");
+        	}*/
+
+
+            TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
+
+            //OpenglUtils.draw2DImageShader(i);
+            //OpenglUtils.draw2DImageShader(textureInfo.textureHandle,1,1,50,50);
+
+        }else if(this.background_color!=null){
+
+            //OpenglUtils.draw2DColorShader(minX,minY,maxX,maxY,background_color);
+
+        }
+        if(this.innerText!=null &&! innerText.equals("")){
+            //GL11.glColor4f(1, 1, 1, 1);
+            //GLApp.print((int)minX,(int)minY,this.innerText);
+        }
+        if(this.border_width>0){
+           /* GL11.glLineWidth(this.border_width);
+            GL11.glColor3f(this.border_color.x,this.border_color.y,this.border_color.z);
+            GLApp.drawRect((int)this.minX,(int)this.minY,this.maxX-this.minX,this.maxY-this.minY);*/
+
+        }
+        for(HtmlObject htmlObject:this.childNodes){
+            //if(Switcher.SHADER_ENABLE){
+                htmlObject.shaderRender();
+            //}else{
+            //    htmlObject.render();
+            //}
+
+        }
+
+      /*  for(int i=0;i<this.childNodes.size();i++){
+            this.childNodes.get(i).render();
+        }*/
+
+
+    }
     public void render(){
         if("none".equals(display))return;
         if(this.background_image!=null){
@@ -154,6 +200,8 @@ public class HtmlObject extends RegionArea{
 
 
             TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
+
+
             //OpenglUtils.draw2DImageShader(textureInfo.textureHandle,1,1,50,50);
             GL11.glColor3f(1, 1, 1);
            // GL11.glClear(GL11.GL_COLOR);
@@ -161,6 +209,8 @@ public class HtmlObject extends RegionArea{
             //GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInfo.textureHandle);
 
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
+
+
             GL11.glBegin(GL11.GL_QUADS);
 
             GL11.glNormal3f(0.0f, 0.0f, 1.0f); // normal faces positive Z

@@ -47,7 +47,7 @@ public class LearnOpenglColor extends FatherLeanr{
     }
 
     int vao2Id;
-
+    int vao3Id;
     int lightVertexShaderId;
     int lightFragmentShaderId;
     public void CreateLightVertexShader()throws Exception {
@@ -318,6 +318,7 @@ try {
         matrixBuffer.rewind();*/
        // glBindTexture(GL_TEXTURE_2D, this.textureHandle);
         glBindVertexArray(vao2Id);
+
 //        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDrawArrays(GL_TRIANGLES,0,36);
         glBindVertexArray(0);

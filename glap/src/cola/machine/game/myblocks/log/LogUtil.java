@@ -9,4 +9,10 @@ public class LogUtil {
         StackTraceElement[] eles = e.getStackTrace();
         System.out.println(eles[1]+":"+s);
     }
+
+    public static void err(String s){
+        println(s);
+        System.exit(0);
+    }
+
 }

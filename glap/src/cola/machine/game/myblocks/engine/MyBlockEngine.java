@@ -306,9 +306,8 @@ public class MyBlockEngine extends GLApp {
         GL11.glLoadIdentity();
         Util.checkGLError();
 //        if(!camera1.fenli) {
-       GL_Vector camera_pos = GL_Vector.add(human.position,
-                GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
-        camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
+
+
 
 //        }
         // camera1.MoveTo(human.Position.x, human.Position.y + 4,

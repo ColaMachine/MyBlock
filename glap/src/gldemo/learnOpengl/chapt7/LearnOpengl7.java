@@ -76,9 +76,9 @@ public class LearnOpengl7 {
         resizeGL();
     }
     public void resizeGL() {
-        glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+       // glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-        int i = glGenLists(1);
+//        int i = glGenLists(1);
     }
 
     public void initGL() throws IOException {

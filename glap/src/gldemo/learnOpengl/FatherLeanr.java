@@ -67,7 +67,7 @@ public class FatherLeanr {
 
             Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
             Display.setTitle(WINDOW_TITLE);
-            Display.create(pixelFormat);
+            Display.create(pixelFormat,contextAtrributes);
 
             GL11.glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
         } catch (LWJGLException e) {
