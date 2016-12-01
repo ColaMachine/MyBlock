@@ -65,7 +65,8 @@ public class newOpenglShaderTest extends  FatherLeanr{
 //        imageConfig.setMaxY(0.5f);
         GLImage image;
         image= OpenglUtils.makeTexture("assets/images/items.png");
-        squareConfig.setTextureHanle(image.textureHandle);
+        glBindTexture(GL_TEXTURE_2D, image.textureHandle);
+       // squareConfig.setTextureHanle(image.textureHandle);
         squareConfig.setVertPath("chapt7/chapt7.vert");
         squareConfig.setFragPath("chapt7/chapt7.frag");
         OpenglUtils.initShader(squareConfig);

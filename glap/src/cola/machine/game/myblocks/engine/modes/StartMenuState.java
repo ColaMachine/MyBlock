@@ -13,8 +13,10 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -40,6 +42,7 @@ import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
 import glapp.GLApp;
 import glapp.GLCamera;
+import glapp.GLImage;
 import gldemo.learnOpengl.chapt13.LearnOpenglColor;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -53,6 +56,7 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
 
+import javax.vecmath.Vector3f;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
@@ -69,7 +73,23 @@ public class StartMenuState implements GameState {
     GUI gui;
     Div div =new Div();
     public void init(GameEngine engine) {
+        TextureManager textureManager =new TextureManager();
+        div=new Div();
+        div.id="bag";
+        Document.appendChild(div);
+        div.margin="0 auto";
+        div.width=400;
+        div.height=300;
+        div.left=100;
+        div.bottom=100;
+        div.border_width=1;
+        div.background_image="soil";
+        TextureInfo batTexture= TextureManager.getTextureInfo("soil");
+        div.width=batTexture.owidth;
+        div.height=batTexture.oheight;
 
+        div.border_color=new Vector3f(0,0,0);
+        div.refresh();
         try {
 
 
@@ -92,6 +112,10 @@ public class StartMenuState implements GameState {
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
+
+        GLImage image;
+        image= OpenglUtils.makeTexture("assets/images/items.png");
+        glBindTexture(GL_TEXTURE_2D, image.textureHandle);
 
     }
 
@@ -135,14 +159,19 @@ public class StartMenuState implements GameState {
 
     @Override
     public void render() {
-       /* try {
-            Thread.sleep(100);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        try {
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }
 
         //glUseProgram(0);
-       gui.update();
+        div.shaderRender();
+
+      // gui.update();
         //OpenglUtils.drawRect();
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);

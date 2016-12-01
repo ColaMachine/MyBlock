@@ -10,6 +10,7 @@ import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.Vao;
 import glapp.GLApp;
 import org.lwjgl.opengl.GL11;
 import org.slf4j.Logger;
@@ -136,6 +137,7 @@ public class HtmlObject extends RegionArea{
         this.minY=this.getBottom();
         this.maxX=this.minX+this.getWidth();
         this.maxY=this.minY+this.getHeight();
+        OpenglUtils.create2dimageVao(vao,minX,minY,maxX,maxY);
         if(this.maxX==0){
             logger.error("maxX can't not be 0");
             System.exit(0);
@@ -145,7 +147,7 @@ public class HtmlObject extends RegionArea{
             this.childNodes.get(i).refresh();
         }
     }
-
+    Vao vao =new Vao();
     public void  shaderRender(){
         if("none".equals(display))return;
         if(this.background_image!=null){
@@ -156,14 +158,15 @@ public class HtmlObject extends RegionArea{
         	}*/
 
 
-            TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
-
+            //TextureInfo textureInfo = TextureManager.getTextureInfo(this.background_image);
+            //textureInfo.bind();
+            OpenglUtils.draw2DImageWithShader(OpenglUtils.get2DImageShaderConfig(),vao);
             //OpenglUtils.draw2DImageShader(i);
             //OpenglUtils.draw2DImageShader(textureInfo.textureHandle,1,1,50,50);
 
         }else if(this.background_color!=null){
 
-            //OpenglUtils.draw2DColorShader(minX,minY,maxX,maxY,background_color);
+            OpenglUtils.draw2DImageWithShader(null,vao);
 
         }
         if(this.innerText!=null &&! innerText.equals("")){

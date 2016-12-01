@@ -32,7 +32,7 @@ public class FileUtil {
             LogUtil.println("file is empty: "+path);
             System.exit(0);
         }
-        LogUtil.println(templateStr.toString());
+//        LogUtil.println(templateStr.toString());
         return templateStr.toString();
     }
     public static void writeFile(File file ,String content) throws IOException {

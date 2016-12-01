@@ -68,9 +68,9 @@ public class ShaderConfig {
         return textureHanle;
     }
 
-    public void setTextureHanle(int textureHanle) {
+   /* public void setTextureHanle(int textureHanle) {
         this.textureHanle = textureHanle;
-    }
+    }*/
 
 
 //

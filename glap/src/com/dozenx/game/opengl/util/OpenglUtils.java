@@ -661,16 +661,26 @@ public class OpenglUtils {
         return textureImg;
     }
 
+    public static ShaderConfig get2DImageShaderConfig(){
+         if(shaderImageConfig==null ){
+            shaderImageConfig =new ShaderConfig();
+            shaderImageConfig.setVertPath("chapt7/chapt7.vert");
+            shaderImageConfig.setFragPath("chapt7/chapt7.frag");
+            initShader(shaderImageConfig);
 
+        }
+        return shaderImageConfig;
+    }
     /*
      * use shader to draw image
      */
     public static void draw2DImageWithShader(ShaderConfig config,Vao vao) {
-       /* if(shaderImageConfig==null ){
+        /*if(shaderImageConfig==null ){
             shaderImageConfig =new ShaderConfig();
             shaderImageConfig.setVertPath("chapt7/chapt7.vert");
-            shaderImageConfig.setVertPath("chapt7/chapt7.frag");
-            init2dImageShader(shaderImageConfig);
+            shaderImageConfig.setFragPath("chapt7/chapt7.frag");
+            initShader(shaderImageConfig);
+
         }*/
        // renderImageShader(shaderImageConfig);
         /*if(image2DShaderProgram==0 ){
@@ -680,7 +690,7 @@ public class OpenglUtils {
 
         glUseProgram(config.getProgramId());
         // glUniform4f(0, 0.0f, greenValue, 0.0f, 1.0f);
-        glBindTexture(GL_TEXTURE_2D, config.getTextureHanle());
+        //glBindTexture(GL_TEXTURE_2D, config.getTextureHanle());
         glBindVertexArray(vao.getVaoId());
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -729,10 +739,14 @@ public class OpenglUtils {
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
         //创建顶点数组
+        minX= minX/800;
+        minY=minY/600;
+        maxX=maxX/800;
+        maxY=maxY/600;
         float VerticesArray[]= {minX, maxY, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top Right
-                maxX,minY, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
-                minX, minY, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
-                minX, maxY, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
+                minX,minY, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
+                maxX, minY, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
+                maxX, maxY, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
         };
 
 
