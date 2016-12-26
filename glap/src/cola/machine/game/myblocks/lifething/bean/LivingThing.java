@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -250,7 +251,7 @@ public class LivingThing extends GameActor{
             LogUtil.println("trianglesCount can't be 0");
             System.exit(1);
         }
-         vaoId = OpenglUtils.createVAO(floatBuffer);
+         vaoId = ShaderUtils.createVAO(floatBuffer);
         if(vaoId<=0){
             LogUtil.println("vaoId can't be 0");
             System.exit(1);

@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.Menu;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.input.PauseMouseEventReceiver;
 import cola.machine.game.myblocks.model.ui.html.Div;
@@ -26,39 +27,39 @@ public class PauseMenu {
         MouseEventReceiver mouseEventReceiver = new PauseMouseEventReceiver();
          mask =new Div();
         CoreRegistry.put(PauseMenu.class, this);
-        mask.left=0;mask.display="none";
-        mask.bottom=0;
-        mask.height= GLApp.getHeight();
-        mask.width=GLApp.getWidth();
-        mask.background_color=new Vector4f(0.1f,0.1f,0.1f,0.8f);
+        mask.setLeft(0);mask.setVisible(false);
+        mask.setTop(0);
+        mask.setHeight(Constants.WINDOW_HEIGHT);
+        mask.setWidth(Constants.WINDOW_WIDTH);
+        mask.setBackgroundColor(new Vector4f(0.1f,0.1f,0.1f,0.8f));
 
         Table table =new Table();
-        table.left= mask.getWidth()/2-buttonWidth/2;
-        table.bottom=mask.height/2-cellSpacing-buttonHeight*2;
-        table.height=buttonHeight*2+cellSpacing;
-        table.width=buttonWidth;
+        table.setLeft(mask.getWidth()/2-buttonWidth/2);
+        table.setTop(mask.getHeight()/2-cellSpacing-buttonHeight*2);
+        table.setHeight(buttonHeight*2+cellSpacing);
+        table.setWidth(buttonWidth);
         table.cellpadding=5;
         table.cellspacing=cellSpacing;
-        table.border_width=1;
-        table.border_color=new Vector3f(1,1,1);
+        table.setBorderWidth(1);
+        table.setBorderColor(new Vector4f(0,0,0,0));
         mask.appendChild(table);
         Tr tr1=new Tr();
         table.addRow(tr1);
-        Td td1 =new Td();td1.border_color=new Vector3f(1,1,1);td1.border_width=2;
+        Td td1 =new Td();td1.setBorderColor(new Vector4f(0,0,0,0));td1.setBorderWidth(2);
         td1.innerText="SAVE GAME";td1.mouseEventReceiver=mouseEventReceiver;
         tr1.addCell(td1);
-        td1.background_color=new Vector4f(0,0,0,1);
+        td1.setBorderColor(new Vector4f(0,0,0,1));
         //td1.mouseEventReceiver=
         Tr tr2=new Tr();
         table.addRow(tr2);
-        Td td2= new Td();td2.border_color=new Vector3f(1,1,1);td2.border_width=2;  td2.innerText="EXIT GAME";
+        Td td2= new Td();td2.setBorderColor(new Vector4f(0,0,0,0));td2.setBorderWidth(2);  td2.innerText="EXIT GAME";
         tr2.addCell(td2);td2.mouseEventReceiver=mouseEventReceiver;
-        td2.background_color=new Vector4f(0,0,0,1);
+        td2.setBorderColor(new Vector4f(0,0,0,1));
         mask.refresh();
 
     }
     public void render(){
-        if(!"none".equals(mask.display)){
+        if(mask.isVisible()){
             mask.render();
         }
 
@@ -83,10 +84,10 @@ public class PauseMenu {
     public void show(){
         this.show=!show;
         if(show) {
-            mask.display = "";
+            mask.setVisible(true);
             Switcher.MOUSE_AUTO_CENTER=false;
         }else {
-            mask.display = "none";
+            mask.setVisible(false);
             Switcher.MOUSE_AUTO_CENTER=true;
         }
     }

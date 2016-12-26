@@ -3,6 +3,7 @@ package com.dozenx.game.graphics.shader;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Matrix;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Util;
@@ -253,7 +254,7 @@ public class ShaderManager {
 
     public void CreateTerrainProgram() {
         try {
-            terrainProgramId = OpenglUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+            terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -262,7 +263,7 @@ public class ShaderManager {
 
     public void CreateLightProgram() {
         try {
-            LightProgramId = OpenglUtils.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
+            LightProgramId = ShaderUtils.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);

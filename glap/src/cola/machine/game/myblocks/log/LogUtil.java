@@ -15,4 +15,10 @@ public class LogUtil {
         System.exit(0);
     }
 
+    public static void err(Exception  e){
+       // println(s);
+        e.printStackTrace();
+        System.exit(0);
+    }
+
 }

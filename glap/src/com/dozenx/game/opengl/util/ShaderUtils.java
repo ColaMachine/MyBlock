@@ -1,0 +1,1047 @@
+package com.dozenx.game.opengl.util;
+
+import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.model.ui.html.Image;
+import com.dozenx.game.font.FontUtil;
+import com.dozenx.game.font.Glyph;
+import com.dozenx.util.FileUtil;
+import com.sun.prism.ps.Shader;
+import glapp.GLApp;
+import glapp.GLImage;
+import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.Util;
+import org.lwjgl.util.glu.GLU;
+
+import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.HashMap;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+
+public class ShaderUtils {
+
+
+   public static void initShader(ShaderConfig shaderConfig){
+
+        try {
+            shaderConfig.setVertShaderId(CreateVertShaders(shaderConfig.getVertPath()));
+
+            shaderConfig.setFragShaderId(CreateFragShaders(shaderConfig.getFragPath()));
+
+            shaderConfig.setProgramId(CreateProgram(shaderConfig.getVertShaderId(),shaderConfig.getFragShaderId()));
+            initProModelView(shaderConfig);
+            //createCubeVao(shaderConfig,new Vao());
+
+        } catch (IOException e) {
+            LogUtil.println(shaderConfig.getVertPath()+ "load shader failed");
+            e.printStackTrace();
+            System.exit(0);
+
+        }
+    }
+
+    public static void init2dShader(ShaderConfig shaderConfig){
+
+        try {
+            shaderConfig.setVertShaderId(CreateVertShaders(shaderConfig.getVertPath()));
+
+            shaderConfig.setFragShaderId(CreateFragShaders(shaderConfig.getFragPath()));
+
+            shaderConfig.setProgramId(CreateProgram(shaderConfig.getVertShaderId(),shaderConfig.getFragShaderId()));
+            //initProModelView(shaderConfig);
+            //createCubeVao(shaderConfig,new Vao());
+
+        } catch (IOException e) {
+            LogUtil.println(shaderConfig.getVertPath()+ "load shader failed");
+            e.printStackTrace();
+            System.exit(0);
+
+        }
+    }
+
+
+    public static void initProModelView(ShaderConfig config){
+        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
+        GL_Matrix model2=GL_Matrix.multiply(model,GL_Matrix.translateMatrix(config.getPosition().x+2,config.getPosition().y,config.getPosition().z)) ;
+
+
+        model=GL_Matrix.multiply(model,GL_Matrix.translateMatrix(config.getPosition().x,config.getPosition().y,config.getPosition().z)) ;
+
+
+
+        config.setModel(model);
+        config.setModel2(model2);
+        GL_Matrix view= GL_Matrix.translateMatrix(0,0,0);
+        config.setView(view);
+
+        GL_Matrix projection= GL_Matrix.perspective3(45,600/600,1f,1000.0f);
+        config.setProjection(projection);
+
+        glUseProgram(config.getProgramId());
+        //unifrom赋值===========================================================
+        int projectionLoc= glGetUniformLocation(config.getProgramId(), "projection");
+        config.setProjLoc(projectionLoc);
+         OpenglUtils.checkGLError();
+        int modelLoc= glGetUniformLocation(config.getProgramId(), "model");
+        config.setModelLoc(modelLoc);
+         OpenglUtils.checkGLError();
+        int viewLoc= glGetUniformLocation(config.getProgramId(), "view");
+        config.setViewLoc(viewLoc);
+         OpenglUtils.checkGLError();
+        glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
+
+        // config.setModel(viewLoc);
+         OpenglUtils.checkGLError();
+        glUniformMatrix4(viewLoc,  false,view.toFloatBuffer() );
+         OpenglUtils.checkGLError();
+        glUniformMatrix4(projectionLoc,  false,projection.toFloatBuffer() );
+
+
+
+    }
+    public static void initObjectColor(ShaderConfig config ){
+        glUseProgram(config.getProgramId());
+        int objectColorLoc= glGetUniformLocation(config.getProgramId(), "objectColor");
+        config.setObejctColorLoc(objectColorLoc);
+        //float[] objectColorAry = new float[]{1,0.5f,0.31f,};
+        // FloatBuffer objectColorBbuffer = BufferUtils.createFloatBuffer(3);
+        // objectColorBbuffer.put(objectColorAry);objectColorBbuffer.rewind();
+        glUniform3f(objectColorLoc,1.0f,0.5f,0.31f);
+        // glUniformMatrix4(objectColorLoc, false, objectColorBbuffer);
+        OpenglUtils.checkGLError();
+    }
+    public static void initLightColor(ShaderConfig config ){
+        glUseProgram(config.getProgramId());
+        //环境光颜色
+
+        int lightColorLoc= glGetUniformLocation(config.getProgramId(), "lightColor");
+//        float[] lightColorAry = new float[]{1,1f,1f,};
+//        FloatBuffer lightColorBbuffer = BufferUtils.createFloatBuffer(3);
+//        lightColorBbuffer.put(lightColorAry);lightColorBbuffer.rewind();
+//        glUniformMatrix4(lightColorLoc,  false,lightColorBbuffer );
+        glUniform3f(lightColorLoc,1.0f,1f,1f);
+        OpenglUtils.checkGLError();
+        config.setLightColorLoc(lightColorLoc);
+
+
+    }
+    public static void createCubeVao(Vao vao){
+        //生成vaoid
+        if(vao.getVaoId()>0){
+            LogUtil.err("vao have been initialized");
+        }
+        vao.setVaoId( glGenVertexArrays());
+
+
+        OpenglUtils.checkGLError();
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        float width = 1;
+
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+        float VerticesArray[]= {
+
+                -width, -width, -width,  0.0f, 0.0f,
+                width, -width, -width,  1.0f, 0.0f,
+                width,  width, -width,  1.0f, 1.0f,
+                width,  width, -width,  1.0f, 1.0f,
+                -width,  width, -width,  0.0f, 1.0f,
+                -width, -width, -width,  0.0f, 0.0f,
+
+                -width, -width,  width,  0.0f, 0.0f,
+                width, -width,  width,  1.0f, 0.0f,
+                width,  width,  width,  1.0f, 1.0f,
+                width,  width,  width,  1.0f, 1.0f,
+                -width,  width,  width,  0.0f, 1.0f,
+                -width, -width,  width,  0.0f, 0.0f,
+
+                -width,  width,  width,  1.0f, 0.0f,
+                -width,  width, -width,  1.0f, 1.0f,
+                -width, -width, -width,  0.0f, 1.0f,
+                -width, -width, -width,  0.0f, 1.0f,
+                -width, -width,  width,  0.0f, 0.0f,
+                -width,  width,  width,  1.0f, 0.0f,
+
+                width,  width,  width,  1.0f, 0.0f,
+                width,  width, -width,  1.0f, 1.0f,
+                width, -width, -width,  0.0f, 1.0f,
+                width, -width, -width,  0.0f, 1.0f,
+                width, -width,  width,  0.0f, 0.0f,
+                width,  width,  width,  1.0f, 0.0f,
+
+                -width, -width, -width,  0.0f, 1.0f,
+                width, -width, -width,  1.0f, 1.0f,
+                width, -width,  width,  1.0f, 0.0f,
+                width, -width,  width,  1.0f, 0.0f,
+                -width, -width,  width,  0.0f, 0.0f,
+                -width, -width, -width,  0.0f, 1.0f,
+
+                -width,  width, -width,  0.0f, 1.0f,
+                width,  width, -width,  1.0f, 1.0f,
+                width,  width,  width,  1.0f, 0.0f,
+                width,  width,  width,  1.0f, 0.0f,
+                -width,  width,  width,  0.0f, 0.0f,
+                -width,  width, -width,  0.0f, 1.0f,
+        };
+
+
+
+         FloatBuffer Vertices ;
+
+        Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+        Vertices.put(VerticesArray);
+        Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
+        //config.setVertices(Vertices);
+        int vboId=glGenBuffers();//create vbo
+        //config.setVboId(vboId);
+
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * 4, 0);//0 1 2 决定了location 位置
+
+        OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+        vao.setPoints(VerticesArray.length/5);
+
+
+        OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+         OpenglUtils.checkGLError();
+
+        //glUseProgram(ProgramId);
+
+
+
+    }
+    public static int CreateProgram(String vertexPath,String fragPath)throws Exception {
+        int vertShaderId =CreateVertShaders(vertexPath);
+        int fragShaderId = CreateFragShaders(fragPath);
+        int programId = CreateProgram(vertShaderId,fragShaderId);
+        return programId;
+
+    }
+    public static void shaderBindTexture(ShaderConfig config,int texHandle){
+
+    }
+
+    public static int CreateProgram(int vertexShaderId, int fragmentShaderId){
+        int newProgramId = glCreateProgram();
+         OpenglUtils.checkGLError();
+
+        // Attach vertex shader
+        glAttachShader(newProgramId, vertexShaderId);
+         OpenglUtils.checkGLError();
+
+        // Attach fragment shader
+        glAttachShader(newProgramId, fragmentShaderId);
+         OpenglUtils.checkGLError();
+
+        // We tell the program how the vertex attribute indices will map
+        // to named "in" variables in the vertex shader. This must be done
+        // before compiling.
+        // glBindAttribLocation(ProgramId, POSITION_INDEX, "in_Position");
+        // glBindAttribLocation(ProgramId, COLOR_INDEX, "in_Color");
+
+        glLinkProgram(newProgramId);
+         OpenglUtils.checkGLError();
+
+        // Print possible compile errors
+        System.out.println("Program linking:");
+        printProgramLog(newProgramId);
+
+
+        //System.out.println("transformLoc:"+transformLoc);
+         OpenglUtils.checkGLError();
+        //glUseProgram(ProgramId);
+        //  OpenglUtils.checkGLError();
+        return newProgramId;
+
+
+    }
+
+    public static int  CreateVertShaders(String path) throws IOException {
+
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/"+path).toString());
+        //创建着色器
+        int  newShaderId = glCreateShader(GL_VERTEX_SHADER);
+         OpenglUtils.checkGLError();
+        //源码
+        glShaderSource(newShaderId, VertexShader);
+         OpenglUtils.checkGLError();
+        //编译
+        glCompileShader(newShaderId);
+         OpenglUtils.checkGLError();
+        //打印日志
+        printShaderLog(newShaderId);
+         OpenglUtils.checkGLError();
+        return newShaderId;
+    }
+    public static int CreateFragShaders(String path) throws IOException {
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/"+path).toString());
+
+        int newFragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+         OpenglUtils.checkGLError();
+
+        glShaderSource(newFragmentShaderId, FragmentShader);
+         OpenglUtils.checkGLError();
+
+        glCompileShader(newFragmentShaderId);
+         OpenglUtils.checkGLError();
+
+        // Print possible compile errors
+        System.out.println("Fragment shader compilation:");
+        printShaderLog(newFragmentShaderId);
+        return newFragmentShaderId;
+
+    }
+
+    public static String readShaderSourceCode(String filePath) throws IOException {
+        return  FileUtil.readFile2Str(filePath);
+
+
+    }
+    /**
+     * Print log of shader object.
+     *
+     * @param id
+     */
+    public static void printShaderLog(int id) {
+        int logLength = glGetShader(id, GL_INFO_LOG_LENGTH);
+         OpenglUtils.checkGLError();
+
+        System.out.println("  Log (length " + logLength + " chars)");
+        String log = glGetShaderInfoLog(id, logLength);
+         OpenglUtils.checkGLError();
+        for (String line : log.split("\n")) {
+            System.out.println("  " + line);
+        }
+        System.out.println("");
+    }
+
+    /**
+     * Print log of program object
+     *
+     * @param programId
+     */
+    public static void printProgramLog(int programId) {
+        int logLength = glGetProgram(programId, GL_INFO_LOG_LENGTH);
+         OpenglUtils.checkGLError();
+
+        System.out.println("  Log (length " + logLength + " chars)");
+        String log = glGetProgramInfoLog(programId, logLength);
+         OpenglUtils.checkGLError();
+        for (String line : log.split("\n")) {
+            System.out.println("  " + line);
+        }
+        System.out.println("");
+    }
+
+    public static int createVAO(FloatBuffer floatBuffer){floatBuffer.flip();
+        int lightVaoId = glGenVertexArrays();
+         OpenglUtils.checkGLError();
+
+        glBindVertexArray(lightVaoId);
+         OpenglUtils.checkGLError();
+
+        CreateLightVBO(floatBuffer);
+        glBindVertexArray(0);
+         OpenglUtils.checkGLError();
+        return lightVaoId;
+    }
+    public static void CreateLightVBO(FloatBuffer Vertices){
+        glBufferData(GL_ARRAY_BUFFER, Vertices, GL15.GL_STATIC_DRAW);//put data
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8* 4, 0);
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+         OpenglUtils.checkGLError();
+    }
+
+
+    public static void drawCubeWithShader(ShaderConfig config,Vao vao){
+
+        glUseProgram(config.getProgramId());
+         OpenglUtils.checkGLError();
+
+        glBindVertexArray(vao.getVaoId());
+         OpenglUtils.checkGLError();
+        glDrawArrays(GL_TRIANGLES,0,vao.getPoints());
+         OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+         OpenglUtils.checkGLError();
+
+
+
+    }
+
+    public static void checkGLError() {
+        try{
+             OpenglUtils.checkGLError();
+        }catch (Exception e ){
+            e.printStackTrace();
+            //LogUtil.println(e.getMessage());
+            //throw e;
+        }
+    }
+
+    public static ShaderConfig shaderImageConfig ;
+    public static int image2DShaderProgram;
+
+    /*public static void init2dImageShaderProgram(ShaderConfig config){
+        try {
+            config.setVertShaderId(CreateVertShaders(config.getVertPath()));
+
+            config.setFragShaderId(CreateFragShaders(config.getFragPath()));
+
+            config.setProgramId(CreateProgram(config.getVertShaderId(),config.getFragShaderId()));
+
+          //  create2dimageVao(config);
+
+        } catch (IOException e) {
+            LogUtil.println(config.getVertPath()+ "load shader failed");
+            e.printStackTrace();
+            System.exit(0);
+
+        }
+
+    }*/
+
+
+
+    public static ShaderConfig get2DImageShaderConfig(){
+         if(shaderImageConfig==null ){
+            shaderImageConfig =new ShaderConfig();
+            shaderImageConfig.setVertPath("chapt7/2dimg.vert");
+            shaderImageConfig.setFragPath("chapt7/2dimg.frag");
+            init2dShader(shaderImageConfig);
+
+        }
+        return shaderImageConfig;
+    }
+    static ShaderConfig d2ColorShaderConfig =null;
+    public static ShaderConfig get2DColorShaderConfig(){
+        if(d2ColorShaderConfig==null ){
+            d2ColorShaderConfig =new ShaderConfig();
+            d2ColorShaderConfig.setVertPath("chapt7/2dcolor.vert");
+            d2ColorShaderConfig.setFragPath("chapt7/2dcolor.frag");
+            init2dShader(d2ColorShaderConfig);
+            //initObjectColor(d2ColorShaderConfig);
+        }
+        return d2ColorShaderConfig;
+    }
+
+    public static ShaderConfig getBorderShaderConfig(){
+        if(d2ColorShaderConfig==null ){
+            d2ColorShaderConfig =new ShaderConfig();
+            d2ColorShaderConfig.setVertPath("chapt7/2dcolor.vert");
+            d2ColorShaderConfig.setFragPath("chapt7/2dcolor.frag");
+            init2dShader(d2ColorShaderConfig);
+            initObjectColor(d2ColorShaderConfig);
+        }
+        return d2ColorShaderConfig;
+    }
+    /*
+     * use shader to draw image
+     */
+    public static void draw2DImageWithShader(ShaderConfig config,Vao vao) {
+        /*if(shaderImageConfig==null ){
+            shaderImageConfig =new ShaderConfig();
+            shaderImageConfig.setVertPath("chapt7/chapt7.vert");
+            shaderImageConfig.setFragPath("chapt7/chapt7.frag");
+            initShader(shaderImageConfig);
+
+        }*/
+       // renderImageShader(shaderImageConfig);
+        /*if(image2DShaderProgram==0 ){
+            createImage2DShaderProgram();
+        }*/
+
+try {
+    glUseProgram(config.getProgramId());
+    ShaderUtils.checkGLError();
+    // glUniform4f(0, 0.0f, greenValue, 0.0f, 1.0f);
+    //glBindTexture(GL_TEXTURE_2D, config.getTextureHanle());
+    glBindVertexArray(vao.getVaoId());
+    ShaderUtils.checkGLError();
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    ShaderUtils.checkGLError();
+    glBindVertexArray(0);
+    ShaderUtils.checkGLError();
+    ShaderUtils.checkGLError();
+}catch(Exception e){
+    e.printStackTrace();
+    LogUtil.err(e);
+}
+
+    }
+
+    public static void draw2DColorWithShader(Vector4f backgroundColor,ShaderConfig shaderConfig ,Vao vao) {
+        glUseProgram(ShaderUtils.get2DColorShaderConfig().getProgramId());
+        glUniform3f(shaderConfig.getObejctColorLoc(),  backgroundColor.x,backgroundColor.y,backgroundColor.z);
+        glBindVertexArray(vao.getVaoId());
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        glBindVertexArray(0);
+
+         OpenglUtils.checkGLError();
+
+    }
+
+    public static void finalDraw2DColor(){
+        ShaderConfig config = ShaderUtils.get2DColorShaderConfig();
+       // ShaderUtils.get2dcolor
+        glUseProgram(ShaderUtils.get2DColorShaderConfig().getProgramId());
+        OpenglUtils.checkGLError();
+       // glUniform3f(shaderConfig.getObejctColorLoc(), backgroundColor.x, backgroundColor.y, backgroundColor.z);
+       // OpenglUtils.checkGLError();
+        glBindVertexArray(get2dColorVao().getVaoId());
+        OpenglUtils.checkGLError();
+        glDrawArrays(GL_TRIANGLES,0, twodColorVao.getPoints());
+        OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+    }
+
+    public static void drawBorderWithShader(Vector4f backgroundColor,ShaderConfig shaderConfig ,Vao vao) {
+        glUseProgram(ShaderUtils.get2DColorShaderConfig().getProgramId());
+        OpenglUtils.checkGLError();
+        glUniform3f(shaderConfig.getObejctColorLoc(), backgroundColor.x, backgroundColor.y, backgroundColor.z);
+        OpenglUtils.checkGLError();
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+        OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+
+
+    }
+
+    /*public static void createImage2DShaderProgram(){
+        try {
+            image2DShaderProgram = OpenglUtils.CreateProgram("twodimg/twodimg.vert", "twodimg/twodimg.frag");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }*/
+   /* public void drawLine() {
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glLineWidth(12f);
+        GL11.glColor3f(1f, 1f, 1f);
+        GL11.glBegin(GL11.GL_LINES); // draw triangles
+        GL11.glVertex3f(lineStart.x, lineStart.y,
+                lineStart.z); // A1-A2
+        GL11.glVertex3f(mouseEnd.x, mouseEnd.y, mouseEnd.z);
+        GL11.glEnd();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+    }*/
+
+    public static void create2dimageVao(Vao vao,float left,float top,float width,float height){
+        //生成vaoid
+        //create vao
+        if(vao.getVaoId()>0){
+
+            //glBindVertexArray(vao.getVaoId());
+           // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+             OpenglUtils.checkGLError();
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+            int eboId = glGenBuffers();
+            vao.setEboId(eboId);
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+         OpenglUtils.checkGLError();
+
+        //create vbo
+
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+        left= left/800-1f;
+        top=top/600+1f;
+        float right=left+width/800;
+        float bottom=top-height/600;
+        float VerticesArray[]= {left, top, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top Right
+                left,bottom, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
+                right, bottom, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
+                right, top, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
+        };
+
+
+       FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+        Vertices.put(VerticesArray);
+        Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
+
+        vao.setVertices(Vertices);
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+
+        //create ebo
+
+
+       // float width = 1;
+
+
+        int[] indices={
+                0,1,3,
+                1,2,3
+        };
+        IntBuffer Indices = BufferUtils.createIntBuffer(indices.length);
+        Indices.put(indices);
+        Indices.rewind();
+
+
+         OpenglUtils.checkGLError();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vao.getEboId());
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,Indices,GL_STATIC_DRAW);
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * 4, 0);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+
+        //颜色
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * 4, 3 * 4);
+
+         OpenglUtils.checkGLError();
+        //
+        glEnableVertexAttribArray(1);
+        //纹理位置
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, 8* 4, 6*4);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(2);
+
+         OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+         OpenglUtils.checkGLError();
+
+    }
+
+    public static void createFinal2dimageVao(Vao vao){
+        //生成vaoid
+        //create vao
+        if(vao.getVaoId()>0){
+
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+             OpenglUtils.checkGLError();
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+         OpenglUtils.checkGLError();
+
+        //create vbo
+
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+
+        vao.setPoints(twoDImgBuffer.position());
+       twoDImgBuffer.rewind();
+
+        vao.setVertices(twoDImgBuffer);
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, twoDImgBuffer, GL_STATIC_DRAW);//put data
+
+        //create ebo
+
+
+        // float width = 1;
+
+
+
+
+
+         OpenglUtils.checkGLError();
+
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * 4, 0);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+
+        //颜色
+
+        //纹理位置
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, 8* 4, 6*4);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(1);
+
+         OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+         OpenglUtils.checkGLError();
+
+    }
+
+
+    public static void getFinal2dColorVao(Vao vao){
+        //生成vaoid
+        //create vao
+        if(vao.getVaoId()>0){
+
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+             OpenglUtils.checkGLError();
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+         OpenglUtils.checkGLError();
+
+        //create vbo
+
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+
+        vao.setPoints(twoDColorBuffer.position());
+        twoDColorBuffer.rewind();
+
+        vao.setVertices(twoDColorBuffer);
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, twoDColorBuffer, GL_STATIC_DRAW);//put data
+
+        //create ebo
+
+
+        // float width = 1;
+
+
+
+
+
+         OpenglUtils.checkGLError();
+
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+
+        //颜色
+
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 6* 4, 3*4);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(1);
+
+         OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+         OpenglUtils.checkGLError();
+
+    }
+
+
+    public static void createBorderVao(Vao vao,float left,float top,float width,float height){
+        //生成vaoid
+        //create vao
+        if(vao.getVaoId()>0){
+
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+             OpenglUtils.checkGLError();
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+            int eboId = glGenBuffers();
+            vao.setEboId(eboId);
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+         OpenglUtils.checkGLError();
+
+        //create vbo
+
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+        left= left/800-1f;
+        top=top/600+1f;
+        float right=left+width/800;
+        float bottom=top-height/600;
+        float VerticesArray[]= {left, top, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top Right
+                left,bottom, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Bottom Right
+                right, bottom, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
+                right, top, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
+        };
+
+
+        FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+        Vertices.put(VerticesArray);
+        Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
+
+        vao.setVertices(Vertices);
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+
+        //create ebo
+
+
+        // float width = 1;
+
+
+        int[] indices={
+                0,1,1,2,2,3,3,0
+
+        };
+/*
+        int[] indices={
+                0,1,3,
+                1,2,3
+        };*/
+        IntBuffer Indices = BufferUtils.createIntBuffer(indices.length);
+        Indices.put(indices);
+        Indices.rewind();
+
+
+         OpenglUtils.checkGLError();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vao.getEboId());
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,Indices,GL_STATIC_DRAW);
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * 4, 0);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+
+        //颜色
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * 4, 3 * 4);
+
+         OpenglUtils.checkGLError();
+        //
+        glEnableVertexAttribArray(1);
+        //纹理位置
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, 8* 4, 6*4);
+
+         OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(2);
+
+         OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+         OpenglUtils.checkGLError();
+
+    }
+
+
+    public static void createFinalBorderVao(Vao vao){
+        //生成vaoid
+        //create vao
+        if(vao.getVaoId()>0){
+
+
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+             OpenglUtils.checkGLError();
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+         OpenglUtils.checkGLError();
+
+        //create vbo
+
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+        int points = twoDBorderBuffer.position();
+        vao.setPoints(twoDImgBuffer.position());
+        twoDBorderBuffer.rewind();
+
+        vao.setVertices(twoDBorderBuffer);
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, twoDBorderBuffer, GL_STATIC_DRAW);//put data
+
+
+
+
+
+        OpenglUtils.checkGLError();
+
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
+
+        OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+
+        //颜色
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * 4, 3 * 4);
+
+        OpenglUtils.checkGLError();
+        //
+        glEnableVertexAttribArray(1);
+        //纹理位置
+
+
+         OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+
+    }
+
+
+
+    public static FloatBuffer twoDImgBuffer =BufferUtils.createFloatBuffer(10240);
+    public static FloatBuffer twoDBorderBuffer = BufferUtils.createFloatBuffer(10240);
+    public static FloatBuffer twoDColorBuffer = BufferUtils.createFloatBuffer(10240);
+
+    public static void draw2dImage(Image image, int posX, int posY, int width, int height) {
+
+        float left = posX/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- posY)/Constants.WINDOW_HEIGHT*2-1f;
+        TextureInfo ti = image.getTexture();
+        GL_Vector p1 = new GL_Vector(left,top-height,0);
+        GL_Vector p2 = new GL_Vector(left+width,top-height,0);
+        GL_Vector p3 = new GL_Vector(left+width,top,0);
+        GL_Vector p4 = new GL_Vector(left,top,0);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(ti.textureHandle);
+        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(ti.textureHandle);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(ti.textureHandle);
+        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(ti.textureHandle);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(ti.textureHandle);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(ti.textureHandle);
+    }
+
+    public static void draw2dColor(Vector4f color, int posX, int posY, int width, int height) {
+
+        float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
+        float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
+        float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
+        GL_Vector p1 = new GL_Vector(left,top-_height*2,0);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,0);
+        GL_Vector p3 = new GL_Vector(left+_width,top,0);
+        GL_Vector p4 = new GL_Vector(left,top,0);
+        twoDColorBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+    }
+
+    public static void draw2dBorder(Vector4f color, int posX, int posY, int width, int height) {
+
+
+        float left = posX/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- posY)/Constants.WINDOW_HEIGHT*2-1f;
+
+
+        GL_Vector p1 = new GL_Vector(left,top-height,0);
+        GL_Vector p2 = new GL_Vector(left+width,top-height,0);
+        GL_Vector p3 = new GL_Vector(left+width,top,0);
+        GL_Vector p4 = new GL_Vector(left,top,0);
+        twoDBorderBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        twoDBorderBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
+        twoDBorderBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
+        twoDBorderBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+        twoDBorderBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+        twoDBorderBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
+        twoDBorderBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
+        twoDBorderBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+    }
+    public static HashMap<Character,Glyph> glyphMap = null;
+    public static HashMap<Character,Glyph> getGlyMap(){
+        if(glyphMap==null){
+            glyphMap= FontUtil.readGlyph();
+        }
+        return glyphMap;
+    }
+    public static void printText(String s, int innerX, int innerY, float fontSize) {
+
+
+    }
+
+    /*public static void drawLine(Vector4f color,int startX,int startY,int endX,int endY) {
+
+        float startXF = startX/Constants.WINDOW_WIDTH*2-1f;
+
+        float startYF = (Constants.WINDOW_HEIGHT- startY)/Constants.WINDOW_HEIGHT*2-1f;
+
+        float endXF = endX/Constants.WINDOW_WIDTH*2-1f;
+
+        float endYF = (Constants.WINDOW_HEIGHT- endY)/Constants.WINDOW_HEIGHT*2-1f;
+
+
+        GL_Vector p1 = new GL_Vector(startXF,startYF,0);
+        GL_Vector p2 = new GL_Vector(startXF,startYF+width,0);
+        GL_Vector p3 = new GL_Vector(endXF,endYF+width,0);
+        GL_Vector p4 = new GL_Vector(endXF,endYF,0);
+        twoDColorBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        twoDColorBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+    }*/
+ public static  Vao twodColorVao;
+    public static Vao get2dColorVao(){
+            if(twodColorVao==null){
+                twodColorVao= new Vao();
+                getFinal2dColorVao(twodColorVao);
+            }
+        return twodColorVao;
+    }
+}

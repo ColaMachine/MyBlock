@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import glapp.GLApp;
 import glapp.GLImage;
@@ -48,15 +49,15 @@ public class newOpenglShaderTest extends  FatherLeanr{
         cubeConfig.setPosition(new Vector3f(0,0,-3));
         cubeConfig.setVertPath(vertPath);
         cubeConfig.setFragPath(fragPath);
-        OpenglUtils.initShader(cubeConfig);
+        ShaderUtils.initShader(cubeConfig);
 
         config2 =new ShaderConfig();
         config2.setPosition(new Vector3f(0,3,0));
         config2.setVertPath(vertPath);
         config2.setFragPath(fragPath);
-        OpenglUtils.initShader(config2);
-        OpenglUtils.initObjectColor(cubeConfig);
-        OpenglUtils.initLightColor(cubeConfig);
+        ShaderUtils.initShader(config2);
+        ShaderUtils.initObjectColor(cubeConfig);
+        ShaderUtils.initLightColor(cubeConfig);
 
         squareConfig = new ShaderConfig();
 //        imageConfig.setMinX(-0.5f);
@@ -69,13 +70,13 @@ public class newOpenglShaderTest extends  FatherLeanr{
        // squareConfig.setTextureHanle(image.textureHandle);
         squareConfig.setVertPath("chapt7/chapt7.vert");
         squareConfig.setFragPath("chapt7/chapt7.frag");
-        OpenglUtils.initShader(squareConfig);
+        ShaderUtils.initShader(squareConfig);
 
         cubeVao =new Vao();
-        OpenglUtils.createCubeVao(cubeVao);
+        ShaderUtils.createCubeVao(cubeVao);
 
         squareVao =new Vao();
-        OpenglUtils.create2dimageVao(squareVao,-0.5f,-0.5f,0.5f,0.5f);
+        ShaderUtils.create2dimageVao(squareVao,-0.5f,-0.5f,0.5f,0.5f);
 
     }
 
@@ -112,9 +113,9 @@ public class newOpenglShaderTest extends  FatherLeanr{
 
 
 //
-     OpenglUtils.drawCubeWithShader(cubeConfig,this.cubeVao);
+        ShaderUtils.drawCubeWithShader(cubeConfig,this.cubeVao);
 
-        OpenglUtils.draw2DImageWithShader(squareConfig,this.squareVao);
+        ShaderUtils.draw2DImageWithShader(squareConfig,this.squareVao);
 //        OpenglUtils.drawCubeWithShader(config2);
     }
     public void cameraPosChangeListener(GL_Vector cameraPos){

@@ -28,7 +28,7 @@ public class PauseMouseEventReceiver implements MouseEventReceiver{
 
     }
     public void mouseClick(float x,float y,HtmlObject htmlObject){
-        if(!"none".equals(htmlObject.display)){//Keyboard.isKeyDown(0)
+        if(htmlObject.isVisible()){//Keyboard.isKeyDown(0)
         	//if this has item  and mouse hasn't then current choose this item
             Tr tr = (Tr)htmlObject.parentNode;
             if(tr.rowIndex==1){

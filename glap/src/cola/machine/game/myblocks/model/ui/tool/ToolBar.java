@@ -1,8 +1,10 @@
 package cola.machine.game.myblocks.model.ui.tool;
 
 import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
 
 import cola.machine.game.myblocks.model.human.Human;
+import cola.machine.game.myblocks.model.ui.html.*;
 import glapp.GLApp;
 
 import org.lwjgl.opengl.GL11;
@@ -13,11 +15,6 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
-import cola.machine.game.myblocks.model.ui.html.Div;
-import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.model.ui.html.Table;
-import cola.machine.game.myblocks.model.ui.html.Td;
-import cola.machine.game.myblocks.model.ui.html.Tr;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 public class ToolBar extends RegionArea {
@@ -29,26 +26,26 @@ public class ToolBar extends RegionArea {
 	Div select_div;
 	public ToolBar() {
 		 div=new Div();
-		 div.id="toolbar";
-		 div.left=200;
-		 div.bottom=0;
-		 div.width=362;
-		 div.height=43;
+		 div.setId("toolbar");
+		 /*div.left=200;
+		 div.top=0;*/
+		 div.setWidth(362);
+		 div.setHeight(43);
 		 
 		Document.appendChild(div);
-		 div.background_image="toolbar";
+		 div.setBackgroundImage(new Image(TextureManager.getTextureInfo("toolbar")));
 		 select_div=new Div();
-		 select_div.id="selectBox";
-		 select_div.background_image="selectBox";
-		 select_div.width=40;
-		 select_div.border_color=new Vector3f(0,0,0);
-		 select_div.border_width=1;
-		 select_div.height=40;
+		 select_div.setId("selectBox");
+		 select_div.setBackgroundImage(new Image(TextureManager.getTextureInfo("selectBox")));
+		 select_div.setWidth(40);
+		 select_div.setBorderColor(new Vector4f(0,0,0,0));
+		 select_div.setBorderWidth(1);
+		 select_div.setHeight(40);
 		 
 		 {
-	            Table table =new Table();table.id="toolbar_table";
-	            table.border_color=new Vector3f(0,0,0);
-	            table.border_width=1;
+	            Table table =new Table();table.setId("toolbar_table");
+	            table.setBorderColor(new Vector4f(0,0,0,0));
+	            table.setBorderWidth(1);
 //	            table.left=0;
 //	            table.bottom=0;table.width=365;
 //	            table.height=43;
@@ -56,16 +53,16 @@ public class ToolBar extends RegionArea {
 	            table.cellspacing=10;
 	            table.cellpadding=7;
 	            for(int i=0;i<1;i++){
-	                Tr tr =new Tr();tr.id="toolbar_table_tr_"+i;
+	                Tr tr =new Tr();tr.setId("toolbar_table_tr_"+i);
 	                table.addRow(tr);
 	                for(int j=0;j<9;j++){
 	                    Td td=new Td();
 	                  
-	                    td.border_width=1;
-	                    td.border_color=new Vector3f(0,0,0);
+	                    td.setBorderWidth(1);
+	                    td.setBorderColor(new Vector4f(0,0,0,0));
 	                    tr.addCell(td);
-	                    td.id="toolbar_"+tr.rowIndex+"_"+td.columnIndex;
-	                    System.out.println(td.id);
+	                    td.setId("toolbar_"+tr.rowIndex+"_"+td.columnIndex);
+	                    System.out.println(td.getId());
 	                    //Div container=new Div();
 	                    // td.a
 	                }
@@ -247,7 +244,7 @@ public class ToolBar extends RegionArea {
 			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[selectedIndex].item.name;
            // CoreRegistry.get(Human.class).item=slots[selectedIndex].item;
         }
-		select_div.left=(div.maxX-div.minX )*selectedIndex/9;
+		select_div.setLeft(div.getWidth()*selectedIndex/9);
 		select_div.refresh();
 		//Document.getElementById("toolbar_0_"+selectedIndex).background_image="selectBox";
 		

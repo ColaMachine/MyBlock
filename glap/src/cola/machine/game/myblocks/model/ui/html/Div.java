@@ -7,17 +7,19 @@ public class Div extends HtmlObject{
 
     public void refresh(){
     	//System.out.println("DIV id:"+id);
-        if(this.width==0){
-            this.minX=this.parentNode.minX;
+        if(this.getWidth()==0){
+           /* this.minX=this.parentNode.minX;
             this.minY=this.parentNode.minY;
             this.maxX=this.parentNode.maxX;
-            this.maxY=this.parentNode.maxY;
+            this.maxY=this.parentNode.maxY;*/
+            //this.reSize();
+
         }else{
-            super.refresh();
+            super.update();
         }
 
         for(int i=0;i<this.childNodes.size();i++){
-            this.childNodes.get(i).refresh();
+            this.childNodes.get(i).update();
         }
     }
 }

@@ -13,6 +13,8 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
     public static String readFile2Str(String path) throws IOException {
@@ -90,5 +92,19 @@ try {
 }catch(Exception e){
     e.printStackTrace();
 }
+    }
+
+    public static List<String > readFile2List(String path) throws IOException {
+        File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        List<String> lines =new ArrayList();
+        String s ;
+        // StringBuffer templateStr = new StringBuffer();
+        while ((s = br.readLine()) != null) {
+            lines.add(s);
+            // templateStr.append(s + "\r\n");
+        }
+        return lines;
     }
 }

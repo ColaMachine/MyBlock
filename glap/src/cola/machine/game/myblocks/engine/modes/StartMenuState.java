@@ -15,6 +15,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.NuiManager;
+import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.network.Client;
@@ -37,6 +38,7 @@ import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
@@ -57,6 +59,7 @@ import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
 
 import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
@@ -67,29 +70,31 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class StartMenuState implements GameState {
-
+    //Bag bag;
     public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
     GUI gui;
+
     Div div =new Div();
     public void init(GameEngine engine) {
         TextureManager textureManager =new TextureManager();
         div=new Div();
-        div.id="bag";
-        Document.appendChild(div);
-        div.margin="0 auto";
-        div.width=400;
-        div.height=300;
-        div.left=100;
-        div.bottom=100;
-        div.border_width=1;
-        div.background_image="soil";
-        TextureInfo batTexture= TextureManager.getTextureInfo("soil");
-        div.width=batTexture.owidth;
-        div.height=batTexture.oheight;
+        // bag =new Bag();
 
-        div.border_color=new Vector3f(0,0,0);
-        div.refresh();
+        div.setId("bag");
+        Document.appendChild(div);
+        //div.margin="0 auto";
+        div.setWidth(400);
+        div.setHeight(300);
+        div.setLeft(0);
+        div.setTop(0);
+        //div.bottom=100;
+        div.setBorderWidth(1);
+        //div.background_image="soil";
+        //TextureInfo batTexture= TextureManager.getTextureInfo("soil");
+       // div.set(new Vector4f(1,0.5f,0.5f,1));
+        div.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
+        div.update();
         try {
 
 
@@ -100,10 +105,11 @@ public class StartMenuState implements GameState {
             //GameUIDemo gameUI = new GameUIDemo();
             LoginDemo loginDemo = new LoginDemo();
             gui = new GUI(loginDemo, renderer);
-
-                    ThemeManager theme = ThemeManager.createThemeManager(
-                    LoginDemo.class.getResource("login.xml"), renderer);
-            gui.applyTheme(theme);
+if(!Switcher.SHADER_ENABLE) {
+    ThemeManager theme = ThemeManager.createThemeManager(
+            LoginDemo.class.getResource("login.xml"), renderer);
+    gui.applyTheme(theme);
+}
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,20 +167,22 @@ public class StartMenuState implements GameState {
     public void render() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        ShaderUtils.twoDColorBuffer.rewind();
         try {
-            Thread.sleep(500);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        //bag.shaderRender();
         //glUseProgram(0);
-        div.shaderRender();
+       div.shaderRender();
 
       // gui.update();
         //OpenglUtils.drawRect();
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);
+
+        ShaderUtils.finalDraw2DColor();
     }
 
     @Override

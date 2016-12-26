@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.input;
 
+import cola.machine.game.myblocks.manager.TextureManager;
 import org.lwjgl.input.Keyboard;
 
 import cola.machine.game.myblocks.item.Item;
@@ -40,11 +41,11 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
                     Document.getElementById("bag").appendChild(temp);
             		Document.var("currentchoose", htmlObject.childNodes.get(0));
                     htmlObject.childNodes.clear();
-                    temp.width=temp.maxX-temp.minX;
-                    temp.height=temp.maxY-temp.minY;
-                    temp.left=temp.minX;
-                    temp.bottom=temp.minY;
-                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).background_image=null;
+                    temp.setWidth(temp.getWidth());
+                    temp.setHeight(temp.getHeight());
+                    /*temp.setPosX();
+                    temp.top=temp.minY;*/
+                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(null);
                     
             	}
         	}else 
@@ -63,7 +64,7 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
                     
                     bag.item=bag.slots[soltIndex].item;
                     bag.slots[soltIndex].item=item;
-                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).background_image=item.name;
+                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(new Image(TextureManager.getTextureInfo(item.name)));
                     
             	}else{
             		//put item in slot
@@ -72,10 +73,10 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
                     temp.parentNode.removeChild(temp);
         			htmlObject.appendChild(temp);
             		Document.var("currentchoose",null);
-                    temp.width=0;
-                    temp.height=0;
-                    temp.left=0;
-                    temp.bottom=0;
+                    temp.setWidth(0);
+                    temp.setHeight(0);
+                    temp.setLeft(0);
+                    temp.setTop(0);
                     
                 	int columnId=((Td)htmlObject).columnIndex;
                     int rowIndex=((Tr)htmlObject.parentNode).rowIndex;
@@ -84,12 +85,12 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
                     
                    
                     bag.slots[soltIndex].item=bag.item;
-                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).background_image=bag.item.name;
+                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(new Image(TextureManager.getTextureInfo(bag.item.name)));
                     
                     bag.item=null;
                     
             	}
-                Document.getElementById("bag").refresh();
+                Document.getElementById("bag").update();
         	}
         }
     }

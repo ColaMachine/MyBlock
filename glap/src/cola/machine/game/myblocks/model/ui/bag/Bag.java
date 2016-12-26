@@ -17,6 +17,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
 
 /**
  * Created by luying on 14-8-29.
@@ -28,7 +29,7 @@ public class Bag extends RegionArea  {
     public ToolBarSlop[] toolBarSlots = new ToolBarSlop[10];//toobar slot
     RegionArea slotsRegion=new RegionArea();
     public int humanTextureHandle;
-    public int earthHandle;
+   // public int earthHandle;
     public float slotsWidth=458;
     public float slotsHeight=130;
     public float slotWidth;
@@ -51,28 +52,29 @@ Div div;
     	BagMouseEventReceiver mouseEventReceiver=new BagMouseEventReceiver();
     	mouseEventReceiver.bag=this;
         div=new Div();
-        div.id="bag";
+        div.setId("bag");
         Document.appendChild(div);
-        div.margin="0 auto";
-        div.width=400;
-        div.height=300;
-        div.left=100;
-        div.bottom=100;
-        div.border_width=1;
-        div.background_image="bag";
+        //div.margin="0 auto";
+        div.setWidth(400);
+        div.setHeight(300);
+        div.setLeft(100);
+        div.setTop(100);
+        div.setBorderWidth(1);
+       // div.background_image="bag";
         TextureInfo batTexture= TextureManager.getTextureInfo("bag");
-        div.width=batTexture.owidth;
-        div.height=batTexture.oheight;
+        div.setWidth((int)batTexture.owidth);
+        div.setHeight((int)batTexture.oheight);
 
-        div.border_color=new Vector3f(0,0,0);
+        div.setBorderColor(new Vector4f(0,0,0,0));
         //toolbar
         {
             Table table =new Table();
-            table.border_color=new Vector3f(0,0,0);
-            table.border_width=1;
-            table.left=14;
-            table.bottom=14;table.width=325;
-            table.height=39;
+            table.setBorderColor(new Vector4f(0,0,0,0));
+            table.setBorderWidth(1);
+            div.setLeft(14);
+            div.setTop(14);
+           table.setWidth(325);
+            table.setHeight(39);
             div.appendChild(table);
             table.cellspacing=5;
             table.cellpadding=5;
@@ -81,9 +83,9 @@ Div div;
                 table.addRow(tr);
                 for(int j=0;j<9;j++){
                     Td td=new Td();
-                    td.id="bag_toolbar_"+tr.rowIndex+"_"+td.columnIndex;
-                    td.border_width=1;
-                    td.border_color=new Vector3f(0,0,0);
+                    td.setId("bag_toolbar_"+tr.rowIndex+"_"+td.columnIndex);
+                    td.setBorderWidth(1);
+                    td.setBorderColor(new Vector4f(0,0,0,0));
                     td.mouseEventReceiver=toobarEventreceiver;
                     tr.addCell(td);
                     //Div container=new Div();
@@ -95,22 +97,26 @@ Div div;
 
         {
             Table table =new Table();
-            table.border_color=new Vector3f(0,0,0);
-            table.border_width=1;
-            table.left=14;
-            table.bottom=60;table.width=325;
-            table.height=111;
+            table.name="bag";
+            table.setBorderColor(new Vector4f(0,0,0,0));
+            table.setBorderWidth(1);
+            table.setLeft(14);
+            table.setTop(60);
+            table.setWidth(325);
+            table.setHeight(111);
             div.appendChild(table);
             table.cellspacing=5;
             table.cellpadding=5;
             for(int i=0;i<3;i++){
                 Tr tr =new Tr();
+                tr.name="bag_tr"+i;
                 table.addRow(tr);
                 for(int j=0;j<9;j++){
                     Td td=new Td();
+                    td. name="bag_tr"+i+"td"+j;
                     td.mouseEventReceiver=mouseEventReceiver;
-                    td.border_width=1;
-                    td.border_color=new Vector3f(0,0,0);
+                    td.setBorderWidth(1);
+                    td.setBorderColor(new Vector4f(0,0,0,0));
                     tr.addCell(td);
                     td.id="bag_"+tr.rowIndex+"_"+td.columnIndex;
                     System.out.println(td.id);
@@ -122,22 +128,25 @@ Div div;
         //workspace
         {
             Table table =new Table();
-            table.border_color=new Vector3f(0,0,0);
-            table.border_width=1;
-            table.left=175;
-            table.bottom=213;table.width=72;
-            table.height=72;
+            table.name="workspace";
+            table.borderColor=new Vector4f(0,0,0,0);
+            table.setBorderWidth(1);
+            table.setLeft(175);
+            table.setTop(213);
+            table.setWidth(72);
+            table.setHeight(72);
             div.appendChild(table);
             table.cellspacing=5;
             table.cellpadding=5;
             for(int i=0;i<2;i++){
                 Tr tr =new Tr();
+                tr.name="work_tr"+i;
                 table.addRow(tr);
                 for(int j=0;j<2;j++){
                     Td td=new Td();
-
-                    td.border_width=1;
-                    td.border_color=new Vector3f(0,0,0);
+td.name="work_tr"+i+"td"+j;
+                    td.setBorderWidth(1);
+                    td.setBorderColor(new Vector4f(0,0,0,0));
                     tr.addCell(td);
                     td.mouseEventReceiver=mouseEventReceiver;
                     //Div container=new Div();
@@ -148,11 +157,12 @@ Div div;
         ////workspace2
         {
             Table table =new Table();
-            table.border_color=new Vector3f(0,0,0);
-            table.border_width=1;
-            table.left=287;
-            table.bottom=227;table.width=38;
-            table.height=38;
+            table.setBorderColor(new Vector4f(0,0,0,0));
+            table.setBorderWidth(1);
+            table.setLeft(287);
+            table.setTop(227);
+            table.setWidth(38);
+            table.setHeight(38);
             div.appendChild(table);
             table.cellspacing=5;
             table.cellpadding=5;
@@ -162,8 +172,8 @@ Div div;
                 for(int j=0;j<1;j++){
                     Td td=new Td();
 
-                    td.border_width=1;
-                    td.border_color=new Vector3f(0,0,0);
+                    td.setBorderWidth(1);
+                    td.setBorderColor(new Vector4f(0,0,0,0));
                     td.mouseEventReceiver=mouseEventReceiver;
                     tr.addCell(td);
                     //Div container=new Div();
@@ -174,12 +184,12 @@ Div div;
 //person view
         {
              personDiv=new Div();
-            personDiv.left=50;
-            personDiv.bottom=176;
-            personDiv.width=108;
-            personDiv.height=144;
-            personDiv.border_color=new Vector3f(0,0,0);
-            personDiv.border_width=1;
+            personDiv.setLeft(50);
+            personDiv.setTop(176);
+            personDiv.setWidth(108);
+            personDiv.setHeight(144);
+            personDiv.setBorderColor(new Vector4f(0,0,0,0));
+            personDiv.setBorderWidth(1);
             div.appendChild(personDiv);
 
         }
@@ -204,13 +214,13 @@ Div div;
 //weapon
         Div weaponDiv =new Div();
         weaponDiv.id="weaponDiv";
-        weaponDiv.border_width=1;
-        weaponDiv.border_color=new Vector3f(0,0,0);;
+        weaponDiv.setBorderWidth(1);
+        weaponDiv.setBorderColor(new Vector4f(0,0,0,0));
         div.appendChild(weaponDiv);
-        weaponDiv.left=13;
-        weaponDiv.bottom=173;
-        weaponDiv.width=38;
-        weaponDiv.height=148;
+        weaponDiv.setLeft(13);
+        weaponDiv.setTop(173);
+        weaponDiv.setWidth(38);
+        weaponDiv.setHeight(148);
         Table weaponTable =new Table();
         weaponDiv.appendChild(weaponTable);
         weaponTable.cellpadding=5;
@@ -219,11 +229,14 @@ Div div;
 
             Tr w_tr=new Tr();
             w_tr.rowIndex=i;
+            w_tr.name="tr"+i;
             Td w_td =new Td();
             w_td.columnIndex=0;
-            w_td.border_color=new Vector3f(0,0,0);
-            w_td.border_width=1;
+            w_td.setBorderColor(new Vector4f(0,0,0,0));
+            w_td.setBorderWidth(1);
+            w_td.name="td"+i;
             w_tr.addCell(w_td);
+
             w_td.mouseEventReceiver=mouseEventReceiver;
             weaponTable.addRow(w_tr);
 
@@ -232,8 +245,8 @@ Div div;
         this.withWH(100,100,500,400);
         this.textureInfo= TextureManager.getTextureInfo("bag");
         //this.humanTextureHandle= TextureManager.getTextureInfo("human").textureHandle;
-        this.earthHandle= TextureManager.getImage("background").textureHandle;
-        this.human= CoreRegistry.get(MyBlockEngine.class).human;
+        //this.earthHandle= TextureManager.getImage("background").textureHandle;
+        //this.human= CoreRegistry.get(MyBlockEngine.class).human;
         //this.block= new BaseBlock(0,0,0);
         //slotsRegion=new RegionArea(left,bottom,slotsWidth,slotsHeight);
         slotsRegion.withWH(left,bottom,slotsWidth,slotsHeight);
@@ -256,14 +269,17 @@ Div div;
         slotsRegion.withWH(left,bottom-55,slotsWidth,slotsHeight+55);
         CoreRegistry.put(Bag.class,this);
 
-        this.putItem(0,new Item("apple_golden",10));
+     //   this.putItem(0,new Item("apple_golden",10));
         this.putItem(1,new Item("soil",10));
         this.putItem(2,new Item("glass",10));
         this.putItem(3,new Item("wood",10));
         this.putItem(4,new Item("sand",10));
-        this.putItem(5,new Item("water",10)); 
+        this.putItem(5,new Item("water",10));
         div.refresh();
         this.human=CoreRegistry.get(Human.class);
+    }
+    public void shaderRender(){
+        this.div.shaderRender();
     }
 
     public void putItem(int slotIndex , Item item){
@@ -273,12 +289,13 @@ Div div;
     	//find the html element and put the 
     	//create element div and set the 
     	Div div =new Div();
-    	div.background_image=item.name;
-        div.border_width=1;
-        div.border_color=new Vector3f(0,0,0);
+    	div.setBackgroundImage(new Image(TextureManager.getTextureInfo(item.name)));
+        div.setBorderWidth(1);
+        div.setBorderColor(new Vector4f(0,0,0,0));
     	HtmlObject object=Document.getElementById("bag_"+rowIndex+"_"+columnIndex);
         object.appendChild(div);
-        slots[slotIndex].putItem(item);
+
+       // slots[slotIndex].putItem(item);
     }
     public void render() {
 if(!show)return;
@@ -322,7 +339,7 @@ if(!show)return;
         GL11.glPushMatrix();
         {
 
-            GL11.glTranslated( personDiv.getLeft()+personDiv.width/2, personDiv.getBottom(), -1); // rotate around Y axis
+            GL11.glTranslated( personDiv.getLeft()+personDiv.getWidth()/2, personDiv.getTop(), -1); // rotate around Y axis
             //GL11.glTranslated( -human.Position.x,  -human.Position.y, -human.Position.z -21); // rotate around Y axis
             //GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
              GL11.glScalef(40f, 40f, 40f); // scale up
@@ -472,17 +489,17 @@ if(!show)return;
         if(currentChoose!=null){
           // float width= currentChoose.maxX-currentChoose.minX;
             //float height= currentChoose.maxY-currentChoose.minY;
-            currentChoose.minX=x-currentChoose.width/2;
-            currentChoose.maxX=x+currentChoose.width/2;
+            currentChoose.setPosX(x-currentChoose.getWidth()/2);
+            currentChoose.setPosX(x+currentChoose.getWidth()/2);
 
-            currentChoose.minY=y-currentChoose.height/2;
-            currentChoose.maxY=y+currentChoose.height/2;
+            currentChoose.setPosY(y-currentChoose.getHeight()/2);
+            currentChoose.setPosY(y+currentChoose.getHeight()/2);
 //            currentChoose.minX=x-40/2;
 //            currentChoose.maxX=x+40/2;
-            currentChoose.left=x-40/2;
+            currentChoose.setLeft(x-40/2);
 //            currentChoose.minY=y-40/2;
 //            currentChoose.maxY=y+40/2;
-           currentChoose.bottom=y-40/2;
+           currentChoose.setTop(y-40/2);
         }
     }
     public static Item item;
@@ -515,13 +532,13 @@ if(!show)return;
     	this.show=!this.show;
 
         if(show) {
-            div.display = "";
+            div.setVisible(true);
             Switcher.MOUSE_AUTO_CENTER=false;
         }else {
-            div.display = "none";
+            div.setVisible(false);
             Switcher.MOUSE_AUTO_CENTER=true;
         }
 
     }
-   
+
 }

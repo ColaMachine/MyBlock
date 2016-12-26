@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Document {
 	public static HashMap variables=new HashMap();
+
+    public  boolean hasInvalidLayouts=false;
 	public static List<HtmlObject> elements =new ArrayList<HtmlObject>(); 
 	public static void appendChild(HtmlObject htmlObject){
 		elements.add(htmlObject);

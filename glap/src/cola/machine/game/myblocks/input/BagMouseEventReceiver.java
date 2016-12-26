@@ -40,10 +40,11 @@ public class BagMouseEventReceiver implements MouseEventReceiver{
                     Document.getElementById("bag").appendChild(temp);
             		Document.var("currentchoose", htmlObject.childNodes.get(0));
                     htmlObject.childNodes.clear();
-                    temp.width=temp.maxX-temp.minX;
+                    /*temp.setWidth().width=temp.maxX-temp.minX;
                     temp.height=temp.maxY-temp.minY;
                     temp.left=temp.minX;
-                    temp.bottom=temp.minY;
+                    temp.top=temp.minY;*/
+                    temp.update();
             	}
         	}else 
         	{
@@ -68,20 +69,20 @@ public class BagMouseEventReceiver implements MouseEventReceiver{
                     temp.parentNode.removeChild(temp);
         			htmlObject.appendChild(temp);
             		Document.var("currentchoose",null);
-                    temp.width=-1;
+                    /*temp.width=-1;
                     temp.height=-1;
                     temp.left=-1;
-                    temp.bottom=-1;
+                    temp.top=-1;*/
                     
                 	int columnId=((Td)htmlObject).columnIndex;
                     int rowIndex=((Tr)htmlObject.parentNode).rowIndex;
                     int soltIndex=rowIndex*9+columnId;
                    
-                    temp.refresh();
+                    temp.update();
                    
                     bag.slots[soltIndex].item=bag.item;bag.item=null;
             	}
-                Document.getElementById("bag").refresh();
+                Document.getElementById("bag").update();
         	}
         }
     }

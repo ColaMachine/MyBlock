@@ -13,7 +13,8 @@ import java.nio.file.Paths;
  * Created by luying on 14-10-5.
  */
 public class Constants {
-
+    public static final int WINDOW_WIDTH=800;
+    public static final int WINDOW_HEIGHT=600;
     public static final String ENTITY_DATA_FILE="entity.dat";
     public static final int DEFAULT_PORT=25777;//server port
     public static final String WORLD_DATA_FILE="world.dat";
