@@ -18,6 +18,7 @@ import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.model.ui.html.Image;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -70,36 +71,56 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class StartMenuState implements GameState {
-    //Bag bag;
+   Bag bag;
     public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
     GUI gui;
-
+    Div div2 =new Div();
     Div div =new Div();
     public void init(GameEngine engine) {
         TextureManager textureManager =new TextureManager();
         div=new Div();
-        // bag =new Bag();
+        bag =new Bag();
 
         div.setId("bag");
         Document.appendChild(div);
         //div.margin="0 auto";
-        div.setWidth(400);
-        div.setHeight(300);
-        div.setLeft(0);
-        div.setTop(0);
+        div.setWidth(100);
+        div.setHeight(100);
+        div.setLeft(110);
+        div.setTop(110);
         //div.bottom=100;
-        div.setBorderWidth(1);
+        div.setBorderWidth(10);
         //div.background_image="soil";
         //TextureInfo batTexture= TextureManager.getTextureInfo("soil");
        // div.set(new Vector4f(1,0.5f,0.5f,1));
+        div.setBackgroundImage(new Image(TextureManager.getTextureInfo("fur_pants")));
         div.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
+        //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
         div.update();
+
+
+     Document.appendChild(div2);
+        //div.margin="0 auto";
+        div2.setWidth(100);
+        div2.setHeight(100);
+        div2.setLeft(210);
+        div2.setTop(210);
+        //div.bottom=100;
+        div2.setBorderWidth(10);
+        //div.background_image="soil";
+        //TextureInfo batTexture= TextureManager.getTextureInfo("soil");
+        // div.set(new Vector4f(1,0.5f,0.5f,1));
+        div2.setBackgroundImage(new Image(TextureManager.getTextureInfo("bag")));
+        div2.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
+        //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
+        div2.update();
+        OpenglUtils.checkGLError();
         try {
 
 
             LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
-            renderer.setUseSWMouseCursors(true);
+            renderer.setUseSWMouseCursors(true);   OpenglUtils.checkGLError();
 
             //ChatDemo chat = new ChatDemo();
             //GameUIDemo gameUI = new GameUIDemo();
@@ -112,16 +133,23 @@ if(!Switcher.SHADER_ENABLE) {
 }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        // this.setPerspective();
+        }   OpenglUtils.checkGLError();
 
+        ShaderUtils.twoDColorBuffer.rewind();   OpenglUtils.checkGLError();
+        ShaderUtils.twoDImgBuffer.rewind();   OpenglUtils.checkGLError();
+        // this.setPerspective();
+        div.shaderRender();   OpenglUtils.checkGLError();
+        div2.shaderRender();   OpenglUtils.checkGLError();
+        bag.shaderRender();
+        ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
+        ShaderUtils.update2dImageVao();   OpenglUtils.checkGLError();
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
 
-        GLImage image;
+       /* GLImage image;
         image= OpenglUtils.makeTexture("assets/images/items.png");
-        glBindTexture(GL_TEXTURE_2D, image.textureHandle);
+        glBindTexture(GL_TEXTURE_2D, image.textureHandle);*/
 
     }
 
@@ -167,7 +195,7 @@ if(!Switcher.SHADER_ENABLE) {
     public void render() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        ShaderUtils.twoDColorBuffer.rewind();
+
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
@@ -175,14 +203,16 @@ if(!Switcher.SHADER_ENABLE) {
         }
         //bag.shaderRender();
         //glUseProgram(0);
-       div.shaderRender();
 
       // gui.update();
         //OpenglUtils.drawRect();
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);
 
+
         ShaderUtils.finalDraw2DColor();
+
+        ShaderUtils.finalDraw2DImage();
     }
 
     @Override

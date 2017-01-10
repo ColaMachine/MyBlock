@@ -317,41 +317,36 @@ public class HtmlObject {
     Vao borderVao =new Vao();
     public void  shaderRender(){
         if(!visible)return;
+        if(this.getBackgroundColor()!=null){
+            ShaderUtils.draw2dColor(this.getBackgroundColor(),getInnerX(),getInnerY(),getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
+            //ShaderUtils.draw2DColorWithShader(this.getBackgroundColor(),ShaderUtils.get2DColorShaderConfig(),vao);
+        }
         if(this.getBackgroundImage()!=null){
-
-
             /*if(this.background_image.equals("toolbar")){
         		System.out.println("toolbar render");
         	}*/
-            ShaderUtils.draw2dImage(this.getBackgroundImage(), posX, posY, width, height);
-
-
+            ShaderUtils.draw2dImg(this.getBackgroundImage(), getInnerX(),getInnerY(),getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
             //ShaderUtils.draw2DImageWithShader(ShaderUtils.get2DImageShaderConfig(), vao);
             //OpenglUtils.draw2DImageShader(i);
             //OpenglUtils.draw2DImageShader(textureInfo.textureHandle,1,1,50,50);
-
-        } if(this.getBackgroundColor()!=null){
-            ShaderUtils.draw2dColor(this.getBorderColor(),getInnerX(),getInnerY(),getInnerWidth(),getInnerHeight());
-            //ShaderUtils.draw2DColorWithShader(this.getBackgroundColor(),ShaderUtils.get2DColorShaderConfig(),vao);
-
         }
 
         if(this.innerText!=null && innerText.length()>0){
             //GL11.glColor4f(1, 1, 1, 1);
-            ShaderUtils.printText("你好",getInnerX(),getInnerY(),this.getFontSize());
+            ShaderUtils.printText("你好",getInnerX(),getInnerY(),this.getFontSize());   OpenglUtils.checkGLError();
             //GLApp.print((int)minX,(int)minY,this.innerText);
         }
         if(this.borderLeft>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,borderLeft,height);
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,borderLeft,height);   OpenglUtils.checkGLError();
         }
         if(this.borderTop>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,width,borderTop);
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,width,borderTop);   OpenglUtils.checkGLError();
         }
         if(this.borderRight>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX+width-borderRight,posY,borderRight,height);
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX+width-borderRight,posY,borderRight,height);   OpenglUtils.checkGLError();
         }
         if(this.borderBottom>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY+height-borderBottom,width,borderBottom);
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY+height-borderBottom,width,borderBottom);   OpenglUtils.checkGLError();
         }
 
         for(HtmlObject htmlObject:this.childNodes){
