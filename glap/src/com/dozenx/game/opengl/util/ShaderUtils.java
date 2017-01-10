@@ -970,7 +970,7 @@ try {
         float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
         float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
         float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
-        GL_Vector p1 = new GL_Vector(left,top-_height*2,0);
+        GL_Vector p1 = new GL_Vector(left,top-_height,0);
         GL_Vector p2 = new GL_Vector(left+_width,top-_height,0);
         GL_Vector p3 = new GL_Vector(left+_width,top,0);
         GL_Vector p4 = new GL_Vector(left,top,0);
