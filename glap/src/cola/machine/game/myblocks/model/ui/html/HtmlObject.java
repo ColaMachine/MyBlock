@@ -243,8 +243,20 @@ public class HtmlObject implements Cloneable  {
             else
                 return 0;
         }*/
-        if(this.parentNode!=null)
-            return this.parentNode.getOffsetLeft()+this.left;
+
+
+
+
+        if(this.parentNode!=null) {
+        int index = this.getParentNode().childNodes.indexOf(this);
+            if(index==0) {
+                return this.parentNode.getOffsetLeft() + this.marginLeft;
+            }else{
+                    HtmlObject prevNode =  this.getParentNode().getChildNodes().get(index-1);
+                return prevNode.getOffsetLeft()+prevNode.getWidth()+ this.marginLeft;
+            }
+
+        }
         else{
             return this.left;
         }
@@ -255,18 +267,35 @@ public class HtmlObject implements Cloneable  {
             return this.top;
 
     }
+    public List<HtmlObject> getChildNodes(){
+        return this.childNodes;
+    }
+    public float getOffsetTop(){
 
-    public int getOffsetTop(){
+        if(this.parentNode!=null) {
+            int index = this.getParentNode().childNodes.indexOf(this);
+            if(index==0) {
+                return this.parentNode.getOffsetLeft() + this.marginTop;
+            }else{
+                HtmlObject prevNode =  this.getParentNode().getChildNodes().get(index-1);
+                return prevNode.getOffsetTop()+prevNode.getHeight()+ this.marginTop;
+            }
+
+        }
+        else{
+            return this.left;
+        }
+        /*
         if(this.parentNode!=null)
             return this.parentNode.getOffsetTop()+this.top;
         else{
             return this.top;
-        }
+        }*/
     }
 
     public int getOffsetBottom(){
         if(this.parentNode!=null)
-            return this.getOffsetTop()+this.getHeight();
+            return (int)this.getOffsetTop()+this.getHeight();
         else{
             return this.top+this.getHeight();
         }
@@ -300,8 +329,15 @@ public class HtmlObject implements Cloneable  {
 			// System.exit(0);
 			// }
 		}*/
-        this.posX=this.getLeft();
-        this.posY=this.getTop();
+       //int left = this.getLeft();
+
+        /*int index = this.parent.childNodes.indexOf(this);
+        if(index==0){
+            this.getOffsetLeft();
+        }*/
+        this.posX= (int)this.getOffsetLeft();
+        this.posY=(int)this.getOffsetTop();
+
         //this.maxX=this.minX+this.getWidth();
         //this.maxY=this.minY+this.getHeight();
         //ShaderUtils.create2dimageVao(vao,minX,minY,this.getWidth(),this.getHeight());
@@ -313,14 +349,19 @@ public class HtmlObject implements Cloneable  {
             logger.error("maxX can't not be 0");
             System.exit(0);
         }
+        //先确定父级的左上角 在确定子的左上角 再确定子的宽度高度 再确定父亲的宽度高度
         for(int i=0;i<this.childNodes.size();i++){
         	//System.out.println("2div id:"+id);
             this.childNodes.get(i).update();
         }
-
+       // this.width = this.getWidth()>this.getChildMaxRight()-this.;
         if(StringUtil.isNotEmpty(innerText)){
 
         }
+    }
+    public int getChildMaxRight(){
+      this.getBorderRight()
+              this
     }
     Vao vao =new Vao();
     Vao borderVao =new Vao();
@@ -1080,10 +1121,11 @@ public class HtmlObject implements Cloneable  {
     protected HtmlObject lastChildMouseOver;
     private HtmlObject focusChild;
     boolean setMouseOverChild(HtmlObject child, Event evt) {//这个方法用来设置鼠标经过的主键 什么时候返回true呢 鼠标任然在某个元素上 或者 之前是没有聚焦的 现在有了并且有子元素消费了事件 那么说明有元素响应了 鼠标移入事件
+//        LogUtil.println(this.id+":setMouseOverChild");
         if (lastChildMouseOver != child) {//如果当前节点的上一个鼠标经过的是空 且询问的节点是非空 或者
             if(child != null) {
                 HtmlObject result = child.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_ENTERED));
-                if(result == null) {
+                if(result == null) {//child的子元素没有处理掉 child也没有handle掉
                     // this child widget doesn't want mouse events
                     return false;
                 }
@@ -1096,23 +1138,24 @@ public class HtmlObject implements Cloneable  {
         return true;
     }
     HtmlObject routeMouseEvent(Event evt) {//这个方法很重要是判断是否鼠标在某个组件的地方
+//        LogUtil.println("routeMouseEvent"+this.id);
         assert !evt.isMouseDragEvent();
         //evt = translateMouseEvent(evt);//x y 进行调整== 转换成相对位置
         if(childNodes != null) {
             for(int i=childNodes.size(); i-->0 ;) {//对每个子元素进行判定
                 HtmlObject child = childNodes.get(i);
                 if(child.visible && child.isMouseInside(evt)) {
-                    LogUtil.println(this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"里 type"+evt.getType());
+//                    LogUtil.println(this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());
                     // we send the real event only only if we can transfer the mouse "focus" to this child
-                    if(setMouseOverChild(child, evt)) {//
-                        LogUtil.println("处理了");
+                    if(setMouseOverChild(child, evt)) {// 向子元素摊派 进入离开事件 说明事件被handle 并且返回了 true
+                        //LogUtil.println("setMouseOverChild 返回了true"+this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());
                         if(evt.getType() == Event.Type.MOUSE_ENTERED ||
                                 evt.getType() == Event.Type.MOUSE_EXITED) {
                             return child;
                         }
-                        HtmlObject result = child.routeMouseEvent(evt);
+                        HtmlObject result = child.routeMouseEvent(evt);//如果不是鼠标进入或者离开时间 比如moved事件 向子元素摊派事件本身 如果本身夜奔
                         if(result != null) {
-                            LogUtil.println(this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"里 type"+evt.getType());
+                           // LogUtil.println("result!=null"+this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());
                             // need to check if the focus was transfered to this child or its descendants
                             // if not we need to transfer focus on mouse click here
                             // this can happen if we click on a widget which doesn't want the keyboard focus itself

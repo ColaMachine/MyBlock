@@ -42,7 +42,6 @@ import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGen
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
-import com.sun.tools.internal.jxc.ap.Const;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
@@ -93,9 +92,11 @@ Document document =new Document();
        // bag =new Bag();
 
         //div.setId("bag");
-        document.body.appendChild(div3);
-        document.body.appendChild(div2);
+        //document.body.appendChild(div3);
+        //document.body.appendChild(div2);
         document.body.appendChild(div);
+        div.appendChild(div3);
+        div.appendChild(div2);
         //div.margin="0 auto";
         div.setWidth(100);
         div.setHeight(100);
@@ -111,7 +112,7 @@ Document document =new Document();
        // div.setBackgroundImage(new Image(TextureManager.getTextureInfo("fur_pants")));
         div.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
-        div.update();
+        //div.update();
 
 
 
@@ -119,32 +120,34 @@ Document document =new Document();
         div2.setWidth(100);
         div2.setHeight(100);
         div2.setLeft(210);
-        div2.setTop(210);
+        div2.setTop(110);
+        div2.setInnerText("两只黄鹂鸣翠柳");
         //div.bottom=100;
         div2.setBorderWidth(10);
         //div.background_image="soil";
         //TextureInfo batTexture= TextureManager.getTextureInfo("soil");
         // div.set(new Vector4f(1,0.5f,0.5f,1));
-        div2.setBackgroundImage(new Image(TextureManager.getTextureInfo("iron_helmet_front")));
+       // div2.setBackgroundImage(new Image(TextureManager.getTextureInfo("iron_helmet_front")));
         div2.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
-        div2.update();
+       // div2.update();
         OpenglUtils.checkGLError();
 
 
         div3.setWidth(100);
         div3.setHeight(100);
-        div3.setLeft(410);
-        div3.setTop(410);
+        div3.setLeft(310);
+        div3.setLeft(310);
+        div3.setInnerText("三个铜板买来的");
         //div.bottom=100;
         div3.setBorderWidth(10);
         //div.background_image="soil";
         //TextureInfo batTexture= TextureManager.getTextureInfo("soil");
         // div.set(new Vector4f(1,0.5f,0.5f,1));
-        div3.setBackgroundImage(new Image(TextureManager.getTextureInfo("zhongwen")));
+       // div3.setBackgroundImage(new Image(TextureManager.getTextureInfo("zhongwen")));
         div3.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
-        div3.update();
+        document.update();
 
 
         try {

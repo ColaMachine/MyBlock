@@ -26,7 +26,7 @@ public class Div extends HtmlObject implements Cloneable{
             document.needUpdate=true;return true;
         }
          //this.borderColor=new Vector4f(1,1,1,1);
-        return false;
+        return true;
     }
     public void refresh(){
     	//System.out.println("DIV id:"+id);

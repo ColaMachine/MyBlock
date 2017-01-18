@@ -140,7 +140,7 @@ public class Document extends HtmlObject {
         event.mouseX = mouseX;//记录鼠标按下的那一刻
         event.mouseY = mouseY;//记录鼠标按下的那一刻
         boolean handled = dragActive;
-        for(HtmlObject child:childNodes){
+       /* for(HtmlObject child:childNodes){
             if(child.isInside(event.mouseX,event.mouseY)){
                 if(this.lastChildMouseOver == child){
 
@@ -153,7 +153,7 @@ public class Document extends HtmlObject {
                 lastChildMouseOver=child;
                 return true;
             }
-        }
+        }*/
         if(!dragActive) {//没有拖动
             if(!isInside(mouseX, mouseY)) {//如果不在范围内
                 pressed = false;
@@ -168,6 +168,7 @@ public class Document extends HtmlObject {
                     handled = true;
                 }
             }
+
         }
 
         if(mouseX != mouseLastX || mouseY != mouseLastY) {//鼠标有移动
@@ -200,6 +201,7 @@ public class Document extends HtmlObject {
             } else if(prevButtonState == 0) {
                 if(sendMouseEvent(Event.Type.MOUSE_MOVED, null) != null) {
                     handled = true;
+                    return handled;
                 }
             }
         }
