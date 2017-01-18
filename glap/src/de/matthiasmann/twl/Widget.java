@@ -1835,7 +1835,7 @@ public class Widget {
      * @param child The child that wants keyboard focus
      * @return true if the child received the focus.
      */
-    protected boolean requestKeyboardFocus(Widget child) {
+    protected boolean requestKeyboardFocus(Widget child) {//她的意思是要把这个节点定位焦点节点
         if(child != null && child.parent != this) {
             throw new IllegalArgumentException("not a direct child");
         }
@@ -1845,7 +1845,7 @@ public class Widget {
                 focusChild = null;//
                 keyboardFocusChildChanged(null);//调用子元素的失去焦点事件
             } else {
-                boolean clear = focusTransferStart();//false
+                boolean clear = focusTransferStart();//false 重新设置焦点链条
                 try {
                     // first request focus for ourself
                     {
@@ -2763,7 +2763,7 @@ public class Widget {
         return sb.append(theme);
     }
 
-    Event translateMouseEvent(Event evt) {
+    Event translateMouseEvent(Event evt) {//可能是相对于父亲窗口的一个事件 所有的x y 都会转换成相对于本窗口的x y 坐标
         if(renderOffscreen instanceof OffscreenMouseAdjustments) {
             int[] newXY = ((OffscreenMouseAdjustments)renderOffscreen).adjustMouseCoordinates(this, evt);
             evt = evt.createSubEvent(newXY[0], newXY[1]);
@@ -2773,23 +2773,23 @@ public class Widget {
     
     Widget routeMouseEvent(Event evt) {//这个方法很重要是判断是否鼠标在某个组件的地方
         assert !evt.isMouseDragEvent();
-        evt = translateMouseEvent(evt);
+        evt = translateMouseEvent(evt);//x y 进行调整== 转换成相对位置
         if(children != null) {
             for(int i=children.size(); i-->0 ;) {
                 Widget child = children.get(i);
-                if(child.visible && child.isMouseInside(evt)) {
+                if(child.visible && child.isMouseInside(evt)) {//如果 有某个子节点再鼠标范围内的画
                     // we send the real event only only if we can transfer the mouse "focus" to this child
-                    if(setMouseOverChild(child, evt)) {
+                    if(setMouseOverChild(child, evt)) {//由于之前已经判定过了 所以这里能很快地返回
                         if(evt.getType() == Event.Type.MOUSE_ENTERED ||
                                 evt.getType() == Event.Type.MOUSE_EXITED) {
                             return child;
                         }
-                        Widget result = child.routeMouseEvent(evt);
+                        Widget result = child.routeMouseEvent(evt);//如果事件被消费了 那就返回
                         if(result != null) {
                             // need to check if the focus was transfered to this child or its descendants
                             // if not we need to transfer focus on mouse click here
                             // this can happen if we click on a widget which doesn't want the keyboard focus itself
-                            if(evt.getType() == Event.Type.MOUSE_BTNDOWN && focusChild != child) {
+                            if(evt.getType() == Event.Type.MOUSE_BTNDOWN && focusChild != child) {//如果是鼠标事件 那么
                                 try {
                                     child.focusGainedCause = FocusGainedCause.MOUSE_BTNDOWN;
                                     if(child.isEnabled() && child.canAcceptKeyboardFocus()) {
@@ -2811,7 +2811,7 @@ public class Widget {
 
         // the following code is only executed for the widget which received
         // the click event. That's why we can call {@code requestKeyboardFocus(null)}
-        if(evt.getType() == Event.Type.MOUSE_BTNDOWN && isEnabled() && canAcceptKeyboardFocus()) {
+        if(evt.getType() == Event.Type.MOUSE_BTNDOWN && isEnabled() && canAcceptKeyboardFocus()) {//如果没有子节点接受事件 那么就自己来处理
             try {
                 focusGainedCause = FocusGainedCause.MOUSE_BTNDOWN;
                 if(focusChild == null) {
@@ -2823,14 +2823,14 @@ public class Widget {
                 focusGainedCause = null;
             }
         }
-        if(evt.getType() != Event.Type.MOUSE_WHEEL) {
-            // no child has mouse over
-            setMouseOverChild(null, evt);
+        if(evt.getType() != Event.Type.MOUSE_WHEEL) {//如果不是鼠标滚轮事件
+            // no child has mouse over  this = dialoglayout 是专门用来触发离开事件 的
+            setMouseOverChild(null, evt);//第二次掉调用setMouseOverChild 第一次是gui的sendMouseEvent方法内 但是由于第一次和第二次传入的都是
         }
         if(!isEnabled() && isMouseAction(evt)) {
             return this;
         }
-        if(handleEvent(evt)) {
+        if(handleEvent(evt)) {//进行单独的事件处理
             return this;
         }
         return null;
@@ -2900,9 +2900,9 @@ public class Widget {
         }
     }
 
-    boolean setMouseOverChild(Widget child, Event evt) {
-        if (lastChildMouseOver != child) {
-            if(child != null) {
+    boolean setMouseOverChild(Widget child, Event evt) {//用来向上级返回当前鼠标经过的组件 用来触发鼠标的离开 和鼠标的进入事件的
+        if (lastChildMouseOver != child) {//第一次肯定是空的 child 是longindemo
+            if(child != null) {//第一次child 是loginDemo 用来接受谁处理的handleEvent
                 Widget result = child.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_ENTERED));
                 if(result == null) {
                     // this child widget doesn't want mouse events
@@ -2912,7 +2912,7 @@ public class Widget {
             if (lastChildMouseOver != null) {
                 lastChildMouseOver.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_EXITED));
             }
-            lastChildMouseOver = child;
+            lastChildMouseOver = child;//lastChildMouseOver 是一个链条用于指向子元素
         }
         return true;
     }

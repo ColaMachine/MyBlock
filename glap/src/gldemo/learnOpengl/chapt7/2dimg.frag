@@ -34,10 +34,7 @@ void main()
         color = texture(ourTexture7, TexCoord);
     }else if(ourTextureIndex==8){
         color = texture(ourTexture8, TexCoord);
-    }else if(ourTextureIndex>111100111 && ourTextureIndex<1111100111 ){
-             color = texture(ourTexture1, TexCoord);
-
-         }else{
+    }else{
        color = vec4(0.5,0.5,0.5,1);
     }
 }

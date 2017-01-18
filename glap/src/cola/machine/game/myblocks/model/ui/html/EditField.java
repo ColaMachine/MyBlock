@@ -12,6 +12,9 @@ public class EditField extends TextField {
     //onblur
     //onfocus
 
+    public void handle(){
+
+    }
     public void onMouseMoveOver(){
         Window.cursor= Window.SELECT;
     }
@@ -19,7 +22,10 @@ public class EditField extends TextField {
         Window.cursor= Window.POINT;
     }
     public void onFocus(){
-        
+        Window.cursor= Window.SELECT;
+    }
+    public void onClick(){
+        Window.cursor= Window.SELECT;
     }
 
 }

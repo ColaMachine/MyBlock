@@ -32,7 +32,7 @@ public class ToolBar extends RegionArea {
 		 div.setWidth(362);
 		 div.setHeight(43);
 		 
-		Document.appendChild(div);
+		Document.getInstance().appendChild(div);
 		 div.setBackgroundImage(new Image(TextureManager.getTextureInfo("toolbar")));
 		 select_div=new Div();
 		 select_div.setId("selectBox");

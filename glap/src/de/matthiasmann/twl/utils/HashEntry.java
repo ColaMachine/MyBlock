@@ -38,7 +38,7 @@ import java.lang.reflect.Array;
  * @param <T> type of subclass
  * @author Matthias Mann
  */
-public class HashEntry<K, T extends HashEntry<K, T>> {
+public class HashEntry<K, T extends HashEntry<K, T>> {//感觉是一种链表形式 主键是key next是另一个HashEntry
 
     public final K key;
     final int hash;
@@ -54,9 +54,9 @@ public class HashEntry<K, T extends HashEntry<K, T>> {
     }
     
     public static<K, T extends HashEntry<K, T>> T get(T[] table, Object key) {
-        int hash = key.hashCode();
-        T e = table[hash & (table.length-1)];
-        Object k;
+        int hash = key.hashCode();//计算出key的hash值
+        T e = table[hash & (table.length-1)];//hash值作为下标 取出一个不大于table长度的值 取出一个table的数组项
+        Object k;//k是临时值 e不为空 并且 e的hash值和给的key的hash值是不一样的   或者 找到的元素的key和制定的key是不一样的 且 equal也不等于
         while(e != null && (e.hash != hash || (((k=e.key) != key) && !key.equals(k)))) {
             e = e.next;
         }

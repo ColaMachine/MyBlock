@@ -9,7 +9,7 @@ public class Glyph {
     public final int x;
     public final int y;
 
-    public Glyph(int width, int height, int x, int y) {
+    public Glyph( int x, int y,int width, int height) {
         this.width = width;
         this.height = height;
         this.x = x;

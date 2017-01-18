@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.model.ui.html;
 
-import cola.machine.game.myblocks.engine.entitySystem.event.Event;
+import de.matthiasmann.twl.*;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 //import cola.machine.game.myblocks.input.Event;
 import cola.machine.game.myblocks.input.KeyEventReceiver;
@@ -13,12 +13,14 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import de.matthiasmann.twl.GUI;
+import com.dozenx.util.StringUtil;
+import de.matthiasmann.twl.Event;
 import glapp.GLApp;
 import org.lwjgl.opengl.GL11;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.print.Doc;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
@@ -27,11 +29,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by luying on 14-9-17.
  */
-public class HtmlObject {
+public class HtmlObject implements Cloneable  {
+
 
     private static final int LAYOUT_INVALID_LOCAL  = 1;
     private static final int LAYOUT_INVALID_GLOBAL = 3;
@@ -55,7 +59,7 @@ public class HtmlObject {
         this.top = top;
     }
 
-    private  float fontSize;
+    private  float fontSize=12;
 
     public float getFontSize() {
         return fontSize;
@@ -87,9 +91,9 @@ public class HtmlObject {
     /**position y**/
     private int posY;
     /** the outer width**/
-    private  int width;
+    protected  int width;
     /** the outer height**/
-    private  int height;
+    protected  int height;
     /**disabled**/
     private boolean disabled = false;
     volatile Document document;
@@ -190,6 +194,7 @@ public class HtmlObject {
             parentNode.removeChild(htmlObject);
         }
         childNodes.add(htmlObject);htmlObject.parentNode=this;
+        //htmlObject.document=parentNode.document;
     }
     public void removeChild(){
         if(this.childNodes!=null && this.childNodes.size()>0)
@@ -312,6 +317,10 @@ public class HtmlObject {
         	//System.out.println("2div id:"+id);
             this.childNodes.get(i).update();
         }
+
+        if(StringUtil.isNotEmpty(innerText)){
+
+        }
     }
     Vao vao =new Vao();
     Vao borderVao =new Vao();
@@ -333,7 +342,7 @@ public class HtmlObject {
 
         if(this.innerText!=null && innerText.length()>0){
             //GL11.glColor4f(1, 1, 1, 1);
-            ShaderUtils.printText("你好",getInnerX(),getInnerY(),this.getFontSize());   OpenglUtils.checkGLError();
+            ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.getFontSize());   OpenglUtils.checkGLError();
             //GLApp.print((int)minX,(int)minY,this.innerText);
         }
         if(this.borderLeft>0){
@@ -468,16 +477,38 @@ public class HtmlObject {
         }
         return null;
     }
+
+
+    protected final HtmlObject getChildAt(int x, int y) {
+        if(childNodes != null) {
+            for(int i=childNodes.size(); i-->0 ;) {
+                HtmlObject child = childNodes.get(i);
+                if(child.visible && child.isInside(x, y)) {
+                    return child;
+                }
+            }
+        }
+        return null;
+    }
+    public HtmlObject getDomAt(int x, int y) {
+        HtmlObject child = getChildAt(x, y);
+        if(child != null) {//child 不为空 递归找到最下面的widget
+            return child.getDomAt(x, y);
+        }
+        return this;
+    }
+
     public void onClick(Event event){
         if(!visible)
             return;
-        if(event.cancelBubble)
-            return;
 
-    	if(this.isInside(event.x, event.y)){
+      /*  if(event.cancelBubble)
+            return;*/
+
+    	if(this.isInside(event.mouseX, event.mouseY)){
             if(this.mouseEventReceiver!=null) {//System.out.println("the clicked element id:"+this.id);
-                this.mouseEventReceiver.mouseClick(event.x, event.y, this);
-                event.cancelBubble=true;
+                this.mouseEventReceiver.mouseClick(event.mouseX, event.mouseY, this);
+                //event.cancelBubble=true;
                 Switcher.MOUSE_CANCELBUBLE=true;
 
                 return;
@@ -1005,4 +1036,438 @@ public class HtmlObject {
     public void setBorderWidth(int borderWidth) {
         this.borderTop= this.borderBottom=this.borderLeft=this.borderRight = (short)borderWidth;
     }
+    private FocusGainedCause focusGainedCause;
+
+    public HtmlObject clone(){
+       HtmlObject o = null;
+       try{
+       o = (HtmlObject)super.clone();
+       }catch(CloneNotSupportedException e){
+       e.printStackTrace();
+       }
+       return o;
+       }
+
+   /* public boolean handleEvent(Event event){
+        if(event.isMouseEvent()){
+           // if(event.is)
+            if(isInside(x,y)){
+
+            }
+        }
+
+        for(HtmlObject htmlObject : childNodes){
+            htmlObject.handleEvent(event);
+        }
+        return false;
+    }
+*/
+
+    static boolean isMouseAction(Event evt) {
+        Event.Type type = evt.getType();
+        return type == Event.Type.MOUSE_BTNDOWN ||
+                type == Event.Type.MOUSE_BTNUP ||
+                type == Event.Type.MOUSE_CLICKED ||
+                type == Event.Type.MOUSE_DRAGGED;
+    }
+    private boolean canAcceptKeyboardFocus;
+    public boolean canAcceptKeyboardFocus() {
+        return canAcceptKeyboardFocus;
+    }
+    protected boolean isMouseInside(Event evt) {
+        return isInside(evt.getMouseX(), evt.getMouseY());
+    }
+    protected HtmlObject lastChildMouseOver;
+    private HtmlObject focusChild;
+    boolean setMouseOverChild(HtmlObject child, Event evt) {//这个方法用来设置鼠标经过的主键 什么时候返回true呢 鼠标任然在某个元素上 或者 之前是没有聚焦的 现在有了并且有子元素消费了事件 那么说明有元素响应了 鼠标移入事件
+        if (lastChildMouseOver != child) {//如果当前节点的上一个鼠标经过的是空 且询问的节点是非空 或者
+            if(child != null) {
+                HtmlObject result = child.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_ENTERED));
+                if(result == null) {
+                    // this child widget doesn't want mouse events
+                    return false;
+                }
+            }
+            if (lastChildMouseOver != null) {
+                lastChildMouseOver.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_EXITED));
+            }
+            lastChildMouseOver = child;
+        }
+        return true;
+    }
+    HtmlObject routeMouseEvent(Event evt) {//这个方法很重要是判断是否鼠标在某个组件的地方
+        assert !evt.isMouseDragEvent();
+        //evt = translateMouseEvent(evt);//x y 进行调整== 转换成相对位置
+        if(childNodes != null) {
+            for(int i=childNodes.size(); i-->0 ;) {//对每个子元素进行判定
+                HtmlObject child = childNodes.get(i);
+                if(child.visible && child.isMouseInside(evt)) {
+                    LogUtil.println(this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"里 type"+evt.getType());
+                    // we send the real event only only if we can transfer the mouse "focus" to this child
+                    if(setMouseOverChild(child, evt)) {//
+                        LogUtil.println("处理了");
+                        if(evt.getType() == Event.Type.MOUSE_ENTERED ||
+                                evt.getType() == Event.Type.MOUSE_EXITED) {
+                            return child;
+                        }
+                        HtmlObject result = child.routeMouseEvent(evt);
+                        if(result != null) {
+                            LogUtil.println(this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"里 type"+evt.getType());
+                            // need to check if the focus was transfered to this child or its descendants
+                            // if not we need to transfer focus on mouse click here
+                            // this can happen if we click on a widget which doesn't want the keyboard focus itself
+                            if(evt.getType() == Event.Type.MOUSE_BTNDOWN && focusChild != child) {
+                                try {
+                                    child.focusGainedCause = FocusGainedCause.MOUSE_BTNDOWN;
+                                    if(child.isEnabled() && child.canAcceptKeyboardFocus()) {
+                                        requestKeyboardFocus(child);
+                                    }
+                                } finally {
+                                    child.focusGainedCause = null;
+                                }
+                            }
+                            return result;
+                        }
+                        // widget no longer wants mouse events
+                    }
+                    // found a widget - but it doesn't want mouse events
+                    // so assumes it's "invisible" for the mouse
+                }
+            }
+        }
+
+        // the following code is only executed for the widget which received
+        // the click event. That's why we can call {@code requestKeyboardFocus(null)}
+        if(evt.getType() == Event.Type.MOUSE_BTNDOWN && isEnabled() && canAcceptKeyboardFocus()) {
+            try {
+                focusGainedCause = FocusGainedCause.MOUSE_BTNDOWN;
+                if(focusChild == null) {
+                    requestKeyboardFocus();
+                } else {
+                    requestKeyboardFocus(null);
+                }
+            } finally {
+                focusGainedCause = null;
+            }
+        }
+        if(evt.getType() != Event.Type.MOUSE_WHEEL) {
+            // no child has mouse over
+            setMouseOverChild(null, evt);
+        }
+        if(!isEnabled() && isMouseAction(evt)) {
+            return this;
+        }
+        if(handleEvent(evt)) {
+            return this;
+        }
+        return null;
+    }
+    private InputMap inputMap;
+
+    private boolean focusKeyEnabled = true;
+    private boolean handleKeyEvent(Event evt) {
+        if(childNodes != null) {
+            if(focusKeyEnabled && guiInstance != null) {
+                guiInstance.setFocusKeyWidget(this);
+            }
+            if(focusChild != null && focusChild.isVisible()) {
+                if(focusChild.handleEvent(evt)) {
+                    return true;
+                }
+            }
+        }
+        if(inputMap != null) {
+            String action = inputMap.mapEvent(evt);
+            if(action != null) {
+                if(handleKeyStrokeAction(action, evt)) {
+                    return true;
+                }
+                /*if(WARN_ON_UNHANDLED_ACTION) {
+                    java.util.logging.Logger.getLogger(getClass().getName()).log(Level.WARNING,
+                            "Unhandled action ''{0}'' for class ''{1}''",
+                            new Object[]{ action, getClass().getName() });
+                }*/
+            }
+        }
+        return false;
+    }
+    private ActionMap actionMap;
+    protected boolean handleKeyStrokeAction(String action, Event event) {
+        if(actionMap != null) {
+            return actionMap.invoke(action, event);
+        }
+        return false;
+    }
+    protected boolean handleEvent(Event evt) {
+        if(evt.isKeyEvent()) {
+            return handleKeyEvent(evt);
+        }
+        return false;
+    }
+    public boolean isEnabled(){
+        return !disabled;
+    }
+    /**
+     * Called when this widget has lost the keyboard focus.
+     * The default implementation does nothing.
+     */
+    protected void keyboardFocusLost() {
+    }
+    private void recursivelyChildFocusLost(HtmlObject w) {
+        while(w != null) {
+            HtmlObject next = w.focusChild;//递归子元素失去焦点
+            //can't resovle
+           /* if(!w.sharedAnimState) {//sharedAnimState=false
+                w.animState.setAnimationState(STATE_KEYBOARD_FOCUS, false);//触发失去焦点事件
+            }*/
+            try {
+                w.keyboardFocusLost();//设置失去焦点
+            } catch(Exception ex) {
+                ex.printStackTrace();
+                //getLogger().log(Level.SEVERE, "Exception in keyboardFocusLost()", ex);
+            }
+            w.focusChild = null;
+            w = next;
+        }
+    }
+    protected boolean requestKeyboardFocus(HtmlObject child) {
+        if(child != null && child.parent != this) {
+            throw new IllegalArgumentException("not a direct child");
+        }
+        if(focusChild != child) {//如果当前的focusChild 不是指定的child  focusCHild是之前的editfield 现在的child是scrollpane 因为我们点击了scrollpane
+            if(child == null) {
+                recursivelyChildFocusLost(focusChild);//让focusCHild的子节点都变成非focus 状态
+                focusChild = null;//
+                keyboardFocusChildChanged(null);//调用子元素的失去焦点事件
+            } else {
+                boolean clear = focusTransferStart();//false
+                try {
+                    // first request focus for ourself
+                    {
+                        FocusGainedCause savedCause = focusGainedCause;//null
+                        if(savedCause == null) {//当前是dialoglayout  children有两个 scrollpane 和editfield
+                            focusGainedCause = FocusGainedCause.CHILD_FOCUSED;
+                        }
+                        try {
+                            if(!requestKeyboardFocus()) {
+                                return false;
+                            }
+                        } finally {
+                            focusGainedCause = savedCause;//null
+                        }
+                    }
+
+                    // second change focused child
+                    recursivelyChildFocusLost(focusChild);//之前的焦点需要释放 原来的焦点链条需要变动
+                    focusChild = child;
+                    keyboardFocusChildChanged(child);//现在的焦点链条要连上 触发焦点事件
+                    /*if(!child.sharedAnimState) {//如果之前动画状态没有
+                        child.animState.setAnimationState(STATE_KEYBOARD_FOCUS, true);//现在的动画状态是获取焦点状态
+                    }*/
+
+                    // last inform the child widget why it gained keyboard focus
+                    FocusGainedCause cause = child.focusGainedCause;//获取焦点的原因是鼠标点击了 各种原因参见FocusGainedCause
+                    HtmlObject[] fti = focusTransferInfo.get();
+                    child.keyboardFocusGained(//获取之前的焦点
+                            (cause != null) ? cause : FocusGainedCause.MANUAL,
+                            (fti != null) ? fti[0] : null);
+                } finally {
+                    focusTransferClear(clear);//清除之前的焦点 在threadlocal中的记录
+                }
+            }
+        }
+        /*if(!sharedAnimState) {
+            animState.setAnimationState(STATE_HAS_FOCUSED_CHILD, focusChild != null);
+        }*/
+        return focusChild != null;
+    }
+
+    protected void keyboardFocusGained(FocusGainedCause cause, HtmlObject previousWidget) {
+        // System.out.println(this + " " + cause + " " + previousWidget);
+        keyboardFocusGained();
+    }
+    /**
+     * Called when this widget has gained the keyboard focus.
+     * The default implementation does nothing.
+     *
+     * @see #keyboardFocusGained(de.matthiasmann.twl.FocusGainedCause, de.matthiasmann.twl.Widget)
+     */
+    protected void keyboardFocusGained() {
+    }
+    private void focusTransferClear(boolean clear) {
+        if(clear) {
+            focusTransferInfo.set(null);
+        }
+    }
+    /**
+     * The current keyboard focus child has changed.
+     * The default implementation does nothing.
+     *
+     * @param child The child which has now the keyboard focus in this hierachy level or null
+     */
+    protected void keyboardFocusChildChanged(HtmlObject child) {
+    }
+    private static final ThreadLocal<HtmlObject[]> focusTransferInfo = new ThreadLocal<HtmlObject[]>();
+    volatile Document guiInstance;
+    private boolean focusTransferStart() {
+        HtmlObject[] fti = focusTransferInfo.get();//存储了焦点传递状态信息 有之前的焦点元素 和现在的焦点元素
+        if(fti == null) {//fti必须是null否则 什么都免谈
+            HtmlObject root = getRootWidget();
+            HtmlObject w = root;
+            while(w.focusChild != null) {
+                w = w.focusChild;
+            }
+            if(w == root) {
+                w = null;
+            }
+            focusTransferInfo.set(new HtmlObject[]{ w });//存储了最终的focus 最底层的元素 存储的是editfield
+            return true;
+        }
+        return false;
+    }
+
+    public final HtmlObject getRootWidget() {
+        HtmlObject w = this;
+        HtmlObject p;
+        while((p=w.parent) != null) {
+            w = p;
+        }
+        return w;
+    }
+
+    private HtmlObject parent;
+    public void setParent(HtmlObject object){
+        this.parent = object;
+    }
+
+    public void insertChild(HtmlObject child, int index) throws IndexOutOfBoundsException {
+        if(child == null) {
+            throw new IllegalArgumentException("child is null");
+        }
+        if(child == this) {
+            throw new IllegalArgumentException("can't add to self");
+        }
+        if(child.parent != null) {
+            throw new IllegalArgumentException("child widget already in tree");
+        }
+        if(childNodes == null) {
+            childNodes = new ArrayList<HtmlObject>();
+        }
+        if(index < 0 || index > childNodes.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        child.setParent(this);  // can throw exception - see PopupWindow
+        childNodes.add(index, child);
+        Document gui = this.getDocument();
+        if(gui != null) {
+            child.recursivelySetGUI(gui);
+        }
+        adjustChildPosition(child, posX + borderLeft, posY + borderTop);
+        child.recursivelyEnabledChanged(null, !this.disabled);
+        if(gui != null) {
+            child.recursivelyAddToGUI(gui);
+        }
+        /*if(themeManager != null) {
+            child.applyTheme(themeManager);
+        }*/
+        try {
+            childAdded(child);
+        } catch(Exception ex) {
+          //  getLogger().log(Level.SEVERE, "Exception in childAdded()", ex);
+        }
+        // A newly added child can't have open popups
+        // because it needs a GUI for this - and it had no parent up to now
+    }
+    protected void childAdded(HtmlObject child) {
+        invalidateLayout();
+    }
+
+
+    private void recursivelySetGUI(Document  doc) {
+        assert guiInstance == null : "guiInstance must be null";
+        guiInstance = doc;
+        if(childNodes != null) {
+            for(int i=childNodes.size() ; i-->0 ;) {
+                childNodes.get(i).recursivelySetGUI(doc);
+            }
+        }
+    }
+    private boolean locallyEnabled = true;
+    public boolean getEnabled(){
+        return !disabled;
+    }
+    private void recursivelyEnabledChanged(GUI gui, boolean enabled) {
+        /*
+        enabled &= locallyEnabled;
+        if(this.enabled != enabled) {
+            this.enabled = enabled;
+            if(!sharedAnimState) {
+                getAnimationState().setAnimationState(STATE_DISABLED, !enabled);
+            }
+            if(!enabled) {
+                if(gui != null) {
+                    gui.widgetDisabled(this);
+                }
+                try {
+                    widgetDisabled();
+                } catch(Exception ex) {
+                    getLogger().log(Level.SEVERE, "Exception in widgetDisabled()", ex);
+                }
+                try {
+                    giveupKeyboardFocus();
+                } catch(Exception ex) {
+                    getLogger().log(Level.SEVERE, "Exception in giveupKeyboardFocus()", ex);
+                }
+            }
+            try {
+                firePropertyChange("enabled", !enabled, enabled);
+            } catch(Exception ex) {
+                getLogger().log(Level.SEVERE, "Exception in firePropertyChange(\"enabled\")", ex);
+            }
+            if(children != null) {
+                for(int i=children.size() ; i-->0 ;) {
+                    Widget child = children.get(i);
+                    child.recursivelyEnabledChanged(gui, enabled);
+                }
+            }
+        }*/
+    }
+
+    private void recursivelyAddToGUI(HtmlObject gui) {
+        /*assert guiInstance == gui : "guiInstance must be equal to gui";
+        if(layoutInvalid != 0) {
+            gui.hasInvalidLayouts = true;
+        }
+        if(!sharedAnimState) {
+            animState.setGUI(gui);
+        }
+        try {
+            afterAddToGUI(gui);
+        } catch(Exception ex) {
+            getLogger().log(Level.SEVERE, "Exception in afterAddToGUI()", ex);
+        }
+        if(children != null) {
+            for(int i=children.size() ; i-->0 ;) {
+                children.get(i).recursivelyAddToGUI(gui);
+            }
+        }*/
+    }
+
+    public boolean requestKeyboardFocus() {
+        if(parent != null && visible) {//如果父节点不为空 并且自己是课件的
+            if(parent.focusChild == this) {//如果父节点的焦点是自己
+                return true;
+            }
+
+            boolean clear = focusTransferStart();
+            try {
+                return parent.requestKeyboardFocus(this);
+            } finally {
+                focusTransferClear(clear);//scrollpane的当前线程变量 里的当前焦点清空
+            }
+        }
+        return false;
+    }
 }
+
+

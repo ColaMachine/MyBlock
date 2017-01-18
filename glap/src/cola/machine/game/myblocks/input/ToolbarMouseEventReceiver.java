@@ -38,14 +38,14 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
                     
                     bag.item=bag.slots[soltIndex].item;
                     bag.slots[soltIndex].item=null;
-                    Document.getElementById("bag").appendChild(temp);
+                    Document.getInstance().getElementById("bag").appendChild(temp);
             		Document.var("currentchoose", htmlObject.childNodes.get(0));
                     htmlObject.childNodes.clear();
                     temp.setWidth(temp.getWidth());
                     temp.setHeight(temp.getHeight());
                     /*temp.setPosX();
                     temp.top=temp.minY;*/
-                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(null);
+                    Document.getInstance().getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(null);
                     
             	}
         	}else 
@@ -55,7 +55,7 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
         			HtmlObject temp= htmlObject.childNodes.get(0);
         			htmlObject.childNodes.remove(0);
         			htmlObject.childNodes.add((HtmlObject)Document.var("currentchoose"));
-            		Document.var("currentchoose",temp);
+            		Document.getInstance().var("currentchoose",temp);
             		
             		int columnId=((Td)htmlObject).columnIndex;
                     int rowIndex=((Tr)htmlObject.parentNode).rowIndex;
@@ -64,7 +64,7 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
                     
                     bag.item=bag.slots[soltIndex].item;
                     bag.slots[soltIndex].item=item;
-                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(new Image(TextureManager.getTextureInfo(item.name)));
+                    Document.getInstance().getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(new Image(TextureManager.getTextureInfo(item.name)));
                     
             	}else{
             		//put item in slot
@@ -85,12 +85,12 @@ public class ToolbarMouseEventReceiver implements MouseEventReceiver{
                     
                    
                     bag.slots[soltIndex].item=bag.item;
-                    Document.getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(new Image(TextureManager.getTextureInfo(bag.item.name)));
+                    Document.getInstance().getElementById("toolbar_"+rowIndex+"_"+columnId).setBackgroundImage(new Image(TextureManager.getTextureInfo(bag.item.name)));
                     
                     bag.item=null;
                     
             	}
-                Document.getElementById("bag").update();
+                Document.getInstance().getElementById("bag").update();
         	}
         }
     }

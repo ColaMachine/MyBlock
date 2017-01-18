@@ -36,6 +36,7 @@ import cola.machine.game.myblocks.ui.chat.CtrlFrame;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
 import cola.machine.game.myblocks.ui.test.SimpleTest;
 import cola.machine.game.myblocks.ui.test.ToggleFadeFrame;
+import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.textarea.HTMLTextAreaModel;
@@ -54,8 +55,8 @@ public class InventoryDemo extends DesktopArea {
     
     public static void main(String[] args) {
         try {
-            String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/linux");
-
+            //String library_path = System.setProperty("org.lwjgl.librarypath","/home/colamachine/workspace/MyBlock/bin/natives/macosx");
+            LWJGLHelper.initNativeLibs();
             Display.setDisplayMode(new DisplayMode(800, 600));//设置高度 宽度
             Display.create();//创建窗口
             Display.setTitle("TWL Login Panel Demo");//设置窗口标题

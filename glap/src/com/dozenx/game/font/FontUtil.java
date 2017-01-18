@@ -198,7 +198,7 @@ public class FontUtil {
         int count =list.size();
         String out = new File("").getAbsolutePath();
         //out+"/fontawesome-webfont.ttf";//
-        String name ="icon.png";
+        String name ="zhongwen.png";
         int padding =2;
         int w_num=24;
         int charSize =(int)fontSize;//(int ) (padding*2+fontSize);
@@ -219,7 +219,7 @@ public class FontUtil {
         int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, image.getWidth(), image.getHeight());
-       g.setColor(Color.BLACK);
+       g.setColor(Color.WHITE);
         g.drawString("啊",x,y);
         // ImageUtil.compressForFix("/Users/luying/Documents/workspace/calendar/src/main/webapp/static/img/a0.jpg");
         //Iterator it = glyphMap.entrySet().iterator();
@@ -320,6 +320,7 @@ public class FontUtil {
 
     }
 
+    public static HashMap<Character,Glyph> zhongwenMap = readGlyph();
     /**
      * the cn char map the location in the png texture
      * @return

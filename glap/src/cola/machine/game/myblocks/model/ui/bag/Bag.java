@@ -2,7 +2,6 @@ package cola.machine.game.myblocks.model.ui.bag;
 
 import cola.machine.game.myblocks.container.Slot;
 import cola.machine.game.myblocks.engine.MyBlockEngine;
-import cola.machine.game.myblocks.engine.entitySystem.event.Event;
 import cola.machine.game.myblocks.input.BagMouseEventReceiver;
 import cola.machine.game.myblocks.input.ToolbarMouseEventReceiver;
 import cola.machine.game.myblocks.item.Item;
@@ -14,6 +13,7 @@ import cola.machine.game.myblocks.model.ui.html.*;
 import cola.machine.game.myblocks.model.ui.tool.ToolBarSlop;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import de.matthiasmann.twl.Event;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector3f;
@@ -53,7 +53,7 @@ Div div;
     	mouseEventReceiver.bag=this;
         div=new Div();
         div.setId("bag");
-        Document.appendChild(div);
+        Document.getInstance().appendChild(div);
         //div.margin="0 auto";
         div.setWidth(400);
         div.setHeight(300);
@@ -292,7 +292,7 @@ td.name="work_tr"+i+"td"+j;
     	div.setBackgroundImage(new Image(TextureManager.getTextureInfo(item.name)));
         div.setBorderWidth(1);
         div.setBorderColor(new Vector4f(0,0,0,0));
-    	HtmlObject object=Document.getElementById("bag_"+rowIndex+"_"+columnIndex);
+    	HtmlObject object=Document.getInstance().getElementById("bag_" + rowIndex + "_" + columnIndex);
         object.appendChild(div);
 
        // slots[slotIndex].putItem(item);
@@ -473,7 +473,7 @@ if(!show)return;
         }*/
     }
 
-    public void click(int x,int y){
+   /* public void click(int x,int y){
         Event event =new Event();
         event.x=x;
         event.y=y;
@@ -482,7 +482,7 @@ if(!show)return;
         mouseX=x;mouseY=y;
         anyHtmlClicked();
 
-    }
+    }*/
     public void move(int x,int y){
         mouseX=x;mouseY=y;
         HtmlObject currentChoose=(HtmlObject)Document.var("currentchoose");

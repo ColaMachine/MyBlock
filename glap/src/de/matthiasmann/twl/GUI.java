@@ -109,7 +109,7 @@ public final class GUI extends Widget {
     private int mouseLastY;
     private int mouseClickedX;
     private int mouseClickedY;
-    private long mouseEventTime;
+    private long mouseEventTime;//鼠标事件时间
     private long tooltipEventTime;
     private long mouseClickedTime;
     private long keyEventTime;
@@ -562,7 +562,7 @@ public final class GUI extends Widget {
     public void update() {//全局的刷新
         setSize();
         updateTime();
-       // handleInput();
+       handleInput();
         handleKeyRepeat();
         handleTooltips();
         updateTimers();
@@ -753,7 +753,7 @@ public final class GUI extends Widget {
         }
         
         // don't send new mouse coords when still in drag area
-        if(dragActive || prevButtonState == 0) {
+        if(dragActive || prevButtonState == 0) {//如果没有按键发生
             event.mouseX = mouseX;//记录 实时的鼠标位置
             event.mouseY = mouseY;
         } else {
@@ -764,8 +764,8 @@ public final class GUI extends Widget {
         boolean handled = dragActive;
 
         if(!dragActive) {//没有拖动
-            if(!isInside(mouseX, mouseY)) {//如果不在范围内
-                pressed = false;
+            if(!isInside(mouseX, mouseY)) {//如果不在本窗口范围内
+                pressed = false;//重置所有状态到无事件状态
                 mouseClickCount = 0;
                 if(wasInside) {//如果之前是在范围内的 那么就是离开的动作
                     sendMouseEvent(Event.Type.MOUSE_EXITED, null);//发送鼠标事件离开
@@ -1036,9 +1036,9 @@ public final class GUI extends Widget {
         }
     }
 
-    private Widget getTopPane() {
+    private Widget getTopPane() {//获取这一层 子节点中位于最上面的那一个widget 一般是倒数第三个
         // don't use potential overwritten methods
-        return super.getChild(super.getNumChildren()-3);
+        return super.getChild(super.getNumChildren()-3);//因为最后一个是tooltip 而倒数第二个是一个widget
     }
     
     @Override
@@ -1046,7 +1046,7 @@ public final class GUI extends Widget {
         return getTopPane().getWidgetUnderMouse();
     }
 
-    private Widget sendMouseEvent(Event.Type type, Widget target) {
+    private Widget sendMouseEvent(Event.Type type, Widget target) {//第一次发送的时候target 是null的 是从776行进入的 之前不再范围内 现在再范围内 会发送进入事件 但是target是空的
         assert type.isMouseEvent;
         popupEventOccured = false;
         event.type = type;
@@ -1054,7 +1054,7 @@ public final class GUI extends Widget {
 
         renderer.setMousePosition(event.mouseX, event.mouseY);
         
-        if(target != null) {
+        if(target != null) {//从gui过来的都是null
             if(target.isEnabled() || !isMouseAction(event)) {
                 target.handleEvent(target.translateMouseEvent(event));
             }
@@ -1062,16 +1062,16 @@ public final class GUI extends Widget {
         } else {
             assert !dragActive || boundDragPopup != null;
             Widget widget = null;
-            if(activeInfoWindow != null) {//找激活窗口
+            if(activeInfoWindow != null) {//找激活窗口 可能是拖动的窗口
                 if(activeInfoWindow.isMouseInside(event) && setMouseOverChild(activeInfoWindow, event)) {
                     widget = activeInfoWindow;
                 }
             }
-            if(widget == null) {//如国没有toppane的话 就是找根节点
+            if(widget == null) {//如国没有toppane的话 就是找根节点 一般是gui的倒数第三个子元素 这里是logindemo
                 widget = getTopPane();
-                setMouseOverChild(widget, event);
+                setMouseOverChild(widget, event);//第一次调用setMouseOverChild
             }
-            return widget.routeMouseEvent(event);
+            return widget.routeMouseEvent(event);//把这个事件分发下去
         }
     }
 

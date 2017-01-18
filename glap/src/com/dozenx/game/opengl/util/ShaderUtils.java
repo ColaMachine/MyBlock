@@ -11,6 +11,7 @@ import com.dozenx.game.font.FontUtil;
 import com.dozenx.game.font.Glyph;
 import com.dozenx.util.FileUtil;
 import com.sun.prism.ps.Shader;
+import de.matthiasmann.twl.renderer.Font;
 import glapp.GLApp;
 import glapp.GLImage;
 import glmodel.GL_Matrix;
@@ -535,7 +536,7 @@ try {
         // OpenglUtils.checkGLError();
         glBindVertexArray(twodImageVao.getVaoId());
         OpenglUtils.checkGLError();
-        glDrawArrays(GL_TRIANGLES,0, twodImageVao.getPoints());
+        glDrawArrays(GL_TRIANGLES, 0, twodImageVao.getPoints());
         OpenglUtils.checkGLError();
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
@@ -765,14 +766,14 @@ try {
         OpenglUtils.checkGLError();
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         //图片位置 //0代表再glsl里的变量的location位置值.
-        glVertexAttribPointer(0, 3, GL_FLOAT, false,6 * 4, 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(0);
         OpenglUtils.checkGLError();
         //纹理位置
-        glVertexAttribPointer(1, 2, GL_FLOAT, false,6* 4, 3*4);
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, 6 * 4, 3 * 4);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(2, 1, GL_FLOAT, false,6* 4, 5*4);
+        glVertexAttribPointer(2, 1, GL_FLOAT, false, 6 * 4, 5 * 4);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(2);
         OpenglUtils.checkGLError();
@@ -1036,6 +1037,8 @@ try {
     }
 
 
+
+
     public static void draw2dColor(Vector4f color, int posX, int posY, int width, int height) {
 
         float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
@@ -1082,6 +1085,20 @@ try {
         return glyphMap;
     }
     public static void printText(String s, int innerX, int innerY, float fontSize) {
+        TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
+
+            Glyph location = FontUtil.zhongwenMap.get(ch);
+            if(location!=null){
+                ti.minX=location.x/ti.owidth;
+                ti.minY=(ti.oheight-location.y-location.height-2)/ti.oheight;
+                ti.maxX=(location.x+location.width)/ti.owidth;
+                ti.maxY=(ti.oheight-location.y-2)/ti.oheight;
+                ShaderUtils.draw2dImg(new Image(ti), innerX+i*(int)fontSize,innerY,(int)fontSize,(int)fontSize);   OpenglUtils.checkGLError();
+            }
+
+        }
 
 
     }

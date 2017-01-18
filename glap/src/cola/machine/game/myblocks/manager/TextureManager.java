@@ -181,7 +181,7 @@ public class TextureManager {
     public void putImage(String name, String textureImagePath) {
         File file =installPath.resolve(textureImagePath).toFile();
         if(!file.exists()){
-            LogUtil.println("not exists:"+textureImagePath);
+            LogUtil.println("not exists:"+file.getPath());
             System.exit(0);
         }
         int textureHandle = 0;

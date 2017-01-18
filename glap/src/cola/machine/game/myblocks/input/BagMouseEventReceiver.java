@@ -37,8 +37,8 @@ public class BagMouseEventReceiver implements MouseEventReceiver{
                     
                     bag.item=bag.slots[soltIndex].item;
                     bag.slots[soltIndex].item=null;
-                    Document.getElementById("bag").appendChild(temp);
-            		Document.var("currentchoose", htmlObject.childNodes.get(0));
+                    Document.getInstance().getElementById("bag").appendChild(temp);
+            		Document.getInstance().var("currentchoose", htmlObject.childNodes.get(0));
                     htmlObject.childNodes.clear();
                     /*temp.setWidth().width=temp.maxX-temp.minX;
                     temp.height=temp.maxY-temp.minY;
@@ -82,7 +82,7 @@ public class BagMouseEventReceiver implements MouseEventReceiver{
                    
                     bag.slots[soltIndex].item=bag.item;bag.item=null;
             	}
-                Document.getElementById("bag").update();
+                Document.getInstance().getElementById("bag").update();
         	}
         }
     }

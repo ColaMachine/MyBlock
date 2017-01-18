@@ -302,7 +302,7 @@ public class ActionMap {
         boolean onRepeat() default true;
     }
 
-    static class Mapping extends HashEntry<String, Mapping> {
+    static class Mapping extends HashEntry<String, Mapping> {//如果触发了指定的事件 那么就调用对应的目标的制定方法 并把参数带进去 是一种反射
         final Object target;
         final Method method;
         final Object[] params;

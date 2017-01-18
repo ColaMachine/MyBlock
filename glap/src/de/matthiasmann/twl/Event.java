@@ -112,7 +112,7 @@ public final class Event {
          */
         CLEAR_KEYBOARD_STATE(false, false);
         
-        final boolean isMouseEvent;
+       public  final boolean isMouseEvent;
         final boolean isKeyEvent;
         Type(boolean isMouseEvent, boolean isKeyEvent) {
             this.isMouseEvent = isMouseEvent;
@@ -314,20 +314,20 @@ public final class Event {
     public static final int KEY_POWER           = 0xDE;
     public static final int KEY_SLEEP           = 0xDF;
     
-    Type type;
-    int mouseX;
-    int mouseY;
+   public  Type type;
+   public  int mouseX;
+    public int mouseY;
     int mouseWheelDelta;
-    int mouseButton;
-    int mouseClickCount;
-    boolean dragEvent;
+    public int mouseButton;
+    public int mouseClickCount;
+    public boolean dragEvent;
     boolean keyRepeated;
     char keyChar;
-    int keyCode;
-    int modifier;
+    public int keyCode;
+    public int modifier;
     private Event subEvent;
 
-    Event() {
+    public Event() {
     }
 
     /**
@@ -488,7 +488,7 @@ public final class Event {
         return modifier;
     }
 
-    final Event createSubEvent(Type newType) {
+    public final Event createSubEvent(Type newType) {
         if(subEvent == null) {
             subEvent = new Event();
         }
@@ -513,7 +513,7 @@ public final class Event {
         return e;
     }
     
-    void setModifier(int mask, boolean pressed) {
+   public  void setModifier(int mask, boolean pressed) {
         if(pressed) {
             modifier |= mask;
         } else {
