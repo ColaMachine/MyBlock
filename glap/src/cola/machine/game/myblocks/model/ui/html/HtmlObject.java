@@ -230,7 +230,23 @@ public class HtmlObject implements Cloneable  {
     public int getLeft(){
         return this.left;
     }
+
+    public float getRecurLeft(){
+        if(this.getParentNode()!=null){
+            return  this.getParentNode().getRecurLeft()+ this.getOffsetLeft();
+        }else{
+            return this.getOffsetLeft();
+        }
+    }
+    public float getRecurTop(){
+        if(this.getParentNode()!=null){
+            return  this.getParentNode().getRecurTop()+ this.getOffsetTop();
+        }else{
+            return this.getOffsetTop();
+        }
+    }
     public float getOffsetLeft(){
+        return this.offsetLeft;
         //if set the left
         //then the left = left + parent.minx
         ///else judge the
@@ -247,19 +263,27 @@ public class HtmlObject implements Cloneable  {
 
 
 
-        if(this.parentNode!=null) {
+       /* if(this.parentNode!=null) {
         int index = this.getParentNode().childNodes.indexOf(this);
             if(index==0) {
-                return this.parentNode.getOffsetLeft() + this.marginLeft;
+                return this.parentNode.getInnerY()+ this.marginLeft;
             }else{
+
                     HtmlObject prevNode =  this.getParentNode().getChildNodes().get(index-1);
-                return prevNode.getOffsetLeft()+prevNode.getWidth()+ this.marginLeft;
+
+                if(this.getParentNode().getInnerWidth()>0 && this.getParentNode().getInnerWidth()< prevNode.getRight() - this.getParentNode().childNodes.get(0).posX){
+                    //this.parentNode.width= prevNode.getRight()+prevNode.getMarginRight()+ this.parentNode.getBorderRight()- this.parentNode.posX;
+
+                    return this.parentNode.getInnerY()+ this.marginLeft;
+                }
+
+                return prevNode.getRight()+ this.marginLeft;
             }
 
         }
         else{
-            return this.left;
-        }
+            return 0;
+        }*/
     }
 
     public int getTop(){
@@ -272,19 +296,28 @@ public class HtmlObject implements Cloneable  {
     }
     public float getOffsetTop(){
 
-        if(this.parentNode!=null) {
+       /* if(this.parentNode!=null) {
             int index = this.getParentNode().childNodes.indexOf(this);
             if(index==0) {
-                return this.parentNode.getOffsetLeft() + this.marginTop;
+                //return this.parentNode.getOffsetTop()+this.parent + this.marginTop;
+                return this.getParentNode().getInnerY()+this.getMarginTop();
             }else{
                 HtmlObject prevNode =  this.getParentNode().getChildNodes().get(index-1);
-                return prevNode.getOffsetTop()+prevNode.getHeight()+ this.marginTop;
+                //return prevNode.getOffsetTop()+prevNode.getHeight()+ this.marginTop;
+                //return prevNode.getBottom()+prevNode.getHeight()+ this.marginTop;
+                //如果出现了换行的情况
+                if(this.getParentNode().getInnerWidth()>0 && this.getParentNode().getInnerWidth()< prevNode.getRight() - this.getParentNode().childNodes.get(0).posX){
+                   // this.parentNode.height= prevNode.getBottom()+this.getMarginTop()+ this.parentNode.getBorderRight()- this.parentNode.posX;
+                    return prevNode.getBottom()+this.getMarginTop();
+                }
+                return this.getParentNode().getInnerY()+this.getMarginTop();
             }
 
         }
         else{
-            return this.left;
-        }
+            return 0;
+        }*/
+        return this.offsetTop;
         /*
         if(this.parentNode!=null)
             return this.parentNode.getOffsetTop()+this.top;
@@ -308,9 +341,101 @@ public class HtmlObject implements Cloneable  {
         //ShaderUtils.create2dimageVao(vao,minX,minY,maxX-minX,maxY-minY);
         //ShaderUtils.createBorderVao(borderVao,minX,minY,maxX-minX,maxY-minY);
     }*/
+    public static final int INLINE=0;
+    public static final int BLOCK=1;
+    public int display=HtmlObject.INLINE;
+    int offsetLeft =0;
+    int offsetTop=0;
 
+    public HtmlObject  getPrevNode(){
+        if(this.getParentNode()!=null){
+            int index=0;
+            if(this.getParentNode().getChildNodes().size()>0 && (index=this.getParentNode().getChildNodes().indexOf(this))>0){
+                return this.getParentNode().getChildNodes().get(index-1);
+            }
+            return null;
+        }else{
+            return null;
+        }
+    }
+    public void resize(){
+        for (int i = 0; i < this.childNodes.size(); i++) {
+            //System.out.println("2div id:"+id);
+            HtmlObject child =  this.childNodes.get(i);
+            child.resize();
+        }
+        int maxWidth=0;
+        int sumWidth =0;
+        int sumHeight =0;
+        int maxHeight =0;
+        //计算宽度
+
+        //HtmlObject prevNode =this.getPrevNode();
+        //如果宽度是自适应的话
+
+
+
+            HtmlObject oldChild=null;
+            for (int i = 0; i < this.childNodes.size(); i++) {
+                //System.out.println("2div id:"+id);
+                HtmlObject child =  this.childNodes.get(i);
+                int parentLeft = 0;
+                int parentTop=0;
+                if(getParentNode()!=null ){
+                    parentLeft= getParentNode().getBorderLeft()+getParentNode().getPaddingLeft();
+                    parentTop= getParentNode().getBorderTop()+getParentNode().getPaddingTop();
+
+                }
+                if(child.display==INLINE){
+                    if(oldChild!=null ) {
+                        if (oldChild.display == INLINE) {
+
+                            child.offsetLeft = oldChild.offsetLeft + oldChild.width  + oldChild.marginRight + child.marginLeft;
+                            child.offsetTop = oldChild.offsetTop;
+
+                            if(this.width==0&& child.offsetLeft+child.width>this.width){
+                                child.offsetLeft= child.marginLeft;
+                                child.offsetTop=oldChild.offsetTop+oldChild.height+child.marginTop;
+                            }
+
+                        }else if(oldChild.display == BLOCK){
+                            child.offsetLeft = child.marginLeft;
+                            child.offsetTop = oldChild.offsetTop+oldChild.height+child.marginTop;
+                        }
+                    }else{
+
+                            child.offsetLeft = child.marginLeft+parentLeft;
+                            child.offsetTop = child.marginTop+parentTop;
+
+
+                        }
+                }else if(child.display==BLOCK){
+
+                        child.offsetLeft = child.marginLeft+parentLeft;
+
+
+                    if(oldChild!=null ){
+                        child.offsetTop = oldChild.offsetTop+oldChild.getHeight()+oldChild.getBorderBottom()+child.marginTop;
+                    }else{
+                        child.offsetTop = child.marginTop+parentTop;
+                    }
+
+                }
+                maxWidth = Math.max(maxWidth, this.childNodes.get(i).getWidth())+child.offsetLeft;
+               // maxHeight = Math.max(maxHeight, this.childNodes.get(i).getHeight());
+                //sumWidth+=child.getWidth()+child.getMarginLeft()+child.getMarginRight();
+                oldChild=child;
+                //sumWidth+=this.childNodes.get(i).getWidth()+this.childNodes.get(i).getMarginLeft()+this.childNodes.get(i).getMarginRight();
+
+            }
+        if(this.width==0)
+            this.width=maxWidth;
+
+
+
+    }
     public void update(){
-    	
+    	//this.resize();
     	/*if (this.parentNode == null) {
 			this.minX = this.left;
 			this.maxX = this.minX + this.width;
@@ -335,8 +460,8 @@ public class HtmlObject implements Cloneable  {
         if(index==0){
             this.getOffsetLeft();
         }*/
-        this.posX= (int)this.getOffsetLeft();
-        this.posY=(int)this.getOffsetTop();
+        this.posX= this.getParentNode()!=null ? this.getParentNode().posX+offsetLeft : offsetLeft;
+        this.posY=this.getParentNode()!=null ? this.getParentNode().posY+offsetTop : offsetTop;
 
         //this.maxX=this.minX+this.getWidth();
         //this.maxY=this.minY+this.getHeight();
@@ -359,10 +484,10 @@ public class HtmlObject implements Cloneable  {
 
         }
     }
-    public int getChildMaxRight(){
+    /*public int getChildMaxRight(){
       this.getBorderRight()
               this
-    }
+    }*/
     Vao vao =new Vao();
     Vao borderVao =new Vao();
     public void  shaderRender(){

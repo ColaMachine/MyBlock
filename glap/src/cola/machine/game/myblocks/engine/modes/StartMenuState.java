@@ -147,6 +147,7 @@ Document document =new Document();
        // div3.setBackgroundImage(new Image(TextureManager.getTextureInfo("zhongwen")));
         div3.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
+        document.resize();
         document.update();
 
 
