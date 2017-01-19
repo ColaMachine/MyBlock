@@ -1130,7 +1130,7 @@ public class EditField extends Widget {
             x -= textRenderer.lastTextX;
             int lineStart = 0;
             int lineEnd = editBuffer.length();
-            if(multiLine) {
+            if(multiLine) {//如果是多行的话
                 y -= textRenderer.computeTextY();
                 int lineHeight = font.getLineHeight();
                 int endIndex = lineEnd;

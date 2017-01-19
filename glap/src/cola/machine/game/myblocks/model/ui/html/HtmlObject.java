@@ -28,6 +28,7 @@ import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -175,6 +176,7 @@ public class HtmlObject implements Cloneable  {
 
     public void setInnerText(String innerText) {
         this.innerText = innerText;
+
     }
 
     public HtmlObject getParentNode() {
@@ -382,8 +384,8 @@ public class HtmlObject implements Cloneable  {
                 int parentLeft = 0;
                 int parentTop=0;
                 if(getParentNode()!=null ){
-                    parentLeft= getParentNode().getBorderLeft()+getParentNode().getPaddingLeft();
-                    parentTop= getParentNode().getBorderTop()+getParentNode().getPaddingTop();
+                    parentLeft= this.getBorderLeft()+this.getPaddingLeft();
+                    parentTop= this.getBorderTop()+this.getPaddingTop();
 
                 }
                 if(child.display==INLINE){
@@ -393,7 +395,7 @@ public class HtmlObject implements Cloneable  {
                             child.offsetLeft = oldChild.offsetLeft + oldChild.width  + oldChild.marginRight + child.marginLeft;
                             child.offsetTop = oldChild.offsetTop;
 
-                            if(this.width==0&& child.offsetLeft+child.width>this.width){
+                            if(this.width>0&& child.offsetLeft+child.width>this.width){
                                 child.offsetLeft= child.marginLeft;
                                 child.offsetTop=oldChild.offsetTop+oldChild.height+child.marginTop;
                             }
@@ -421,17 +423,29 @@ public class HtmlObject implements Cloneable  {
                     }
 
                 }
-                maxWidth = Math.max(maxWidth, this.childNodes.get(i).getWidth())+child.offsetLeft;
-               // maxHeight = Math.max(maxHeight, this.childNodes.get(i).getHeight());
+                maxWidth = Math.max(maxWidth, child.getWidth()+child.offsetLeft+child.marginRight);
+                maxHeight = Math.max(maxHeight, child.getHeight()+child.offsetTop+child.marginBottom);
+
                 //sumWidth+=child.getWidth()+child.getMarginLeft()+child.getMarginRight();
                 oldChild=child;
                 //sumWidth+=this.childNodes.get(i).getWidth()+this.childNodes.get(i).getMarginLeft()+this.childNodes.get(i).getMarginRight();
 
             }
-        if(this.width==0)
-            this.width=maxWidth;
+        if(this.width==0) {
+            this.width = maxWidth + this.borderRight + this.paddingRight;
+        }
+        if(this.height==0) {
+            this.height = maxHeight + this.borderBottom + this.paddingBottom;
+        }
 
 
+    }
+
+    public void countTextArea(){
+        if(StringUtil.isNotEmpty(this.innerText)){
+            float textLength=this.innerText.length()*this.fontSize;
+            float textHeight=this.fontSize;
+        }
 
     }
     public void update(){
@@ -1236,7 +1250,7 @@ public class HtmlObject implements Cloneable  {
                 type == Event.Type.MOUSE_CLICKED ||
                 type == Event.Type.MOUSE_DRAGGED;
     }
-    private boolean canAcceptKeyboardFocus;
+    protected boolean canAcceptKeyboardFocus;
     public boolean canAcceptKeyboardFocus() {
         return canAcceptKeyboardFocus;
     }
@@ -1331,6 +1345,82 @@ public class HtmlObject implements Cloneable  {
         return null;
     }
     private InputMap inputMap;
+    protected List<HtmlObject> getKeyboardFocusOrder() {
+        if(childNodes == null) {
+            return Collections.<HtmlObject>emptyList();
+        }
+        return Collections.unmodifiableList(childNodes);
+    }
+    private boolean depthFocusTraversal = true;
+
+    private int collectFocusOrderList(ArrayList<HtmlObject> list) {
+        int idx = -1;
+        for(HtmlObject child : getKeyboardFocusOrder()) {
+            if(child.visible && child.isEnabled()) {
+                if(child.canAcceptKeyboardFocus) {
+                    if(child == focusChild) {
+                        idx = list.size();
+                    }
+                    list.add(child);
+                }
+                if(child.depthFocusTraversal) {
+                    int subIdx = child.collectFocusOrderList(list);
+                    if(subIdx != -1) {
+                        idx = subIdx;
+                    }
+                }
+            }
+        }
+        return idx;
+    }
+
+    private boolean moveFocus(boolean relative, int dir) {
+        ArrayList<HtmlObject> focusList = new ArrayList<HtmlObject>();
+        int curIndex = collectFocusOrderList(focusList);
+        if(focusList.isEmpty()) {
+            return false;
+        }
+        if(dir < 0) {
+            if(!relative || --curIndex < 0) {
+                curIndex = focusList.size() - 1;
+            }
+        } else if(!relative || ++curIndex >= focusList.size()) {
+            curIndex = 0;
+        }
+        HtmlObject widget = focusList.get(curIndex);
+        try {
+            widget.focusGainedCause = FocusGainedCause.FOCUS_KEY;
+            widget.requestKeyboardFocus(null);
+            widget.requestKeyboardFocus();
+        } finally {
+            widget.focusGainedCause = null;
+        }
+        return true;
+    }
+    public boolean focusNextChild() {
+        return moveFocus(true, +1);
+    }
+
+    public boolean focusPrevChild() {
+        return moveFocus(true, -1);
+    }
+
+    public boolean focusFirstChild() {
+        return moveFocus(false, +1);
+    }
+
+    public boolean focusLastChild() {
+        return moveFocus(false, -1);
+    }
+    void handleFocusKeyEvent(Event evt) {
+        if(evt.isKeyPressedEvent()) {
+            if((evt.getModifiers() & Event.MODIFIER_SHIFT) != 0) {
+                focusPrevChild();
+            } else {
+                focusNextChild();
+            }
+        }
+    }
 
     private boolean focusKeyEnabled = true;
     private boolean handleKeyEvent(Event evt) {
@@ -1399,7 +1489,7 @@ public class HtmlObject implements Cloneable  {
         }
     }
     protected boolean requestKeyboardFocus(HtmlObject child) {
-        if(child != null && child.parent != this) {
+        if(child != null && child.parentNode != this) {
             throw new IllegalArgumentException("not a direct child");
         }
         if(focusChild != child) {//如果当前的focusChild 不是指定的child  focusCHild是之前的editfield 现在的child是scrollpane 因为我们点击了scrollpane
@@ -1497,15 +1587,15 @@ public class HtmlObject implements Cloneable  {
     public final HtmlObject getRootWidget() {
         HtmlObject w = this;
         HtmlObject p;
-        while((p=w.parent) != null) {
+        while((p=w.parentNode) != null) {
             w = p;
         }
         return w;
     }
 
-    private HtmlObject parent;
+    //private HtmlObject parent;
     public void setParent(HtmlObject object){
-        this.parent = object;
+        this.parentNode = object;
     }
 
     public void insertChild(HtmlObject child, int index) throws IndexOutOfBoundsException {
@@ -1515,7 +1605,7 @@ public class HtmlObject implements Cloneable  {
         if(child == this) {
             throw new IllegalArgumentException("can't add to self");
         }
-        if(child.parent != null) {
+        if(child.parentNode != null) {
             throw new IllegalArgumentException("child widget already in tree");
         }
         if(childNodes == null) {
@@ -1622,14 +1712,14 @@ public class HtmlObject implements Cloneable  {
     }
 
     public boolean requestKeyboardFocus() {
-        if(parent != null && visible) {//如果父节点不为空 并且自己是课件的
-            if(parent.focusChild == this) {//如果父节点的焦点是自己
+        if(parentNode != null && visible) {//如果父节点不为空 并且自己是课件的
+            if(parentNode.focusChild == this) {//如果父节点的焦点是自己
                 return true;
             }
 
             boolean clear = focusTransferStart();
             try {
-                return parent.requestKeyboardFocus(this);
+                return parentNode.requestKeyboardFocus(this);
             } finally {
                 focusTransferClear(clear);//scrollpane的当前线程变量 里的当前焦点清空
             }

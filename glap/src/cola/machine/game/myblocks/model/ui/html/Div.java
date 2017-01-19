@@ -24,7 +24,10 @@ public class Div extends HtmlObject implements Cloneable{
             this.borderColor=new Vector4f(0,0,0,1);
             LogUtil.println(this.id+"离开了了");
             document.needUpdate=true;return true;
+        }else if(evt.getType()==Event.Type.MOUSE_MOVED){
+
         }
+
          //this.borderColor=new Vector4f(1,1,1,1);
         return true;
     }

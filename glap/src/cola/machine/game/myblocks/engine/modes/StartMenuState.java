@@ -17,10 +17,7 @@ import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
-import cola.machine.game.myblocks.model.ui.html.Div;
-import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.model.ui.html.HtmlObject;
-import cola.machine.game.myblocks.model.ui.html.Image;
+import cola.machine.game.myblocks.model.ui.html.*;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -98,11 +95,13 @@ Document document =new Document();
         div.appendChild(div3);
         div.appendChild(div2);
         //div.margin="0 auto";
-        div.setWidth(100);
-        div.setHeight(100);
+       // div.setWidth(100);
+       // div.setHeight(100);
         div.setLeft(110);
         div.setTop(110);
-        div.setFontSize(12);
+        div.setFontSize(24);
+        div2.setFontSize(24);
+        div3.setFontSize(24);
         //div.bottom=100;
         div.setBorderWidth(10);
        div.setInnerText("一行白鹭路上青天");
@@ -114,10 +113,21 @@ Document document =new Document();
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
         //div.update();
 
-
+        EditField editField =new EditField();
+        editField.setWidth(100);
+       // editField.setBackgroundColor(new Vector4f(1,0.85f,0.85f,1));
+        editField.setHeight(100);
+        editField.setLeft(210);
+        editField.setTop(110);
+        editField.setText("你好啊");
+        editField.display=HtmlObject.BLOCK;
+        editField.setBorderWidth(10);
+        document.body.appendChild(editField);
+        editField.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
 
         //div.margin="0 auto";
         div2.setWidth(100);
+        div2.setBackgroundColor(new Vector4f(1,0.85f,0.85f,1));
         div2.setHeight(100);
         div2.setLeft(210);
         div2.setTop(110);
@@ -178,8 +188,9 @@ if(!Switcher.SHADER_ENABLE) {
        // div2.shaderRender();   OpenglUtils.checkGLError();
         //div3.shaderRender();   OpenglUtils.checkGLError();
         //bag.shaderRender();
-        ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
+
         ShaderUtils.update2dImageVao();   OpenglUtils.checkGLError();
+        ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
@@ -198,17 +209,20 @@ if(!Switcher.SHADER_ENABLE) {
     public void handleInput(float delta) {
 
 
-       /* if (Keyboard.isCreated()) {
+        if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
 
-                gui.handleKey(
+               /* gui.handleKey(
+                        Keyboard.getEventKey(),
+                        Keyboard.getEventCharacter(),
+                        Keyboard.getEventKeyState());*/
+                document.handleKey(
                         Keyboard.getEventKey(),
                         Keyboard.getEventCharacter(),
                         Keyboard.getEventKeyState());
 
-
             }
-        }*/
+        }
         if (Mouse.isCreated()) {
             while (Mouse.next()) {
                 document.handleMouse(
@@ -232,8 +246,9 @@ if(!Switcher.SHADER_ENABLE) {
             // div2.shaderRender();   OpenglUtils.checkGLError();
             //div3.shaderRender();   OpenglUtils.checkGLError();
             //bag.shaderRender();
-            ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
             ShaderUtils.update2dImageVao();   OpenglUtils.checkGLError();
+            ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
+
             Document.needUpdate=false;
         }
     }
@@ -258,10 +273,10 @@ if(!Switcher.SHADER_ENABLE) {
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);
 
-
+        ShaderUtils.finalDraw2DImage();
         ShaderUtils.finalDraw2DColor();
 
-        ShaderUtils.finalDraw2DImage();
+
     }
 
     @Override

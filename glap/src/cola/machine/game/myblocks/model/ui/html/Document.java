@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.InfoWindow;
 import de.matthiasmann.twl.Widget;
@@ -154,6 +155,7 @@ public class Document extends HtmlObject {
                 return true;
             }
         }*/
+
         if(!dragActive) {//没有拖动
             if(!isInside(mouseX, mouseY)) {//如果不在范围内
                 pressed = false;
@@ -329,9 +331,56 @@ public class Document extends HtmlObject {
         return event.keyCode == FOCUS_KEY &&
                 ((event.modifier & (Event.MODIFIER_CTRL|Event.MODIFIER_META|Event.MODIFIER_ALT)) == 0);
     }
-    private static final int DRAG_DIST = 3;
     private long mouseClickedTime;
     private HtmlObject lastMouseDownWidget;
     private HtmlObject lastMouseClickWidget;
     private static final int DBLCLICK_TIME = 500;   // ms
+    private static final int DRAG_DIST = 3;
+    private static final int KEYREPEAT_INITIAL_DELAY = 250; // ms
+    private static final int NO_REPEAT = 0;
+    private int keyRepeatDelay;
+    public final boolean handleKey(int keyCode, char keyChar, boolean pressed) {
+        event.keyCode = keyCode;
+        event.keyChar = keyChar;
+        event.keyRepeated = false;
+
+        keyEventTime = curTime;
+        if(event.keyCode != Event.KEY_NONE || event.keyChar != Event.CHAR_NONE) {
+            event.setModifiers(pressed);
+
+            if(pressed) {
+                keyRepeatDelay = KEYREPEAT_INITIAL_DELAY;
+                return sendKeyEvent(Event.Type.KEY_PRESSED);
+            } else {
+                keyRepeatDelay = NO_REPEAT;
+                return sendKeyEvent(Event.Type.KEY_RELEASED);
+            }
+        } else {
+            keyRepeatDelay = NO_REPEAT;
+        }
+
+        return false;
+    }
+
+    private boolean sendKeyEvent(Event.Type type) {
+        assert type.isKeyEvent;
+        popupEventOccured = false;
+        focusKeyWidget = null;
+        event.type = type;
+        event.dragEvent = false;
+        boolean handled = getTopPane().handleEvent(event);
+        if(!handled && focusKeyWidget != null) {
+            focusKeyWidget.handleFocusKeyEvent(event);
+            handled = true;
+        }
+        focusKeyWidget = null;  // allow GC
+        return handled;
+    }
+
+
+    private HtmlObject getTopPane() {//获取这一层 子节点中位于最上面的那一个widget 一般是倒数第三个
+        // don't use potential overwritten methods
+        return super.getChildNodes().get(0);//因为最后一个是tooltip 而倒数第二个是一个widget
+    }
+    private long keyEventTime;
 }

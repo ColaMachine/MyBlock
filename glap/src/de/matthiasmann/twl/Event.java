@@ -113,7 +113,7 @@ public final class Event {
         CLEAR_KEYBOARD_STATE(false, false);
         
        public  final boolean isMouseEvent;
-        final boolean isKeyEvent;
+       public final boolean isKeyEvent;
         Type(boolean isMouseEvent, boolean isKeyEvent) {
             this.isMouseEvent = isMouseEvent;
             this.isKeyEvent = isKeyEvent;
@@ -321,8 +321,8 @@ public final class Event {
     public int mouseButton;
     public int mouseClickCount;
     public boolean dragEvent;
-    boolean keyRepeated;
-    char keyChar;
+    public boolean keyRepeated;
+    public char keyChar;
     public int keyCode;
     public int modifier;
     private Event subEvent;
@@ -521,7 +521,7 @@ public final class Event {
         }
     }
 
-    void setModifiers(boolean pressed) {
+    public void setModifiers(boolean pressed) {
         int mask;
         switch(keyCode) {
             case KEY_LSHIFT:   mask = MODIFIER_LSHIFT; break;
