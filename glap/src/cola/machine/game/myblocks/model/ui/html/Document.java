@@ -24,7 +24,9 @@ public class Document extends HtmlObject {
     public Document(){
         this.setId("document");
         body.setId("body");
+        body.canAcceptKeyboardFocus=true;
         this.appendChild(body);
+        this.canAcceptKeyboardFocus=true;
     }
     public static Document getInstance(){
 
@@ -383,4 +385,20 @@ public class Document extends HtmlObject {
         return super.getChildNodes().get(0);//因为最后一个是tooltip 而倒数第二个是一个widget
     }
     private long keyEventTime;
+
+    @Override
+    public boolean requestKeyboardFocus() {
+        // GUI always has the keyboard focus
+        return true;
+    }
+
+    @Override
+    protected boolean requestKeyboardFocus(HtmlObject child) {
+        if(child != null) {
+            if(child != getTopPane()) {
+                return false;
+            }
+        }
+        return super.requestKeyboardFocus(child);
+    }
 }

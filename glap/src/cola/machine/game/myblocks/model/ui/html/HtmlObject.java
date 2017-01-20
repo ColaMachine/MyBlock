@@ -1641,7 +1641,7 @@ public class HtmlObject implements Cloneable  {
     }
 
 
-    private void recursivelySetGUI(Document  doc) {
+    public void recursivelySetGUI(Document  doc) {
         assert guiInstance == null : "guiInstance must be null";
         guiInstance = doc;
         if(childNodes != null) {

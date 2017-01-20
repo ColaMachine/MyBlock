@@ -159,6 +159,7 @@ Document document =new Document();
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
         document.resize();
         document.update();
+        document.recursivelySetGUI(document);
 
 
         try {
@@ -238,8 +239,8 @@ if(!Switcher.SHADER_ENABLE) {
 
     public void update(float delta) {
         if( Document.needUpdate){
-            ShaderUtils.twoDColorBuffer.rewind();   OpenglUtils.checkGLError();
-            ShaderUtils.twoDImgBuffer.rewind();   OpenglUtils.checkGLError();
+            ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
+            ShaderUtils.twoDImgBuffer.clear();   OpenglUtils.checkGLError();
             // this.setPerspective();
             document.shaderRender();
             //div.shaderRender();   OpenglUtils.checkGLError();

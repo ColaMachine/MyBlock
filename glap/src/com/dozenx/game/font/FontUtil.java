@@ -298,7 +298,7 @@ public class FontUtil {
     public static void generateCN2500(){
         try {
             List<Character> list = new ArrayList<Character>();
-            List<String> lists = FileUtil.readFile2List(PathManager.getInstance().getInstallPath().resolve("normalcn.txt").toString());
+            List<String> lists = FileUtil.readFile2List(PathManager.getInstance().getInstallPath().resolve("normalcn").toString());
             int count =0 ;
             for (String line : lists) {
                 if (!StringUtil.isBlank(line)) {
