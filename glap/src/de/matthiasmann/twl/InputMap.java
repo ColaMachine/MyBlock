@@ -54,7 +54,7 @@ public final class InputMap {
     
     private final KeyStroke[] keyStrokes;
 
-    private InputMap(KeyStroke[] keyStrokes) {
+    public InputMap(KeyStroke[] keyStrokes) {
         this.keyStrokes = keyStrokes;
     }
 

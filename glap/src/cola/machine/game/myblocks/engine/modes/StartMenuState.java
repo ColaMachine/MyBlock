@@ -115,8 +115,10 @@ Document document =new Document();
 
         EditField editField =new EditField();
         editField.setWidth(100);
-       // editField.setBackgroundColor(new Vector4f(1,0.85f,0.85f,1));
+        editField.multiLine =true;
+       editField.setBackgroundColor(new Vector4f(1,0.85f,0.85f,1));
         editField.setHeight(100);
+        editField.setFontSize(25);
         editField.setLeft(210);
         editField.setTop(110);
         editField.setText("你好啊");
@@ -181,7 +183,7 @@ if(!Switcher.SHADER_ENABLE) {
             e.printStackTrace();
         }   OpenglUtils.checkGLError();
 
-        ShaderUtils.twoDColorBuffer.rewind();   OpenglUtils.checkGLError();
+        //ShaderUtils.twoDColorBuffer.rewind();   OpenglUtils.checkGLError();
         ShaderUtils.twoDImgBuffer.rewind();   OpenglUtils.checkGLError();
         // this.setPerspective();
         document.shaderRender();
@@ -191,7 +193,7 @@ if(!Switcher.SHADER_ENABLE) {
         //bag.shaderRender();
 
         ShaderUtils.update2dImageVao();   OpenglUtils.checkGLError();
-        ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
+       // ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
@@ -239,8 +241,13 @@ if(!Switcher.SHADER_ENABLE) {
 
     public void update(float delta) {
         if( Document.needUpdate){
-            ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
+            document.resize();
+            document.update();
+            document.recursivelySetGUI(document);
+
+            //ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
             ShaderUtils.twoDImgBuffer.clear();   OpenglUtils.checkGLError();
+
             // this.setPerspective();
             document.shaderRender();
             //div.shaderRender();   OpenglUtils.checkGLError();
@@ -248,7 +255,7 @@ if(!Switcher.SHADER_ENABLE) {
             //div3.shaderRender();   OpenglUtils.checkGLError();
             //bag.shaderRender();
             ShaderUtils.update2dImageVao();   OpenglUtils.checkGLError();
-            ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
+          //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
 
             Document.needUpdate=false;
         }
@@ -273,12 +280,14 @@ if(!Switcher.SHADER_ENABLE) {
         //OpenglUtils.drawRect();
         //print(30, viewportH - 135, "fps:" );
         //  GLApp.drawRect(1,1,50,50);
-
+       /* count++;
+        if(count<1000)*/
         ShaderUtils.finalDraw2DImage();
-        ShaderUtils.finalDraw2DColor();
+        //ShaderUtils.finalDraw2DColor();
 
 
     }
+   // int count =10;
 
     @Override
     public boolean isHibernationAllowed() {

@@ -693,7 +693,7 @@ try {
         //create vbo 创建vbo  vertex buffer objects
         //创建顶点数组
 
-        vao.setPoints(twoDColorBuffer.position());
+        vao.setPoints(twoDColorBuffer.position()/6);
         twoDColorBuffer.rewind();
 
         vao.setVertices(twoDColorBuffer);
@@ -756,7 +756,8 @@ try {
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
         //创建顶点数组
-         vao.setPoints(twoDImgBuffer.position());
+         vao.setPoints(twoDImgBuffer.position()/10);
+        LogUtil.println("twoDImgBuffer:"+twoDImgBuffer.position());
         twoDImgBuffer.rewind();
         vao.setVertices(twoDImgBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
@@ -766,17 +767,25 @@ try {
         OpenglUtils.checkGLError();
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         //图片位置 //0代表再glsl里的变量的location位置值.
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 10 * 4, 0);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(0);
         OpenglUtils.checkGLError();
         //纹理位置
-        glVertexAttribPointer(1, 2, GL_FLOAT, false, 6 * 4, 3 * 4);
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, 10 * 4, 3 * 4);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(2, 1, GL_FLOAT, false, 6 * 4, 5 * 4);
+        //textureHandle
+        glVertexAttribPointer(2, 1, GL_FLOAT, false, 10 * 4, 5 * 4);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(2);
         OpenglUtils.checkGLError();
+        //color
+        glVertexAttribPointer(3, 4, GL_FLOAT, false, 10 * 4, 6 * 4);
+        OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(3);
+        OpenglUtils.checkGLError();
+
+
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
 
@@ -1014,7 +1023,7 @@ try {
     public static FloatBuffer twoDBorderBuffer = BufferUtils.createFloatBuffer(10240);
     public static FloatBuffer twoDColorBuffer = BufferUtils.createFloatBuffer(10240);
 
-    public static void draw2dImg(Image image, int posX, int posY, int width, int height) {
+    public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height) {
 
 
         TextureInfo ti = image.getTexture();
@@ -1023,38 +1032,38 @@ try {
         float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
         float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
         float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
-        GL_Vector p1 = new GL_Vector(left,top-_height,0);
-        GL_Vector p2 = new GL_Vector(left+_width,top-_height,0);
-        GL_Vector p3 = new GL_Vector(left+_width,top,0);
-        GL_Vector p4 = new GL_Vector(left,top,0);
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);
         int index = ShaderUtils.getTextureIndex(ti.textureHandle);
-        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index);
-        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index);
-        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index);
-        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index);
-        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index);
-        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(0.5f);
+        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(0).put(0).put(0).put(0.5f);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0.5f);
+        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0.5f);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(0.5f);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0.5f);
     }
 
 
 
 
-    public static void draw2dColor(Vector4f color, int posX, int posY, int width, int height) {
+    public static void draw2dColor(Vector4f color, int posX, int posY,float z, int width, int height) {
 
         float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
         float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
         float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
         float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
-        GL_Vector p1 = new GL_Vector(left,top-_height,0);
-        GL_Vector p2 = new GL_Vector(left+_width,top-_height,0);
-        GL_Vector p3 = new GL_Vector(left+_width,top,0);
-        GL_Vector p4 = new GL_Vector(left,top,0);
-        twoDColorBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
-        twoDColorBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
-        twoDColorBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
-        twoDColorBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
-        twoDColorBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
-        twoDColorBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
+        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
+        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
     }
 
     public static void draw2dBorder(Vector4f color, int posX, int posY, int width, int height) {
@@ -1084,18 +1093,26 @@ try {
         }
         return glyphMap;
     }
-    public static void printText(String s, int innerX, int innerY, float fontSize) {
+    public static void printText(String s, int innerX, int innerY,float z, float fontSize) {
+        int preX=0;
+        int preY=0;
         TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
         for(int i=0;i<s.length();i++){
             char ch = s.charAt(i);
-
+            if(ch=='\n'){
+                preX=0;
+                preY+=fontSize;
+            }else{
+                preX+=fontSize;
+            }
             Glyph location = FontUtil.zhongwenMap.get(ch);
+            float height =2566;
             if(location!=null){
                 ti.minX=location.x/ti.owidth;
-                ti.minY=(ti.oheight-location.y-location.height-2)/ti.oheight;
-                ti.maxX=(location.x+location.width)/ti.owidth;
-                ti.maxY=(ti.oheight-location.y-2)/ti.oheight;
-                ShaderUtils.draw2dImg(new Image(ti), innerX+i*(int)fontSize,innerY,(int)fontSize,(int)fontSize);   OpenglUtils.checkGLError();
+                ti.minY=(height-location.y-location.height-2)/height;
+                ti.maxX=(location.x+location.width)/height;
+                ti.maxY=(height-location.y-2)/height;
+                ShaderUtils.draw2dImg(new Image(ti), innerX+preX,innerY+preY,z,(int)fontSize,(int)fontSize);   OpenglUtils.checkGLError();
             }
 
         }

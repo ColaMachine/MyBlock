@@ -38,7 +38,7 @@ public class FontUtil {
     }
     public static void ttf(){
         float fontSize =24;
-        int color =0x000000;
+        int color =0xffffff;
         String out = new File("").getAbsolutePath();
         //out+"/fontawesome-webfont.ttf";//
         String  fontPath = "/Users/luying/Documents/workspace/calendar/src/main/webapp/static/fonts/fontawesome-webfont.ttf";//
@@ -130,7 +130,7 @@ public class FontUtil {
     }
     private static Random random = new Random();
     private static Font getFont(){
-        return new Font("Fixedsys",Font.CENTER_BASELINE,18);
+        return new Font("Fixedsys",Font.CENTER_BASELINE,24);
     }
     private static int rotate_value=5;//摇摆幅度
     private static void drawString(Graphics2D  g,char car,int i) {
@@ -194,12 +194,12 @@ public class FontUtil {
     }
     public static void drawAllCharacterInOneJpg(List<Character> list){
         float fontSize =24;
-        int color =0x000000;
+        int color =0x123566;
         int count =list.size();
         String out = new File("").getAbsolutePath();
         //out+"/fontawesome-webfont.ttf";//
         String name ="zhongwen.png";
-        int padding =2;
+       // int padding =2;
         int w_num=24;
         int charSize =(int)fontSize;//(int ) (padding*2+fontSize);
         int imgSize=charSize*w_num;
@@ -209,18 +209,19 @@ public class FontUtil {
         g.setFont(getFont());
 
         //g.setFont(new Font("Times New Roman",Font.ROMAN_BASELINE,18));
-        g.setColor(new Color(color,true));
+        //g.setColor(new Color(color,true));
 
-        FontMetrics fm =g.getFontMetrics();
+       /* FontMetrics fm =g.getFontMetrics();
         int stringWidth =fm.stringWidth("你");
         int stringAscent = fm.getAscent();//上升
         int stringDecent = fm.getDescent();//下降
         int x = image.getWidth()/2 -stringWidth/2;
-        int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;
+        int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;*/
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, image.getWidth(), image.getHeight());
-       g.setColor(Color.WHITE);
-        g.drawString("啊",x,y);
+       g.setColor(Color.BLUE);
+
+        //g.drawString("啊",x,y);
         // ImageUtil.compressForFix("/Users/luying/Documents/workspace/calendar/src/main/webapp/static/img/a0.jpg");
         //Iterator it = glyphMap.entrySet().iterator();
         int i=0;

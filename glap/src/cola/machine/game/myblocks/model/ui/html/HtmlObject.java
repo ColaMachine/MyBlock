@@ -46,6 +46,7 @@ public class HtmlObject implements Cloneable  {
     public KeyEventReceiver keyEventReceiver;
     public  HtmlObject parentNode;
     public   List<HtmlObject> childNodes =new ArrayList<HtmlObject>();
+    public float index=0;
     /**id**/
     public String id;
     /**name**/
@@ -507,14 +508,14 @@ public class HtmlObject implements Cloneable  {
     public void  shaderRender(){
         if(!visible)return;
         if(this.getBackgroundColor()!=null){
-            ShaderUtils.draw2dColor(this.getBackgroundColor(),getInnerX(),getInnerY(),getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
+            ShaderUtils.draw2dColor(this.getBackgroundColor(),getInnerX(),getInnerY(),this.index+0.004f,getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
             //ShaderUtils.draw2DColorWithShader(this.getBackgroundColor(),ShaderUtils.get2DColorShaderConfig(),vao);
         }
         if(this.getBackgroundImage()!=null){
             /*if(this.background_image.equals("toolbar")){
         		System.out.println("toolbar render");
         	}*/
-            ShaderUtils.draw2dImg(this.getBackgroundImage(), getInnerX(),getInnerY(),getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
+            ShaderUtils.draw2dImg(this.getBackgroundImage(), getInnerX(),getInnerY(),this.index+0.003f,getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
             //ShaderUtils.draw2DImageWithShader(ShaderUtils.get2DImageShaderConfig(), vao);
             //OpenglUtils.draw2DImageShader(i);
             //OpenglUtils.draw2DImageShader(textureInfo.textureHandle,1,1,50,50);
@@ -522,20 +523,21 @@ public class HtmlObject implements Cloneable  {
 
         if(this.innerText!=null && innerText.length()>0){
             //GL11.glColor4f(1, 1, 1, 1);
-            ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.getFontSize());   OpenglUtils.checkGLError();
+            ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.001f,this.getFontSize());   OpenglUtils.checkGLError();
+
             //GLApp.print((int)minX,(int)minY,this.innerText);
         }
         if(this.borderLeft>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,borderLeft,height);   OpenglUtils.checkGLError();
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,index+0.004f,borderLeft,height);   OpenglUtils.checkGLError();
         }
         if(this.borderTop>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,width,borderTop);   OpenglUtils.checkGLError();
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY,index+0.004f,width,borderTop);   OpenglUtils.checkGLError();
         }
         if(this.borderRight>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX+width-borderRight,posY,borderRight,height);   OpenglUtils.checkGLError();
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX+width-borderRight,posY,index+0.004f,borderRight,height);   OpenglUtils.checkGLError();
         }
         if(this.borderBottom>0){
-            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY+height-borderBottom,width,borderBottom);   OpenglUtils.checkGLError();
+            ShaderUtils.draw2dColor(this.getBorderColor(),posX,posY+height-borderBottom,index+0.004f,width,borderBottom);   OpenglUtils.checkGLError();
         }
 
         for(HtmlObject htmlObject:this.childNodes){
@@ -1548,7 +1550,7 @@ public class HtmlObject implements Cloneable  {
      * Called when this widget has gained the keyboard focus.
      * The default implementation does nothing.
      *
-     * @see #keyboardFocusGained(de.matthiasmann.twl.FocusGainedCause, de.matthiasmann.twl.Widget)
+     * @see //#keyboardFocusGained(de.matthiasmann.twl.FocusGainedCause, de.matthiasmann.twl.Widget)
      */
     protected void keyboardFocusGained() {
     }
@@ -1642,6 +1644,10 @@ public class HtmlObject implements Cloneable  {
 
 
     public void recursivelySetGUI(Document  doc) {
+        if(this.getParentNode()!=null){
+            this.index= getParentNode().index-0.01f;
+        }
+
         assert guiInstance == null : "guiInstance must be null";
         guiInstance = doc;
         if(childNodes != null) {
@@ -1726,6 +1732,36 @@ public class HtmlObject implements Cloneable  {
         }
         return false;
     }
+
+    protected void addActionMapping(String action, String methodName, Object ... params) {
+        getOrCreateActionMap().addMapping(action, this, methodName, params, ActionMap.FLAG_ON_PRESSED);
+    }
+
+    public ActionMap getOrCreateActionMap() {
+        if(actionMap == null) {
+            actionMap = new ActionMap();
+        }
+        return actionMap;
+    }
+
+    /**
+     * Returns the current input map.
+     * @return the current input map or null.
+     */
+    public InputMap getInputMap() {
+        return inputMap;
+    }
+
+    /**
+     * Sets the input map for key strokes.
+     *
+     * @param inputMap the input map or null.
+     * @see #handleKeyStrokeAction(java.lang.String, de.matthiasmann.twl.Event)
+     */
+    public void setInputMap(InputMap inputMap) {
+        this.inputMap = inputMap;
+    }
+
 }
 
 

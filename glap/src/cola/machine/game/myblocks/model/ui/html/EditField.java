@@ -1,8 +1,8 @@
 package cola.machine.game.myblocks.model.ui.html;
 
 import com.dozenx.game.opengl.util.ShaderUtils;
-import de.matthiasmann.twl.Event;
-import de.matthiasmann.twl.Menu;
+import com.sun.glass.events.KeyEvent;
+import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.model.DefaultEditFieldModel;
 import de.matthiasmann.twl.model.EditFieldModel;
 import de.matthiasmann.twl.renderer.*;
@@ -25,7 +25,7 @@ public class EditField extends TextField {
     int selectionStart;
     int selectionEnd;
     int numberOfLines;
-    boolean multiLine;
+   public  boolean multiLine;
     boolean pendingScrollToCursor;
     boolean pendingScrollToCursorForce;
     private int maxTextLength = Short.MAX_VALUE;
@@ -43,6 +43,19 @@ public class EditField extends TextField {
     }
     public EditField(){
         this.canAcceptKeyboardFocus=true;
+        addActionMapping("cut", "cutToClipboard");
+        addActionMapping("copy", "copyToClipboard");
+        addActionMapping("paste", "pasteFromClipboard");
+        addActionMapping("selectAll", "selectAll");
+        addActionMapping("duplicateLineDown", "duplicateLineDown");
+
+        KeyStroke[] keys =  new KeyStroke[]{KeyStroke.parse("ctrl X","cut"),
+                KeyStroke.parse("ctrl C","copy"),
+                KeyStroke.parse("ctrl V","paste"),
+                KeyStroke.parse("ctrl A","selectAll")};
+        InputMap inputMap =new InputMap(keys);
+        this.setInputMap(inputMap);
+        //(int modifier, int keyCode, char keyChar, String action) {
     }
 
     void setText(String text, boolean fromModel) {
@@ -293,14 +306,55 @@ public class EditField extends TextField {
         }
     }
     @Override
-    public void shaderRender(){
+    public void shaderRender(){//你好
+     //  this.setMarginTop( (short)(this.getMarginTop()+10));
+       // this.setMarginLeft( (short)(this.getMarginLeft()+10));
         this.innerText =editBuffer.toString();
+
         super.shaderRender();
-    if(selectionStart!=selectionEnd){
-        ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),200+this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),(selectionEnd-selectionStart)*(int)getFontSize(),(int)this.getFontSize());
-    }else{
-        ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),200+this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),10,(int)this.getFontSize());
-    }
+        //绘制鼠标
+        if(multiLine){
+           /* String[] ss = innerText.split("\n");
+            int count =0;
+            for(String s:ss){
+                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.cursorPos*this.getFontSize()),this.getInnerY(),10,(int)this.getFontSize());
+                count++;
+
+            }*/
+                if(selectionStart!=selectionEnd){
+
+                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),index+0.0008f,(selectionEnd-selectionStart)*(int)getFontSize(),(int)this.getFontSize());
+                    //这里涉及到了分段
+                    //开始的选中位置
+                    //多段集合 每个集合都标明了 开始结束位置
+                    //linestart lineend
+                    //this.computeLineStart()
+            }else{
+                int preY  =0;
+                int preX =0;
+                int start=0;
+                preY=0;
+                String s= editBuffer.substring(0,this.cursorPos);
+                    int thieLineStart =0;
+                int totalLen=0;
+                while((start=s.indexOf('\n',start+1))!=-1){
+                    thieLineStart= start;
+                    preY++;
+                   // s= s.substring(start);
+                    //totalLen+=start;
+                }
+                preX = this.cursorPos-thieLineStart;
+
+                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(preX*this.getFontSize()),(int)(this.getInnerY()+preY*getFontSize()),index+0.0008f,10,(int)this.getFontSize());
+            }
+        }else{
+            if(selectionStart!=selectionEnd){
+                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),index+0.0008f,(selectionEnd-selectionStart)*(int)getFontSize(),(int)this.getFontSize());
+            }else{
+                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.cursorPos*this.getFontSize()),this.getInnerY(),index+0.0008f,10,(int)this.getFontSize());
+            }
+        }
+
 
     }
     final EditFieldModel editBuffer =new DefaultEditFieldModel();
@@ -453,6 +507,7 @@ public class EditField extends TextField {
         return (int) ((cursorPos-lineStart)*getFontSize());
        // return textRenderer.computeRelativeCursorPositionX(lineStart, cursorPos);
     }
+
     protected int computeLineStart(int cursorPos) {
         if(!multiLine) {
             return 0;
@@ -469,4 +524,122 @@ public class EditField extends TextField {
         selectionEnd = editBuffer.length();
         updateSelection();
     }
+
+    public void pasteFromClipboard() {
+        String cbText = Clipboard.getClipboard();
+        if(cbText != null) {
+            if(!multiLine) {
+                cbText = TextUtil.stripNewLines(cbText);
+            }
+            insertText(cbText);
+        }
+    }
+    public String getSelectedText() {
+        return editBuffer.substring(selectionStart, selectionEnd);
+    }
+    public String getText() {
+        return editBuffer.toString();
+    }
+    public void copyToClipboard() {
+        String text;
+        if(hasSelection()) {
+            text = getSelectedText();
+        } else {
+            text = getText();
+        }
+        if(isPasswordMasking()) {
+            text = TextUtil.createString(passwordChar, text.length());
+        }
+        Clipboard.setClipboard(text);
+    }
+    static class PasswordMasker implements CharSequence {
+        final CharSequence base;
+        final char maskingChar;
+
+        public PasswordMasker(CharSequence base, char maskingChar) {
+            this.base = base;
+            this.maskingChar = maskingChar;
+        }
+
+        public int length() {
+            return base.length();
+        }
+
+        public char charAt(int index) {
+            return maskingChar;
+        }
+
+        public CharSequence subSequence(int start, int end) {
+            throw new UnsupportedOperationException("Not supported.");
+        }
+    }
+    private PasswordMasker passwordMasking;
+    public boolean isPasswordMasking() {
+        return passwordMasking != null;
+    }
+    public void insertText(String str) {
+        if(!readOnly) {
+            boolean update = false;
+            if(hasSelection()) {
+                deleteSelection();
+                update = true;
+            }
+            int insertLength = Math.min(str.length(), maxTextLength - editBuffer.length());
+            if(insertLength > 0) {
+                int inserted = editBuffer.replace(cursorPos, 0, str.substring(0, insertLength));
+                if(inserted > 0) {
+                    cursorPos += inserted;
+                    update = true;
+                }
+            }
+            if(update) {
+                updateText(true, false, Event.KEY_NONE);
+            }
+        }
+    }
+
+    public void cutToClipboard() {
+        String text;
+        if(!hasSelection()) {
+            selectAll();
+        }
+        text = getSelectedText();
+        if(!readOnly) {
+            deleteSelection();
+            updateText(true, false, Event.KEY_DELETE);
+        }
+        if(isPasswordMasking()) {
+            text = TextUtil.createString(passwordChar, text.length());
+        }
+        Clipboard.setClipboard(text);
+    }
+
+    public void duplicateLineDown() {
+        if(multiLine && !readOnly) {
+            int lineStart, lineEnd;
+            if(hasSelection()) {
+                lineStart = selectionStart;
+                lineEnd   = selectionEnd;
+            } else {
+                lineStart = cursorPos;
+                lineEnd   = cursorPos;
+            }
+            lineStart = computeLineStart(lineStart);
+            lineEnd   = computeLineEnd(lineEnd);
+            String line = editBuffer.substring(lineStart, lineEnd);
+            line = "\n".concat(line);
+            editBuffer.replace(lineEnd, 0, line);
+            setCursorPos(cursorPos + line.length());
+            updateText(true, false, Event.KEY_NONE);
+        }
+    }
+
+    public void setCursorPos(int pos) {
+        if(pos < 0 || pos > editBuffer.length()) {
+            throw new IllegalArgumentException("pos");
+        }
+        setCursorPos(pos, false);
+    }
+
+
 }

@@ -1,5 +1,8 @@
 #version 330 core
 in vec2 TexCoord;
+
+
+in vec4 ourcolor;
 flat in float ourTextureIndex;
 out vec4 color;
 
@@ -14,6 +17,10 @@ uniform sampler2D ourTexture7;
 uniform sampler2D ourTexture8;
 void main()
 {
+    if(ourTextureIndex==-1){
+            color = ourcolor;
+
+    }else
      if(ourTextureIndex==0){
             color = texture(ourTexture0, TexCoord);
 
@@ -37,4 +44,5 @@ void main()
     }else{
        color = vec4(0.5,0.5,0.5,1);
     }
+    color.w=1;
 }
