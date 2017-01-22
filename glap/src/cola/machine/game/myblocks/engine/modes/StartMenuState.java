@@ -91,7 +91,7 @@ Document document =new Document();
         //div.setId("bag");
         //document.body.appendChild(div3);
         //document.body.appendChild(div2);
-        document.body.appendChild(div);
+        //document.body.appendChild(div);
         div.appendChild(div3);
         div.appendChild(div2);
         //div.margin="0 auto";

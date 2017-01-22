@@ -1,6 +1,7 @@
 package com.dozenx.game.font;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.util.UUIDUtil;
@@ -129,12 +130,13 @@ public class FontUtil {
         }
     }
     private static Random random = new Random();
-    private static Font getFont(){
-        return new Font("Fixedsys",Font.CENTER_BASELINE,24);
+    private static Font getFont(int fontSize){
+        return new Font("Fixedsys",Font.CENTER_BASELINE,fontSize);
     }
     private static int rotate_value=5;//摇摆幅度
     private static void drawString(Graphics2D  g,char car,int i) {
-        g.setFont(getFont());
+        int fontSize =25;
+        g.setFont(getFont(fontSize));
         g.setColor(new Color(random.nextInt(101), random.nextInt(111), random.nextInt(121)));
         int rotateAngle = random.nextInt(rotate_value * 2) - rotate_value;
         //g.translate(random.nextInt(3), random.nextInt(3));
@@ -160,7 +162,7 @@ public class FontUtil {
         /*for(int i=1;i<=str.length();i++){
             drawString(g,str.charAt(i-1),i);
         }*/
-        g.setFont(getFont());
+        g.setFont(getFont(18));
         g.setColor(new Color(random.nextInt(101), random.nextInt(111), random.nextInt(121)));
         int rotateAngle = random.nextInt(rotate_value * 2) - rotate_value;
         //g.translate(random.nextInt(3), random.nextInt(3));
@@ -193,20 +195,22 @@ public class FontUtil {
         //return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",str,result};
     }
     public static void drawAllCharacterInOneJpg(List<Character> list){
-        float fontSize =24;
-        int color =0x123566;
+        int fontSize =30;
+       // int color =0x123566;
         int count =list.size();
         String out = new File("").getAbsolutePath();
         //out+"/fontawesome-webfont.ttf";//
         String name ="zhongwen.png";
        // int padding =2;
-        int w_num=24;
+        int colNum=24;
+        int rowNum=count / colNum;
         int charSize =(int)fontSize;//(int ) (padding*2+fontSize);
-        int imgSize=charSize*w_num;
-        BufferedImage image =new BufferedImage(imgSize,charSize*count/w_num, BufferedImage.TYPE_INT_ARGB);
+        int imgWidth=charSize*colNum;
+        int imgHeight = rowNum* charSize;
+        BufferedImage image =new BufferedImage(imgWidth,imgHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         //Font font =loadFont(fontPath,fontSize);
-        g.setFont(getFont());
+        g.setFont(getFont(fontSize));
 
         //g.setFont(new Font("Times New Roman",Font.ROMAN_BASELINE,18));
         //g.setColor(new Color(color,true));
@@ -233,28 +237,30 @@ public class FontUtil {
         for(Character  car : list){
 
 
-            i++;
 
-            x_offset= i%w_num*charSize;
-            y_offset= i /w_num*charSize;
+
+            x_offset= i%colNum*fontSize;
+            y_offset= i /colNum*fontSize;
             Glyph glyph= new Glyph((int)fontSize,(int)fontSize,x_offset,y_offset);
             glyphMap.put(car,glyph);
-            if(i /w_num>=count/w_num){
+            if(i /colNum>=rowNum){
                 break;
 
             }
-            ttf2jpg(car, g, x_offset, y_offset);
+            ttf2jpg(car, g, x_offset, y_offset,fontSize);
             sb.append(car).append(" ").append(x_offset).append(" ").append(y_offset).append(" ").append(charSize).append(" ").append(charSize).append("\r\n");
+            i++;
         }
         try {
-            FileUtil.writeFile(new File("cn.txt"), sb.toString());
+            LogUtil.println(PathManager.getInstance().getInstallPath().resolve("wordLocation.txt").toString());
+            FileUtil.writeFile(PathManager.getInstance().getInstallPath().resolve("wordLocation.txt").toFile(), sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
         g.dispose();
         FileOutputStream fos =null;
         try{
-            fos =new FileOutputStream(out+"/"+name);
+            fos =new FileOutputStream(PathManager.getInstance().getHomePath().resolve(name).toFile());
             ImageIO.write(image,"png",fos);
             fos.close();
         }catch(Exception e){
@@ -262,13 +268,13 @@ public class FontUtil {
         }
 
     }
-    public static void ttf2jpg(char car , Graphics g,int x,int y){
+    public static void ttf2jpg(char car , Graphics g,int x,int y,int fontHeight){
        // System.out.println("x:"+x+" y:"+y);
        // g.translate(x,y);
         //g.translate(13 * i + _x, 16 + _y);
         //g.drawString(car + "啊", x, y);
         //g.translate(-x,-y);
-            g.drawString(car + "", x, y+24);
+            g.drawString(car + "", x, y+fontHeight);
 
 
 
@@ -329,7 +335,7 @@ public class FontUtil {
     public static HashMap<Character,Glyph> readGlyph(){
         HashMap<Character,Glyph> map =new HashMap<>();
         try {
-            List<String> lines= FileUtil.readFile2List(PathManager.getInstance().getHomePath().resolve("cn.txt").toString());
+            List<String> lines= FileUtil.readFile2List(PathManager.getInstance().getInstallPath().resolve("wordLocation.txt").toString());
             for(String line:lines){
                String[] ary = line.split(" ");
                 map.put(ary[0].charAt(0),new Glyph(Integer.valueOf(ary[1]),Integer.valueOf(ary[2]),Integer.valueOf(ary[3]),Integer.valueOf(ary[4])));

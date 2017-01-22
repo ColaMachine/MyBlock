@@ -46,7 +46,7 @@ public class FileUtil {
             }
 
             //true = append file
-            FileWriter fileWritter = new FileWriter(file.getName(), true);
+            FileWriter fileWritter = new FileWriter(file, false);
             BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
             bufferWritter.write(content);
             bufferWritter.close();

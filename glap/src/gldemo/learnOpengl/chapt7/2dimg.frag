@@ -44,5 +44,7 @@ void main()
     }else{
        color = vec4(0.5,0.5,0.5,1);
     }
+    if(color.a<0.1)
+    discard;
     color.w=1;
 }

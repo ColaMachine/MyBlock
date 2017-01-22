@@ -1037,12 +1037,12 @@ try {
         GL_Vector p3 = new GL_Vector(left+_width,top,z);
         GL_Vector p4 = new GL_Vector(left,top,z);
         int index = ShaderUtils.getTextureIndex(ti.textureHandle);
-        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(0.5f);
-        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(0).put(0).put(0).put(0.5f);
-        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0.5f);
-        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0.5f);
-        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(0.5f);
-        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0.5f);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(1);
+        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(0).put(0).put(0).put(1);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(1);
+        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(0).put(0).put(0).put(1);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(1);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(1);
     }
 
 
@@ -1058,12 +1058,12 @@ try {
         GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
         GL_Vector p3 = new GL_Vector(left+_width,top,z);
         GL_Vector p4 = new GL_Vector(left,top,z);
-        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
-        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
-        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
-        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
-        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
-        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(0);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(1);
+        twoDImgBuffer.put(p2.x).put(p2.y).put(p2.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(1);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(1);
+        twoDImgBuffer.put(p4.x).put(p4.y).put(p4.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(1);
+        twoDImgBuffer.put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(1);
+        twoDImgBuffer.put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(1);
     }
 
     public static void draw2dBorder(Vector4f color, int posX, int posY, int width, int height) {
@@ -1106,12 +1106,13 @@ try {
                 preX+=fontSize;
             }
             Glyph location = FontUtil.zhongwenMap.get(ch);
-            float height =2566;
+            float height =ti.texture.getHeight();
+            float width = ti.texture.getWidth();
             if(location!=null){
-                ti.minX=location.x/ti.owidth;
-                ti.minY=(height-location.y-location.height-2)/height;
-                ti.maxX=(location.x+location.width)/height;
-                ti.maxY=(height-location.y-2)/height;
+                ti.minX=location.x/width;
+                ti.minY=(height-location.y-location.height)/height;
+                ti.maxX=(location.x+location.width)/width;
+                ti.maxY=(height-location.y)/height;
                 ShaderUtils.draw2dImg(new Image(ti), innerX+preX,innerY+preY,z,(int)fontSize,(int)fontSize);   OpenglUtils.checkGLError();
             }
 
