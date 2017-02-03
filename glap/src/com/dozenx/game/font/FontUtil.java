@@ -8,8 +8,11 @@ import com.dozenx.util.UUIDUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -131,20 +134,26 @@ public class FontUtil {
     }
     private static Random random = new Random();
     private static Font getFont(int fontSize){
-        return new Font("Fixedsys",Font.CENTER_BASELINE,fontSize);
+        return new Font("宋体",Font.PLAIN,fontSize);
     }
     private static int rotate_value=5;//摇摆幅度
     private static void drawString(Graphics2D  g,char car,int i) {
-        int fontSize =25;
+        int fontSize =10;
         g.setFont(getFont(fontSize));
         g.setColor(new Color(random.nextInt(101), random.nextInt(111), random.nextInt(121)));
         int rotateAngle = random.nextInt(rotate_value * 2) - rotate_value;
         //g.translate(random.nextInt(3), random.nextInt(3));
         int _x = random.nextInt(3);
         int _y = random.nextInt(3);
+        AttributedString ats = new AttributedString(car+"");
+        ats.addAttribute(TextAttribute.FONT, getFont(18), 0, 1);
+        AttributedCharacterIterator iter = ats.getIterator();
+                          /* 添加水印的文字和设置水印文字出现的内容 ----位置 */
+
         g.translate(13 * i + _x, 16 + _y);
         g.rotate(rotateAngle * Math.PI / 180);
-        g.drawString(car + "", 0, 0);
+      //  g.drawString(iter, width - w, height - h);
+        g.drawString(iter, 0, 0);
         g.rotate(-rotateAngle * Math.PI / 180);
         g.translate(-13 * i - _x, -16 - _y);
         // g.drawString(rand,13*i, 16);
@@ -215,16 +224,11 @@ public class FontUtil {
         //g.setFont(new Font("Times New Roman",Font.ROMAN_BASELINE,18));
         //g.setColor(new Color(color,true));
 
-       /* FontMetrics fm =g.getFontMetrics();
-        int stringWidth =fm.stringWidth("你");
-        int stringAscent = fm.getAscent();//上升
-        int stringDecent = fm.getDescent();//下降
-        int x = image.getWidth()/2 -stringWidth/2;
-        int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;*/
+        FontMetrics fm =g.getFontMetrics();
+
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, image.getWidth(), image.getHeight());
-       g.setColor(Color.BLUE);
-
+        g.setColor(Color.BLUE);
         //g.drawString("啊",x,y);
         // ImageUtil.compressForFix("/Users/luying/Documents/workspace/calendar/src/main/webapp/static/img/a0.jpg");
         //Iterator it = glyphMap.entrySet().iterator();
@@ -234,20 +238,30 @@ public class FontUtil {
         HashMap<Character,Glyph> glyphMap =new HashMap<Character,Glyph>();
         StringBuffer sb =new StringBuffer();
 
+       /* AttributedString ats = new AttributedString(car+"");
+        ats.addAttribute(TextAttribute.FONT, getFont(fontHeight), 0, 1);
+        ats.addAttribute(TextAttribute.KERNING,0);
+        AttributedCharacterIterator iter = ats.getIterator();*/
+
         for(Character  car : list){
 
+            int stringWidth =fm.stringWidth(car+"");
+            int stringHeight = fm.getHeight();
+            int stringAscent = fm.getAscent();//上升
+            int stringDecent = fm.getDescent();//下降
+           // int stringWidth = stringWidth/2;
 
-
+            int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;
 
             x_offset= i%colNum*fontSize;
             y_offset= i /colNum*fontSize;
-            Glyph glyph= new Glyph((int)fontSize,(int)fontSize,x_offset,y_offset);
+            Glyph glyph= new Glyph((int)x_offset,(int)y_offset,stringWidth,stringHeight);
             glyphMap.put(car,glyph);
             if(i /colNum>=rowNum){
                 break;
-
             }
-            ttf2jpg(car, g, x_offset, y_offset,fontSize);
+
+            ttf2jpg(car, g, x_offset, y_offset,stringAscent);
             sb.append(car).append(" ").append(x_offset).append(" ").append(y_offset).append(" ").append(charSize).append(" ").append(charSize).append("\r\n");
             i++;
         }
@@ -274,7 +288,12 @@ public class FontUtil {
         //g.translate(13 * i + _x, 16 + _y);
         //g.drawString(car + "啊", x, y);
         //g.translate(-x,-y);
-            g.drawString(car + "", x, y+fontHeight);
+       AttributedString ats = new AttributedString(car+"");
+        ats.addAttribute(TextAttribute.FONT, getFont(fontHeight), 0, 1);
+        ats.addAttribute(TextAttribute.KERNING,0);
+        AttributedCharacterIterator iter = ats.getIterator();
+
+            g.drawString(iter, x, y+fontHeight);
 
 
 
@@ -312,7 +331,7 @@ public class FontUtil {
                     String[] ary = line.split(" ");
                     for(int i=0;i<ary.length;i++){
                         list.add(Character.valueOf(ary[i].trim().charAt(0)));
-                        System.out.println(ary[i]);
+                        //System.out.println(ary[i]);
                     }
 
                 }
