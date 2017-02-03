@@ -1,72 +1,30 @@
 package cola.machine.game.myblocks.engine.modes;
 
-import cola.machine.game.myblocks.action.BagController;
-import cola.machine.game.myblocks.animation.AnimationManager;
-import cola.machine.game.myblocks.config.Config;
-import cola.machine.game.myblocks.control.DropControlCenter;
-import cola.machine.game.myblocks.control.MouseControlCenter;
+import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.NuiManager;
-import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.html.*;
-import cola.machine.game.myblocks.network.Client;
-import cola.machine.game.myblocks.network.SynchronTask;
-import cola.machine.game.myblocks.persistence.StorageManager;
-import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
-import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.rendering.world.WorldRenderer;
-import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
-import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.login.LoginDemo;
-import cola.machine.game.myblocks.world.WorldProvider;
-import cola.machine.game.myblocks.world.block.BlockManager;
-import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
-import cola.machine.game.myblocks.world.chunks.ChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
-import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
-import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
-import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import de.matthiasmann.twl.GUI;
+import de.matthiasmann.twl.Timer;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
-import glapp.GLApp;
-import glapp.GLCamera;
-import glapp.GLImage;
-import gldemo.learnOpengl.chapt13.LearnOpenglColor;
-import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.Util;
-import org.lwjgl.util.glu.GLU;
 
-import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
-import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class StartMenuState implements GameState {
@@ -76,15 +34,47 @@ public class StartMenuState implements GameState {
     GUI gui;
 Document document =new Document();
     public void init(GameEngine engine) {
+        TextureManager textureManager =new TextureManager();
+
+        ShaderManager manager = new ShaderManager();
+        manager.init();
+       // manager.createProgram(manager.uiShaderConfig);
+        //manager.initUniform(manager.uiShaderConfig);
         document.setWidth(Constants.WINDOW_WIDTH);
         document.setHeight(Constants.WINDOW_HEIGHT);
         document.body.setWidth(Constants.WINDOW_WIDTH);
         document.body.setHeight(Constants.WINDOW_HEIGHT);
-        TextureManager textureManager =new TextureManager();
 
-        Div div3 =new Div();div3.setId("3");
-        Div div2 =new Div();div2.setId("2");
+
+        Div div2=new Div();
+        Div div3=new Div();
+       // document.body.appendChild(div2);
+        //document.body.appendChild(div3);
+
         Div div =new Div();div.setId("1");
+        div.setMarginLeft((short)(Constants.WINDOW_WIDTH/2-100));
+        div.setMarginTop((short)(Constants.WINDOW_HEIGHT/2-50));
+        div.appendChild(new Label("用户名:"));
+        div.appendChild(new EditField());
+        div.appendChild(new Br());
+        div.appendChild(new Label("密码:"));
+        div.appendChild(new EditField());
+
+        div.appendChild(new Br());
+        Button button =new Button();
+        button.innerText="登录";
+        button.setWidth(100);
+        button.addCallback(new Runnable() {
+            @Override
+            public void run() {
+                emulateLogin();
+                LogUtil.println("nihao");
+            }
+        });
+       // button.setHeight(30);
+        //button.setBackgroundColor(new Vector4f(1,1,1,0));
+        div.appendChild(button);
+        document.body.appendChild(div);
        // div=new Div();
        // bag =new Bag();
 
@@ -92,7 +82,7 @@ Document document =new Document();
         //document.body.appendChild(div3);
         //document.body.appendChild(div2);
         //document.body.appendChild(div);
-        div.appendChild(div3);
+       /* div.appendChild(div3);
         div.appendChild(div2);
         //div.margin="0 auto";
        // div.setWidth(100);
@@ -104,7 +94,7 @@ Document document =new Document();
         div3.setFontSize(24);
         //div.bottom=100;
         div.setBorderWidth(10);
-       div.setInnerText("一行白鹭路上青天");
+       div.setInnerText("一行白鹭路上青天");*/
         //div.background_image="soil";
         //TextureInfo batTexture= TextureManager.getTextureInfo("soil");
        // div.set(new Vector4f(1,0.5f,0.5f,1));
@@ -113,7 +103,9 @@ Document document =new Document();
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
         //div.update();
 
-        EditField editField =new EditField();
+      /*  EditField editField =new EditField();
+        //Image image = TextureManager.createImage("");
+        //editField.setBackgroundImage(new GridImage());
         editField.setWidth(100);
         editField.multiLine =true;
        editField.setBackgroundColor(new Vector4f(1,0.85f,0.85f,1));
@@ -125,7 +117,7 @@ Document document =new Document();
         editField.display=HtmlObject.BLOCK;
         editField.setBorderWidth(10);
         document.body.appendChild(editField);
-        editField.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
+        editField.setBorderColor(new Vector4f(1,0.5f,0.5f,1));*/
 
         //div.margin="0 auto";
         div2.setWidth(100);
@@ -184,7 +176,7 @@ if(!Switcher.SHADER_ENABLE) {
         }   OpenglUtils.checkGLError();
 
         //ShaderUtils.twoDColorBuffer.rewind();   OpenglUtils.checkGLError();
-        ShaderUtils.twoDImgBuffer.rewind();   OpenglUtils.checkGLError();
+        ShaderManager.uiShaderConfig.getVao().getVertices().rewind();   OpenglUtils.checkGLError();
         // this.setPerspective();
         document.shaderRender();
         //div.shaderRender();   OpenglUtils.checkGLError();
@@ -192,7 +184,7 @@ if(!Switcher.SHADER_ENABLE) {
         //div3.shaderRender();   OpenglUtils.checkGLError();
         //bag.shaderRender();
 
-        ShaderUtils.update2dImageVao();   OpenglUtils.checkGLError();
+        ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);   OpenglUtils.checkGLError();
        // ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
@@ -246,7 +238,7 @@ if(!Switcher.SHADER_ENABLE) {
             document.recursivelySetGUI(document);
 
             //ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
-            ShaderUtils.twoDImgBuffer.clear();   OpenglUtils.checkGLError();
+            //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
 
             // this.setPerspective();
             document.shaderRender();
@@ -254,7 +246,7 @@ if(!Switcher.SHADER_ENABLE) {
             // div2.shaderRender();   OpenglUtils.checkGLError();
             //div3.shaderRender();   OpenglUtils.checkGLError();
             //bag.shaderRender();
-            ShaderUtils.update2dImageVao();   OpenglUtils.checkGLError();
+            ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);   OpenglUtils.checkGLError();
           //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
 
             Document.needUpdate=false;
@@ -282,13 +274,60 @@ if(!Switcher.SHADER_ENABLE) {
         //  GLApp.drawRect(1,1,50,50);
        /* count++;
         if(count<1000)*/
-        ShaderUtils.finalDraw2DImage();
+        ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
+        ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig);//2DImage
+        ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);//2DImage
+        ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);//2DImage
         //ShaderUtils.finalDraw2DColor();
 
 
     }
    // int count =10;
+   void emulateLogin() {
+       if(BlockEngine.engine!=null ){
+           BlockEngine.engine.changeState(new GamingState());}
+       else {
+           NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
+           nuiManager.startGame();
+       }
+      /* GUI gui = getGUI();
+       if(gui != null) {
+           // step 1: disable all controls
+           efName.setEnabled(false);
+           efPassword.setEnabled(false);
+           btnLogin.setEnabled(false);
 
+           // step 2: get name & password from UI
+           String name = efName.getText();
+           String pasword = efPassword.getText();
+           System.out.println("Name: " + name + " with a " + pasword.length() + " character password");
+
+           Constants.userName = name;
+           //Client client =CoreRegistry.get(Client.class);
+           //client.send("newborn:1,1,1,1,1");
+           //UserService action =new UserAction();
+           // action.
+           // step 3: start a timer to simulate the process of talking to a remote server
+           Timer timer = gui.createTimer();
+           timer.setCallback(new Runnable() {
+               public void run() {
+                   // once the timer fired re-enable the controls and clear the password
+                   efName.setEnabled(true);
+                   efPassword.setEnabled(true);
+                   efPassword.setText("");
+                   efPassword.requestKeyboardFocus();
+                   btnLogin.setEnabled(true);
+               }
+           });
+           timer.setDelay(2500);
+           timer.start();
+
+            *//* NOTE: in a real app you would need to keep a reference to the timer object
+             * to cancel it if the user closes the dialog which uses the timer.
+             * @see Widget#beforeRemoveFromGUI(de.matthiasmann.twl.GUI)
+             *//*
+       }*/
+   }
     @Override
     public boolean isHibernationAllowed() {
         return false;

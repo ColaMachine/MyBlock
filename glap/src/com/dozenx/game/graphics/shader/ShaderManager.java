@@ -2,18 +2,24 @@ package com.dozenx.game.graphics.shader;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.StringUtil;
 import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Util;
 
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -23,14 +29,58 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
  * Created by luying on 16/11/14.
  */
 public class ShaderManager {
-    public void init(){
-        this.CreateTerrainProgram();
-       // this.CreateTerrainVAO();
-        this.uniformTerrian();
+    //Vao terrainVao = new Vao();
 
-        this.CreateLightProgram();
-        this.CreateLightVAO();
-        this.uniformLight();
+    /*public  int terrainProgramId;
+    public  int VaoId;
+    public  int VboId;
+    public  int viewPosLoc;
+    public  int LightProgramId;
+    public  int viewLoc;//glGetUniformLocation(ProgramId,"view");
+    public  int lightViewLoc;// glGetUniformLocation(LightProgramId,"view");
+    */
+
+    /*int lightColorLoc;
+   int lightPosInTerrainLoc;
+   int lightPosLoc;*/
+
+
+    public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain","chapt16/box.frag","chapt16/box.vert");
+    public static ShaderConfig lightShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
+
+    public static ShaderConfig uiShaderConfig = new ShaderConfig("living","chapt7/2dimg.frag","chapt7/2dimg.vert");
+    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
+
+    public HashMap<String,ShaderConfig> configMap =new HashMap<>();
+    public void registerConfig(ShaderConfig config) throws Exception {
+        if(StringUtil.isBlank(config.getName())){
+            throw new Exception("not allow shader config has no name!");
+        }
+        configMap.put(config.getName(),config);
+
+    }
+    public void init(){
+        //Vao terrainVao = new Vao();
+        this.createProgram(terrainShaderConfig);
+        terrainShaderConfig.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
+        this.createProgram(lightShaderConfig);
+        this.createProgram(uiShaderConfig);
+        this.createProgram(livingThingShaderConfig);
+       // this.CreateTerrainVAO();
+       // ShaderUtils.initProModelView(terrainShaderConfig);
+        //ShaderUtils.initProModelView(lightShaderConfig);
+        //ShaderUtils.initProModelView(livingThingShaderConfig);
+
+        this.initUniform(terrainShaderConfig);
+        this.initUniform(lightShaderConfig);
+        this.initUniform(livingThingShaderConfig);
+        this.initUniform(uiShaderConfig);
+        //this.createProgram(lightShaderConfig);
+        this.CreateLightVAO(lightShaderConfig);
+        this.CreateUiVAO(uiShaderConfig);
+        this.CreateTerrainVAO(terrainShaderConfig);
+        this.CreateLivingVAO(livingThingShaderConfig);
+        //this.uniformLight();
     }
 
 
@@ -38,14 +88,14 @@ public class ShaderManager {
 
 
        int  VaoId = glGenVertexArrays();
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
 
         glBindVertexArray(VaoId);
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
         this.CreateTerrainVBO123();
 
         glBindVertexArray(0);
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
     }
 
     public void CreateTerrainVBO123() {
@@ -106,15 +156,15 @@ public class ShaderManager {
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
 
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
         glEnableVertexAttribArray(0);
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
 
         glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * 4, 3 * 4);
 
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
         glEnableVertexAttribArray(1);
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
 
 
     }
@@ -122,32 +172,26 @@ public class ShaderManager {
     GL_Matrix projection = GL_Matrix.perspective3(45, 600 / 600, 1f, 1000.0f);
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 
-    public  int terrainProgramId;
-    public  int VaoId;
-    public  int VboId;
-    public  int viewPosLoc;
-    public  int LightProgramId;
-    public  int viewLoc;//glGetUniformLocation(ProgramId,"view");
-    public  int lightViewLoc;// glGetUniformLocation(LightProgramId,"view");
+
     public void lightPosChangeListener() {
 
-        glUseProgram(terrainProgramId);
+        glUseProgram(terrainShaderConfig.getProgramId());
 
-        glUniform3f(lightPosInTerrainLoc, GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
-        Util.checkGLError();
+        glUniform3f(terrainShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        OpenglUtils.checkGLError();
 
-        glUseProgram(LightProgramId);
+        glUseProgram(lightShaderConfig.getProgramId());
 
         GL_Matrix model = GL_Matrix.translateMatrix( GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
-        glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
-        Util.checkGLError();
+        glUniformMatrix4(lightShaderConfig.getModelLoc(), false, model.toFloatBuffer());
+        OpenglUtils.checkGLError();
 
 
     }
 
 
 
-    public void uniformTerrian() {
+    public void initUniform(ShaderConfig config ) {
         /*
         uniform mat4 projection;
         uniform mat4 view;
@@ -162,161 +206,652 @@ public class ShaderManager {
 
 
         //glUseProgram(ProgramId);
-        glUseProgram(terrainProgramId);
+        int programId =config.getProgramId();
+
+        glUseProgram(config.getProgramId());
         //unifrom赋值===========================================================
         //投影矩阵
-        int projectionLoc = glGetUniformLocation(terrainProgramId, "projection");
-        Util.checkGLError();
+        int projectionLoc = glGetUniformLocation(config.getProgramId(), "projection");
+        config.setProjLoc(projectionLoc);
+        OpenglUtils.checkGLError();
+
         glUniformMatrix4(projectionLoc, false, projection.toFloatBuffer());
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
 
         //相机位置
-        GL_Matrix view =
+        GL_Matrix view ;
+       if(GamingState.instance!=null)
+         view =
                 GL_Matrix.LookAt( GamingState.instance.camera.Position,  GamingState.instance.camera.ViewDir);
+        else{
+            view =GL_Matrix.LookAt( new GL_Vector( 0,0,4),  new GL_Vector( 0,0,-1));
+       }
         view.fillFloatBuffer(cameraViewBuffer);
-        viewLoc = glGetUniformLocation(terrainProgramId, "view");
-
-        Util.checkGLError();
+        int viewLoc = glGetUniformLocation(programId, "view");
+        config.setViewLoc(viewLoc);
+        OpenglUtils.checkGLError();
         glUniformMatrix4(viewLoc, false, view.toFloatBuffer());
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
 
 
         GL_Matrix model = GL_Matrix.rotateMatrix((float) (0 * 3.14 / 180.0), 0, 0);
-        int modelLoc = glGetUniformLocation(terrainProgramId, "model");
-        Util.checkGLError();
+        int modelLoc = glGetUniformLocation(programId, "model");
+        config.setModelLoc(modelLoc);
+        OpenglUtils.checkGLError();
         glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
 
 
-        viewLoc = glGetUniformLocation(terrainProgramId, "view");
-        Util.checkGLError();
-
+        /*viewLoc = glGetUniformLocation(terrainProgramId, "view");
+        OpenglUtils.checkGLError();
+        terrainShaderConfig.setViewLoc(viewLoc);*/
 
         //物体颜色
-        int objectColorLoc = glGetUniformLocation(terrainProgramId, "objectColor");
-        glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
-        Util.checkGLError();
+        int objectColorLoc = glGetUniformLocation(programId, "objectColor");
+        if(objectColorLoc>0){
+            config.setObejctColorLoc(objectColorLoc);
+            glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
+            OpenglUtils.checkGLError();
+        }
+
 
         //环境光颜色
 
        /*  lightColorLoc= glGetUniformLocation(ProgramId, "lightColor");
         glUniform3f(lightColorLoc,1.0f,1f,1f);
-        Util.checkGLError();*/
+        OpenglUtils.checkGLError();*/
+        int lightPosInTerrainLoc = glGetUniformLocation(programId, "light.position");
+        GL_Vector lightPos = new GL_Vector();
+        if(GamingState.instance==null){
 
-        lightPosInTerrainLoc = glGetUniformLocation(terrainProgramId, "light.position");
-        if (lightPosInTerrainLoc == -1) {
-            LogUtil.println("light.position not found ");
-            System.exit(1);
+        }else{
+            lightPos= GamingState.instance.lightPos;
         }
-        glUniform3f(lightPosInTerrainLoc,  GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
-        Util.checkGLError();
+        if (lightPosInTerrainLoc >0) {
+            config.setLightPosLoc(lightPosInTerrainLoc);
+           // LogUtil.println("light.position not found ");
+            //System.exit(1);
+            glUniform3f(lightPosInTerrainLoc,  lightPos.x,  lightPos.y,  lightPos.z);
+            OpenglUtils.checkGLError();
+        }
 
-        viewPosLoc = glGetUniformLocation(terrainProgramId, "viewPos");
-        if (viewPosLoc == -1) {
-            LogUtil.println("viewPos not found ");
-            System.exit(1);
+
+        int viewPosLoc = glGetUniformLocation(programId, "viewPos");//camerapos
+
+        if (viewPosLoc > 0) {
+            config.setViewPosLoc(viewPosLoc);
+            glUniform3f(viewPosLoc,  lightPos.x,  lightPos.y,  lightPos.z);
+            OpenglUtils.checkGLError();
         }
-        glUniform3f(viewPosLoc,  GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
-        Util.checkGLError();
+
 
 
         //int matAmbientLoc = glGetUniformLocation(ProgramId, "material.ambient");
         //int matDiffuseLoc = glGetUniformLocation(ProgramId, "material.diffuse");
-        int matSpecularLoc = glGetUniformLocation(terrainProgramId, "material.specular");
-        int matShineLoc = glGetUniformLocation(terrainProgramId, "material.shininess");
+        int matSpecularLoc = glGetUniformLocation(programId, "material.specular");
+        if(matSpecularLoc>0){
+            glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+        }
 
+        int matShineLoc = glGetUniformLocation(programId, "material.shininess");
+        if(matShineLoc>0){
+            glUniform1f(matShineLoc, 32.0f);//光斑大小
+        }
         //glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
         //glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
-        glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
-        glUniform1f(matShineLoc, 32.0f);
 
-        int lightMatAmbientLoc = glGetUniformLocation(terrainProgramId, "light.ambient");
-        int lightMatDiffuseLoc = glGetUniformLocation(terrainProgramId, "light.diffuse");
-        int lightMatSpecularLoc = glGetUniformLocation(terrainProgramId, "light.specular");
-        int lightMatShineLoc = glGetUniformLocation(terrainProgramId, "light.shininess");
 
-        glUniform3f(lightMatAmbientLoc, 0.5f, 0.5f, 0.5f);
-        glUniform3f(lightMatDiffuseLoc, 0.5f, 0.5f, 0.5f);
-        glUniform3f(lightMatSpecularLoc, 0.5f, 0.5f, 0.5f);
-        glUniform1f(lightMatShineLoc, 32.0f);
 
-        glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
-        glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);
-        glUniform1f(glGetUniformLocation(terrainProgramId, "light.quadratic"), 0.017f);
+        int lightMatAmbientLoc = glGetUniformLocation(programId, "light.ambient");
+        if(lightMatAmbientLoc>0){
+            glUniform3f(lightMatAmbientLoc, 0.5f, 0.5f, 0.5f);
+        }
+        int lightMatDiffuseLoc = glGetUniformLocation(programId, "light.diffuse");
+        if(lightMatDiffuseLoc>0) {
+            glUniform3f(lightMatDiffuseLoc, 0.5f, 0.5f, 0.5f);
+        }
+        int lightMatSpecularLoc = glGetUniformLocation(programId, "light.specular");
+        if(lightMatSpecularLoc>0) {
+            glUniform3f(lightMatSpecularLoc, 0.5f, 0.5f, 0.5f);
+        }
+        int lightMatShineLoc = glGetUniformLocation(programId, "light.shininess");
+        if(lightMatSpecularLoc>0) {
+            glUniform1f(lightMatShineLoc, 32.0f);
+        }
+
+
+        int lightConstantLoc = glGetUniformLocation(programId, "light.constant");
+        if(lightConstantLoc>0) {
+            glUniform1f(lightConstantLoc, 1f);
+        }
+
+        int lightLinearLoc = glGetUniformLocation(programId, "light.linear");
+        if(lightLinearLoc>0) {
+            glUniform1f(lightLinearLoc, 0.07f);
+        }
+
+        int lightQuadraticLoc = glGetUniformLocation(programId, "light.quadratic");
+        if(lightQuadraticLoc>0) {
+            glUniform1f(lightQuadraticLoc, 0.017f);
+        }
+
+        //glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
+       // glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);
+        //glUniform1f(glGetUniformLocation(terrainProgramId, "light.quadratic"), 0.017f);
 
     }
 
-    int lightColorLoc;
-    int lightPosInTerrainLoc;
-    int lightPosLoc;
 
-    public int lightVaoId;
 
-    public void CreateTerrainProgram() {
+    public void createProgram(ShaderConfig  config) {
         try {
-            terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+            int programId = ShaderUtils.CreateProgram(config.getVertPath(),config.getFragPath());
+            config.setProgramId(programId);
+            //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
+    public static void addTestTerrainVao(){
+        terrainShaderConfig.addVao(new Vao("test"));
+        Vao vao =new Vao("test");
+        int x =0,y=0,z=-10 ;
+        TextureInfo ti = TextureManager.getTextureInfo("soil");
+        FloatBuffer veticesBuffer= vao.getVertices();
 
-    public void CreateLightProgram() {
-        try {
-            LightProgramId = ShaderUtils.CreateProgram("chapt13/light.vert", "chapt13/light.frag");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
+        // x += this.chunkPos.x * getChunkSizeX();
+        // z += this.chunkPos.z * getChunkSizeZ();
+        // this.faceIndex = 1;
+        // count++;//left front top
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+        veticesBuffer.put(x + 1); //left front right
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.minY);
+
+        veticesBuffer.put(x + 1);//left behind right
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.maxY);
+
+        veticesBuffer.put(x);
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z + 1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+
+        veticesBuffer.put(ti.minX);
+        veticesBuffer.put(ti.minY);
+
+
+        veticesBuffer.put(x + 1); //left behind right
+        veticesBuffer.put(y + 1);
+        veticesBuffer.put(z);
+        veticesBuffer.put(0);
+        veticesBuffer.put(1);
+        veticesBuffer.put(0);
+        veticesBuffer.put(ti.maxX);
+        veticesBuffer.put(ti.maxY);
     }
+    public static void CreateTerrainVAO(ShaderConfig  config) {
+        //config.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
+        glUseProgram(config.getProgramId());
+        //生成vaoid
+        //create vao
+        Vao vao =config.getVao();
 
-    public void CreateLightVAO() {
-        lightVaoId = glGenVertexArrays();
+        /*VaoId = glGenVertexArrays();
         Util.checkGLError();
 
-        glBindVertexArray(lightVaoId);
+        glBindVertexArray(VaoId);
         Util.checkGLError();
+        this.CreateTerrainVBO();
 
-        this.CreateLightVBO();
         glBindVertexArray(0);
         Util.checkGLError();
+        */
+        if(vao.getVaoId()>0){
+            glBindVertexArray(vao.getVaoId());
+            OpenglUtils.checkGLError();
+
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+            OpenglUtils.checkGLError();
+            glBindVertexArray(vao.getVaoId());
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+           /* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*/
+        }
+        //绑定vao
+
+        //create vbo
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+        int position = vao.getVertices().position();
+      /*  if(vao.getVertices().position()==0){
+
+        }*/
+        assert vao.getVertices().position()>0;
+        vao.setPoints(vao.getVertices().position()/8);
+        assert vao.getVaoId()>0;
+        assert vao.getVaoId()>0;
+        assert vao.getPoints()>0;
+        //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+        vao.getVertices().rewind();
+        // vao.setVertices(twoDImgBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+
+        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+        //create ebo
+        // float width = 1;
+        OpenglUtils.checkGLError();
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+
+
+
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * 4, 0);
+
+        Util.checkGLError();
+        glEnableVertexAttribArray(0);
+        Util.checkGLError();
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * 4, 3 * 4);
+        Util.checkGLError();
+        glEnableVertexAttribArray(1);
+        Util.checkGLError();
+
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, 8 * 4, 6 * 4);
+        Util.checkGLError();
+        glEnableVertexAttribArray(2);
+        Util.checkGLError();
+
+
+
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+    }
+
+    public void CreateLivingVAO(ShaderConfig config ) {
+
+
+        //生成vaoid
+        //create vao
+        Vao vao =config.getVao();
+        if(vao.getVaoId()>0){
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+            OpenglUtils.checkGLError();
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+           /* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*/
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        //create vbo
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+
+        int length =9;
+        int position = vao.getVertices().position();
+        if(vao.getVertices().position()==0){
+            int x =150,y=210,z=0 ;
+            TextureInfo ti = TextureManager.getTextureInfo("soil");
+            FloatBuffer veticesBuffer= vao.getVertices();
+
+            // x += this.chunkPos.x * getChunkSizeX();
+            // z += this.chunkPos.z * getChunkSizeZ();
+            // this.faceIndex = 1;
+            // count++;//left front top
+            veticesBuffer.put(x);
+            veticesBuffer.put(y + 1);
+            veticesBuffer.put(z + 1);
+            veticesBuffer.put(0);
+            veticesBuffer.put(1);
+            veticesBuffer.put(0);
+            veticesBuffer.put(ti.minX);
+            veticesBuffer.put(ti.minY);
+            veticesBuffer.put(0);
+
+            veticesBuffer.put(x + 1); //left front right
+            veticesBuffer.put(y + 1);
+            veticesBuffer.put(z + 1);
+            veticesBuffer.put(0);
+            veticesBuffer.put(1);
+            veticesBuffer.put(0);
+            veticesBuffer.put(ti.maxX);
+            veticesBuffer.put(ti.minY);
+            veticesBuffer.put(0);
+
+            veticesBuffer.put(x + 1);//left behind right
+            veticesBuffer.put(y + 1);
+            veticesBuffer.put(z);
+            veticesBuffer.put(0);
+            veticesBuffer.put(1);
+            veticesBuffer.put(0);
+            veticesBuffer.put(ti.maxX);
+            veticesBuffer.put(ti.maxY);
+            veticesBuffer.put(0);
+
+            veticesBuffer.put(x);
+            veticesBuffer.put(y + 1);
+            veticesBuffer.put(z);
+            veticesBuffer.put(0);
+            veticesBuffer.put(1);
+            veticesBuffer.put(0);
+
+            veticesBuffer.put(ti.minX);
+            veticesBuffer.put(ti.maxY);
+            veticesBuffer.put(0);
+
+            veticesBuffer.put(x);
+            veticesBuffer.put(y + 1);
+            veticesBuffer.put(z + 1);
+            veticesBuffer.put(0);
+            veticesBuffer.put(1);
+            veticesBuffer.put(0);
+
+            veticesBuffer.put(ti.minX);
+            veticesBuffer.put(ti.minY);
+            veticesBuffer.put(0);
+
+            veticesBuffer.put(x + 1); //left behind right
+            veticesBuffer.put(y + 1);
+            veticesBuffer.put(z);
+            veticesBuffer.put(0);
+            veticesBuffer.put(1);
+            veticesBuffer.put(0);
+            veticesBuffer.put(ti.maxX);
+            veticesBuffer.put(ti.maxY);
+            veticesBuffer.put(0);
+        }
+        vao.setPoints(vao.getVertices().position()/length);
+        //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+        vao.getVertices().rewind();
+        // vao.setVertices(twoDImgBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+        //create ebo
+        // float width = 1;
+        OpenglUtils.checkGLError();
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+
+
+
+
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, length * 4, 0);
+
+        Util.checkGLError();
+        glEnableVertexAttribArray(0);
+        Util.checkGLError();
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, length* 4, 3 * 4);
+        Util.checkGLError();
+        glEnableVertexAttribArray(1);
+        Util.checkGLError();
+
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, length * 4, 6 * 4);
+        Util.checkGLError();
+        glEnableVertexAttribArray(2);
+        Util.checkGLError();
+
+        glVertexAttribPointer(3, 1, GL_FLOAT, false, length * 4, 8* 4);
+        Util.checkGLError();
+        glEnableVertexAttribArray(3);
+        Util.checkGLError();
+
+
+
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+    }
+
+    public void CreateTerrainProgram(ShaderConfig  config) {
+        try {
+            int terrainProgramId = ShaderUtils.CreateProgram(config.getVertPath(),config.getFragPath());
+            config.setProgramId(terrainProgramId);
+            //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void CreateLightProgram(ShaderConfig config) {
+        try {
+            int LightProgramId = ShaderUtils.CreateProgram(config.getVertPath(),config.getFragPath());
+            config.setProgramId(LightProgramId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void CreateLightVAO(ShaderConfig config) {
+        glUseProgram(config.getProgramId());
+        int lightVaoId = glGenVertexArrays();
+        //config.getVao().setVaoId(lightVaoId);
+        //config.getVao().setVaoId(lightVaoId);
+        OpenglUtils.checkGLError();
+
+        glBindVertexArray(lightVaoId);
+        config.getVao().setVaoId(lightVaoId);
+        OpenglUtils.checkGLError();
+
+        this.CreateLightVBO(config);
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
 
     }
 
-    public void CreateLightVBO() {
+    public void CreateUiVAO(ShaderConfig config) {
+
+
+        //生成vaoid
+        //create vao
+        Vao vao =config.getVao();
+        if(vao.getVaoId()>0){
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+            OpenglUtils.checkGLError();
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+           /* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*/
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        //create vbo
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+        int position = vao.getVertices().position();
+        if(vao.getVertices().position()==0){
+            ShaderUtils.printText("it's test ",50,50,0,24);
+        }
+        vao.setPoints(vao.getVertices().position()/10);
+        LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+        vao.getVertices().rewind();
+        // vao.setVertices(twoDImgBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+        //create ebo
+        // float width = 1;
+        OpenglUtils.checkGLError();
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 10 * 4, 0);
+        OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(0);
+        OpenglUtils.checkGLError();
+        //纹理位置
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, 10 * 4, 3 * 4);
+        glEnableVertexAttribArray(1);
+        //textureHandle
+        glVertexAttribPointer(2, 1, GL_FLOAT, false, 10 * 4, 5 * 4);
+        OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(2);
+        OpenglUtils.checkGLError();
+        //color
+        glVertexAttribPointer(3, 4, GL_FLOAT, false, 10 * 4, 6 * 4);
+        OpenglUtils.checkGLError();
+        glEnableVertexAttribArray(3);
+        OpenglUtils.checkGLError();
+
+
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+
+
+    }
+
+    public void CreateLightVBO(ShaderConfig config ) {
 
         //创建vao2=========================================================
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
 
         // model = GL_Matrix.multiply(view2,model);
-        // VboId=glGenBuffers();//create vbo
-        glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
-        // glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+        int  VboId=glGenBuffers();//create vbo
+        config.getVao().setVboId(VboId);
+        float VerticesArray[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+                -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+
+                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+
+                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+
+                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+
+                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+                0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+                -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+
+                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+                0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+                -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f};
+        FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+
+
+        Vertices.put(VerticesArray);
+        config.getVao().setPoints(Vertices.position()/6);
+        Vertices.rewind(); //
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, config.getVao().getVboId());//bind vbo
+        OpenglUtils.checkGLError();
+         glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
         glEnableVertexAttribArray(0);
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
     }
 
-    int lightModelLoc;
+   // int lightModelLoc;
 
     public void uniformLight() {
         GL_Matrix model = GL_Matrix.translateMatrix( GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
         GL_Matrix view = GL_Matrix.translateMatrix(0, 0, 0);
-        glUseProgram(LightProgramId);
-        int lightProjectionLoc = glGetUniformLocation(LightProgramId, "projection");
+        glUseProgram(lightShaderConfig.getProgramId());
+        int lightProjectionLoc = glGetUniformLocation(lightShaderConfig.getProgramId(), "projection");
         glUniformMatrix4(lightProjectionLoc, false, projection.toFloatBuffer());
-        Util.checkGLError();
-        lightModelLoc = glGetUniformLocation(LightProgramId, "model");
+        OpenglUtils.checkGLError();
+        int lightModelLoc = glGetUniformLocation(lightShaderConfig.getProgramId(), "model");
+        lightShaderConfig.setModelLoc(lightModelLoc);
         glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
 
-        lightViewLoc = glGetUniformLocation(LightProgramId, "view");
-        glUniformMatrix4(lightViewLoc, false, view.toFloatBuffer());
-        Util.checkGLError();
+      //  int lightViewLoc = ;
+        lightShaderConfig.setViewLoc(glGetUniformLocation(lightShaderConfig.getProgramId(), "view"));
+        glUniformMatrix4(lightShaderConfig.getViewLoc(), false, view.toFloatBuffer());
+        OpenglUtils.checkGLError();
 
+    }
+
+    public void initViewModelProjectionLoc(ShaderConfig config,GL_Matrix model ,GL_Matrix view){
+        assert config.getProgramId()>0;
+        glUseProgram(config.getProgramId());
+        int lightProjectionLoc = glGetUniformLocation(config.getProgramId(), "projection");
+        glUniformMatrix4(lightProjectionLoc, false, projection.toFloatBuffer());
+        OpenglUtils.checkGLError();
+        int lightModelLoc = glGetUniformLocation(config.getProgramId(), "model");
+        lightShaderConfig.setModelLoc(lightModelLoc);
+        glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
+        OpenglUtils.checkGLError();
+        //  int lightViewLoc = ;
+        lightShaderConfig.setViewLoc(glGetUniformLocation(lightShaderConfig.getProgramId(), "view"));
+        glUniformMatrix4(lightShaderConfig.getViewLoc(), false, view.toFloatBuffer());
+        OpenglUtils.checkGLError();
     }
 
 
@@ -326,26 +861,35 @@ public class ShaderManager {
                 GL_Matrix.LookAt( GamingState.instance.camera.Position,  GamingState.instance.camera.ViewDir);
         view.fillFloatBuffer(cameraViewBuffer);
 
-        glUseProgram(terrainProgramId);
+        glUseProgram(terrainShaderConfig.getProgramId());
 
 
-        glUniformMatrix4(viewLoc, false, cameraViewBuffer);
-        Util.checkGLError();
+        glUniformMatrix4(terrainShaderConfig.getViewLoc(), false, cameraViewBuffer);
+        OpenglUtils.checkGLError();
         //viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
 
-        glUniform3f(viewPosLoc,  GamingState.instance.camera.Position.x,  GamingState.instance.camera.Position.y,  GamingState.instance.camera.Position.z);
-        Util.checkGLError();
+        glUniform3f(terrainShaderConfig.getViewPosLoc(),  GamingState.instance.camera.Position.x,  GamingState.instance.camera.Position.y,  GamingState.instance.camera.Position.z);
+        OpenglUtils.checkGLError();
 
 
-        glUseProgram(LightProgramId);
-        Util.checkGLError();
+        glUseProgram(lightShaderConfig.getProgramId());
+        OpenglUtils.checkGLError();
         //lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
-        glUniformMatrix4(lightViewLoc, false, view.toFloatBuffer());
+        glUniformMatrix4(lightShaderConfig.getViewLoc(), false, view.toFloatBuffer());
 
-        Util.checkGLError();
+        OpenglUtils.checkGLError();
+
+        glUseProgram(livingThingShaderConfig.getProgramId());
+        OpenglUtils.checkGLError();
+        //lightViewLoc= glGetUniformLocation(LightProgramId,"view");
+
+
+        glUniformMatrix4(livingThingShaderConfig.getViewLoc(), false, view.toFloatBuffer());
+
+        OpenglUtils.checkGLError();
 
     }
 

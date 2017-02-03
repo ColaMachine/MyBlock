@@ -4,12 +4,57 @@ import glmodel.GL_Matrix;
 
 import javax.vecmath.Vector3f;
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 
 /**
  * Created by luying on 16/11/26.
  */
 public class ShaderConfig {
 
+    public int textureIndex;
+    public ShaderConfig(){
+
+    }
+    public ShaderConfig(String name,String fragPath,String vertPath){
+        this.name =name;
+        this.fragPath=fragPath;
+        this.vertPath = vertPath;
+    }
+    String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    HashMap<String,Vao> vaoMaps =new HashMap<String,Vao>();
+    public void addVao(Vao vao ){
+        vaoMaps.put(vao.getName(),vao);
+    }
+    public Vao getVao(String name){
+       return  vaoMaps.get(name);
+    }
+    public Vao getVao() {
+        return vao;
+    }
+
+    public void setVao(Vao vao) {
+        this.vao = vao;
+    }
+
+    private Vao vao=new Vao();
+private int viewPosLoc;
+
+    public int getViewPosLoc() {
+        return viewPosLoc;
+    }
+
+    public void setViewPosLoc(int viewPosLoc) {
+        this.viewPosLoc = viewPosLoc;
+    }
 //    private float minX;
 //    private float minY;
 //    private float maxX;
@@ -17,7 +62,18 @@ public class ShaderConfig {
 
     private String vertPath;
     private int programId;
-//    private int vboId;
+
+    private int lightPosLoc;
+
+    public int getLightPosLoc() {
+        return lightPosLoc;
+    }
+
+    public void setLightPosLoc(int lightPosLoc) {
+        this.lightPosLoc = lightPosLoc;
+    }
+
+    //    private int vboId;
 //    private int vaoId;
 //private int eboId ;
     //private FloatBuffer Vertices;
@@ -247,4 +303,15 @@ public class ShaderConfig {
     public void setViewLoc(int viewLoc) {
         this.viewLoc = viewLoc;
     }
+
+    public  HashMap<Integer, Integer> getTextureIndexMap() {
+        return textureIndexMap;
+    }
+
+    public  void setTextureIndexMap(HashMap<Integer, Integer> textureIndexMap) {
+        textureIndexMap = textureIndexMap;
+    }
+
+    public  HashMap<Integer,Integer> textureIndexMap=new HashMap();
+
 }

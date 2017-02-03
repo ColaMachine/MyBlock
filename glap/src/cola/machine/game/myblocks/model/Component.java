@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -200,7 +201,8 @@ this.secnum =secnum;
         GL_Vector newPoint = GL_Vector.add(newAxis,newVector);
         return newPoint;
     }
-    public void renderShader(FloatBuffer floatBuffer, GL_Matrix matrix){
+    public void renderShader(ShaderConfig config ,  GL_Matrix matrix){
+        FloatBuffer floatBuffer = config.getVao().getVertices();
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentLocation.x, parentLocation.y, parentLocation.z);
 
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,0,0);
@@ -217,27 +219,27 @@ this.secnum =secnum;
          translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
         rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
         if(front!=null) {
-            GL_Vector.glVertex3fv4triangle(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer);
+            GL_Vector.glVertex3fv4triangle(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer, config);
         }
         if(back!=null) {
-            GL_Vector.glVertex3fv4triangle(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,1),back,floatBuffer);
+            GL_Vector.glVertex3fv4triangle(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),back,floatBuffer, config);
         }
         if(top!=null) {
-            GL_Vector.glVertex3fv4triangle(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),top,floatBuffer);
+            GL_Vector.glVertex3fv4triangle(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),top,floatBuffer, config);
         }
 
         if(bottom!=null) {
-            GL_Vector.glVertex3fv4triangle(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),bottom,floatBuffer);
+            GL_Vector.glVertex3fv4triangle(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),bottom,floatBuffer, config);
         }
         if(left!=null) {
-            GL_Vector.glVertex3fv4triangle(P2,P3,P7,P6,rotateMatrix,new GL_Vector(0,0,1f),left,floatBuffer);
+            GL_Vector.glVertex3fv4triangle(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),left,floatBuffer, config);
         }
         if(right!=null) {
-            GL_Vector.glVertex3fv4triangle(P4,P1,P5,P8,rotateMatrix,new GL_Vector(0,0,-1),right,floatBuffer);
+            GL_Vector.glVertex3fv4triangle(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),right,floatBuffer, config);
         }
-       for(int i=0;i<children.size();i++){
-            children.get(i).renderShader(floatBuffer,rotateMatrix);
-        }
+       /*for(int i=0;i<children.size();i++){
+            children.get(i).renderShader(config,rotateMatrix);
+        }*/
 
     }
 

@@ -46,9 +46,9 @@ public enum Alignment {
     BOTTOMRIGHT(HAlignment.RIGHT,2,2),
     FILL(HAlignment.CENTER,1,1);
     
-    final HAlignment fontHAlignment;
-    final byte hpos;
-    final byte vpos;
+    public final HAlignment fontHAlignment;
+    public final byte hpos;
+    public final byte vpos;
     
     private Alignment(HAlignment fontHAlignment, int hpos, int vpos) {
         this.fontHAlignment = fontHAlignment;

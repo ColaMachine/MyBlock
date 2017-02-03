@@ -13,7 +13,7 @@ public class Div extends HtmlObject implements Cloneable{
     public void handle(Event event ){
         System.out.println("进来了");
     }
-    protected boolean handleEvent(Event evt) {
+   /* protected boolean handleEvent(Event evt) {
        //ss System.out.println("进来了");
         if(evt.getType()==Event.Type.MOUSE_ENTERED){
             this.borderColor=new Vector4f(1,1,1,1);
@@ -32,7 +32,7 @@ public class Div extends HtmlObject implements Cloneable{
 
          //this.borderColor=new Vector4f(1,1,1,1);
         return true;
-    }
+    }*/
     public void refresh(){
     	//System.out.println("DIV id:"+id);
         if(this.getWidth()==0){

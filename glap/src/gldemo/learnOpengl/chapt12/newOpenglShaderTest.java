@@ -51,7 +51,7 @@ public class newOpenglShaderTest extends  FatherLeanr{
         cubeConfig.setFragPath(fragPath);
         ShaderUtils.initShader(cubeConfig);
 
-        config2 =new ShaderConfig();
+        config2 =new ShaderConfig("test",fragPath,vertPath);
         config2.setPosition(new Vector3f(0,3,0));
         config2.setVertPath(vertPath);
         config2.setFragPath(fragPath);

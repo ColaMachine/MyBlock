@@ -8,6 +8,25 @@ public class TextureCfgBean{
 String name;
     String xywh;
     String image;
+    String splitx;
+
+    public String getSplitx() {
+        return splitx;
+    }
+
+    public void setSplitx(String splitx) {
+        this.splitx = splitx;
+    }
+
+    public String getSplity() {
+        return splity;
+    }
+
+    public void setSplity(String splity) {
+        this.splity = splity;
+    }
+
+    String splity;
 
     public String getName() {
         return name;
