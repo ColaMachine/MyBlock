@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.log.LogUtil;
@@ -8,6 +9,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glapp.GLApp;
@@ -236,28 +238,29 @@ public class LivingThing extends GameActor{
 
 
     }
-    int vaoId;
-    int trianglesCount =0;
-    public void preRenderShader(){
+   // int vaoId;
+    //int trianglesCount =0;
+    public void preRenderShader(){//当发生改变变的时候触发这里
         GL_Matrix translateMatrix=GL_Matrix.translateMatrix(position.x, position.y + 0.75f, position.z);
         float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle,0);
 
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
-
-        bodyComponent.renderShader(floatBuffer,rotateMatrix);
-        trianglesCount= floatBuffer.position()/8;
+        //.getVao().getVertices()
+        bodyComponent.renderShader(ShaderManager.livingThingShaderConfig,rotateMatrix);
+        /*trianglesCount= floatBuffer.position()/8;
         if(trianglesCount<=0){
             LogUtil.println("trianglesCount can't be 0");
             System.exit(1);
-        }
-         vaoId = ShaderUtils.createVAO(floatBuffer);
-        if(vaoId<=0){
+        }*/
+       // ShaderManager.livingThingShaderConfig.getVao().setVertices();
+          ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
+        if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()<=0){
             LogUtil.println("vaoId can't be 0");
             System.exit(1);
         }
     }
-    FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(10240);
+    //FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(10240);
     public void render(){
         /*GL11.glPushMatrix();try{
             Util.checkGLError();}catch (Exception e ){
@@ -316,26 +319,29 @@ public class LivingThing extends GameActor{
         }*/
     }
     public void renderShader(){
-        if(vaoId<=0){
+        if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()<=0){
             preRenderShader();
         }
-        TextureManager.getTextureInfo("human_head_right").bind();
-        glUseProgram(GamingState.instance.shaderManager.terrainProgramId);
+        //TextureManager.getTextureInfo("human_head_right").bind();
+
+        ShaderUtils.finalDraw(GamingState.instance.shaderManager.livingThingShaderConfig);
+        /*glUseProgram(GamingState.instance.shaderManager.livingThingShaderConfig.getProgramId());
         Util.checkGLError();
 
-       /* int transformLoc= glGetUniformLocation(ProgramId,"transform");
+       *//* int transformLoc= glGetUniformLocation(ProgramId,"transform");
         glUniformMatrix4(0,  false,matrixBuffer );
-        matrixBuffer.rewind();*/
+        matrixBuffer.rewind();*//*
         // glBindTexture(GL_TEXTURE_2D, this.textureHandle);
-        glBindVertexArray(vaoId);
+        glBindVertexArray(GamingState.instance.shaderManager.livingThingShaderConfig.getVao().getVaoId());
 
 //        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glDrawArrays(GL11.GL_TRIANGLES,0,trianglesCount);
+        //3position 3normal 2texcoord 1 textureindex
+        glDrawArrays(GL11.GL_TRIANGLES,0,GamingState.instance.shaderManager.livingThingShaderConfig.getVao().getPoints()/9);
 
         Util.checkGLError();
         glBindVertexArray(0);
 
-        glUseProgram(0);
+        glUseProgram(0);*/
         // GL11.glPushMatrix();
         //this.dropControl();
        // GL11.glTranslatef(position.x, position.y + 0.75f, position.z);

@@ -1261,7 +1261,7 @@ public class EditField extends Widget {
             Font font = getFont();
             if(attributes != null && font instanceof Font2) {
                 paintWithAttributes((Font2)font);
-            } else if(hasSelection() && hasFocusOrPopup()) {
+            } else if(hasSelection() && hasFocusOrPopup()) {//如果有选中或者获得焦点
                 if(multiLine) {
                     paintMultiLineWithSelection();
                 } else {

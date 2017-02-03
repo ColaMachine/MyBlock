@@ -81,10 +81,10 @@ public class BitmapFont {
             va.put(tx1).put(ty0).put(x + width).put(y);
         }
         
-        int getKerning(char ch) {
-            if(kerning != null) {
-                byte[] page = kerning[ch >>> LOG2_PAGE_SIZE];
-                if(page != null) {
+        int getKerning(char ch) {//字符间隔举例
+            if(kerning != null) {//如果字间距有设置的话
+                byte[] page = kerning[ch >>> LOG2_PAGE_SIZE];//数组的下标位置left transfer 9 西文字符一般都是0
+                if(page != null) {// get the page
                     return page[ch & (PAGE_SIZE-1)];
                 }
             }

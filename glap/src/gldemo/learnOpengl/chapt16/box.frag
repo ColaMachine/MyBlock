@@ -1,4 +1,15 @@
 #version 330 core
+
+//uniform sampler2D ourTexture0;
+//uniform sampler2D ourTexture1;
+//uniform sampler2D ourTexture2;
+//uniform sampler2D ourTexture3;
+//uniform sampler2D ourTexture4;
+//uniform sampler2D ourTexture5;
+//uniform sampler2D ourTexture6;
+//uniform sampler2D ourTexture7;
+//uniform sampler2D ourTexture8;
+//flat in float ourTextureIndex;
 struct Material
 {
     sampler2D diffuse;
@@ -41,6 +52,8 @@ vec3 viewDir = normalize(viewPos - FragPos);
 vec3 reflectDir = reflect(-lightDir, norm);
 float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
+
+
 vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoord));
 vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
 vec3 specular = light.specular * spec ;//* vec3(texture(material.specular, TexCoord));
@@ -52,7 +65,7 @@ float distance = length(light.position - FragPos);
 //specular *= attenuation;
 
  //vec4(light.ambient*vec3(texture(material.diffuse,TexCoords)), 1.0f);
-vec3 result = (ambient + diffuse + specular) * vec3(texture(material.diffuse,TexCoord));
+vec3 result = (ambient + diffuse + specular) * vec3(texture(material.diffuse,TexCoord));//
 color = vec4(result, 1.0f);
 
 

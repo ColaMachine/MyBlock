@@ -258,25 +258,25 @@ public class GLCamera {
 				GL_Matrix.LookAt(Position,ViewDir);
 		view.fillFloatBuffer(cameraViewBuffer);
 
-		glUseProgram(GamingState.instance.shaderManager.terrainProgramId);
+		glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());
 
 
 
-		glUniformMatrix4(GamingState.instance.shaderManager.viewLoc,  false,cameraViewBuffer);
+		glUniformMatrix4(GamingState.instance.shaderManager.terrainShaderConfig.getViewLoc(),  false,cameraViewBuffer);
 		org.lwjgl.opengl.Util.checkGLError();
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
 
-		glUniform3f(GamingState.instance.shaderManager.viewPosLoc,  Position.x,Position.y,Position.z);
+		glUniform3f(GamingState.instance.shaderManager.terrainShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
 		org.lwjgl.opengl.Util.checkGLError();
 
 
-		glUseProgram(GamingState.instance.shaderManager.LightProgramId);
+		glUseProgram(GamingState.instance.shaderManager.lightShaderConfig.getProgramId());
 		org.lwjgl.opengl.Util.checkGLError();
 		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
-		glUniformMatrix4(GamingState.instance.shaderManager.lightViewLoc,  false,view.toFloatBuffer() );
+		glUniformMatrix4(GamingState.instance.shaderManager.lightShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
 
 		org.lwjgl.opengl.Util.checkGLError();
 

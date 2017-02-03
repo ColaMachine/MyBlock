@@ -3,6 +3,8 @@ package cola.machine.game.myblocks.model.ui.html;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.sun.glass.events.KeyEvent;
 import de.matthiasmann.twl.*;
+import de.matthiasmann.twl.AnimationState;
+import de.matthiasmann.twl.TextWidget;
 import de.matthiasmann.twl.model.DefaultEditFieldModel;
 import de.matthiasmann.twl.model.EditFieldModel;
 import de.matthiasmann.twl.renderer.*;
@@ -29,7 +31,7 @@ public class EditField extends TextField {
     boolean pendingScrollToCursor;
     boolean pendingScrollToCursorForce;
     private int maxTextLength = Short.MAX_VALUE;
-
+    //private int fontSize=12;
     private int columns = 5;
     private char passwordChar;
     private Object errorMsg;
@@ -42,6 +44,7 @@ public class EditField extends TextField {
         setText(text, false);
     }
     public EditField(){
+        this.setFontSize(12);
         this.canAcceptKeyboardFocus=true;
         addActionMapping("cut", "cutToClipboard");
         addActionMapping("copy", "copyToClipboard");
@@ -55,6 +58,12 @@ public class EditField extends TextField {
                 KeyStroke.parse("ctrl A","selectAll")};
         InputMap inputMap =new InputMap(keys);
         this.setInputMap(inputMap);
+        this.setMinHeight((short)getFontSize());
+        this.setMinWidth((short) (getFontSize() * 5));
+        this.width=(int)getFontSize()*5;
+        this.height=(int)getFontSize();
+        this.setBorderColor(new Vector4f(0.8f,0.8f,0.8f,1));
+        this.setBackgroundColor(new Vector4f(1,1,1,1));
         //(int modifier, int keyCode, char keyChar, String action) {
     }
 
@@ -130,6 +139,7 @@ public class EditField extends TextField {
 
     @Override
     public boolean handleEvent(Event evt) {
+
         boolean selectPressed = (evt.getModifiers() & Event.MODIFIER_SHIFT) != 0;
 
         if(evt.isMouseEvent()) {
@@ -142,6 +152,7 @@ public class EditField extends TextField {
                     (evt.getModifiers() & Event.MODIFIER_LBUTTON) != 0) {
                 int newPos = getCursorPosFromMouse(evt.getMouseX(), evt.getMouseY());
                 setCursorPos(newPos, true);
+                Document.needUpdate=true;
             }
             return true;
         }
@@ -246,6 +257,7 @@ public class EditField extends TextField {
                     int newPos = getCursorPosFromMouse(evt.getMouseX(), evt.getMouseY());
                     setCursorPos(newPos, selectPressed);
                     scrollPos = 0;//textRenderer.lastScrollPos;
+                    Document.needUpdate=true;
                     return true;
                 }
                 break;
@@ -258,6 +270,7 @@ public class EditField extends TextField {
                     scrollToCursor(false);
                     this.cursorPos = selectionEnd;
                     scrollToCursor(false);
+                    Document.needUpdate=true;
                     return true;
                 }
                 if(evt.getMouseClickCount() == 3) {
@@ -321,9 +334,9 @@ public class EditField extends TextField {
                 count++;
 
             }*/
-                if(selectionStart!=selectionEnd){
+            if(selectionStart!=selectionEnd){
 
-                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),index+0.0008f,(selectionEnd-selectionStart)*(int)getFontSize(),(int)this.getFontSize());
+                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),index+0.002f,(selectionEnd-selectionStart)*(int)getFontSize(),(int)this.getFontSize());
                     //这里涉及到了分段
                     //开始的选中位置
                     //多段集合 每个集合都标明了 开始结束位置
@@ -345,18 +358,31 @@ public class EditField extends TextField {
                 }
                 preX = this.cursorPos-thieLineStart;
 
-                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(preX*this.getFontSize()),(int)(this.getInnerY()+preY*getFontSize()),index+0.0008f,10,(int)this.getFontSize());
+                ShaderUtils.draw2dColor(new Vector4f(0,1,1,1),this.getInnerX()+ (int)(preX*this.getFontSize()),(int)(this.getInnerY()+preY*getFontSize()),index+0.0015f,2,(int)this.getFontSize());
             }
-        }else{
-            if(selectionStart!=selectionEnd){
-                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),index+0.0008f,(selectionEnd-selectionStart)*(int)getFontSize(),(int)this.getFontSize());
-            }else{
-                ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),this.getInnerX()+ (int)(this.cursorPos*this.getFontSize()),this.getInnerY(),index+0.0008f,10,(int)this.getFontSize());
+        }else{//没有换行
+            if(hasFocusOrPopup()){
+
+               //long nowTime =  System.currentTimeMillis();
+               // if((nowTime-lastBlinkTime)% duration <flashTime){
+                    ShaderUtils.draw2dColor(new Vector4f(0,0,0,1),this.getInnerX()+ (int)((this.cursorPos==0?0.2:this.cursorPos)*this.getFontSize()),this.getInnerY(),index+0.0015f,2,(int)this.getFontSize());
+
+                //}
+
+            } if(hasSelection()  ){
+                //blink
+
+                ShaderUtils.draw2dColor(new Vector4f(0,1,1,1),this.getInnerX()+ (int)(this.selectionStart*this.getFontSize()),this.getInnerY(),index+0.002f,(selectionEnd-selectionStart)*(int)getFontSize(),(int)this.getFontSize());
+
             }
+
         }
 
 
     }
+    float lastBlinkTime=0;
+    float duration=3*1000;
+    float flashTime=2*1000;
     final EditFieldModel editBuffer =new DefaultEditFieldModel();
     protected void insertChar(char ch) {
         // don't add control characters
@@ -640,6 +666,142 @@ public class EditField extends TextField {
         }
         setCursorPos(pos, false);
     }
+    protected boolean hasFocusOrPopup() {
+        return hasKeyboardFocus() || hasOpenPopups();
+    }
+    /*protected class TextRenderer extends TextWidget {
+        int lastTextX;
+        int lastScrollPos;
+        AttributedStringFontCache cache;
+        boolean cacheDirty;
 
+        protected TextRenderer(AnimationState animState) {
+            super(animState);
+        }
+
+        @Override
+        protected void paintWidget(GUI gui) {
+            if(pendingScrollToCursor) {
+                scrollToCursor(pendingScrollToCursorForce);
+            }
+            lastScrollPos = hasFocusOrPopup() ? scrollPos : 0;
+            lastTextX = computeTextX();
+            Font font = getFont();
+            if(attributes != null && font instanceof Font2) {
+                paintWithAttributes((Font2)font);
+            } else if(hasSelection() && hasFocusOrPopup()) {//如果有选中或者获得焦点
+                if(multiLine) {
+                    paintMultiLineWithSelection();
+                } else {
+                    paintWithSelection(0, editBuffer.length(), computeTextY());
+                }
+            } else {
+                paintLabelText(getAnimationState());
+            }
+        }
+
+        protected void paintWithSelection(int lineStart, int lineEnd, int yoff) {
+            int selStart = selectionStart;
+            int selEnd = selectionEnd;
+            if(selectionImage != null && selEnd > lineStart && selStart <= lineEnd) {
+                int xpos0 = lastTextX + computeRelativeCursorPositionX(lineStart, selStart);
+                int xpos1 = (lineEnd < selEnd) ? getInnerRight() :
+                        lastTextX + computeRelativeCursorPositionX(lineStart, Math.min(lineEnd, selEnd));
+                selectionImage.draw(getAnimationState(), xpos0, yoff,
+                        xpos1 - xpos0, getFont().getLineHeight());
+            }
+
+            paintWithSelection(getAnimationState(), selStart, selEnd, lineStart, lineEnd, yoff);
+        }
+
+        protected void paintMultiLineWithSelection() {
+            final EditFieldModel eb = editBuffer;
+            int lineStart = 0;
+            int endIndex = eb.length();
+            int yoff = computeTextY();
+            int lineHeight = getLineHeight();
+            while(lineStart < endIndex) {
+                int lineEnd = computeLineEnd(lineStart);
+
+                paintWithSelection(lineStart, lineEnd, yoff);
+
+                yoff += lineHeight;
+                lineStart = lineEnd + 1;
+            }
+        }
+
+        protected void paintMultiLineSelectionBackground() {
+            int lineHeight = getLineHeight();
+            int lineStart = computeLineStart(selectionStart);
+            int lineNumber = computeLineNumber(lineStart);
+            int endIndex = selectionEnd;
+            int yoff = computeTextY() + lineHeight * lineNumber;
+            int xstart = lastTextX + computeRelativeCursorPositionX(lineStart, selectionStart);
+            while(lineStart < endIndex) {
+                int lineEnd = computeLineEnd(lineStart);
+                int xend;
+
+                if(lineEnd < endIndex) {
+                    xend = getInnerRight();
+                } else {
+                    xend = lastTextX + computeRelativeCursorPositionX(lineStart, endIndex);
+                }
+
+                selectionImage.draw(getAnimationState(), xstart, yoff, xend - xstart, lineHeight);
+
+                yoff += lineHeight;
+                lineStart = lineEnd + 1;
+                xstart = getInnerX();
+            }
+        }
+
+        protected void paintWithAttributes(Font2 font) {
+            if(selectionEnd > selectionStart && selectionImage != null) {
+                paintMultiLineSelectionBackground();
+            }
+            if(cache == null || cacheDirty) {
+                cacheDirty = false;
+                if(multiLine) {
+                    cache = font.cacheMultiLineText(cache, attributes);
+                } else {
+                    cache = font.cacheText(cache, attributes);
+                }
+            }
+            int y = computeTextY();
+            if(cache != null) {
+                cache.draw(lastTextX, y);
+            } else if(multiLine) {
+                font.drawMultiLineText(lastTextX, y, attributes);
+            } else {
+                font.drawText(lastTextX, y, attributes);
+            }
+        }
+
+        @Override
+        protected void sizeChanged() {
+            if(scrollToCursorOnSizeChange) {
+                scrollToCursor(true);
+            }
+        }
+
+        @Override
+        protected int computeTextX() {
+            int x = getInnerX();
+            int pos = getAlignment().hpos;
+            if(pos > 0) {
+                x += Math.max(0, getInnerWidth() - computeTextWidth()) * pos / 2;
+            }
+            return x - lastScrollPos;
+        }
+
+        @Override
+        public void destroy() {
+            super.destroy();
+            if(cache != null) {
+                cache.destroy();
+                cache = null;
+            }
+        }
+    }÷*/
 
 }

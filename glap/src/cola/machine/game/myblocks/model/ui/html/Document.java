@@ -158,7 +158,7 @@ public class Document extends HtmlObject {
             }
         }*/
 
-        if(!dragActive) {//没有拖动
+        if(!dragActive) {//没有拖动 响应自身的
             if(!isInside(mouseX, mouseY)) {//如果不在范围内
                 pressed = false;
                 mouseClickCount = 0;
@@ -304,7 +304,7 @@ public class Document extends HtmlObject {
 
         if(target != null) {
             if(!target.isDisabled() || !isMouseAction(event)) {
-               // target.handleEvent(target.translateMouseEvent(event));
+                target.handleEvent(event);
             }
             return target;
         } else {

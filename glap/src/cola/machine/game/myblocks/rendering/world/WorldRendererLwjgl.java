@@ -14,6 +14,8 @@ import java.util.PriorityQueue;
 
 import javax.vecmath.Vector3f;
 
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.math.Rect2i;
 
 import org.lwjgl.BufferUtils;
@@ -117,6 +119,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
        // if(true)return;
         this.updateChunksInProximity(false);
+        //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
         for (ChunkImpl chunk : chunksInProximity) {
             if(Switcher.SHADER_ENABLE){
                 chunk.preRenderShader();
@@ -135,13 +138,15 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 		TextureManager.getTextureInfo("mantle").bind();
         if(Switcher.SHADER_ENABLE){
-            for (ChunkImpl chunk : chunksInProximity) {
-                glUseProgram(GamingState.instance.shaderManager.terrainProgramId);
+            ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);
+            /*for (ChunkImpl chunk : chunksInProximity) {
+                glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());
+
                 Util.checkGLError();
                 chunk.renderShader();
                 glBindVertexArray(0);
                 Util.checkGLError();
-            }
+            }*/
         }else{
             for (ChunkImpl chunk : chunksInProximity) {
                 GL11.glTranslated(chunk.getChunkWorldPosX(), 0,

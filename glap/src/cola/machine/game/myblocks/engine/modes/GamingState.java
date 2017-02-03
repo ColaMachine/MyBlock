@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
@@ -36,6 +37,7 @@ import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGen
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
@@ -84,8 +86,8 @@ public class GamingState implements GameState {
 
     public void init(GameEngine engine) {
         this.instance =this;
-        /*ShaderManager shaderManager =new ShaderManager();
-        shaderManager.init();*/
+        ShaderManager shaderManager =new ShaderManager();
+        /*shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
 
         try {
@@ -123,6 +125,9 @@ public class GamingState implements GameState {
 public ShaderManager shaderManager;
     public void initGL() {
         if (Switcher.SHADER_ENABLE) {
+            if(shaderManager==null){
+                shaderManager=new ShaderManager();
+            }
             shaderManager.init();
 
         } else {
@@ -168,7 +173,7 @@ public ShaderManager shaderManager;
                 // pass key event to handler
                 //LogUtil.println("Character"+Keyboard.getEventCharacter());
 
-
+if(!Switcher.SHADER_ENABLE)
                 gui.handleKey(
                         Keyboard.getEventKey(),
                         Keyboard.getEventCharacter(),
@@ -207,6 +212,7 @@ public ShaderManager shaderManager;
                     mouseControlCenter.mouseRightUp(cursorX, cursorY);
                 }
                 //GUI gui = CoreRegistry.get(GUI.class);
+                if(!Switcher.SHADER_ENABLE)
                 gui.handleMouse(
                         Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
                         Mouse.getEventButton(), Mouse.getEventButtonState());
@@ -370,9 +376,10 @@ public ShaderManager shaderManager;
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
+        if(!Switcher.SHADER_ENABLE) {
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glLoadIdentity();
+        }
 //        Util.checkGLError();
 
         //glTranslatef( 0.0f, 0.0f, -5.0f );
@@ -390,12 +397,14 @@ public ShaderManager shaderManager;
         glBindVertexArray(0);
         Util.checkGLError();*/
         if (Switcher.SHADER_ENABLE) {
-            glUseProgram(this.shaderManager.LightProgramId);
+
+            ShaderUtils.finalDraw(this.shaderManager.lightShaderConfig);
+           /* glUseProgram(this.shaderManager.lightShaderConfig.getProgramId());
             Util.checkGLError();
-            glBindVertexArray(shaderManager.lightVaoId);
+            glBindVertexArray(shaderManager.lightShaderConfig.getVao().getVaoId());
             glDrawArrays(GL_TRIANGLES, 0, 36);
             Util.checkGLError();
-            glBindVertexArray(0);
+            glBindVertexArray(0);*/
             worldRenderer.render();
             OpenglUtils.checkGLError();
             livingThingManager.render();
@@ -406,12 +415,12 @@ public ShaderManager shaderManager;
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
             worldRenderer.render();
             livingThingManager.render();
-
+            gameGui.update();
            // OpenglUtils.renderCubeTest();
         }
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();
-        gameGui.update();
+
         //GLApp.print(10,10,"fps:"+fps);
        // LogUtil.println("fps:"+fps);
         //printText();
@@ -472,6 +481,7 @@ public ShaderManager shaderManager;
             LWJGLRenderer renderer = new LWJGLRenderer();
             ThemeManager newTheme = null;
             try {
+                if(!Switcher.SHADER_ENABLE)
                 newTheme = ThemeManager.createThemeManager(
                         SimpleTest.class.getResource("simple_demo.xml"), renderer);
             } catch (IOException e) {
@@ -481,15 +491,17 @@ public ShaderManager shaderManager;
             Long startTime = System.nanoTime();
             long duration = System.nanoTime() - startTime;
             System.out.println("Loaded theme in " + (duration / 1000) + " us");
-            GuiRootPane root = new GuiRootPane();//创建root pane
-            gameGui = new GUI(root, renderer);//创建gui
-            //this.root.addGamingComponent();
-            gameGui.setSize();
-            gameGui.applyTheme(newTheme);
-            gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
-            gameGui.validateLayout();
-            gameGui.adjustSize();
-            CoreRegistry.put(GUI.class, gameGui);
+            if(!Switcher.SHADER_ENABLE) {
+                GuiRootPane root = new GuiRootPane();//创建root pane
+                gameGui = new GUI(root, renderer);//创建gui
+                //this.root.addGamingComponent();
+                gameGui.setSize();
+                gameGui.applyTheme(newTheme);
+                gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
+                gameGui.validateLayout();
+                gameGui.adjustSize();
+                CoreRegistry.put(GUI.class, gameGui);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

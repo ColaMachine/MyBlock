@@ -106,6 +106,11 @@ public class HtmlObject implements Cloneable  {
     private short borderRight;
     private short borderBottom;
 
+    short offsetLeft =0;
+    short offsetTop=0;
+    short offsetWidth=0;
+    short offsetHeight=0;
+
     private short minWidth;
     private short minHeight;
     private short maxWidth;
@@ -133,6 +138,7 @@ public class HtmlObject implements Cloneable  {
     private boolean absolute=false;
     private boolean relative=false;
     private boolean visible =true;
+
     //public String display;
     //public  float offsetleft;
     //public  float OffsetRight;
@@ -346,9 +352,10 @@ public class HtmlObject implements Cloneable  {
     }*/
     public static final int INLINE=0;
     public static final int BLOCK=1;
-    public int display=HtmlObject.INLINE;
-    int offsetLeft =0;
-    int offsetTop=0;
+    public int display;
+
+    //int minHeight;
+    //int minWidth;
 
     public HtmlObject  getPrevNode(){
         if(this.getParentNode()!=null){
@@ -375,13 +382,21 @@ public class HtmlObject implements Cloneable  {
 
         //HtmlObject prevNode =this.getPrevNode();
         //如果宽度是自适应的话
+        if(StringUtil.isNotEmpty(this.innerText)){
+            maxWidth=(int)(this.innerText.length()*this.getFontSize());
+            maxHeight=(int)(this.getFontSize()*1.5);
+        }
 
 
 
-            HtmlObject oldChild=null;
+
+        HtmlObject oldChild=null;
             for (int i = 0; i < this.childNodes.size(); i++) {
                 //System.out.println("2div id:"+id);
                 HtmlObject child =  this.childNodes.get(i);
+                //child.offsetWidth= (short)Math.max(width,minWidth);
+                //child.offsetHeight= (short)Math.max(width,minWidth);
+
                 int parentLeft = 0;
                 int parentTop=0;
                 if(getParentNode()!=null ){
@@ -393,34 +408,34 @@ public class HtmlObject implements Cloneable  {
                     if(oldChild!=null ) {
                         if (oldChild.display == INLINE) {
 
-                            child.offsetLeft = oldChild.offsetLeft + oldChild.width  + oldChild.marginRight + child.marginLeft;
-                            child.offsetTop = oldChild.offsetTop;
+                            child.offsetLeft = (short)(oldChild.offsetLeft + oldChild.offsetWidth  + oldChild.marginRight + child.marginLeft);
+                            child.offsetTop = (short)(oldChild.offsetTop);
 
                             if(this.width>0&& child.offsetLeft+child.width>this.width){
                                 child.offsetLeft= child.marginLeft;
-                                child.offsetTop=oldChild.offsetTop+oldChild.height+child.marginTop;
+                                child.offsetTop=(short)(oldChild.offsetTop+oldChild.height+child.marginTop);
                             }
 
                         }else if(oldChild.display == BLOCK){
                             child.offsetLeft = child.marginLeft;
-                            child.offsetTop = oldChild.offsetTop+oldChild.height+child.marginTop;
+                            child.offsetTop = (short)(oldChild.offsetTop+oldChild.height+child.marginTop);
                         }
                     }else{
 
-                            child.offsetLeft = child.marginLeft+parentLeft;
-                            child.offsetTop = child.marginTop+parentTop;
+                            child.offsetLeft = (short)(child.marginLeft+parentLeft);
+                            child.offsetTop = (short)(child.marginTop+parentTop);
 
 
                         }
                 }else if(child.display==BLOCK){
 
-                        child.offsetLeft = child.marginLeft+parentLeft;
+                        child.offsetLeft = (short)(child.marginLeft+parentLeft);
 
 
                     if(oldChild!=null ){
-                        child.offsetTop = oldChild.offsetTop+oldChild.getHeight()+oldChild.getBorderBottom()+child.marginTop;
+                        child.offsetTop = (short)(oldChild.offsetTop+oldChild.getHeight()+oldChild.getBorderBottom()+child.marginTop);
                     }else{
-                        child.offsetTop = child.marginTop+parentTop;
+                        child.offsetTop = (short)(child.marginTop+parentTop);
                     }
 
                 }
@@ -433,12 +448,17 @@ public class HtmlObject implements Cloneable  {
 
             }
         if(this.width==0) {
-            this.width = maxWidth + this.borderRight + this.paddingRight;
+            this.offsetWidth = (short)(maxWidth + this.borderRight + this.paddingRight);
+        }else{
+            this.offsetWidth=(short)width;
         }
         if(this.height==0) {
-            this.height = maxHeight + this.borderBottom + this.paddingBottom;
+            this.offsetHeight = (short)(maxHeight + this.borderBottom + this.paddingBottom);
+        }else{
+            this.offsetHeight=(short)height;
         }
-
+        this.width = offsetWidth;
+        this.height=offsetHeight;
 
     }
 
@@ -503,8 +523,8 @@ public class HtmlObject implements Cloneable  {
       this.getBorderRight()
               this
     }*/
-    Vao vao =new Vao();
-    Vao borderVao =new Vao();
+    //Vao vao =new Vao();
+    //Vao borderVao =new Vao();
     public void  shaderRender(){
         if(!visible)return;
         if(this.getBackgroundColor()!=null){
@@ -1410,7 +1430,16 @@ public class HtmlObject implements Cloneable  {
     public boolean focusFirstChild() {
         return moveFocus(false, +1);
     }
-
+    public boolean hasKeyboardFocus() {
+        if(getParentNode() != null) {
+            return getParentNode().focusChild == this;
+        }
+        return false;
+    }
+    private boolean hasOpenPopup;
+    public boolean hasOpenPopups() {
+        return hasOpenPopup;
+    }
     public boolean focusLastChild() {
         return moveFocus(false, -1);
     }
@@ -1760,6 +1789,131 @@ public class HtmlObject implements Cloneable  {
      */
     public void setInputMap(InputMap inputMap) {
         this.inputMap = inputMap;
+    }
+
+    /**
+     * Clean up GL resources. When overwritten then super method must be called.
+     */
+
+
+    public AnimationState getAnimationState() {
+        return animState;
+    }
+    public HtmlObject(){
+        this.sharedAnimState=false;
+        this.animState = new AnimationState();
+
+    }
+
+    private final AnimationState animState;
+    private final boolean sharedAnimState;
+
+
+    public HtmlObject(AnimationState animState, boolean inherit) {
+        // determine the default theme name from the class name of this instance
+        // eg class Label => "label"
+        Class<?> clazz = getClass();
+       /* do {
+            //theme = clazz.getSimpleName().toLowerCase(Locale.ENGLISH);
+            clazz = clazz.getSuperclass();
+        } while (theme.length() == 0 && clazz != null);*/
+
+        if(animState == null || inherit) {
+            this.animState = new AnimationState(animState);
+            this.sharedAnimState = false;
+        } else {
+            this.animState = animState;
+            this.sharedAnimState = true;
+        }
+    }
+    protected void paintWidget(Document doc) {
+    }
+    final void drawWidget(Document gui) {//drawWidget -> paint
+        /*if(renderOffscreen != null) {
+            drawWidgetOffscreen(gui);
+            return;
+        }
+        if(tintAnimator != null && tintAnimator.hasTint()) {
+            drawWidgetTint(gui);
+            return;
+        }
+        if(clip) {
+            drawWidgetClip(gui);
+            return;
+        }*/
+        paint(gui);
+    }
+    protected void paintChildren(Document gui) {
+        if(childNodes != null) {
+            for(int i=0,n=childNodes.size() ; i<n ; i++) {
+                HtmlObject child = childNodes.get(i);
+                if(child.visible) {
+                    child.drawWidget(gui);
+                }
+            }
+        }
+    }
+    public int getPreferredInnerHeight() {
+        int bottom = getInnerY();
+        if(childNodes != null) {
+            for(int i=0,n=childNodes.size() ; i<n ; i++) {
+                HtmlObject child = childNodes.get(i);
+                bottom = Math.max(bottom, child.getBottom());
+            }
+        }
+        return bottom - getInnerY();
+    }
+    public de.matthiasmann.twl.renderer.Image getOverlay() {
+        return overlay;
+    }
+    private de.matthiasmann.twl.renderer.Image overlay;
+    protected void paint(Document doc) {
+        paintBackground(doc);
+        paintWidget(doc);
+        paintChildren(doc);
+        paintOverlay(doc);
+    }
+
+    protected void paintOverlay(Document gui) {
+        de.matthiasmann.twl.renderer.Image ovImage = getOverlay();
+        if(ovImage != null) {
+            ovImage.draw(getAnimationState(), posX, posY, width, height);
+        }
+    }
+    protected void paintBackground(Document gui) {
+        de.matthiasmann.twl.renderer.Image bgImage = getBackground();
+        if(bgImage != null) {
+            bgImage.draw(getAnimationState(), posX, posY, width, height);
+        }
+    }
+    private de.matthiasmann.twl.renderer.Image background;
+    public de.matthiasmann.twl.renderer.Image getBackground() {
+        return background;
+    }
+    /**
+     * Clean up GL resources. When overwritten then super method must be called.
+     */
+    public void destroy() {
+        if(childNodes != null) {
+            for(int i=0,n=childNodes.size() ; i<n ; i++) {
+                childNodes.get(i).destroy();
+            }
+        }
+        /*if(offscreenSurface != null) {
+            offscreenSurface.destroy();
+            offscreenSurface = null;
+        }*/
+    }
+
+    public int getPreferredInnerWidth() {//会用子元素里最靠右边的right属性减去innerx
+        int right = getInnerX();
+        if(childNodes != null) {
+            for(int i=0,n=childNodes.size() ; i<n ; i++) {
+                HtmlObject child = childNodes.get(i);
+                right = Math.max(right, child.getRight());
+            }
+        }
+        return right - getInnerX();
     }
 
 }

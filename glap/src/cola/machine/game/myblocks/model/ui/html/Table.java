@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import de.matthiasmann.twl.AnimationState;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,13 @@ import java.util.List;
  * Created by luying on 14-9-16.
  */
 public class Table extends HtmlObject{
+
+    public Table(){
+
+    }
+    public Table(AnimationState animationState,boolean flag){
+
+    }
     public float cellspacing=0;
     public float cellpadding=0;
     //public List<Tr> rows=new ArrayList<Tr>();
