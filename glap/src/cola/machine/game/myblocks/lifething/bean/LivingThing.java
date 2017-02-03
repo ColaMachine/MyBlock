@@ -197,7 +197,8 @@ public class LivingThing extends GameActor{
         if(!Switcher.IS_GOD)
             if (!this.stable) {
                 long t = Sys.getTime() - this.lastTime;//�˶���ʱ��
-
+                GamingState.livingThingChanged=true;
+                GamingState.cameraChanged=true;
                 s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
                 // this.position.y+=s;
                 // System.out.println("time:"+t+" weiyi:"+s);
@@ -240,25 +241,26 @@ public class LivingThing extends GameActor{
     }
    // int vaoId;
     //int trianglesCount =0;
-    public void preRenderShader(){//当发生改变变的时候触发这里
+    private void preRenderShader(){//当发生改变变的时候触发这里
         GL_Matrix translateMatrix=GL_Matrix.translateMatrix(position.x, position.y + 0.75f, position.z);
         float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle,0);
+        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle*3.14f/180,0);
 
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
         //.getVao().getVertices()
         bodyComponent.renderShader(ShaderManager.livingThingShaderConfig,rotateMatrix);
-        /*trianglesCount= floatBuffer.position()/8;
+
+         /*trianglesCount= floatBuffer.position()/8;
         if(trianglesCount<=0){
             LogUtil.println("trianglesCount can't be 0");
             System.exit(1);
         }*/
        // ShaderManager.livingThingShaderConfig.getVao().setVertices();
-          ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
-        if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()<=0){
+         // ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
+        /*if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()<=0){
             LogUtil.println("vaoId can't be 0");
             System.exit(1);
-        }
+        }*/
     }
     //FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(10240);
     public void render(){
@@ -318,13 +320,21 @@ public class LivingThing extends GameActor{
             throw e;
         }*/
     }
-    public void renderShader(){
-        if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()<=0){
-            preRenderShader();
-        }
-        //TextureManager.getTextureInfo("human_head_right").bind();
+    public void update(){
 
-        ShaderUtils.finalDraw(GamingState.instance.shaderManager.livingThingShaderConfig);
+            preRenderShader();
+
+    }
+    public void renderShader(){
+        /*if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()==0){
+            preRenderShader();
+
+            //LogUtil.err("vao id 不能为空");
+        }*/
+       // assert ShaderManager.livingThingShaderConfig.getVao().getVaoId()!=0;
+      // TextureManager.getTextureInfo("human_head_right").bind();
+
+        //ShaderUtils.finalDraw(GamingState.instance.shaderManager.livingThingShaderConfig);
         /*glUseProgram(GamingState.instance.shaderManager.livingThingShaderConfig.getProgramId());
         Util.checkGLError();
 
@@ -343,7 +353,7 @@ public class LivingThing extends GameActor{
 
         glUseProgram(0);*/
         // GL11.glPushMatrix();
-        //this.dropControl();
+        this.dropControl();
        // GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
        // float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
         //GL11.glRotatef(angle, 0, 1, 0);

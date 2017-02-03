@@ -6,8 +6,10 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -210,21 +212,24 @@ this.secnum =secnum;
 
         if(rotateZ!=0){
             //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, rotateZ));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -rotateZ*3.14f/180));
         }
         if(rotateX!=0){
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( rotateX, 0, 0));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -rotateX*3.14f/180, 0, 0));
 
         } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
          translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
         rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
         if(front!=null) {
+           // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
             GL_Vector.glVertex3fv4triangle(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer, config);
         }
         if(back!=null) {
+            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
             GL_Vector.glVertex3fv4triangle(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),back,floatBuffer, config);
         }
         if(top!=null) {
+            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
             GL_Vector.glVertex3fv4triangle(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),top,floatBuffer, config);
         }
 
@@ -237,9 +242,9 @@ this.secnum =secnum;
         if(right!=null) {
             GL_Vector.glVertex3fv4triangle(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),right,floatBuffer, config);
         }
-       /*for(int i=0;i<children.size();i++){
+       for(int i=0;i<children.size();i++){
             children.get(i).renderShader(config,rotateMatrix);
-        }*/
+        }
 
     }
 

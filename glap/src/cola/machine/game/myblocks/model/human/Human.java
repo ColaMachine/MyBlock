@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
@@ -147,9 +148,9 @@ public class Human extends LivingThing {
    // public boolean judge;
  //   public MovementMode mode = MovementMode.WALKING;
 
-    public void update(){
+  /*  public void update(){
 
-    }
+    }*/
 
 
 //	public static void main(String args[]) {
@@ -194,6 +195,8 @@ public class Human extends LivingThing {
 	public void move(float x, float y, float z) {
         if(GL_Vector.length(GL_Vector.sub(oldPosition,position))>0.2){
             this.oldPosition.copy(this.position);
+			GamingState.livingThingChanged=true;
+			GamingState.cameraChanged=true;
 
 
 

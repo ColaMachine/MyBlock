@@ -80,16 +80,16 @@ public class MouseControlCenter {
             return;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            human.headRotate(0, -human.camSpeedXZ * seconds*100);
+           // human.headRotate(0, -human.camSpeedXZ * seconds*100);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-            human.headRotate(-human.camSpeedXZ * seconds*100,0 );
+           // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            human.headRotate(human.camSpeedXZ * seconds*100,0 );
+            //human.headRotate(human.camSpeedXZ * seconds*100,0 );
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            human.headRotate(0, human.camSpeedXZ * seconds*100);
+            //human.headRotate(0, human.camSpeedXZ * seconds*100);
         }  else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
             Switcher.CAMERA_2_PLAYER++;
             if (Switcher.CAMERA_2_PLAYER > 10) {
@@ -385,6 +385,8 @@ public class MouseControlCenter {
     }
     public void mouseRightDown(int x, int y) {
         mouseRightPressed=true;
+        prevMouseX=x;
+        prevMouseY=y;
     }
     public void mouseRightUp(int x, int y) {
         mouseRightPressed=false;
@@ -607,24 +609,24 @@ public class MouseControlCenter {
         int seconds = 100;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            human.headRotate(0, -human.camSpeedXZ * seconds);
+           // human.headRotate(0, -human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            human.headRotate(human.camSpeedXZ * seconds, 0);
+           // human.headRotate(human.camSpeedXZ * seconds, 0);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            human.bodyRotate(0, human.camSpeedR * seconds);
+           // human.bodyRotate(0, human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_E)) {// Turn right
             System.out.println("key_e");
-            human.bodyRotate(0, -human.camSpeedR * seconds);
+         //   human.bodyRotate(0, -human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            human.StrafeRight(-human.camSpeedXZ * seconds);
+            //human.StrafeRight(-human.camSpeedXZ * seconds);
             //LogUtil.println("walk left");
         } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
-            human.StrafeRight(human.camSpeedXZ * seconds);
+            //human.StrafeRight(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-            human.MoveForward(-human.camSpeedXZ * seconds);
+           // human.MoveForward(-human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_W)) { // tilt up
 
-            human.MoveForward(human.camSpeedXZ * seconds);
+            //human.MoveForward(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             human.position.y = human.position.y - 3 * seconds;
             human.move(human.position);

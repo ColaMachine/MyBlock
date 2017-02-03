@@ -275,9 +275,9 @@ if(!Switcher.SHADER_ENABLE) {
        /* count++;
         if(count<1000)*/
         ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
-        ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig);//2DImage
-        ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);//2DImage
-        ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);//2DImage
+       // ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig);//2DImage
+      //  ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);//2DImage
+      //  ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);//2DImage
         //ShaderUtils.finalDraw2DColor();
 
 

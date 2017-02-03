@@ -48,8 +48,8 @@ public class ShaderManager {
     public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain","chapt16/box.frag","chapt16/box.vert");
     public static ShaderConfig lightShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
 
-    public static ShaderConfig uiShaderConfig = new ShaderConfig("living","chapt7/2dimg.frag","chapt7/2dimg.vert");
-    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
+    public static ShaderConfig uiShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
+    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt16/box.frag","chapt16/box.vert");
 
     public HashMap<String,ShaderConfig> configMap =new HashMap<>();
     public void registerConfig(ShaderConfig config) throws Exception {
@@ -62,7 +62,7 @@ public class ShaderManager {
     public void init(){
         //Vao terrainVao = new Vao();
         this.createProgram(terrainShaderConfig);
-        terrainShaderConfig.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
+        //terrainShaderConfig.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
         this.createProgram(lightShaderConfig);
         this.createProgram(uiShaderConfig);
         this.createProgram(livingThingShaderConfig);
@@ -78,8 +78,8 @@ public class ShaderManager {
         //this.createProgram(lightShaderConfig);
         this.CreateLightVAO(lightShaderConfig);
         this.CreateUiVAO(uiShaderConfig);
-        this.CreateTerrainVAO(terrainShaderConfig);
-        this.CreateLivingVAO(livingThingShaderConfig);
+        //this.CreateTerrainVAO(terrainShaderConfig);
+      //  this.CreateLivingVAO(livingThingShaderConfig);
         //this.uniformLight();
     }
 
@@ -185,6 +185,17 @@ public class ShaderManager {
         GL_Matrix model = GL_Matrix.translateMatrix( GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
         glUniformMatrix4(lightShaderConfig.getModelLoc(), false, model.toFloatBuffer());
         OpenglUtils.checkGLError();
+
+
+        glUseProgram(livingThingShaderConfig.getProgramId());
+
+        glUniform3f(livingThingShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        OpenglUtils.checkGLError();/*
+        glUseProgram(livingThingShaderConfig.getProgramId());
+
+
+        glUniformMatrix4(livingThingShaderConfig.getModelLoc(), false, model.toFloatBuffer());
+        OpenglUtils.checkGLError();*/
 
 
     }
@@ -421,12 +432,12 @@ public class ShaderManager {
         veticesBuffer.put(ti.maxX);
         veticesBuffer.put(ti.maxY);
     }
-    public static void CreateTerrainVAO(ShaderConfig  config) {
+    public static void CreateTerrainVAO(ShaderConfig  config,Vao vao) {
         //config.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
-        glUseProgram(config.getProgramId());
+        //glUseProgram(config.getProgramId());
         //生成vaoid
         //create vao
-        Vao vao =config.getVao();
+       // Vao vao =config.getVao();
 
         /*VaoId = glGenVertexArrays();
         Util.checkGLError();
@@ -439,22 +450,22 @@ public class ShaderManager {
         Util.checkGLError();
         */
         if(vao.getVaoId()>0){
-            glBindVertexArray(vao.getVaoId());
-            OpenglUtils.checkGLError();
+
 
             //glBindVertexArray(vao.getVaoId());
             // LogUtil.err("vao have been initialized");
         }else {
             vao.setVaoId(glGenVertexArrays());
             OpenglUtils.checkGLError();
-            glBindVertexArray(vao.getVaoId());
+          //  glBindVertexArray(vao.getVaoId());
             int VboId=glGenBuffers();//create vbo
             vao.setVboId(VboId);
            /* int eboId = glGenBuffers();
             vao.setEboId(eboId);*/
         }
         //绑定vao
-
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
         //create vbo
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
@@ -854,7 +865,7 @@ public class ShaderManager {
         OpenglUtils.checkGLError();
     }
 
-
+/*
     public void cameraPosChangeListener() {
         LogUtil.println("please use camera changeCallBack");
         GL_Matrix view =
@@ -882,16 +893,29 @@ public class ShaderManager {
 
         OpenglUtils.checkGLError();
 
-        glUseProgram(livingThingShaderConfig.getProgramId());
+      *//*  glUseProgram(livingThingShaderConfig.getProgramId());
         OpenglUtils.checkGLError();
         //lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
         glUniformMatrix4(livingThingShaderConfig.getViewLoc(), false, view.toFloatBuffer());
 
+        OpenglUtils.checkGLError();*//*
+
+
+        glUseProgram(livingThingShaderConfig.getProgramId());
+
+
+        glUniformMatrix4(livingThingShaderConfig.getViewLoc(), false, cameraViewBuffer);
+        OpenglUtils.checkGLError();
+        //viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
+
+
+        glUniform3f(livingThingShaderConfig.getViewPosLoc(),  GamingState.instance.camera.Position.x,  GamingState.instance.camera.Position.y,  GamingState.instance.camera.Position.z);
         OpenglUtils.checkGLError();
 
-    }
+
+    }*/
 
     public void update(){
 

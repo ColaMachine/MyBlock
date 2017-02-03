@@ -122,7 +122,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
         for (ChunkImpl chunk : chunksInProximity) {
             if(Switcher.SHADER_ENABLE){
-                chunk.preRenderShader();
+             chunk.preRenderShader();
             }else{
                 chunk.preRender();
             }
@@ -136,17 +136,17 @@ public class WorldRendererLwjgl implements WorldRenderer {
             throw e;
         }*/
 
-		TextureManager.getTextureInfo("mantle").bind();
+		//TextureManager.getTextureInfo("mantle").bind();
         if(Switcher.SHADER_ENABLE){
-            ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);
-            /*for (ChunkImpl chunk : chunksInProximity) {
-                glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());
+           // ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);
+            for (ChunkImpl chunk : chunksInProximity) {
+              //  glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());
 
                 Util.checkGLError();
-                chunk.renderShader();
+              chunk.renderShader();
                 glBindVertexArray(0);
                 Util.checkGLError();
-            }*/
+            }
         }else{
             for (ChunkImpl chunk : chunksInProximity) {
                 GL11.glTranslated(chunk.getChunkWorldPosX(), 0,

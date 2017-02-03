@@ -67,6 +67,8 @@ public class GamingState implements GameState {
     public static GamingState instance;
     public static Human human;//= new Human();
     public static String catchThing;
+    public static boolean cameraChanged=false;
+    public static boolean livingThingChanged=true;
     //LearnOpenglColor learnOpenglColor;
     //GUI startGui;
     WorldRenderer worldRenderer;
@@ -361,7 +363,11 @@ if(!Switcher.SHADER_ENABLE)
 
                     camera.viewDir(human.ViewDir);
                 }
-                camera.changeCallBack();
+                if(GamingState.cameraChanged){
+                    camera.changeCallBack();
+                    GamingState.cameraChanged=false;
+                }
+
             }
     }
 
@@ -385,6 +391,11 @@ if(!Switcher.SHADER_ENABLE)
         //glTranslatef( 0.0f, 0.0f, -5.0f );
 
         Long time = System.currentTimeMillis();
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
        /* float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
@@ -518,11 +529,11 @@ if(!Switcher.SHADER_ENABLE)
 
     private void initEntities() {
         human = new Human();
-        human.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
+        human.setHuman(1, 125, 5, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
 
         LivingThing livingThing = new LivingThing();
-        livingThing.position = new GL_Vector(10, 4, 0);
+        livingThing.position = new GL_Vector(10,125, 0);
         livingThingManager.setPlayer(human);
         //livingThingManager.add(livingThing);
         SynchronTask task = new SynchronTask();

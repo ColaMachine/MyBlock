@@ -49,7 +49,11 @@ public class ChunkImpl implements Chunk {
     int faceIndex = 0;
     public int displayId = 0;
     public int alphaDisplayId = 0;
-
+    public IntBuffer vetices = BufferUtils.createIntBuffer(14);
+    public int count = 0;
+    public Vao vao =new Vao();
+    public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
+    //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
         this(chunkPos.x, chunkPos.y, chunkPos.z);
     }
@@ -397,7 +401,7 @@ public class ChunkImpl implements Chunk {
 
     }*/
 
-    public void CreateTerrainVAO() {
+   /* public void CreateTerrainVAO() {
 
 
         VaoId = glGenVertexArrays();
@@ -409,7 +413,7 @@ public class ChunkImpl implements Chunk {
 
         glBindVertexArray(0);
         Util.checkGLError();
-    }
+    }*/
     public String  toString(){
             return this.getChunkWorldPosX()+"-"+this.getChunkSizeY()+"-"+this.getChunkWorldPosZ();
     }
@@ -527,16 +531,13 @@ public class ChunkImpl implements Chunk {
                 }
             }
         }
-        CreateTerrainVAO();
-        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig);
+        //CreateTerrainVAO();
+        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig,vao);
         // GL11.glEnd();
         //System.out.println(this.count);
     }
 
-    public IntBuffer vetices = BufferUtils.createIntBuffer(14);
-   // public int count = 0;
-    public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
-    //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
+
 
     public void addThisTop(int x, int y, int z) {
 
@@ -735,14 +736,14 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x+1,y+1,z+1);
         GL_Vector p3= new GL_Vector(x+1,y+1,z);
         GL_Vector p4= new GL_Vector(x,y+1,z);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,p1, p2, p3,p4, normal, ti);
+        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
 
-        veticesBuffer.put(x).put(y+1).put(z+1 ).put(0).put(1).put(0).put(ti.minX).put(ti.minY);//p1
+       /* veticesBuffer.put(x).put(y+1).put(z+1 ).put(0).put(1).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y+1).put(z+1 ).put(0).put(1).put(0).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x+1 ).put(y+1 ).put(z).put(0).put(1).put(0).put(ti.maxX).put(ti.maxY);//p3
         veticesBuffer.put(x).put(y+1 ).put(z ).put(0).put(1).put(0).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x).put(y+1).put(z+1 ).put(0).put(1).put(0).put(ti.minX).put(ti.minY);//p1
-        veticesBuffer.put(x+1 ).put(y+1 ).put(z).put(0).put(1).put(0).put(ti.maxX).put(ti.maxY);//p3
+        veticesBuffer.put(x+1 ).put(y+1 ).put(z).put(0).put(1).put(0).put(ti.maxX).put(ti.maxY);//p3*/
         count++;//left front top
 
 
@@ -753,21 +754,21 @@ public class ChunkImpl implements Chunk {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
         this.faceIndex = 2;
-        count++;
+       count++;
 
         GL_Vector normal= new GL_Vector(0,-1,0);
         GL_Vector p1= new GL_Vector(x,y,z);
         GL_Vector p2= new GL_Vector(x+1,y,z);
         GL_Vector p3= new GL_Vector(x+1,y,z+1);
         GL_Vector p4= new GL_Vector(x,y,z+1);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,p1, p2, p3,p4, normal, ti);
+        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
 
-        veticesBuffer.put(x).put(y).put(z ).put(0).put(-1).put(0).put(ti.minX).put(ti.minY);//p1
+      /*  veticesBuffer.put(x).put(y).put(z ).put(0).put(-1).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y).put(z ).put(0).put(-1).put(0).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x+1 ).put(y ).put(z+1).put(0).put(-1).put(0).put(ti.maxX).put(ti.maxY);//p3
         veticesBuffer.put(x).put(y ).put(z+1 ).put(0).put(-1).put(0).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x).put(y).put(z ).put(0).put(-1).put(0).put(ti.minX).put(ti.minY);//p1
-        veticesBuffer.put(x+1 ).put(y ).put(z+1).put(0).put(-1).put(0).put(ti.maxX).put(ti.maxY);//p3
+        veticesBuffer.put(x+1 ).put(y ).put(z+1).put(0).put(-1).put(0).put(ti.maxX).put(ti.maxY);//p3*/
 
     }
 
@@ -832,14 +833,14 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x+1,y,z+1);
         GL_Vector p3= new GL_Vector(x+1,y+1,z+1);
         GL_Vector p4= new GL_Vector(x,y+1,z+1);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,p1, p2, p3,p4, normal, ti);
+        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
 
-        veticesBuffer.put(x).put(y).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.minY);//p1
+        /*veticesBuffer.put(x).put(y).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x + 1).put(y).put(z + 1).put(0).put(0).put(1).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x + 1).put(y + 1).put(z + 1).put(0).put(0).put(1).put(ti.maxX).put(ti.maxY);//p3
         veticesBuffer.put(x).put(y + 1).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x).put(y).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.minY);//p1
-        veticesBuffer.put(x + 1).put(y + 1).put(z + 1).put(0).put(0).put(1).put(ti.maxX).put(ti.maxY);//p3
+        veticesBuffer.put(x + 1).put(y + 1).put(z + 1).put(0).put(0).put(1).put(ti.maxX).put(ti.maxY);//p3*/
 
 
 
@@ -884,14 +885,14 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x,y,z);
         GL_Vector p3= new GL_Vector(x,y+1,z);
         GL_Vector p4= new GL_Vector(x+1,y,z);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,p1, p2, p3,p4, normal, ti);
+        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
 
-        veticesBuffer.put(x+1).put(y).put(z ).put(0).put(0).put(-1).put(ti.minX).put(ti.minY);//p1
+        /*veticesBuffer.put(x+1).put(y).put(z ).put(0).put(0).put(-1).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x ).put(y).put(z ).put(0).put(0).put(-1).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x ).put(y + 1).put(z).put(0).put(0).put(-1).put(ti.maxX).put(ti.maxY);//p3
         veticesBuffer.put(x+1).put(y + 1).put(z ).put(0).put(0).put(-1).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x+1).put(y).put(z ).put(0).put(0).put(-1).put(ti.minX).put(ti.minY);//p1
-        veticesBuffer.put(x ).put(y + 1).put(z).put(0).put(0).put(-1).put(ti.maxX).put(ti.maxY);//p3
+        veticesBuffer.put(x ).put(y + 1).put(z).put(0).put(0).put(-1).put(ti.maxX).put(ti.maxY);//p3*/
     }
 
     public void addThisLeft(int x, int y, int z) {
@@ -929,14 +930,14 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x,y,z+1);
         GL_Vector p3= new GL_Vector(x,y+1,z+1);
         GL_Vector p4= new GL_Vector(x,y+1,z);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,p1, p2, p3,p4, normal, ti);
+        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
 
-        veticesBuffer.put(x).put(y).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
+     /*   veticesBuffer.put(x).put(y).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x ).put(y).put(z +1).put(-1).put(0).put(0).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x ).put(y + 1).put(z+1).put(-1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3
         veticesBuffer.put(x).put(y + 1).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x).put(y).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
-        veticesBuffer.put(x ).put(y + 1).put(z+1).put(-1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3
+        veticesBuffer.put(x ).put(y + 1).put(z+1).put(-1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3*/
 
 
 
@@ -982,14 +983,14 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x+1,y,z);
         GL_Vector p3= new GL_Vector(x+1,y+1,z);
         GL_Vector p4= new GL_Vector(x+1,y+1,z+1);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,p1, p2, p3,p4, normal, ti);
+        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
 
-        veticesBuffer.put(x+1).put(y).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
+        /*veticesBuffer.put(x+1).put(y).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y).put(z ).put(1).put(0).put(0).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x+1 ).put(y + 1).put(z).put(1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3
         veticesBuffer.put(x+1).put(y + 1).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x+1).put(y).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
-        veticesBuffer.put(x+1 ).put(y + 1).put(z).put(1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3
+        veticesBuffer.put(x+1 ).put(y + 1).put(z).put(1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3*/
 
 
 
@@ -1236,16 +1237,16 @@ public class ChunkImpl implements Chunk {
 
 
     public void renderShader() {
-        if (this.VaoId == 0) {
+        if (vao.getVaoId() == 0) {
              int error =GL11.glGetError();
             System.out.println(this.chunkPos + "displayId should not be 0 in render");
         } else {
 
-            //ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);
-            glBindVertexArray(VaoId);
+            ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,vao);
+           /* glBindVertexArray(VaoId);
             Util.checkGLError();
             glDrawArrays(GL_TRIANGLES, 0, this.count * 6);
-            Util.checkGLError();
+            Util.checkGLError();*/
 
         }
     }

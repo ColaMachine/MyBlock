@@ -555,6 +555,25 @@ try {
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
     }
+    public static void finalDraw(ShaderConfig config,Vao vao){
+        //TextureManager.getTextureInfo("soil").bind();
+        // ShaderUtils.get2dcolor
+        assert config.getProgramId()>0;
+        glUseProgram(config.getProgramId());
+        OpenglUtils.checkGLError();
+        // glUniform3f(shaderConfig.getObejctColorLoc(), backgroundColor.x, backgroundColor.y, backgroundColor.z);
+        // OpenglUtils.checkGLError();
+        assert vao.getVaoId()>0;
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        assert vao.getPoints()>0;
+        glDrawArrays(GL_TRIANGLES,0, vao.getPoints());
+        //config.getVao().getVertices().rewind();
+
+        OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+    }
     /*
     public static void finalDraw2DImage(){
         ShaderConfig config = ShaderUtils.get2DImgConfig();
@@ -825,7 +844,7 @@ try {
 
     public static void updateLivingVao(Vao vao){
 
-        int stride= 9*4;
+        int stride= 8*4;
         //生成vaoid
         //create vao
 
@@ -849,7 +868,7 @@ try {
         //创建顶点数组
         vao.setPoints(vao.getVertices().position()/9);
         //LogUtil.println("twoDImgBuffer:"+twoDImgBuffer.position());
-        vao.getVertices().rewind();
+        vao.getVertices().flip();
         //vao.setVertices(twoDImgBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
         glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
@@ -873,10 +892,10 @@ try {
         glEnableVertexAttribArray(2);
         OpenglUtils.checkGLError();
         //textureHandle
-        glVertexAttribPointer(3, 1, GL_FLOAT, false, stride, 8 * 4);
+      /*  glVertexAttribPointer(3, 1, GL_FLOAT, false, stride, 8 * 4);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(3);
-        OpenglUtils.checkGLError();
+        OpenglUtils.checkGLError();*/
 
 
         //color
@@ -1418,8 +1437,11 @@ try {
     }*/
 
     public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
-
+        if(config.getProgramId()==0){
+            LogUtil.err("no programid");
+        }
         glUseProgram(config.getProgramId());
+        OpenglUtils.checkGLError();
         Integer index = config.getTextureIndexMap().get(textureHandle);
         if(index==null){
             index =config.textureIndex;
@@ -1453,10 +1475,21 @@ try {
 
     }
 
-    public static void drawImage(ShaderConfig config ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
+    /**
+     * this function is for terrain draw
+     * @param config
+     * @param p1
+     * @param p2
+     * @param p3
+     * @param p4
+     * @param normal
+     * @param ti
+     */
+    public static void drawImage(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
+        //ti=TextureManager.getTextureInfo("mantle");
         ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
-            FloatBuffer veticesBuffer = config.getVao().getVertices();
+            FloatBuffer veticesBuffer = vao.getVertices();
             if (veticesBuffer.position() > veticesBuffer.limit() || veticesBuffer.position() >= 102400 - 1) {
                 LogUtil.println("overflow");
             }

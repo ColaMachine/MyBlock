@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.lifething.manager;
 
 import cola.machine.game.myblocks.control.DropControlCenter;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
@@ -8,6 +9,8 @@ import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector3f;
@@ -54,6 +57,26 @@ return livingThingsMap.get(id);
     public Map<Integer,LivingThing> livingThingsMap =new HashMap();
 
     public void render(){
+
+        //if(/*ShaderManager.livingThingShaderConfig.getVao().getVaoId()==0*/GamingState.livingThingChanged){
+            ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
+            for(LivingThing livingThing:livingThings){
+                if(Switcher.SHADER_ENABLE){
+                    livingThing.update();
+
+                }else{
+
+                }
+
+                //livingThing.renderBloodBar();
+                livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
+
+            }
+            this.player.update();
+            ShaderManager.CreateTerrainVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
+            //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
+            GamingState.livingThingChanged=false;
+        //}
         for(LivingThing livingThing:livingThings){
             if(Switcher.SHADER_ENABLE){
                 livingThing.renderShader();
@@ -76,7 +99,7 @@ return livingThingsMap.get(id);
             this.player.render();
             //livingThing.render();
         }
-
+        ShaderUtils.finalDraw(GamingState.instance.shaderManager.livingThingShaderConfig);
        // component.renderBend();
 
 
@@ -89,8 +112,16 @@ return livingThingsMap.get(id);
 
     public void CrashCheck(  DropControlCenter dcc){
         for(LivingThing livingThing:livingThings){
+            if(livingThing.position.y<0){
+                livingThing.position.y=0;
+                livingThing.stable=true;
+            }
             dcc.check(livingThing);
 
+        }
+        if(player.position.y<0){
+            player.position.y=0;
+            player.stable=true;
         }
         dcc.check(player);
     }
@@ -142,9 +173,32 @@ return livingThingsMap.get(id);
 
     }
     Client client =CoreRegistry.get(Client.class);
+    long lastUpdateTime=System.currentTimeMillis();
 
+    /**
+     * 通过定时线程来控制
+     */
     public void update(){
+      /*  long nowTime = System.currentTimeMillis();
+        if(nowTime-lastUpdateTime >5000){lastUpdateTime=nowTime;
+            for(LivingThing livingThing:livingThings){
+                if(Switcher.SHADER_ENABLE){
+                    livingThing.setPosition(0,3,0);
+                    livingThing.update();
 
+                }else{
+
+                }
+
+                //livingThing.renderBloodBar();
+                livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
+
+            }
+            this.player.update();
+            ShaderManager.CreateTerrainVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
+            //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
+
+        }*/
         while(client.movements.size()>0 && client.movements.peek()!=null){
             String[] msg = client.movements.pop();
             int id = Integer.valueOf(msg[0]);
