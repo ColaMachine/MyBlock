@@ -15,6 +15,9 @@ import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
+import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.model.ui.html.InventoryPanel;
+import cola.machine.game.myblocks.model.ui.html.SlotPanel;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -85,8 +88,10 @@ public class GamingState implements GameState {
     public double preKeyTime = 0;
 
     GUI gameGui;
+    Document document ;
 
     public void init(GameEngine engine) {
+        document= Document.getInstance();
         this.instance =this;
         ShaderManager shaderManager =new ShaderManager();
         /*shaderManager.init();*/
@@ -115,6 +120,14 @@ public class GamingState implements GameState {
                 ThemeManager theme = ThemeManager.createThemeManager(
                         LoginDemo.class.getResource("login.xml"), renderer);
                 startGui.applyTheme(theme);*/
+
+
+
+            document= Document.getInstance();
+            document .body.removeChild();
+            document.body.appendChild(new InventoryPanel(4,5));
+
+            document.needUpdate=true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,8 +175,18 @@ public ShaderManager shaderManager;
         }
         GUI gui = CoreRegistry.get(GUI.class);
 
+
+
+
+
         if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
+
+                document.handleKey(
+                        Keyboard.getEventKey(),
+                        Keyboard.getEventCharacter(),
+                        Keyboard.getEventKeyState());
+
                 // check for exit key
            /* if (Keyboard.getEventKey() == finishedKey) {
                 finished = true;
@@ -193,7 +216,9 @@ if(!Switcher.SHADER_ENABLE)
             mouseControlCenter.mouseMove(cursorX, cursorY);
             while (Mouse.next()) {
 
-
+                document.handleMouse(
+                        Mouse.getEventX(), Constants.WINDOW_HEIGHT - Mouse.getEventY() - 1,
+                        Mouse.getEventButton(), Mouse.getEventButtonState());
                 int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
                     //gui.handleMouseWheel(wheelDelta / 120);
@@ -369,6 +394,26 @@ if(!Switcher.SHADER_ENABLE)
                 }
 
             }
+
+        if( Document.needUpdate){
+            document.resize();
+            document.update();
+            document.recursivelySetGUI(document);
+
+            //ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
+            //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
+
+            // this.setPerspective();
+            document.shaderRender();
+            //div.shaderRender();   OpenglUtils.checkGLError();
+            // div2.shaderRender();   OpenglUtils.checkGLError();
+            //div3.shaderRender();   OpenglUtils.checkGLError();
+            //bag.shaderRender();
+            ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);   OpenglUtils.checkGLError();
+            //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
+
+            Document.needUpdate=false;
+        }
     }
 
 
@@ -462,6 +507,8 @@ if(!Switcher.SHADER_ENABLE)
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
+
+        ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
 
     }
 

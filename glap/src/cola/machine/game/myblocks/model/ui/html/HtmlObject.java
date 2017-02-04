@@ -185,7 +185,16 @@ public class HtmlObject implements Cloneable  {
         this.innerText = innerText;
 
     }
-
+    public HtmlObject getWidgetAt(int x, int y) {
+        HtmlObject child = getChildAt(x, y);
+        if(child != null) {//child 不为空 递归找到最下面的widget
+            return child.getWidgetAt(x, y);
+        }
+        return this;
+    }
+    public HtmlObject getParent() {
+        return parentNode;
+    }
     public HtmlObject getParentNode() {
         return parentNode;
     }
@@ -199,9 +208,13 @@ public class HtmlObject implements Cloneable  {
 
     }
     public void appendChild(HtmlObject htmlObject){
+        if(htmlObject==null){
+            return;
+        }
         if(parentNode!=null){
             parentNode.removeChild(htmlObject);
         }
+
         childNodes.add(htmlObject);htmlObject.parentNode=this;
         //htmlObject.document=parentNode.document;
     }
