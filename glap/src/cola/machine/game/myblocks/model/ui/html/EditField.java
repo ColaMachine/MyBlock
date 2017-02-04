@@ -319,12 +319,12 @@ public class EditField extends TextField {
         }
     }
     @Override
-    public void shaderRender(){//你好
+    public void buildVao(){//你好
      //  this.setMarginTop( (short)(this.getMarginTop()+10));
        // this.setMarginLeft( (short)(this.getMarginLeft()+10));
         this.innerText =editBuffer.toString();
 
-        super.shaderRender();
+        super.buildVao();
         //绘制鼠标
         if(multiLine){
            /* String[] ss = innerText.split("\n");

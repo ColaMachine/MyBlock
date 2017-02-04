@@ -218,6 +218,11 @@ public class HtmlObject implements Cloneable  {
         childNodes.add(htmlObject);htmlObject.parentNode=this;
         //htmlObject.document=parentNode.document;
     }
+    public void removeAllChild(){
+        while(this.childNodes!=null && this.childNodes.size()>0)
+            this.childNodes.remove(this.childNodes.size()-1);
+
+    }
     public void removeChild(){
         if(this.childNodes!=null && this.childNodes.size()>0)
         this.childNodes.remove(this.childNodes.size()-1);
@@ -236,7 +241,10 @@ public class HtmlObject implements Cloneable  {
         if(width>0){
             return width;
         }else{
-            width=parentNode.getWidth();///this.parentNode.childNodes.size() because of tr's width  may be the whole with of table
+            if(parentNode==null){
+                LogUtil.println("parentNode==null");
+            }
+            setWidth(parentNode.getWidth());///this.parentNode.childNodes.size() because of tr's width  may be the whole with of table
             return width;
         }
     }
@@ -452,8 +460,8 @@ public class HtmlObject implements Cloneable  {
                     }
 
                 }
-                maxWidth = Math.max(maxWidth, child.getWidth()+child.offsetLeft+child.marginRight);
-                maxHeight = Math.max(maxHeight, child.getHeight()+child.offsetTop+child.marginBottom);
+                maxWidth = Math.max(maxWidth, child.offsetWidth+child.offsetLeft+child.marginRight);
+                maxHeight = Math.max(maxHeight, child.offsetHeight+child.offsetTop+child.marginBottom);
 
                 //sumWidth+=child.getWidth()+child.getMarginLeft()+child.getMarginRight();
                 oldChild=child;
@@ -470,8 +478,8 @@ public class HtmlObject implements Cloneable  {
         }else{
             this.offsetHeight=(short)height;
         }
-        this.width = offsetWidth;
-        this.height=offsetHeight;
+        setWidth ( offsetWidth);
+        setHeight(offsetHeight);
 
     }
 
@@ -538,7 +546,7 @@ public class HtmlObject implements Cloneable  {
     }*/
     //Vao vao =new Vao();
     //Vao borderVao =new Vao();
-    public void  shaderRender(){
+    public void  buildVao(){
         if(!visible)return;
         if(this.getBackgroundColor()!=null){
             ShaderUtils.draw2dColor(this.getBackgroundColor(),getInnerX(),getInnerY(),this.index+0.004f,getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
@@ -575,7 +583,7 @@ public class HtmlObject implements Cloneable  {
 
         for(HtmlObject htmlObject:this.childNodes){
             //if(Switcher.SHADER_ENABLE){
-                htmlObject.shaderRender();
+                htmlObject.buildVao();
             //}else{
             //    htmlObject.render();
             //}

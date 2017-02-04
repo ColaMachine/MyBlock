@@ -27,9 +27,11 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package cola.machine.game.myblocks.model.ui.html;
+package com.dozenx.game.engine.ui.inventory.view;
 
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import de.matthiasmann.twl.Event;
 
 import javax.vecmath.Vector4f;
@@ -42,18 +44,18 @@ public class SlotPanel extends HtmlObject {
 
     private int numSlotsX;
     private int numSlotsY;
-    protected final ItemSlot[] slot;
+    protected final ItemSlotView[] slot;
 
     private int slotSpacing;
 
-    private ItemSlot dragSlot;
-    private ItemSlot dropSlot;
+    private ItemSlotView dragSlot;
+    private ItemSlotView dropSlot;
     boolean dragActive=false;
-    IconView IconView = null;
+    com.dozenx.game.engine.ui.inventory.view.IconView IconView = null;
     int mouseX = 0;
     int mouseY =0;
     //Font font;
-    ItemSlot.DragListener listener;
+    ItemSlotView.DragListener listener;
     public SlotPanel(int numSlotsX, int numSlotsY) {
         this.setBorderColor(new Vector4f(1,1,1,1));
         this.setBorderWidth(1);
@@ -61,22 +63,22 @@ public class SlotPanel extends HtmlObject {
         this.setWidth(numSlotsX*40+1);
         this.numSlotsX = numSlotsX;
         this.numSlotsY = numSlotsY;
-        this.slot = new ItemSlot[numSlotsX * numSlotsY];//数组
+        this.slot = new ItemSlotView[numSlotsX * numSlotsY];//数组
         //创建listener
-         listener = new ItemSlot.DragListener() {//创建listener
-            public void dragStarted(ItemSlot slot, Event evt) {
+         listener = new ItemSlotView.DragListener() {//创建listener
+            public void dragStarted(ItemSlotView slot, Event evt) {
                 SlotPanel.this.dragStarted(slot, evt);
             }
-            public void dragging(ItemSlot slot, Event evt) {
+            public void dragging(ItemSlotView slot, Event evt) {
                 SlotPanel.this.dragging(slot, evt);
             }
-            public void dragStopped(ItemSlot slot, Event evt) {
+            public void dragStopped(ItemSlotView slot, Event evt) {
                 SlotPanel.this.dragStopped(slot, evt);
             }
         };
 
         for(int i=0 ; i<slot.length ; i++) {
-            slot[i] = new ItemSlot(0);
+            slot[i] = new ItemSlotView(0);
             slot[i].setListener(listener);//所有的slot都绑定了一个listener
             appendChild(slot[i]);
         }
@@ -116,43 +118,43 @@ public class SlotPanel extends HtmlObject {
         font = themeInfo.getFont("black");
     }*/
 
-    void dragStarted(ItemSlot slot, Event evt) {
+    void dragStarted(ItemSlotView slot, Event evt) {
         if(slot.getIconView() != null) {
             dragSlot = slot;
             dragging(slot, evt);
         }
     }
 
-    void dragging(ItemSlot slot, Event evt) {
+    void dragging(ItemSlotView slot, Event evt) {
         /*if(dragSlot != null) {
             Widget w = this.getParent().getParent().getWidgetAt(evt.getMouseX(), evt.getMouseY());
             if(w.getParent() instanceof PersonPanel) {
                 //LogUtil.println("拖到了person上");
             }
-            if(w instanceof ItemSlot) {
+            if(w instanceof ItemSlotView) {
                // System.out.println(1);
-                setDropSlot((ItemSlot)w);
+                setDropSlot((ItemSlotView)w);
             } else {
                 setDropSlot(null);
             }
         }*/
     }
-    void drop(ItemSlot slot, Event evt) {
+    void drop(ItemSlotView slot, Event evt) {
         if(dragSlot != null) {
             HtmlObject w = this.getParent().getParent().getWidgetAt(evt.getMouseX(), evt.getMouseY());
            // if(w.getParent() instanceof PersonPanel) {
                 //LogUtil.println("拖到了person上");
            // }
-            if(w instanceof ItemSlot) {
+            if(w instanceof ItemSlotView) {
                 //System.out.println(1);
-                setDropSlot((ItemSlot)w);
+                setDropSlot((ItemSlotView)w);
             } else {
                 setDropSlot(null);
             }
         }
     }
 
-    void dragStopped(ItemSlot slot, Event evt) {
+    void dragStopped(ItemSlotView slot, Event evt) {
         if(dragSlot != null) {
             drop(slot, evt);
             if(dropSlot != null && dropSlot.canDrop(dragSlot.getIconView().getItemCfg()) && dropSlot != dragSlot) {
@@ -183,7 +185,7 @@ public class SlotPanel extends HtmlObject {
         }
     }
 
-    private void setDropSlot(ItemSlot slot) {
+    private void setDropSlot(ItemSlotView slot) {
         if(slot != dropSlot) {
             if(dropSlot != null) {
                 dropSlot.setDropState(false, false);
@@ -199,21 +201,7 @@ public class SlotPanel extends HtmlObject {
         }
     }
 
-    @Override//静态绘制
-    protected void paintWidget(Document gui) {
-        if(IconView != null) {
-            final int innerWidth = 40;
-            final int innerHeight = 40;
 
-            /*IconView.getIcon().draw(getAnimationState(),
-                    mouseX - innerWidth/2,
-                    mouseY - innerHeight/2,
-                    innerWidth, innerHeight);*/
-
-           // font.drawText(getAnimationState(),mouseX+5,mouseY+5, IconView.getNum()+"");
-        }
-
-    }
     protected boolean handleEvent(Event evt) {
 
             if(IconView !=null) {//如果正在拖动
@@ -221,14 +209,14 @@ public class SlotPanel extends HtmlObject {
                 if (evt.getType()==Event.Type.MOUSE_CLICKED ) {//如果是鼠标单击事件
 
                     HtmlObject w = getWidgetAt(evt.getMouseX(), evt.getMouseY());//判断有没有点击到slot上
-                    if(w instanceof ItemSlot) {
-                        ItemSlot slot = (ItemSlot)w;
+                    if(w instanceof ItemSlotView) {
+                        ItemSlotView slot = (ItemSlotView)w;
                        // ItemWrap oldItemWrap = slot.getItemWrap();
                         IconView oldIconView = slot.getIconView();
                         slot.setIconView(IconView);
                         this.IconView = oldIconView;
 
-                        setDropSlot((ItemSlot)w);
+                        setDropSlot((ItemSlotView)w);
                         System.out.println("InventoryPanel 放下");
                         int eventModifiers= evt.getModifiers();
                         if((eventModifiers & Event.MODIFIER_CTRL) != 0) {
@@ -251,8 +239,8 @@ public class SlotPanel extends HtmlObject {
                 }
             }else if(evt.getType()==Event.Type.MOUSE_CLICKED){
                 HtmlObject w = getWidgetAt(evt.getMouseX(), evt.getMouseY());
-                if(w instanceof ItemSlot) {
-                    ItemSlot slot = (ItemSlot)w;
+                if(w instanceof ItemSlotView) {
+                    ItemSlotView slot = (ItemSlotView)w;
 
                        IconView = slot.getIconView();
 
@@ -274,5 +262,19 @@ public class SlotPanel extends HtmlObject {
 
 
     }
-    
+    @Override//静态绘制
+    protected void paintWidget(Document gui) {
+        if(IconView != null) {
+            final int innerWidth = 40;
+            final int innerHeight = 40;
+
+            /*IconView.getIcon().draw(getAnimationState(),
+                    mouseX - innerWidth/2,
+                    mouseY - innerHeight/2,
+                    innerWidth, innerHeight);*/
+
+            // font.drawText(getAnimationState(),mouseX+5,mouseY+5, IconView.getNum()+"");
+        }
+
+    }
 }

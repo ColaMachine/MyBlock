@@ -79,4 +79,7 @@ public class Constants {
     public static final int serverPort =8082;
 
     public static String userName;
+
+    public static final int INVENTORY_SLOT_X_NUM=6;
+    public static final int INVENTORY_SLOT_Y_NUM=6;
 }

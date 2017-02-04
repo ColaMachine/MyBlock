@@ -10,6 +10,11 @@ import java.nio.FloatBuffer;
 public class Vao {
     public Vao(){
        // this.name=name;
+         Vertices = /*FloatBuffer.allocate(10240);*/BufferUtils.createFloatBuffer(102400);
+    }
+    public Vao(int bufferLength){
+        // this.name=name;
+        Vertices = BufferUtils.createFloatBuffer(bufferLength);
     }
     public Vao(String name ){
         this.name=name;
@@ -28,7 +33,7 @@ public class Vao {
     private int eboId;
     private int vboId;
     private int points;
-    private FloatBuffer Vertices = /*FloatBuffer.allocate(10240);*/BufferUtils.createFloatBuffer(102400);
+    private FloatBuffer Vertices ;
     public int getVaoId() {
         return vaoId;
     }

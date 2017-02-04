@@ -1,8 +1,7 @@
-package cola.machine.game.myblocks.action;
+package com.dozenx.game.engine.ui.inventory.control;
 
 import cola.machine.game.myblocks.bean.BagEntity;
-import cola.machine.game.myblocks.bean.ItemEntity;
-import cola.machine.game.myblocks.engine.Constants;
+import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import cola.machine.game.myblocks.service.BagService;
 
 import java.util.Map;
@@ -16,19 +15,19 @@ public class BagController {
        public BagEntity getBag(){
            return bag;
        }
-       public ItemEntity[] getItemEntity(){
-           return bag.getItemEntitys();
+       public ItemBean[] getItemEntity(){
+           return bag.getItemBeen();
        }
     /**
      * 将物品添加到包裹中
      * @param item
      */
-      public void addItem(ItemEntity item){
+      public void addItem(ItemBean item){
           boolean has=false;
           int nullIndex=-1;
 
-          for(int i=0,length=bag.getItemEntitys().length;i<length ;i++){
-               ItemEntity itemIn = bag.getItemEntitys()[i];
+          for(int i = 0, length = bag.getItemBeen().length; i<length ; i++){
+               ItemBean itemIn = bag.getItemBeen()[i];
               if(itemIn!=null){
 
                   if(itemIn.getId()==item.getId()){
@@ -42,7 +41,7 @@ public class BagController {
           }
 
           if(!has && nullIndex>=0){
-              bag.getItemEntitys()[nullIndex]=item;//放入物品
+              bag.getItemBeen()[nullIndex]=item;//放入物品
           }
       }
 
@@ -52,8 +51,8 @@ public class BagController {
      * @param item
      * @return
      */
-    public boolean hasItem(BagEntity bag, ItemEntity item){
-        for(ItemEntity itemIn:bag.getItemEntitys()){
+    public boolean hasItem(BagEntity bag, ItemBean item){
+        for(ItemBean itemIn:bag.getItemBeen()){
             if(itemIn!=null && itemIn.getId() == item.getId()){
               return true;
             }
@@ -62,7 +61,7 @@ public class BagController {
 
     }
 
-    public Map<Integer,ItemEntity> getAllItemEntity(){
+    public Map<Integer,ItemBean> getAllItemEntity(){
         return bagService.getBagItemEntitys();
     }
 }

@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.model;
 
+import com.dozenx.game.opengl.util.ShaderConfig;
+import glmodel.GL_Matrix;
 import org.lwjgl.opengl.GL11;
 
 import cola.machine.game.myblocks.Color;
@@ -14,7 +16,9 @@ public class BaseBlock extends AABB implements Block{
     public boolean yl=true;
 
 
+	public void renderShader(ShaderConfig config , GL_Matrix matrix){
 
+	}
     public boolean yh=true;
     public boolean xl=true;
     public boolean xh=true;

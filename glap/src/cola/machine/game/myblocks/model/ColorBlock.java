@@ -1,14 +1,21 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.opengl.util.ShaderConfig;
+import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.model.AABB.AABB;
 
+import java.nio.FloatBuffer;
+
 public class ColorBlock extends AABB implements Block {
 	public int x = 0;
 	public int y = 0;
 	public int z = 0;
+
 	public int red = 0;
 	public int blue = 0;
 	public int green = 0;
@@ -105,14 +112,64 @@ public class ColorBlock extends AABB implements Block {
 		this.maxX = x + 1;
 		this.maxY = y + 1;
 		this.maxZ = z + 1;
+
 		this.red = color.r();
 		this.blue = color.b();
 		this.green = color.g();
         this.rf=this.red*1f/256;
         this.gf=this.green*1f/256;
         this.bf=this.blue*1f/256;
-	}
 
+         P1 =new GL_Vector(minX/10, minY/10, maxZ/10);
+         P2 =new GL_Vector(maxX/10, minY/10, maxZ/10);
+         P3 =new GL_Vector(maxX/10, minY/10, minZ/10);
+         P4 =new GL_Vector(minX/10, minY/10, minZ/10);
+
+         P5 =new GL_Vector(minX/10, maxY/10, maxZ/10);
+         P6 =new GL_Vector(maxX/10, maxY/10, maxZ/10);
+         P7 =new GL_Vector(maxX/10, maxY/10, minZ/10);
+         P8 =new GL_Vector(minX/10, maxY/10, minZ/10);
+	}
+    GL_Vector P1 =new GL_Vector(minX/10, minY/10, maxZ/10);
+    GL_Vector P2 =new GL_Vector(maxX/10, minY/10, maxZ/10);
+    GL_Vector P3 =new GL_Vector(maxX/10, minY/10, minZ/10);
+    GL_Vector P4 =new GL_Vector(minX/10, minY/10, minZ/10);
+
+    GL_Vector P5 =new GL_Vector(minX/10, maxY/10, maxZ/10);
+    GL_Vector P6 =new GL_Vector(maxX/10, maxY/10, maxZ/10);
+    GL_Vector P7 =new GL_Vector(maxX/10, maxY/10, minZ/10);
+    GL_Vector P8 =new GL_Vector(minX/10, maxY/10, minZ/10);
+
+
+    public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix) {
+        // Front Face
+        FloatBuffer floatBuffer = config.getVao().getVertices();
+        GL_Vector color = new GL_Vector(this.rf(),this.gf(),this.bf());
+
+            if(zh) {
+                // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
+                GL_Vector.glVertex3fv4triangleColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
+            }
+            if(zl) {
+                //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
+                GL_Vector.glVertex3fv4triangleColor(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),color,floatBuffer, config);
+            }
+            if(yh) {
+                //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
+                GL_Vector.glVertex3fv4triangleColor(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),color,floatBuffer, config);
+            }
+
+            if(yl) {
+                GL_Vector.glVertex3fv4triangleColor(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),color,floatBuffer, config);
+            }
+            if(xl) {
+                GL_Vector.glVertex3fv4triangleColor(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),color,floatBuffer, config);
+            }
+            if(xh) {
+                GL_Vector.glVertex3fv4triangleColor(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),color,floatBuffer, config);
+            }
+
+    }
 	public void render() {
 		// Front Face
 

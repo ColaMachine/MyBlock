@@ -29,9 +29,9 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
-import cola.machine.game.myblocks.action.BagController;
+import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
-import cola.machine.game.myblocks.bean.ItemEntity;
+import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import java.util.Map;
@@ -56,7 +56,7 @@ public class InventoryPanel extends SlotPanel {
         //Assert.checkNonNull(bagEntity,"bagEntity miss in CoreRegistry");
 
 
-        Map<Integer,ItemEntity> itemEntityMap=bagController.getAllItemEntity();
+        Map<Integer,ItemBean> itemEntityMap=bagController.getAllItemEntity();
         Set<Integer> set = itemEntityMap.keySet();
         for(int key:set){
             slot[key].setIconWidget(new IconWidget(itemEntityMap.get(key)));

@@ -57,7 +57,12 @@ public float x1;
         img=TextureManager.getImage(imgName);
         texture = TextureManager.getTexture(imgName);
         try {
-            withWH(minX / texture.getWidth(),/*(img.h - minY -height)*/minY / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
+            if(imgName.equals("terrain")){
+                withWH(minX / texture.getWidth(),/*(img.h - minY -height)*/minY / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
+            }else {
+                withWHReverse(minX / texture.getWidth(),/*(img.h - minY -height)*/minY / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
+            }
+
         }catch(Exception e){
             LogUtil.println("error");
             System.exit(1);

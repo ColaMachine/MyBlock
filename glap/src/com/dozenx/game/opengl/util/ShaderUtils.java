@@ -1282,12 +1282,12 @@ try {
         GL_Vector p3 = new GL_Vector(left+_width,top,z);
         GL_Vector p4 = new GL_Vector(left,top,z);
         int index = ShaderUtils.bindAndGetTextureIndex(ShaderManager.uiShaderConfig,ti.textureHandle);
-        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(1);
-        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(0).put(0).put(0).put(1);
-        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(1);
-        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(0).put(0).put(0).put(1);
-        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(1);
-        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(1);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(index);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(0).put(0).put(0).put(index);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(index);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(0).put(0).put(0).put(index);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(index);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(index);
     }
 
 
@@ -1399,7 +1399,7 @@ try {
         return twodColorVao;
     }*/
 
-    public static int textureIndex=0;
+   // public static int textureIndex=0;
     public static HashMap<Integer,Integer> textureIndexMap=new HashMap();
     /*public static Integer bindAndGetTextureIndex(int textureHandle) {
         glUseProgram(get2DImgConfig().getProgramId());
@@ -1463,11 +1463,13 @@ try {
             }else if(index==2){
                 GL13.glActiveTexture(GL13.GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture2"), 2);   OpenglUtils.checkGLError();
+                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture2"), 2);
+                OpenglUtils.checkGLError();
             }else if(index==3){
                 GL13.glActiveTexture(GL13.GL_TEXTURE3);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture3"), 3);   OpenglUtils.checkGLError();
+                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture3"), 3);
+                OpenglUtils.checkGLError();
             }
 
         }
@@ -1487,18 +1489,18 @@ try {
      */
     public static void drawImage(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
         //ti=TextureManager.getTextureInfo("mantle");
-        ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
             FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() || veticesBuffer.position() >= 102400 - 1) {
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
             }
-            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);//p1
-            veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY);//p2
-            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);//p3
-            veticesBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY);//p4
-            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY);//p1
-            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY);//p3
+            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
+            veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);//p2
+            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
+            veticesBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);//p4
+            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
+            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
         }catch(Exception e){
             e.printStackTrace();
             throw e;

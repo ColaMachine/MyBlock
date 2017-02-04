@@ -1,18 +1,19 @@
 package cola.machine.game.myblocks.bean;
 
 import cola.machine.game.myblocks.engine.Constants;
+import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 
 /**
  * Created by luying on 16/7/3.
  */
 public class BagEntity {
-    private ItemEntity[] itemEntitys= new ItemEntity[Constants.BAG_CAPACITY];
+    private ItemBean[] itemBeen = new ItemBean[Constants.BAG_CAPACITY];
 
-    public ItemEntity[] getItemEntitys() {
-        return itemEntitys;
+    public ItemBean[] getItemBeen() {
+        return itemBeen;
     }
 
-    public void setItemEntitys(ItemEntity[] itemEntitys) {
-        this.itemEntitys = itemEntitys;
+    public void setItemBeen(ItemBean[] itemBeen) {
+        this.itemBeen = itemBeen;
     }
 }

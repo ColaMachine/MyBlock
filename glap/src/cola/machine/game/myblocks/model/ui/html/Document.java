@@ -1,6 +1,11 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.InfoWindow;
 import de.matthiasmann.twl.Widget;
@@ -13,14 +18,12 @@ import java.util.logging.Logger;
 
 public class Document extends HtmlObject {
     public HtmlObject body = new HtmlObject();
-    public void setWidth(int width) {
-        this.width = width;
-    }
+
     public void setHeight(int height) {
         this.height = height;
     }
     private static Document document= new Document();
-    public static boolean needUpdate=false;
+    public static boolean needUpdate=true;
     public Document(){
         this.setId("document");
         body.setId("body");
@@ -363,7 +366,32 @@ public class Document extends HtmlObject {
 
         return false;
     }
+    @Override
+    public void render(){
+        if(Switcher.SHADER_ENABLE) {
+            ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
 
+        }else{
+            super.render();
+        }
+    }
+    @Override
+    public  void update(){
+        document.setWidth(Constants.WINDOW_WIDTH);
+        document.setHeight(Constants.WINDOW_HEIGHT);
+        document.body.setWidth(Constants.WINDOW_WIDTH);
+        document.body.setHeight(Constants.WINDOW_HEIGHT);
+        super.resize();
+        super.update();
+        super.recursivelySetGUI(document);
+        if(Switcher.SHADER_ENABLE) {
+            ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
+            super.buildVao();
+            ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
+            OpenglUtils.checkGLError();
+        }
+
+    }
     private boolean sendKeyEvent(Event.Type type) {
         assert type.isKeyEvent;
         popupEventOccured = false;

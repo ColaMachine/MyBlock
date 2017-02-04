@@ -40,10 +40,7 @@ Document document =new Document();
         manager.init();
        // manager.createProgram(manager.uiShaderConfig);
         //manager.initUniform(manager.uiShaderConfig);
-        document.setWidth(Constants.WINDOW_WIDTH);
-        document.setHeight(Constants.WINDOW_HEIGHT);
-        document.body.setWidth(Constants.WINDOW_WIDTH);
-        document.body.setHeight(Constants.WINDOW_HEIGHT);
+
 
 
         Div div2=new Div();
@@ -151,9 +148,6 @@ Document document =new Document();
        // div3.setBackgroundImage(new Image(TextureManager.getTextureInfo("zhongwen")));
         div3.setBorderColor(new Vector4f(1,0.5f,0.5f,1));
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
-        document.resize();
-        document.update();
-        document.recursivelySetGUI(document);
 
 
         try {
@@ -176,15 +170,14 @@ if(!Switcher.SHADER_ENABLE) {
         }   OpenglUtils.checkGLError();
 
         //ShaderUtils.twoDColorBuffer.rewind();   OpenglUtils.checkGLError();
-        ShaderManager.uiShaderConfig.getVao().getVertices().rewind();   OpenglUtils.checkGLError();
+        document.needUpdate=true;
         // this.setPerspective();
-        document.shaderRender();
         //div.shaderRender();   OpenglUtils.checkGLError();
        // div2.shaderRender();   OpenglUtils.checkGLError();
         //div3.shaderRender();   OpenglUtils.checkGLError();
         //bag.shaderRender();
 
-        ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);   OpenglUtils.checkGLError();
+
        // ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
         /*ShaderManager shaderManager =new ShaderManager();
         shaderManager.init();*/
@@ -233,20 +226,20 @@ if(!Switcher.SHADER_ENABLE) {
 
     public void update(float delta) {
         if( Document.needUpdate){
-            document.resize();
+
             document.update();
-            document.recursivelySetGUI(document);
+
 
             //ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
             //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
 
             // this.setPerspective();
-            document.shaderRender();
+          //  document.update();
             //div.shaderRender();   OpenglUtils.checkGLError();
             // div2.shaderRender();   OpenglUtils.checkGLError();
             //div3.shaderRender();   OpenglUtils.checkGLError();
             //bag.shaderRender();
-            ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);   OpenglUtils.checkGLError();
+
           //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
 
             Document.needUpdate=false;

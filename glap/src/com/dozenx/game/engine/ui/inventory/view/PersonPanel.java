@@ -27,11 +27,14 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package cola.machine.game.myblocks.ui.inventory;
+package com.dozenx.game.engine.ui.inventory.view;
 
+import cola.machine.game.myblocks.ui.inventory.*;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.engine.Constants;
+
+import javax.vecmath.Vector4f;
 
 /**
  *
@@ -48,26 +51,30 @@ public class PersonPanel extends SlotPanel {
 
     public PersonPanel(int numSlotsX, int numSlotsY) {
         super( numSlotsX,  numSlotsY);
-
-        slot[0] = new ItemSlot(Constants.SLOT_TYPE_HEAD);
+        this.setBorderColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));
+        this.setBorderWidth(2);
+        this.setMarginLeft((short)200);
+        this.setWidth(numSlotsX*40+1);
+        this.removeAllChild();
+        slot[0] = new ItemSlotView(Constants.SLOT_TYPE_HEAD);
         slot[0].setListener(listener);//所有的slot都绑定了一个listener
-        add(slot[0]);
+        appendChild(slot[0]);
 
-        slot[1] = new ItemSlot(Constants.SLOT_TYPE_BODY);
+        slot[1] = new ItemSlotView(Constants.SLOT_TYPE_BODY);
         slot[1].setListener(listener);//所有的slot都绑定了一个listener
-        add(slot[1]);
+        appendChild(slot[1]);
 
-        slot[2] = new ItemSlot(Constants.SLOT_TYPE_LEG);
+        slot[2] = new ItemSlotView(Constants.SLOT_TYPE_LEG);
         slot[2].setListener(listener);//所有的slot都绑定了一个listener
-        add(slot[2]);
+        appendChild(slot[2]);
 
-        slot[3] = new ItemSlot(Constants.SLOT_TYPE_FOOT);
+        slot[3] = new ItemSlotView(Constants.SLOT_TYPE_FOOT);
         slot[3].setListener(listener);//所有的slot都绑定了一个listener
-        add(slot[3]);
+        appendChild(slot[3]);
 
-        slot[4] = new ItemSlot(Constants.SLOT_TYPE_HAND);
+        slot[4] = new ItemSlotView(Constants.SLOT_TYPE_HAND);
         slot[4].setListener(listener);//所有的slot都绑定了一个listener
-        add(slot[4]);
+        appendChild(slot[4]);
 
 
 

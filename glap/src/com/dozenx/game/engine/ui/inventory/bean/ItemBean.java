@@ -1,12 +1,13 @@
-package cola.machine.game.myblocks.bean;
+package com.dozenx.game.engine.ui.inventory.bean;
 
 /**
  * Created by luying on 16/7/3.
  */
-public class ItemEntity {
+public class ItemBean {
     int id;
     String name;
-    public ItemEntity(String name, int num)
+    int num;
+    public ItemBean(String name, int num)
     {
         this.name=name;
         this.num=num;
@@ -27,7 +28,7 @@ public class ItemEntity {
         this.num = num;
     }
 
-    int num;
+
 
     public int getId() {
         return id;

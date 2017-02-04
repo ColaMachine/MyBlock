@@ -49,7 +49,7 @@ public class ShaderManager {
     public static ShaderConfig lightShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
 
     public static ShaderConfig uiShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
-    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt16/box.frag","chapt16/box.vert");
+    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
 
     public HashMap<String,ShaderConfig> configMap =new HashMap<>();
     public void registerConfig(ShaderConfig config) throws Exception {
@@ -449,6 +449,7 @@ public class ShaderManager {
         glBindVertexArray(0);
         Util.checkGLError();
         */
+        int length =10;
         if(vao.getVaoId()>0){
 
 
@@ -475,7 +476,7 @@ public class ShaderManager {
 
         }*/
         assert vao.getVertices().position()>0;
-        vao.setPoints(vao.getVertices().position()/8);
+        vao.setPoints(vao.getVertices().position()/length);
         assert vao.getVaoId()>0;
         assert vao.getVaoId()>0;
         assert vao.getPoints()>0;
@@ -495,20 +496,25 @@ public class ShaderManager {
 
 
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * 4, 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, length * 4, 0);
 
         Util.checkGLError();
         glEnableVertexAttribArray(0);
         Util.checkGLError();
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * 4, 3 * 4);
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, length * 4, 3 * 4);
         Util.checkGLError();
         glEnableVertexAttribArray(1);
         Util.checkGLError();
 
-        glVertexAttribPointer(2, 2, GL_FLOAT, false, 8 * 4, 6 * 4);
+        glVertexAttribPointer(2, 3, GL_FLOAT, false, length * 4, 6 * 4);
         Util.checkGLError();
         glEnableVertexAttribArray(2);
+        Util.checkGLError();
+
+        glVertexAttribPointer(3, 1, GL_FLOAT, false, length * 4, 9 * 4);
+        Util.checkGLError();
+        glEnableVertexAttribArray(3);
         Util.checkGLError();
 
 
@@ -517,18 +523,18 @@ public class ShaderManager {
         OpenglUtils.checkGLError();
     }
 
-    public void CreateLivingVAO(ShaderConfig config ) {
+    public static void CreateLivingVAO(ShaderConfig config,Vao vao ) {
 
-
-        //生成vaoid
-        //create vao
-        Vao vao =config.getVao();
+    int length =10;
         if(vao.getVaoId()>0){
+
+
             //glBindVertexArray(vao.getVaoId());
             // LogUtil.err("vao have been initialized");
         }else {
             vao.setVaoId(glGenVertexArrays());
             OpenglUtils.checkGLError();
+            //  glBindVertexArray(vao.getVaoId());
             int VboId=glGenBuffers();//create vbo
             vao.setVboId(VboId);
            /* int eboId = glGenBuffers();
@@ -541,85 +547,20 @@ public class ShaderManager {
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
         //创建顶点数组
-
-        int length =9;
         int position = vao.getVertices().position();
-        if(vao.getVertices().position()==0){
-            int x =150,y=210,z=0 ;
-            TextureInfo ti = TextureManager.getTextureInfo("soil");
-            FloatBuffer veticesBuffer= vao.getVertices();
+      /*  if(vao.getVertices().position()==0){
 
-            // x += this.chunkPos.x * getChunkSizeX();
-            // z += this.chunkPos.z * getChunkSizeZ();
-            // this.faceIndex = 1;
-            // count++;//left front top
-            veticesBuffer.put(x);
-            veticesBuffer.put(y + 1);
-            veticesBuffer.put(z + 1);
-            veticesBuffer.put(0);
-            veticesBuffer.put(1);
-            veticesBuffer.put(0);
-            veticesBuffer.put(ti.minX);
-            veticesBuffer.put(ti.minY);
-            veticesBuffer.put(0);
-
-            veticesBuffer.put(x + 1); //left front right
-            veticesBuffer.put(y + 1);
-            veticesBuffer.put(z + 1);
-            veticesBuffer.put(0);
-            veticesBuffer.put(1);
-            veticesBuffer.put(0);
-            veticesBuffer.put(ti.maxX);
-            veticesBuffer.put(ti.minY);
-            veticesBuffer.put(0);
-
-            veticesBuffer.put(x + 1);//left behind right
-            veticesBuffer.put(y + 1);
-            veticesBuffer.put(z);
-            veticesBuffer.put(0);
-            veticesBuffer.put(1);
-            veticesBuffer.put(0);
-            veticesBuffer.put(ti.maxX);
-            veticesBuffer.put(ti.maxY);
-            veticesBuffer.put(0);
-
-            veticesBuffer.put(x);
-            veticesBuffer.put(y + 1);
-            veticesBuffer.put(z);
-            veticesBuffer.put(0);
-            veticesBuffer.put(1);
-            veticesBuffer.put(0);
-
-            veticesBuffer.put(ti.minX);
-            veticesBuffer.put(ti.maxY);
-            veticesBuffer.put(0);
-
-            veticesBuffer.put(x);
-            veticesBuffer.put(y + 1);
-            veticesBuffer.put(z + 1);
-            veticesBuffer.put(0);
-            veticesBuffer.put(1);
-            veticesBuffer.put(0);
-
-            veticesBuffer.put(ti.minX);
-            veticesBuffer.put(ti.minY);
-            veticesBuffer.put(0);
-
-            veticesBuffer.put(x + 1); //left behind right
-            veticesBuffer.put(y + 1);
-            veticesBuffer.put(z);
-            veticesBuffer.put(0);
-            veticesBuffer.put(1);
-            veticesBuffer.put(0);
-            veticesBuffer.put(ti.maxX);
-            veticesBuffer.put(ti.maxY);
-            veticesBuffer.put(0);
-        }
+        }*/
+        assert vao.getVertices().position()>0;
         vao.setPoints(vao.getVertices().position()/length);
+        assert vao.getVaoId()>0;
+        assert vao.getVaoId()>0;
+        assert vao.getPoints()>0;
         //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
         vao.getVertices().rewind();
         // vao.setVertices(twoDImgBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+
         glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
         //create ebo
         // float width = 1;
@@ -632,26 +573,24 @@ public class ShaderManager {
 
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, length * 4, 0);
-
         Util.checkGLError();
         glEnableVertexAttribArray(0);
         Util.checkGLError();
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, false, length* 4, 3 * 4);
+        glVertexAttribPointer(1, 3, GL_FLOAT, false,length * 4, 3 * 4);
         Util.checkGLError();
         glEnableVertexAttribArray(1);
         Util.checkGLError();
 
-        glVertexAttribPointer(2, 2, GL_FLOAT, false, length * 4, 6 * 4);
+        glVertexAttribPointer(2, 3, GL_FLOAT, false, length * 4, 6 * 4);
         Util.checkGLError();
         glEnableVertexAttribArray(2);
         Util.checkGLError();
 
-        glVertexAttribPointer(3, 1, GL_FLOAT, false, length * 4, 8* 4);
+        glVertexAttribPointer(3, 1, GL_FLOAT, false, length * 4, 9 * 4);
         Util.checkGLError();
         glEnableVertexAttribArray(3);
         Util.checkGLError();
-
 
 
         glBindVertexArray(0);

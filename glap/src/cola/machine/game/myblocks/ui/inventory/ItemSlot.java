@@ -46,7 +46,7 @@ import de.matthiasmann.twl.renderer.Font;
  * @author Matthias Mann
  */
 public class ItemSlot extends Widget {
-//    private Logger logger = Logger.getLogger(ItemSlot.class);
+//    private Logger logger = Logger.getLogger(ItemSlotView.class);
     public static final StateKey STATE_DRAG_ACTIVE = StateKey.get("dragActive");
     public static final StateKey STATE_DROP_OK = StateKey.get("dropOk");
     public static final StateKey STATE_DROP_BLOCKED = StateKey.get("dropBlocked");

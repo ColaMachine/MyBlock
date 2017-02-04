@@ -27,14 +27,14 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package cola.machine.game.myblocks.model.ui.html;
+package com.dozenx.game.engine.ui.inventory.view;
 
-import cola.machine.game.myblocks.bean.ItemEntity;
+import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
-import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.model.ui.html.HtmlObject;
+import cola.machine.game.myblocks.model.ui.html.Image;
 import cola.machine.game.myblocks.skill.SkillDefinition;
-import de.matthiasmann.twl.ParameterMap;
 
 import javax.vecmath.Vector4f;
 
@@ -73,8 +73,8 @@ public class IconView extends HtmlObject {
     private SkillDefinition skillDefinition;
 
 
-    private ItemEntity itemEntity;
-
+    private ItemBean itemBean;
+/*
     private Image icon;
 
     private  TextureInfo icon2;
@@ -82,24 +82,24 @@ public class IconView extends HtmlObject {
 
 
 
-    private ParameterMap icons;
+    private ParameterMap icons;*/
 
-    public IconView(ItemEntity itemEntity) {
-        this.itemEntity=itemEntity;
+    public IconView(ItemBean itemBean) {
+        this.itemBean = itemBean;
         this.setBorderColor(new Vector4f(1,1,1,1));
         this.setBorderWidth(1);
         this.setWidth(40);
         this.setHeight(40);
        // label =new Label();
-      // label.setText(""+itemEntity.getNum());
+      // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        this.setBackgroundImage(new Image(TextureManager.getItemCfg(itemEntity.getName()).getIcon()));
-        icon2= TextureManager.getItemCfg(itemEntity.getName()).getIcon();
+        this.setBackgroundImage(new Image(TextureManager.getItemCfg(itemBean.getName()).getIcon()));
+   /*     icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
-        }
-        this.itemCfg = TextureManager.getItemCfg(itemEntity.getName());
+        }*/
+        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
@@ -107,37 +107,37 @@ public class IconView extends HtmlObject {
     public IconView(SkillDefinition skillDefinition) {
         this.skillDefinition=skillDefinition;
         // label =new Label();
-        // label.setText(""+itemEntity.getNum());
+        // label.setText(""+itemBean.getNum());
         // add(label);
         //label.setPosition(30,30);
        // icon2= TextureManager.getItemCfg(skillDefinition.getIcon().getName()).getIcon();
-        if(icon2==  null){
+       /* if(icon2==  null){
             assert icon2!=null;
-        }
-        this.itemCfg = TextureManager.getItemCfg(itemEntity.getName());
+        }*/
+        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
     }
     public int getNum(){
-        return itemEntity.getNum();
+        return itemBean.getNum();
     }
     public void  setNum(int num){
-        this.itemEntity.setNum(num);
+        this.itemBean.setNum(num);
     }
     public String getItem() {
-        return itemEntity.getName();
+        return itemBean.getName();
     }
 
-    public void setItem(ItemEntity itemEntity) {
-        this.itemEntity = itemEntity;
-        findIcon();//根据name 查找
+    public void setItem(ItemBean itemBean) {
+        this.itemBean = itemBean;
+        //findIcon();//根据name 查找
     }
 
 
 
 
-    public Image getIcon() {
+  /*  public Image getIcon() {
         return icon;
     }
     public TextureInfo getIcon2() {
@@ -148,7 +148,7 @@ public class IconView extends HtmlObject {
     }
     public void setIcon(TextureInfo icon) {
         this. icon2=icon;
-    }
+    }*/
 
   //  @Override//静态绘制
    /* protected void paintWidget(GUI gui) {
@@ -169,14 +169,14 @@ public class IconView extends HtmlObject {
       //  this.setBackground(icon);
     }*/
 
-    private void findIcon() {
-        if(itemEntity == null || icons == null) {
+   /* private void findIcon() {
+        if(itemBean == null || icons == null) {
             icon = null;
         } else {
-            icon2= TextureManager.getTextureInfo(itemEntity.getName());
-           // icon = icons.getImage(itemEntity.getName());
+            icon2= TextureManager.getTextureInfo(itemBean.getName());
+           // icon = icons.getImage(itemBean.getName());
         }
-    }
+    }*/
 
 
     public ItemDefinition getItemCfg() {
@@ -187,29 +187,29 @@ public class IconView extends HtmlObject {
         this.itemCfg = itemCfg;
     }
 
-    public ItemEntity getItemEntity() {
-        return itemEntity;
+    public ItemBean getItemBean() {
+        return itemBean;
     }
 
-    public void setItemEntity(ItemEntity itemEntity) {
-        this.itemEntity = itemEntity;
+    public void setItemBean(ItemBean itemBean) {
+        this.itemBean = itemBean;
     }
 
-    public void setIcon2(TextureInfo icon2) {
+   /* public void setIcon2(TextureInfo icon2) {
         this.icon2 = icon2;
     }
 
 
-/*
+*//*
     public void setLabel(Label label) {
         this.label = label;
-    }*/
+    }*//*
 
     public ParameterMap getIcons() {
         return icons;
-    }
+    }*/
 
-    public void setIcons(ParameterMap icons) {
+ /*   public void setIcons(ParameterMap icons) {
         this.icons = icons;
-    }
+    }*/
 }

@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
-import cola.machine.game.myblocks.action.BagController;
+import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.paths.PathManager;

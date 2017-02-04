@@ -278,8 +278,8 @@ td.name="work_tr"+i+"td"+j;
         div.refresh();
         this.human=CoreRegistry.get(Human.class);
     }
-    public void shaderRender(){
-        this.div.shaderRender();
+    public void buildVao(){
+        this.div.buildVao();
     }
 
     public void putItem(int slotIndex , Item item){

@@ -40,7 +40,15 @@ public class RegionArea {
     }*/
     public void withWH(float minX,float minY,float width,float height){
         this.minX=minX;
-        this.minY=1-minY-height;
+        //this.minY=1-minY-height;
+        this.minY=minY;
+        this.maxX = minX+ width;
+        this.maxY = this.minY+height;
+    }
+    public void withWHReverse(float minX,float minY,float width,float height){
+        this.minX=minX;
+       this.minY=1-minY-height;
+        //this.minY=minY;
         this.maxX = minX+ width;
         this.maxY = this.minY+height;
     }

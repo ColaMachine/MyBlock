@@ -121,13 +121,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         this.updateChunksInProximity(false);
         //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
         for (ChunkImpl chunk : chunksInProximity) {
-            if(Switcher.SHADER_ENABLE){
-             chunk.preRenderShader();
-            }else{
-                chunk.preRender();
-            }
-
-
+             	chunk.update();
         }
       /*  try{
             Util.checkGLError();}catch (Exception e ){
@@ -137,20 +131,12 @@ public class WorldRendererLwjgl implements WorldRenderer {
         }*/
 
 		//TextureManager.getTextureInfo("mantle").bind();
-        if(Switcher.SHADER_ENABLE){
-           // ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);
-            for (ChunkImpl chunk : chunksInProximity) {
-              //  glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());
 
-                Util.checkGLError();
-              chunk.renderShader();
-                glBindVertexArray(0);
-                Util.checkGLError();
-            }
-        }else{
             for (ChunkImpl chunk : chunksInProximity) {
-                GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-                chunk.getChunkWorldPosZ());
+				if(!Switcher.SHADER_ENABLE) {
+					GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
+							chunk.getChunkWorldPosZ());
+				}
                 //GL11.glBegin(GL11.GL_QUADS);
                  chunk.render();
 
@@ -162,16 +148,16 @@ public class WorldRendererLwjgl implements WorldRenderer {
                     LogUtil.println(e.getMessage());
                     throw e;
                 }
-*/
-                 GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-                        -chunk.getChunkWorldPosZ());/*try{
+*/	if(!Switcher.SHADER_ENABLE) {
+					GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
+							-chunk.getChunkWorldPosZ());
+				}/*try{
                     Util.checkGLError();}catch (Exception e ){
                     e.printStackTrace();
                     LogUtil.println(e.getMessage());
                     throw e;
                 }*/
             }
-        }
        /* try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();

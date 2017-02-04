@@ -304,9 +304,10 @@ public class MouseControlCenter {
 
     public void mouseRClick(int x, int y) {
 
-        System.out.println("x:" + x + "y:" + y);
+        LogUtil.println("x:" + x + "y:" + y);
                                     /* GL_Vector from =camera.Position; */
-        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
+        LogUtil.println("mouse clikc at  %d %d \r\n ", x, y);
+       // System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
         GL_Vector viewdir = OpenglUtils.getLookAtDirection(x, y);
         // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
 

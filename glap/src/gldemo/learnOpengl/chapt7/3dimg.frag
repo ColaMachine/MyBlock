@@ -1,18 +1,18 @@
 #version 330 core
 
-//uniform sampler2D ourTexture0;
-//uniform sampler2D ourTexture1;
-//uniform sampler2D ourTexture2;
-//uniform sampler2D ourTexture3;
-//uniform sampler2D ourTexture4;
-//uniform sampler2D ourTexture5;
-//uniform sampler2D ourTexture6;
-//uniform sampler2D ourTexture7;
-//uniform sampler2D ourTexture8;
-//flat in float ourTextureIndex;
+uniform sampler2D ourTexture0;
+uniform sampler2D ourTexture1;
+uniform sampler2D ourTexture2;
+uniform sampler2D ourTexture3;
+uniform sampler2D ourTexture4;
+uniform sampler2D ourTexture5;
+uniform sampler2D ourTexture6;
+uniform sampler2D ourTexture7;
+uniform sampler2D ourTexture8;
+flat in float ourTextureIndex;
 struct Material
 {
-    sampler2D diffuse;
+    //sampler2D diffuse;
     //vec3 diffuse;
     vec3 specular;
     float shininess;
@@ -33,7 +33,7 @@ uniform Light light;
 out vec4 color;
 in vec3 Normal;
 in vec3 FragPos;
-in vec2 TexCoord;
+in vec3 TexCoord;
 
 uniform vec3 viewPos;
 //uniform sampler2D ourTexture;
@@ -41,6 +41,38 @@ void main()
 {
 
 
+    vec4 oricolor ;
+    vec2 TexCoordReal=vec2(TexCoord.x,TexCoord.y);
+    if(ourTextureIndex==-1){
+         oricolor = vec4(TexCoord,1);
+
+    }else if(ourTextureIndex==0){
+            oricolor = texture(ourTexture0, TexCoordReal);
+
+    }else if(ourTextureIndex==1){
+        oricolor = texture(ourTexture1, TexCoordReal);
+
+    }else if(ourTextureIndex==2){
+        oricolor = texture(ourTexture2, TexCoordReal);
+    }else if(ourTextureIndex==3){
+        oricolor = texture(ourTexture3, TexCoordReal);
+    }else if(ourTextureIndex==4){
+        oricolor = texture(ourTexture4, TexCoordReal);
+    }else if(ourTextureIndex==5){
+        oricolor = texture(ourTexture5, TexCoordReal);
+    }else if(ourTextureIndex==6){
+        oricolor = texture(ourTexture6, TexCoordReal);
+    }else if(ourTextureIndex==7){
+        oricolor = texture(ourTexture7, TexCoordReal);
+    }else if(ourTextureIndex==8){
+        oricolor = texture(ourTexture8, TexCoordReal);
+    }else{
+       oricolor = vec4(0.5,0.5,0.5,1);
+    }
+    if(oricolor.a<0.1)
+    discard;
+   // color.w=1;
+    vec3 textureColor = vec3(oricolor.x,oricolor.y,oricolor.z);
 vec3 norm = normalize(Normal);//faxian guiyi
 vec3 lightDir = normalize(light.position - FragPos);//guang de xian lu
 
@@ -54,8 +86,8 @@ float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
 
 
-vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoord));
-vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
+vec3 ambient = light.ambient * textureColor;
+vec3 diffuse = light.diffuse * diff * textureColor;
 vec3 specular = light.specular * spec ;//* vec3(texture(material.specular, TexCoord));
 
 float distance = length(light.position - FragPos);
@@ -65,8 +97,8 @@ float distance = length(light.position - FragPos);
 //specular *= attenuation;
 
  //vec4(light.ambient*vec3(texture(material.diffuse,TexCoords)), 1.0f);
-vec3 result = (ambient + diffuse + specular) * vec3(texture(material.diffuse,TexCoord));//
-color = vec4(result, 1.0f);
+vec3 result = (ambient + diffuse + specular) * textureColor;//
+color = vec4(textureColor, 1.0f);
 
 
 }

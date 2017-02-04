@@ -203,7 +203,7 @@ this.secnum =secnum;
         GL_Vector newPoint = GL_Vector.add(newAxis,newVector);
         return newPoint;
     }
-    public void renderShader(ShaderConfig config ,  GL_Matrix matrix){
+    public void build(ShaderConfig config ,  GL_Matrix matrix){
         FloatBuffer floatBuffer = config.getVao().getVertices();
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentLocation.x, parentLocation.y, parentLocation.z);
 
@@ -220,6 +220,12 @@ this.secnum =secnum;
         } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
          translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
         rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+
+        if(this.itemDefinition !=null){
+            this.itemDefinition.renderShader( config ,   matrix);
+            // return;
+        }
+
         if(front!=null) {
            // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
             GL_Vector.glVertex3fv4triangle(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer, config);
@@ -243,7 +249,7 @@ this.secnum =secnum;
             GL_Vector.glVertex3fv4triangle(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),right,floatBuffer, config);
         }
        for(int i=0;i<children.size();i++){
-            children.get(i).renderShader(config,rotateMatrix);
+            children.get(i).build(config,rotateMatrix);
         }
 
     }

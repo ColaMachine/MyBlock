@@ -4,7 +4,10 @@ import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.BinaryUtil;
+import glmodel.GL_Matrix;
 import org.lwjgl.opengl.GL11;
 import com.dozenx.util.ImageUtil;
 
@@ -280,31 +283,39 @@ public class ItemDefinition {
 
     }
     Block[] blocks;
-    public void render(){
-        // 先缩小
-        //GL11.glRotated(180, 0, 1, 0);
-
-        //GL11.glTranslatef(x-2,y, z);
-
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);//GL11.glTranslatef(2,0f,-4f);
-       // GL11.glRotated(135, 1,0 , 0);
-      //  GL11.glRotated(90, 0, 0, 1);
-
-        GL11.glScalef(0.1f, 0.1f, 0.1f);
-        //GL11.glTranslatef(-3.5f,-0.5f, -11f);
+    public void renderShader(ShaderConfig config , GL_Matrix matrix){
         for (Block block : blocks) {
-            GL11.glColor3f(block.rf(), block.bf() , block.gf());
-            block.render();
+          //  GL11.glColor3f(block.rf(), block.bf() , block.gf());
+            block.renderShader(config,matrix);
         }
-       // GL11.glTranslatef(3.5f,0.5f,11f);
-        GL11.glScalef(10f,10f, 10f);
-
-      // GL11.glRotated(-90, 0, 0, 1);
-        //GL11.glRotated(-135, 1, 0, 0);//GL11.glTranslatef(-2f,0f,4f);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        //GL11.glTranslatef(-x+2,-y, -z);
-        //GL11.glRotated(-180, 0, 1, 0);
     }
+    public void render(){
+
+
+            // 先缩小
+            //GL11.glRotated(180, 0, 1, 0);
+
+            //GL11.glTranslatef(x-2,y, z);
+
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glDisable(GL11.GL_LIGHTING);//GL11.glTranslatef(2,0f,-4f);
+            // GL11.glRotated(135, 1,0 , 0);
+            //  GL11.glRotated(90, 0, 0, 1);
+
+            GL11.glScalef(0.1f, 0.1f, 0.1f);
+            //GL11.glTranslatef(-3.5f,-0.5f, -11f);
+            for (Block block : blocks) {
+                GL11.glColor3f(block.rf(), block.bf(), block.gf());
+                block.render();
+            }
+            // GL11.glTranslatef(3.5f,0.5f,11f);
+            GL11.glScalef(10f, 10f, 10f);
+
+            // GL11.glRotated(-90, 0, 0, 1);
+            //GL11.glRotated(-135, 1, 0, 0);//GL11.glTranslatef(-2f,0f,4f);
+            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            //GL11.glTranslatef(-x+2,-y, -z);
+            //GL11.glRotated(-180, 0, 1, 0);
+        }
 }

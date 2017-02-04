@@ -29,7 +29,7 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
-import cola.machine.game.myblocks.bean.ItemEntity;
+import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -64,7 +64,7 @@ public class IconWidget extends Widget {
     private SkillDefinition skillDefinition;
 
 
-    private ItemEntity itemEntity;
+    private ItemBean itemBean;
 
     private Image icon;
 
@@ -75,17 +75,17 @@ public class IconWidget extends Widget {
 
     private ParameterMap icons;
 
-    public IconWidget(ItemEntity itemEntity) {
-        this.itemEntity=itemEntity;
+    public IconWidget(ItemBean itemBean) {
+        this.itemBean = itemBean;
        // label =new Label();
-      // label.setText(""+itemEntity.getNum());
+      // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        icon2= TextureManager.getItemCfg(itemEntity.getName()).getIcon();
+        icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }
-        this.itemCfg = TextureManager.getItemCfg(itemEntity.getName());
+        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
@@ -93,30 +93,30 @@ public class IconWidget extends Widget {
     public IconWidget(SkillDefinition skillDefinition) {
         this.skillDefinition=skillDefinition;
         // label =new Label();
-        // label.setText(""+itemEntity.getNum());
+        // label.setText(""+itemBean.getNum());
         // add(label);
         //label.setPosition(30,30);
        // icon2= TextureManager.getItemCfg(skillDefinition.getIcon().getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }
-        this.itemCfg = TextureManager.getItemCfg(itemEntity.getName());
+        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
     }
     public int getNum(){
-        return itemEntity.getNum();
+        return itemBean.getNum();
     }
     public void  setNum(int num){
-        this.itemEntity.setNum(num);
+        this.itemBean.setNum(num);
     }
     public String getItem() {
-        return itemEntity.getName();
+        return itemBean.getName();
     }
 
-    public void setItem(ItemEntity itemEntity) {
-        this.itemEntity = itemEntity;
+    public void setItem(ItemBean itemBean) {
+        this.itemBean = itemBean;
         findIcon();//根据name 查找
     }
 
@@ -156,11 +156,11 @@ public class IconWidget extends Widget {
     }
     
     private void findIcon() {
-        if(itemEntity == null || icons == null) {
+        if(itemBean == null || icons == null) {
             icon = null;
         } else {
-            icon2= TextureManager.getTextureInfo(itemEntity.getName());
-            icon = icons.getImage(itemEntity.getName());
+            icon2= TextureManager.getTextureInfo(itemBean.getName());
+            icon = icons.getImage(itemBean.getName());
         }
     }
 
@@ -173,12 +173,12 @@ public class IconWidget extends Widget {
         this.itemCfg = itemCfg;
     }
 
-    public ItemEntity getItemEntity() {
-        return itemEntity;
+    public ItemBean getItemBean() {
+        return itemBean;
     }
 
-    public void setItemEntity(ItemEntity itemEntity) {
-        this.itemEntity = itemEntity;
+    public void setItemBean(ItemBean itemBean) {
+        this.itemBean = itemBean;
     }
 
     public void setIcon2(TextureInfo icon2) {

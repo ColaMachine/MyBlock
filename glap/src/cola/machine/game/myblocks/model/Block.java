@@ -1,6 +1,9 @@
 package cola.machine.game.myblocks.model;
 
 
+import com.dozenx.game.opengl.util.ShaderConfig;
+import glmodel.GL_Matrix;
+
 public interface  Block {
 	public String getName();
 
@@ -29,7 +32,7 @@ public interface  Block {
     public void setXh(boolean xh);
 
 
-
+    public void renderShader(ShaderConfig config , GL_Matrix matrix);
     public void render();
 	public void renderCube();
 	public void renderColor();

@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.engine.modes;
 
-import cola.machine.game.myblocks.action.BagController;
+import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.control.DropControlCenter;
@@ -10,14 +10,12 @@ import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
-import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.model.ui.html.InventoryPanel;
-import cola.machine.game.myblocks.model.ui.html.SlotPanel;
+import com.dozenx.game.engine.ui.inventory.control.InventoryController;
+import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.network.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -38,6 +36,7 @@ import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
+import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -46,24 +45,16 @@ import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
 import glapp.GLApp;
 import glapp.GLCamera;
-import gldemo.learnOpengl.chapt13.LearnOpenglColor;
-import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class GamingState implements GameState {
@@ -126,6 +117,7 @@ public class GamingState implements GameState {
             document= Document.getInstance();
             document .body.removeChild();
             document.body.appendChild(new InventoryPanel(4,5));
+            document.body.appendChild(new PersonPanel(1,5));
 
             document.needUpdate=true;
         } catch (Exception e) {
@@ -396,20 +388,20 @@ if(!Switcher.SHADER_ENABLE)
             }
 
         if( Document.needUpdate){
-            document.resize();
+
             document.update();
-            document.recursivelySetGUI(document);
+
 
             //ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
             //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
 
             // this.setPerspective();
-            document.shaderRender();
+            document.render();
             //div.shaderRender();   OpenglUtils.checkGLError();
             // div2.shaderRender();   OpenglUtils.checkGLError();
             //div3.shaderRender();   OpenglUtils.checkGLError();
             //bag.shaderRender();
-            ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);   OpenglUtils.checkGLError();
+
             //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
 
             Document.needUpdate=false;
@@ -454,7 +446,7 @@ if(!Switcher.SHADER_ENABLE)
         Util.checkGLError();*/
         if (Switcher.SHADER_ENABLE) {
 
-            ShaderUtils.finalDraw(this.shaderManager.lightShaderConfig);
+
            /* glUseProgram(this.shaderManager.lightShaderConfig.getProgramId());
             Util.checkGLError();
             glBindVertexArray(shaderManager.lightShaderConfig.getVao().getVaoId());
@@ -465,15 +457,19 @@ if(!Switcher.SHADER_ENABLE)
             OpenglUtils.checkGLError();
             livingThingManager.render();
             OpenglUtils.checkGLError();
-            glUseProgram(0);
+
+            ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);
+
         } else {
             camera.Render();
             GL11.glEnable(GL11.GL_TEXTURE_2D);   // be sure textures are on
             worldRenderer.render();
             livingThingManager.render();
             gameGui.update();
+
            // OpenglUtils.renderCubeTest();
         }
+        document.render();
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();
 
@@ -508,7 +504,7 @@ if(!Switcher.SHADER_ENABLE)
             e.printStackTrace();
         }*/
 
-        ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
+
 
     }
 
@@ -522,6 +518,7 @@ if(!Switcher.SHADER_ENABLE)
         CoreRegistry.put(Client.class, client);
         BagController bagController = new BagController();
         CoreRegistry.put(BagController.class, bagController);
+        CoreRegistry.put(InventoryController.class, new InventoryController());
         // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
@@ -576,7 +573,7 @@ if(!Switcher.SHADER_ENABLE)
 
     private void initEntities() {
         human = new Human();
-        human.setHuman(1, 125, 5, 0, 0, -1, 0, 1, 0);
+        human.setHuman(1, 3, 5, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
 
         LivingThing livingThing = new LivingThing();

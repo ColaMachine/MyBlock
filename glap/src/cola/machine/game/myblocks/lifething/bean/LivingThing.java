@@ -241,14 +241,20 @@ public class LivingThing extends GameActor{
     }
    // int vaoId;
     //int trianglesCount =0;
-    private void preRenderShader(){//当发生改变变的时候触发这里
-        GL_Matrix translateMatrix=GL_Matrix.translateMatrix(position.x, position.y + 0.75f, position.z);
-        float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle*3.14f/180,0);
+    private void build(){//当发生改变变的时候触发这里
+        if(Switcher.SHADER_ENABLE){
+            GL_Matrix translateMatrix=GL_Matrix.translateMatrix(position.x, position.y + 0.75f, position.z);
+            float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
+            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle*3.14f/180,0);
 
-        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
-        //.getVao().getVertices()
-        bodyComponent.renderShader(ShaderManager.livingThingShaderConfig,rotateMatrix);
+            rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+            //.getVao().getVertices()
+            bodyComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
+
+
+        }else{
+
+        }
 
          /*trianglesCount= floatBuffer.position()/8;
         if(trianglesCount<=0){
@@ -270,7 +276,7 @@ public class LivingThing extends GameActor{
             LogUtil.println(e.getMessage());
             throw e;
         }*/
-        this.dropControl();
+
         GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
         float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
         GL11.glRotatef(angle, 0, 1, 0);/*try{
@@ -321,8 +327,8 @@ public class LivingThing extends GameActor{
         }*/
     }
     public void update(){
-
-            preRenderShader();
+             this.dropControl();
+            build();
 
     }
     public void renderShader(){
@@ -353,7 +359,7 @@ public class LivingThing extends GameActor{
 
         glUseProgram(0);*/
         // GL11.glPushMatrix();
-        this.dropControl();
+
        // GL11.glTranslatef(position.x, position.y + 0.75f, position.z);
        // float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
         //GL11.glRotatef(angle, 0, 1, 0);

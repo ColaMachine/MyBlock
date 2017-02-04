@@ -125,9 +125,9 @@ public class SlotPanel extends Widget {
             if(w.getParent() instanceof PersonPanel) {
                 //LogUtil.println("拖到了person上");
             }
-            if(w instanceof ItemSlot) {
+            if(w instanceof ItemSlotView) {
                // System.out.println(1);
-                setDropSlot((ItemSlot)w);
+                setDropSlot((ItemSlotView)w);
             } else {
                 setDropSlot(null);
             }

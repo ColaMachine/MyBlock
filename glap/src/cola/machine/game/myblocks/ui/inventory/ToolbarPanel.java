@@ -29,13 +29,8 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
-import cola.machine.game.myblocks.action.BagController;
-import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
-import de.matthiasmann.twl.renderer.Font;
 
 /**
  *

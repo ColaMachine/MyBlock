@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.*;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -40,6 +41,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
@@ -51,7 +53,7 @@ public class ChunkImpl implements Chunk {
     public int alphaDisplayId = 0;
     public IntBuffer vetices = BufferUtils.createIntBuffer(14);
     public int count = 0;
-    public Vao vao =new Vao();
+    public Vao vao =new Vao(602400);
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
@@ -418,9 +420,9 @@ public class ChunkImpl implements Chunk {
             return this.getChunkWorldPosX()+"-"+this.getChunkSizeY()+"-"+this.getChunkWorldPosZ();
     }
 
-    public void buildShaderBuffer() {
+    public void buildVao() {
 
-
+        glUseProgram(ShaderManager.terrainShaderConfig.getProgramId());
         ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
         ChunkImpl leftChunk = (ChunkImpl) chunkProvider.getChunk(this.chunkPos.x - 1, this.chunkPos.y, this.chunkPos.z);
         ChunkImpl rightChunk = (ChunkImpl) chunkProvider.getChunk(this.chunkPos.x + 1, this.chunkPos.y, this.chunkPos.z);
@@ -884,7 +886,7 @@ public class ChunkImpl implements Chunk {
         GL_Vector p1= new GL_Vector(x+1,y,z);
         GL_Vector p2= new GL_Vector(x,y,z);
         GL_Vector p3= new GL_Vector(x,y+1,z);
-        GL_Vector p4= new GL_Vector(x+1,y,z);
+        GL_Vector p4= new GL_Vector(x+1,y+1,z);
         ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
 
         /*veticesBuffer.put(x+1).put(y).put(z ).put(0).put(0).put(-1).put(ti.minX).put(ti.minY);//p1
@@ -1205,70 +1207,64 @@ public class ChunkImpl implements Chunk {
         }
     }
 
-    public void preRenderShader() {
 
-        if (this.disposed) {
-            // if(this.displayId==0){
 
-            this.buildShaderBuffer();//this.buildAlpha();
-            this.disposed = false;
+    public void update() {
+        if(Switcher.SHADER_ENABLE) {
+            if (this.disposed) {
+                // if(this.displayId==0){
+
+                this.buildVao();//this.buildAlpha();
+                this.disposed = false;
+            }
+            if (this.vao.getVaoId() == 0) {
+                int error = GL11.glGetError();
+                System.out.println("error: " + GLU.gluErrorString(error));
+                System.out.println("vaoid should not be 0 in preRender");
+            }
+        }else {
+            if (this.disposed) {
+                // if(this.displayId==0){
+                this.build();//this.buildAlpha();
+                this.disposed = false;
+            }
+            if (this.displayId == 0) {
+                int error = GL11.glGetError();
+                System.out.println("error: " + GLU.gluErrorString(error));
+                System.out.println("displayId should not be 0 in preRender");
+            }
         }
-        /*if (this.VaoId == 0) {
-            int error = GL11.glGetError();
-            System.out.println("error: " + GLU.gluErrorString(error));
-            System.out.println("displayId should not be 0 in preRender");
-        }*/
         // GLApp.callDisplayList(this.displayId);
     }
 
-    public void preRender() {
-        if (this.disposed) {
-            // if(this.displayId==0){
-            this.build();//this.buildAlpha();
-            this.disposed = false;
-        }
-        if (this.displayId == 0) {
-            int error = GL11.glGetError();
-            System.out.println("error: " + GLU.gluErrorString(error));
-            System.out.println("displayId should not be 0 in preRender");
-        }
-        // GLApp.callDisplayList(this.displayId);
-    }
 
 
-    public void renderShader() {
-        if (vao.getVaoId() == 0) {
-             int error =GL11.glGetError();
-            System.out.println(this.chunkPos + "displayId should not be 0 in render");
-        } else {
-
-            ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,vao);
-           /* glBindVertexArray(VaoId);
-            Util.checkGLError();
-            glDrawArrays(GL_TRIANGLES, 0, this.count * 6);
-            Util.checkGLError();*/
-
-        }
-    }
 
     public void render() {
-
-
+        if(Switcher.SHADER_ENABLE){
+            if (vao.getVaoId() == 0) {
+                int error =GL11.glGetError();
+                System.out.println(this.chunkPos + "displayId should not be 0 in render");
+            } else {
+                ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,vao);
+            }
+        }
+        else {
 //        GLApp.renderCube();
-        if (this.displayId == 0) {
-            // int error =GL11.glGetError();
-            System.out.println(this.chunkPos + "displayId should not be 0 in render");
-        } else {
+            if (this.displayId == 0) {
+                // int error =GL11.glGetError();
+                System.out.println(this.chunkPos + "displayId should not be 0 in render");
+            } else {
 
-            //OpenglUtil.glVertex3fv4rect(P1, P2, P6, P5, ti, Constants.FRONT);
-            GLApp.callDisplayList(this.displayId);
+                //OpenglUtil.glVertex3fv4rect(P1, P2, P6, P5, ti, Constants.FRONT);
+                GLApp.callDisplayList(this.displayId);
             /*GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
             GL11.glVertex3f(-1.0f, -1.0f,  1.0f);	// Bottom Left
             GL11.glVertex3f( 1.0f, -1.0f,  1.0f);	// Bottom Right
             GL11.glVertex3f( 1.0f,  1.0f,  1.0f);	// Top Right
             GL11.glVertex3f(-1.0f,  1.0f,  1.0f);	// Top Left*/
+            }
         }
-
     }
 
     public void renderAlpha() {

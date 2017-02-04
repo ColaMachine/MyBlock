@@ -27,17 +27,19 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package cola.machine.game.myblocks.model.ui.html;
+package com.dozenx.game.engine.ui.inventory.view;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.ui.inventory.control.InventoryController;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
-import de.matthiasmann.twl.renderer.Font;
 
 import javax.vecmath.Vector4f;
 //import org.apache.log4j.Logger;
@@ -48,14 +50,19 @@ import javax.vecmath.Vector4f;
  *
  * @author Matthias Mann
  */
-public class ItemSlot extends HtmlObject {
-//    private Logger logger = Logger.getLogger(ItemSlot.class);
+public class ItemSlotView extends HtmlObject {
+//    private Logger logger = Logger.getLogger(ItemSlotView.class);
     public static final StateKey STATE_DRAG_ACTIVE = StateKey.get("dragActive");
     public static final StateKey STATE_DROP_OK = StateKey.get("dropOk");
     public static final StateKey STATE_DROP_BLOCKED = StateKey.get("dropBlocked");
     //Font font;
-    private IconView IconView;
-    public ItemSlot(int type) {
+    private DragListener listener;
+    private boolean dragActive;
+    private ParameterMap icons;
+    private int itemType ;
+
+    private IconView iconView;
+    public ItemSlotView(int type) {
         this.itemType=type;
         this.setBorderColor(new Vector4f(1,1,1,1));
         this.setBorderWidth(1);
@@ -77,45 +84,52 @@ public class ItemSlot extends HtmlObject {
         this.setInputMap(inputMap);*/
     }
     public IconView getIconView() {
-        return IconView;
+        return iconView;
     }
     public interface DragListener {
-        public void dragStarted(ItemSlot slot, Event evt);
-        public void dragging(ItemSlot slot, Event evt);
-        public void dragStopped(ItemSlot slot, Event evt);
+        public void dragStarted(ItemSlotView slot, Event evt);
+        public void dragging(ItemSlotView slot, Event evt);
+        public void dragStopped(ItemSlotView slot, Event evt);
     }
 
 
-    public void setIconView(IconView IconView) {
+    public void setIconView(IconView iconView) {
        // this.allChildrenRemoved();
        /* if(itemWrap == null ){
             this.allChildrenRemoved();
         }*/
-
-        this.IconView = IconView;
+        if(this.iconView==iconView)return;
+        this.iconView = iconView;
         this.removeChild();
-        this.appendChild(IconView);
-        if(IconView !=null ) {
-            /*if(IconView.getIcon2()!=null) {
+        this.appendChild(iconView);
+        if(this.getItemType()>0){
+            InventoryController inventoryController = CoreRegistry.get(InventoryController.class);
+
+            inventoryController.loadEquip(this.getItemType(),iconView==null?null:iconView.getItemBean());
+        }
+
+       /* if(iconView !=null ) {//穿上装备
+            *//*if(IconView.getIcon2()!=null) {
                 this.setBackgroundImage(new Image(IconView.getIcon2()));
-            }*/
+            }*//*
+
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addHeadEquip(IconView.getItemCfg());
+                human.addHeadEquip(iconView.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addLegEquip(IconView.getItemCfg());
+                human.addLegEquip(iconView.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addBodyEquip(IconView.getItemCfg());
+                human.addBodyEquip(iconView.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
                 Human human = CoreRegistry.get(Human.class);
-                human.addHandEquip(IconView.getItemCfg());
+                human.addHandEquip(iconView.getItemCfg());
             }
-        }else{
+        }else{//卸下装备
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
                 Human human = CoreRegistry.get(Human.class);
                 human.addHeadEquip(null);
@@ -135,7 +149,7 @@ public class ItemSlot extends HtmlObject {
 
                 human.addHandEquip(null);
             }
-        }
+        }*/
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){
             itemWrap.getParent().removeChild(itemWrap);
 
@@ -151,10 +165,7 @@ public class ItemSlot extends HtmlObject {
    // private Image icon;
    // private int num;
     //private Label label;
-    private DragListener listener;
-    private boolean dragActive;
-    private ParameterMap icons;
-    private int itemType ;
+
 
     public int getItemType() {
         return itemType;
@@ -247,6 +258,7 @@ public class ItemSlot extends HtmlObject {
                 dragActive = true;
                 getAnimationState().setAnimationState(STATE_DRAG_ACTIVE, true);
                 if(listener != null) {
+                    LogUtil.println("dragStarted");
                     listener.dragStarted(this, evt);
                 }
             }/*
@@ -285,7 +297,7 @@ public class ItemSlot extends HtmlObject {
         return super.handleEvent(evt);
     }
 
-    @Override//静态绘制
+/*    @Override//静态绘制
     protected void paintWidget(Document gui) {
         if(!dragActive && IconView != null) {
             if(IconView.getIcon2()==null){
@@ -299,18 +311,18 @@ public class ItemSlot extends HtmlObject {
             //font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15, IconView.getNum()+"");
         }
 
-    }
+    }*/
 
    // @Override//绘制拖动过程
-    protected void paintDragOverlay(GUI gui, int mouseX, int mouseY, int modifier) {
+ /*   protected void paintDragOverlay(GUI gui, int mouseX, int mouseY, int modifier) {
         if(IconView != null) {
             final int innerWidth = getInnerWidth();
             final int innerHeight = getInnerHeight();
 
-            /*itemWrap.getIcon().draw(getAnimationState(),
+            *//*itemWrap.getIcon().draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
-                    innerWidth, innerHeight);*/
+                    innerWidth, innerHeight);*//*
             IconView.getIcon2().draw(getAnimationState(),
                     mouseX - innerWidth/2,
                     mouseY - innerHeight/2,
@@ -321,16 +333,16 @@ public class ItemSlot extends HtmlObject {
             //font.drawText(getAnimationState(),mouseX+5,mouseY+5, IconView.getNum()+"");
         }
     }
-
+*/
     //@Override
-    protected void applyTheme(ThemeInfo themeInfo) {
+  /*  protected void applyTheme(ThemeInfo themeInfo) {
         //super.applyTheme(themeInfo);
        // icons = themeInfo.getParameterMap("icons");
        // font = themeInfo.getFont("black");
         //findIcon();
-    }
-    private TextureInfo icon2;
-    private void findIcon() {
+    }*/
+ //   private TextureInfo icon2;
+   /* private void findIcon() {
         if(IconView == null || icons == null) {
             //icon = null;
         } else {
@@ -338,5 +350,5 @@ public class ItemSlot extends HtmlObject {
             //icon2= TextureManager.getTextureInfo(itemWrap.getItem());
            //itemWidget.setIcon(icons.getImage(itemWidget.getItem())) ;
         }
-    }
+    }*/
 }

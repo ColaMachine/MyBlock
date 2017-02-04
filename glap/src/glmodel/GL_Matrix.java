@@ -679,7 +679,7 @@ public class GL_Matrix
 			}
 		}
 		matrixBuffer.flip();
-        System.out.println();
+        //System.out.println();
 		return matrixBuffer;
 
 
