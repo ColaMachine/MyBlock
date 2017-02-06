@@ -267,7 +267,8 @@ if(!Switcher.SHADER_ENABLE) {
         //  GLApp.drawRect(1,1,50,50);
        /* count++;
         if(count<1000)*/
-        ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
+        //ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
+        document.render();
        // ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig);//2DImage
       //  ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);//2DImage
       //  ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);//2DImage

@@ -369,7 +369,7 @@ public class Document extends HtmlObject {
     @Override
     public void render(){
         if(Switcher.SHADER_ENABLE) {
-            ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
+            ShaderUtils.finalDraw(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao());//2DImage
 
         }else{
             super.render();

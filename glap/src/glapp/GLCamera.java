@@ -280,8 +280,8 @@ public class GLCamera {
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
 
-		glUniform3f(GamingState.instance.shaderManager.livingThingShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
-		org.lwjgl.opengl.Util.checkGLError();
+		//glUniform3f(GamingState.instance.shaderManager.livingThingShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
+		//org.lwjgl.opengl.Util.checkGLError();
 
 
 		glUseProgram(GamingState.instance.shaderManager.lightShaderConfig.getProgramId());

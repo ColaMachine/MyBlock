@@ -12,6 +12,82 @@ import java.util.HashMap;
 public class ShaderConfig {
 
     public int textureIndex;
+
+    public int texture0Loc;
+    public int texture1Loc;
+    public int texture2Loc;
+    public int texture3Loc;
+    public int texture4Loc;
+
+    public int getTexture0Loc() {
+        return texture0Loc;
+    }
+
+    public void setTexture0Loc(int texture0Loc) {
+        this.texture0Loc = texture0Loc;
+    }
+
+    public int getTexture1Loc() {
+        return texture1Loc;
+    }
+
+    public void setTexture1Loc(int texture1Loc) {
+        this.texture1Loc = texture1Loc;
+    }
+
+    public int getTexture2Loc() {
+        return texture2Loc;
+    }
+
+    public void setTexture2Loc(int texture2Loc) {
+        this.texture2Loc = texture2Loc;
+    }
+
+    public int getTexture3Loc() {
+        return texture3Loc;
+    }
+
+    public void setTexture3Loc(int texture3Loc) {
+        this.texture3Loc = texture3Loc;
+    }
+
+    public int getTexture4Loc() {
+        return texture4Loc;
+    }
+
+    public void setTexture4Loc(int texture4Loc) {
+        this.texture4Loc = texture4Loc;
+    }
+
+    public int getTexture5Loc() {
+        return texture5Loc;
+    }
+
+    public void setTexture5Loc(int texture5Loc) {
+        this.texture5Loc = texture5Loc;
+    }
+
+    public int getTexture6Loc() {
+        return texture6Loc;
+    }
+
+    public void setTexture6Loc(int texture6Loc) {
+        this.texture6Loc = texture6Loc;
+    }
+
+    public int getTexture7Loc() {
+        return texture7Loc;
+    }
+
+    public void setTexture7Loc(int texture7Loc) {
+        this.texture7Loc = texture7Loc;
+    }
+
+    public int texture5Loc;
+    public int texture6Loc;
+    public int texture7Loc;
+
+
     public ShaderConfig(){
 
     }

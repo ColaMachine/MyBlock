@@ -8,6 +8,7 @@ import de.matthiasmann.twl.TextWidget;
 import de.matthiasmann.twl.model.DefaultEditFieldModel;
 import de.matthiasmann.twl.model.EditFieldModel;
 import de.matthiasmann.twl.renderer.*;
+import de.matthiasmann.twl.utils.CallbackSupport;
 import de.matthiasmann.twl.utils.TextUtil;
 
 import javax.vecmath.Vector4f;
@@ -185,7 +186,7 @@ public class EditField extends TextField {
                                 break;
                             }
                         } else {
-                            //doCallback(Event.KEY_RETURN);
+                            doCallback(Event.KEY_RETURN);
                         }
                         return true;
                     case Event.KEY_ESCAPE:
@@ -803,5 +804,28 @@ public class EditField extends TextField {
             }
         }
     }÷*/
+    public interface Callback {
+        /**
+         * Gets called for any change in the edit field, or when ESCAPE or RETURN was pressed
+         *
+         * @param key One of KEY_NONE, KEY_ESCAPE, KEY_RETURN, KEY_DELETE
+         * @see Event#KEY_NONE
+         * @see Event#KEY_ESCAPE
+         * @see Event#KEY_RETURN
+         * @see Event#KEY_DELETE
+         */
+        public void callback(int key);
+    }
+    protected void doCallback(int key) {
+        if(callbacks != null) {
+            for(Callback cb : callbacks) {
+                cb.callback(key);
+            }
+        }
+    }
 
+    public void addCallback(Callback cb) {
+        callbacks = CallbackSupport.addCallbackToList(callbacks, cb, Callback.class);
+    }
+    private Callback[] callbacks;
 }

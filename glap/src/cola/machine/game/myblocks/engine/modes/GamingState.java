@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine.modes;
 
+import com.dozenx.game.engine.ui.chat.view.ChatPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
@@ -37,6 +38,7 @@ import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
+import com.dozenx.game.engine.ui.toolbar.view.ToolbarView;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -118,6 +120,9 @@ public class GamingState implements GameState {
             document .body.removeChild();
             document.body.appendChild(new InventoryPanel(4,5));
             document.body.appendChild(new PersonPanel(1,5));
+            document.body.appendChild(new ToolbarView(10,1));
+
+            document.body.appendChild(new ChatPanel());
 
             document.needUpdate=true;
         } catch (Exception e) {
@@ -135,7 +140,8 @@ public ShaderManager shaderManager;
             if(shaderManager==null){
                 shaderManager=new ShaderManager();
             }
-            shaderManager.init();
+
+            //shaderManager.init();
 
         } else {
             OpenglUtils.setGlobalLight();
@@ -174,10 +180,12 @@ public ShaderManager shaderManager;
         if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
 
-                document.handleKey(
+               if(document.handleKey(
                         Keyboard.getEventKey(),
                         Keyboard.getEventCharacter(),
-                        Keyboard.getEventKeyState());
+                        Keyboard.getEventKeyState())){
+                   continue;
+               }
 
                 // check for exit key
            /* if (Keyboard.getEventKey() == finishedKey) {
@@ -208,9 +216,16 @@ if(!Switcher.SHADER_ENABLE)
             mouseControlCenter.mouseMove(cursorX, cursorY);
             while (Mouse.next()) {
 
-                document.handleMouse(
+                if(document.handleMouse(
                         Mouse.getEventX(), Constants.WINDOW_HEIGHT - Mouse.getEventY() - 1,
-                        Mouse.getEventButton(), Mouse.getEventButtonState());
+                        Mouse.getEventButton(), Mouse.getEventButtonState())){
+                    if( Mouse.getEventButtonState() ==false){
+
+                    }else{
+                        continue;
+                    }
+
+                }
                 int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
                     //gui.handleMouseWheel(wheelDelta / 120);
@@ -364,7 +379,7 @@ if(!Switcher.SHADER_ENABLE)
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        livingThingManager.update();
         if (!Switcher.IS_GOD)
             if (/*Math.random()*/ 1> 0.5) {
                 //dcc.check(human);
@@ -419,6 +434,9 @@ if(!Switcher.SHADER_ENABLE)
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         if(!Switcher.SHADER_ENABLE) {
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
@@ -458,7 +476,7 @@ if(!Switcher.SHADER_ENABLE)
             livingThingManager.render();
             OpenglUtils.checkGLError();
 
-            ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);
+            ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
 
         } else {
             camera.Render();
@@ -573,15 +591,15 @@ if(!Switcher.SHADER_ENABLE)
 
     private void initEntities() {
         human = new Human();
-        human.setHuman(1, 3, 5, 0, 0, -1, 0, 1, 0);
+        human.setHuman(1, 53, 5, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
 
         LivingThing livingThing = new LivingThing();
         livingThing.position = new GL_Vector(10,125, 0);
         livingThingManager.setPlayer(human);
         //livingThingManager.add(livingThing);
-        SynchronTask task = new SynchronTask();
-        task.start();
+       // SynchronTask task = new SynchronTask();
+        //task.start();
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
         CoreRegistry.put(Player.class,player);*/

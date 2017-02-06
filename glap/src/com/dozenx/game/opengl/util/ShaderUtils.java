@@ -36,6 +36,7 @@ import java.util.HashMap;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
@@ -536,7 +537,7 @@ try {
         OpenglUtils.checkGLError();
     }
 */
-    public static void finalDraw(ShaderConfig config){
+    /*public static void finalDraw(ShaderConfig config){
         //TextureManager.getTextureInfo("soil").bind();
         // ShaderUtils.get2dcolor
         assert config.getProgramId()>0;
@@ -554,7 +555,8 @@ try {
         OpenglUtils.checkGLError();
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
-    }
+        glUseProgram(0);
+    }*/
     public static void finalDraw(ShaderConfig config,Vao vao){
         //TextureManager.getTextureInfo("soil").bind();
         // ShaderUtils.get2dcolor
@@ -573,6 +575,7 @@ try {
         OpenglUtils.checkGLError();
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
+        glUseProgram(0);
     }
     /*
     public static void finalDraw2DImage(){
@@ -1399,7 +1402,7 @@ try {
         return twodColorVao;
     }*/
 
-   // public static int textureIndex=0;
+   public static int textureIndex=0;
     public static HashMap<Integer,Integer> textureIndexMap=new HashMap();
     /*public static Integer bindAndGetTextureIndex(int textureHandle) {
         glUseProgram(get2DImgConfig().getProgramId());
@@ -1440,38 +1443,56 @@ try {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
         }
-        glUseProgram(config.getProgramId());
-        OpenglUtils.checkGLError();
+
+
         Integer index = config.getTextureIndexMap().get(textureHandle);
         if(index==null){
-            index =config.textureIndex;
+            glUseProgram(config.getProgramId());
+            OpenglUtils.checkGLError();
+            index =textureIndex;
 
             config.getTextureIndexMap().put(textureHandle,index);
-            config.textureIndex++;
+            textureIndex++;
             //uniform texture
             if(index==0){
                 GL13.glActiveTexture(GL13.GL_TEXTURE0);
 
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture0"), 0);
+                glUniform1i(config.texture0Loc, 0);
                 OpenglUtils.checkGLError();
             }else if(index==1){
                 GL13.glActiveTexture(GL13.GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture1"), 1);
+                glUniform1i(config.texture1Loc, 1);
                 OpenglUtils.checkGLError();
             }else if(index==2){
                 GL13.glActiveTexture(GL13.GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture2"), 2);
+                glUniform1i(config.texture2Loc, 2);
                 OpenglUtils.checkGLError();
             }else if(index==3){
                 GL13.glActiveTexture(GL13.GL_TEXTURE3);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(glGetUniformLocation(config.getProgramId(), "ourTexture3"), 3);
+                glUniform1i(config.texture3Loc, 3);
                 OpenglUtils.checkGLError();
             }
-
+            else if(index==4){
+                GL13.glActiveTexture(GL13.GL_TEXTURE4);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture4Loc, 4);
+                OpenglUtils.checkGLError();
+            } else if(index==5){
+                GL13.glActiveTexture(GL13.GL_TEXTURE5);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture5Loc, 5);
+                OpenglUtils.checkGLError();
+            }else if(index==6){
+                GL13.glActiveTexture(GL13.GL_TEXTURE6);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture6Loc, 6);
+                OpenglUtils.checkGLError();
+            }
+            glUseProgram(0);
         }
         return index;
 
@@ -1489,6 +1510,8 @@ try {
      */
     public static void drawImage(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
         //ti=TextureManager.getTextureInfo("mantle");
+
+
         int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
             FloatBuffer veticesBuffer = vao.getVertices();

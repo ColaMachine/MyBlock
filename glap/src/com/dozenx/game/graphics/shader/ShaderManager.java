@@ -22,6 +22,7 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
@@ -187,17 +188,18 @@ public class ShaderManager {
         OpenglUtils.checkGLError();
 
 
-        glUseProgram(livingThingShaderConfig.getProgramId());
+       // glUseProgram(livingThingShaderConfig.getProgramId());
 
-        glUniform3f(livingThingShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
-        OpenglUtils.checkGLError();/*
+       // glUniform3f(livingThingShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        //OpenglUtils.checkGLError();
+        /*
         glUseProgram(livingThingShaderConfig.getProgramId());
 
 
         glUniformMatrix4(livingThingShaderConfig.getModelLoc(), false, model.toFloatBuffer());
         OpenglUtils.checkGLError();*/
 
-
+        glUseProgram(0);
     }
 
 
@@ -346,6 +348,29 @@ public class ShaderManager {
             glUniform1f(lightQuadraticLoc, 0.017f);
         }
 
+
+        int ourTexture0Loc = glGetUniformLocation(config.getProgramId(), "ourTexture0");
+        if(ourTexture0Loc>0) {
+            config.setTexture0Loc(ourTexture0Loc);
+        }
+
+        int ourTexture1Loc = glGetUniformLocation(config.getProgramId(), "ourTexture1");
+        if(ourTexture1Loc>0) {
+            config.setTexture1Loc(ourTexture1Loc);
+        }
+        int ourTexture2Loc = glGetUniformLocation(config.getProgramId(), "ourTexture2");
+        if(ourTexture2Loc>0) {
+            config.setTexture2Loc(ourTexture2Loc);
+        }
+        int ourTexture3Loc = glGetUniformLocation(config.getProgramId(), "ourTexture3");
+        if(ourTexture3Loc>0) {
+            config.setTexture3Loc(ourTexture3Loc);
+        }
+        int ourTexture4Loc = glGetUniformLocation(config.getProgramId(), "ourTexture4");
+        if(ourTexture4Loc>0) {
+            config.setTexture4Loc(ourTexture4Loc);
+        }
+        glUseProgram(0);
         //glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
        // glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);
         //glUniform1f(glGetUniformLocation(terrainProgramId, "light.quadratic"), 0.017f);
@@ -632,6 +657,7 @@ public class ShaderManager {
         this.CreateLightVBO(config);
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
+        glUseProgram(0);
 
     }
 

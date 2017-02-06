@@ -99,7 +99,7 @@ float distance = length(light.position - FragPos);
 
  //vec4(light.ambient*vec3(texture(material.diffuse,TexCoords)), 1.0f);
 vec3 result = (ambient + diffuse + specular) * textureColor;//
-color = vec4(textureColor, 1.0f);
+color =vec4(result,oricolor.w)  ;    // oricolor;//vec4(textureColor, 0.5f);
 
 
 }

@@ -47,6 +47,30 @@ public class HtmlObject implements Cloneable  {
     public  HtmlObject parentNode;
     public   List<HtmlObject> childNodes =new ArrayList<HtmlObject>();
     public float index=0;
+
+    public int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(int display) {
+        this.display = display;
+    }
+
+    public static int POSITION_ABSOLUTE=1;
+
+    public static int POSITION_RELATIVE=2;
+
+    public static int POSITION_STATIC=0;
     /**id**/
     public String id;
     /**name**/
@@ -425,6 +449,10 @@ public class HtmlObject implements Cloneable  {
                     parentTop= this.getBorderTop()+this.getPaddingTop();
 
                 }
+                if(child.position==HtmlObject.POSITION_ABSOLUTE){
+                    child.offsetLeft =(short) child.left;
+                    child.offsetTop = (short)child.top;
+                }else
                 if(child.display==INLINE){
                     if(oldChild!=null ) {
                         if (oldChild.display == INLINE) {

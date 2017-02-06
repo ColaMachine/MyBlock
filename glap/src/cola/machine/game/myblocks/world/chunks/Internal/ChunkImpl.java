@@ -422,7 +422,7 @@ public class ChunkImpl implements Chunk {
 
     public void buildVao() {
 
-        glUseProgram(ShaderManager.terrainShaderConfig.getProgramId());
+        //glUseProgram(ShaderManager.terrainShaderConfig.getProgramId());
         ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
         ChunkImpl leftChunk = (ChunkImpl) chunkProvider.getChunk(this.chunkPos.x - 1, this.chunkPos.y, this.chunkPos.z);
         ChunkImpl rightChunk = (ChunkImpl) chunkProvider.getChunk(this.chunkPos.x + 1, this.chunkPos.y, this.chunkPos.z);

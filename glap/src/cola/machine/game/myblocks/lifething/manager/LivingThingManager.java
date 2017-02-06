@@ -59,28 +59,32 @@ return livingThingsMap.get(id);
     public Map<Integer,LivingThing> livingThingsMap =new HashMap();
 
     public void render(){
-        glUseProgram(ShaderManager.livingThingShaderConfig.getProgramId());
+        //glUseProgram(ShaderManager.livingThingShaderConfig.getProgramId());
         //if(/*ShaderManager.livingThingShaderConfig.getVao().getVaoId()==0*/GamingState.livingThingChanged){
-            ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
-            //livingthing update
-            for(LivingThing livingThing:livingThings){
-                    livingThing.update();
 
-
-                //livingThing.renderBloodBar();
-                livingThing.distance = GL_Vector.length( GL_Vector.sub(player.position,livingThing.position));
-
-            }
-
-            //player update
-            this.player.update();
-            if(Switcher.SHADER_ENABLE) {
-                ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
-            }
-            //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
-            GamingState.livingThingChanged=false;
         //}
         //livingThing render
+
+        ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
+        //livingthing update
+        for (LivingThing livingThing : livingThings) {
+            livingThing.update();
+
+
+            //livingThing.renderBloodBar();
+            livingThing.distance = GL_Vector.length(GL_Vector.sub(player.position, livingThing.position));
+
+        }
+
+        //player update
+        this.player.update();
+        if (Switcher.SHADER_ENABLE) {
+            ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
+        }
+        //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
+        GamingState.livingThingChanged = false;
+
+
         for(LivingThing livingThing:livingThings){
             if(Switcher.SHADER_ENABLE){
                 livingThing.renderShader();
@@ -103,7 +107,7 @@ return livingThingsMap.get(id);
             this.player.render();
             //livingThing.render();
         }
-        //ShaderUtils.finalDraw(GamingState.instance.shaderManager.livingThingShaderConfig);
+        ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
        // component.renderBend();
 
 
@@ -263,6 +267,9 @@ return livingThingsMap.get(id);
            this.add(livingThing);
 
         }*/
+        //if(GamingState.livingThingChanged ) {
+
+        //}
 
     }
    /* public void attack(){
