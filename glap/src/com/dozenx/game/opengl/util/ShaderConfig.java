@@ -86,7 +86,15 @@ public class ShaderConfig {
     public int texture5Loc;
     public int texture6Loc;
     public int texture7Loc;
+    public int texture8Loc;
 
+    public int getTexture8Loc() {
+        return texture8Loc;
+    }
+
+    public void setTexture8Loc(int texture8Loc) {
+        this.texture8Loc = texture8Loc;
+    }
 
     public ShaderConfig(){
 

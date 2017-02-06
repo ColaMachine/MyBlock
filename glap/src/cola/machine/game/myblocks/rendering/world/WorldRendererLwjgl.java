@@ -123,6 +123,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         for (ChunkImpl chunk : chunksInProximity) {
              	chunk.update();
         }
+		skysphere.update();
       /*  try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
@@ -132,39 +133,35 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 		//TextureManager.getTextureInfo("mantle").bind();
 
-            for (ChunkImpl chunk : chunksInProximity) {
-				if(!Switcher.SHADER_ENABLE) {
-					GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
-							chunk.getChunkWorldPosZ());
-				}
-                //GL11.glBegin(GL11.GL_QUADS);
-                 chunk.render();
+		for (ChunkImpl chunk : chunksInProximity) {
+			if(!Switcher.SHADER_ENABLE) {
+				GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
+						chunk.getChunkWorldPosZ());
+			}
 
+			 chunk.render();
 
-                 // GL11.glEnd();
-               /* try{
-                    Util.checkGLError();}catch (Exception e ){
-                    e.printStackTrace();
-                    LogUtil.println(e.getMessage());
-                    throw e;
-                }
-*/	if(!Switcher.SHADER_ENABLE) {
-					GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
-							-chunk.getChunkWorldPosZ());
-				}/*try{
-                    Util.checkGLError();}catch (Exception e ){
-                    e.printStackTrace();
-                    LogUtil.println(e.getMessage());
-                    throw e;
-                }*/
-            }
-       /* try{
-            Util.checkGLError();}catch (Exception e ){
-            e.printStackTrace();
-            LogUtil.println(e.getMessage());
-            throw e;
-        }*/
-		//skysphere.render();
+			if(!Switcher.SHADER_ENABLE) {
+				GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
+						-chunk.getChunkWorldPosZ());
+			}
+		}
+
+		for (ChunkImpl chunk : chunksInProximity) {
+			if(!Switcher.SHADER_ENABLE) {
+				GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
+						chunk.getChunkWorldPosZ());
+			}
+
+			chunk.renderAlpha();
+
+			if(!Switcher.SHADER_ENABLE) {
+				GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
+						-chunk.getChunkWorldPosZ());
+			}
+		}
+
+		skysphere.render();
 	}
 
 	int vaoId, vbocId, vboId;

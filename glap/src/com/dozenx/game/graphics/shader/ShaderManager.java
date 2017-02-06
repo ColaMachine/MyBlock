@@ -30,6 +30,8 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
  * Created by luying on 16/11/14.
  */
 public class ShaderManager {
+
+
     //Vao terrainVao = new Vao();
 
     /*public  int terrainProgramId;
@@ -49,8 +51,11 @@ public class ShaderManager {
     public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain","chapt16/box.frag","chapt16/box.vert");
     public static ShaderConfig lightShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
 
+    public static ShaderConfig skyShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
+
     public static ShaderConfig uiShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
     public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
+
 
     public HashMap<String,ShaderConfig> configMap =new HashMap<>();
     public void registerConfig(ShaderConfig config) throws Exception {
@@ -65,6 +70,7 @@ public class ShaderManager {
         this.createProgram(terrainShaderConfig);
         //terrainShaderConfig.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
         this.createProgram(lightShaderConfig);
+        this.createProgram(skyShaderConfig);
         this.createProgram(uiShaderConfig);
         this.createProgram(livingThingShaderConfig);
        // this.CreateTerrainVAO();
@@ -76,6 +82,7 @@ public class ShaderManager {
         this.initUniform(lightShaderConfig);
         this.initUniform(livingThingShaderConfig);
         this.initUniform(uiShaderConfig);
+        this.initUniform(skyShaderConfig);
         //this.createProgram(lightShaderConfig);
         this.CreateLightVAO(lightShaderConfig);
         this.CreateUiVAO(uiShaderConfig);
@@ -173,8 +180,29 @@ public class ShaderManager {
     GL_Matrix projection = GL_Matrix.perspective3(45, 600 / 600, 1f, 1000.0f);
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 
+    public static void humanPosChangeListener(){
 
-    public void lightPosChangeListener() {
+
+        GamingState.instance.lightPos.x= GamingState.instance.human.position.x;
+        GamingState.instance.lightPos.y= GamingState.instance.human.position.y+30;
+        GamingState.instance.lightPos.z= GamingState.instance.human.position.z;
+
+        glUseProgram(lightShaderConfig.getProgramId());
+
+        GL_Matrix model = GL_Matrix.translateMatrix( GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        glUniformMatrix4(lightShaderConfig.getModelLoc(), false, model.toFloatBuffer());
+        OpenglUtils.checkGLError();
+
+
+        glUseProgram(skyShaderConfig.getProgramId());
+
+
+        glUniformMatrix4(skyShaderConfig.getModelLoc(), false, model.toFloatBuffer());
+        OpenglUtils.checkGLError();
+        lightPosChangeListener();
+
+    }
+    public static void lightPosChangeListener() {
 
         glUseProgram(terrainShaderConfig.getProgramId());
 
@@ -340,15 +368,20 @@ public class ShaderManager {
 
         int lightLinearLoc = glGetUniformLocation(programId, "light.linear");
         if(lightLinearLoc>0) {
-            glUniform1f(lightLinearLoc, 0.07f);
+            glUniform1f(lightLinearLoc, 0.01f);
         }
 
         int lightQuadraticLoc = glGetUniformLocation(programId, "light.quadratic");
         if(lightQuadraticLoc>0) {
-            glUniform1f(lightQuadraticLoc, 0.017f);
+            glUniform1f(lightQuadraticLoc, 0.007f);
         }
 
-
+     /*   for(int i=0;i<8;i++){
+            int ourTexture0Loc = glGetUniformLocation(config.getProgramId(), "ourTexture"+i);
+            if(ourTexture0Loc>0) {
+                config.setTexture0Loc(ourTexture0Loc);
+            }
+        }*/
         int ourTexture0Loc = glGetUniformLocation(config.getProgramId(), "ourTexture0");
         if(ourTexture0Loc>0) {
             config.setTexture0Loc(ourTexture0Loc);
@@ -369,6 +402,22 @@ public class ShaderManager {
         int ourTexture4Loc = glGetUniformLocation(config.getProgramId(), "ourTexture4");
         if(ourTexture4Loc>0) {
             config.setTexture4Loc(ourTexture4Loc);
+        }
+        int ourTexture5Loc = glGetUniformLocation(config.getProgramId(), "ourTexture5");
+        if(ourTexture5Loc>0) {
+            config.setTexture5Loc(ourTexture5Loc);
+        }
+        int ourTexture6Loc = glGetUniformLocation(config.getProgramId(), "ourTexture6");
+        if(ourTexture6Loc>0) {
+            config.setTexture6Loc(ourTexture6Loc);
+        }
+        int ourTexture7Loc = glGetUniformLocation(config.getProgramId(), "ourTexture7");
+        if(ourTexture7Loc>0) {
+            config.setTexture7Loc(ourTexture7Loc);
+        }
+        int ourTexture8Loc = glGetUniformLocation(config.getProgramId(), "ourTexture8");
+        if(ourTexture8Loc>0) {
+            config.setTexture8Loc(ourTexture8Loc);
         }
         glUseProgram(0);
         //glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
@@ -732,8 +781,56 @@ public class ShaderManager {
         //create vbo 创建vbo  vertex buffer objects
 
         // model = GL_Matrix.multiply(view2,model);
+        // model = GL_Matrix.multiply(view2,model);
         int  VboId=glGenBuffers();//create vbo
         config.getVao().setVboId(VboId);
+        int minX = -1;
+        int minY = -1;
+        int minZ = -1;
+        int maxX = 1;
+        int maxY = 1;
+        int maxZ = 1;
+        GL_Vector color = new GL_Vector(1.0f,1f, 1f);
+        GL_Vector P1 = new GL_Vector(minX, minY, maxZ);
+        GL_Vector P2 = new GL_Vector(maxX, minY, maxZ);
+        GL_Vector P3 = new GL_Vector(maxX, minY, minZ);
+        GL_Vector P4 = new GL_Vector(minX, minY, minZ);
+
+        GL_Vector P5 = new GL_Vector(minX, maxY, maxZ);
+        GL_Vector P6 = new GL_Vector(maxX, maxY, maxZ);
+        GL_Vector P7 = new GL_Vector(maxX, maxY, minZ);
+        GL_Vector P8 = new GL_Vector(minX, maxY, minZ);
+        Vao vao = config.getVao();
+        FloatBuffer floatBuffer = vao.getVertices();
+        floatBuffer.rewind();
+        ShaderUtils.draw3dColorSimple(P1, P2, P6, P5, new GL_Vector(0, 0, -1f), color, floatBuffer, config);
+
+
+        //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
+        ShaderUtils.draw3dColorSimple(P3, P4, P8, P7, new GL_Vector(0, 0, 1), color, floatBuffer, config);
+
+        //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
+        ShaderUtils.draw3dColorSimple(P5, P6, P7, P8, new GL_Vector(0, -1, 0), color, floatBuffer, config);
+
+        ShaderUtils.draw3dColorSimple(P4, P3, P2, P1, new GL_Vector(0, 1, 0), color, floatBuffer, config);
+
+        ShaderUtils.draw3dColorSimple(P2, P3, P7, P6, new GL_Vector(1, 0, 0f), color, floatBuffer, config);
+
+        ShaderUtils.draw3dColorSimple(P4, P1, P5, P8, new GL_Vector(-1, 0, 0), color, floatBuffer, config);
+        ShaderUtils.createVao(config,config.getVao(),new int[]{3,3});
+    }
+
+
+    public void CreateSkyVBO(ShaderConfig config ) {
+
+        //创建vao2=========================================================
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+
+        // model = GL_Matrix.multiply(view2,model);
+        int  VboId=glGenBuffers();//create vbo
+        config.getVao().setVboId(VboId);
+        GL_Vector p1 = new GL_Vector(-0.5f, -0.5f, -0.5f);
         float VerticesArray[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
                 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
                 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
@@ -785,7 +882,7 @@ public class ShaderManager {
 
         glBindBuffer(GL_ARRAY_BUFFER, config.getVao().getVboId());//bind vbo
         OpenglUtils.checkGLError();
-         glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
         OpenglUtils.checkGLError();

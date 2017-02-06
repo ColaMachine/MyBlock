@@ -58,12 +58,15 @@ public class ChatPanel extends HtmlObject {
         editField.addCallback(new EditField.Callback() {
             public void callback(int key) {//调用顺序 gui的 handlekey
                 //System.out.println(key);
+
                 if(key == Event.KEY_RETURN) {
 
                     // cycle through 3 different colors/font styles
                     //client.send("say:"+Constants.userName+":"+editField.getText());
-
+                    Switcher.isChat=false;
                     appendRow("color"+curColor, editField.getText());
+                    editField.giveupKeyboardFocus();
+                    editField.setVisible(false);
                     /*editField.setText("");
                     curColor = (curColor + 1) % 3;
                     editField.giveupKeyboardFocus();

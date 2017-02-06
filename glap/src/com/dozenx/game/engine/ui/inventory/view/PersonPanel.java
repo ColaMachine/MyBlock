@@ -29,6 +29,9 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
+import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.ui.inventory.*;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
@@ -48,38 +51,52 @@ public class PersonPanel extends SlotPanel {
 
 
 
-
+    Div attriDiv =new Div();
     public PersonPanel(int numSlotsX, int numSlotsY) {
         super( numSlotsX,  numSlotsY);
+
         this.setBorderColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));
         this.setBorderWidth(2);
         this.setMarginLeft((short)200);
-        this.setWidth(numSlotsX*40+1);
+
+        attriDiv.setWidth(100);
+
         this.removeAllChild();
+        Div div =new Div();
+        div.setDisplay(HtmlObject.INLINE);
+        attriDiv.setDisplay(HtmlObject.INLINE);
+        div.setWidth(numSlotsX*40+1);
         slot[0] = new ItemSlotView(Constants.SLOT_TYPE_HEAD);
         slot[0].setListener(listener);//所有的slot都绑定了一个listener
-        appendChild(slot[0]);
+        div.appendChild(slot[0]);
 
         slot[1] = new ItemSlotView(Constants.SLOT_TYPE_BODY);
         slot[1].setListener(listener);//所有的slot都绑定了一个listener
-        appendChild(slot[1]);
+        div.appendChild(slot[1]);
 
         slot[2] = new ItemSlotView(Constants.SLOT_TYPE_LEG);
         slot[2].setListener(listener);//所有的slot都绑定了一个listener
-        appendChild(slot[2]);
+        div.appendChild(slot[2]);
 
         slot[3] = new ItemSlotView(Constants.SLOT_TYPE_FOOT);
         slot[3].setListener(listener);//所有的slot都绑定了一个listener
-        appendChild(slot[3]);
+        div.appendChild(slot[3]);
 
         slot[4] = new ItemSlotView(Constants.SLOT_TYPE_HAND);
         slot[4].setListener(listener);//所有的slot都绑定了一个listener
-        appendChild(slot[4]);
+        div.appendChild(slot[4]);
+
+        this.appendChild(div);
+        this.appendChild(attriDiv);
 
 
 
 
+    }
 
+    public void update(){
+        super.update();
+        attriDiv.innerText=GamingState.human.getState();
     }
 
 

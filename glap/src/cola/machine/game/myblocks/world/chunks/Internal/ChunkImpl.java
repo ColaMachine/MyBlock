@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.*;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import glapp.GLApp;
@@ -54,6 +55,7 @@ public class ChunkImpl implements Chunk {
     public IntBuffer vetices = BufferUtils.createIntBuffer(14);
     public int count = 0;
     public Vao vao =new Vao(602400);
+    public Vao alphaVao =new Vao(602400);
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
@@ -137,7 +139,9 @@ public class ChunkImpl implements Chunk {
             return false;
         } else if (blockManager.getBlock(selfType).getAlpha() && blockManager.getBlock(blockType).getAlpha()) {
             return false;
-        } else {
+        } else if(blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha()){//如果自身是Alpha 对方不是alpha 也不需要绘制
+            return false;
+        }else {
             return true;
         }
 		/*if((selfType==6||selfType==3) && blockType==0){
@@ -268,8 +272,8 @@ public class ChunkImpl implements Chunk {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    /*if(i==6||i==3)
-                        continue;*/
+                    if(i==6||i==3)
+                        continue;
                     currentBlockType = i;
                     //addThisTop(x, y, z);
 
@@ -446,7 +450,7 @@ public class ChunkImpl implements Chunk {
                     currentBlockType = i;
 
                     if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
-                        Draw2();
+                        getTexutreInfo();
                         // 判断上面
                         if (y < this.getChunkSizeY() - 1) {
                             if (needToPaint(i, blockData.get(x, y + 1, z))) {
@@ -535,6 +539,7 @@ public class ChunkImpl implements Chunk {
         }
         //CreateTerrainVAO();
         ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig,vao);
+        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig,alphaVao);
         // GL11.glEnd();
         //System.out.println(this.count);
     }
@@ -582,7 +587,7 @@ public class ChunkImpl implements Chunk {
 
     BlockDefManager blockDefManager;
 
-    public void Draw2() {// up down left right front back
+    public void getTexutreInfo() {// up down left right front back
 
         boolean flat = true;
         //blockDefManager.getBlockById()
@@ -726,7 +731,13 @@ public class ChunkImpl implements Chunk {
         // vetices.flip();
 
     }
-
+    public void addToVao( GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Vector normal){
+        if(currentBlockType==6 || currentBlockType==3){
+            ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        }else{
+            ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,alphaVao,p1, p2, p3,p4, normal, ti);
+        }
+    }
     public void addThisTop4shader(int x, int y, int z) {
 
         x += this.chunkPos.x * getChunkSizeX();
@@ -738,7 +749,9 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x+1,y+1,z+1);
         GL_Vector p3= new GL_Vector(x+1,y+1,z);
         GL_Vector p4= new GL_Vector(x,y+1,z);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        addToVao(p1, p2, p3,p4, normal);
+
+
 
        /* veticesBuffer.put(x).put(y+1).put(z+1 ).put(0).put(1).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y+1).put(z+1 ).put(0).put(1).put(0).put(ti.maxX).put(ti.minY);//p2
@@ -763,7 +776,7 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x+1,y,z);
         GL_Vector p3= new GL_Vector(x+1,y,z+1);
         GL_Vector p4= new GL_Vector(x,y,z+1);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        addToVao(p1, p2, p3,p4, normal);
 
       /*  veticesBuffer.put(x).put(y).put(z ).put(0).put(-1).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y).put(z ).put(0).put(-1).put(0).put(ti.maxX).put(ti.minY);//p2
@@ -835,7 +848,7 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x+1,y,z+1);
         GL_Vector p3= new GL_Vector(x+1,y+1,z+1);
         GL_Vector p4= new GL_Vector(x,y+1,z+1);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        addToVao(p1, p2, p3,p4, normal);
 
         /*veticesBuffer.put(x).put(y).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x + 1).put(y).put(z + 1).put(0).put(0).put(1).put(ti.maxX).put(ti.minY);//p2
@@ -887,8 +900,8 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x,y,z);
         GL_Vector p3= new GL_Vector(x,y+1,z);
         GL_Vector p4= new GL_Vector(x+1,y+1,z);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-
+       // ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        addToVao(p1, p2, p3,p4, normal);
         /*veticesBuffer.put(x+1).put(y).put(z ).put(0).put(0).put(-1).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x ).put(y).put(z ).put(0).put(0).put(-1).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x ).put(y + 1).put(z).put(0).put(0).put(-1).put(ti.maxX).put(ti.maxY);//p3
@@ -932,7 +945,7 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x,y,z+1);
         GL_Vector p3= new GL_Vector(x,y+1,z+1);
         GL_Vector p4= new GL_Vector(x,y+1,z);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        addToVao(p1, p2, p3,p4, normal);
 
      /*   veticesBuffer.put(x).put(y).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x ).put(y).put(z +1).put(-1).put(0).put(0).put(ti.maxX).put(ti.minY);//p2
@@ -985,7 +998,7 @@ public class ChunkImpl implements Chunk {
         GL_Vector p2= new GL_Vector(x+1,y,z);
         GL_Vector p3= new GL_Vector(x+1,y+1,z);
         GL_Vector p4= new GL_Vector(x+1,y+1,z+1);
-        ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        addToVao(p1, p2, p3,p4, normal);
 
         /*veticesBuffer.put(x+1).put(y).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y).put(z ).put(1).put(0).put(0).put(ti.maxX).put(ti.minY);//p2
@@ -1268,11 +1281,29 @@ public class ChunkImpl implements Chunk {
     }
 
     public void renderAlpha() {
-        if (this.alphaDisplayId == 0) {
-            // int error =GL11.glGetError();
-            System.out.println("displayId should not be 0 in render");
-        } else {
-            GLApp.callDisplayList(this.alphaDisplayId);
+        if(Switcher.SHADER_ENABLE){
+            if (alphaVao.getVaoId() == 0) {
+                int error =GL11.glGetError();
+                System.out.println(this.chunkPos + "displayId should not be 0 in render");
+            } else {
+                ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,alphaVao);
+            }
+        }
+        else {
+//        GLApp.renderCube();
+            if (this.displayId == 0) {
+                // int error =GL11.glGetError();
+                System.out.println(this.chunkPos + "displayId should not be 0 in render");
+            } else {
+
+                //OpenglUtil.glVertex3fv4rect(P1, P2, P6, P5, ti, Constants.FRONT);
+                GLApp.callDisplayList(this.displayId);
+            /*GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
+            GL11.glVertex3f(-1.0f, -1.0f,  1.0f);	// Bottom Left
+            GL11.glVertex3f( 1.0f, -1.0f,  1.0f);	// Bottom Right
+            GL11.glVertex3f( 1.0f,  1.0f,  1.0f);	// Top Right
+            GL11.glVertex3f(-1.0f,  1.0f,  1.0f);	// Top Left*/
+            }
         }
     }
 

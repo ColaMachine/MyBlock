@@ -75,7 +75,7 @@ public class GamingState implements GameState {
     public BulletPhysics bulletPhysics;
     public GLCamera camera = new GLCamera();
 
-    public GL_Vector lightPos = new GL_Vector(5, 5, 2);
+    public GL_Vector lightPos = new GL_Vector(5, 65, 2);
     //shader constants
 
     public double preKeyTime = 0;
@@ -176,7 +176,7 @@ public ShaderManager shaderManager;
 
 
 
-
+        mouseControlCenter.handleNavKeys(delta);
         if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
 
@@ -186,6 +186,7 @@ public ShaderManager shaderManager;
                         Keyboard.getEventKeyState())){
                    continue;
                }
+
 
                 // check for exit key
            /* if (Keyboard.getEventKey() == finishedKey) {
@@ -228,7 +229,7 @@ if(!Switcher.SHADER_ENABLE)
                 }
                 int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
-                    //gui.handleMouseWheel(wheelDelta / 120);
+                    mouseControlCenter.handleMouseWheel(wheelDelta / 120);
                 }
                 //LogUtil.println("Mouse.getEventButton()"+Mouse.getEventButton());
 
@@ -254,7 +255,7 @@ if(!Switcher.SHADER_ENABLE)
             }
         }
 
-        mouseControlCenter.handleNavKeys(delta);
+
         /*if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(camera.ViewDir,
                     -0.1f));
@@ -323,38 +324,38 @@ if(!Switcher.SHADER_ENABLE)
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 
-            lightPos.x += -0.1;
+            lightPos.x += -1;
 
             shaderManager.lightPosChangeListener();
 
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            lightPos.x += 0.1;
+            lightPos.x += 1.1;
 
             shaderManager.lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            lightPos.z -= 0.1;
+            lightPos.z -= 1.1;
 
             shaderManager.lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            lightPos.z += 0.1;
+            lightPos.z += 1.1;
 
             shaderManager.lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_I)) {
-            lightPos.y += 0.1;
+            lightPos.y += 1.1;
 
             shaderManager. lightPosChangeListener();
 
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-            lightPos.y -= 0.1;
+            lightPos.y -= 1.1;
 
             shaderManager.lightPosChangeListener();
 

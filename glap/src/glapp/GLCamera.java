@@ -289,7 +289,19 @@ public class GLCamera {
 		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
 
 
+
+		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
+
+
+
 		glUniformMatrix4(GamingState.instance.shaderManager.lightShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
+
+		org.lwjgl.opengl.Util.checkGLError();
+
+		glUseProgram(GamingState.instance.shaderManager.skyShaderConfig.getProgramId());
+		org.lwjgl.opengl.Util.checkGLError();
+
+		glUniformMatrix4(GamingState.instance.shaderManager.skyShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
 
 		org.lwjgl.opengl.Util.checkGLError();
 

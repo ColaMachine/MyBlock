@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -148,25 +149,25 @@ public class ColorBlock extends AABB implements Block {
 
             if(zh) {
                 // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
-                GL_Vector.glVertex3fv4triangleColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
+                ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
             }
             if(zl) {
                 //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
-                GL_Vector.glVertex3fv4triangleColor(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),color,floatBuffer, config);
+                ShaderUtils.draw3dColor(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),color,floatBuffer, config);
             }
             if(yh) {
                 //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
-                GL_Vector.glVertex3fv4triangleColor(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),color,floatBuffer, config);
+                ShaderUtils.draw3dColor(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),color,floatBuffer, config);
             }
 
             if(yl) {
-                GL_Vector.glVertex3fv4triangleColor(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),color,floatBuffer, config);
+                ShaderUtils.draw3dColor(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),color,floatBuffer, config);
             }
             if(xl) {
-                GL_Vector.glVertex3fv4triangleColor(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),color,floatBuffer, config);
+                ShaderUtils.draw3dColor(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),color,floatBuffer, config);
             }
             if(xh) {
-                GL_Vector.glVertex3fv4triangleColor(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),color,floatBuffer, config);
+                ShaderUtils.draw3dColor(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),color,floatBuffer, config);
             }
 
     }

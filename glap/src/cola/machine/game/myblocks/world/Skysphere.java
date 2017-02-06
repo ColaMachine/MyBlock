@@ -5,13 +5,22 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 import static org.lwjgl.opengl.GL11.glEndList;
 import static org.lwjgl.opengl.GL11.glGenLists;
 import static org.lwjgl.opengl.GL11.glNewList;
+
+import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import glapp.GLApp;
 
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
+
+import java.nio.FloatBuffer;
 
 public class Skysphere {
 	public Skysphere() {
@@ -29,7 +38,7 @@ public class Skysphere {
 	}
 
 	public void render() {
-		glDepthMask(false);
+		//glDepthMask(false);
 
 		/*
 		 * if (false) { glCullFace(GL_BACK); } else { glCullFace(GL_FRONT); }
@@ -43,13 +52,13 @@ public class Skysphere {
         //drawSkysphereTexture();
 		drawSkyCube();
 		//drawSkysphere();
-		drawSun();
+		//drawSun();
 		//
 		/*
 		 * if (false) { glCullFace(GL_FRONT); } else { glCullFace(GL_BACK); }
 		 */
 
-		glDepthMask(true);
+		//glDepthMask(true);
 	}
 
 	public void drawSkysphere() {
@@ -214,21 +223,72 @@ public void drawSunTest() {
 	        */
 	       GL11.glTranslated(-1, -50, 1);
 	}
-	public void drawSkyCube() {
-		// draw the sky
-		if (displayListSphere == -1) {
-			displayListSphere = glGenLists(1);
-			glNewList(displayListSphere, GL11.GL_COMPILE);
-			initDisplayList();
-			glEndList();
-		}
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glColor4f(0.63f, 0.80f, 0.91f, 1.0f);
-		glCallList(displayListSphere);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	public void update(){
+		if(ShaderManager.skyShaderConfig.getVao().getVaoId()==0) {
+
+			GL_Vector color = new GL_Vector(186f/250, 210f/250, 247f/250);
+			int minX = -100;
+			int minY = -100;
+			int minZ = -100;
+			int maxX = 100;
+			int maxY = 100;
+			int maxZ = 100;
+
+			GL_Vector P1 = new GL_Vector(minX, minY, maxZ);
+			GL_Vector P2 = new GL_Vector(maxX, minY, maxZ);
+			GL_Vector P3 = new GL_Vector(maxX, minY, minZ);
+			GL_Vector P4 = new GL_Vector(minX, minY, minZ);
+
+			GL_Vector P5 = new GL_Vector(minX, maxY, maxZ);
+			GL_Vector P6 = new GL_Vector(maxX, maxY, maxZ);
+			GL_Vector P7 = new GL_Vector(maxX, maxY, minZ);
+			GL_Vector P8 = new GL_Vector(minX, maxY, minZ);
+			ShaderConfig config = ShaderManager.skyShaderConfig;
+			Vao vao = config.getVao();
+			FloatBuffer floatBuffer = vao.getVertices();
+			floatBuffer.rewind();
+			// ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
+			ShaderUtils.draw3dColorSimpleReverse(P1, P2, P6, P5, new GL_Vector(0, 0, -1f), color, floatBuffer, config);
+
+
+			//ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
+			ShaderUtils.draw3dColorSimpleReverse(P3, P4, P8, P7, new GL_Vector(0, 0, 1), color, floatBuffer, config);
+
+			//ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
+			ShaderUtils.draw3dColorSimpleReverse(P5, P6, P7, P8, new GL_Vector(0, -1, 0), color, floatBuffer, config);
+
+			ShaderUtils.draw3dColorSimpleReverse(P4, P3, P2, P1, new GL_Vector(0, 1, 0), color, floatBuffer, config);
+
+			ShaderUtils.draw3dColorSimpleReverse(P2, P3, P7, P6, new GL_Vector(1, 0, 0f), color, floatBuffer, config);
+
+			ShaderUtils.draw3dColorSimpleReverse(P4, P1, P5, P8, new GL_Vector(-1, 0, 0), color, floatBuffer, config);
+
+			ShaderUtils.createVao(config,config.getVao(),new int[]{3,3});
+		}
+
+	}
+	public void drawSkyCube() {
+		if(Switcher.SHADER_ENABLE){
+			ShaderUtils.finalDraw(ShaderManager.skyShaderConfig,ShaderManager.skyShaderConfig.getVao());
+
+
+		}else {
+			// draw the sky
+			if (displayListSphere == -1) {
+				displayListSphere = glGenLists(1);
+				glNewList(displayListSphere, GL11.GL_COMPILE);
+				initDisplayList();
+				glEndList();
+			}
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glColor4f(0.63f, 0.80f, 0.91f, 1.0f);
+			glCallList(displayListSphere);
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+		}
 
 	}
 

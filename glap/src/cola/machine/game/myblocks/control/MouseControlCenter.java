@@ -5,7 +5,9 @@ import java.awt.Point;
 import java.awt.Robot;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+
 import cola.machine.game.myblocks.engine.modes.GameState;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
@@ -13,11 +15,13 @@ import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import de.matthiasmann.twl.Event;
 import glapp.GLApp;
 import glapp.GLCamera;
 import glmodel.GL_Vector;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import cola.machine.game.myblocks.model.human.Human;
@@ -92,8 +96,8 @@ public class MouseControlCenter {
             //human.headRotate(0, human.camSpeedXZ * seconds*100);
         }  else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
             Switcher.CAMERA_2_PLAYER++;
-            if (Switcher.CAMERA_2_PLAYER > 10) {
-                Switcher.CAMERA_2_PLAYER = 10;
+            if (Switcher.CAMERA_2_PLAYER > 200) {
+                Switcher.CAMERA_2_PLAYER = 200;
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
             Switcher.CAMERA_2_PLAYER--;
@@ -375,7 +379,16 @@ public class MouseControlCenter {
                                                                      */
         mouseLeftPressed=true;
     }
+    public void handleMouseWheel(int times){
+        Switcher.CAMERA_2_PLAYER+=times;
+        if (Switcher.CAMERA_2_PLAYER < 0) {
+            Switcher.CAMERA_2_PLAYER = 0;  GamingState.cameraChanged=true;
+        }else
+        if (Switcher.CAMERA_2_PLAYER > 100) {
+            Switcher.CAMERA_2_PLAYER = 100;  GamingState.cameraChanged=true;
+        }
 
+    }
     public void mouseLeftDown(int x, int y) {
         prevMouseX=x;
         prevMouseY=y;
@@ -518,11 +531,14 @@ public class MouseControlCenter {
             // �ƶ���ͷ
         }
     }
+    int DRAG_DIST=3;
     public GameState gameState;
     public void mouseLeftDrag(int x, int y) {
 
-        if (/*MathUtil.distance(prevMouseX, prevMouseY, x, y) > 0.1f
-                &&*/ MathUtil.distance(prevMouseX, prevMouseY, x, y) < 2000) {
+        if ( Math.abs(x - prevMouseX) > DRAG_DIST ||
+                Math.abs(y - prevMouseY) > DRAG_DIST) {
+      /*  if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 0.1f
+                && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 2000) {*/
             // add a segment to the line
             // System.out.println("ͷ��ת��");
             // System.out.println(x-prevMouseX);

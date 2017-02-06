@@ -41,6 +41,10 @@ public class LivingThing extends GameActor{
     public int energy; //  能量
     public int sight=5;  //  视力
 
+    public int physicAttack ;//物攻
+    public int mgicAttack ;//魔攻
+
+    public int fangyu;
 
     public int nowBlood;
     public int nowEnergy;
@@ -53,17 +57,17 @@ public class LivingThing extends GameActor{
     public int baseSpirit=100;     //  基础精神
 
 
-    public int totalPower;
+   /* public int totalPower;
     public int totalIntell;
     public int totalAgility;
-    public int totalSpirit;
+    public int totalSpirit;*/
 
     public int level;          //  现在的等级
 
-    public int power;          //  现在的力量值
-    public int Intell;         //  智力值
-    public int agility;        //  敏捷值
-    public int spirit;         //  精神值
+    public int totalPower;          //  现在的力量值
+    public int totalIntell;         //  智力值
+    public int totalAgility;        //  敏捷值
+    public int totalSpirit;         //  精神值
 
     public float speed=1;
 
@@ -93,7 +97,15 @@ public class LivingThing extends GameActor{
     public
     int preY = 0;
 
-
+    public String getState(){
+        return "力量:"+basePower+"/"+totalPower+"\n"
+                +"智力:"+baseIntell+"/"+totalIntell+"\n"
+                +"敏捷:"+baseAgility+"/"+totalAgility+"\n"
+                +"精神:"+baseSpirit+"/"+totalSpirit+"\n"
+                +"血量:"+nowBlood+"/"+blood+"\n"
+                +"魔法:"+nowEnergy+"/"+energy+"\n"
+                +"防御:"+fangyu+"";
+    }
     public void drop() {
 
         // ��¼��ǰ��ʱ��

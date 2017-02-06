@@ -47,7 +47,7 @@ public abstract class TimeBase implements EngineTime{
 			now =getRawTimeInMs();
 			newDelta =now -last.get();
 		}
-		if(newDelta>UPDATE_CAP){
+		if(newDelta>UPDATE_CAP){//如果大于1秒
 			logger.warn("Delta too great({}, capping to {})",newDelta,UPDATE_CAP);
 			newDelta =UPDATE_CAP;
 		}

@@ -190,7 +190,7 @@ public class EditField extends TextField {
                         }
                         return true;
                     case Event.KEY_ESCAPE:
-                        //doCallback(evt.getKeyCode());
+                        doCallback(evt.getKeyCode());
                         return true;
                     case Event.KEY_HOME:
                         setCursorPos(computeLineStart(cursorPos), selectPressed);

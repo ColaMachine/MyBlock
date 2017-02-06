@@ -1348,7 +1348,7 @@ try {
         for(int i=0;i<s.length();i++){
             char ch = s.charAt(i);
             if(ch=='\n'){
-                preX=0;
+                preX=0-(int)fontSize;
                 preY+=fontSize;
             }else{
                 if(i!=0)
@@ -1528,6 +1528,131 @@ try {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public static void draw3dImage(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBuffer floatBuffer,ShaderConfig config){
+        //ti= TextureManager.getTextureInfo("mantle");
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+
+        p1 =GL_Matrix.multiply(matrix,p1);
+
+        p2 =GL_Matrix.multiply(matrix,p2);
+        p3 =GL_Matrix.multiply(matrix,p3);
+        p4 =GL_Matrix.multiply(matrix,p4);
+        normal=GL_Matrix.multiply(matrix,normal);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
+        floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
+        floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
+    }
+
+    public static void draw3dColor(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
+        //ti= TextureManager.getTextureInfo("mantle");
+
+
+        p1 =GL_Matrix.multiply(matrix,p1);
+
+        p2 =GL_Matrix.multiply(matrix,p2);
+        p3 =GL_Matrix.multiply(matrix,p3);
+        p4 =GL_Matrix.multiply(matrix,p4);
+        normal=GL_Matrix.multiply(matrix,normal);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
+        floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
+        floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
+    }
+
+
+    public static void draw3dColorSimple(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
+        //ti= TextureManager.getTextureInfo("mantle");
+
+
+
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+    }
+
+    public static void draw3dColorSimpleReverse(GL_Vector p4, GL_Vector p3, GL_Vector p2, GL_Vector p1,  GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
+        //ti= TextureManager.getTextureInfo("mantle");
+
+
+
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+        floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
+    }
+
+    public static void createVao(ShaderConfig config ,Vao vao,int[] attris){
+
+        int length =0;
+        for(int i=0;i<attris.length;i++){
+            length += attris[i];
+        }
+        if(vao.getVaoId()>0){
+
+
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+        }else {
+            vao.setVaoId(glGenVertexArrays());
+            OpenglUtils.checkGLError();
+            //  glBindVertexArray(vao.getVaoId());
+            int VboId=glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+           /* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*/
+        }
+        //绑定vao
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        //create vbo
+        //顶点 vbo
+        //create vbo 创建vbo  vertex buffer objects
+        //创建顶点数组
+        int position = vao.getVertices().position();
+      /*  if(vao.getVertices().position()==0){
+
+        }*/
+
+        vao.setPoints(vao.getVertices().position()/length);
+
+        //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+        vao.getVertices().rewind();
+        // vao.setVertices(twoDImgBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+
+        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+        //create ebo
+        // float width = 1;
+        OpenglUtils.checkGLError();
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+        //图片位置 //0代表再glsl里的变量的location位置值.
+
+        int sum=0;
+
+        for(int i=0;i<attris.length;i++){
+            glVertexAttribPointer(i, attris[i], GL_FLOAT, false, length * 4, sum*4);
+
+            Util.checkGLError();
+            glEnableVertexAttribArray(i);
+            Util.checkGLError();
+            sum+=attris[i];
+        }
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+
+
+
     }
 }
 

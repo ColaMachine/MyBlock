@@ -624,6 +624,12 @@ public class HtmlObject implements Cloneable  {
 
 
     }
+
+    public void giveupKeyboardFocus() {
+        if(getParent() != null && getParent().focusChild == this) {
+            getParent().requestKeyboardFocus(null);
+        }
+    }
     public void render(){
         if(!visible)return;
         if(this.getBackgroundImage()!=null){

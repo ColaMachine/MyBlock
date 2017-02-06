@@ -11,6 +11,7 @@ import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -197,7 +198,7 @@ public class Human extends LivingThing {
             this.oldPosition.copy(this.position);
 			GamingState.livingThingChanged=true;
 			GamingState.cameraChanged=true;
-
+			ShaderManager.humanPosChangeListener();
 
 
 

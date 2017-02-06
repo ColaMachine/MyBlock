@@ -92,10 +92,10 @@ vec3 diffuse = light.diffuse * diff * textureColor;
 vec3 specular = light.specular * spec ;//* vec3(texture(material.specular, TexCoord));
 
 float distance = length(light.position - FragPos);
-//float attenuation = 1.0f / (light.constant + light.linear*distance +light.quadratic*(distance*distance));
-//ambient *= attenuation;
-//diffuse *= attenuation;
-//specular *= attenuation;
+float attenuation = 5.0f / (light.constant + light.linear*distance +light.quadratic*(distance*distance));
+ambient *= attenuation;
+diffuse *= attenuation;
+specular *= attenuation;
 
  //vec4(light.ambient*vec3(texture(material.diffuse,TexCoords)), 1.0f);
 vec3 result = (ambient + diffuse + specular) * textureColor;//

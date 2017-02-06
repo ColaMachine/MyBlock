@@ -228,25 +228,25 @@ this.secnum =secnum;
 
         if(front!=null) {
            // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
-            GL_Vector.glVertex3fv4triangle(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer, config);
+            ShaderUtils.draw3dImage(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer, config);
         }
         if(back!=null) {
             //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
-            GL_Vector.glVertex3fv4triangle(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),back,floatBuffer, config);
+            ShaderUtils.draw3dImage(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),back,floatBuffer, config);
         }
         if(top!=null) {
             //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
-            GL_Vector.glVertex3fv4triangle(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),top,floatBuffer, config);
+            ShaderUtils.draw3dImage(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),top,floatBuffer, config);
         }
 
         if(bottom!=null) {
-            GL_Vector.glVertex3fv4triangle(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),bottom,floatBuffer, config);
+            ShaderUtils.draw3dImage(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),bottom,floatBuffer, config);
         }
         if(left!=null) {
-            GL_Vector.glVertex3fv4triangle(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),left,floatBuffer, config);
+            ShaderUtils.draw3dImage(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),left,floatBuffer, config);
         }
         if(right!=null) {
-            GL_Vector.glVertex3fv4triangle(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),right,floatBuffer, config);
+            ShaderUtils.draw3dImage(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),right,floatBuffer, config);
         }
        for(int i=0;i<children.size();i++){
             children.get(i).build(config,rotateMatrix);
