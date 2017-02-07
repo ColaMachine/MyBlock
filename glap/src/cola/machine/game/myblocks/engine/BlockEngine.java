@@ -148,6 +148,7 @@ public class BlockEngine implements GameEngine{
 
 
     }
+
     public void mainLoop(){
 
         while(true) {
@@ -160,17 +161,25 @@ public class BlockEngine implements GameEngine{
             //networkSystem.update();
 
             long totalDelta = 0;
+            //long startTime =System.currentTimeMillis();
+
             while (updateCycles.hasNext()) {
                 float delta = updateCycles.next();
                 totalDelta += time.getDeltaInMs();
-                currentState.update(delta);//statemainmenu
+               // currentState.update(delta);//statemainmenu
             }
+          /*  long nowTime = System.currentTimeMillis();;
+            LogUtil.println("updateCycles.next"+(nowTime-startTime));
+            startTime = nowTime;*/
             float delta = totalDelta / 1000f;
-
-
+            //FPS的控制是在LwjglGraphics里的 Display.sync里控制的
+            currentState.update(totalDelta);//statemainmenu
             for (EngineSubsystem subsystem : getSubsystems()) {
                 subsystem.preUpdate(currentState, delta);
             }
+            /*nowTime = System.currentTimeMillis();;
+            LogUtil.println("preUpdate"+(nowTime-startTime));
+            startTime = nowTime;*/
            /* try{
                 Util.checkGLError();}catch (Exception e ){
                 e.printStackTrace();
@@ -182,6 +191,9 @@ public class BlockEngine implements GameEngine{
             for (EngineSubsystem subsystem : subsystems) {
                 subsystem.postUpdate(currentState, delta);
             }
+/*            nowTime = System.currentTimeMillis();;
+            LogUtil.println("postUpdate"+(nowTime-startTime));
+            startTime = nowTime;*/
             /*try{
                 Util.checkGLError();}catch (Exception e ){
                 e.printStackTrace();

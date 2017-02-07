@@ -50,7 +50,7 @@ public class BehaviorManager extends    Thread{
 
     public void moveOrAttack(){
         for(LivingThing livingThing : LivingThingManager.livingThings){
-
+            if(!livingThing.isPlayer)
             if(livingThing.target!=null ){
                 GL_Vector direction =  GL_Vector.sub(LivingThingManager.player.position,livingThing.position);
                 livingThing.WalkDir= direction;
@@ -66,10 +66,12 @@ public class BehaviorManager extends    Thread{
         }
     }
     public void findThing(){
-        for(LivingThing livingThing : LivingThingManager.livingThings){
-            if(livingThing.target!=null )continue;
-            if(GL_Vector.length(GL_Vector.sub(livingThing.position,LivingThingManager.player.position))<livingThing.sight){
-                livingThing.target=LivingThingManager.player;
+        for(LivingThing livingThing : LivingThingManager.livingThings) {
+            if (!livingThing.isPlayer) {
+                if (livingThing.target != null) continue;
+                if (GL_Vector.length(GL_Vector.sub(livingThing.position, LivingThingManager.player.position)) < livingThing.sight) {
+                    livingThing.target = LivingThingManager.player;
+                }
             }
         }
     }

@@ -29,7 +29,7 @@ public class AllSender extends Thread{
                         Map.Entry entry = (Map.Entry) iter.next();
 
                         Worker val = (Worker) entry.getValue();
-                        if(!val.isAlive()){
+                        if(val.end || !val.isAlive()){
                             LogUtil.println("删除socket成功");
                             workerMap.remove(entry.getKey());
                         }else {

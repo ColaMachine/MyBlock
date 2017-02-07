@@ -62,11 +62,13 @@ public class ChatPanel extends HtmlObject {
                 if(key == Event.KEY_RETURN) {
 
                     // cycle through 3 different colors/font styles
-                    //client.send("say:"+Constants.userName+":"+editField.getText());
+                    client.send("say:"+Constants.userName+":"+editField.getText());
                     Switcher.isChat=false;
-                    appendRow("color"+curColor, editField.getText());
+
+                    //appendRow("color"+curColor, editField.getText());
+                    editField.setText("");
                     editField.giveupKeyboardFocus();
-                    editField.setVisible(false);
+                    //editField.setVisible(false);
                     /*editField.setText("");
                     curColor = (curColor + 1) % 3;
                     editField.giveupKeyboardFocus();
@@ -94,6 +96,15 @@ public class ChatPanel extends HtmlObject {
        // add(l);
 
        // appendRow("default", "Welcome to the chat demo. Type your messages below :)");
+    }
+
+    public void check(){
+
+        while(client.messages.size()>0 && client.messages.peek()!=null){
+            String msg = client.messages.pop();
+            appendRow("color"+curColor, msg);
+            Document.needUpdate=true;
+        }
     }
     public void paintWidget(Document gui){
         while(client.messages.size()>0 && client.messages.peek()!=null){

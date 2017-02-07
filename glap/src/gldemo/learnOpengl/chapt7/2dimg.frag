@@ -18,8 +18,8 @@ uniform sampler2D ourTexture8;
 void main()
 {
     if(ourTextureIndex==-1){
-            color = ourcolor;
-
+        color = ourcolor;
+        color = vec4(0,00,0,0.3);
     }else
      if(ourTextureIndex==0){
             color = texture(ourTexture0, TexCoord);
@@ -42,9 +42,9 @@ void main()
     }else if(ourTextureIndex==8){
         color = texture(ourTexture8, TexCoord);
     }else{
-       color = vec4(0.5,0.5,0.5,1);
+       color = vec4(0,00,0,0.3);
     }
-    if(color.a<0.1)
-    discard;
-    color.w=1;
+    //if(color.a<0.1)
+    //discard;
+
 }

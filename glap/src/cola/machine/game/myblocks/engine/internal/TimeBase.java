@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.engine.internal;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicLong;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,11 +37,11 @@ public abstract class TimeBase implements EngineTime{
 	public abstract long getRawTimeInMs();
 	
 	public Iterator<Float > tick(){
-		long now =getRawTimeInMs();
-		long newDelta=now-last.get();
+		long now =getRawTimeInMs();//当前时间
+		long newDelta=now-last.get();//本次时间减去上次时间  =  间隔时间
 		if(0== newDelta){
 			try{
-				Thread.sleep(0,1000);
+				Thread.sleep(0,1000);//停止1秒 原因过快
 			}catch(InterruptedException e){
 				
 			}
@@ -53,8 +54,8 @@ public abstract class TimeBase implements EngineTime{
 		}
 		int updateCycles =(int)((newDelta-1)/MAX_UPDATE_CYCLE_LENGTH)+1;
 		last.set(now);
-		avgDelta =avgDelta * DECAY_RATE+newDelta * ONE_MINUS_DECAY_RATE;
-		
+		avgDelta =avgDelta * DECAY_RATE+newDelta * ONE_MINUS_DECAY_RATE;//追上的速度
+		//avgDelta 表示的是两真之间的间隔时间 如果一次的时间特别长 就会增加avgDelta的值
 		if(desynch !=0){
 			long diff=(long)Math.ceil(desynch * RESYNC_TIME_RATE);
 			if(diff==0){
@@ -72,6 +73,7 @@ public abstract class TimeBase implements EngineTime{
 			if(updateCycles>0){
 				delta.set(newDelta/updateCycles);
 			}
+			//LogUtil.println("fps:"+this.getFps());
 			return new TimeStepper(updateCycles,newDelta/updateCycles);
 		}
 	}
@@ -154,7 +156,7 @@ public abstract class TimeBase implements EngineTime{
 
 		@Override
 		public Float next() {
-			currentCycle++;
+			currentCycle++;//初始值为0 累加到16 如果fps要求是60的话
 			gameTime.addAndGet(deltaPerCycle);
 			return deltaPerCycle/1000f;
 		}

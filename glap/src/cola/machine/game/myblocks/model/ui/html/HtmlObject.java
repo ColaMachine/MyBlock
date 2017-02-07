@@ -262,13 +262,18 @@ public class HtmlObject implements Cloneable  {
 
     }
     public int getWidth (){
+
         if(width>0){
             return width;
         }else{
             if(parentNode==null){
                 LogUtil.println("parentNode==null");
             }
-            setWidth(parentNode.getWidth());///this.parentNode.childNodes.size() because of tr's width  may be the whole with of table
+            try {
+                setWidth(parentNode.getWidth());///this.parentNode.childNodes.size() because of tr's width  may be the whole with of table
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return width;
         }
     }
@@ -567,6 +572,18 @@ public class HtmlObject implements Cloneable  {
         if(StringUtil.isNotEmpty(innerText)){
 
         }
+    }
+
+    public void check(){
+        for(HtmlObject htmlObject:this.childNodes){
+            //if(Switcher.SHADER_ENABLE){
+            htmlObject.check();
+            //}else{
+            //    htmlObject.render();
+            //}
+
+        }
+
     }
     /*public int getChildMaxRight(){
       this.getBorderRight()

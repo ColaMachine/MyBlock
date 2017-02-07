@@ -13,9 +13,9 @@ public class Switcher {
     public static int yangjiao_d=89;
     public static int fujiao_d=-89;
     public static boolean  test=false;
-    public static float YANGJIAO=yangjiao_d/90f;
+    public static float YANGJIAO=yangjiao_d/180f*3.14f;
 
-    public static float FUJIAO=fujiao_d/90f;
+    public static float FUJIAO=fujiao_d/180f *3.14f;
 
     public static boolean isChat =false;
 

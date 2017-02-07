@@ -253,11 +253,11 @@ if(!Switcher.SHADER_ENABLE) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        try {
+       /* try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         //bag.shaderRender();
         //glUseProgram(0);
 

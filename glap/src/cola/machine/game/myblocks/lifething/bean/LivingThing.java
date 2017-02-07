@@ -90,13 +90,15 @@ public class LivingThing extends GameActor{
     public float s = 0;
     public float nextZ = 0;
     public int limit = 0;
-
+    public boolean exist;
     public LivingThing target;
 
     public int mark = 0;
     public
     int preY = 0;
-
+    public void disapper(){
+        this.exist=false;
+    }
     public String getState(){
         return "力量:"+basePower+"/"+totalPower+"\n"
                 +"智力:"+baseIntell+"/"+totalIntell+"\n"
@@ -261,6 +263,7 @@ public class LivingThing extends GameActor{
 
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
             //.getVao().getVertices()
+          //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
             bodyComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
 
 
@@ -483,6 +486,11 @@ public class LivingThing extends GameActor{
         this.nowBlood=this.blood;
         this.nowEnergy=this.energy;
 
+    }
+    public boolean isPlayer =false;
+
+    public void setPlayer(boolean playerFlag){
+        this.isPlayer=playerFlag;
     }
     public void beAttack(int damage){
         this.nowBlood-=damage;

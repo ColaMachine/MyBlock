@@ -228,7 +228,7 @@ public class FontUtil {
 
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, image.getWidth(), image.getHeight());
-        g.setColor(Color.BLUE);
+        g.setColor(Color.WHITE);
         //g.drawString("啊",x,y);
         // ImageUtil.compressForFix("/Users/luying/Documents/workspace/calendar/src/main/webapp/static/img/a0.jpg");
         //Iterator it = glyphMap.entrySet().iterator();

@@ -16,6 +16,7 @@ public class DropControlCenter {
 		// ȡ���������� ż�����
 
 		//ȡ�����������������
+
 		if(!human.stable){
 			//System.out.println("��ǰ�����y:"+human.Position.y);
 //			int x = MathUtil.getNearOdd(human.Position.x );

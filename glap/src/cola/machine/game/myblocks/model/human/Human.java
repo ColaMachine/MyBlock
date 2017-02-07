@@ -21,6 +21,7 @@ import org.lwjgl.Sys;
 import cola.machine.game.myblocks.switcher.Switcher;
 import org.lwjgl.opengl.GL11;
 
+import javax.swing.text.View;
 import javax.vecmath.Point3f;
 
 public class Human extends LivingThing {
@@ -194,7 +195,8 @@ public class Human extends LivingThing {
     }
 
 	public void move(float x, float y, float z) {
-        if(GL_Vector.length(GL_Vector.sub(oldPosition,position))>0.2){
+		/*float distance = GL_Vector.length(GL_Vector.sub(oldPosition,position));
+        if(distance>0.02){*/
             this.oldPosition.copy(this.position);
 			GamingState.livingThingChanged=true;
 			GamingState.cameraChanged=true;
@@ -202,19 +204,20 @@ public class Human extends LivingThing {
 
 
 
-		/*	if(!Switcher.IS_GOD)
+
+			this.position.set(x,y,z);
+			this.updateTime=System.currentTimeMillis();
+			if(!Switcher.IS_GOD)
 				if(CoreRegistry.get(CrashCheck.class).check(this)){
 					this.position.copy(oldPosition);
-				}*/
-
+				}
 			//client.send("move:");
 			//this.stable=false;
 			//client.send("move:"+this.id+","+this.position.x+","+this.position.y+","+this.position.z+"");
 
-        }
+       // }
 
-		this.position.set(x,y,z);
-		this.updateTime=System.currentTimeMillis();
+
 	/*	String message = "move:"+ id+","+position.x
 				+","+position.y
 				+","+position.z+","+WalkDir.x+","+WalkDir.y+","+WalkDir.z;
@@ -275,32 +278,43 @@ public class Human extends LivingThing {
         GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float) Math.toRadians(leftRightDegree),
                 0);
 
-
-		ViewDir.y+=updownDegree/100;
+		//计算俯角
+		double xy= Math.sqrt(ViewDir.x*ViewDir.x + ViewDir.z*ViewDir.z);
+		double jiaojiao = Math.atan(ViewDir.y/xy);
+		jiaojiao+=updownDegree/100;
+		if(jiaojiao<=Switcher.FUJIAO  )
+			jiaojiao=Switcher.FUJIAO ;
+		if(jiaojiao>=Switcher.YANGJIAO  )
+			jiaojiao=Switcher.YANGJIAO;
+		ViewDir.y =(float)(Math.tan(jiaojiao)*xy);
+		//ViewDir.y+=updownDegree/100;
         GL_Vector vd = M.transform(ViewDir);
         ViewDir = vd;
 
-        if(ViewDir.y<=Switcher.FUJIAO  )
-            ViewDir.y=Switcher.FUJIAO ;
-        if(ViewDir.y>=Switcher.YANGJIAO  )
-            ViewDir.y=Switcher.YANGJIAO;
+
 		ViewDir.normalize();
       //  System.out.println(vd);
     }
-    public void bodyRotate(float updownDegree,float leftRightDegree){
+    public void bodyRotate(float leftRightDegree,float updownDegree){
+		headRotate(leftRightDegree,updownDegree);
+
         GL_Matrix M = GL_Matrix.rotateMatrix(0, (float) Math.toRadians(leftRightDegree)/5,
                 0);
         GL_Vector vd = M.transform(WalkDir);
         RightVector = GL_Vector.crossProduct(vd, UpVector);
-        WalkDir = vd;
+		vd.y=0;
+		WalkDir.x= ViewDir.x;
+		WalkDir.y= 0;
+		WalkDir.z= ViewDir.z;
+      /*  WalkDir = vd;
         ViewDir.x= vd.x;
-        ViewDir.z = vd.z;
+        ViewDir.z = vd.z;*/
 
 /*        GLApp.setSpotLight(GL11.GL_LIGHT1,
                 new float[]{0f, 0f, 0f, 0.0f},//diffuseGL_AMBIENT表示各种光线照射到该材质上，经过很多次反射后最终遗留在环境中的光线强度（颜色）。
                 new float[]{0.5f, 0.5f, 0.0f, 1.0f},//ambient GL_DIFFUSE表示光线照射到该材质上，经过漫反射后形成的光线强度（颜色）。
                 new float[]{position.x,position.y+5,position.z,0}, new float[]{WalkDir.x,WalkDir.y,WalkDir.z,0}, 50);*/
-        headRotate(0,-updownDegree);
+
 
     }
 	public void ViewRotateV1(float Angle) {
@@ -398,30 +412,32 @@ public class Human extends LivingThing {
 	}*/
 
 	public void StrafeRight(float Distance) {
-
-        AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-        manager.apply(bodyComponent,"walkerLeft");
-		//if (this.stable) {
+		if(Math.abs(Distance)>0.02) {
+			AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+			manager.apply(bodyComponent, "walkerLeft");
+			//if (this.stable) {
 			lastMoveTime = Sys.getTime();
-			this.move( GL_Vector.add(position, GL_Vector.multiply(RightVector,
+			this.move(GL_Vector.add(position, GL_Vector.multiply(RightVector,
 					Distance)));
+		}
 		//}
 	}
 
 	public void MoveForward(float Distance) {// System.out.printf("%f %f %f
 //        LogUtil.println("MoveForward");							// \r\n",ViewDir.x,ViewDir.y,ViewDir.z);
 		//if (this.stable) {
-
-        //Player player= CoreRegistry.get(Player.class);
-        AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-        manager.apply(bodyComponent,"walkerFoward");
-		this.move( GL_Vector.add(position, GL_Vector.multiplyWithoutY(WalkDir,
+		if(Math.abs(Distance)>0.02) {
+			//Player player= CoreRegistry.get(Player.class);
+			AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+			manager.apply(bodyComponent, "walkerFoward");
+			this.move(GL_Vector.add(position, GL_Vector.multiplyWithoutY(WalkDir,
 					Distance)));
 //        LogUtil.println(position+"");
 			lastMoveTime = Sys.getTime();
 			// System.out.printf("position: %f %f %f viewdir: %f %f %f
 			// \r\n",position.x,position.y,position.z,ViewDir.x,ViewDir.y,ViewDir.z);
-		//}
+			//}
+		}
 	}
 
 	/*public void startWalk() {

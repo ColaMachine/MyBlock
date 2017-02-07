@@ -12,8 +12,16 @@ import java.util.Stack;
 public class Worker extends Thread {
     private Socket socket;
     public boolean end=false;
+    public String ip;
+
+    public void close(){
+        LogUtil.println("失去连接"+this.ip);
+        this.end=true;
+
+    }
     Stack<String> messages;
     public Worker(Socket socket,Stack<String> messages){
+        this.ip=socket.getInetAddress().getHostAddress();
         this.socket =socket;
         this.messages=messages;
     }
@@ -53,13 +61,14 @@ public class Worker extends Thread {
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+           // e.printStackTrace();
         }finally{
             System.out.println("Close.....");
             try {
                 br.close();
                 pw.close();
                 socket.close();
+                this.close();
 
             } catch (Exception e2) {
 

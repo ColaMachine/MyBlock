@@ -36,7 +36,7 @@ public class CrashCheck {
                     ChunkImpl chunk_temp = chunksInProximity.get(i);
                     if (chunk_temp.getPos().x == chunk_pos_x_16 &&//0
                             chunk_temp.getPos().z == chunk_pos_z_16) {//0
-                        chunk_corner = chunk_temp;
+                        chunk_corner = chunk_temp;break;
                     } else {
                         continue;
                     }
@@ -98,12 +98,13 @@ public class CrashCheck {
                     ChunkImpl chunk_temp = chunksInProximity.get(i);
                     if (chunk_temp.getPos().x == chunk_pos_x_16 &&
                             chunk_temp.getPos().z == chunk_pos_z_16) {
-                        chunk_corner = chunk_temp;
+                        chunk_corner = chunk_temp;break;
                     } else {
                         continue;
                     }
                 }
                 if (chunk_corner == null) {
+                    livingThing.disapper();
                     GLApp.msg("the chunk_corner can't be null please debug it");
                     System.exit(0);
                 }

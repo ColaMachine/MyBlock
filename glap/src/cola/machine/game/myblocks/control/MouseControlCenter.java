@@ -411,9 +411,9 @@ public class MouseControlCenter {
     public void mouseMove(int x, int y) {
         if(mouseRightPressed){
             this.mouseRightDrag(x,y);
-            camera.ViewDir.x= human.ViewDir.x;
+           /* camera.ViewDir.x= human.ViewDir.x;
             camera.ViewDir.y= human.ViewDir.y;
-            camera.ViewDir.z= human.ViewDir.z;
+            camera.ViewDir.z= human.ViewDir.z;*/
         }
         if(mouseLeftPressed){
             this.mouseLeftDrag(x,y);
@@ -508,6 +508,8 @@ public class MouseControlCenter {
      * Add last mouse motion to the line, only if left mouse button is down.
      */
     public void mouseRightDrag(int x, int y) {
+
+
         // add mouse motion to line if left button is down, and mouse has moved
         // more than 10 pixels
         if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 1f
@@ -515,7 +517,7 @@ public class MouseControlCenter {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
-            human.bodyRotate(-(y - prevMouseY), -(x - prevMouseX));
+            human.bodyRotate( -(x - prevMouseX),(y - prevMouseY));
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli = false;
@@ -526,8 +528,8 @@ public class MouseControlCenter {
             camera.ViewDir.x= human.ViewDir.x;
             camera.ViewDir.y= human.ViewDir.y;
             camera.ViewDir.z= human.ViewDir.z;
-
-            camera.changeCallBack();
+            GamingState.cameraChanged=true;
+           // camera.changeCallBack();
             // �ƶ���ͷ
         }
     }
@@ -556,8 +558,8 @@ public class MouseControlCenter {
             camera.ViewDir.x= human.ViewDir.x;
             camera.ViewDir.y= human.ViewDir.y;
             camera.ViewDir.z= human.ViewDir.z;
-
-            camera.changeCallBack();
+            GamingState.cameraChanged=true;
+            //camera.changeCallBack();
             // �ƶ���ͷ
         }
     }

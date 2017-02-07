@@ -56,9 +56,10 @@ public class PersonPanel extends SlotPanel {
         super( numSlotsX,  numSlotsY);
 
         this.setBorderColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));
+        this.setBackgroundColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));
         this.setBorderWidth(2);
         this.setMarginLeft((short)200);
-
+        this.setWidth(0);
         attriDiv.setWidth(100);
 
         this.removeAllChild();

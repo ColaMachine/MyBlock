@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.engine.subsystem.lwjgl;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.config.RenderingConfig;
 import cola.machine.game.myblocks.engine.ComponentSystemManager;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.engine.subsystem.DisplayDevice;
@@ -67,7 +68,7 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
     @Override
     public void postUpdate(GameState currentState, float delta) {
         Display.update();
-        Display.sync(60);
+        Display.sync(Constants.FPS);//定义了每秒的帧率
         currentState.render();
 
         if (Display.wasResized()) {

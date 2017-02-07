@@ -32,9 +32,9 @@ public class LivingThingManager {
     Component bendComponent;
     public LivingThingManager(){
 
-        LivingThing livingThing =new LivingThing();
+     /*   LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(0,4,0);
-        livingThings.add(livingThing);
+        livingThings.add(livingThing);*/
       /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -120,6 +120,7 @@ return livingThingsMap.get(id);
 
     public void CrashCheck(  DropControlCenter dcc){
         for(LivingThing livingThing:livingThings){
+            if(livingThing.isPlayer || !livingThing.exist)continue;//不对玩家进行校验 怕玩家离开自己太远的时候还进行校验
             if(livingThing.position.y<0){
                 livingThing.position.y=0;
                 livingThing.stable=true;
@@ -187,6 +188,12 @@ return livingThingsMap.get(id);
      * 通过定时线程来控制
      */
     public void update(){
+        for(int i=livingThings.size()-1;i>=0;i--){
+            LivingThing  livingThing = livingThings.get(i);
+            if(!livingThing.exist){
+               this.livingThingsMap.remove(livingThing.id);
+            }
+        }
       /*  long nowTime = System.currentTimeMillis();
         if(nowTime-lastUpdateTime >5000){lastUpdateTime=nowTime;
             for(LivingThing livingThing:livingThings){
@@ -230,7 +237,8 @@ return livingThingsMap.get(id);
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
             if(livingThing==null ){
-                 livingThing =new LivingThing();
+
+                 livingThing =new LivingThing();livingThing.setPlayer(true);
                 livingThing.id=id;
                // livingThing.name=name;
                 livingThing.setPosition(x,y,z);

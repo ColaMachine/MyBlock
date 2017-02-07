@@ -377,18 +377,39 @@ public class Document extends HtmlObject {
     }
     @Override
     public  void update(){
-        document.setWidth(Constants.WINDOW_WIDTH);
-        document.setHeight(Constants.WINDOW_HEIGHT);
-        document.body.setWidth(Constants.WINDOW_WIDTH);
-        document.body.setHeight(Constants.WINDOW_HEIGHT);
-        super.resize();
-        super.update();
-        super.recursivelySetGUI(document);
-        if(Switcher.SHADER_ENABLE) {
-            ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
-            super.buildVao();
-            ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
-            OpenglUtils.checkGLError();
+        super.check();
+        if( Document.needUpdate){
+
+
+
+            document.setWidth(Constants.WINDOW_WIDTH);
+            document.setHeight(Constants.WINDOW_HEIGHT);
+            document.body.setWidth(Constants.WINDOW_WIDTH);
+            document.body.setHeight(Constants.WINDOW_HEIGHT);
+
+            super.resize();
+            super.update();
+            super.recursivelySetGUI(document);
+            if(Switcher.SHADER_ENABLE) {
+                ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
+                super.buildVao();
+                ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
+                OpenglUtils.checkGLError();
+            }
+
+            //ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
+            //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
+
+            // this.setPerspective();
+            document.render();
+            //div.shaderRender();   OpenglUtils.checkGLError();
+            // div2.shaderRender();   OpenglUtils.checkGLError();
+            //div3.shaderRender();   OpenglUtils.checkGLError();
+            //bag.shaderRender();
+
+            //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
+
+            Document.needUpdate=false;
         }
 
     }

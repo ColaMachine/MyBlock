@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine.modes;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
@@ -367,13 +368,15 @@ if(!Switcher.SHADER_ENABLE)
     int fps=0;
     public void update(float delta) {
         nowTime=System.currentTimeMillis();
-        if((nowTime-lastTime)>1000){
+        if((nowTime-lastTime)>60000){
             fps =frameCount;
             frameCount=0;
             lastTime=nowTime;
         }else{
             frameCount++;
-        }
+
+      }
+//        LogUtil.println("帧率"+frameCount*1000/(nowTime-lastTime));
         AttackManager.update();
         try {
             animationManager.update();
@@ -402,26 +405,8 @@ if(!Switcher.SHADER_ENABLE)
                 }
 
             }
+        document.update();
 
-        if( Document.needUpdate){
-
-            document.update();
-
-
-            //ShaderUtils.twoDColorBuffer.clear();   OpenglUtils.checkGLError();
-            //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
-
-            // this.setPerspective();
-            document.render();
-            //div.shaderRender();   OpenglUtils.checkGLError();
-            // div2.shaderRender();   OpenglUtils.checkGLError();
-            //div3.shaderRender();   OpenglUtils.checkGLError();
-            //bag.shaderRender();
-
-            //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
-
-            Document.needUpdate=false;
-        }
     }
 
 
@@ -431,6 +416,9 @@ if(!Switcher.SHADER_ENABLE)
     DropControlCenter dcc = new DropControlCenter();
     int frameCount=0;
     long lastTime=0;
+    public void preUpdate(){
+
+    }
     public void render() {
 
 
@@ -447,11 +435,11 @@ if(!Switcher.SHADER_ENABLE)
         //glTranslatef( 0.0f, 0.0f, -5.0f );
 
         Long time = System.currentTimeMillis();
-        try {
+       /* try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
        /* float greenValue = (float)(Math.sin(time.doubleValue())/2+0.5);
 
         glUseProgram(this.ProgramId);
@@ -592,15 +580,15 @@ if(!Switcher.SHADER_ENABLE)
 
     private void initEntities() {
         human = new Human();
-        human.setHuman(1, 53, 5, 0, 0, -1, 0, 1, 0);
+        human.setHuman(1, 53,-25, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
 
-        LivingThing livingThing = new LivingThing();
-        livingThing.position = new GL_Vector(10,125, 0);
+       // LivingThing livingThing = new LivingThing();
+       // livingThing.position = new GL_Vector(10,125, 0);
         livingThingManager.setPlayer(human);
         //livingThingManager.add(livingThing);
-       // SynchronTask task = new SynchronTask();
-        //task.start();
+        SynchronTask task = new SynchronTask();
+       task.start();
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
         CoreRegistry.put(Player.class,player);*/
