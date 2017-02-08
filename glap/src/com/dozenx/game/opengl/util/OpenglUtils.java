@@ -115,6 +115,9 @@ public class OpenglUtils {
 
     }
     public static GL_Vector getLookAtDirection2(GL_Vector viewDir ,float cursorX, float cursorY) {
+        GL_Vector newV = new GL_Vector();
+        newV.copy(viewDir);
+
         int windowWidth =Constants.WINDOW_WIDTH;
         int windowHeight =Constants.WINDOW_HEIGHT;
         float newX= cursorX-windowWidth/2;
@@ -134,22 +137,72 @@ public class OpenglUtils {
         double xDegree = Math.atan(newX/x);
 
 
-        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float) Math.toRadians(xDegree),
+        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float)- xDegree,
+                0);
+
+
+
+
+        //ViewDir.y+=updownDegree/100;
+        GL_Vector vd = M.transform(newV);
+
+
+        //计算俯角
+        double xy= Math.sqrt(vd.x*vd.x + vd.z*vd.z);
+        double jiaojiao = Math.atan(vd.y/xy);
+        jiaojiao+=yDegree;
+        vd.y =(float)(Math.tan(jiaojiao)*xy);
+        vd.normalize(); //<vector x=-0.5508821 y=0.0 z=-0.83458304> 0.66006864937011
+        //-576  869.6  0.6623735050598  // 33.428°
+       return vd.normalize();
+//        -0.5476552  -0.83405346
+
+	}
+
+    public static GL_Vector getLookAtDirection3(GL_Vector viewDir ,float cursorX, float cursorY) {
+        GL_Vector newV = new GL_Vector();
+        newV.copy(viewDir);
+
+        int windowWidth =Constants.WINDOW_WIDTH;
+        int windowHeight =Constants.WINDOW_HEIGHT;
+        float newX= cursorX-windowWidth/2;
+        float newY=cursorY-windowHeight/2;
+        //()/x = Math.tan(45/2);
+
+        //(windowWidth/2)/x = Math.tan(0y);
+        //newY/x= Math.tan(?);
+        //newX/x= Math.tan(?);
+        double x = (windowHeight/2)/Math.tan(3.14/4/2);
+
+        //double x = (windowHeight/2)/Math.tan(3.14/4/2);
+
+        //float newXF= newX/(windowWidth/2);
+        // float newYF= newY/(windowHeight/2);
+        double yDegree = Math.atan(newY/x );
+        double xDegree = Math.atan(newX/x);
+        double ydu = yDegree/3.1415*180;
+        double xdu = xDegree/3.1415*180;
+        LogUtil.println("角度x"+xdu+"角度y"+ydu);
+
+        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float)- xDegree/2,
                 0);
 
         //计算俯角
-        double xy= Math.sqrt(viewDir.x*viewDir.x + viewDir.z*viewDir.z);
-        double jiaojiao = Math.atan(viewDir.y/xy);
+        double xy= Math.sqrt(newV.x*newV.x + newV.z*newV.z);
+        double jiaojiao = Math.atan(newV.y/xy);
         jiaojiao+=yDegree;
 
-        viewDir.y =(float)(Math.tan(jiaojiao)*xy);
+        double xzDegree =- Math.atan(newV.z/newV.x);
+        newV.z= (float) Math.tan( xzDegree+xDegree)*newV.x;
+        xy= Math.sqrt(newV.x*newV.x + newV.z*newV.z);
+        newV.y =(float)(Math.tan(jiaojiao)*xy);
         //ViewDir.y+=updownDegree/100;
-        GL_Vector vd = M.transform(viewDir);
-        vd.normalize();
-       return vd;
+        // GL_Vector vd = M.transform(newV);
+//        vd.normalize();
+        return newV;
 
 
-	}
+    }
 
     public static GL_Vector getLookAtDirection(float cursorX, float cursorY) {
         IntBuffer viewport = ByteBuffer.allocateDirect((Integer.SIZE / 8) * 16)

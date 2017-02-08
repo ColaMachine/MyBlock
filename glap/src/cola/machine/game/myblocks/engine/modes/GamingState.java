@@ -238,7 +238,7 @@ if(!Switcher.SHADER_ENABLE)
                 }
                 int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
-                    mouseControlCenter.handleMouseWheel(wheelDelta / 120);
+                    mouseControlCenter.handleMouseWheel(-wheelDelta / 40);
                 }
 
 

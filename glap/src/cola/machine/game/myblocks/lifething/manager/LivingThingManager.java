@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -150,7 +151,15 @@ return livingThingsMap.get(id);
         }
         return null;
     }*/
+    public void chooseObject(LivingThing livingThing){
+       if(livingThing==null && player.target!=null){
+           CoreRegistry.get(HeadPanel.class).setVisible(false);
+           player.target.unSelect();
+           player.target=null;
+           Document.needUpdate=true;
+       }
 
+    }
     public LivingThing chooseObject(GL_Vector from, GL_Vector direction){
        // LogUtil.println("开始选择");
         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
@@ -161,9 +170,10 @@ return livingThingsMap.get(id);
 
            // LogUtil.println(fromV.toString() );
            // LogUtil.println(directionV.toString() );
-           if( aabb.intersectRectangle(fromV,directionV)){
+           if( /*aabb.intersectRectangle(fromV,directionV)*/GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
             //   LogUtil.println("选中了");
                this.target=livingThing;
+               livingThing.select();
                player.target=livingThing;
                CoreRegistry.get(HeadPanel.class).bind(livingThing).show();
                 return livingThing;

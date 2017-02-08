@@ -56,6 +56,7 @@ public class ShaderManager {
 
     public static ShaderConfig uiShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
     public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
+    public static ShaderConfig anotherShaderConfig = new ShaderConfig("another","chapt7/3dimg.frag","chapt7/3dimg.vert");
 
 
     public HashMap<String,ShaderConfig> configMap =new HashMap<>();
@@ -74,6 +75,8 @@ public class ShaderManager {
         this.createProgram(skyShaderConfig);
         this.createProgram(uiShaderConfig);
         this.createProgram(livingThingShaderConfig);
+        this.createProgram(anotherShaderConfig);
+
        // this.CreateTerrainVAO();
        // ShaderUtils.initProModelView(terrainShaderConfig);
         //ShaderUtils.initProModelView(lightShaderConfig);
@@ -84,6 +87,7 @@ public class ShaderManager {
         this.initUniform(livingThingShaderConfig);
         this.initUniform(uiShaderConfig);
         this.initUniform(skyShaderConfig);
+        this.initUniform(anotherShaderConfig);
         //this.createProgram(lightShaderConfig);
         this.CreateLightVAO(lightShaderConfig);
         this.CreateUiVAO(uiShaderConfig);

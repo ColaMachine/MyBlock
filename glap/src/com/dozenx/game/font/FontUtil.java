@@ -356,6 +356,7 @@ public class FontUtil {
         try {
             List<String> lines= FileUtil.readFile2List(PathManager.getInstance().getInstallPath().resolve("wordLocation.txt").toString());
             for(String line:lines){
+              //  LogUtil.println(line);
                String[] ary = line.split(" ");
                 map.put(ary[0].charAt(0),new Glyph(Integer.valueOf(ary[1]),Integer.valueOf(ary[2]),Integer.valueOf(ary[3]),Integer.valueOf(ary[4])));
             }

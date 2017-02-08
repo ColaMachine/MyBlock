@@ -1,11 +1,13 @@
 package glmodel;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glapp.GLApp;
 
+import javax.vecmath.Vector3f;
 import java.nio.FloatBuffer;
 
 /**
@@ -349,11 +351,63 @@ public class GL_Vector
 	 */
 	public static float angle(GL_Vector a, GL_Vector b)
 	{
-		a.normalize();
-		b.normalize();
-		return (a.x*b.x+a.y*b.y+a.z*b.z);
+		GL_Vector newA= new GL_Vector();
+		newA.copy(a);
+		GL_Vector newB= new GL_Vector();
+		newB.copy(b);
+		newA.normalize();
+		newB.normalize();
+		return (newA.x*newB.x+newA.y*newB.y+newA.z*newB.z);
+		//return (a.x*b.x+a.y*b.y+a.z*b.z);
 	}
-	
+
+
+	/*设a=（-1,3,2） b=（2,-2,2）θ为向量a、b的夹角
+	|a|=根号（（-1）^2+3^2+2^2)=根号14
+	同理|b|=根号12
+	cosθ=（a•b）∕（|a||b|)=（-2-6+4）∕（根号14*根号12）=-（根号2∕根号21）
+	所以θ=arccos（-（根号2∕根号21））*/
+
+	public static float angle2(GL_Vector a, GL_Vector b)
+	{
+		GL_Vector mult =GL_Vector.mult(a,b);
+		float result =(mult.x+mult.y+mult.z)/(GL_Vector.length(a)*GL_Vector.length(b));
+		return (float)Math.acos(result);
+		//return (a.x*b.x+a.y*b.y+a.z*b.z);
+	}
+	/**
+	 * GL_Vector point 点相对起始坐标的坐标
+	 * viewDir 方向
+	 * @param point
+	 * @param viewDir
+     * @return
+     */
+	public static double chuizhijuli(GL_Vector point,GL_Vector viewDir) {
+		GL_Vector ap = point;
+
+		GL_Vector ab =viewDir;
+		float angle =angle2(ap,ab);
+		double length = Math.cos(Math.atan(angle))*GL_Vector.length(ap);
+
+		GL_Vector norm= GL_Vector.multiply(ab.normalize(),(float)length);
+		 length =GL_Vector.length(GL_Vector.sub(norm,ap));
+		LogUtil.println("chuizhi juli "+length);
+
+		return length;
+	}
+
+
+	public static void main(String args[]){
+		GL_Vector a= new GL_Vector(0.5f,0.5f,0).normalize();
+		GL_Vector b= new GL_Vector(0,1,0);
+		float result = GL_Vector.angle(a,b);
+		LogUtil.println(result+"");
+
+		GL_Vector point =new GL_Vector(0,1,0);
+		GL_Vector from =new GL_Vector(0,0,0);
+		GL_Vector to =new GL_Vector(0.5f,0.5f,0);
+		//LogUtil.println(chuizhijuli(point,from,to)+"");
+	}
 	/**
 	 *  returns the angle between 2 vectors on the XZ plane.
 	 *  angle is 0-360 where the 0/360 divide is directly in front of the A vector

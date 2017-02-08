@@ -96,8 +96,12 @@ try {
 
     public static List<String > readFile2List(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
-
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        if(!file.exists()){
+            LogUtil.println("read file failed path:"+path);
+        }
+        LogUtil.println("read file from1 path:"+path);
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+      //  BufferedReader br = new BufferedReader(new FileReader(file));
         List<String> lines =new ArrayList();
         String s ;
         // StringBuffer templateStr = new StringBuffer();

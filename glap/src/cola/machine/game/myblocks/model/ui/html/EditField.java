@@ -10,6 +10,7 @@ import de.matthiasmann.twl.model.EditFieldModel;
 import de.matthiasmann.twl.renderer.*;
 import de.matthiasmann.twl.utils.CallbackSupport;
 import de.matthiasmann.twl.utils.TextUtil;
+import glmodel.GL_Vector;
 
 import javax.vecmath.Vector4f;
 
@@ -46,6 +47,7 @@ public class EditField extends TextField {
     }
     public EditField(){
         this.setFontSize(12);
+
         this.canAcceptKeyboardFocus=true;
         addActionMapping("cut", "cutToClipboard");
         addActionMapping("copy", "copyToClipboard");

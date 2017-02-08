@@ -4,9 +4,12 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import cola.machine.game.myblocks.item.ItemManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -284,6 +287,32 @@ public class LivingThing extends GameActor{
         }*/
     }
     //FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(10240);
+    public void select(){
+
+
+
+            Shape shape = TextureManager.getShape("iron_pants");
+
+            Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+            component.setShape(shape);
+            component.id="select";
+
+
+            component.setOffset(new Point3f(0,4,0),new Point3f(0,0,0));
+            //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        bodyComponent.addChild(component);	//changeProperty()
+
+    }
+    public void unSelect(){
+        if("select".equals(bodyComponent.children.get(bodyComponent.children.size()-1).id)){
+            bodyComponent.children.remove(bodyComponent.children.size()-1);
+        }
+
+
+
+
+
+    }
     public void render(){
         /*GL11.glPushMatrix();try{
             Util.checkGLError();}catch (Exception e ){

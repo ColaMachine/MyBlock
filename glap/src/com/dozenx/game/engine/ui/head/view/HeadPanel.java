@@ -68,7 +68,8 @@ public class HeadPanel extends HtmlObject {
     //ProgressBar pro =new ProgressBar();
         //headPanel = new HeadPanel();//10行5列
         //CoreRegistry.put(HeadPanel.class,this);
-        this.position=HtmlObject.POSITION_ABSOLUTE;
+       // this.position=HtmlObject.POSITION_ABSOLUTE;
+        this.setId("headPanel");
         this.setMarginTop((short)10);
         this.setMarginLeft((short)30);
         this.setBorderWidth(2);

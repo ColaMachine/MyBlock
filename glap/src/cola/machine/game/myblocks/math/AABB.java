@@ -19,6 +19,7 @@ package cola.machine.game.myblocks.math;
 //import com.bulletphysics.linearmath.AabbUtil2;
 //import com.bulletphysics.linearmath.Transform;
 import com.google.common.base.Objects;
+import glmodel.GL_Vector;
 import gnu.trove.list.TFloatList;
 
 import javax.vecmath.Matrix4f;
@@ -409,6 +410,59 @@ public final class AABB {
 
     public boolean intersectRectangle(Vector3f from, Vector3f direction) {
         Vector3f dirfrac = new Vector3f();
+        //(0.5, 65.0, -40.5)  //(1.5, 66.5, -39.5)  //(-0.044776313, 0.5225283, -0.8514454)
+
+        GL_Vector newMin = new GL_Vector();
+        newMin.x= min.x - from.x;
+        newMin.y= min.y - from.y;
+        newMin.z= min.z - from.z;
+
+        GL_Vector newMax = new GL_Vector();
+        newMax.x= max.x - from.x;
+        newMax.y= max.y - from.y;
+        newMax.z= max.z - from.z;
+
+
+        dirfrac.x = 1.0f / direction.x;
+        dirfrac.y = 1.0f / direction.y;
+        dirfrac.z = 1.0f / direction.z;
+
+        float t1 = (min.x - from.x) * dirfrac.x;
+        float t2 = (max.x - from.x) * dirfrac.x;
+        float t3 = (min.y - from.y) * dirfrac.y;
+        float t4 = (max.y - from.y) * dirfrac.y;
+        float t5 = (min.z - from.z) * dirfrac.z;
+        float t6 = (max.z - from.z) * dirfrac.z;
+
+        float tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
+        float tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
+
+        if (tmax < 0) {
+            return false;
+        }
+
+        if (tmin > tmax) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public boolean chuizhijuli(Vector3f from, Vector3f direction) {
+        Vector3f dirfrac = new Vector3f();
+        //(0.5, 65.0, -40.5)  //(1.5, 66.5, -39.5)  //(-0.044776313, 0.5225283, -0.8514454)
+
+        GL_Vector newMin = new GL_Vector();
+        newMin.x= min.x - from.x;
+        newMin.y= min.y - from.y;
+        newMin.z= min.z - from.z;
+
+        GL_Vector newMax = new GL_Vector();
+        newMax.x= max.x - from.x;
+        newMax.y= max.y - from.y;
+        newMax.z= max.z - from.z;
+
 
         dirfrac.x = 1.0f / direction.x;
         dirfrac.y = 1.0f / direction.y;

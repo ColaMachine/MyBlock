@@ -464,7 +464,7 @@ public class HtmlObject implements Cloneable  {
                     child.offsetTop = (short)child.top;
                 }else
                 if(child.display==INLINE){
-                    if(oldChild!=null ) {
+                    if(oldChild!=null && oldChild.getPosition()!=HtmlObject.POSITION_ABSOLUTE ) {
                         if (oldChild.display == INLINE) {
 
                             child.offsetLeft = (short)(oldChild.offsetLeft + oldChild.offsetWidth  + oldChild.marginRight + child.marginLeft);

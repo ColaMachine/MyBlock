@@ -1354,6 +1354,10 @@ try {
                 if(i!=0)
                 preX+=fontSize;
             }
+            if(FontUtil.zhongwenMap==null)
+            {LogUtil.err("font load failed");
+
+            }
             Glyph location = FontUtil.zhongwenMap.get(ch);
             float height =ti.texture.getHeight();
             float width = ti.texture.getWidth();

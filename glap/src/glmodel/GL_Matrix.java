@@ -687,6 +687,11 @@ public class GL_Matrix
 	}
 
 	public static void main(String args[]){
+
+		GL_Vector gl_vector=new GL_Vector(1,0,0);
+		GL_Matrix transform = GL_Matrix.rotateMatrix(0,(float)(90.0*3.14/180.0),0);
+
+		gl_vector =transform.transform(gl_vector);
 		GL_Matrix model= GL_Matrix.rotateMatrix((float)(45.0*3.14/180.0),0,0);
 
 		GL_Matrix view= GL_Matrix.translateMatrix(0,0,3);

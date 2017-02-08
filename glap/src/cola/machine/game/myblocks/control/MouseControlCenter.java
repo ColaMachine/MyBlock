@@ -89,6 +89,10 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
            // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            livingThingManager.chooseObject(null);
+            // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
+        }
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
             //human.headRotate(human.camSpeedXZ * seconds*100,0 );
         }
@@ -268,8 +272,15 @@ public class MouseControlCenter {
 //        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
 //        // viewdir.x,viewdir.y,viewdir.z);
 //
+
+
         GL_Vector to = GL_Vector.add(camera.Position,
-                GL_Vector.multiply(viewdir, 10));
+                GL_Vector.multiply(viewdir, 100));
+
+       /* GamingState.instance.lightPos.x= to.x;
+        GamingState.instance.lightPos.y= to.y;
+        GamingState.instance.lightPos.z= to.z;
+        GamingState.lightPosChanged=true;*/
         //this.engine.lineStart = camera.Position;
         //this.engine.mouseEnd = to;
 //        ChunkProvider localChunkProvider = CoreRegistry
@@ -279,9 +290,9 @@ public class MouseControlCenter {
         // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
         //livingThingManager.attack();
-       Ball ball =new Ball(this.camera.Position,viewdir,7.3f);
+       /*Ball ball =new Ball(this.camera.Position,viewdir,17.3f);
 
-        AttackManager.add(ball);
+        AttackManager.add(ball);*/
         //  20);
 //        if (hitPoint != null) {
 //            // Block block=new
@@ -382,11 +393,12 @@ public class MouseControlCenter {
     public void handleMouseWheel(int times){
         Switcher.CAMERA_2_PLAYER+=times;
         if (Switcher.CAMERA_2_PLAYER < 0) {
-            Switcher.CAMERA_2_PLAYER = 0;  GamingState.cameraChanged=true;
+            Switcher.CAMERA_2_PLAYER = 0;
         }else
         if (Switcher.CAMERA_2_PLAYER > 100) {
-            Switcher.CAMERA_2_PLAYER = 100;  GamingState.cameraChanged=true;
+            Switcher.CAMERA_2_PLAYER = 100;
         }
+        GamingState.cameraChanged=true;
 
     }
     public void mouseLeftDown(int x, int y) {
