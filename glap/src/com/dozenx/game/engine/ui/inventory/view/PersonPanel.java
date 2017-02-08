@@ -90,7 +90,10 @@ public class PersonPanel extends SlotPanel {
         this.appendChild(div);
         this.appendChild(attriDiv);
 
+        this.setPosition(HtmlObject.POSITION_ABSOLUTE);
 
+        this.setTop(300);
+        this.setLeft(600);
 
 
     }

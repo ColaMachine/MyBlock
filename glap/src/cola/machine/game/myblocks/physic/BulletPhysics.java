@@ -70,13 +70,13 @@ public class BulletPhysics  {
     			Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId(),false);
     			
     			ChunkImpl _chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
-    			_chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor(_y), MathUtil.getOffesetChunk(_z), block);
+    			//_chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor(_y), MathUtil.getOffesetChunk(_z), block);
 //    			chunk.setBlock(MathUtil.floor(from.x+x*to.x)%16,
 //    					MathUtil.floor(from.y+x*to.y),
 //    					MathUtil.floor(from.z+x*to.z)%16, block);
     			//重新更新
-    			_chunk.build();
-                _chunk.buildAlpha();
+    			//_chunk.build();
+                //_chunk.buildAlpha();
     			return new GL_Vector(MathUtil.floor(from.x+x*to.x),
     					MathUtil.floor(from.y+x*to.y),
     					MathUtil.floor(from.z+x*to.z));//����ײ��ǰ�ķ���λ��

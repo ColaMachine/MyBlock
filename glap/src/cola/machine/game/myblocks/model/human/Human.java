@@ -11,6 +11,7 @@ import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.live.state.HumanState;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
@@ -43,6 +44,8 @@ public class Human extends LivingThing {
 	public float camSpeedR = 5; // degrees per second
 	public float camSpeedXZ = 2.4f; // units per second
 	public float camSpeedY = 0.1f; // units per second
+
+    HumanState currentState =new HumanState();
 
 
  /*   public MovementMode movementMode=MovementMode.NONE;*/
@@ -293,6 +296,8 @@ public class Human extends LivingThing {
 
 
 		ViewDir.normalize();
+
+
       //  System.out.println(vd);
     }
     public void bodyRotate(float leftRightDegree,float updownDegree){

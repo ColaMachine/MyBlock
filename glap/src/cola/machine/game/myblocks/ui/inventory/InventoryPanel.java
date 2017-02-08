@@ -62,6 +62,8 @@ public class InventoryPanel extends SlotPanel {
             slot[key].setIconWidget(new IconWidget(itemEntityMap.get(key)));
         }
 
+
+
       //  KeyStroke ks = KeyStroke.parse("ctrl A", "copy");
 
       //  InputMap inputMap = InputMap.empty();

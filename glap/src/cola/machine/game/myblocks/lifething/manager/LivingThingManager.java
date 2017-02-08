@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
+import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Vector;
@@ -32,9 +33,9 @@ public class LivingThingManager {
     Component bendComponent;
     public LivingThingManager(){
 
-     /*   LivingThing livingThing =new LivingThing();
-        livingThing.position=new GL_Vector(0,4,0);
-        livingThings.add(livingThing);*/
+        LivingThing livingThing =new LivingThing();
+        livingThing.position=new GL_Vector(1,65,-40);
+        livingThings.add(livingThing);
       /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -164,7 +165,7 @@ return livingThingsMap.get(id);
             //   LogUtil.println("选中了");
                this.target=livingThing;
                player.target=livingThing;
-               CoreRegistry.get(HeadDialog.class).bind(livingThing).show();
+               CoreRegistry.get(HeadPanel.class).bind(livingThing).show();
                 return livingThing;
            }
 

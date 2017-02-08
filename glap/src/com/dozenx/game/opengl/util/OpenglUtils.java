@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Image;
+import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.util.FileUtil;
 import de.matthiasmann.twl.renderer.Texture;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
@@ -113,47 +114,84 @@ public class OpenglUtils {
          GL11.glEnd();
 
     }
-    public static GL_Vector getLookAtDirection(float cursorX, float cursorY) {
-		IntBuffer viewport = ByteBuffer.allocateDirect((Integer.SIZE / 8) * 16)
-				.order(ByteOrder.nativeOrder()).asIntBuffer();
-		FloatBuffer modelview = ByteBuffer
-				.allocateDirect((Float.SIZE / 8) * 16)
-				.order(ByteOrder.nativeOrder()).asFloatBuffer();
-		FloatBuffer projection = ByteBuffer
-				.allocateDirect((Float.SIZE / 8) * 16)
-				.order(ByteOrder.nativeOrder()).asFloatBuffer();
-		FloatBuffer pickingRayBuffer = ByteBuffer
-				.allocateDirect((Float.SIZE / 8) * 3)
-				.order(ByteOrder.nativeOrder()).asFloatBuffer();
-		FloatBuffer zBuffer = ByteBuffer.allocateDirect((Float.SIZE / 8) * 1)
-				.order(ByteOrder.nativeOrder()).asFloatBuffer();
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
-        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
-        GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
-		float winX = (float) cursorX;
-        LogUtil.println("viewport3 x:"+viewport.get(0)+"y:"+viewport.get(1)+"y:"+viewport.get(2));
+    public static GL_Vector getLookAtDirection2(GL_Vector viewDir ,float cursorX, float cursorY) {
+        int windowWidth =Constants.WINDOW_WIDTH;
+        int windowHeight =Constants.WINDOW_HEIGHT;
+        float newX= cursorX-windowWidth/2;
+        float newY=cursorY-windowHeight/2;
+        //()/x = Math.tan(45/2);
 
-		float winY = viewport.get(3)-(float) cursorY;
-     //   GL11.glReadPixels( (int)(cursorX), (int)(winY), 1, 1, GL11.GL_DEPTH_COMPONENT,GL11. GL_FLOAT,pickingRayBuffer );
-       //float  winZ= pickingRayBuffer.get(0);
-       // pickingRayBuffer.rewind();
-        GLU.gluUnProject(winX, winY, 0, modelview, projection, viewport,
-				pickingRayBuffer);
-		GL_Vector nearVector = new GL_Vector(pickingRayBuffer.get(0),
-				pickingRayBuffer.get(1), pickingRayBuffer.get(2));
+        //(windowWidth/2)/x = Math.tan(0y);
+        //newY/x= Math.tan(?);
+        //newX/x= Math.tan(?);
+        double x = (windowHeight/2)/Math.tan(3.14/4/2);
 
-		//pickingRayBuffer.rewind();
+        //double x = (windowHeight/2)/Math.tan(3.14/4/2);
 
-		GLU.gluUnProject(winX, winY, 1.0f, modelview, projection, viewport,
-				pickingRayBuffer);
-		GL_Vector farVector = new GL_Vector(pickingRayBuffer.get(0),
-				pickingRayBuffer.get(1), pickingRayBuffer.get(2));
+        //float newXF= newX/(windowWidth/2);
+       // float newYF= newY/(windowHeight/2);
+        double yDegree = Math.atan(newY/x );
+        double xDegree = Math.atan(newX/x);
 
- 		return farVector.sub(nearVector).normalize();
 
+        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float) Math.toRadians(xDegree),
+                0);
+
+        //计算俯角
+        double xy= Math.sqrt(viewDir.x*viewDir.x + viewDir.z*viewDir.z);
+        double jiaojiao = Math.atan(viewDir.y/xy);
+        jiaojiao+=yDegree;
+
+        viewDir.y =(float)(Math.tan(jiaojiao)*xy);
+        //ViewDir.y+=updownDegree/100;
+        GL_Vector vd = M.transform(viewDir);
+        vd.normalize();
+       return vd;
 
 
 	}
+
+    public static GL_Vector getLookAtDirection(float cursorX, float cursorY) {
+        IntBuffer viewport = ByteBuffer.allocateDirect((Integer.SIZE / 8) * 16)
+                .order(ByteOrder.nativeOrder()).asIntBuffer();
+        FloatBuffer modelview = ByteBuffer
+                .allocateDirect((Float.SIZE / 8) * 16)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer projection = ByteBuffer
+                .allocateDirect((Float.SIZE / 8) * 16)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer pickingRayBuffer = ByteBuffer
+                .allocateDirect((Float.SIZE / 8) * 3)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        FloatBuffer zBuffer = ByteBuffer.allocateDirect((Float.SIZE / 8) * 1)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
+        GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
+        float winX = (float) cursorX;
+        LogUtil.println("viewport3 x:"+viewport.get(0)+"y:"+viewport.get(1)+"y:"+viewport.get(2));
+
+        float winY = viewport.get(3)-(float) cursorY;
+        //   GL11.glReadPixels( (int)(cursorX), (int)(winY), 1, 1, GL11.GL_DEPTH_COMPONENT,GL11. GL_FLOAT,pickingRayBuffer );
+        //float  winZ= pickingRayBuffer.get(0);
+        // pickingRayBuffer.rewind();
+        GLU.gluUnProject(winX, winY, 0, modelview, projection, viewport,
+                pickingRayBuffer);
+        GL_Vector nearVector = new GL_Vector(pickingRayBuffer.get(0),
+                pickingRayBuffer.get(1), pickingRayBuffer.get(2));
+
+        //pickingRayBuffer.rewind();
+
+        GLU.gluUnProject(winX, winY, 1.0f, modelview, projection, viewport,
+                pickingRayBuffer);
+        GL_Vector farVector = new GL_Vector(pickingRayBuffer.get(0),
+                pickingRayBuffer.get(1), pickingRayBuffer.get(2));
+
+        return farVector.sub(nearVector).normalize();
+
+
+
+    }
 
     public static void glVertex3fv4rect(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  TextureInfo ti,int position){
 

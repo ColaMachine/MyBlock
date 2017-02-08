@@ -422,6 +422,9 @@ public class HtmlObject implements Cloneable  {
         for (int i = 0; i < this.childNodes.size(); i++) {
             //System.out.println("2div id:"+id);
             HtmlObject child =  this.childNodes.get(i);
+            if("bloodBar".equals(child.getId())){
+                LogUtil.println(")");
+            }
             child.resize();
         }
         int maxWidth=0;
@@ -446,7 +449,9 @@ public class HtmlObject implements Cloneable  {
                 HtmlObject child =  this.childNodes.get(i);
                 //child.offsetWidth= (short)Math.max(width,minWidth);
                 //child.offsetHeight= (short)Math.max(width,minWidth);
-
+                if("bloodBar".equals(child.getId())){
+                    LogUtil.println(")");
+                }
                 int parentLeft = 0;
                 int parentTop=0;
                 if(getParentNode()!=null ){
@@ -593,6 +598,9 @@ public class HtmlObject implements Cloneable  {
     //Vao borderVao =new Vao();
     public void  buildVao(){
         if(!visible)return;
+        if("bloodBar".equals(this.getId())){
+            LogUtil.println(")");
+        }
         if(this.getBackgroundColor()!=null){
             ShaderUtils.draw2dColor(this.getBackgroundColor(),getInnerX(),getInnerY(),this.index+0.004f,getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
             //ShaderUtils.draw2DColorWithShader(this.getBackgroundColor(),ShaderUtils.get2DColorShaderConfig(),vao);

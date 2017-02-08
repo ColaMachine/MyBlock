@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.skill;
 
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import glmodel.GL_Vector;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class AttackManager {
         list.add(ball);
     }
     public static void update(){
+
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
             GL_Vector vector = ball.position;

@@ -19,7 +19,7 @@ void main()
 {
     if(ourTextureIndex==-1){
         color = ourcolor;
-        color = vec4(0,00,0,0.3);
+       // color = vec4(0,00,0,0.3);
     }else
      if(ourTextureIndex==0){
             color = texture(ourTexture0, TexCoord);

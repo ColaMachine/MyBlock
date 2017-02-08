@@ -261,7 +261,7 @@ public class MouseControlCenter {
 //        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
 
 
-        GL_Vector viewdir = OpenglUtils.getLookAtDirection(x, y);
+        GL_Vector viewdir = OpenglUtils.getLookAtDirection2(camera.getViewDir(),x, y);
         //viewdir.y=-viewdir.y;
 //        // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
 //
@@ -279,7 +279,7 @@ public class MouseControlCenter {
         // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
         //livingThingManager.attack();
-        Ball ball =new Ball(this.camera.Position,viewdir,7.3f);
+       Ball ball =new Ball(this.camera.Position,viewdir,7.3f);
 
         AttackManager.add(ball);
         //  20);
@@ -392,6 +392,7 @@ public class MouseControlCenter {
     public void mouseLeftDown(int x, int y) {
         prevMouseX=x;
         prevMouseY=y;
+        mouseLClick(x, y);
         mouseLeftPressed=true;
     }
     public void mouseLeftUp(int x, int y) {

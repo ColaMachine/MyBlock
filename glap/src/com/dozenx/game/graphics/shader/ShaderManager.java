@@ -1,5 +1,6 @@
 package com.dozenx.game.graphics.shader;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -177,7 +178,7 @@ public class ShaderManager {
 
     }
 
-    GL_Matrix projection = GL_Matrix.perspective3(45, 600 / 600, 1f, 1000.0f);
+    GL_Matrix projection = GL_Matrix.perspective3(45, Constants.WINDOW_WIDTH / Constants.WINDOW_HEIGHT, 1f, 1000.0f);
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 
     public static void humanPosChangeListener(){

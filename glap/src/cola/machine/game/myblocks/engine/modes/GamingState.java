@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.engine.modes;
 
 import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
+import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
@@ -66,6 +67,8 @@ public class GamingState implements GameState {
     public static String catchThing;
     public static boolean cameraChanged=false;
     public static boolean livingThingChanged=true;
+
+    public static boolean lightPosChanged =true;
     //LearnOpenglColor learnOpenglColor;
     //GUI startGui;
     WorldRenderer worldRenderer;
@@ -124,6 +127,11 @@ public class GamingState implements GameState {
             document.body.appendChild(new ToolbarView(10,1));
 
             document.body.appendChild(new ChatPanel());
+            document.body.appendChild(new HeadPanel());
+            HeadPanel headPanel =new HeadPanel();
+            headPanel.setVisible(false);
+            CoreRegistry.put(HeadPanel.class,headPanel);
+            document.body.appendChild(headPanel);
 
             document.needUpdate=true;
         } catch (Exception e) {
@@ -232,6 +240,9 @@ if(!Switcher.SHADER_ENABLE)
                 if (wheelDelta != 0) {
                     mouseControlCenter.handleMouseWheel(wheelDelta / 120);
                 }
+
+
+
                 //LogUtil.println("Mouse.getEventButton()"+Mouse.getEventButton());
 
 
@@ -377,12 +388,12 @@ if(!Switcher.SHADER_ENABLE)
 
       }
 //        LogUtil.println("帧率"+frameCount*1000/(nowTime-lastTime));
-        AttackManager.update();
+        AttackManager.update();OpenglUtils.checkGLError();
         try {
             animationManager.update();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }OpenglUtils.checkGLError();
         livingThingManager.update();
         if (!Switcher.IS_GOD)
             if (/*Math.random()*/ 1> 0.5) {
@@ -403,9 +414,16 @@ if(!Switcher.SHADER_ENABLE)
                     camera.changeCallBack();
                     GamingState.cameraChanged=false;
                 }
+                if(GamingState.lightPosChanged){
+                    //camera.changeCallBack();
+
+                    shaderManager.lightPosChangeListener();
+                    GamingState.cameraChanged=false;
+                }
+
 
             }
-        document.update();
+        document.update();OpenglUtils.checkGLError();
 
     }
 
@@ -425,11 +443,12 @@ if(!Switcher.SHADER_ENABLE)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+        OpenglUtils.checkGLError();
         if(!Switcher.SHADER_ENABLE) {
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
         }
+        OpenglUtils.checkGLError();
 //        Util.checkGLError();
 
         //glTranslatef( 0.0f, 0.0f, -5.0f );
@@ -476,7 +495,9 @@ if(!Switcher.SHADER_ENABLE)
 
            // OpenglUtils.renderCubeTest();
         }
+        OpenglUtils.checkGLError();
         document.render();
+        OpenglUtils.checkGLError();
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();
 

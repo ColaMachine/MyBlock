@@ -29,6 +29,7 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
+import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
@@ -62,6 +63,11 @@ public class InventoryPanel extends SlotPanel {
             slot[key].setIconView(new IconView(itemEntityMap.get(key)));
         }
 
+
+        this.setPosition(HtmlObject.POSITION_ABSOLUTE);
+
+        this.setTop(300);
+        this.setLeft(300);
       //  KeyStroke ks = KeyStroke.parse("ctrl A", "copy");
 
       //  InputMap inputMap = InputMap.empty();
