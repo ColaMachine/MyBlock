@@ -560,6 +560,9 @@ try {
     public static void finalDraw(ShaderConfig config,Vao vao){
         //TextureManager.getTextureInfo("soil").bind();
         // ShaderUtils.get2dcolor
+        if(vao.getPoints()==0){
+            return;
+        }
         assert config.getProgramId()>0;
         glUseProgram(config.getProgramId());
         OpenglUtils.checkGLError();
@@ -569,6 +572,7 @@ try {
         glBindVertexArray(vao.getVaoId());
         OpenglUtils.checkGLError();
         assert vao.getPoints()>0;
+
         glDrawArrays(GL_TRIANGLES,0, vao.getPoints());
         //config.getVao().getVertices().rewind();
 
@@ -1602,7 +1606,12 @@ try {
     }
 
     public static void createVao(ShaderConfig config ,Vao vao,int[] attris){
+        int position = vao.getVertices().position();
+      /*  if(vao.getVertices().position()==0){
 
+        }*/
+        if(position==0)
+            return;
         int length =0;
         for(int i=0;i<attris.length;i++){
             length += attris[i];
@@ -1628,10 +1637,7 @@ try {
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
         //创建顶点数组
-        int position = vao.getVertices().position();
-      /*  if(vao.getVertices().position()==0){
 
-        }*/
 
         vao.setPoints(vao.getVertices().position()/length);
 

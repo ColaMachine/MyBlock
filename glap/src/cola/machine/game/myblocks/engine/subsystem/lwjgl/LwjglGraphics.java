@@ -135,6 +135,8 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
 
     private void initOpenGL() {
         checkOpenGL();
+        int widh =Display.getWidth();
+        int height = Display.getHeight();
         glViewport(0, 0, Display.getWidth(), Display.getHeight());
         initOpenGLParams();
         /*AssetManager assetManager = CoreRegistry.get(AssetManager.class);

@@ -182,7 +182,7 @@ public class ShaderManager {
 
     }
 
-    GL_Matrix projection = GL_Matrix.perspective3(45, Constants.WINDOW_WIDTH / Constants.WINDOW_HEIGHT, 1f, 1000.0f);
+    GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 
     public static void humanPosChangeListener(){

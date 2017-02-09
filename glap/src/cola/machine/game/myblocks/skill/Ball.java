@@ -51,7 +51,7 @@ startTime=System.currentTimeMillis();
         if(sumDistance>distance){
             this.died=true;
         }
-        GL11.glTranslatef(position.x, position.y, position.z);
+//        GL11.glTranslatef(position.x, position.y, position.z);
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
         component.build(ShaderManager.anotherShaderConfig,translateMatrix);
     }

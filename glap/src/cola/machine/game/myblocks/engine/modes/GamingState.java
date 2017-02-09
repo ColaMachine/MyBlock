@@ -497,6 +497,7 @@ if(!Switcher.SHADER_ENABLE)
         }
         OpenglUtils.checkGLError();
         document.render();
+        AttackManager.render();
         OpenglUtils.checkGLError();
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();

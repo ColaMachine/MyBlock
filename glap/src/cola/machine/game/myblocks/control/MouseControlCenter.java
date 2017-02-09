@@ -125,6 +125,9 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
             human.MoveForward(-human.camSpeedXZ * seconds);
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_G)) { // tilt down
+            //human.MoveForward(-human.camSpeedXZ * seconds);
+        }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
             human.MoveForward(human.camSpeedXZ * seconds);
@@ -290,9 +293,9 @@ public class MouseControlCenter {
         // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
         //livingThingManager.attack();
-       /*Ball ball =new Ball(this.camera.Position,viewdir,17.3f);
+       Ball ball =new Ball(this.camera.Position,viewdir,17.3f);
 
-        AttackManager.add(ball);*/
+        AttackManager.add(ball);
         //  20);
 //        if (hitPoint != null) {
 //            // Block block=new

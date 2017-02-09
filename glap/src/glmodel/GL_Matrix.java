@@ -527,7 +527,7 @@ public class GL_Matrix
 	public static GL_Matrix perspective3(float fov, float aspect,float zn,float zf )
 	{
 
-        fov=(float)(3.14*fov/180);
+        fov=(float)(3.1415926*fov/180);
 		GL_Matrix m = new GL_Matrix();
 		m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
 		m.m11=(float)(1/(Math.tan(fov*0.5f)));

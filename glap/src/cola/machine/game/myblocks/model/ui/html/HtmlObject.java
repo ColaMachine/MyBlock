@@ -423,7 +423,7 @@ public class HtmlObject implements Cloneable  {
             //System.out.println("2div id:"+id);
             HtmlObject child =  this.childNodes.get(i);
             if("bloodBar".equals(child.getId())){
-                LogUtil.println(")");
+//                LogUtil.println(")");
             }
             child.resize();
         }

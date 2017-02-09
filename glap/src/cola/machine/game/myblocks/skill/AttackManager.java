@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.skill;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Vector;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class AttackManager {
         list.add(ball);
     }
     public static void update(){
-
+        ShaderManager.anotherShaderConfig.getVao().getVertices().rewind();
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
             GL_Vector vector = ball.position;
@@ -34,6 +35,7 @@ public class AttackManager {
                 list.remove(i);
             }
         }
+        ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),new int[]{3,3,3,1});
     }
 
     public static void update2(){
@@ -55,12 +57,15 @@ public class AttackManager {
                 list.remove(i);
             }
         }
+
     }
     public static void render(){
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
             ball.render();
         }
+
+        ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
     }
 
 }

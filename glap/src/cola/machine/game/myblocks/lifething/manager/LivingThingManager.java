@@ -81,7 +81,8 @@ return livingThingsMap.get(id);
         //player update
         this.player.update();
         if (Switcher.SHADER_ENABLE) {
-            ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
+            ShaderUtils.createVao(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao(),new int[]{3,3,3,1});
+            //ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
         }
         //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
         GamingState.livingThingChanged = false;
