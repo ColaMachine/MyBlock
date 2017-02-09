@@ -30,21 +30,40 @@ public float x1;
     public float oheight;
     public float x2;
     public float y2;
-    /*public TextureInfo(String imgName,float minX,float minY,float width,float height){
-        this.x1=minX;
-        this.y1=minY;
-        this.owidth=width;
-        this.oheight=height;
-        this.x2=x1+owidth;
-        this.y2=y2+oheight;
-         img=TextureManager.getImage(imgName);
-        withWH(minX/img.w, minY/img.h, width/img.w, height/img.h);
-        textureHandle= img.textureHandle;
 
-    }*/
-    public Texture texture;
+    public int getImgWidth() {
+        return imgWidth;
+    }
+
+    public void setImgWidth(int imgWidth) {
+        this.imgWidth = imgWidth;
+    }
+
+    public int getImgHeight() {
+        return imgHeight;
+    }
+
+    public void setImgHeight(int imgHeight) {
+        this.imgHeight = imgHeight;
+    }
+
+    /*public TextureInfo(String imgName,float minX,float minY,float width,float height){
+            this.x1=minX;
+            this.y1=minY;
+            this.owidth=width;
+            this.oheight=height;
+            this.x2=x1+owidth;
+            this.y2=y2+oheight;
+             img=TextureManager.getImage(imgName);
+            withWH(minX/img.w, minY/img.h, width/img.w, height/img.h);
+            textureHandle= img.textureHandle;
+
+        }*/
+   // public Texture texture;
     String imageName;
     String name;
+    int imgWidth ;
+    int imgHeight;
     public TextureInfo(String imgName,float minX,float minY,float width,float height,String name){
         this.x1=minX;
         this.name=name;
@@ -55,12 +74,14 @@ public float x1;
         this.x2=x1+owidth;
         this.y2=y2+oheight;
         img=TextureManager.getImage(imgName);
-        texture = TextureManager.getTexture(imgName);
+        imgWidth=img.w;
+        imgHeight=img.h;
+       // texture = TextureManager.getTexture(imgName);
         try {
             if(imgName.equals("terrain")){
-                withWH(minX / texture.getWidth(),/*(img.h - minY -height)*/minY / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
+                withWH(minX /imgWidth,/*(img.h - minY -height)*/minY / imgHeight, width / imgWidth, height / imgHeight);//(img.h - minY -
             }else {
-                withWHReverse(minX / texture.getWidth(),/*(img.h - minY -height)*/minY / texture.getHeight(), width / texture.getWidth(), height / texture.getHeight());//(img.h - minY -
+                withWHReverse(minX / imgWidth,/*(img.h - minY -height)*/minY / imgWidth, width / imgWidth, height / imgHeight);//(img.h - minY -
             }
 
         }catch(Exception e){
@@ -76,14 +97,14 @@ public float x1;
         GLImage img=TextureManager.getImage(imgName);
         withWH(0, 0, 1, 1);
         textureHandle= img.textureHandle;
-        texture = TextureManager.getTexture(imgName);
+        //texture = TextureManager.getTexture(imgName);
     }
 
     public TextureInfo(String imgName,float minX,float minY,float width,float height,boolean flag){
         GLImage img=TextureManager.getImage(imgName);
         withWH(minX, minY, width, height);
         textureHandle= img.textureHandle;
-        texture = TextureManager.getTexture(imgName);
+        //texture = TextureManager.getTexture(imgName);
 
     }
 
@@ -96,13 +117,13 @@ public float x1;
         GLImage img=TextureManager.getImage(imgName);
         withWH((float)x/totalWidth, (float)y/totalHeight, (float)width/totalWidth, (float)height/totalHeight);
         textureHandle= img.textureHandle;
-        texture = TextureManager.getTexture(imgName);
+        //texture = TextureManager.getTexture(imgName);
     }
     public TextureInfo(String imgName, float x, float y, float width, float height, float w, float h,float offset) {
         GLImage img=TextureManager.getImage(imgName);
         withWH((x+offset)/w, (y+offset)/h, (width-offset)/w, (height-offset)/h);
         textureHandle= img.textureHandle;
-        texture = TextureManager.getTexture(imgName);
+        //texture = TextureManager.getTexture(imgName);
     }
 	public void render(){
 

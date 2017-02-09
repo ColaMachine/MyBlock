@@ -192,7 +192,7 @@ public class ShaderManager {
         GamingState.instance.lightPos.y= GamingState.instance.human.position.y+30;
         GamingState.instance.lightPos.z= GamingState.instance.human.position.z;
 
-        glUseProgram(lightShaderConfig.getProgramId());
+        /*glUseProgram(lightShaderConfig.getProgramId());
 
         GL_Matrix model = GL_Matrix.translateMatrix( GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
         glUniformMatrix4(lightShaderConfig.getModelLoc(), false, model.toFloatBuffer());
@@ -204,7 +204,7 @@ public class ShaderManager {
 
         glUniformMatrix4(skyShaderConfig.getModelLoc(), false, model.toFloatBuffer());
         OpenglUtils.checkGLError();
-        lightPosChangeListener();
+        lightPosChangeListener();*/
 
     }
     public static void lightPosChangeListener() {
@@ -741,7 +741,7 @@ public class ShaderManager {
         //创建顶点数组
         int position = vao.getVertices().position();
         if(vao.getVertices().position()==0){
-            ShaderUtils.printText("it's test ",50,50,0,24);
+            //ShaderUtils.printText("it's test ",50,50,0,24);
         }
         vao.setPoints(vao.getVertices().position()/10);
         LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());

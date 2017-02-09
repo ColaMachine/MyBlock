@@ -74,8 +74,8 @@ public class TextureManager {
 
         //this.put("most","assets.images/fewest.tif");
         //textureInfoMap.put("most",new TextureInfo("most"));
-        this.putImage("sun", "assets/minecraft/textures/environment/sun.png");
-        textureInfoMap.put("sun", new TextureInfo("sun"));
+        /*this.putImage("sun", "assets/minecraft/textures/environment/sun.png");
+        textureInfoMap.put("sun", new TextureInfo("sun"));*/
 
         //this.putImage("inventory", "assets/minecraft/textures/gui/container/inventory.png");
         //textureInfoMap.put("bag", new TextureInfo("inventory", 0, 179, 352, 332));
@@ -189,7 +189,7 @@ public class TextureManager {
             LogUtil.println("not exists:" + file.getPath());
             System.exit(0);
         }
-        int textureHandle = 0;
+
 
 
         GLImage textureImg;
@@ -202,10 +202,16 @@ public class TextureManager {
             if (textureImg != null) {
                 textureImg.textureHandle = GLApp.makeTexture(textureImg);
                 Util.checkGLError();
-                GLApp.makeTextureMipMap(textureHandle, textureImg);
+                GLApp.makeTextureMipMap(textureImg.textureHandle, textureImg);
                 Util.checkGLError();
             }
             textureMap.put(name, texture);
+            if(StringUtil.isNotEmpty(textureIndex2NameMap.get(textureImg.textureHandle))){
+               LogUtil.err("name exists"+name);
+            }
+            LogUtil.println(name+":"+textureImg.textureHandle);
+            textureIndex2NameMap.put(textureImg.textureHandle,name);
+
             imageMap.put(name, textureImg);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -214,6 +220,9 @@ public class TextureManager {
         }
 
     }
+
+    public static HashMap<Integer,String> textureIndex2NameMap =new HashMap<Integer,String>();
+
 
     public void preInit() {
 

@@ -172,7 +172,7 @@ public ShaderManager shaderManager;
 
     int cursorX;
     int cursorY;
-
+boolean handled;
     public void handleInput(float delta) {
         cursorX = Mouse.getEventX();
         cursorY = Mouse.getEventY();
@@ -184,8 +184,8 @@ public ShaderManager shaderManager;
 
 
 
+       // handled=false;
 
-        mouseControlCenter.handleNavKeys(delta);
         if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
 
@@ -193,6 +193,7 @@ public ShaderManager shaderManager;
                         Keyboard.getEventKey(),
                         Keyboard.getEventCharacter(),
                         Keyboard.getEventKeyState())){
+                   //handled=true;
                    continue;
                }
 
@@ -222,6 +223,11 @@ if(!Switcher.SHADER_ENABLE)
                 }*/
             }
         }
+
+        //if(!handled){
+       // if(/*!document.hasFocusChild()*/document.getFocusKeyWidget()==null)//如果没有键盘粘纸的控件那么就放过
+            mouseControlCenter.handleNavKeys(delta);
+        //}
         if (Mouse.isCreated()) {
             mouseControlCenter.mouseMove(cursorX, cursorY);
             while (Mouse.next()) {

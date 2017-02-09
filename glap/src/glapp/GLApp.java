@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import com.dozenx.game.opengl.util.OpenglUtils;
@@ -1137,7 +1138,8 @@ public class GLApp {
             }
             else {
                 msg("GLApp.makeTexture(GLImage) Warning: not a power of two: " + textureImg.w + "," + textureImg.h);
-                textureImg.convertToPowerOf2();
+                LogUtil.println("jump over textureImg.convertToPowerOf2(); ");
+                //textureImg.convertToPowerOf2();
                 return makeTexture(textureImg.pixelBuffer, textureImg.w, textureImg.h, false);
             }
         }

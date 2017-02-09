@@ -3,7 +3,7 @@ in vec2 TexCoord;
 
 
 in vec4 ourcolor;
-flat in float ourTextureIndex;
+ in float ourTextureIndex;
 out vec4 color;
 
 uniform sampler2D ourTexture0;
@@ -20,7 +20,7 @@ void main()
     if(ourTextureIndex==-1){
         color = ourcolor;
        // color = vec4(0,00,0,0.3);
-    }else
+    }else {
      if(ourTextureIndex==0){
             color = texture(ourTexture0, TexCoord);
 
@@ -41,10 +41,20 @@ void main()
         color = texture(ourTexture7, TexCoord);
     }else if(ourTextureIndex==8){
         color = texture(ourTexture8, TexCoord);
-    }else{
-       color = vec4(0,00,0,0.3);
     }
-    //if(color.a<0.1)
-    //discard;
+     else{
+           color = vec4(0,00,0,0.3);
+       }
+    if(ourcolor.w>0.1){
+        color= color *ourcolor;
+    }
+    //color= color *ourColor;
+    }
+
+   // else{
+     //  color = vec4(0,00,0,0.3);
+   // }
+    if(color.a<0.1)
+    discard;
 
 }

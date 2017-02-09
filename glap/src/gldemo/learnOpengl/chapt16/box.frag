@@ -9,7 +9,7 @@ uniform sampler2D ourTexture5;
 uniform sampler2D ourTexture6;
 uniform sampler2D ourTexture7;
 uniform sampler2D ourTexture8;
-flat in float ourTextureIndex;
+ in float ourTextureIndex;
 struct Material
 {
     //sampler2D diffuse;

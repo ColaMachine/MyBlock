@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.sun.glass.events.KeyEvent;
 import de.matthiasmann.twl.*;
@@ -61,6 +62,7 @@ public class EditField extends TextField {
                 KeyStroke.parse("ctrl A","selectAll")};
         InputMap inputMap =new InputMap(keys);
         this.setInputMap(inputMap);
+        this.setColor(new Vector4f(0,0,1,1));
         this.setMinHeight((short)getFontSize());
         this.setMinWidth((short) (getFontSize() * 5));
         this.width=(int)getFontSize()*5;
@@ -806,6 +808,8 @@ public class EditField extends TextField {
             }
         }
     }÷*/
+
+
     public interface Callback {
         /**
          * Gets called for any change in the edit field, or when ESCAPE or RETURN was pressed

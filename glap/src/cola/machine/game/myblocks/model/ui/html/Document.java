@@ -326,6 +326,9 @@ public class Document extends HtmlObject {
         }
     }
     private HtmlObject focusKeyWidget;
+    public HtmlObject getFocusKeyWidget(){
+        return focusKeyWidget;
+    }
     void setFocusKeyWidget(HtmlObject widget) {
         if(focusKeyWidget == null && isFocusKey()) {
             focusKeyWidget = widget;
@@ -412,6 +415,13 @@ public class Document extends HtmlObject {
             Document.needUpdate=false;
         }
 
+    }
+    public boolean hasFocusChild(){
+        if(this.body.focusChild!=null){
+            return true;
+        }else{
+            return false;
+        }
     }
     private boolean sendKeyEvent(Event.Type type) {
         assert type.isKeyEvent;

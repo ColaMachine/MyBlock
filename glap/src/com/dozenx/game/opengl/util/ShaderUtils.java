@@ -13,6 +13,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.util.FileUtil;
 import com.sun.prism.ps.Shader;
 import de.matthiasmann.twl.renderer.Font;
+import de.matthiasmann.twl.utils.TextUtil;
 import glapp.GLApp;
 import glapp.GLImage;
 import glmodel.GL_Matrix;
@@ -1009,7 +1010,7 @@ try {
         //create vbo 创建vbo  vertex buffer objects
         //创建顶点数组
          vao.setPoints(vao.getVertices().position()/10);
-        LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+//        LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
         vao.getVertices().rewind();
        // vao.setVertices(twoDImgBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
@@ -1289,12 +1290,33 @@ try {
         GL_Vector p3 = new GL_Vector(left+_width,top,z);
         GL_Vector p4 = new GL_Vector(left,top,z);
         int index = ShaderUtils.bindAndGetTextureIndex(ShaderManager.uiShaderConfig,ti.textureHandle);
-        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(index);
-        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(0).put(0).put(0).put(index);
-        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(index);
-        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(0).put(0).put(0).put(index);
-        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(index);
-        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(index);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0);
+    }
+    public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height,Vector4f color) {
+        Vao vao = ShaderManager.uiShaderConfig.getVao();
+
+        TextureInfo ti = image.getTexture();
+
+        float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
+        float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
+        float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);
+        int index = ShaderUtils.bindAndGetTextureIndex(ShaderManager.uiShaderConfig,ti.textureHandle);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
     }
 
 
@@ -1345,7 +1367,7 @@ try {
         }
         return glyphMap;
     }
-    public static void printText(String s, int innerX, int innerY,float z, float fontSize) {
+    public static void printText(String s, int innerX, int innerY,float z, float fontSize,Vector4f color) {
         int preX=0;
         int preY=0;
         TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
@@ -1363,14 +1385,14 @@ try {
 
             }
             Glyph location = FontUtil.zhongwenMap.get(ch);
-            float height =ti.texture.getHeight();
-            float width = ti.texture.getWidth();
+            float height =ti.getImgHeight();
+            float width = ti.getImgWidth();
             if(location!=null){
                 ti.minX=location.x/width;
                 ti.minY=(height-location.y-location.height)/height;
                 ti.maxX=(location.x+location.width)/width;
                 ti.maxY=(height-location.y)/height;
-                ShaderUtils.draw2dImg(new Image(ti), innerX+preX,innerY+preY,z,(int)fontSize,(int)fontSize);
+                ShaderUtils.draw2dImg(new Image(ti), innerX+preX,innerY+preY,z,(int)fontSize,(int)fontSize,color);
                 OpenglUtils.checkGLError();
             }
 
@@ -1447,20 +1469,97 @@ try {
 
     }*/
 
-    public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
+    public static void main(String args[]){
+        Integer b=1;
+        Integer a =b;
+        b++;
+        System.out.println(a);
+    }
+    public static Integer bindAndGetTextureIndex123(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
         }
 
 
         Integer index = config.getTextureIndexMap().get(textureHandle);
+       /* if(index == null){
+            index = config.getTextureIndexMap().get(textureHandle);
+            if(index !=null){
+
+            }
+        }*/
         if(index==null){
+
+            glUseProgram(config.getProgramId());
+            OpenglUtils.checkGLError();
+           index =textureIndex;
+            //index=config.textureIndex;
+            config.getTextureIndexMap().put(textureHandle,index);
+           //config.textureIndex++;
+            textureIndex++;
+            //uniform texture
+            if(index==0){
+                GL13.glActiveTexture(GL13.GL_TEXTURE0);
+
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture0Loc, 0);
+                OpenglUtils.checkGLError();
+            }else if(index==1){
+                GL13.glActiveTexture(GL13.GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture1Loc, 1);
+                OpenglUtils.checkGLError();
+            }else if(index==2){
+                GL13.glActiveTexture(GL13.GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture2Loc, 2);
+                OpenglUtils.checkGLError();
+            }else if(index==3){
+                GL13.glActiveTexture(GL13.GL_TEXTURE3);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture3Loc, 3);
+                OpenglUtils.checkGLError();
+            }
+            else if(index==4){
+                GL13.glActiveTexture(GL13.GL_TEXTURE4);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture4Loc, 4);
+                OpenglUtils.checkGLError();
+            } else if(index==5){
+                GL13.glActiveTexture(GL13.GL_TEXTURE5);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture5Loc, 5);
+                OpenglUtils.checkGLError();
+            }else if(index==6){
+                GL13.glActiveTexture(GL13.GL_TEXTURE6);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+                glUniform1i(config.texture6Loc, 6);
+                OpenglUtils.checkGLError();
+            }
+            glUseProgram(0);
+        }
+        return index;
+
+    }
+
+    public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
+        if(config.getProgramId()==0){
+            LogUtil.err("no programid");
+        }
+
+        String name = TextureManager.textureIndex2NameMap.get(textureHandle);
+        Integer index = textureIndexMap.get(textureHandle);
+
+        if(index==null){
+
             glUseProgram(config.getProgramId());
             OpenglUtils.checkGLError();
             index =textureIndex;
 
-            config.getTextureIndexMap().put(textureHandle,index);
+            textureIndexMap.put(textureHandle,index);
+            LogUtil.println(name+":"+textureHandle+":"+index);
             textureIndex++;
+
             //uniform texture
             if(index==0){
                 GL13.glActiveTexture(GL13.GL_TEXTURE0);

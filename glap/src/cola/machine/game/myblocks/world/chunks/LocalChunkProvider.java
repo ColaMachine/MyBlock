@@ -54,7 +54,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
     	
     }
     public void createOrLoadChunk(Vector3i chunkPos){
-    	System.out.printf("加载或创建地图  x:%d y:%d z:%d \n",chunkPos.x,chunkPos.y,chunkPos.z);
+    	//System.out.printf("加载或创建地图  x:%d y:%d z:%d \n",chunkPos.x,chunkPos.y,chunkPos.z);
 		ChunkImpl chunk=nearCache.get(chunkPos);
 		if(chunk == null){
 			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";

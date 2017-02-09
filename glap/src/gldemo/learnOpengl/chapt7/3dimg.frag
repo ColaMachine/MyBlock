@@ -9,7 +9,7 @@ uniform sampler2D ourTexture5;
 uniform sampler2D ourTexture6;
 uniform sampler2D ourTexture7;
 uniform sampler2D ourTexture8;
-flat in float ourTextureIndex;
+ in float ourTextureIndex;
 
 out vec4 color;
 
@@ -30,7 +30,7 @@ void main()
             oricolor = texture(ourTexture0, TexCoordReal);
 
     }else if(ourTextureIndex==1){
-        oricolor = texture(ourTexture1, TexCoordReal);
+       oricolor = texture(ourTexture1, TexCoordReal);
 
     }else if(ourTextureIndex==2){
         oricolor = texture(ourTexture2, TexCoordReal);
@@ -39,6 +39,7 @@ void main()
     }else if(ourTextureIndex==4){
         oricolor = texture(ourTexture4, TexCoordReal);
     }else if(ourTextureIndex==5){
+
         oricolor = texture(ourTexture5, TexCoordReal);
     }else if(ourTextureIndex==6){
         oricolor = texture(ourTexture6, TexCoordReal);
@@ -49,7 +50,7 @@ void main()
     }else{
        oricolor = vec4(1,1,1,1);
     }
-    
+
     if(oricolor.a<0.1)
     discard;
    // color.w=1;

@@ -63,18 +63,23 @@ public class ChatPanel extends HtmlObject {
 
                     // cycle through 3 different colors/font styles
                     client.send("say:"+Constants.userName+":"+editField.getText());
-                    Switcher.isChat=false;
+                    //Switcher.isChat=false;
 
                     //appendRow("color"+curColor, editField.getText());
                     editField.setText("");
-                    editField.giveupKeyboardFocus();
+                    /*guiInstance.*/giveupKeyboardFocus();
                     //editField.setVisible(false);
                     /*editField.setText("");
                     curColor = (curColor + 1) % 3;
                     editField.giveupKeyboardFocus();
                     editField.setVisible(false);
                     Switcher.isChat=false;*/
+                   // Switcher.isChat=false;
                   //  hide();
+                }else  if(key == Event.KEY_ESCAPE) {
+                    /*guiInstance.*/giveupKeyboardFocus();
+                   // Switcher.isChat=false;
+
                 }
             }
         });
@@ -97,7 +102,19 @@ public class ChatPanel extends HtmlObject {
 
        // appendRow("default", "Welcome to the chat demo. Type your messages below :)");
     }
-
+    protected void keyboardFocusChildChanged(HtmlObject child) {
+        /*if(child!=null){
+            Switcher.isChat=true;
+        }else{
+            Switcher.isChat=false;
+        }*/
+    }
+    protected void keyboardFocusGained() {
+        Switcher.isChat=true;
+    }
+    protected void keyboardFocusLost() {
+       Switcher.isChat=false;
+    }
     public void check(){
 
         while(client.messages.size()>0 && client.messages.peek()!=null){

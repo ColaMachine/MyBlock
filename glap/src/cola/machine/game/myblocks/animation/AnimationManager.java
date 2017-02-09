@@ -273,7 +273,7 @@ public class AnimationManager {
                         blocks.add(block);
                         blockIndex++;
                     }else{
-                        System.out.println("find a new block "+ content.substring(start,start+10));
+                      //  System.out.println("find a new block "+ content.substring(start,start+10));
                         pos=readBlock(block.blocks,content,start);
                         thisIsAWorld=false;
                        ch = content.charAt(pos);
@@ -301,12 +301,12 @@ public class AnimationManager {
                 String s= content.substring(start,pos);
                 if(block.title==null){
                     block.title=s.trim();
-                    System.out.println("title"+s.trim());
+                    //System.out.println("title"+s.trim());
                 }else{
                     //这里还要判断读到的是不是一个}
                     if(ch!='}') {
                         block.contents.add(s.trim());
-                        System.out.println("content" + s.trim());
+                        //System.out.println("content" + s.trim());
                     }
                 }
                 //表示读到一个单词

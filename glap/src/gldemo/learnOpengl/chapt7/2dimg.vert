@@ -7,7 +7,7 @@ layout (location = 3) in vec4 inColor;
 out vec2 TexCoord;
 
 out vec4 ourcolor;
-flat out float ourTextureIndex;
+ out float ourTextureIndex;
 void main()
 {
 gl_Position = vec4(position, 1.0f);

@@ -419,6 +419,7 @@ public class HtmlObject implements Cloneable  {
         }
     }
     public void resize(){
+
         for (int i = 0; i < this.childNodes.size(); i++) {
             //System.out.println("2div id:"+id);
             HtmlObject child =  this.childNodes.get(i);
@@ -450,7 +451,7 @@ public class HtmlObject implements Cloneable  {
                 //child.offsetWidth= (short)Math.max(width,minWidth);
                 //child.offsetHeight= (short)Math.max(width,minWidth);
                 if("bloodBar".equals(child.getId())){
-                    LogUtil.println(")");
+                   // LogUtil.println(")");
                 }
                 int parentLeft = 0;
                 int parentTop=0;
@@ -568,6 +569,15 @@ public class HtmlObject implements Cloneable  {
             logger.error("maxX can't not be 0");
             System.exit(0);
         }
+
+        if(color ==null){
+            if(this.getParent()!=null){
+                color = this.getParent().getColor();
+            }
+        }
+        if(color ==null){
+            color= new Vector4f(0,0,0,1);
+        }
         //先确定父级的左上角 在确定子的左上角 再确定子的宽度高度 再确定父亲的宽度高度
         for(int i=0;i<this.childNodes.size();i++){
         	//System.out.println("2div id:"+id);
@@ -578,8 +588,19 @@ public class HtmlObject implements Cloneable  {
 
         }
     }
+    private Vector4f color;
+
+    public Vector4f getColor() {
+
+        return color;
+    }
+
+    public void setColor(Vector4f color) {
+        this.color = color;
+    }
 
     public void check(){
+
         for(HtmlObject htmlObject:this.childNodes){
             //if(Switcher.SHADER_ENABLE){
             htmlObject.check();
@@ -599,7 +620,7 @@ public class HtmlObject implements Cloneable  {
     public void  buildVao(){
         if(!visible)return;
         if("bloodBar".equals(this.getId())){
-            LogUtil.println(")");
+           // LogUtil.println(")");
         }
         if(this.getBackgroundColor()!=null){
             ShaderUtils.draw2dColor(this.getBackgroundColor(),getInnerX(),getInnerY(),this.index+0.004f,getInnerWidth(),getInnerHeight());   OpenglUtils.checkGLError();
@@ -617,7 +638,8 @@ public class HtmlObject implements Cloneable  {
 
         if(this.innerText!=null && innerText.length()>0){
             //GL11.glColor4f(1, 1, 1, 1);
-            ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.001f,this.getFontSize());   OpenglUtils.checkGLError();
+            ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.001f,this.getFontSize(),this.getColor());
+            OpenglUtils.checkGLError();
 
             //GLApp.print((int)minX,(int)minY,this.innerText);
         }
@@ -1360,7 +1382,7 @@ public class HtmlObject implements Cloneable  {
         return isInside(evt.getMouseX(), evt.getMouseY());
     }
     protected HtmlObject lastChildMouseOver;
-    private HtmlObject focusChild;
+    protected HtmlObject focusChild;
     boolean setMouseOverChild(HtmlObject child, Event evt) {//这个方法用来设置鼠标经过的主键 什么时候返回true呢 鼠标任然在某个元素上 或者 之前是没有聚焦的 现在有了并且有子元素消费了事件 那么说明有元素响应了 鼠标移入事件
 //        LogUtil.println(this.id+":setMouseOverChild");
         if (lastChildMouseOver != child) {//如果当前节点的上一个鼠标经过的是空 且询问的节点是非空 或者
@@ -1677,7 +1699,7 @@ public class HtmlObject implements Cloneable  {
     protected void keyboardFocusChildChanged(HtmlObject child) {
     }
     private static final ThreadLocal<HtmlObject[]> focusTransferInfo = new ThreadLocal<HtmlObject[]>();
-    volatile Document guiInstance;
+    protected volatile Document guiInstance;
     private boolean focusTransferStart() {
         HtmlObject[] fti = focusTransferInfo.get();//存储了焦点传递状态信息 有之前的焦点元素 和现在的焦点元素
         if(fti == null) {//fti必须是null否则 什么都免谈
