@@ -10,12 +10,20 @@ import javax.vecmath.Vector4f;
  */
 public class Div extends HtmlObject implements Cloneable{
 
-    public void handle(Event event ){
+    public Runnable click;
+   /* public void handle(Event event ){
         System.out.println("进来了");
-    }
-   /* protected boolean handleEvent(Event evt) {
+
+
+    }*/
+    /*protected boolean handleEvent(Event evt) {
+
+        if(evt.getType()==Event.Type.MOUSE_CLICKED && click!=null){
+            click.run();
+
+        }
        //ss System.out.println("进来了");
-        if(evt.getType()==Event.Type.MOUSE_ENTERED){
+        *//*if(evt.getType()==Event.Type.MOUSE_ENTERED){
             this.borderColor=new Vector4f(1,1,1,1);
             this.innerText="进入了";
             LogUtil.println(this.id+"进入了");
@@ -28,7 +36,7 @@ public class Div extends HtmlObject implements Cloneable{
             document.needUpdate=true;return true;
         }else if(evt.getType()==Event.Type.MOUSE_MOVED){
 
-        }
+        }*//*
 
          //this.borderColor=new Vector4f(1,1,1,1);
         return true;

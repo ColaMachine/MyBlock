@@ -74,14 +74,14 @@ public float x1;
         this.x2=x1+owidth;
         this.y2=y2+oheight;
         img=TextureManager.getImage(imgName);
-        imgWidth=img.w;
-        imgHeight=img.h;
+        imgWidth=img.tmpi.getWidth();//.w;
+        imgHeight=img.tmpi.getHeight();//img.h;
        // texture = TextureManager.getTexture(imgName);
         try {
             if(imgName.equals("terrain")){
                 withWH(minX /imgWidth,/*(img.h - minY -height)*/minY / imgHeight, width / imgWidth, height / imgHeight);//(img.h - minY -
             }else {
-                withWHReverse(minX / imgWidth,/*(img.h - minY -height)*/minY / imgWidth, width / imgWidth, height / imgHeight);//(img.h - minY -
+                withWHReverse(minX / imgWidth,/*(img.h - minY -height)*/minY / imgHeight, width / imgWidth, height / imgHeight);//(img.h - minY -
             }
 
         }catch(Exception e){

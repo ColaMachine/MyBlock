@@ -1139,7 +1139,7 @@ public class GLApp {
             else {
                 msg("GLApp.makeTexture(GLImage) Warning: not a power of two: " + textureImg.w + "," + textureImg.h);
                 LogUtil.println("jump over textureImg.convertToPowerOf2(); ");
-                //textureImg.convertToPowerOf2();
+                textureImg.convertToPowerOf2();
                 return makeTexture(textureImg.pixelBuffer, textureImg.w, textureImg.h, false);
             }
         }

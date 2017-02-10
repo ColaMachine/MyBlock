@@ -51,8 +51,8 @@ void main()
        oricolor = vec4(1,1,1,1);
     }
 
-    if(oricolor.a<0.1)
-    discard;
+    //if(oricolor.a<0.1)
+    //discard;
    // color.w=1;
 
 

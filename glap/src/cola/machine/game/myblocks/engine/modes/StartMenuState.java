@@ -10,6 +10,7 @@ import cola.machine.game.myblocks.model.ui.html.*;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.login.LoginDemo;
+import com.dozenx.game.engine.edit.view.TextureEditPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
@@ -72,6 +73,7 @@ Document document =new Document();
         //button.setBackgroundColor(new Vector4f(1,1,1,0));
         div.appendChild(button);
         document.body.appendChild(div);
+        document.body.appendChild(new TextureEditPanel());
        // div=new Div();
        // bag =new Bag();
 

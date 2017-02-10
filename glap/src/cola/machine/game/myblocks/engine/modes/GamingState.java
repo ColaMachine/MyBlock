@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.engine.modes;
 
 import cola.machine.game.myblocks.log.LogUtil;
+import com.dozenx.game.engine.edit.view.TextureEditPanel;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
@@ -122,6 +123,7 @@ public class GamingState implements GameState {
 
             document= Document.getInstance();
             document .body.removeChild();
+
             document.body.appendChild(new InventoryPanel(4,5));
             document.body.appendChild(new PersonPanel(1,5));
             document.body.appendChild(new ToolbarView(10,1));

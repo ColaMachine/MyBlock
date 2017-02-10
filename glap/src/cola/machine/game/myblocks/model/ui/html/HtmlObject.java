@@ -227,7 +227,7 @@ public class HtmlObject implements Cloneable  {
         this.parentNode = parentNode;
     }
 
-    public Vector4f borderColor;
+    public Vector4f borderColor=new Vector4f(1,1,1,0);
     public void onClick(){
 
     }

@@ -1332,6 +1332,9 @@ try {
         GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
         GL_Vector p3 = new GL_Vector(left+_width,top,z);
         GL_Vector p4 = new GL_Vector(left,top,z);
+        if(color==null){
+            LogUtil.err("color can't be null");
+        }
         vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
@@ -1475,74 +1478,114 @@ try {
         b++;
         System.out.println(a);
     }
-    public static Integer bindAndGetTextureIndex123(ShaderConfig config,int textureHandle) {
+    public static HashMap<Integer ,Integer> texHandle2glTexLocMap =new HashMap<Integer ,Integer>();
+    public static int globalActiveIndex=0;
+
+    public  static Integer getActiveTextureLoc(int textureHandle){
+        Integer activeTextureLoc = texHandle2glTexLocMap.get(textureHandle);
+        if(activeTextureLoc==null){
+
+            activeTextureLoc = globalActiveIndex;
+            texHandle2glTexLocMap.put(textureHandle,activeTextureLoc);
+            globalActiveIndex++;
+            if(activeTextureLoc==0){
+                GL13.glActiveTexture(GL13.GL_TEXTURE0);
+
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }else if(activeTextureLoc==1){
+                GL13.glActiveTexture(GL13.GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }else if(activeTextureLoc==2){
+                GL13.glActiveTexture(GL13.GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }else if(activeTextureLoc==3){
+                GL13.glActiveTexture(GL13.GL_TEXTURE3);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }
+            else if(activeTextureLoc==4){
+                GL13.glActiveTexture(GL13.GL_TEXTURE4);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            } else if(activeTextureLoc==5){
+                GL13.glActiveTexture(GL13.GL_TEXTURE5);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }else if(activeTextureLoc==6){
+                GL13.glActiveTexture(GL13.GL_TEXTURE6);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }
+
+
+        }
+        return activeTextureLoc;
+    }
+    public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
         }
 
+        Integer glTexLoc = getActiveTextureLoc(textureHandle);
+        Integer sampleLoc = config.getSampleLocMap().get(glTexLoc);
 
-        Integer index = config.getTextureIndexMap().get(textureHandle);
        /* if(index == null){
             index = config.getTextureIndexMap().get(textureHandle);
             if(index !=null){
 
             }
         }*/
-        if(index==null){
+        //texturenhande ===> ative texture====>uniformloc
+        if(sampleLoc==null){
 
             glUseProgram(config.getProgramId());
             OpenglUtils.checkGLError();
-           index =textureIndex;
-            //index=config.textureIndex;
-            config.getTextureIndexMap().put(textureHandle,index);
-           //config.textureIndex++;
-            textureIndex++;
+           //index =textureIndex;
+            sampleLoc=config.textureIndex;
+            config.getSampleLocMap().put(glTexLoc,sampleLoc);
+           config.textureIndex++;
+            //textureIndex++;
             //uniform texture
-            if(index==0){
-                GL13.glActiveTexture(GL13.GL_TEXTURE0);
+            if(sampleLoc==0){
 
-                glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture0Loc, 0);
+                glUniform1i(config.texture0Loc, glTexLoc);
                 OpenglUtils.checkGLError();
-            }else if(index==1){
-                GL13.glActiveTexture(GL13.GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture1Loc, 1);
+            }else if(sampleLoc==1){
+
+                glUniform1i(config.texture1Loc, glTexLoc);
                 OpenglUtils.checkGLError();
-            }else if(index==2){
-                GL13.glActiveTexture(GL13.GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture2Loc, 2);
+            }else if(sampleLoc==2){
+
+                glUniform1i(config.texture2Loc, glTexLoc);
                 OpenglUtils.checkGLError();
-            }else if(index==3){
-                GL13.glActiveTexture(GL13.GL_TEXTURE3);
-                glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture3Loc, 3);
+            }else if(sampleLoc==3){
+
+                glUniform1i(config.texture3Loc, glTexLoc);
                 OpenglUtils.checkGLError();
             }
-            else if(index==4){
-                GL13.glActiveTexture(GL13.GL_TEXTURE4);
-                glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture4Loc, 4);
+            else if(sampleLoc==4){
+
+                glUniform1i(config.texture4Loc, glTexLoc);
                 OpenglUtils.checkGLError();
-            } else if(index==5){
-                GL13.glActiveTexture(GL13.GL_TEXTURE5);
-                glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture5Loc, 5);
+            } else if(sampleLoc==5){
+
+                glUniform1i(config.texture5Loc, glTexLoc);
                 OpenglUtils.checkGLError();
-            }else if(index==6){
-                GL13.glActiveTexture(GL13.GL_TEXTURE6);
-                glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture6Loc, 6);
+            }else if(sampleLoc==6){
+
+                glUniform1i(config.texture6Loc, glTexLoc);
                 OpenglUtils.checkGLError();
             }
             glUseProgram(0);
         }
-        return index;
+        return sampleLoc;
 
     }
 
-    public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
+    public static Integer bindAndGetTextureIndex123(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
         }

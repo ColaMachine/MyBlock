@@ -388,14 +388,16 @@ private int viewPosLoc;
         this.viewLoc = viewLoc;
     }
 
-    public  HashMap<Integer, Integer> getTextureIndexMap() {
-        return textureIndexMap;
+    public  HashMap<Integer, Integer> getSampleLocMap() {
+        return sampleLocMap;
     }
 
     public  void setTextureIndexMap(HashMap<Integer, Integer> textureIndexMap) {
         textureIndexMap = textureIndexMap;
     }
 
-    public  HashMap<Integer,Integer> textureIndexMap=new HashMap();
+
+    //glTexLoc === > uniform smaple loc
+    public  HashMap<Integer,Integer> sampleLocMap=new HashMap();
 
 }
