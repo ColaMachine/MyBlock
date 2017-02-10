@@ -3,13 +3,17 @@ package com.dozenx.game.engine.edit.view;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureCfgBean;
 import cola.machine.game.myblocks.model.ui.html.*;
+import com.alibaba.fastjson.JSON;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 import de.matthiasmann.twl.Event;
 
 import javax.vecmath.Vector4f;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Created by luying on 17/2/9.
@@ -17,6 +21,13 @@ import java.io.IOException;
 public class TextureEditPanel extends HtmlObject{
     //private HtmlObject chooseObj = null;
     public TextureEditPanel(){
+        List<String> list=null;
+        try {
+            list = FileUtil.readFile2List(PathManager.getInstance().getHomePath().resolve("newItems.cfg").toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         final HtmlObject parent =this;
         final int bili =2;
         final Div wrap =new Div();
@@ -57,6 +68,22 @@ public class TextureEditPanel extends HtmlObject{
                };*/
                 div.setDisplay(HtmlObject.INLINE);
                 EditField edit = new EditField();
+                int index =i*16+j;
+                if(list!=null && list.size()>index){
+                    String name = list.get(index);
+
+                    try {
+                        if (StringUtil.isNotEmpty(name)) {
+                            if(name.lastIndexOf(',') == name.length()-1){
+                                name = name.substring(0,name.length()-1);
+                            }
+                            TextureCfgBean textureCfgBeanList = JSON.parseObject(name, TextureCfgBean.class);
+                            edit.setText(textureCfgBeanList.getName());
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
                 edit.setBackgroundColor(null);//new Vector4f(1,1,1,0.5f)
                 edit.setColor(new Vector4f(1,1,1,1));
                 div.appendChild(edit);
@@ -97,7 +124,7 @@ public class TextureEditPanel extends HtmlObject{
                         String name =edit.getText().trim();
 
                         sb.append("{name:").append("\"").append(name).append("\",")
-                                .append("xywh:").append(left).append(" ").append(top).append(" ").append(width).append(" ").append(height).append(",")
+                                .append("xywh:\"").append(left).append(",").append(top).append(",").append(width).append(",").append(height).append("\",")
                                 .append("image:").append("\"items\"").append("},\n");
 
                     }else{

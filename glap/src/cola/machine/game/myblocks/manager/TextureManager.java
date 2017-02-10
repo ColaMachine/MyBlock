@@ -195,7 +195,7 @@ public class TextureManager {
         GLImage textureImg;
         try {
             LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
-            Texture texture = renderer.loadTexture(new URL(installPath.toUri().toURL(), textureImagePath), "RGBA", "linear");
+           // Texture texture = renderer.loadTexture(new URL(installPath.toUri().toURL(), textureImagePath), "RGBA", "linear");
             Util.checkGLError();
             textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
@@ -205,7 +205,7 @@ public class TextureManager {
                 GLApp.makeTextureMipMap(textureImg.textureHandle, textureImg);
                 Util.checkGLError();
             }
-            textureMap.put(name, texture);
+           // textureMap.put(name, texture);
             if(StringUtil.isNotEmpty(textureIndex2NameMap.get(textureImg.textureHandle))){
                LogUtil.err("name exists"+name);
             }

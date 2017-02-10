@@ -34,7 +34,7 @@ public class StartMenuState implements GameState {
     //LearnOpenglColor learnOpenglColor;
     GUI gui;
 Document document =new Document();
-    public void init(GameEngine engine) {
+    public void init(GameEngine engine) {  OpenglUtils.checkGLError();
         TextureManager textureManager =new TextureManager();
 
         ShaderManager manager = new ShaderManager();

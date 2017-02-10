@@ -42,7 +42,7 @@ public class newOpenglShaderTest extends  FatherLeanr{
      /*   glClearColor(0, 0, 0, 0);
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_LIGHTING);*/
-        String vertPath="chapt12/box.vert";
+       /* String vertPath="chapt12/box.vert";
         String fragPath="chapt12/box.frag";
 
         cubeConfig =new ShaderConfig();
@@ -76,7 +76,7 @@ public class newOpenglShaderTest extends  FatherLeanr{
         ShaderUtils.createCubeVao(cubeVao);
 
         squareVao =new Vao();
-        ShaderUtils.create2dimageVao(squareVao,-0.5f,-0.5f,0.5f,0.5f);
+        ShaderUtils.create2dimageVao(squareVao,-0.5f,-0.5f,0.5f,0.5f);*/
 
     }
 
@@ -113,9 +113,9 @@ public class newOpenglShaderTest extends  FatherLeanr{
 
 
 //
-        ShaderUtils.drawCubeWithShader(cubeConfig,this.cubeVao);
+        //ShaderUtils.drawCubeWithShader(cubeConfig,this.cubeVao);
 
-        ShaderUtils.draw2DImageWithShader(squareConfig,this.squareVao);
+       // ShaderUtils.draw2DImageWithShader(squareConfig,this.squareVao);
 //        OpenglUtils.drawCubeWithShader(config2);
     }
     public void cameraPosChangeListener(GL_Vector cameraPos){

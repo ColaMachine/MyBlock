@@ -733,9 +733,9 @@ public class ChunkImpl implements Chunk {
     }
     public void addToVao( GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Vector normal){
         if(currentBlockType==6 || currentBlockType==3){
-            ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
         }else{
-            ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,alphaVao,p1, p2, p3,p4, normal, ti);
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,alphaVao,p1, p2, p3,p4, normal, ti);
         }
     }
     public void addThisTop4shader(int x, int y, int z) {

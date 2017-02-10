@@ -9,7 +9,7 @@ out  vec3 TexCoord;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
- out float ourTextureIndex;
+out float ourTextureIndex;
 void main()
 {
 

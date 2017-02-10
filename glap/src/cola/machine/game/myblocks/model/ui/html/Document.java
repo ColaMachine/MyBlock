@@ -396,7 +396,8 @@ public class Document extends HtmlObject {
             if(Switcher.SHADER_ENABLE) {
                 ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
                 super.buildVao();
-                ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
+               // ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
+                ShaderUtils.createVao(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao(),new int[]{3,2,1,4});
                 OpenglUtils.checkGLError();
             }
 

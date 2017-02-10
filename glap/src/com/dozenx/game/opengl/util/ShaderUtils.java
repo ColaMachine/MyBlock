@@ -44,7 +44,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 public class ShaderUtils {
 
 
-   public static void initShader(ShaderConfig shaderConfig){
+   /*public static void initShader(ShaderConfig shaderConfig){
 
         try {
             shaderConfig.setVertShaderId(CreateVertShaders(shaderConfig.getVertPath()));
@@ -61,7 +61,7 @@ public class ShaderUtils {
             System.exit(0);
 
         }
-    }
+    }*/
 
     /**
      *
@@ -70,7 +70,7 @@ public class ShaderUtils {
      * init2dSahder
      *
      */
-    public static void init2dShader(ShaderConfig shaderConfig){
+   /* public static void init2dShader(ShaderConfig shaderConfig){
 
         try {
             shaderConfig.setVertShaderId(CreateVertShaders(shaderConfig.getVertPath()));
@@ -88,9 +88,9 @@ public class ShaderUtils {
 
         }
     }
+*/
 
-
-    public static void initProModelView(ShaderConfig config){
+   /* public static void initProModelView(ShaderConfig config){
         GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
         GL_Matrix model2=GL_Matrix.multiply(model,GL_Matrix.translateMatrix(config.getPosition().x+2,config.getPosition().y,config.getPosition().z)) ;
 
@@ -128,8 +128,8 @@ public class ShaderUtils {
 
 
 
-    }
-    public static void initObjectColor(ShaderConfig config ){
+    }*/
+    /*public static void initObjectColor(ShaderConfig config ){
         glUseProgram(config.getProgramId());
         int objectColorLoc= glGetUniformLocation(config.getProgramId(), "objectColor");
         config.setObejctColorLoc(objectColorLoc);
@@ -248,17 +248,17 @@ public class ShaderUtils {
 
 
 
-    }
+    }*/
     public static int CreateProgram(String vertexPath,String fragPath)throws Exception {
         int vertShaderId =CreateVertShaders(vertexPath);
         int fragShaderId = CreateFragShaders(fragPath);
         int programId = CreateProgram(vertShaderId,fragShaderId);
         return programId;
 
-    }
+    }/*
     public static void shaderBindTexture(ShaderConfig config,int texHandle){
 
-    }
+    }*/
     //init2dshader
     public static int CreateProgram(int vertexShaderId, int fragmentShaderId){
         int newProgramId = glCreateProgram();
@@ -296,9 +296,10 @@ public class ShaderUtils {
     }
 
     public static int  CreateVertShaders(String path) throws IOException {
-
+        OpenglUtils.checkGLError();
         String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/"+path).toString());
         //创建着色器
+        OpenglUtils.checkGLError();
         int  newShaderId = glCreateShader(GL_VERTEX_SHADER);
          OpenglUtils.checkGLError();
         //源码
@@ -372,7 +373,7 @@ public class ShaderUtils {
         System.out.println("");
     }
 
-    public static int createVAO(FloatBuffer floatBuffer){floatBuffer.flip();
+   /* public static int createVAO(FloatBuffer floatBuffer){floatBuffer.flip();
         int lightVaoId = glGenVertexArrays();
          OpenglUtils.checkGLError();
 
@@ -383,18 +384,18 @@ public class ShaderUtils {
         glBindVertexArray(0);
          OpenglUtils.checkGLError();
         return lightVaoId;
-    }
-    public static void CreateLightVBO(FloatBuffer Vertices){
+    }*/
+   /* public static void CreateLightVBO(FloatBuffer Vertices){
         glBufferData(GL_ARRAY_BUFFER, Vertices, GL15.GL_STATIC_DRAW);//put data
 
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 8* 4, 0);
          OpenglUtils.checkGLError();
         glEnableVertexAttribArray(0);
          OpenglUtils.checkGLError();
-    }
+    }*/
 
 
-    public static void drawCubeWithShader(ShaderConfig config,Vao vao){
+   /* public static void drawCubeWithShader(ShaderConfig config,Vao vao){
 
         glUseProgram(config.getProgramId());
          OpenglUtils.checkGLError();
@@ -408,7 +409,7 @@ public class ShaderUtils {
 
 
 
-    }
+    }*/
 
     public static void checkGLError() {
         try{
@@ -420,8 +421,8 @@ public class ShaderUtils {
         }
     }
 
-    public static ShaderConfig twodImgConfig ;
-    public static int image2DShaderProgram;
+   // public static ShaderConfig twodImgConfig ;
+   // public static int image2DShaderProgram;
 
     /*public static void init2dImageShaderProgram(ShaderConfig config){
         try {
@@ -444,7 +445,7 @@ public class ShaderUtils {
 
 
 
-    public static ShaderConfig get2DImgConfig(){
+  /*  public static ShaderConfig get2DImgConfig(){
          if(twodImgConfig==null ){
              twodImgConfig =new ShaderConfig("2dimg","chapt7/2dimg.frag","chapt7/2dimg.vert");
              //twodImgConfig.setVertPath();
@@ -453,9 +454,9 @@ public class ShaderUtils {
 
         }
         return twodImgConfig;
-    }
-    static ShaderConfig twodColorConfig =null;
-    public static ShaderConfig get2DColorConfig(){
+    }*/
+    //static ShaderConfig twodColorConfig =null;
+   /* public static ShaderConfig get2DColorConfig(){
         if(twodColorConfig==null ){
             twodColorConfig =new ShaderConfig("2dcoloor","chapt7/2dcolor.frag","chapt7/2dcolor.vert");
            // twodColorConfig.setVertPath("chapt7/2dcolor.vert");
@@ -464,7 +465,7 @@ public class ShaderUtils {
             //initObjectColor(d2ColorShaderConfig);
         }
         return twodColorConfig;
-    }
+    }*/
 
     /*public static ShaderConfig getBorderShaderConfig(){
         if(twodColorConfig==null ){
@@ -479,18 +480,18 @@ public class ShaderUtils {
     /*
      * use shader to draw image
      */
-    public static void draw2DImageWithShader(ShaderConfig config,Vao vao) {
-        /*if(shaderImageConfig==null ){
+    /*public static void draw2DImageWithShader(ShaderConfig config,Vao vao) {
+        *//*if(shaderImageConfig==null ){
             shaderImageConfig =new ShaderConfig();
             shaderImageConfig.setVertPath("chapt7/chapt7.vert");
             shaderImageConfig.setFragPath("chapt7/chapt7.frag");
             initShader(shaderImageConfig);
 
-        }*/
+        }*//*
        // renderImageShader(shaderImageConfig);
-        /*if(image2DShaderProgram==0 ){
+        *//*if(image2DShaderProgram==0 ){
             createImage2DShaderProgram();
-        }*/
+        }*//*
 
 try {
     glUseProgram(config.getProgramId());
@@ -509,9 +510,9 @@ try {
     LogUtil.err(e);
 }
 
-    }
+    }*/
 
-    public static void draw2DColorWithShader(Vector4f backgroundColor,ShaderConfig shaderConfig ,Vao vao) {
+ /*   public static void draw2DColorWithShader(Vector4f backgroundColor,ShaderConfig shaderConfig ,Vao vao) {
         glUseProgram(ShaderUtils.get2DColorConfig().getProgramId());
         glUniform3f(shaderConfig.getObejctColorLoc(),  backgroundColor.x,backgroundColor.y,backgroundColor.z);
         glBindVertexArray(vao.getVaoId());
@@ -521,7 +522,7 @@ try {
 
          OpenglUtils.checkGLError();
 
-    }
+    }*/
 
    /* public static void finalDraw2DColor(){
         ShaderConfig config = ShaderUtils.get2DColorConfig();
@@ -634,7 +635,8 @@ try {
 
     }*/
 
-    public static void create2dimageVao(Vao vao,float left,float top,float width,float height){
+  /*  public static void create2dimageVao(Vao vao,float left,float top,float width,float height){
+
         //生成vaoid
         //create vao
         if(vao.getVaoId()>0){
@@ -721,7 +723,7 @@ try {
         glBindVertexArray(0);
          OpenglUtils.checkGLError();
 
-    }
+    }*/
     //public static Vao twodImageVao=new Vao();
 
   /*  public static void update2dColorVao(){
@@ -790,7 +792,7 @@ try {
         OpenglUtils.checkGLError();
 
     }*/
-    public static void updateVao(Vao vao){
+   /* public static void updateVao(Vao vao){
         //生成vaoid
         //create vao
 
@@ -802,8 +804,8 @@ try {
             OpenglUtils.checkGLError();
             int VboId=glGenBuffers();//create vbo
             vao.setVboId(VboId);
-           /* int eboId = glGenBuffers();
-            vao.setEboId(eboId);*/
+           *//* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*//*
         }
         //绑定vao
         glBindVertexArray(vao.getVaoId());
@@ -847,10 +849,10 @@ try {
 
 
 
-    }
+    }*/
 
 
-    public static void updateLivingVao(Vao vao){
+   /* public static void updateLivingVao(Vao vao){
 
         int stride= 8*4;
         //生成vaoid
@@ -864,8 +866,8 @@ try {
             OpenglUtils.checkGLError();
             int VboId=glGenBuffers();//create vbo
             vao.setVboId(VboId);
-           /* int eboId = glGenBuffers();
-            vao.setEboId(eboId);*/
+           *//* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*//*
         }
         //绑定vao
         glBindVertexArray(vao.getVaoId());
@@ -900,17 +902,17 @@ try {
         glEnableVertexAttribArray(2);
         OpenglUtils.checkGLError();
         //textureHandle
-      /*  glVertexAttribPointer(3, 1, GL_FLOAT, false, stride, 8 * 4);
+      *//*  glVertexAttribPointer(3, 1, GL_FLOAT, false, stride, 8 * 4);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(3);
-        OpenglUtils.checkGLError();*/
+        OpenglUtils.checkGLError();*//*
 
 
         //color
-        /*glVertexAttribPointer(3, 4, GL_FLOAT, false, stride, 6 * 4);
+        *//*glVertexAttribPointer(3, 4, GL_FLOAT, false, stride, 6 * 4);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(3);
-        OpenglUtils.checkGLError();*/
+        OpenglUtils.checkGLError();*//*
 
 
         glBindVertexArray(0);
@@ -918,9 +920,9 @@ try {
 
 
 
-    }
+    }*/
 
-    public static void updateLivingVao1(Vao vao){
+   /* public static void updateLivingVao1(Vao vao){
 
         int stride= 9*4;
         //生成vaoid
@@ -934,8 +936,8 @@ try {
             OpenglUtils.checkGLError();
             int VboId=glGenBuffers();//create vbo
             vao.setVboId(VboId);
-           /* int eboId = glGenBuffers();
-            vao.setEboId(eboId);*/
+           *//* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*//*
         }
         //绑定vao
         glBindVertexArray(vao.getVaoId());
@@ -975,10 +977,10 @@ try {
         glEnableVertexAttribArray(3);
         OpenglUtils.checkGLError();
         //color
-        /*glVertexAttribPointer(3, 4, GL_FLOAT, false, stride, 6 * 4);
+        *//*glVertexAttribPointer(3, 4, GL_FLOAT, false, stride, 6 * 4);
         OpenglUtils.checkGLError();
         glEnableVertexAttribArray(3);
-        OpenglUtils.checkGLError();*/
+        OpenglUtils.checkGLError();*//*
 
 
         glBindVertexArray(0);
@@ -986,8 +988,8 @@ try {
 
 
 
-    }
-    public static void update2dImageVao(ShaderConfig config ){
+    }*/
+  /*  public static void update2dImageVao(ShaderConfig config ){
         //生成vaoid
         //create vao
         Vao vao =config.getVao();
@@ -999,8 +1001,8 @@ try {
             OpenglUtils.checkGLError();
             int VboId=glGenBuffers();//create vbo
             vao.setVboId(VboId);
-           /* int eboId = glGenBuffers();
-            vao.setEboId(eboId);*/
+           *//* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*//*
         }
         //绑定vao
         glBindVertexArray(vao.getVaoId());
@@ -1044,7 +1046,7 @@ try {
 
 
 
-    }
+    }*/
   /*  public static void createFinal2dimageVao(Vao vao){
         //生成vaoid
         //create vao
@@ -1114,7 +1116,7 @@ try {
 
 
 
-    public static void createBorderVao(Vao vao,float left,float top,float width,float height){
+   /* public static void createBorderVao(Vao vao,float left,float top,float width,float height){
         //生成vaoid
         //create vao
         if(vao.getVaoId()>0){
@@ -1169,11 +1171,11 @@ try {
                 0,1,1,2,2,3,3,0
 
         };
-/*
+*//*
         int[] indices={
                 0,1,3,
                 1,2,3
-        };*/
+        };*//*
         IntBuffer Indices = BufferUtils.createIntBuffer(indices.length);
         Indices.put(indices);
         Indices.rewind();
@@ -1206,7 +1208,7 @@ try {
         glBindVertexArray(0);
          OpenglUtils.checkGLError();
 
-    }
+    }*/
 
 
     /*public static void createFinalBorderVao(Vao vao){
@@ -1274,9 +1276,18 @@ try {
 
    // public static FloatBuffer twoDImgBuffer =BufferUtils.createFloatBuffer(10240);
    // public static FloatBuffer twoDBorderBuffer = BufferUtils.createFloatBuffer(10240);
-    public static FloatBuffer twoDColorBuffer = BufferUtils.createFloatBuffer(10240);
+  //  public static FloatBuffer twoDColorBuffer = BufferUtils.createFloatBuffer(10240);
 
-    public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height) {
+    /**
+     * 不带颜色的绘制图片
+     * @param image
+     * @param posX
+     * @param posY
+     * @param z
+     * @param width
+     * @param height
+     */
+  public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height) {
         Vao vao = ShaderManager.uiShaderConfig.getVao();
 
         TextureInfo ti = image.getTexture();
@@ -1297,6 +1308,17 @@ try {
         vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(0).put(0).put(0).put(0);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0);
     }
+
+    /**
+     * 带颜色的绘制图片
+     * @param image
+     * @param posX
+     * @param posY
+     * @param z
+     * @param width
+     * @param height
+     * @param color
+     */
     public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height,Vector4f color) {
         Vao vao = ShaderManager.uiShaderConfig.getVao();
 
@@ -1315,7 +1337,7 @@ try {
         vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+       vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
     }
 
@@ -1335,6 +1357,12 @@ try {
         if(color==null){
             LogUtil.err("color can't be null");
         }
+        if(vao.getVertices().position() >= vao.getVertices().capacity()-60 ){
+            FloatBuffer buffer = vao.getVertices();
+            FloatBuffer newBuffer = BufferUtils.createFloatBuffer(vao.getVertices().capacity()+10000);
+            newBuffer.put(buffer);
+            vao.setVertices(BufferUtils.createFloatBuffer(vao.getVertices().capacity()+10000));
+        }
         vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
@@ -1343,7 +1371,8 @@ try {
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
     }
 
-    public static void draw2dBorder(Vector4f color, int posX, int posY, int width, int height) {
+    /*public static void draw2dBorder(Vector4f color, int posX, int posY, int width, int height) {
+        LogUtil.err("this method Abandoned");
         Vao vao =ShaderManager.uiShaderConfig.getVao();
 
         float left = posX/Constants.WINDOW_WIDTH*2-1f;
@@ -1362,7 +1391,7 @@ try {
         vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
         vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
         vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
-    }
+    }*/
     public static HashMap<Character,Glyph> glyphMap = null;
     public static HashMap<Character,Glyph> getGlyMap(){
         if(glyphMap==null){
@@ -1435,8 +1464,8 @@ try {
         return twodColorVao;
     }*/
 
-   public static int textureIndex=0;
-    public static HashMap<Integer,Integer> textureIndexMap=new HashMap();
+   //public static int textureIndex=0;
+  //  public static HashMap<Integer,Integer> textureIndexMap=new HashMap();
     /*public static Integer bindAndGetTextureIndex(int textureHandle) {
         glUseProgram(get2DImgConfig().getProgramId());
         Integer index = textureIndexMap.get(textureHandle);
@@ -1473,6 +1502,16 @@ try {
     }*/
 
     public static void main(String args[]){
+
+        for(int i=0;i<10000;i++){
+            FloatBuffer floatBuffer =BufferUtils.createFloatBuffer(102400);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         Integer b=1;
         Integer a =b;
         b++;
@@ -1591,17 +1630,17 @@ try {
         }
 
         String name = TextureManager.textureIndex2NameMap.get(textureHandle);
-        Integer index = textureIndexMap.get(textureHandle);
+        Integer index = texHandle2glTexLocMap.get(textureHandle);
 
         if(index==null){
 
             glUseProgram(config.getProgramId());
             OpenglUtils.checkGLError();
-            index =textureIndex;
+            index =globalActiveIndex;
 
-            textureIndexMap.put(textureHandle,index);
+            texHandle2glTexLocMap.put(textureHandle,index);
             LogUtil.println(name+":"+textureHandle+":"+index);
-            textureIndex++;
+            globalActiveIndex++;
 
             //uniform texture
             if(index==0){
@@ -1658,7 +1697,7 @@ try {
      * @param normal
      * @param ti
      */
-    public static void drawImage(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
+ public static void draw3dImage(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
         //ti=TextureManager.getTextureInfo("mantle");
 
 
@@ -1716,7 +1755,7 @@ try {
         floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
         floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
-        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
+      floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
     }
 
@@ -1734,7 +1773,7 @@ try {
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
     }
 
-    public static void draw3dColorSimpleReverse(GL_Vector p4, GL_Vector p3, GL_Vector p2, GL_Vector p1,  GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
+  public static void draw3dColorSimpleReverse(GL_Vector p4, GL_Vector p3, GL_Vector p2, GL_Vector p1,  GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
 
 
@@ -1743,7 +1782,7 @@ try {
         floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
         floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(color.x).put(color.y).put(color.z);
-        floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
+      floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
     }
 

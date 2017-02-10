@@ -22,6 +22,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.dozenx.game.opengl.util.OpenglUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Util;
 import org.slf4j.Logger;
@@ -118,8 +119,10 @@ public class BlockEngine implements GameEngine{
     @Override
     public void init() {
     	 initConfig();//初始化配置
+
     	 for(EngineSubsystem subsystem:subsystems){
     		 subsystem.preInitialise();//预先初始化各种设备
+
     	 }
         time = (EngineTime) CoreRegistry.get(Time.class);
     	 System.out.println((Sys.getTime()*1000)/Sys.getTimerResolution());
@@ -132,6 +135,7 @@ public class BlockEngine implements GameEngine{
     	 System.out.println((Sys.getTime()*1000)/Sys.getTimerResolution());
     	 for(EngineSubsystem subsystem:subsystems){
     		 subsystem.postInitialise(config);//预先初始化各种设备
+
     	 }
         initialised = true;
     }
