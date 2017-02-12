@@ -31,7 +31,7 @@ public class TextureManager {
 
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
-    public static HashMap<String, ItemDefinition> itemCfgMap = new HashMap<String, ItemDefinition>();
+    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
     public static HashMap<String, Shape> shapeMap = new HashMap<String, Shape>();
 
     public HashMap<String, ImageInfo> ImageInfoMap = new HashMap<>();
@@ -166,16 +166,16 @@ public class TextureManager {
     }
 
 
-    public void putItemCfg(String name, ItemDefinition item) {
-        this.itemCfgMap.put(name, item);
+    public void putItemDefinition(String name, ItemDefinition item) {
+        this.itemDefinitionMap.put(name, item);
         if (name.equals("fur_helmet")) {
             LogUtil.println("fur_helmet");
         }
     }
 
-    public static ItemDefinition getItemCfg(String name) {
+    public static ItemDefinition getItemDefinition(String name) {
 
-        ItemDefinition itemCfg = itemCfgMap.get(name);
+        ItemDefinition itemCfg = itemDefinitionMap.get(name);
         if (itemCfg == null) {
             LogUtil.println("itemCfg 为null:" + name);
             System.exit(0);
@@ -328,7 +328,7 @@ public class TextureManager {
                         System.out.println(shape==null);
                     }*/
                     item.setShape(shape);
-                    this.putItemCfg(name, item);
+                    this.putItemDefinition(name, item);
                     //item.init();
                 } else if (type.equals("food")) {
                     item.setType(Constants.ICON_TYPE_FOOD);

@@ -73,7 +73,7 @@ Document document =new Document();
         //button.setBackgroundColor(new Vector4f(1,1,1,0));
         div.appendChild(button);
         document.body.appendChild(div);
-        document.body.appendChild(new TextureEditPanel());
+        //document.body.appendChild(new TextureEditPanel());
        // div=new Div();
        // bag =new Bag();
 

@@ -29,6 +29,7 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
+import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
@@ -61,16 +62,16 @@ public class IconView extends HtmlObject {
 
     }
 
-    public SkillDefinition getSkillDefinition() {
+   /* public SkillDefinition getSkillDefinition() {
         return skillDefinition;
-    }
+    }*/
 
-    public void setSkillDefinition(SkillDefinition skillDefinition) {
+    /*public void setSkillDefinition(SkillDefinition skillDefinition) {
         this.skillDefinition = skillDefinition;
-    }
+    }*/
 
-    private ItemDefinition itemCfg;
-    private SkillDefinition skillDefinition;
+    private ItemDefinition itemDefinition;
+   // private SkillDefinition skillDefinition;
 
 
     private ItemBean itemBean;
@@ -94,31 +95,32 @@ public class IconView extends HtmlObject {
       // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        this.setBackgroundImage(new Image(TextureManager.getItemCfg(itemBean.getName()).getIcon()));
+        this.setBackgroundImage(new Image(TextureManager.getItemDefinition(itemBean.getName()).getIcon()));
    /*     icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }*/
-        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
-        if(itemCfg==  null) {
-            assert this.itemCfg!=null;
+        this.itemDefinition = TextureManager.getItemDefinition(itemBean.getName());
+        if(itemDefinition==  null) {
+            assert this.itemDefinition!=null;
         }
     }
-    public IconView(SkillDefinition skillDefinition) {
+    /*public IconView(SkillDefinition skillDefinition) {
         this.skillDefinition=skillDefinition;
         // label =new Label();
         // label.setText(""+itemBean.getNum());
         // add(label);
         //label.setPosition(30,30);
        // icon2= TextureManager.getItemCfg(skillDefinition.getIcon().getName()).getIcon();
-       /* if(icon2==  null){
+       *//* if(icon2==  null){
             assert icon2!=null;
-        }*/
-        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
-        if(itemCfg==  null) {
-            assert this.itemCfg!=null;
+        }*//*
+        this.itemDefinition = TextureManager.getItemCfg(itemBean.getName());
+        if(itemDefinition==  null) {
+            LogUtil.err("itemDefinition should not be null");
+            assert this.itemDefinition!=null;
         }
-    }
+    }*/
     public int getNum(){
         return itemBean.getNum();
     }
@@ -179,12 +181,12 @@ public class IconView extends HtmlObject {
     }*/
 
 
-    public ItemDefinition getItemCfg() {
-        return itemCfg;
+    public ItemDefinition getItemDefinition() {
+        return itemDefinition;
     }
 
-    public void setItemCfg(ItemDefinition itemCfg) {
-        this.itemCfg = itemCfg;
+    public void setItemDefinition(ItemDefinition itemDefinition) {
+        this.itemDefinition = itemDefinition;
     }
 
     public ItemBean getItemBean() {

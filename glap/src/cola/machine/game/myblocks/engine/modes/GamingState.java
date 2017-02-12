@@ -1,7 +1,5 @@
 package cola.machine.game.myblocks.engine.modes;
 
-import cola.machine.game.myblocks.log.LogUtil;
-import com.dozenx.game.engine.edit.view.TextureEditPanel;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
@@ -11,7 +9,6 @@ import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
@@ -41,7 +38,7 @@ import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
-import com.dozenx.game.engine.ui.toolbar.view.ToolbarView;
+import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -59,7 +56,6 @@ import org.lwjgl.util.glu.GLU;
 import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class GamingState implements GameState {
@@ -126,7 +122,7 @@ public class GamingState implements GameState {
 
             document.body.appendChild(new InventoryPanel(4,5));
             document.body.appendChild(new PersonPanel(1,5));
-            document.body.appendChild(new ToolbarView(10,1));
+            document.body.appendChild(new ToolBarView(10,1));
 
             document.body.appendChild(new ChatPanel());
             document.body.appendChild(new HeadPanel());

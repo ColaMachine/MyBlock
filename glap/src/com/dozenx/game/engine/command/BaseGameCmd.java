@@ -9,4 +9,16 @@ public class BaseGameCmd  implements  GameCmd{
     public void delete() {
         this.deleted=true;
     }
+
+    public int val;
+
+    @Override
+    public int val(){
+        return val;
+
+    }
+
+    public void setVal(int val){
+        this.val=val;
+    }
 }

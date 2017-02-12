@@ -5,12 +5,16 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.ui.inventory.bean.InventoryBean;
 import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
 
 /**
  * Created by dozen.zhang on 2017/2/4.
  */
 public class InventoryController {
+    InventoryBean inventoryBean =new InventoryBean();
+    ToolBarBean toolBarBean =new ToolBarBean();
     Human human;
     public void loadEquip(int slotType, ItemBean itemBean){
         if(human==null) {
@@ -18,7 +22,7 @@ public class InventoryController {
         }
 
         if(itemBean !=null ) {//穿上装备
-            ItemDefinition itemDef =  TextureManager.getItemCfg(itemBean.getName());
+            ItemDefinition itemDef =  TextureManager.getItemDefinition(itemBean.getName());
             /*if(IconView.getIcon2()!=null) {
                 this.setBackgroundImage(new Image(IconView.getIcon2()));
             }*/
