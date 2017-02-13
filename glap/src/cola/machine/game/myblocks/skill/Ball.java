@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import glmodel.GL_Matrix;
@@ -27,14 +28,24 @@ public class Ball  {
     int height;
     Long startTime;
     Component component;
-    public Ball(GL_Vector position ,GL_Vector direction,float speed){
+    public Ball(GL_Vector position ,GL_Vector direction,float speed,Shape shape){
         component= new Component(1,1,1);
 startTime=System.currentTimeMillis();
         this.speed = speed;
         this.position =position;
         this.direction=direction;
-        component.setShape(TextureManager.getShape("human_head"));
+        component.setShape(shape);
+        //component.setItem();
     }
+   /* public Ball(GL_Vector position ,GL_Vector direction,float speed,ItemD shape){
+        component= new Component(1,1,1);
+        startTime=System.currentTimeMillis();
+        this.speed = speed;
+        this.position =position;
+        this.direction=direction;
+        component.setShape(shape);
+        component.setItem();
+    }*/
     public void update(){
         Long nowTime=System.currentTimeMillis()-startTime;
         startTime= System.currentTimeMillis();
@@ -53,7 +64,16 @@ startTime=System.currentTimeMillis();
         }
 //        GL11.glTranslatef(position.x, position.y, position.z);
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
-        component.build(ShaderManager.anotherShaderConfig,translateMatrix);
+        //float xzDegree = Math.atan(direction.z,direction.x);
+        float angle=GL_Vector.angleXZ(this.direction , new GL_Vector(0,0,-1));
+
+        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle*3.14f/180,0);
+
+        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+
+
+       //GL_Matrix.rotateMatrix(direction.x,direction.y,direction.z);
+        component.build(ShaderManager.anotherShaderConfig,rotateMatrix);
     }
     public void render(){
 //        LogUtil.println(position.toString());

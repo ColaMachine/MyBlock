@@ -195,6 +195,8 @@ boolean handled;
                    continue;
                }
 
+                keyDown(Keyboard.getEventKey());
+
 
                 // check for exit key
            /* if (Keyboard.getEventKey() == finishedKey) {
@@ -440,6 +442,10 @@ if(!Switcher.SHADER_ENABLE)
     long lastTime=0;
     public void preUpdate(){
 
+    }
+
+    public void  keyDown(int key){
+        mouseControlCenter.keyDown(key);
     }
     public void render() {
 

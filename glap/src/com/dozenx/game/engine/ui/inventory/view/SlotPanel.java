@@ -157,7 +157,7 @@ public class SlotPanel extends HtmlObject {
     void dragStopped(ItemSlotView slot, Event evt) {
         if(dragSlot != null) {
             drop(slot, evt);
-            if(dropSlot != null && dropSlot.canDrop(dragSlot.getIconView().getItemCfg()) && dropSlot != dragSlot) {
+            if(dropSlot != null && dropSlot.canDrop(dragSlot.getIconView().getItemDefinition()) && dropSlot != dragSlot) {
               IconView dropItem = dropSlot.getIconView();
                 IconView dragItem = dragSlot.getIconView();
                 //如果是相同的元素 允许堆叠
@@ -192,11 +192,11 @@ public class SlotPanel extends HtmlObject {
             }
             dropSlot = slot;
             if(dropSlot != null) {
-                if(dragSlot.getIconView().getItemCfg()==null){
+                if(dragSlot.getIconView().getItemDefinition()==null){
                     LogUtil.println("itemcfg 不能为null");
-                    assert dragSlot.getIconView().getItemCfg()!=null;
+                    assert dragSlot.getIconView().getItemDefinition()!=null;
                 }
-                dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop(dragSlot.getIconView().getItemCfg()));
+                dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop(dragSlot.getIconView().getItemDefinition()));
             }
         }
     }

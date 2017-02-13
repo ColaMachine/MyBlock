@@ -41,11 +41,11 @@ public class Human extends LivingThing {
    // public GL_Vector oldposition=new GL_Vector();
     public final Client client;
 
-	public float camSpeedR = 5; // degrees per second
+	public float camSpeedR = 15; // degrees per second
 	public float camSpeedXZ = 2.4f; // units per second
 	public float camSpeedY = 0.1f; // units per second
 
-    HumanState currentState =new HumanState();
+
 
 
  /*   public MovementMode movementMode=MovementMode.NONE;*/
@@ -311,6 +311,7 @@ public class Human extends LivingThing {
 		WalkDir.x= ViewDir.x;
 		WalkDir.y= 0;
 		WalkDir.z= ViewDir.z;
+        GamingState.cameraChanged=true;
       /*  WalkDir = vd;
         ViewDir.x= vd.x;
         ViewDir.z = vd.z;*/

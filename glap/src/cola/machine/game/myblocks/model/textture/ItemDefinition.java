@@ -18,7 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ItemDefinition {
-
+    Block[] blocks;
+    public static HashMap<String,Block[]> map =new HashMap<>();
 
     String name;
     TextureInfo icon;
@@ -156,6 +157,14 @@ public class ItemDefinition {
         }
     }
     public void init() {
+        if(blocks!=null){
+            return;
+        }
+        this.blocks =  map.get(this.icon.imageName);
+        if(blocks!=null){
+            return;
+        }
+        map.put(this.icon.imageName,blocks);
         int height=  this.icon.img
                 .h;
         int width=  this.icon.img
@@ -212,7 +221,7 @@ public class ItemDefinition {
 
                 }
             blocks = list.toArray(new Block[list.size()]);
-
+            map.put(this.icon.imageName,blocks);
         } catch (FileNotFoundException e) {
             // VIP Auto-generated catch block
             e.printStackTrace();
@@ -282,11 +291,16 @@ public class ItemDefinition {
         BinaryUtil.toString(b);
 
     }
-    Block[] blocks;
-    public void renderShader(ShaderConfig config , GL_Matrix matrix){
+
+    public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix){
+            //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
+        /*rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -90*3.14f/180, 0, 0));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -45*3.14f/180));
+*/
+
         for (Block block : blocks) {
           //  GL11.glColor3f(block.rf(), block.bf() , block.gf());
-            block.renderShader(config,matrix);
+            block.renderShader(config,rotateMatrix);
         }
     }
     public void render(){

@@ -81,11 +81,11 @@ public class IconWidget extends Widget {
       // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
+        icon2= TextureManager.getItemDefinition(itemBean.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }
-        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
+        this.itemCfg = TextureManager.getItemDefinition(itemBean.getName());
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
@@ -100,7 +100,7 @@ public class IconWidget extends Widget {
         if(icon2==  null){
             assert icon2!=null;
         }
-        this.itemCfg = TextureManager.getItemCfg(itemBean.getName());
+        this.itemCfg = TextureManager.getItemDefinition(itemBean.getName());
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }

@@ -265,7 +265,7 @@ public class TextureManager {
                     //createGridImage(x,y,w,h,);
                 }
                 try {
-                    textureInfoMap.put(textureCfgBean.getName(), new TextureInfo(textureCfgBean.getImage(), x,
+                    textureInfoMap.put(textureCfgBean.getName().replace(" ","_"), new TextureInfo(textureCfgBean.getImage(), x,
                             y,
                             w,
                             h, textureCfgBean.getName()
@@ -357,18 +357,22 @@ public class TextureManager {
                 Shape shape = new Shape();
                 String name = (String) map.get("name");
                 shape.setName(name);
-                String front = (String) map.get("front");
-                String back = (String) map.get("back");
-                String left = (String) map.get("left");
-                String right = (String) map.get("right");
-                String top = (String) map.get("top");
-                String bottom = (String) map.get("bottom");
+
+                int shapeType = (Integer ) map.get("shapeType");
+
+                    String front = (String) map.get("front");
+                    String back = (String) map.get("back");
+                    String left = (String) map.get("left");
+                    String right = (String) map.get("right");
+                    String top = (String) map.get("top");
+                    String bottom = (String) map.get("bottom");
+
 
                 float width = MapUtil.getFloatValue(map, "width");
                 float height = MapUtil.getFloatValue(map, "height");
                 float thick = MapUtil.getFloatValue(map, "thick");
                 shape.setWidth(width);
-                shape.setHeight(height);
+                shape.setHeight(height);shape.setShapeType(shapeType);
                 shape.setThick(thick);
                 String parent = MapUtil.getStringValue(map, "parent");
                 if (!parent.equals("root")) {
@@ -392,24 +396,25 @@ public class TextureManager {
                     shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
                 }
-
-                if (!isEmpty(front)) {
-                    shape.setFront(this.getTextureInfo(front));
-                }
-                if (!isEmpty(back)) {
-                    shape.setBack(this.getTextureInfo(back));
-                }
-                if (!isEmpty(left)) {
-                    shape.setLeft(this.getTextureInfo(left));
-                }
-                if (!isEmpty(right)) {
-                    shape.setRight(this.getTextureInfo(right));
-                }
-                if (!isEmpty(top)) {
-                    shape.setTop(this.getTextureInfo(top));
-                }
-                if (!isEmpty(bottom)) {
-                    shape.setBottom(this.getTextureInfo(bottom));
+                if(shapeType==3) {
+                    if (!isEmpty(front)) {
+                        shape.setFront(this.getTextureInfo(front));
+                    }
+                    if (!isEmpty(back)) {
+                        shape.setBack(this.getTextureInfo(back));
+                    }
+                    if (!isEmpty(left)) {
+                        shape.setLeft(this.getTextureInfo(left));
+                    }
+                    if (!isEmpty(right)) {
+                        shape.setRight(this.getTextureInfo(right));
+                    }
+                    if (!isEmpty(top)) {
+                        shape.setTop(this.getTextureInfo(top));
+                    }
+                    if (!isEmpty(bottom)) {
+                        shape.setBottom(this.getTextureInfo(bottom));
+                    }
                 }
 
                 this.shapeMap.put(name, shape);

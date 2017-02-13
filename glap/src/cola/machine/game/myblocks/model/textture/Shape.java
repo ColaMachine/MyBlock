@@ -7,7 +7,16 @@ import java.util.regex.Pattern;
  * Created by luying on 16/9/12.
  */
 public class Shape {
+    public int getShapeType() {
+        return shapeType;
+    }
+
+    public void setShapeType(int shapeType) {
+        this.shapeType = shapeType;
+    }
+
     String name ;
+    int shapeType;
     TextureInfo front;
     TextureInfo back;
     TextureInfo left;

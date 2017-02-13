@@ -8,7 +8,7 @@ import com.dozenx.game.engine.command.WalkCmd;
  * Created by luying on 17/2/7.
  */
 public class WalkState extends  HumanState {
-    private LivingThing livingThing;
+    //private LivingThing livingThing;
     float speedForward;
     float speedLeft;
     float speedRight;
@@ -16,6 +16,9 @@ public class WalkState extends  HumanState {
     long forwardPressedTime;
     long leftTime;
     long backTime;
+    public WalkState(LivingThing livingThing){
+        super(livingThing);
+    }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的
     public void receive(GameCmd gameCmd){//11
         if(gameCmd instanceof WalkCmd){

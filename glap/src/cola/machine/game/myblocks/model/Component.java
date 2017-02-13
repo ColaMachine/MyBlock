@@ -221,6 +221,7 @@ this.secnum =secnum;
          translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
         rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
 
+
         if(this.itemDefinition !=null){
             this.itemDefinition.renderShader( config ,   matrix);
             // return;
@@ -529,7 +530,10 @@ this.secnum =secnum;
        // this.bottom= itemCfgBean.getIcon();
     }
     public void setShape(Shape shape){
-
+        if(shape.getShapeType()==2){
+            this.itemDefinition=TextureManager.getItemDefinition(shape.getName());
+            itemDefinition.init();
+        }
         this.id= shape.getName();
         this.front= shape.getFront();
         this.back= shape.getBack();

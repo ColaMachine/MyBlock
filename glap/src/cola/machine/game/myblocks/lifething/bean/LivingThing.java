@@ -12,6 +12,8 @@ import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.GameCmd;
+import com.dozenx.game.engine.live.state.HumanState;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -34,6 +36,64 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  * Created by luying on 16/9/16.
  */
 public class LivingThing extends GameActor{
+    public LivingThing(){
+        this.currentState = new HumanState(this);
+
+        this.id=(int)(Math.random()*1000000);
+        this.WalkDir=new  GL_Vector(0,0,-1);
+        bodyComponent.id="human_body";
+        bodyComponent.setEightFace("human_body");
+
+
+        bodyComponent.id="human_body";
+        bodyComponent.setEightFace("human_body");
+        Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        rHandComponent.setEightFace("human_hand");
+        rHandComponent.id="rHumanHand";
+        rHandComponent.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addChild(rHandComponent);
+
+        //小手
+
+        //rhand
+        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        lHandComponent.setEightFace("human_hand");
+        lHandComponent.id="lHumanHand";
+        lHandComponent.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addChild(lHandComponent);
+
+        //lleg
+        Component human_l_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        human_l_b_leg.setEightFace("human_leg");
+        human_l_b_leg.id="human_l_b_leg";
+
+        human_l_b_leg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
+        bodyComponent.addChild(human_l_b_leg);
+
+
+
+
+        //rleg
+        Component human_r_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        human_r_b_leg.setEightFace("human_leg");
+        human_r_b_leg.id="human_r_b_leg";
+        human_r_b_leg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
+        bodyComponent.addChild(human_r_b_leg);
+
+        //head
+
+        Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
+        head.setEightFace("human_head");
+
+        head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
+        bodyComponent.addChild(head);
+
+
+        changeProperty();
+
+        this.nowBlood=this.blood;
+        this.nowEnergy=this.energy;
+    }
 
     public long updateTime;
     public int id;
@@ -459,63 +519,7 @@ public class LivingThing extends GameActor{
         this.maxZ=posz+0.5f;
         position = new GL_Vector(posx, posy, posz);
     }
-    public LivingThing(){
-            this.id=(int)(Math.random()*1000000);
-        this.WalkDir=new  GL_Vector(0,0,-1);
-        bodyComponent.id="human_body";
-        bodyComponent.setEightFace("human_body");
 
-
-        bodyComponent.id="human_body";
-        bodyComponent.setEightFace("human_body");
-        Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        rHandComponent.setEightFace("human_hand");
-        rHandComponent.id="rHumanHand";
-        rHandComponent.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
-        bodyComponent.addChild(rHandComponent);
-
-        //小手
-
-        //rhand
-        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        lHandComponent.setEightFace("human_hand");
-        lHandComponent.id="lHumanHand";
-        lHandComponent.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
-        bodyComponent.addChild(lHandComponent);
-
-        //lleg
-        Component human_l_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        human_l_b_leg.setEightFace("human_leg");
-        human_l_b_leg.id="human_l_b_leg";
-
-        human_l_b_leg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
-        bodyComponent.addChild(human_l_b_leg);
-
-
-
-
-        //rleg
-        Component human_r_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        human_r_b_leg.setEightFace("human_leg");
-        human_r_b_leg.id="human_r_b_leg";
-        human_r_b_leg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
-        bodyComponent.addChild(human_r_b_leg);
-
-        //head
-
-        Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
-        head.setEightFace("human_head");
-
-        head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
-        bodyComponent.addChild(head);
-
-
-        changeProperty();
-
-        this.nowBlood=this.blood;
-        this.nowEnergy=this.energy;
-
-    }
     public boolean isPlayer =false;
 
     public void setPlayer(boolean playerFlag){
@@ -529,6 +533,11 @@ public class LivingThing extends GameActor{
             manager.clear(bodyComponent);
             manager.apply(bodyComponent,"died");
         }
+    }
+
+    final HumanState currentState ;
+    public void receive(GameCmd cmd ){
+        currentState.receive(cmd);
     }
 
 }

@@ -11,9 +11,12 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
+import com.dozenx.game.engine.command.AttackCmd;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import de.matthiasmann.twl.Event;
 import glapp.GLApp;
@@ -86,6 +89,9 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
            // human.headRotate(0, -human.camSpeedXZ * seconds*100);
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_G)) {
+
+        }
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
            // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
         }
@@ -109,11 +115,11 @@ public class MouseControlCenter {
                 Switcher.CAMERA_2_PLAYER = 0;
             }
         } if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            human.bodyRotate(0, human.camSpeedR * seconds);
+            human.bodyRotate(human.camSpeedR * seconds,0);
         }   if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             // Turn right
 
-            human.bodyRotate(0, -human.camSpeedR * seconds);
+            human.bodyRotate( -human.camSpeedR * seconds,0);
         }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             human.StrafeRight(-human.camSpeedXZ * seconds);
         }
@@ -293,9 +299,9 @@ public class MouseControlCenter {
         // camera.getViewDir().add();
         livingThingManager.chooseObject(camera.Position, viewdir);
         //livingThingManager.attack();
-       Ball ball =new Ball(this.camera.Position,viewdir,17.3f);
+       /*Ball ball =new Ball(this.camera.Position,viewdir,17.3f, TextureManager.getShape("arrow"));
 
-        AttackManager.add(ball);
+        AttackManager.add(ball);*/
         //  20);
 //        if (hitPoint != null) {
 //            // Block block=new
@@ -581,7 +587,9 @@ public class MouseControlCenter {
     }
 
     public void keyDown(int keycode) {
-
+        if (keycode == Keyboard.KEY_G) {
+            human.receive(new AttackCmd());
+        }
                                        /* if(Keyboard.isRepeatEvent()){
                                             LogUtil.println("重复按键"+Keyboard.getKeyName(keycode));
                                         }
