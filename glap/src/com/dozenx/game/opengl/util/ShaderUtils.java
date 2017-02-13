@@ -1744,7 +1744,12 @@ try {
     public static void draw3dColor(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
 
-
+        if(floatBuffer.position()>floatBuffer.limit()-100){
+            FloatBuffer  newfloatBuffer=BufferUtils.createFloatBuffer(floatBuffer.limit()+10000);
+            newfloatBuffer.put(floatBuffer);
+            config.getVao().setVertices(newfloatBuffer);
+            floatBuffer = newfloatBuffer;
+        }
         p1 =GL_Matrix.multiply(matrix,p1);
 
         p2 =GL_Matrix.multiply(matrix,p2);

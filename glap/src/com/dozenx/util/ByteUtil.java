@@ -17,6 +17,23 @@ public class ByteUtil
         return bytes;
     }
 
+    public static byte[] getBytes(byte[]... byteArrys)
+    {
+        int sum=0;
+       for(int i=0;i<byteArrys.length;i++){
+           sum += byteArrys[i].length;
+       }
+        byte[] bytes= new byte[sum];
+        int index=0;
+        for(int i=0;i<byteArrys.length;i++){
+            for(int j=0;j<byteArrys[i].length;j++){
+                bytes[index]=byteArrys[i][j];
+                index++;
+            }
+        }
+        return bytes;
+    }
+
     public static byte[] getBytes(char data)
     {
         byte[] bytes = new byte[2];

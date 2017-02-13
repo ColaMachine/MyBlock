@@ -16,6 +16,16 @@ public class InventoryController {
     InventoryBean inventoryBean =new InventoryBean();
     ToolBarBean toolBarBean =new ToolBarBean();
     Human human;
+    public boolean has(String name){
+       // if()
+        ItemBean[] itemBeans = inventoryBean.getItemBean();
+        for(int i=0;i<itemBeans.length;i++){
+            if(itemBeans[i]!=null&& itemBeans[i].getName().equals("name")){
+                return true;
+            }
+        }
+        return false;
+    }
     public void loadEquip(int slotType, ItemBean itemBean){
         if(human==null) {
             human = CoreRegistry.get(Human.class);

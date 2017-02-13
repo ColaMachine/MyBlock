@@ -259,8 +259,8 @@ public class MouseControlCenter {
 
     public void mouseLClick(int x, int y) {
         Switcher.MOUSE_CANCELBUBLE = false;
-        AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-        manager.apply(human.bodyComponent,"walkerFoward");
+    /*    AnimationManager manager = CoreRegistry.get(AnimationManager.class);
+        manager.apply(human.bodyComponent,"walkerFoward");*/
 
 //        CoreRegistry.get(Bag.class).click(x, y);
 

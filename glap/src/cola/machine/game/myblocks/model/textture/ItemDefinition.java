@@ -160,11 +160,11 @@ public class ItemDefinition {
         if(blocks!=null){
             return;
         }
-        this.blocks =  map.get(this.icon.imageName);
+        this.blocks =  map.get(this.icon.name);
         if(blocks!=null){
             return;
         }
-        map.put(this.icon.imageName,blocks);
+        map.put(this.icon.name,blocks);
         int height=  this.icon.img
                 .h;
         int width=  this.icon.img

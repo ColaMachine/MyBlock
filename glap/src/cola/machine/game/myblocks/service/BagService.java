@@ -20,7 +20,9 @@ public class BagService {
         itemEntityMap.put(5,new ItemBean("wood_pick",1));
         itemEntityMap.put(6,new ItemBean("wood_axe",1));
         itemEntityMap.put(7,new ItemBean("wood_hoe",1));
-        itemEntityMap.put(8,new ItemBean("arrow",1));
+        itemEntityMap.put(8,new ItemBean("arrow",11));
+
+        itemEntityMap.put(9,new ItemBean("arch",1));
         return itemEntityMap;
     }
 }

@@ -21,7 +21,7 @@ public class Ball  {
     GL_Vector position;
     GL_Vector direction;
    float sumDistance=0;
-    int distance=123;
+    int distance=40;
     boolean died=false;
     int width;
     float speed;
@@ -66,8 +66,9 @@ startTime=System.currentTimeMillis();
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
         //float xzDegree = Math.atan(direction.z,direction.x);
         float angle=GL_Vector.angleXZ(this.direction , new GL_Vector(0,0,-1));
+        float angleY= GL_Vector.updownAngle(direction);
 
-        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle*3.14f/180,0);
+        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(angleY-(float)(45*3.14/180),angle*3.14f/180,0);
 
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 

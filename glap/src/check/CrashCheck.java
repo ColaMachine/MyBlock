@@ -106,7 +106,8 @@ public class CrashCheck {
                 if (chunk_corner == null) {
                     livingThing.disapper();
                     GLApp.msg("the chunk_corner can't be null please debug it");
-                    System.exit(0);
+                    //System.exit(0);
+                    return false;
                 }
 
                 for (int offset_y = -1; offset_y <0; offset_y += 2) {

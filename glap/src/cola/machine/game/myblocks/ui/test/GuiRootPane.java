@@ -233,7 +233,7 @@ public class GuiRootPane extends Widget {
                             inventoryDialog.setVisible(false);
                         }else if(targetHeadDialog.isVisible()){
                             targetHeadDialog.setVisible(false);
-                            CoreRegistry.get(Human.class).target=null;
+                            CoreRegistry.get(Human.class).setTarget(null);
                         }
                     }
                 }

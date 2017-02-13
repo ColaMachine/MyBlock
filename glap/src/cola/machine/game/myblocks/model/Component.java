@@ -214,6 +214,9 @@ this.secnum =secnum;
             //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
             rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -rotateZ*3.14f/180));
         }
+        if(rotateY!=0){
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, -rotateY*3.14f/180, 0));
+        }
         if(rotateX!=0){
             rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -rotateX*3.14f/180, 0, 0));
 

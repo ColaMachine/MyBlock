@@ -10,8 +10,11 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.server.NetWorkManager;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.EquipmentCmd;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.live.state.HumanState;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -26,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
 
 import javax.vecmath.Point3f;
+import java.lang.ref.WeakReference;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
@@ -153,9 +157,21 @@ public class LivingThing extends GameActor{
     public float s = 0;
     public float nextZ = 0;
     public int limit = 0;
-    public boolean exist;
-    public LivingThing target;
-
+    public boolean exist=true;
+    private WeakReference<LivingThing> target;
+    public LivingThing getTarget(){
+        if(target==null)return null;
+        return target.get()!=null ? target.get() :null;
+    }
+    public void   finalize(){
+        LogUtil.println("回收了");
+    }
+    public void setTarget(LivingThing target){
+        if(target==null){
+            this.target=null;
+        }else
+        this.target=new WeakReference<LivingThing>(target);
+    }
     public int mark = 0;
     public
     int preY = 0;
@@ -433,7 +449,7 @@ public class LivingThing extends GameActor{
     public void update(){
              this.dropControl();
             build();
-
+this.currentState.update();
     }
     public void renderShader(){
         /*if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()==0){
@@ -527,6 +543,7 @@ public class LivingThing extends GameActor{
     }
     public void beAttack(int damage){
         this.nowBlood-=damage;
+        Document.needUpdate=true;
         if(this.nowBlood<=0){
             this.nowBlood=0;
             AnimationManager manager = CoreRegistry.get(AnimationManager.class);
@@ -535,9 +552,111 @@ public class LivingThing extends GameActor{
         }
     }
 
-    final HumanState currentState ;
+     HumanState currentState ;
     public void receive(GameCmd cmd ){
         currentState.receive(cmd);
     }
+    public void changeState(HumanState humanState){
+        if(this.currentState!=null &&this.currentState != humanState ){
+            currentState.dispose();
+            this.currentState =humanState;
+        }else{
+            this.currentState =humanState;
+        }
+    }
+    public ItemDefinition getMainWeapon(){
+        Component component = bodyComponent.findChild("rHumanHand");
+        if(component.children.size()>0){
+            Component weapon = component.children.get(0);
+          return weapon.itemDefinition;
+        }
+        return null;
+    }
 
+
+    public void addHeadEquip(ItemDefinition itemCfg)  {
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this,itemCfg);
+        NetWorkManager.push(equipMentCmd);
+        Component parent = 	bodyComponent.findChild("human_head");
+        if(itemCfg==null){
+            parent.children.remove(parent.children.size()-1);	changeProperty();
+            return;
+        }
+        Shape shape = itemCfg.getShape();
+
+        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+        component.setShape(itemCfg.getShape());
+        component.id=itemCfg.getName();
+
+        if(parent==null){
+            LogUtil.println("未找到子component");
+            System.exit(0);
+        }
+        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        parent.addChild(component);	changeProperty();
+    }
+    public void addLegEquip(ItemDefinition itemCfg)  {
+        Component parent = 	bodyComponent.findChild("human_l_b_leg");
+        if(itemCfg==null){
+            parent.children.remove(parent.children.size()-1);	changeProperty();
+            return;
+        }
+        Shape shape = itemCfg.getShape();
+
+        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+        component.setShape(itemCfg.getShape());
+        component.id=itemCfg.getName();
+
+        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+
+        //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        //parent.addConnector(connector);
+        parent.addChild(component);	changeProperty();
+    }
+    public void addBodyEquip(ItemDefinition itemCfg)  {
+        Component parent = 	bodyComponent.findChild("human_body");
+        if(itemCfg==null){
+            parent.children.remove(parent.children.size()-1);	changeProperty();
+            return;
+        }
+
+        Shape shape = itemCfg.getShape();
+
+        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+        component.setShape(itemCfg.getShape());
+        component.id=itemCfg.getName();
+
+        if(parent==null){
+            LogUtil.println("未找到子component");
+            System.exit(0);
+        }
+        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        parent.addChild(component);	changeProperty();
+    }
+
+    public void addHandEquip(ItemDefinition itemCfg)  {
+        //Shape shape = itemCfg.getShape();
+        Component parent = 	bodyComponent.findChild("rHumanHand");
+        if(itemCfg==null){
+            parent.children.clear();	changeProperty();
+            return;
+        }
+
+
+        Component component= new Component(0.01f,1,1);
+        itemCfg.init();
+        component.setItem(itemCfg);
+        component.id=itemCfg.getName();
+
+        if(parent==null){
+            LogUtil.println("未找到子component");
+            System.exit(0);
+        }
+        component.setOffset(new Point3f(this.HAND_WIDTH/2,0,this.HAND_THICK/2),new Point3f(0,0,0));
+
+        // Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
+        parent.addChild(component);
+        changeProperty();
+    }
 }

@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.animation;
 
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import java.io.*;
 import java.util.*;
@@ -23,9 +24,26 @@ public class AnimationManager {
 
     public AnimationManager(){
         this.init();
+        CoreRegistry.put(AnimationManager.class,this);
 
     }
     public void clear(Component component){
+
+        Iterator it = id2animatorMap.entrySet().iterator();
+        int  hashCode =component.hashCode();
+        while(it.hasNext()){
+            Map.Entry<String,Object> entry=(Map.Entry)it.next();
+            String id = entry.getKey();
+            if(id.startsWith(hashCode+component.id)){
+                id2animatorMap.get(id).complete=true;
+            }
+
+        }
+        if(component.children.size()>0){
+            for(int i=0;i<component.children.size();i++){
+                clear(component.children.get(i));
+            }
+        }
 
     }
     public void apply(Component component , String action){
@@ -214,18 +232,23 @@ public class AnimationManager {
                 Transform transform =new Transform();
                 keyFrame.transform=transform;
                 Pattern p=Pattern.compile("rotate([XYZ])\\((-?\\d+)deg\\)");
-                Matcher m=p.matcher(arr[1].trim());
-                while(m.find()){
-                    //LogUtil.println("总数:"+m.groupCount()+"找到一条transform value:"+m.group(1));
+
+                String[] tranformValue =arr[1].split(",");
+                for(int j=0;j<tranformValue.length;j++){
+                    Matcher m=p.matcher(tranformValue[j].trim());
+                    while(m.find()){
+                        //LogUtil.println("总数:"+m.groupCount()+"找到一条transform value:"+m.group(1));
 //                    LogUtil.println(m.group(1) + ":" + m.group(2));
-                    if (m.group(1).equals("X")) {
-                        transform.rotateX = Integer.valueOf(m.group(2));
-                    } else if (m.group(1).equals("Y")) {
-                        transform.rotateY = Integer.valueOf(m.group(2));
-                    } else if (m.group(1).equals("Z")) {
-                        transform.rotateZ = Integer.valueOf(m.group(2));
+                        if (m.group(1).equals("X")) {
+                            transform.rotateX = Integer.valueOf(m.group(2));
+                        } else if (m.group(1).equals("Y")) {
+                            transform.rotateY = Integer.valueOf(m.group(2));
+                        } else if (m.group(1).equals("Z")) {
+                            transform.rotateZ = Integer.valueOf(m.group(2));
+                        }
                     }
                 }
+
             }
         }
         return keyFrame;

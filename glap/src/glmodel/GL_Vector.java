@@ -375,6 +375,12 @@ public class GL_Vector
 		return (float)Math.acos(result);
 		//return (a.x*b.x+a.y*b.y+a.z*b.z);
 	}
+
+	public static float updownAngle(GL_Vector ViewDir){
+		double xy= Math.sqrt(ViewDir.x*ViewDir.x + ViewDir.z*ViewDir.z);
+		double jiaojiao = Math.atan(ViewDir.y/xy);
+		return (float)jiaojiao;
+	}
 	/**
 	 * GL_Vector point 点相对起始坐标的坐标
 	 * viewDir 方向

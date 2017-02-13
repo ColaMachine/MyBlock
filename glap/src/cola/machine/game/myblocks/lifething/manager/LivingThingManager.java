@@ -29,7 +29,7 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 public class LivingThingManager {
     public static List<LivingThing> livingThings = new ArrayList<>();
 
-    public LivingThing target ;
+    //public LivingThing target ;
     public static LivingThing player;
     Component bendComponent;
     public LivingThingManager(){
@@ -37,14 +37,14 @@ public class LivingThingManager {
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(1,65,-40);
         livingThings.add(livingThing);
-      /*   component =new Component(2,16,2);
+        /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
-CoreRegistry.put(LivingThingManager.class,this);
-       // Thread thread = new Thread(behaviorManager);
+        CoreRegistry.put(LivingThingManager.class,this);
+        // Thread thread = new Thread(behaviorManager);
 
         //behaviorManager.run();
-    // livingThings.add(CoreRegistry.get(Human.class));
+        // livingThings.add(CoreRegistry.get(Human.class));
 
 
     }
@@ -58,7 +58,7 @@ CoreRegistry.put(LivingThingManager.class,this);
     public LivingThing getLivingThingById(int id){
 return livingThingsMap.get(id);
     }
-    public Map<Integer,LivingThing> livingThingsMap =new HashMap();
+    private Map<Integer,LivingThing> livingThingsMap =new HashMap();
 
     public void render(){
         //glUseProgram(ShaderManager.livingThingShaderConfig.getProgramId());
@@ -153,10 +153,10 @@ return livingThingsMap.get(id);
         return null;
     }*/
     public void chooseObject(LivingThing livingThing){
-       if(livingThing==null && player.target!=null){
+       if(livingThing==null && player.getTarget()!=null){
            CoreRegistry.get(HeadPanel.class).setVisible(false);
-           player.target.unSelect();
-           player.target=null;
+           player.getTarget().unSelect();
+           player.setTarget(null);
            Document.needUpdate=true;
        }
 
@@ -173,9 +173,9 @@ return livingThingsMap.get(id);
            // LogUtil.println(directionV.toString() );
            if( /*aabb.intersectRectangle(fromV,directionV)*/GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
             //   LogUtil.println("选中了");
-               this.target=livingThing;
+               //this.target=livingThing;
                livingThing.select();
-               player.target=livingThing;
+               player.setTarget(livingThing);
                CoreRegistry.get(HeadPanel.class).bind(livingThing).show();
                 return livingThing;
            }
@@ -204,6 +204,7 @@ return livingThingsMap.get(id);
             LivingThing  livingThing = livingThings.get(i);
             if(!livingThing.exist){
                this.livingThingsMap.remove(livingThing.id);
+                livingThings.remove(i);
             }
         }
       /*  long nowTime = System.currentTimeMillis();

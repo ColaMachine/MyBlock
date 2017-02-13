@@ -115,8 +115,23 @@ public class HeadPanel extends HtmlObject {
 
        // setPosition(0,0);
     }
+    @Override
+    public void update(){
+
+        if(livingThing!=null){
+
+            int width_= 100*livingThing.nowBlood/livingThing.blood;
+            if(width_ ==0)width_=1;
+            this.bloodBar.setWidth(width_);
+
+            this.blueBar.setWidth(100*livingThing.nowEnergy/livingThing.energy);
+            super.update();
+        }else{
+            this.setVisible(false);
+        }
 
 
+    }
     public HeadPanel bind(LivingThing livingThing){
         this.livingThing=livingThing;
         this.bloodBar.setWidth(100*livingThing.nowBlood/livingThing.blood);

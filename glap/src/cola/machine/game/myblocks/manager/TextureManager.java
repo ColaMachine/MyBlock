@@ -297,7 +297,7 @@ public class TextureManager {
                 item.setName(name);
                 item.setIcon(this.getTextureInfo(icon));
                 String type = (String) map.get("type");
-                if (type.equals("wear")) {
+               /* if (type.equals("wear")) {*/
                     item.setType(Constants.ICON_TYPE_WEAR);
                     String position = (String) map.get("position");
                     if (position.equals("head")) {
@@ -328,11 +328,11 @@ public class TextureManager {
                         System.out.println(shape==null);
                     }*/
                     item.setShape(shape);
-                    this.putItemDefinition(name, item);
+
                     //item.init();
-                } else if (type.equals("food")) {
+               /* } else if (type.equals("food")) {
                     item.setType(Constants.ICON_TYPE_FOOD);
-                }
+                }*/ this.putItemDefinition(name, item);
 
 
             }

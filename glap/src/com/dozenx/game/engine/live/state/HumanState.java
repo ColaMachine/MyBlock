@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.skill.AttackManager;
@@ -14,6 +15,12 @@ import glmodel.GL_Vector;
  * Created by luying on 17/2/7.
  */
 public class HumanState {
+    public void dispose(){
+
+    }
+    public void update(){
+
+    }
     protected LivingThing livingThing;
     public HumanState (LivingThing livingThing){
         this.livingThing = livingThing;
@@ -25,9 +32,19 @@ public class HumanState {
             if(livingThing.getNowSkill()){
 
             }*/
-            Ball ball =new Ball(this.livingThing.position.getClone(), GL_Vector.sub(this.livingThing.target.position,
-                    this.livingThing.position),1,TextureManager.getShape("arrow"));
-            AttackManager.add(ball);
+            if(this.livingThing!=null && this.livingThing.getTarget()!=null ) {
+                GL_Vector direction =  GL_Vector.sub(this.livingThing.getTarget().position,
+                        this.livingThing.position);
+                if(GL_Vector.length(direction)>220){
+                    LogUtil.println("超出距离");
+                    return;
+                }
+                if(livingThing.getMainWeapon()!=null && livingThing.getMainWeapon().getName().equals("arch")){
+                   this.livingThing.changeState( new HumanShootState(this.livingThing));
+
+                }
+
+            }
         }
 
     }
