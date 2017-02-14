@@ -13,7 +13,7 @@ public class BagService {
         //test
         HashMap<Integer,ItemBean> itemEntityMap = new HashMap<Integer,ItemBean>();
         itemEntityMap.put(0,new ItemBean("fur_helmet",11));
-        itemEntityMap.put(1,new ItemBean("fur_armour",1));
+        itemEntityMap.put(1,new ItemBean("fur_armor",1));
         itemEntityMap.put(2,new ItemBean("fur_pants",1));
         itemEntityMap.put(3,new ItemBean("fur_shoe",1));
         itemEntityMap.put(4,new ItemBean("wood_sword",1));

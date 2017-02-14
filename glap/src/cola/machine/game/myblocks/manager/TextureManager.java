@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
 import com.alibaba.fastjson.JSON;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 import de.matthiasmann.twl.renderer.Texture;
@@ -32,6 +33,7 @@ public class TextureManager {
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
     public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
+    public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();
     public static HashMap<String, Shape> shapeMap = new HashMap<String, Shape>();
 
     public HashMap<String, ImageInfo> ImageInfoMap = new HashMap<>();
@@ -168,6 +170,12 @@ public class TextureManager {
 
     public void putItemDefinition(String name, ItemDefinition item) {
         this.itemDefinitionMap.put(name, item);
+        try {
+            item.setItemType(ItemType.valueOf(name));
+        }catch (Exception e){
+            LogUtil.err(name);
+        }
+        itemType2ItemDefinitionMap.put(ItemType.valueOf(name),item);
         if (name.equals("fur_helmet")) {
             LogUtil.println("fur_helmet");
         }
@@ -178,6 +186,16 @@ public class TextureManager {
         ItemDefinition itemCfg = itemDefinitionMap.get(name);
         if (itemCfg == null) {
             LogUtil.println("itemCfg 为null:" + name);
+            System.exit(0);
+        }
+        return itemCfg;
+    }
+
+    public static ItemDefinition getItemDefinition(ItemType itemType) {
+
+        ItemDefinition itemCfg = itemType2ItemDefinitionMap.get(itemType);
+        if (itemCfg == null) {
+            LogUtil.println("itemCfg 为null:" + itemType);
             System.exit(0);
         }
         return itemCfg;

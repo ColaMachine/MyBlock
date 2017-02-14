@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.command;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import com.dozenx.util.ByteUtil;
 
@@ -21,13 +22,15 @@ public class EquipmentCmd implements  GameCmd{
 
     //equip |pos|item |itemId|
     public byte[] toByte(){
-
         return ByteUtil.getBytes(ByteUtil.getBytes((byte)cmdType.ordinal()),
         ByteUtil.getBytes((byte)pos.ordinal()),
-        ByteUtil.getBytes(item.getName()));
+        ByteUtil.getBytes((byte)item.getItemType().ordinal()));
     }
     public void parse(byte[] byteArray){
-        this.pos = pos.values()[ ByteUtil.getInt(byteArray)];
+        byte[] bytes = ByteUtil.getBytes(byteArray,4,4);
+        this.pos = pos.values()[ ByteUtil.getInt(bytes)];
+        bytes = ByteUtil.getBytes(byteArray,8,4);
+        this.item = TextureManager.getItemDefinition( ItemType.values()[ ByteUtil.getInt(bytes)]);
     }
     @Override
     public void delete() {

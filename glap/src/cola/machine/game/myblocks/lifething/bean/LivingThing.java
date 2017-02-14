@@ -14,6 +14,7 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.server.NetWorkManager;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.EquipPosType;
 import com.dozenx.game.engine.command.EquipmentCmd;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.live.state.HumanState;
@@ -575,8 +576,8 @@ this.currentState.update();
 
 
     public void addHeadEquip(ItemDefinition itemCfg)  {
-       // EquipmentCmd equipMentCmd = new EquipmentCmd(this,itemCfg);
-        //NetWorkManager.push(equipMentCmd);
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPosType.HEAD,itemCfg);
+        NetWorkManager.push(equipMentCmd);
         Component parent = 	bodyComponent.findChild("human_head");
         if(itemCfg==null){
             parent.children.remove(parent.children.size()-1);	changeProperty();

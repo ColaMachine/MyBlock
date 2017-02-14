@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.BinaryUtil;
 import glmodel.GL_Matrix;
@@ -20,6 +21,15 @@ import java.util.List;
 public class ItemDefinition {
     Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
+    private ItemType itemType;
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
 
     String name;
     TextureInfo icon;

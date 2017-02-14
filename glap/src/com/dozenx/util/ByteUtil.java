@@ -34,6 +34,22 @@ public class ByteUtil
         return bytes;
     }
 
+    public static byte[] getBytes(byte[]byteArry,int startIndex,int length)
+    {
+
+        byte[] bytes= new byte[length];
+        if(startIndex+length >=byteArry.length){
+            return null;
+        }
+        for(int i=startIndex;i<startIndex+length;i++){
+
+                bytes[i]=byteArry[i+startIndex];
+
+
+        }
+        return bytes;
+    }
+
     public static byte[] getBytes(char data)
     {
         byte[] bytes = new byte[2];

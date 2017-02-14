@@ -22,8 +22,8 @@ public class Client extends Thread{
          chatFrame =  CoreRegistry.get(ChatFrame.class );
     }
     Socket socket = null;
-    BufferedReader br = null;
-    PrintWriter pw = null;
+   // BufferedReader br = null;
+    //PrintWriter pw = null;
     public  void send(String message){
     if(pw!=null){
         System.out.println(" send message"+message);
@@ -58,6 +58,8 @@ public class Client extends Thread{
         }
 
     }
+    InputStream inputSteram;
+    OutputStream outputStream;
     public void run(){
         int curColor=0;
         try {
@@ -66,10 +68,12 @@ public class Client extends Thread{
             //socket.setTcpNoDelay(true);
             System.out.println("Socket=" + socket);
             //同服务器原理一样
-            br = new BufferedReader(new InputStreamReader(
-                    socket.getInputStream()));
-            pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-                    socket.getOutputStream())));
+            inputSteram = socket.getInputStream();
+           /* br = new BufferedReader(new InputStreamReader(
+                   ));*/
+             outputStream = socket.getOutputStream();
+           /* pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
+                    )));*/
             //pw.println("1");pw.flush();
            // pw.println("2");pw.flush();
            /*for(int i=0;i<10;i++){
@@ -82,8 +86,10 @@ public class Client extends Thread{
                 }
             }*/
             //pw.flush();
+            byte[] bytes=new byte[4096];
             while(true){//不断读取数据 然后压入到messages里 由界面端显示出stack
                 String str = br.readLine();
+                inputSteram.read()
                 if(str==null){
                     LogUtil.println("失去连接 正在重新连接");
                     //Thread.sleep(1000);
