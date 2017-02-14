@@ -78,7 +78,7 @@ public class TextureEditPanel extends HtmlObject{
                                 name = name.substring(0,name.length()-1);
                             }
                             TextureCfgBean textureCfgBeanList = JSON.parseObject(name, TextureCfgBean.class);
-                            edit.setText(textureCfgBeanList.getName());
+                            edit.setText(textureCfgBeanList.getName().replace(" ","_"));
                         }
                     }catch (Exception e){
                         e.printStackTrace();
@@ -108,6 +108,7 @@ public class TextureEditPanel extends HtmlObject{
             @Override
             public void run() {
                 StringBuffer sb =new StringBuffer();
+                StringBuffer enumsb =new StringBuffer();
                 for(int i=0;i<wrap.childNodes.size();i++){
                     if(   wrap.childNodes.get(i) instanceof Button ){
                         break;
@@ -122,7 +123,7 @@ public class TextureEditPanel extends HtmlObject{
                         int width =16;
                         int height =16;
                         String name =edit.getText().trim();
-
+                        enumsb.append(name).append(",");
                         sb.append("{name:").append("\"").append(name).append("\",")
                                 .append("xywh:\"").append(left).append(",").append(top).append(",").append(width).append(",").append(height).append("\",")
                                 .append("image:").append("\"items\"").append("},\n");
@@ -134,6 +135,7 @@ public class TextureEditPanel extends HtmlObject{
                 }
                 try {
                     FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("newItems.cfg").toFile(),sb.toString());
+                    FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("itemEnum.cfg").toFile(),enumsb.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

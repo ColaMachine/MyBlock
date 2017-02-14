@@ -17,6 +17,7 @@ import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.engine.command.AttackCmd;
+import com.dozenx.game.engine.command.AttackType;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import de.matthiasmann.twl.Event;
 import glapp.GLApp;
@@ -588,7 +589,7 @@ public class MouseControlCenter {
 
     public void keyDown(int keycode) {
         if (keycode == Keyboard.KEY_G) {
-            human.receive(new AttackCmd());
+            human.receive(new AttackCmd(AttackType.ARROW));
         }
                                        /* if(Keyboard.isRepeatEvent()){
                                             LogUtil.println("重复按键"+Keyboard.getKeyName(keycode));

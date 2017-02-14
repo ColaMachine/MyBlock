@@ -575,8 +575,8 @@ this.currentState.update();
 
 
     public void addHeadEquip(ItemDefinition itemCfg)  {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this,itemCfg);
-        NetWorkManager.push(equipMentCmd);
+       // EquipmentCmd equipMentCmd = new EquipmentCmd(this,itemCfg);
+        //NetWorkManager.push(equipMentCmd);
         Component parent = 	bodyComponent.findChild("human_head");
         if(itemCfg==null){
             parent.children.remove(parent.children.size()-1);	changeProperty();
