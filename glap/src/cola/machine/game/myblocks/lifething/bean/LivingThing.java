@@ -14,7 +14,7 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.server.NetWorkManager;
 import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.engine.command.EquipPosType;
+import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.command.EquipmentCmd;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.live.state.HumanState;
@@ -41,11 +41,14 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  * Created by luying on 16/9/16.
  */
 public class LivingThing extends GameActor{
+   public  float bodyAngle =0  ;
+    public float headAngle =0  ;
+    public float headAngle2 =0  ;
     public LivingThing(){
         this.currentState = new HumanState(this);
 
         this.id=(int)(Math.random()*1000000);
-        this.WalkDir=new  GL_Vector(0,0,-1);
+        this.WalkDir=new  GL_Vector(1,0,0);
         bodyComponent.id="human_body";
         bodyComponent.setEightFace("human_body");
 
@@ -338,8 +341,8 @@ public class LivingThing extends GameActor{
     private void build(){//当发生改变变的时候触发这里
         if(Switcher.SHADER_ENABLE){
             GL_Matrix translateMatrix=GL_Matrix.translateMatrix(position.x, position.y + 0.75f, position.z);
-            float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle*3.14f/180,0);
+            //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
+            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-bodyAngle+3.14f/2/**3.14f/180*/,0);
 
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
             //.getVao().getVertices()
@@ -576,7 +579,7 @@ this.currentState.update();
 
 
     public void addHeadEquip(ItemDefinition itemCfg)  {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPosType.HEAD,itemCfg);
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.HEAD,itemCfg);
         NetWorkManager.push(equipMentCmd);
         Component parent = 	bodyComponent.findChild("human_head");
         if(itemCfg==null){

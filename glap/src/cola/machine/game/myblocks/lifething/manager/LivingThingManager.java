@@ -10,6 +10,8 @@ import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
+import com.dozenx.game.engine.command.EquipmentCmd;
+import com.dozenx.game.engine.command.PosCmd;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -199,7 +201,7 @@ return livingThingsMap.get(id);
     /**
      * 通过定时线程来控制
      */
-    public void update(){
+    public void netWorkUpdate(){
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
             if(!livingThing.exist){
@@ -228,17 +230,17 @@ return livingThingsMap.get(id);
 
         }*/
         while(client.movements.size()>0 && client.movements.peek()!=null){
-            String[] msg = client.movements.pop();
-            int id = Integer.valueOf(msg[0]);
+            PosCmd cmd = (PosCmd)client.movements.pop();
+            int id = cmd.userId;
 
 
-            float x = Float.valueOf(msg[1]);
-            float y = Float.valueOf(msg[2]);
-            float z = Float.valueOf(msg[3]);
+            float x = cmd.x;//Float.valueOf(msg[1]);
+            float y = cmd.y;//Float.valueOf(msg[2]);
+            float z = cmd.z;//Float.valueOf(msg[3]);
 
-            float x1 = Float.valueOf(msg[4]);
-            float y1 = Float.valueOf(msg[5]);
-            float z1 = Float.valueOf(msg[6]);
+            float bodyAngle = cmd.bodyAngle;//Float.valueOf(msg[4]);
+            float headAngle = cmd.headAngle;//Float.valueOf(msg[5]);
+            float headAngle2 = cmd.headAngle2;//Float.valueOf(msg[6]);
 
             if(player.id == id){
                /* player.setPosition(x,y,z);
@@ -259,9 +261,47 @@ return livingThingsMap.get(id);
                 this.add(livingThing);
             }
             livingThing.setPosition(x,y,z);
-            livingThing.WalkDir.x= x1;
-            livingThing.WalkDir.y= y1;
-            livingThing.WalkDir.z= z1;
+            livingThing.bodyAngle=bodyAngle;
+            livingThing.headAngle= headAngle;
+            livingThing.headAngle2= headAngle2;
+
+        }
+
+        while(client.equips.size()>0 && client.equips.peek()!=null){
+            EquipmentCmd cmd = (EquipmentCmd)client.movements.pop();
+            int id = cmd.userId;
+
+
+            float x = cmd.x;//Float.valueOf(msg[1]);
+            float y = cmd.y;//Float.valueOf(msg[2]);
+            float z = cmd.z;//Float.valueOf(msg[3]);
+
+            float bodyAngle = cmd.bodyAngle;//Float.valueOf(msg[4]);
+            float headAngle = cmd.headAngle;//Float.valueOf(msg[5]);
+            float headAngle2 = cmd.headAngle2;//Float.valueOf(msg[6]);
+
+            if(player.id == id){
+               /* player.setPosition(x,y,z);
+                player.WalkDir.x= x1;
+                player.WalkDir.y= y1;
+                player.WalkDir.z= z1;*/
+                continue;
+            }
+            //appendRow("color"+curColor, msg);
+            LivingThing livingThing = this.getLivingThingById(id);
+            if(livingThing==null ){
+
+                livingThing =new LivingThing();livingThing.setPlayer(true);
+                livingThing.id=id;
+                // livingThing.name=name;
+                livingThing.setPosition(x,y,z);
+
+                this.add(livingThing);
+            }
+            livingThing.setPosition(x,y,z);
+            livingThing.bodyAngle=bodyAngle;
+            livingThing.headAngle= headAngle;
+            livingThing.headAngle2= headAngle2;
 
         }
        /* while(client.newborns.size()>0 && client.newborns.peek()!=null){

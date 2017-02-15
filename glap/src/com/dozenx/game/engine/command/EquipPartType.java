@@ -3,7 +3,7 @@ package com.dozenx.game.engine.command;
 /**
  * Created by dozen.zhang on 2017/2/13.
  */
-public enum EquipPosType {
+public enum EquipPartType {
     LHAND,
     RHAND,
     LLEG,

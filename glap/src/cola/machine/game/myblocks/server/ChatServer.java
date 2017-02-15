@@ -6,6 +6,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -18,8 +20,8 @@ public class ChatServer {
         server.start();
     }
     //public HashMap<Integer , Socket> socketMap =new HashMap();
-    public HashMap<Integer,Worker> workerMap =new HashMap();
-    public Stack<String> messages=new Stack<>();
+    public Map<Integer,Worker> workerMap =new Hashtable();
+    public Stack<byte[]> messages=new Stack<>();
     public Stack<String> livingThings=new Stack<>();
     public  void start(){
         ServerSocket s = null;

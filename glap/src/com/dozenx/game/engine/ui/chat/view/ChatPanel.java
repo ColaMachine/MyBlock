@@ -12,6 +12,7 @@ import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.SayCmd;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.textarea.HTMLTextAreaModel;
 import org.lwjgl.Sys;
@@ -62,7 +63,8 @@ public class ChatPanel extends HtmlObject {
                 if(key == Event.KEY_RETURN) {
 
                     // cycle through 3 different colors/font styles
-                    client.send("say:"+Constants.userName+":"+editField.getText());
+                    new SayCmd(0,Constants.userName,editField.getText());
+                    //client.send("say:"+Constants.userName+":"+editField.getText());
                     //Switcher.isChat=false;
 
                     //appendRow("color"+curColor, editField.getText());
@@ -118,18 +120,18 @@ public class ChatPanel extends HtmlObject {
     public void check(){
 
         while(client.messages.size()>0 && client.messages.peek()!=null){
-            String msg = client.messages.pop();
-            appendRow("color"+curColor, msg);
+            SayCmd  msg = (SayCmd) client.messages.pop();
+            appendRow("color"+curColor, msg.getMsg());
             Document.needUpdate=true;
         }
     }
-    public void paintWidget(Document gui){
+    /*public void paintWidget(Document gui){
         while(client.messages.size()>0 && client.messages.peek()!=null){
             String msg = client.messages.pop();
             appendRow("color"+curColor, msg);
 
         }
-    }
+    }*/
     public void setFocus(){
         this.editField.requestKeyboardFocus();
     }

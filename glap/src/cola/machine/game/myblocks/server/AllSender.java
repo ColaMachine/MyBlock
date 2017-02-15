@@ -12,17 +12,17 @@ import java.util.Stack;
  * Created by luying on 16/10/7.
  */
 public class AllSender extends Thread{
-    Stack<String> messages;
-    HashMap<Integer, Worker> workerMap;
-    public AllSender(Stack<String> messages,HashMap<Integer,Worker> workerMap){
+    Stack<byte[]> messages;
+    Map<Integer, Worker> workerMap;
+    public AllSender(Stack<byte[]> messages,Map<Integer,Worker> workerMap){
         this.messages =messages;
         this.workerMap=workerMap;
     }
     public void run(){
         while(true) {
             if (messages.size() > 0) {
-                String message = messages.peek();
-                if (message != null) {
+                byte[] bytes  = messages.peek();
+                if (bytes != null) {
                     messages.pop();
                     Iterator iter = workerMap.entrySet().iterator();
                     while (iter.hasNext()) {
@@ -33,7 +33,7 @@ public class AllSender extends Thread{
                             LogUtil.println("删除socket成功");
                             workerMap.remove(entry.getKey());
                         }else {
-                            val.send(message);
+                            val.send(bytes);
                         }
                     }
                 }

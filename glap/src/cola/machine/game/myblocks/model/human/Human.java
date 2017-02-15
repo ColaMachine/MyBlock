@@ -278,21 +278,30 @@ public class Human extends LivingThing {
 
 	public void headRotate(float leftRightDegree,float updownDegree){
 		//LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
-        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float) Math.toRadians(leftRightDegree),
+
+        headAngle+=Math.toRadians(-leftRightDegree);
+        headAngle= headAngle;
+        headAngle2+=Math.toRadians(updownDegree);
+        if(leftRightDegree!=0){
+
+            ViewDir.x = (float)Math.cos(headAngle);
+            ViewDir.z = (float)Math.sin(headAngle);
+        }
+        /*GL_Matrix M = GL_Matrix.rotateMatrix(*//*(float) Math.toRadians(updownDegree)/5,*//*0, (float) Math.toRadians(leftRightDegree),
                 0);
 
 		//计算俯角
 		double xy= Math.sqrt(ViewDir.x*ViewDir.x + ViewDir.z*ViewDir.z);
 		double jiaojiao = Math.atan(ViewDir.y/xy);
-		jiaojiao+=updownDegree/100;
-		if(jiaojiao<=Switcher.FUJIAO  )
-			jiaojiao=Switcher.FUJIAO ;
-		if(jiaojiao>=Switcher.YANGJIAO  )
-			jiaojiao=Switcher.YANGJIAO;
-		ViewDir.y =(float)(Math.tan(jiaojiao)*xy);
+		jiaojiao+=Math.toRadians(updownDegree);*/
+		if(headAngle2<=Switcher.FUJIAO  )
+            headAngle2=Switcher.FUJIAO ;
+		if(headAngle2>=Switcher.YANGJIAO  )
+            headAngle2=Switcher.YANGJIAO;
+		ViewDir.y =(float)Math.tan(headAngle2);//(float)(Math.tan(jiaojiao)*xy);
 		//ViewDir.y+=updownDegree/100;
-        GL_Vector vd = M.transform(ViewDir);
-        ViewDir = vd;
+        /*GL_Vector vd = M.transform(ViewDir);
+        ViewDir = vd;*/
 
 
 		ViewDir.normalize();
@@ -302,15 +311,18 @@ public class Human extends LivingThing {
     }
     public void bodyRotate(float leftRightDegree,float updownDegree){
 		headRotate(leftRightDegree,updownDegree);
-
-        GL_Matrix M = GL_Matrix.rotateMatrix(0, (float) Math.toRadians(leftRightDegree)/5,
-                0);
-        GL_Vector vd = M.transform(WalkDir);
-        RightVector = GL_Vector.crossProduct(vd, UpVector);
-		vd.y=0;
+        bodyAngle=headAngle;
+        //bodyAngle+=Math.toRadians(leftRightDegree);
+        /*GL_Matrix M = GL_Matrix.rotateMatrix(0, (float) Math.toRadians(leftRightDegree),
+                0);*/
+       WalkDir.x= ViewDir.x;//(float)Math.cos(bodyAngle);
+         WalkDir.z= ViewDir.z;//(float)Math.sin(bodyAngle);
+       // GL_Vector vd = M.transform(WalkDir);
+        RightVector = GL_Vector.crossProduct(WalkDir, UpVector);
+		/*vd.y=0;
 		WalkDir.x= ViewDir.x;
 		WalkDir.y= 0;
-		WalkDir.z= ViewDir.z;
+		WalkDir.z= ViewDir.z;*/
         GamingState.cameraChanged=true;
       /*  WalkDir = vd;
         ViewDir.x= vd.x;

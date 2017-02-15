@@ -6,6 +6,12 @@ package com.dozenx.game.engine.command;
 public class BaseGameCmd  implements  GameCmd{
 
     private boolean deleted;
+
+    @Override
+    public byte[] toBytes() {
+        return new byte[0];
+    }
+
     @Override
     public void delete() {
         this.deleted=true;

@@ -12,25 +12,46 @@ public class EquipmentCmd implements  GameCmd{
     private boolean deleted;
     private LivingThing livingThing;
     private ItemDefinition item;
+    private int userId;
     private CmdType cmdType = CmdType.EQUIP;
-    private EquipPosType pos;
-    public EquipmentCmd(LivingThing live, EquipPosType pos,ItemDefinition item){
+    private EquipPartType part;
+    public EquipmentCmd(byte[] bytes){
+        parse(bytes);
+    }
+    public EquipmentCmd(LivingThing live, EquipPartType pos,ItemDefinition item){
         this.livingThing =live;
         this.item = item;
-        this.pos =pos;
+        this.part =pos;
+        this.userId =livingThing.id;
+
     }
 
-    //equip |pos|item |itemId|
-    public byte[] toByte(){
-        return ByteUtil.getBytes(ByteUtil.getBytes((byte)cmdType.ordinal()),
-        ByteUtil.getBytes((byte)pos.ordinal()),
-        ByteUtil.getBytes((byte)item.getItemType().ordinal()));
+    //equip 4 |userId|part 2|item |itemId|
+    public byte[] toBytes(){
+        return /*ByteUtil.getBytes(ByteUtil.getBytes((byte)cmdType.ordinal()),
+        ByteUtil.getBytes((byte)part.ordinal()),
+        ByteUtil.getBytes((byte)item.getItemType().ordinal()));*/
+        new byte[]{(byte)cmdType.ordinal(),(byte)part.ordinal(),(byte)item.getItemType().ordinal()};
+        byte[] userIdByteAry = ByteUtil.getBytes(userId);
+        byte[] bytes =new bytes[8];
+        bytes[0]= (byte)cmdType.ordinal();
+        bytes[1]= userIdByteAry[0];
+        bytes[2]= userIdByteAry[1];
+        bytes[3]= userIdByteAry[2];
+        bytes[4]= userIdByteAry[3];
+        bytes[5]= (byte)part.ordinal();
+        bytes[6]= (byte)item.getItemType().ordinal();
+       // byte[] userIdByteAry = ByteUtil.getBytes(userId);
+       // bytes[7]=
+       // ByteUtil.getBytes();
+        return bytes;
     }
-    public void parse(byte[] byteArray){
-        byte[] bytes = ByteUtil.getBytes(byteArray,4,4);
-        this.pos = pos.values()[ ByteUtil.getInt(bytes)];
-        bytes = ByteUtil.getBytes(byteArray,8,4);
-        this.item = TextureManager.getItemDefinition( ItemType.values()[ ByteUtil.getInt(bytes)]);
+    public void parse(byte[] bytes){
+       // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
+        this.part = EquipPartType.values()[bytes[1]];
+        this.item = TextureManager.getItemDefinition( ItemType.values()[ bytes[1]]);
+        //bytes = ByteUtil.getBytes(byteArray,8,4);
+      //  this.item = TextureManager.getItemDefinition( ItemType.values()[ ByteUtil.getInt(bytes)]);
     }
     @Override
     public void delete() {

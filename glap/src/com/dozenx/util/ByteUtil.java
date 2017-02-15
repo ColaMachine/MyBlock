@@ -9,6 +9,13 @@ import java.nio.charset.Charset;
 
 public class ByteUtil
 {
+    public static byte[] copy(byte[] bytes,int start,int length){
+        byte[] newBytes =new byte[length];
+        for(int i=0;i<length;i++){
+            newBytes[i]=bytes[start+i];
+        }
+        return newBytes;
+    }
     public static byte[] getBytes(short data)
     {
         byte[] bytes = new byte[2];
@@ -41,7 +48,7 @@ public class ByteUtil
         if(startIndex+length >=byteArry.length){
             return null;
         }
-        for(int i=startIndex;i<startIndex+length;i++){
+        for(int i=0;i<length;i++){
 
                 bytes[i]=byteArry[i+startIndex];
 

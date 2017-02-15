@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.server;
 
 import cola.machine.game.myblocks.log.LogUtil;
+import com.dozenx.util.ByteUtil;
 
 import java.io.*;
 import java.net.Socket;
@@ -19,27 +20,35 @@ public class Worker extends Thread {
         this.end=true;
 
     }
-    Stack<String> messages;
-    public Worker(Socket socket,Stack<String> messages){
+    Stack<byte[]> messages;
+    public Worker(Socket socket,Stack<byte[]> messages){
         this.ip=socket.getInetAddress().getHostAddress();
         this.socket =socket;
         this.messages=messages;
     }
-    BufferedReader br = null;
-    PrintWriter pw = null;
-    public void send(String message){
+    InputStream br = null;
+    OutputStream pw = null;
+    public void send(byte[] bytes){
         if(pw!=null)
-        pw.println(message);
+            try {
+                pw.write(bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        //pw.println(message);
     }
     public void run(){
-
+        byte[] bytes =new byte[100];
         try {
-            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            br =  socket.getInputStream();
             //用于发送返回信息,可以不需要装饰这么多io流使用缓冲流时发送数据要注意调用.flush()方法
-            pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+            pw = socket.getOutputStream();
             while (true) {
-                String str = br.readLine();
-                if(str==null){
+               int n = br.read(bytes);
+                if(bytes[n-1]!='\n'){
+                    LogUtil.err("socket read end is not \n:"+n);
+                }
+                if(n==0){
                     LogUtil.println("isOutputShutdown"+socket.isOutputShutdown());
                     LogUtil.println("isClosed"+socket.isClosed());
                     LogUtil.println("isConnected"+socket.isConnected());
@@ -50,12 +59,14 @@ public class Worker extends Thread {
 
 
                 }
-                if("END".equals(str)){
+               /* if("END".equals(str)){
                     break;
-                }
+                }*/
+               /* while(){
 
-                messages.push(str);
-                System.out.println("Client Socket Message:"+str);
+                }*/
+                messages.push(ByteUtil.copy(bytes,0,n));
+               // System.out.println("Client Socket Message:"+str);
                 //Thread.sleep(1000);
                 //pw.println("Message Received");
             }

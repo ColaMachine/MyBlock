@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
+import com.dozenx.game.engine.command.PosCmd;
 
 import java.io.*;
 import java.net.Socket;
@@ -28,7 +29,7 @@ public class SynchronTask extends Thread{
         while (true) {
             try {
 
-            livingThingManager.update();
+            livingThingManager.netWorkUpdate();
 
                //Thread.sleep(100);
 
@@ -37,7 +38,7 @@ public class SynchronTask extends Thread{
                     String message = "move:" + LivingThingManager.player.id + "," + LivingThingManager.player.position.x
                             + "," + LivingThingManager.player.position.y
                             + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;
-                    client.send(message);
+                    client.send(new PosCmd(LivingThingManager.player));
                 }
                 Thread.sleep(100);
             } catch (InterruptedException e) {
