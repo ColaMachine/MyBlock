@@ -10,6 +10,7 @@ import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.inventory.HeadDialog;
+import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.command.EquipmentCmd;
 import com.dozenx.game.engine.command.PosCmd;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
@@ -58,7 +59,10 @@ public class LivingThingManager {
         livingThingsMap.put(livingThing.id,livingThing);
     }
     public LivingThing getLivingThingById(int id){
-return livingThingsMap.get(id);
+        if(player.id == id){
+            return player;
+        }
+        return livingThingsMap.get(id);
     }
     private Map<Integer,LivingThing> livingThingsMap =new HashMap();
 
@@ -268,40 +272,29 @@ return livingThingsMap.get(id);
         }
 
         while(client.equips.size()>0 && client.equips.peek()!=null){
-            EquipmentCmd cmd = (EquipmentCmd)client.movements.pop();
-            int id = cmd.userId;
-
-
-            float x = cmd.x;//Float.valueOf(msg[1]);
-            float y = cmd.y;//Float.valueOf(msg[2]);
-            float z = cmd.z;//Float.valueOf(msg[3]);
-
-            float bodyAngle = cmd.bodyAngle;//Float.valueOf(msg[4]);
-            float headAngle = cmd.headAngle;//Float.valueOf(msg[5]);
-            float headAngle2 = cmd.headAngle2;//Float.valueOf(msg[6]);
-
-            if(player.id == id){
-               /* player.setPosition(x,y,z);
-                player.WalkDir.x= x1;
-                player.WalkDir.y= y1;
-                player.WalkDir.z= z1;*/
+            EquipmentCmd cmd = (EquipmentCmd)client.equips.pop();
+            int id = cmd.getUserId();
+            /*if(player.id == id){
                 continue;
-            }
+            }*/
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
-            if(livingThing==null ){
-
-                livingThing =new LivingThing();livingThing.setPlayer(true);
-                livingThing.id=id;
-                // livingThing.name=name;
-                livingThing.setPosition(x,y,z);
-
-                this.add(livingThing);
+            if(livingThing!=null ){
+                if(cmd.getPart()== EquipPartType.BODY){
+                    livingThing.addBodyEquip(cmd.getItem());
+                }else if(cmd.getPart()== EquipPartType.HEAD){
+                    livingThing.addHeadEquip(cmd.getItem());
+                }else if(cmd.getPart()== EquipPartType.HAND){
+                    livingThing.addHandEquip(cmd.getItem());
+                }else if(cmd.getPart()== EquipPartType.LEG){
+                    livingThing.addLegEquip(cmd.getItem());
+                }else if(cmd.getPart()== EquipPartType.SHOE){
+                    livingThing.addShoeEquip(cmd.getItem());
+                }
             }
-            livingThing.setPosition(x,y,z);
-            livingThing.bodyAngle=bodyAngle;
-            livingThing.headAngle= headAngle;
-            livingThing.headAngle2= headAngle2;
+
+
+
 
         }
        /* while(client.newborns.size()>0 && client.newborns.peek()!=null){

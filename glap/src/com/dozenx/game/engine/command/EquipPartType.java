@@ -6,6 +6,9 @@ package com.dozenx.game.engine.command;
 public enum EquipPartType {
     LHAND,
     RHAND,
+    LEG,
+    SHOE,
+
     LLEG,
     RLEG,
     BODY,

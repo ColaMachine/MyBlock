@@ -38,14 +38,14 @@ public class PosCmd implements  GameCmd{
        // this.part =pos;
     }
 
-    //equip 4 |part 2|item |itemId|
+
     public byte[] toBytes(){
         //ByteBuffer byteBuffer = BufferUtils.createByteBuffer(10);
         //byteBuffer.putFloat();
         return /*ByteUtil.getBytes(ByteUtil.getBytes((byte)cmdType.ordinal()),
         ByteUtil.getBytes((byte)part.ordinal()),
         ByteUtil.getBytes((byte)item.getItemType().ordinal()));*/
-                ByteUtil.getBytes(new byte[]{(byte)cmdType.ordinal()},ByteUtil.getBytes(x),ByteUtil.getBytes(y),ByteUtil.getBytes(z),ByteUtil.getBytes(bodyAngle),
+                ByteUtil.getBytes(new byte[]{(byte)cmdType.ordinal()},ByteUtil.getBytes(userId),ByteUtil.getBytes(x),ByteUtil.getBytes(y),ByteUtil.getBytes(z),ByteUtil.getBytes(bodyAngle),
                         ByteUtil.getBytes(headAngle),
                         ByteUtil.getBytes(headAngle2));
        // new byte[]{(byte)cmdType.ordinal(),(byte)part.ordinal(),(byte)item.getItemType().ordinal()};
@@ -53,13 +53,14 @@ public class PosCmd implements  GameCmd{
     public void parse(byte[] bytes){
        // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
         //this.part = EquipPartType.values()[bytes[1]];
-        this.x = ByteUtil.getFloat(ByteUtil.getBytes(bytes,1,4));
-        this.y = ByteUtil.getFloat(ByteUtil.getBytes(bytes,5,4));
-        this.z = ByteUtil.getFloat(ByteUtil.getBytes(bytes,9,4));
-        this.bodyAngle = ByteUtil.getFloat(ByteUtil.getBytes(bytes,13,4));
-        this.headAngle = ByteUtil.getFloat(ByteUtil.getBytes(bytes,17,4));
-        this.headAngle2 = ByteUtil.getFloat(ByteUtil.getBytes(bytes,21,4));
-        this.userId = ByteUtil.getInt(ByteUtil.getBytes(bytes, 25, 4));
+        this.userId = ByteUtil.getInt(ByteUtil.getBytes(bytes,1,4));
+        this.x = ByteUtil.getFloat(ByteUtil.getBytes(bytes,5,4));
+        this.y = ByteUtil.getFloat(ByteUtil.getBytes(bytes,9,4));
+        this.z = ByteUtil.getFloat(ByteUtil.getBytes(bytes,13,4));
+        this.bodyAngle = ByteUtil.getFloat(ByteUtil.getBytes(bytes,17,4));
+        this.headAngle = ByteUtil.getFloat(ByteUtil.getBytes(bytes,21,4));
+        this.headAngle2 = ByteUtil.getFloat(ByteUtil.getBytes(bytes,25,4));
+
         if(userId==0) LogUtil.err("userId shold not be 0");
        // this.item = TextureManager.getItemDefinition( ItemType.values()[ bytes[1]]);
         //bytes = ByteUtil.getBytes(byteArray,8,4);

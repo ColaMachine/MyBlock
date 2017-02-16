@@ -76,7 +76,7 @@ public class Client extends Thread{
         int curColor=0;
         try {
             //客户端socket指定服务器的地址和端口号
-            socket = new Socket("127.0.0.1", Constants.serverPort);
+            socket = new Socket("192.168.3.15", Constants.serverPort);
             //socket.setTcpNoDelay(true);
             System.out.println("Socket=" + socket);
             //同服务器原理一样

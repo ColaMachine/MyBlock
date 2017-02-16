@@ -11,6 +11,7 @@ import java.util.Stack;
  * Created by luying on 16/10/7.
  */
 public class Worker extends Thread {
+
     private Socket socket;
     public boolean end=false;
     public String ip;
@@ -22,7 +23,9 @@ public class Worker extends Thread {
     }
     Stack<byte[]> messages;
     public Worker(Socket socket,Stack<byte[]> messages){
+
         this.ip=socket.getInetAddress().getHostAddress();
+        LogUtil.println("连接服务器"+this.ip);
         this.socket =socket;
         this.messages=messages;
     }

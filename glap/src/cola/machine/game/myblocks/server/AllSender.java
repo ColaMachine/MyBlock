@@ -3,10 +3,7 @@ package cola.machine.game.myblocks.server;
 import cola.machine.game.myblocks.log.LogUtil;
 
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by luying on 16/10/7.
@@ -18,6 +15,7 @@ public class AllSender extends Thread{
         this.messages =messages;
         this.workerMap=workerMap;
     }
+ Queue<Integer> waitDelList =new LinkedList<>();
     public void run(){
         while(true) {
             if (messages.size() > 0) {
@@ -26,15 +24,26 @@ public class AllSender extends Thread{
                     messages.pop();
                     Iterator iter = workerMap.entrySet().iterator();
                     while (iter.hasNext()) {
-                        Map.Entry entry = (Map.Entry) iter.next();
+                        Map.Entry<Integer,Worker> entry = (Map.Entry) iter.next();
 
                         Worker val = (Worker) entry.getValue();
                         if(val.end || !val.isAlive()){
                             LogUtil.println("删除socket成功");
-                            workerMap.remove(entry.getKey());
+                            val.interrupt();   val.end=true;
+                            waitDelList.offer(entry.getKey());
+
+
+
+
+
                         }else {
                             val.send(bytes);
                         }
+                    }
+
+                    while(waitDelList.size()>0&& waitDelList.peek()!=null){
+                        Integer id = waitDelList.poll();
+                        workerMap.remove(id);
                     }
                 }
 

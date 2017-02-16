@@ -11,6 +11,7 @@ import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.server.NetWorkManager;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -577,17 +578,75 @@ this.currentState.update();
         return null;
     }
 
+    public void addBodyEquipStart(ItemDefinition itemCfg) {
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.BODY, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+    public void addLegEquipStart(ItemDefinition itemCfg) {
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.LEG, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+
+    public void addHandEquipStart(ItemDefinition itemCfg) {
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.HAND, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+
+    public void addShoeEquipStart(ItemDefinition itemCfg) {
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.SHOE, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+    public void addHeadEquipStart(ItemDefinition itemCfg) {
+        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.HEAD, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
 
     public void addHeadEquip(ItemDefinition itemCfg)  {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.HEAD,itemCfg);
-        NetWorkManager.push(equipMentCmd);
+
         Component parent = 	bodyComponent.findChild("human_head");
-        if(itemCfg==null){
+        if(itemCfg==null ){
+            if( parent.children.size()== 0 ){
+                LogUtil.println("不能为空的");
+                return;
+            }
             parent.children.remove(parent.children.size()-1);	changeProperty();
             return;
         }
         Shape shape = itemCfg.getShape();
 
+        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
+        component.setShape(itemCfg.getShape());
+        component.id=itemCfg.getName();
+
+        if(parent==null){
+            LogUtil.println("未找到子component");
+            System.exit(0);
+        }
+        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+        parent.addChild(component);	changeProperty();
+    }
+
+    public void addShoeEquip(ItemDefinition itemCfg)  {
+
+        Component parent = 	bodyComponent.findChild("human_head");
+        if(itemCfg==null ){
+            if( parent.children.size()== 0 ){
+                LogUtil.println("不能为空的");
+                return;
+            }
+            parent.children.remove(parent.children.size()-1);	changeProperty();
+            return;
+        }
+        Shape shape = itemCfg.getShape();
+        if(shape == null){
+            LogUtil.err("load shape from itemDefinition:"+itemCfg.getName()+"failed");
+        }
         Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
         component.setShape(itemCfg.getShape());
         component.id=itemCfg.getName();

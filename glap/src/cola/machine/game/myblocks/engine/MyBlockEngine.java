@@ -450,7 +450,7 @@ public class MyBlockEngine extends GLApp {
                 exit();
             }
            worldRenderer.render();Util.checkGLError();
-           livingThingManager.update();Util.checkGLError();
+           livingThingManager.netWorkUpdate();Util.checkGLError();
             livingThingManager.render();Util.checkGLError();
 
             AttackManager.update();Util.checkGLError();

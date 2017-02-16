@@ -400,7 +400,7 @@ if(!Switcher.SHADER_ENABLE)
         } catch (Exception e) {
             e.printStackTrace();
         }OpenglUtils.checkGLError();
-        livingThingManager.update();
+       // livingThingManager.netWorkUpdate();;
         if (!Switcher.IS_GOD)
             if (/*Math.random()*/ 1> 0.5) {
                 //dcc.check(human);

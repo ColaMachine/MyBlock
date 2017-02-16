@@ -5,6 +5,9 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.server.NetWorkManager;
+import com.dozenx.game.engine.command.EquipPartType;
+import com.dozenx.game.engine.command.EquipmentCmd;
 import com.dozenx.game.engine.ui.inventory.bean.InventoryBean;
 import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
@@ -37,31 +40,41 @@ public class InventoryController {
                 this.setBackgroundImage(new Image(IconView.getIcon2()));
             }*/
 
+
             if (slotType == Constants.SLOT_TYPE_HEAD) {
-                human.addHeadEquip(itemDef);
+
+                human.addHeadEquipStart(itemDef);
             }
             if (slotType == Constants.SLOT_TYPE_LEG) {
-                human.addLegEquip(itemDef);
+                human.addLegEquipStart(itemDef);
             }
             if (slotType== Constants.SLOT_TYPE_BODY) {
-                human.addBodyEquip(itemDef);
+                human.addBodyEquipStart(itemDef);
             }
             if (slotType == Constants.SLOT_TYPE_HAND) {
-                human.addHandEquip(itemDef);
+                human.addHandEquipStart(itemDef);
+
+            } if (slotType == Constants.SLOT_TYPE_FOOT) {
+                human.addShoeEquipStart(itemDef);
+
             }
         }else{//卸下装备
             if (slotType == Constants.SLOT_TYPE_HEAD) {
-                human.addHeadEquip(null);
+                human.addHeadEquipStart(null);
             }
             if (slotType == Constants.SLOT_TYPE_LEG) {
-                human.addLegEquip(null);
+                human.addLegEquipStart(null);
 
             }
             if (slotType == Constants.SLOT_TYPE_BODY) {
-                human.addBodyEquip(null);
+                human.addBodyEquipStart(null);
             }
             if (slotType == Constants.SLOT_TYPE_HAND) {
-                human.addHandEquip(null);
+                human.addHandEquipStart(null);
+            }
+            if (slotType == Constants.SLOT_TYPE_FOOT) {
+                human.addShoeEquipStart(null);
+
             }
         }
 
