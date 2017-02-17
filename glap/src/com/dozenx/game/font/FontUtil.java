@@ -322,7 +322,7 @@ public class FontUtil {
 //shadowGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         FontRenderContext frc = g2.getFontRenderContext();
         TextLayout tl = new TextLayout(car+"", new Font("宋体", Font.PLAIN,fontSize), frc);
-        Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, y+30));
+        Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, y+28));
         g2.setColor(Color.WHITE);
         g2.draw(sha);
         g2.setColor(Color.WHITE);

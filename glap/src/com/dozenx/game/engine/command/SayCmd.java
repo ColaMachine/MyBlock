@@ -40,7 +40,7 @@ public class SayCmd implements  GameCmd{
     String msg;
     private CmdType cmdType = CmdType.SAY;
     private EquipPartType part;
-    // userId | username :msg|
+    // userId | length| username:msg|
     public SayCmd(byte[] bytes){
         parse(bytes);
     }
@@ -51,18 +51,23 @@ public class SayCmd implements  GameCmd{
        // this.part =pos;
     }
 
-    //equip 4 |part 2|item |itemId|
+
     public byte[] toBytes(){
         try {
-            return msg.getBytes("utf-8");
+            byte[] msgByteAry = msg.getBytes("utf-8");
+
+            int length =msgByteAry.length;
+            return ByteUtil.getBytes(ByteUtil.getBytes((byte)cmdType.ordinal()),ByteUtil.getBytes(length), msgByteAry);
+             //msg.getBytes("utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return null;
     }
     public void parse(byte[] bytes){
-
-        this.msg= new String(ByteUtil.getBytes(bytes,1,bytes.length-1));
+        this.userId = (int)bytes[0];
+        int length =ByteUtil.getInt( ByteUtil.getBytes(bytes,1,4));
+        this.msg= new String(ByteUtil.getBytes(bytes,5,length));//最后一个应该是结束符号
        // this.item = TextureManager.getItemDefinition( ItemType.values()[ bytes[1]]);
         //bytes = ByteUtil.getBytes(byteArray,8,4);
       //  this.item = TextureManager.getItemDefinition( ItemType.values()[ ByteUtil.getInt(bytes)]);

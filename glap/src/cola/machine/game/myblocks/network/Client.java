@@ -108,18 +108,22 @@ public class Client extends Thread{
                     //Thread.sleep(1000);
                     continue;
                 }*/
-                if(n==0){
-                    LogUtil.err("读取的数据为0");
-                    //Thread.sleep(1000);
-                    //continue;
-                }
-                if(bytes[0]== (byte)CmdType.EQUIP.ordinal()){//equip
-                    equips.push(new EquipmentCmd(bytes));
+                try {
+                    if (n == 0) {
+                        LogUtil.err("读取的数据为0");
+                        //Thread.sleep(1000);
+                        //continue;
+                    }
+                    if (bytes[0] == (byte) CmdType.EQUIP.ordinal()) {//equip
+                        equips.push(new EquipmentCmd(bytes));
 
-                }else if(bytes[0]== (byte)CmdType.POS.ordinal()){
-                    movements.push(new PosCmd(bytes));
-                }else if(bytes[0]== (byte)CmdType.POS.ordinal()){
-                    messages.push(new SayCmd(bytes));
+                    } else if (bytes[0] == (byte) CmdType.POS.ordinal()) {
+                        movements.push(new PosCmd(bytes));
+                    } else if (bytes[0] == (byte) CmdType.SAY.ordinal()) {
+                        messages.push(new SayCmd(bytes));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
                /* if(str.startsWith("say:")) {
                     messages.push(str.substring(4));

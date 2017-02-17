@@ -14,13 +14,13 @@ import glapp.GLApp;
 import glapp.GLImage;
 
 import java.io.File;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
 import org.lwjgl.opengl.Util;
 import com.dozenx.util.MapUtil;
+import sun.rmi.runtime.Log;
 
 
 /**
@@ -253,14 +253,18 @@ public class TextureManager {
     public void loadImage() throws Exception {
         Util.checkGLError();
         try {
-            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/image.cfg").toString());
-            LogUtil.println("homepath:" + PathManager.getInstance().getHomePath());
-            List<ImageInfo> imageInfoList = JSON.parseArray(json, ImageInfo.class);
-            for (int i = 0; i < imageInfoList.size(); i++) {
-                ImageInfo imageInfo = imageInfoList.get(i);
-                this.putImage(imageInfo.getName(), imageInfo.getUri());
+            List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/image").toString());
+            for(File file : fileList){
+                String json = FileUtil.readFile2Str(file);
+                LogUtil.println("homepath:" + PathManager.getInstance().getHomePath());
+                List<ImageInfo> imageInfoList = JSON.parseArray(json, ImageInfo.class);
+                for (int i = 0; i < imageInfoList.size(); i++) {
+                    ImageInfo imageInfo = imageInfoList.get(i);
+                    this.putImage(imageInfo.getName(), imageInfo.getUri());
 
+                }
             }
+
 
         } catch (Exception e) {
             throw new Exception("Failed to load config", e);
@@ -270,7 +274,10 @@ public class TextureManager {
     public void loadTexture() throws Exception {
 
         try {
-            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/texture.cfg").toString());
+            List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/texture").toString());
+            for(File file : fileList){
+                String json = FileUtil.readFile2Str(file);
+
             List<TextureCfgBean> textureCfgBeanList = JSON.parseArray(json, TextureCfgBean.class);
             for (int i = 0; i < textureCfgBeanList.size(); i++) {
                 TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
@@ -283,11 +290,11 @@ public class TextureManager {
                 int w = Integer.valueOf(ary[2].trim());
                 int h = Integer.valueOf(ary[3].trim());
                 //int hegihtAry
-                if(StringUtil.isNotEmpty(splitx)){
+                if (StringUtil.isNotEmpty(splitx)) {
                     //createGridImage(x,y,w,h,);
                 }
                 try {
-                    textureInfoMap.put(textureCfgBean.getName().replace(" ","_"), new TextureInfo(textureCfgBean.getImage(), x,
+                    textureInfoMap.put(textureCfgBean.getName().replace(" ", "_"), new TextureInfo(textureCfgBean.getImage(), x,
                             y,
                             w,
                             h, textureCfgBean.getName()
@@ -296,7 +303,7 @@ public class TextureManager {
                     e.printStackTrace();
                     System.exit(0);
                 }
-
+            }
             }
 
         } catch (Exception e) {
@@ -308,17 +315,20 @@ public class TextureManager {
     public void loadItem() throws Exception {
 
         try {
-            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/item.cfg").toString());
-            List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
-            for (int i = 0; i < textureCfgBeanList.size(); i++) {
-                HashMap map = textureCfgBeanList.get(i);
-                ItemDefinition item = new ItemDefinition();
-                String name = (String) map.get("name");
 
-                String icon = (String) map.get("icon");
-                item.setName(name);
-                item.setIcon(this.getTextureInfo(icon));
-                String type = (String) map.get("type");
+            List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
+            for(File file : fileList) {
+                String json = FileUtil.readFile2Str(file);
+                List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
+                for (int i = 0; i < textureCfgBeanList.size(); i++) {
+                    HashMap map = textureCfgBeanList.get(i);
+                    ItemDefinition item = new ItemDefinition();
+                    String name = (String) map.get("name");
+
+                    String icon = (String) map.get("icon");
+                    item.setName(name);
+                    item.setIcon(this.getTextureInfo(icon));
+                    String type = (String) map.get("type");
                /* if (type.equals("wear")) {*/
                     item.setType(Constants.ICON_TYPE_WEAR);
                     String position = (String) map.get("position");
@@ -354,11 +364,12 @@ public class TextureManager {
                     //item.init();
                /* } else if (type.equals("food")) {
                     item.setType(Constants.ICON_TYPE_FOOD);
-                }*/ this.putItemDefinition(name, item);
+                }*/
+                    this.putItemDefinition(name, item);
 
 
+                }
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -371,17 +382,30 @@ public class TextureManager {
     public void loadShape() throws Exception {
 
         try {
-            String json = FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("config/shape.cfg").toString());
-            List<HashMap> list = JSON.parseArray(json, HashMap.class);
-            for (int i = 0; i < list.size(); i++) {
+            List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/shape").toString());
+            for(File file : fileList) {
+                String json = FileUtil.readFile2Str(file);
+                List<HashMap> list;
+                try {   LogUtil.println(json.substring(3616,3699));
+                  list = JSON.parseArray(json, HashMap.class);
 
-                HashMap map = list.get(i);
-                Shape shape = new Shape();
-                String name = (String) map.get("name");
-                shape.setName(name);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    LogUtil.err("load "+file.toPath()+" error ");
+                    return ;
+                }
+                for (int i = 0; i < list.size(); i++) {
 
-                int shapeType = (Integer ) map.get("shapeType");
+                    HashMap map = list.get(i);
+                    Shape shape = new Shape();
+                    String name = (String) map.get("name");
+                    shape.setName(name);
 
+                    int shapeType =
+                    MapUtil.getIntValue(map,"shapeType");
+                    if(shapeType!=2 && shapeType!=3){
+                        LogUtil.err("shaperType is error ");
+                    }
                     String front = (String) map.get("front");
                     String back = (String) map.get("back");
                     String left = (String) map.get("left");
@@ -390,59 +414,60 @@ public class TextureManager {
                     String bottom = (String) map.get("bottom");
 
 
-                float width = MapUtil.getFloatValue(map, "width");
-                float height = MapUtil.getFloatValue(map, "height");
-                float thick = MapUtil.getFloatValue(map, "thick");
-                shape.setWidth(width);
-                shape.setHeight(height);shape.setShapeType(shapeType);
-                shape.setThick(thick);
-                String parent = MapUtil.getStringValue(map, "parent");
-                if (!parent.equals("root")) {
-                    String p_posi_xStr = MapUtil.getStringValue(map, "p_posi_x");
-                    String p_posi_yStr = MapUtil.getStringValue(map, "p_posi_y");
-                    String p_posi_zStr = MapUtil.getStringValue(map, "p_posi_z");
+                    float width = MapUtil.getFloatValue(map, "width");
+                    float height = MapUtil.getFloatValue(map, "height");
+                    float thick = MapUtil.getFloatValue(map, "thick");
+                    shape.setWidth(width);
+                    shape.setHeight(height);
+                    shape.setShapeType(shapeType);
+                    shape.setThick(thick);
+                    String parent = MapUtil.getStringValue(map, "parent");
+                    if (!parent.equals("root")) {
+                        String p_posi_xStr = MapUtil.getStringValue(map, "p_posi_x");
+                        String p_posi_yStr = MapUtil.getStringValue(map, "p_posi_y");
+                        String p_posi_zStr = MapUtil.getStringValue(map, "p_posi_z");
 
-                    Shape parentShape = this.getShape(parent);
+                        Shape parentShape = this.getShape(parent);
 
-                    // String c_posi_xStr =  MapUtil.getStringValue(map,"c_posi_x");
+                        // String c_posi_xStr =  MapUtil.getStringValue(map,"c_posi_x");
 
-                    shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                        shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                    //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
-                    shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                        //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
+                        shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                    shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                        shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                    shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                    shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                    shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                        shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                        shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                        shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+
+                    }
+                    if (shapeType == 3) {
+                        if (!isEmpty(front)) {
+                            shape.setFront(this.getTextureInfo(front));
+                        }
+                        if (!isEmpty(back)) {
+                            shape.setBack(this.getTextureInfo(back));
+                        }
+                        if (!isEmpty(left)) {
+                            shape.setLeft(this.getTextureInfo(left));
+                        }
+                        if (!isEmpty(right)) {
+                            shape.setRight(this.getTextureInfo(right));
+                        }
+                        if (!isEmpty(top)) {
+                            shape.setTop(this.getTextureInfo(top));
+                        }
+                        if (!isEmpty(bottom)) {
+                            shape.setBottom(this.getTextureInfo(bottom));
+                        }
+                    }
+
+                    this.shapeMap.put(name, shape);
 
                 }
-                if(shapeType==3) {
-                    if (!isEmpty(front)) {
-                        shape.setFront(this.getTextureInfo(front));
-                    }
-                    if (!isEmpty(back)) {
-                        shape.setBack(this.getTextureInfo(back));
-                    }
-                    if (!isEmpty(left)) {
-                        shape.setLeft(this.getTextureInfo(left));
-                    }
-                    if (!isEmpty(right)) {
-                        shape.setRight(this.getTextureInfo(right));
-                    }
-                    if (!isEmpty(top)) {
-                        shape.setTop(this.getTextureInfo(top));
-                    }
-                    if (!isEmpty(bottom)) {
-                        shape.setBottom(this.getTextureInfo(bottom));
-                    }
-                }
-
-                this.shapeMap.put(name, shape);
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to load config", e);

@@ -165,8 +165,19 @@ public class Shape {
     }
 
 
-
-public static Float parsePosition(String str,Float width,Float height,Float thick,Float pwidth,Float pheight,Float pthick) throws Exception {
+    /**
+     * 根据父节点的属性来求子属性的值
+     * @param str
+     * @param width
+     * @param height
+     * @param thick
+     * @param pwidth
+     * @param pheight
+     * @param pthick
+     * @return
+     * @throws Exception
+     */
+    public static Float parsePosition(String str,Float width,Float height,Float thick,Float pwidth,Float pheight,Float pthick) throws Exception {
 
     Pattern pattern = Pattern.compile("\\d+\\.?\\d*");
     Matcher matcher = pattern.matcher(str);

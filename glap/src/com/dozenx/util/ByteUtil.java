@@ -16,6 +16,13 @@ public class ByteUtil
         }
         return newBytes;
     }
+    public static byte[] getBytes(byte data)
+    {
+        byte[] bytes = new byte[1];
+        bytes[0]= data;
+        return bytes;
+    }
+
     public static byte[] getBytes(short data)
     {
         byte[] bytes = new byte[2];

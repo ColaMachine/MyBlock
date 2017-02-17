@@ -25,7 +25,11 @@ public class MapUtil {
 		return value;
 	}
 	public static Integer getIntValue(Map map , String name){
-		Integer value =(Integer)map.get(name);
+		Object object =map.get(name);
+		if(object == null){
+			return null;
+		}
+		Integer value =(Integer)object;
 		return value;
 	}
 	

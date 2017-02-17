@@ -63,10 +63,10 @@ public class ChatPanel extends HtmlObject {
                 if(key == Event.KEY_RETURN) {
 
                     // cycle through 3 different colors/font styles
-                    new SayCmd(0,Constants.userName,editField.getText());
+
                     //client.send("say:"+Constants.userName+":"+editField.getText());
                     //Switcher.isChat=false;
-
+                    client.send(new SayCmd(0,Constants.userName,editField.getText()));
                     //appendRow("color"+curColor, editField.getText());
                     editField.setText("");
                     /*guiInstance.*/giveupKeyboardFocus();

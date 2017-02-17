@@ -17,6 +17,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtil {
+    public static List<File> readAllFileInFold(String path) throws IOException {
+        File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
+        if(!file.exists()){
+            LogUtil.println("not exsits "+path);
+            System.exit(0);
+        }
+        if(!file.isDirectory()){
+            LogUtil.err("it's not folder "+path);
+        }
+        return listFile(file);
+
+
+    }
+
+    public static List<File> listFile(File file ){
+        List<File > fileList =new ArrayList<>();
+        File[] fileAry = file.listFiles();
+        for(File childFile : fileAry){
+            if(childFile.isDirectory()){
+                fileList.addAll(listFile(childFile));
+            }else{
+                fileList.add(childFile);
+            }
+        }
+        return fileList;
+    }
     public static String readFile2Str(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
         if(!file.exists()){
@@ -32,6 +58,26 @@ public class FileUtil {
         }
         if(templateStr==null || templateStr.toString().length()==0){
             LogUtil.println("file is empty: "+path);
+            System.exit(0);
+        }
+//        LogUtil.println(templateStr.toString());
+        return templateStr.toString();
+    }
+    public static String readFile2Str(File file) throws IOException {
+
+        if(!file.exists()){
+            LogUtil.println("not exsits "+file);
+            System.exit(0);
+        }
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+        BufferedReader br = new BufferedReader(isr);
+        String s;
+        StringBuffer templateStr = new StringBuffer();
+        while ((s = br.readLine()) != null) {
+            templateStr.append(s + "\r\n");
+        }
+        if(templateStr==null || templateStr.toString().length()==0){
+            LogUtil.println("file is empty: "+file);
             System.exit(0);
         }
 //        LogUtil.println(templateStr.toString());
