@@ -8,7 +8,10 @@ import com.dozenx.util.UUIDUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.AttributedCharacterIterator;
@@ -217,7 +220,7 @@ public class FontUtil {
         int imgWidth=charSize*colNum;
         int imgHeight = rowNum* charSize;
         BufferedImage image =new BufferedImage(imgWidth,imgHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
+        Graphics2D g = image.createGraphics();
         //Font font =loadFont(fontPath,fontSize);
         g.setFont(getFont(fontSize));
 
@@ -243,6 +246,14 @@ public class FontUtil {
         ats.addAttribute(TextAttribute.KERNING,0);
         AttributedCharacterIterator iter = ats.getIterator();*/
 
+
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g.setStroke(new BasicStroke(2f));
+        g.setColor(Color.BLACK);
+
         for(Character  car : list){
 
             int stringWidth =fm.stringWidth(car+"");
@@ -261,9 +272,12 @@ public class FontUtil {
                 break;
             }
 
-            ttf2jpg(car, g, x_offset, y_offset,stringAscent);
+            ttf3jpg(car, g, x_offset, y_offset,stringAscent,fontSize);
             sb.append(car).append(" ").append(x_offset).append(" ").append(y_offset).append(" ").append(charSize).append(" ").append(charSize).append("\r\n");
             i++;
+           /* if(i==10){
+                break;
+            }*/
         }
         try {
             LogUtil.println(PathManager.getInstance().getInstallPath().resolve("wordLocation.txt").toString());
@@ -293,7 +307,27 @@ public class FontUtil {
         ats.addAttribute(TextAttribute.KERNING,0);
         AttributedCharacterIterator iter = ats.getIterator();
 
+
+
             g.drawString(iter, x, y+fontHeight);
+
+
+
+    }
+
+    public static void ttf3jpg(char car , Graphics2D g2,int x,int y,int fontHeight,int fontSize){
+
+//g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+//shadowGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        FontRenderContext frc = g2.getFontRenderContext();
+        TextLayout tl = new TextLayout(car+"", new Font("宋体", Font.PLAIN,fontSize), frc);
+        Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, y+30));
+        g2.setColor(Color.WHITE);
+        g2.draw(sha);
+        g2.setColor(Color.WHITE);
+        g2.fill(sha);
+
 
 
 

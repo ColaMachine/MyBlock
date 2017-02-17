@@ -218,9 +218,13 @@ public class TextureManager {
             textureImg = GLApp.loadImage(installPath.resolve(textureImagePath).toUri());//
             //Image image=        ImageIO.read(new File(installPath.resolve(textureImagePath).toUri()));
             if (textureImg != null) {
+
                 textureImg.textureHandle = GLApp.makeTexture(textureImg);
                 Util.checkGLError();
-                GLApp.makeTextureMipMap(textureImg.textureHandle, textureImg);
+                if(!name.equals("zhongwen")) {
+                    LogUtil.println("生成字体的时候关闭mipmap能提高字体清晰度");
+                    GLApp.makeTextureMipMap(textureImg.textureHandle, textureImg);
+                }
                 Util.checkGLError();
             }
            // textureMap.put(name, texture);
