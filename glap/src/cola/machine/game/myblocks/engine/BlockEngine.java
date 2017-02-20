@@ -1,6 +1,5 @@
 package cola.machine.game.myblocks.engine;
 
-import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
@@ -9,7 +8,6 @@ import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglInput;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglTimer;
 import cola.machine.game.myblocks.input.InputSystem;
-import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.utilities.concurrency.Task;
 import cola.machine.game.myblocks.utilities.concurrency.TaskMaster;
 
@@ -22,9 +20,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.dozenx.game.opengl.util.OpenglUtils;
 import org.lwjgl.Sys;
-import org.lwjgl.opengl.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.terasology.crashreporter.CrashReporter;

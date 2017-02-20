@@ -10,7 +10,7 @@ package com.dozenx.util;
 
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 
 import java.io.*;
 import java.util.ArrayList;

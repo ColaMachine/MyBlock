@@ -29,7 +29,7 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.Font;
 

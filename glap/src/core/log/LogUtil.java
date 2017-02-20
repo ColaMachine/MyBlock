@@ -1,4 +1,4 @@
-package cola.machine.game.myblocks.log;
+package core.log;
 
 /**
  * Created by luying on 16/7/24.

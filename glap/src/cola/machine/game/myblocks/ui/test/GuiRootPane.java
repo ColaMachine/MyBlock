@@ -1,21 +1,12 @@
 package cola.machine.game.myblocks.ui.test;
 
 import cola.machine.game.myblocks.control.MouseControlCenter;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import cola.machine.game.myblocks.ui.inventory.*;
 import de.matthiasmann.twl.*;
-import de.matthiasmann.twl.model.SimpleBooleanModel;
-import de.matthiasmann.twl.renderer.Texture;
-import glapp.GLApp;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Created by luying on 16/7/3.

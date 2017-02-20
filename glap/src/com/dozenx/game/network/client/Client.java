@@ -1,9 +1,7 @@
-package cola.machine.game.myblocks.network;
+package com.dozenx.game.network.client;
 
-import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.command.*;

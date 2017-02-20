@@ -3,22 +3,18 @@ package cola.machine.game.myblocks.engine.modes;
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.model.ui.html.*;
-import cola.machine.game.myblocks.network.Client;
+import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.login.LoginDemo;
 import com.dozenx.game.engine.command.LoginCmd;
-import com.dozenx.game.engine.edit.view.TextureEditPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
-import com.dozenx.game.opengl.util.ShaderConfig;
-import com.dozenx.game.opengl.util.ShaderUtils;
 import de.matthiasmann.twl.GUI;
-import de.matthiasmann.twl.Timer;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
 
@@ -289,8 +285,8 @@ if(!Switcher.SHADER_ENABLE) {
    void emulateLogin() {
        if(BlockEngine.engine!=null ){
 
-           CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText()));
-
+         //  CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText()));
+           ResultDTO dto = CoreRegistry.get(LoginClientController.class).login(userName.getText(),pwd.getText());
            //BlockEngine.engine.changeState(new GamingState());
        }
        else {

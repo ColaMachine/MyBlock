@@ -6,7 +6,7 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.network.Client;
+import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.EquipCmd;

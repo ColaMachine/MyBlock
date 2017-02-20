@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.animation;
 
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.model.Component;
 
 import java.util.Date;

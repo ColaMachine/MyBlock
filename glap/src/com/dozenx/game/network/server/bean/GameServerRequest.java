@@ -1,12 +1,12 @@
-package com.dozenx.game.server.user.bean;
+package com.dozenx.game.network.server.bean;
 
-import cola.machine.game.myblocks.server.Worker;
+import com.dozenx.game.network.server.Worker;
 import com.dozenx.game.engine.command.GameCmd;
 
 /**
  * Created by luying on 17/2/18.
  */
-public class GameRequest {
+public class GameServerRequest {
     private GameCmd cmd ;
 
     public GameCmd getCmd() {
@@ -26,7 +26,7 @@ public class GameRequest {
     }
 
     private Worker worker;
-    public GameRequest(GameCmd cmd ,Worker worker){
+    public GameServerRequest(GameCmd cmd , Worker worker){
         this.cmd =cmd ;
         this. worker = worker;
     }

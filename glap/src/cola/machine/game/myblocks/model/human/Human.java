@@ -4,26 +4,15 @@ import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.model.Component;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
-import cola.machine.game.myblocks.model.textture.Shape;
-import cola.machine.game.myblocks.network.Client;
+import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.dozenx.game.engine.live.state.HumanState;
 import com.dozenx.game.graphics.shader.ShaderManager;
-import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import org.lwjgl.Sys;
 
 import cola.machine.game.myblocks.switcher.Switcher;
-import org.lwjgl.opengl.GL11;
-
-import javax.swing.text.View;
-import javax.vecmath.Point3f;
 
 public class Human extends LivingThing {
 

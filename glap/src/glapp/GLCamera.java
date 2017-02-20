@@ -1,19 +1,12 @@
 package glapp;
 
-import javax.vecmath.Vector3f;
-
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.engine.modes.StartMenuState;
-import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.switcher.Switcher;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.*;
 
-import cola.machine.game.myblocks.rendering.cameras.Camera;
 import glmodel.GL_Vector;
 import glmodel.GL_Matrix;
-import org.lwjgl.util.glu.Util;
 
 import java.nio.FloatBuffer;
 

@@ -30,7 +30,7 @@
 package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;

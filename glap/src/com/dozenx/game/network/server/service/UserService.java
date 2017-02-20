@@ -1,7 +1,7 @@
-package com.dozenx.game.server.user.bean;
+package com.dozenx.game.network.server.service;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.server.PlayerStatus;
+import com.dozenx.game.network.server.PlayerStatus;
 import com.alibaba.fastjson.JSON;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;

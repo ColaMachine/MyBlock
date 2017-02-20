@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.server;
 
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
+import com.dozenx.game.network.server.Worker;
 
 import java.util.HashMap;
 import java.util.Iterator;

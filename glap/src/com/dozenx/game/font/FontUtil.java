@@ -1,7 +1,7 @@
 package com.dozenx.game.font;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.util.UUIDUtil;

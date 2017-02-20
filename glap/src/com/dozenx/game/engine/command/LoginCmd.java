@@ -1,7 +1,5 @@
 package com.dozenx.game.engine.command;
 
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.util.ByteUtil;
 
 import java.nio.ByteBuffer;

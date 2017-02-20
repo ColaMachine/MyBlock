@@ -1,6 +1,5 @@
 package cola.machine.game.myblocks.model.ui.html;
 
-import cola.machine.game.myblocks.log.LogUtil;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.model.ButtonModel;
 import de.matthiasmann.twl.model.SimpleButtonModel;

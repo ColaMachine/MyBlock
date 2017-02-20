@@ -1,12 +1,11 @@
-package cola.machine.game.myblocks.server;
+package com.dozenx.game.network.server;
 
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import com.dozenx.game.engine.command.CmdUtil;
 import com.dozenx.game.engine.command.GameCmd;
-import com.dozenx.game.server.user.bean.GameRequest;
-import com.dozenx.game.server.user.bean.GameResponse;
-import com.dozenx.game.server.user.bean.GameServerHandler;
-import com.dozenx.util.ByteUtil;
+import com.dozenx.game.network.server.bean.GameServerRequest;
+import com.dozenx.game.network.server.bean.GameServerResponse;
+import com.dozenx.game.network.server.handler.GameServerHandler;
 
 import java.io.*;
 import java.net.Socket;
@@ -77,7 +76,7 @@ public class Worker extends Thread {
                 GameCmd cmd = CmdUtil.getCmd(bytes);
                 GameServerHandler handler = ChatServer.allHandlerMap.get(cmd.getCmdType());
                 if(handler!= null ){
-                    handler.handler(new GameRequest(cmd,this),new GameResponse());
+                    handler.handler(new GameServerRequest(cmd,this),new GameServerResponse());
                 }
                 //messages.push(ByteUtil.copy(bytes,0,n));
                // System.out.println("Client Socket Message:"+str);

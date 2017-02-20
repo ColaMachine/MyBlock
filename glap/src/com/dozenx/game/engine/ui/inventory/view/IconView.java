@@ -29,13 +29,11 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
-import cola.machine.game.myblocks.log.LogUtil;
 import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Image;
-import cola.machine.game.myblocks.skill.SkillDefinition;
 
 import javax.vecmath.Vector4f;
 

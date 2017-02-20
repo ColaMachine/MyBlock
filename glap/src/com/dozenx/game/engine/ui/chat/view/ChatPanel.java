@@ -9,13 +9,11 @@ import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.EditField;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
-import cola.machine.game.myblocks.network.Client;
+import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.SayCmd;
 import de.matthiasmann.twl.Event;
-import de.matthiasmann.twl.textarea.HTMLTextAreaModel;
-import org.lwjgl.Sys;
 
 import javax.vecmath.Vector4f;
 

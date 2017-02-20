@@ -1,4 +1,4 @@
-package cola.machine.game.myblocks.server;
+package com.dozenx.game.network.server;
 
 /**
  * Created by dozen.zhang on 2017/2/16.

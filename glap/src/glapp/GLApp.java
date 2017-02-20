@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import com.dozenx.game.opengl.util.OpenglUtils;

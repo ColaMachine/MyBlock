@@ -1,17 +1,7 @@
-package cola.machine.game.myblocks.server;
+package com.dozenx.game.network.server;
 
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.dozenx.game.engine.command.CmdType;
-import com.dozenx.game.engine.command.CmdUtil;
-import com.dozenx.game.engine.command.GameCmd;
-import com.dozenx.game.engine.command.LoginCmd;
-import com.dozenx.game.server.user.bean.GameRequest;
-import com.dozenx.game.server.user.bean.GameServerHandler;
-import com.dozenx.game.server.user.bean.UserService;
-import com.dozenx.util.StringUtil;
+import core.log.LogUtil;
 
-import java.net.Socket;
 import java.util.*;
 
 /**
@@ -30,7 +20,7 @@ public class AllSender extends Thread{
         /*GameCmd cmd = CmdUtil.getCmd(bytes);
         GameServerHandler handler = ChatServer.allHandlerMap.get(cmd.getCmdType());
         if(handler!= null ){
-            handler.handler(new GameRequest(cmd,));
+            handler.handler(new GameServerRequest(cmd,));
         }
         if (cmd.getCmdType()== CmdType.EQUIP) {//equip
 

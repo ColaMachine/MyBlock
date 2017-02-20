@@ -29,7 +29,7 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import de.matthiasmann.twl.Event;

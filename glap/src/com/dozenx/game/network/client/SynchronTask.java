@@ -1,16 +1,8 @@
-package cola.machine.game.myblocks.network;
+package com.dozenx.game.network.client;
 
-import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
-import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.command.PosCmd;
-
-import java.io.*;
-import java.net.Socket;
-import java.util.Stack;
 
 /**
  * Created by luying on 16/10/7.

@@ -1,18 +1,13 @@
 package cola.machine.game.myblocks.model.ui.html;
 
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import de.matthiasmann.twl.Event;
-import de.matthiasmann.twl.InfoWindow;
-import de.matthiasmann.twl.Widget;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

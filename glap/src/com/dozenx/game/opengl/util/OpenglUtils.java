@@ -2,41 +2,24 @@ package com.dozenx.game.opengl.util;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import cola.machine.game.myblocks.model.ui.html.Image;
-import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.util.FileUtil;
-import de.matthiasmann.twl.renderer.Texture;
-import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import glapp.GLApp;
 import glapp.GLImage;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-import java.io.IOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
 
-import javax.vecmath.Vector3f;
-import javax.vecmath.Vector4f;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class OpenglUtils {

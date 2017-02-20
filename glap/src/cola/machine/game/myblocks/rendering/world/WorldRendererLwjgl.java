@@ -1,9 +1,7 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
-import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.engine.modes.StartMenuState;
-import cola.machine.game.myblocks.log.LogUtil;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import cola.machine.game.myblocks.switcher.Switcher;
 
@@ -14,8 +12,6 @@ import java.util.PriorityQueue;
 
 import javax.vecmath.Vector3f;
 
-import com.dozenx.game.graphics.shader.ShaderManager;
-import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.math.Rect2i;
 
 import org.lwjgl.BufferUtils;
@@ -25,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.GLBufferPool;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
-import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.cameras.Camera;
@@ -39,9 +34,6 @@ import cola.machine.game.myblocks.math.Vector3i;
 import com.google.common.collect.Lists;
 
 import cola.machine.game.myblocks.config.Config;
-
-import static org.lwjgl.opengl.GL20.glUseProgram;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class WorldRendererLwjgl implements WorldRenderer {
     private final Config config;

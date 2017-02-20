@@ -1,12 +1,7 @@
 package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.skill.AttackManager;
-import cola.machine.game.myblocks.skill.Ball;
-import cola.machine.game.myblocks.skill.SkillDefinition;
+import core.log.LogUtil;
 import com.dozenx.game.engine.command.AttackCmd;
 import com.dozenx.game.engine.command.GameCmd;
 import glmodel.GL_Vector;

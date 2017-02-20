@@ -4,8 +4,7 @@ package cola.machine.game.myblocks.ui.chat;
  * Created by colamachine on 16-6-24.
  */
 
-import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.network.Client;
+import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import de.matthiasmann.twl.*;

@@ -1,13 +1,11 @@
 package glmodel;
 
-import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.manager.TextureManager;
+import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glapp.GLApp;
 
-import javax.vecmath.Vector3f;
 import java.nio.FloatBuffer;
 
 /**
