@@ -157,4 +157,22 @@ try {
         }
         return lines;
     }
+
+    public static List<String > readFile2List(File file ) throws IOException {
+
+        if(!file.exists()){
+            LogUtil.println("read file failed path:"+file.getPath());
+        }
+        LogUtil.println("read file from1 path:"+file.getPath());
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+        //  BufferedReader br = new BufferedReader(new FileReader(file));
+        List<String> lines =new ArrayList();
+        String s ;
+        // StringBuffer templateStr = new StringBuffer();
+        while ((s = br.readLine()) != null) {
+            lines.add(s);
+            // templateStr.append(s + "\r\n");
+        }
+        return lines;
+    }
 }

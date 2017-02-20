@@ -1,8 +1,9 @@
 package cola.machine.game.myblocks.network;
 
+import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.log.LogUtil;
-import cola.machine.game.myblocks.logic.characters.MovementMode;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.command.*;
@@ -114,14 +115,20 @@ public class Client extends Thread{
                         //Thread.sleep(1000);
                         //continue;
                     }
-                    if (bytes[0] == (byte) CmdType.EQUIP.ordinal()) {//equip
-                        equips.push(new EquipmentCmd(bytes));
+                    GameCmd cmd = CmdUtil.getCmd(bytes);
+                    if (cmd.getCmdType()== CmdType.EQUIP) {//equip
+                        equips.push(cmd);
 
-                    } else if (bytes[0] == (byte) CmdType.POS.ordinal()) {
-                        movements.push(new PosCmd(bytes));
-                    } else if (bytes[0] == (byte) CmdType.SAY.ordinal()) {
-                        messages.push(new SayCmd(bytes));
-                    }
+                    } else if (cmd.getCmdType()== CmdType.POS) {
+                        movements.push(cmd);
+                    } else if (cmd.getCmdType()== CmdType.SAY) {
+                        messages.push(cmd);
+                    } /*else if (cmd.getCmdType()== CmdType.L) {
+
+                        BlockEngine.engine.changeState(new GamingState());
+                    }*/
+
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }

@@ -17,6 +17,8 @@ public class Button extends HtmlObject implements Cloneable{
         this.mouseButton = Event.MOUSE_LBUTTON;
         this.canAcceptKeyboardFocus=true;
         model = new SimpleButtonModel();
+        this.setColor(new Vector4f(1,1,1,1));
+        this.setBackgroundColor(new Vector4f(0,0,0,1));
     }
     public void addCallback(Runnable callback) {
         model.addActionCallback(callback);
@@ -27,14 +29,18 @@ public class Button extends HtmlObject implements Cloneable{
     protected boolean handleEvent(Event evt) {
        //ss System.out.println("进来了");
         if(evt.getType()==Event.Type.MOUSE_ENTERED){
+            this.setPreBackgroundColor(this.getBackgroundColor());
+            this.setPreColor(this.getColor());
             this.setBackgroundColor(new Vector4f(1,1,1,1));
+            this.setColor(new Vector4f(0,0,0,1));
            // this.innerText="进入了";
             //LogUtil.println(this.id + "进入了");
             Document.needUpdate=true;
             //return true;
         }else if(evt.getType()==Event.Type.MOUSE_EXITED){
             //this.borderColor=new Vector4f(0,0,0,1);
-            this.setBackgroundColor(new Vector4f(0,0,0,1));
+            this.setColor(this.getPreColor());
+            this.setBackgroundColor(this.getPreBackgroundColor());
             //LogUtil.println(this.id+"离开了了");
             //this.innerText="离开了了";
             document.needUpdate=true;//return true;

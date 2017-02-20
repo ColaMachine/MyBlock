@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by luying on 17/2/7.
  */
-public class SayCmd implements  GameCmd{
+public class SayCmd extends   BaseGameCmd{
     private boolean deleted;
     int userId;
     String userName;
@@ -38,10 +38,11 @@ public class SayCmd implements  GameCmd{
     }
 
     String msg;
-    private CmdType cmdType = CmdType.SAY;
+    final CmdType cmdType = CmdType.SAY;
     private EquipPartType part;
     // userId | length| username:msg|
     public SayCmd(byte[] bytes){
+
         parse(bytes);
     }
     public SayCmd(int userId,String userName,String msg){

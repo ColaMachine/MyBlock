@@ -46,7 +46,7 @@ void main()
            color = vec4(0,00,0,0.3);
        }
     if(ourcolor.w>0.1){
-        //color= color *ourcolor;
+        color= color *ourcolor;
     }
     //color= color *ourColor;
     }

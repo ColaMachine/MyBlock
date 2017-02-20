@@ -9,6 +9,10 @@ import java.nio.charset.Charset;
 
 public class ByteUtil
 {
+
+    public static ByteBufferWrap createBuffer(){
+        return new ByteBufferWrap();
+    }
     public static byte[] copy(byte[] bytes,int start,int length){
         byte[] newBytes =new byte[length];
         for(int i=0;i<length;i++){
@@ -16,6 +20,16 @@ public class ByteUtil
         }
         return newBytes;
     }
+
+    public static byte[] slice(byte[] src,int start,int length){
+        byte[] bytes= new byte[length];
+         System.arraycopy(src, start, bytes, 0, length);
+        return bytes;
+    }
+
+   /* public static ByteBuffer createBuffer(){
+        ByteBuffer byteBuffer = ByteBuffer.allocate();
+    }*/
     public static byte[] getBytes(byte data)
     {
         byte[] bytes = new byte[1];
@@ -71,8 +85,16 @@ public class ByteUtil
         bytes[1] = (byte) (data >> 8);
         return bytes;
     }
-
     public static byte[] getBytes(int data)
+    {
+        byte[] bytes = new byte[4];
+        bytes[3] = (byte) (data & 0xff);
+        bytes[2] = (byte) ((data & 0xff00) >> 8);
+        bytes[1] = (byte) ((data & 0xff0000) >> 16);
+        bytes[0] = (byte) ((data & 0xff000000) >> 24);
+        return bytes;
+    }
+    public static byte[] getBytes123(int data)
     {
         byte[] bytes = new byte[4];
         bytes[0] = (byte) (data & 0xff);
@@ -82,7 +104,7 @@ public class ByteUtil
         return bytes;
     }
 
-    public static byte[] getBytes(long data)
+    public static byte[] getBytes123(long data)
     {
         byte[] bytes = new byte[8];
         bytes[0] = (byte) (data & 0xff);
@@ -95,8 +117,21 @@ public class ByteUtil
         bytes[7] = (byte) ((data >> 56) & 0xff);
         return bytes;
     }
+    public static byte[] getBytes(long data)
+    {
+        byte[] bytes = new byte[8];
+        bytes[7] = (byte) (data & 0xff);
+        bytes[6] = (byte) ((data >> 8) & 0xff);
+        bytes[5] = (byte) ((data >> 16) & 0xff);
+        bytes[4] = (byte) ((data >> 24) & 0xff);
+        bytes[3] = (byte) ((data >> 32) & 0xff);
+        bytes[2] = (byte) ((data >> 40) & 0xff);
+        bytes[1] = (byte) ((data >> 48) & 0xff);
+        bytes[0] = (byte) ((data >> 56) & 0xff);
+        return bytes;
+    }
 
-    public static byte[] getBytes(float data)
+   public static byte[] getBytes(float data)
     {
         int intBits = Float.floatToIntBits(data);
         return getBytes(intBits);
@@ -119,21 +154,38 @@ public class ByteUtil
         return getBytes(data, "GBK");
     }
 
-
+/*
     public static short getShort(byte[] bytes)
     {
         return (short) ((0xff & bytes[0]) | (0xff00 & (bytes[1] << 8)));
+    }*/
+
+    public static short getShort(byte[] bytes)
+    {
+        return (short) ((0xff & bytes[1]) | (0xff00 & (bytes[0] << 8)));
     }
+
+   /* public static char getChar(byte[] bytes)
+    {
+        return (char) ((0xff & bytes[1]) | (0xff00 & (bytes[0] << 8)));
+    }*/
 
     public static char getChar(byte[] bytes)
     {
-        return (char) ((0xff & bytes[1]) | (0xff00 & (bytes[0] << 8)));
+        return (char) ((0xff & bytes[0]) | (0xff00 & (bytes[1] << 8)));
     }
 
-    public static int getInt(byte[] bytes)
+  /*  public static int getInt(byte[] bytes)
     {
         return (0xff & bytes[0]) | (0xff00 & (bytes[1] << 8)) | (0xff0000 & (bytes[2] << 16)) | (0xff000000 & (bytes[3] << 24));
     }
+*/
+
+    public static int getInt(byte[] bytes)
+    {
+        return (0xff & bytes[3]) | (0xff00 & (bytes[2] << 8)) | (0xff0000 & (bytes[1] << 16)) | (0xff000000 & (bytes[0] << 24));
+    }
+
 
     public static long getLong(byte[] bytes)
     {
@@ -166,7 +218,7 @@ public class ByteUtil
 
     public static void main(String[] args)
     {
-        short s = 122;
+       /* short s = 122;
         int i = 122;
         long l = 1222222;
 
@@ -208,7 +260,7 @@ public class ByteUtil
             System.out.println("个的gbk 16进制表示:"+Integer.toHexString(byteary[0]) +""+Integer.toHexString(byteary[1]) );
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
     }
     public static String toFullBinaryString(int num) {
         char[] chs = new char[Integer.SIZE];

@@ -1,10 +1,7 @@
 package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
-import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.engine.modes.StartMenuState;
-import cola.machine.game.myblocks.item.ItemManager;
 import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
@@ -13,30 +10,20 @@ import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.server.NetWorkManager;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.EquipCmd;
 import com.dozenx.game.engine.command.EquipPartType;
-import com.dozenx.game.engine.command.EquipmentCmd;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.live.state.HumanState;
 import com.dozenx.game.graphics.shader.ShaderManager;
-import com.dozenx.game.opengl.util.OpenglUtils;
-import com.dozenx.game.opengl.util.ShaderUtils;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.Util;
 
 import javax.vecmath.Point3f;
 import java.lang.ref.WeakReference;
-import java.nio.FloatBuffer;
-
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL20.glUseProgram;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 /**
  * Created by luying on 16/9/16.
@@ -579,29 +566,29 @@ this.currentState.update();
     }
 
     public void addBodyEquipStart(ItemDefinition itemCfg) {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.BODY, itemCfg);
+        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.BODY, itemCfg);
         CoreRegistry.get(Client.class).send(equipMentCmd);
         //NetWorkManager.push(equipMentCmd);
     }
     public void addLegEquipStart(ItemDefinition itemCfg) {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.LEG, itemCfg);
+        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.LEG, itemCfg);
         CoreRegistry.get(Client.class).send(equipMentCmd);
         //NetWorkManager.push(equipMentCmd);
     }
 
     public void addHandEquipStart(ItemDefinition itemCfg) {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.HAND, itemCfg);
+        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.HAND, itemCfg);
         CoreRegistry.get(Client.class).send(equipMentCmd);
         //NetWorkManager.push(equipMentCmd);
     }
 
     public void addShoeEquipStart(ItemDefinition itemCfg) {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.SHOE, itemCfg);
+        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.SHOE, itemCfg);
         CoreRegistry.get(Client.class).send(equipMentCmd);
         //NetWorkManager.push(equipMentCmd);
     }
     public void addHeadEquipStart(ItemDefinition itemCfg) {
-        EquipmentCmd equipMentCmd = new EquipmentCmd(this, EquipPartType.HEAD, itemCfg);
+        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.HEAD, itemCfg);
         CoreRegistry.get(Client.class).send(equipMentCmd);
         //NetWorkManager.push(equipMentCmd);
     }

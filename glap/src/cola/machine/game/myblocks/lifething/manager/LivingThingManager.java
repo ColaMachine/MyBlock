@@ -9,9 +9,8 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
-import cola.machine.game.myblocks.ui.inventory.HeadDialog;
+import com.dozenx.game.engine.command.EquipCmd;
 import com.dozenx.game.engine.command.EquipPartType;
-import com.dozenx.game.engine.command.EquipmentCmd;
 import com.dozenx.game.engine.command.PosCmd;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -23,8 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.lwjgl.opengl.GL20.glUseProgram;
 
 /**
  * Created by luying on 16/9/17.
@@ -272,7 +269,7 @@ public class LivingThingManager {
         }
 
         while(client.equips.size()>0 && client.equips.peek()!=null){
-            EquipmentCmd cmd = (EquipmentCmd)client.equips.pop();
+            EquipCmd cmd = (EquipCmd)client.equips.pop();
             int id = cmd.getUserId();
             /*if(player.id == id){
                 continue;

@@ -1,6 +1,15 @@
 package cola.machine.game.myblocks.server;
 
 import cola.machine.game.myblocks.log.LogUtil;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.command.CmdType;
+import com.dozenx.game.engine.command.CmdUtil;
+import com.dozenx.game.engine.command.GameCmd;
+import com.dozenx.game.engine.command.LoginCmd;
+import com.dozenx.game.server.user.bean.GameRequest;
+import com.dozenx.game.server.user.bean.GameServerHandler;
+import com.dozenx.game.server.user.bean.UserService;
+import com.dozenx.util.StringUtil;
 
 import java.net.Socket;
 import java.util.*;
@@ -16,6 +25,39 @@ public class AllSender extends Thread{
         this.workerMap=workerMap;
     }
  Queue<Integer> waitDelList =new LinkedList<>();
+
+    public void  syncStatus(byte[] bytes){
+        /*GameCmd cmd = CmdUtil.getCmd(bytes);
+        GameServerHandler handler = ChatServer.allHandlerMap.get(cmd.getCmdType());
+        if(handler!= null ){
+            handler.handler(new GameRequest(cmd,));
+        }
+        if (cmd.getCmdType()== CmdType.EQUIP) {//equip
+
+
+        } else if (cmd.getCmdType()== CmdType.POS) {
+
+        } else if (cmd.getCmdType()== CmdType.SAY) {
+
+        }else if (cmd.getCmdType()== CmdType.LOGIN) {
+            LoginCmd loginCmd = (LoginCmd) cmd;
+            String userName = loginCmd.getUserName();
+            String pwd = loginCmd.getPwd();
+            if(StringUtil.isBlank(userName)){
+
+            }
+           *//* CoreRegistry.get(UserService.class).getUserInfoByUserName(userName);
+            //vertify the pwd
+            loginCmd.pwd;
+*//*
+            //notice other player
+        }*/
+
+
+    }
+    public void getCmd(byte[] bytes){
+
+    }
     public void run(){
         while(true) {
             if (messages.size() > 0) {

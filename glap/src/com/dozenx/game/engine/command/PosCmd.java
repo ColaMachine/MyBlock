@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by luying on 17/2/7.
  */
-public class PosCmd implements  GameCmd{
+public class PosCmd extends   BaseGameCmd{
     private boolean deleted;
     public int userId;
     public float x;
@@ -21,10 +21,12 @@ public class PosCmd implements  GameCmd{
     public float bodyAngle;
     public float headAngle;
     public float headAngle2;
-    private CmdType cmdType = CmdType.POS;
+    final CmdType cmdType = CmdType.POS;
     //private EquipPartType part;
     // userId | x | y | z | bodyAngle | headAngle | headAngle2|
+
     public PosCmd(byte[] bytes){
+
         parse(bytes);
     }
     public PosCmd(LivingThing livingThing){

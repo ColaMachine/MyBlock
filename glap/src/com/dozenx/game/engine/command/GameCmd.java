@@ -6,6 +6,6 @@ package com.dozenx.game.engine.command;
 public interface GameCmd {
     public byte[] toBytes();
     public void delete();
-
+        public CmdType getCmdType();
     public int val();
 }

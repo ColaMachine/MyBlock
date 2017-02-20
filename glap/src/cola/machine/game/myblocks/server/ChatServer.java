@@ -1,6 +1,10 @@
 package cola.machine.game.myblocks.server;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.command.CmdType;
+import com.dozenx.game.server.user.bean.GameServerHandler;
+import com.dozenx.game.server.user.bean.LoginHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -19,11 +23,17 @@ public class ChatServer {
         ChatServer server =new ChatServer();
         server.start();
     }
+    public static HashMap<String,PlayerStatus> name2PalyerMap  =new HashMap();
+
     //public HashMap<Integer , Socket> socketMap =new HashMap();
     public Map<Integer,Worker> workerMap =new Hashtable();
     public Stack<byte[]> messages=new Stack<>();
     public Stack<String> livingThings=new Stack<>();
+    public static HashMap<CmdType,GameServerHandler> allHandlerMap =new HashMap<>();
     public  void start(){
+        //注册所有服务
+        allHandlerMap.put(CmdType.LOGIN,new LoginHandler());
+
         ServerSocket s = null;
 
         Thread allSender =new AllSender(messages,workerMap);allSender.start();

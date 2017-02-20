@@ -4,7 +4,7 @@ package com.dozenx.game.engine.command;
  * Created by luying on 17/2/7.
  */
 public class BaseGameCmd  implements  GameCmd{
-
+    final CmdType cmdType =CmdType.POS;
     private boolean deleted;
 
     @Override
@@ -15,6 +15,11 @@ public class BaseGameCmd  implements  GameCmd{
     @Override
     public void delete() {
         this.deleted=true;
+    }
+
+    @Override
+    public CmdType getCmdType() {
+        return cmdType;
     }
 
     public int val;

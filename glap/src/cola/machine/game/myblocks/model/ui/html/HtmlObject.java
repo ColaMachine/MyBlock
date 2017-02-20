@@ -157,6 +157,24 @@ public class HtmlObject implements Cloneable  {
     private int layoutInvalid;
 
     private  Vector4f backgroundColor;
+    private  Vector4f preBackgroundColor;
+    private  Vector4f preColor;
+
+    public Vector4f getPreBackgroundColor() {
+        return preBackgroundColor;
+    }
+
+    public void setPreBackgroundColor(Vector4f preBackgroundColor) {
+        this.preBackgroundColor = preBackgroundColor;
+    }
+
+    public Vector4f getPreColor() {
+        return preColor;
+    }
+
+    public void setPreColor(Vector4f preColor) {
+        this.preColor = preColor;
+    }
 
     //public float top;
     private boolean absolute=false;

@@ -5,6 +5,7 @@ package com.dozenx.game.engine.command;
  */
 public enum CmdType {
     SAY,
+    LOGIN,
     EQUIP,
     POS,
     ATTACK,
@@ -12,6 +13,9 @@ public enum CmdType {
     GROUP,
     CHUNK,
     BACK,
-    LIVI
+    LIVI;
 
+    public byte getType(){
+        return (byte)this.ordinal();
+    }
 }

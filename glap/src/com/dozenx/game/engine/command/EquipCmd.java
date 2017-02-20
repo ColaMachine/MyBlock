@@ -9,7 +9,7 @@ import com.dozenx.util.ByteUtil;
 /**
  * Created by luying on 17/2/7.
  */
-public class EquipmentCmd implements  GameCmd{
+public class EquipCmd extends   BaseGameCmd{
     private boolean deleted;
    // private LivingThing livingThing;
 
@@ -39,12 +39,12 @@ public class EquipmentCmd implements  GameCmd{
 
     private ItemDefinition item;
     private int userId;
-    private CmdType cmdType = CmdType.EQUIP;
+    final CmdType cmdType = CmdType.EQUIP;
     private EquipPartType part;
-    public EquipmentCmd(byte[] bytes){
+    public EquipCmd(byte[] bytes){
         parse(bytes);
     }
-    public EquipmentCmd(LivingThing live, EquipPartType pos,ItemDefinition item){
+    public EquipCmd(LivingThing live, EquipPartType pos, ItemDefinition item){
        // this.livingThing =live;
         this.item = item;
         this.part =pos;

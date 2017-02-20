@@ -78,7 +78,7 @@ public float x1;
         imgHeight=img.tmpi.getHeight();//img.h;
        // texture = TextureManager.getTexture(imgName);
         try {
-            if(imgName.equals("terrain") || imgName.equals("items")){
+            if(imgName.equals("terrain") /*|| imgName.equals("items")*/){
                 withWH(minX /imgWidth,/*(img.h - minY -height)*/minY / imgHeight, width / imgWidth, height / imgHeight);//(img.h - minY -
             }else {
                 withWHReverse(minX / imgWidth,/*(img.h - minY -height)*/minY / imgHeight, width / imgWidth, height / imgHeight);//(img.h - minY -

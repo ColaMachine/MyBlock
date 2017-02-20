@@ -7,9 +7,11 @@ import cola.machine.game.myblocks.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.model.ui.html.*;
+import cola.machine.game.myblocks.network.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.login.LoginDemo;
+import com.dozenx.game.engine.command.LoginCmd;
 import com.dozenx.game.engine.edit.view.TextureEditPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
@@ -34,6 +36,9 @@ public class StartMenuState implements GameState {
     //LearnOpenglColor learnOpenglColor;
     GUI gui;
 Document document =new Document();
+
+    EditField userName ;
+    EditField pwd ;
     public void init(GameEngine engine) {  OpenglUtils.checkGLError();
         TextureManager textureManager =new TextureManager();
 
@@ -53,10 +58,12 @@ Document document =new Document();
         div.setMarginLeft((short)(Constants.WINDOW_WIDTH/2-100));
         div.setMarginTop((short)(Constants.WINDOW_HEIGHT/2-50));
         div.appendChild(new Label("用户名:"));
-        div.appendChild(new EditField());
+         userName = new EditField();
+         pwd = new EditField();
+        div.appendChild(userName);
         div.appendChild(new Br());
         div.appendChild(new Label("密码:"));
-        div.appendChild(new EditField());
+        div.appendChild(pwd);
 
         div.appendChild(new Br());
         Button button =new Button();
@@ -281,7 +288,11 @@ if(!Switcher.SHADER_ENABLE) {
    // int count =10;
    void emulateLogin() {
        if(BlockEngine.engine!=null ){
-           BlockEngine.engine.changeState(new GamingState());}
+
+           CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText()));
+
+           //BlockEngine.engine.changeState(new GamingState());
+       }
        else {
            NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
            nuiManager.startGame();
