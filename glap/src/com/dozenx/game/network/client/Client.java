@@ -1,15 +1,18 @@
 package com.dozenx.game.network.client;
 
 import cola.machine.game.myblocks.engine.Constants;
+import com.dozenx.game.network.client.bean.GameCallBackTask;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.util.ByteUtil;
+import sun.rmi.runtime.Log;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Stack;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by luying on 16/10/7.
@@ -19,6 +22,8 @@ public class Client extends Thread{
     public static Stack<GameCmd> equips=new Stack<GameCmd>();
     public static Stack<GameCmd> movements=new Stack<GameCmd>();
     public static Stack<GameCmd> newborns=new Stack<GameCmd>();
+    public static Map<Integer, GameCallBackTask> taskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
+    public static Queue<GameCmd> playerSync=new LinkedList<>();
     ChatFrame chatFrame;
     public Client(){
          chatFrame =  CoreRegistry.get(ChatFrame.class );
@@ -33,9 +38,16 @@ public class Client extends Thread{
         pw.flush();*/
         try {
             byte[] oldByteAry = cmd.toBytes();
-            byte[] newByteAry =
-            ByteUtil.getBytes(oldByteAry,new byte[]{'\n'});
-            outputStream.write(newByteAry);
+            if(ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4))>10){
+                LogUtil.err("错误");
+            }
+          /*  byte[] newByteAry =
+
+            ByteUtil.getBytes(oldByteAry,new byte[]{'\n'});*/
+            LogUtil.println("client 准备发送数据类型:"+ ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4))+"长度:"+(oldByteAry.length-4));
+
+            outputStream.write(oldByteAry);
+            LogUtil.println("send over");
             //outputStream.write('\n');
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,19 +113,42 @@ public class Client extends Thread{
             int n=0;
             while(true){//不断读取数据 然后压入到messages里 由界面端显示出stack
                 //String str = br.readLine();
-                n=inputSteram.read(bytes);
+
+                inputSteram.read(bytes,0,4);
+                int length = ByteUtil.getInt(bytes);
+                LogUtil.println("client received data length: "+length);
+                if(length<=0){
+                  /* n=  inputSteram.read(bytes);
+                    if(n==-1){*/
+                        LogUtil.err("socket 读取数据有问题 +"+length+"+ 已经自动断开");
+
+                    /*    break;
+                    }*/
+
+
+                }
+                if(length>4096){
+                    LogUtil.err("err");
+                }
+                n= inputSteram.read(bytes,0,length);
+              byte[] newBytes =  ByteUtil.slice(bytes,0,length);
                /* if(str==null){
                     LogUtil.println("失去连接 正在重新连接");
                     //Thread.sleep(1000);
                     continue;
                 }*/
+                if(ByteUtil.getInt(newBytes)>10){
+                    LogUtil.err("错误");
+                }
+                LogUtil.println("client 准备接收数据类型:"+ ByteUtil.getInt(newBytes)+"长度:"+(length));
                 try {
                     if (n == 0) {
                         LogUtil.err("读取的数据为0");
                         //Thread.sleep(1000);
                         //continue;
                     }
-                    GameCmd cmd = CmdUtil.getCmd(bytes);
+                    GameCmd cmd = CmdUtil.getCmd(newBytes);
+                    LogUtil.println("the cmd was : "+cmd.getCmdType());
                     if (cmd.getCmdType()== CmdType.EQUIP) {//equip
                         equips.push(cmd);
 
@@ -121,7 +156,28 @@ public class Client extends Thread{
                         movements.push(cmd);
                     } else if (cmd.getCmdType()== CmdType.SAY) {
                         messages.push(cmd);
-                    } /*else if (cmd.getCmdType()== CmdType.L) {
+                    }
+                    else if (cmd.getCmdType()== CmdType.PLAYERSTATUS) {
+                        playerSync.offer(cmd);
+                    }
+                    else if (cmd.getCmdType()== CmdType.RESULT) {
+                         ResultCmd result = (ResultCmd) cmd;
+
+                        if(result.getThreadId()>0){
+                            GameCallBackTask task = taskMap.get(result.getThreadId());
+                            if(task!=null){
+                                task .setResult(result);
+                                task.run();
+                               // task.notifyAll();
+                            }else{
+                                LogUtil.err("不能为null");
+                            }
+
+                        }
+
+                    }
+
+                    /*else if (cmd.getCmdType()== CmdType.L) {
 
                         BlockEngine.engine.changeState(new GamingState());
                     }*/

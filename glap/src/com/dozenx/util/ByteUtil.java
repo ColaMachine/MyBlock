@@ -13,6 +13,9 @@ public class ByteUtil
     public static ByteBufferWrap createBuffer(){
         return new ByteBufferWrap();
     }
+    public static ByteBufferWrap createBuffer(byte[] bytes){
+        return new ByteBufferWrap(bytes);
+    }
     public static byte[] copy(byte[] bytes,int start,int length){
         byte[] newBytes =new byte[length];
         for(int i=0;i<length;i++){

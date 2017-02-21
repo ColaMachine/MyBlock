@@ -5,17 +5,20 @@ package com.dozenx.game.engine.command;
  */
 public enum CmdType {
     SAY,
+    RESULT,
     LOGIN,
     EQUIP,
     POS,
+    PLAYERSTATUS,
     ATTACK,
     DROP,
     GROUP,
     CHUNK,
     BACK,
-    LIVI;
+    LIVI,
+    WALK;
 
-    public byte getType(){
-        return (byte)this.ordinal();
+    public int getType(){
+        return this.ordinal();
     }
 }

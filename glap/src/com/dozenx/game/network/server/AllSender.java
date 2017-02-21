@@ -8,9 +8,9 @@ import java.util.*;
  * Created by luying on 16/10/7.
  */
 public class AllSender extends Thread{
-    Stack<byte[]> messages;
+    Queue<byte[]> messages;
     Map<Integer, Worker> workerMap;
-    public AllSender(Stack<byte[]> messages,Map<Integer,Worker> workerMap){
+    public AllSender(Queue<byte[]> messages,Map<Integer,Worker> workerMap){
         this.messages =messages;
         this.workerMap=workerMap;
     }
@@ -53,7 +53,7 @@ public class AllSender extends Thread{
             if (messages.size() > 0) {
                 byte[] bytes  = messages.peek();
                 if (bytes != null) {
-                    messages.pop();
+                    messages.poll();
                     Iterator iter = workerMap.entrySet().iterator();
                     while (iter.hasNext()) {
                         Map.Entry<Integer,Worker> entry = (Map.Entry) iter.next();

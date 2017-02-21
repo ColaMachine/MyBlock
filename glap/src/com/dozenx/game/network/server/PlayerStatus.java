@@ -5,8 +5,26 @@ package com.dozenx.game.network.server;
  */
 public class PlayerStatus {
     private float x;
+    private float y;
+    private float z;
+
     private String name;
     private String pwd;
+    private float bodyAngle;
+    private float headAngle;
+    private float headAngle2;
+    private int headEquip;
+    private int bodyEquip;//省体装备
+    private int handEquip;//手部装备
+    private int shoeEquip;
+    private int legEquip;//腿部装备
+    private int id;//id
+    private long loginTime;//下线时间
+    private long logoffTime;//登录时间
+    private int targetId;//目标
+    private boolean isplayer;//是否是玩家
+    private byte type;//生物种类
+
 
     public String getPwd() {
         return pwd;
@@ -24,7 +42,7 @@ public class PlayerStatus {
         this.name = name;
     }
 
-    private float y;
+
 
     public float getX() {
         return x;
@@ -50,69 +68,75 @@ public class PlayerStatus {
         this.z = z;
     }
 
-    public int getBodyAngle() {
-        return bodyAngle;
-    }
-
-    public void setBodyAngle(int bodyAngle) {
-        this.bodyAngle = bodyAngle;
-    }
-
-    public int getHeadAngle() {
-        return headAngle;
-    }
-
-    public void setHeadAngle(int headAngle) {
-        this.headAngle = headAngle;
-    }
-
-    public int getHeadAngle2() {
-        return headAngle2;
-    }
-
-    public void setHeadAngle2(int headAngle2) {
-        this.headAngle2 = headAngle2;
-    }
-
-    public byte getHeadEquip() {
+    public int getHeadEquip() {
         return headEquip;
     }
 
-    public void setHeadEquip(byte headEquip) {
+    public void setHeadEquip(int headEquip) {
         this.headEquip = headEquip;
     }
 
-    public byte getBodyEquip() {
+    public int getBodyEquip() {
         return bodyEquip;
     }
 
-    public void setBodyEquip(byte bodyEquip) {
+    public void setBodyEquip(int bodyEquip) {
         this.bodyEquip = bodyEquip;
     }
 
-    public byte getHandEquip() {
+    public int getHandEquip() {
         return handEquip;
     }
 
-    public void setHandEquip(byte handEquip) {
+    public void setHandEquip(int handEquip) {
         this.handEquip = handEquip;
     }
 
-    public byte getShoeEquip() {
+    public int getShoeEquip() {
         return shoeEquip;
     }
 
-    public void setShoeEquip(byte shoeEquip) {
+    public void setShoeEquip(int shoeEquip) {
         this.shoeEquip = shoeEquip;
     }
 
-    public byte getLegEquip() {
+    public int getLegEquip() {
         return legEquip;
     }
 
-    public void setLegEquip(byte legEquip) {
+    public float getBodyAngle() {
+        return bodyAngle;
+    }
+
+    public void setBodyAngle(float bodyAngle) {
+        this.bodyAngle = bodyAngle;
+    }
+
+    public float getHeadAngle() {
+        return headAngle;
+    }
+
+    public void setHeadAngle(float headAngle) {
+        this.headAngle = headAngle;
+    }
+
+    public float getHeadAngle2() {
+        return headAngle2;
+    }
+
+    public void setHeadAngle2(float headAngle2) {
+        this.headAngle2 = headAngle2;
+    }
+
+    public void setLegEquip(int legEquip) {
         this.legEquip = legEquip;
     }
+
+    public boolean isplayer() {
+        return isplayer;
+    }
+
+
 
     public int getId() {
         return id;
@@ -162,20 +186,6 @@ public class PlayerStatus {
         this.type = type;
     }
 
-    private float z;
-    private int bodyAngle;
-    private int headAngle;
-    private int headAngle2;
-    private byte headEquip;
-    private byte bodyEquip;//省体装备
-    private byte handEquip;//手部装备
-    private byte shoeEquip;
-    private byte legEquip;//腿部装备
-    private int id;//id
-    private long loginTime;//下线时间
-    private long logoffTime;//登录时间
-    private int targetId;//目标
-    private boolean isplayer;//是否是玩家
-    private byte type;//生物种类
+
 
 }

@@ -1,6 +1,8 @@
 package com.dozenx.game.engine.command;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.network.server.PlayerStatus;
+import com.dozenx.util.ByteBufferWrap;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
@@ -13,13 +15,13 @@ public class EquipCmd extends   BaseGameCmd{
     private boolean deleted;
    // private LivingThing livingThing;
 
-    public ItemDefinition getItem() {
+   /* public ItemDefinition getItem() {
         return item;
     }
 
     public void setItem(ItemDefinition item) {
         this.item = item;
-    }
+    }*/
 
     public int getUserId() {
         return userId;
@@ -36,64 +38,63 @@ public class EquipCmd extends   BaseGameCmd{
     public void setPart(EquipPartType part) {
         this.part = part;
     }
-
-    private ItemDefinition item;
+    private ItemType itemType;
+   // private ItemDefinition item;
     private int userId;
     final CmdType cmdType = CmdType.EQUIP;
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
+
     private EquipPartType part;
     public EquipCmd(byte[] bytes){
         parse(bytes);
     }
     public EquipCmd(LivingThing live, EquipPartType pos, ItemDefinition item){
        // this.livingThing =live;
-        this.item = item;
+        if(item!=null){
+            this.itemType = item.getItemType();
+        }else{
+
+        }
+
         this.part =pos;
         this.userId =live.id;
 
     }
 
-    //equip 4 |userId|part 2|item |itemId|
+    //equip 4 |userId|part 2|item |itemId todo|
     public byte[] toBytes(){
-       /* return ByteUtil.getBytes(ByteUtil.getBytes((byte)cmdType.ordinal()),
-        ByteUtil.getBytes((byte)part.ordinal()),
-        ByteUtil.getBytes((byte)item.getItemType().ordinal()));*/
-     /*   new byte[]{(byte)cmdType.ordinal(),(byte)part.ordinal(),(byte)item.getItemType().ordinal()};*/
-        byte[] bytes =new byte[8];
-        byte[] userIdByteAry = ByteUtil.getBytes(userId);
-        bytes[0]= (byte)cmdType.ordinal();
-        bytes[1]= userIdByteAry[0];
-        bytes[2]= userIdByteAry[1];
-        bytes[3]= userIdByteAry[2];
-        bytes[4]= userIdByteAry[3];
-        bytes[5]= (byte)part.ordinal();
-        if(item!= null){
-            bytes[6]= (byte)item.getItemType().ordinal();
-        }else{
-            bytes[6]= -1;
-        }
 
-       // byte[] userIdByteAry = ByteUtil.getBytes(userId);
-       // bytes[7]=
-       // ByteUtil.getBytes();
-        return bytes;
+        return ByteUtil.createBuffer().put(cmdType.getType())
+                .put(userId)
+                .put(getPart().getType())
+                .put(itemType.getType()).array();
+
+
+
+
     }
     public void parse(byte[] bytes){
-       // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
-        if(bytes[0]!=CmdType.EQUIP.ordinal()){
-            LogUtil.err("hello");
-        }
-        this.userId =ByteUtil.getInt( ByteUtil.getBytes(bytes,1,4));
-        this.part = EquipPartType.values()[bytes[5]];
-
-        if(bytes[6]!=-1){
-            this.item = TextureManager.getItemDefinition( ItemType.values()[ bytes[6]]);
-        }
-        //bytes = ByteUtil.getBytes(byteArray,8,4);
-      //  this.item = TextureManager.getItemDefinition( ItemType.values()[ ByteUtil.getInt(bytes)]);
+        ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
+        byteBufferWrap.getInt();
+        this.userId= byteBufferWrap.getInt();
+        this.part = EquipPartType.values()[byteBufferWrap.get()];
+        this.itemType=ItemType.values()[byteBufferWrap.get()];
     }
     @Override
     public void delete() {
         this.deleted=true;
+    }
+
+    @Override
+    public CmdType getCmdType() {
+        return cmdType;
     }
 
     public int val;

@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.lifething.manager;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
@@ -278,15 +279,15 @@ public class LivingThingManager {
             LivingThing livingThing = this.getLivingThingById(id);
             if(livingThing!=null ){
                 if(cmd.getPart()== EquipPartType.BODY){
-                    livingThing.addBodyEquip(cmd.getItem());
+                    livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HEAD){
-                    livingThing.addHeadEquip(cmd.getItem());
+                    livingThing.addHeadEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HAND){
-                    livingThing.addHandEquip(cmd.getItem());
+                    livingThing.addHandEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.LEG){
-                    livingThing.addLegEquip(cmd.getItem());
+                    livingThing.addLegEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.SHOE){
-                    livingThing.addShoeEquip(cmd.getItem());
+                    livingThing.addShoeEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }
             }
 

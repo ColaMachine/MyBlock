@@ -3,8 +3,8 @@ package com.dozenx.game.engine.command;
 /**
  * Created by luying on 17/2/7.
  */
-public class BaseGameCmd  implements  GameCmd{
-    final CmdType cmdType =CmdType.POS;
+public abstract class BaseGameCmd  implements  GameCmd{
+
     private boolean deleted;
 
     @Override
@@ -17,10 +17,7 @@ public class BaseGameCmd  implements  GameCmd{
         this.deleted=true;
     }
 
-    @Override
-    public CmdType getCmdType() {
-        return cmdType;
-    }
+
 
     public int val;
 

@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.command;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.util.ByteBufferWrap;
 import core.log.LogUtil;
 import com.dozenx.util.ByteUtil;
 
@@ -8,7 +9,7 @@ import com.dozenx.util.ByteUtil;
  * Created by luying on 17/2/7.
  */
 public class PosCmd extends   BaseGameCmd{
-    private boolean deleted;
+
     public int userId;
     public float x;
     public float y;
@@ -37,26 +38,36 @@ public class PosCmd extends   BaseGameCmd{
 
 
     public byte[] toBytes(){
-        //ByteBuffer byteBuffer = BufferUtils.createByteBuffer(10);
-        //byteBuffer.putFloat();
-        return /*ByteUtil.getBytes(ByteUtil.getBytes((byte)cmdType.ordinal()),
-        ByteUtil.getBytes((byte)part.ordinal()),
-        ByteUtil.getBytes((byte)item.getItemType().ordinal()));*/
-                ByteUtil.getBytes(new byte[]{(byte)cmdType.ordinal()},ByteUtil.getBytes(userId),ByteUtil.getBytes(x),ByteUtil.getBytes(y),ByteUtil.getBytes(z),ByteUtil.getBytes(bodyAngle),
-                        ByteUtil.getBytes(headAngle),
-                        ByteUtil.getBytes(headAngle2));
-       // new byte[]{(byte)cmdType.ordinal(),(byte)part.ordinal(),(byte)item.getItemType().ordinal()};
+
+
+        return  ByteUtil.createBuffer().put(CmdType.PLAYERSTATUS.getType())
+                .put( userId)
+                .put(x)
+                .put(y)
+                .put(z)
+                .put(bodyAngle)
+                .put(headAngle)
+                .put(headAngle2).array();
+
+
+
+
     }
     public void parse(byte[] bytes){
+
+        ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
+        byteBufferWrap.getInt();
+        this.userId= byteBufferWrap.getInt();
+
        // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
         //this.part = EquipPartType.values()[bytes[1]];
         this.userId = ByteUtil.getInt(ByteUtil.getBytes(bytes,1,4));
-        this.x = ByteUtil.getFloat(ByteUtil.getBytes(bytes,5,4));
-        this.y = ByteUtil.getFloat(ByteUtil.getBytes(bytes,9,4));
-        this.z = ByteUtil.getFloat(ByteUtil.getBytes(bytes,13,4));
-        this.bodyAngle = ByteUtil.getFloat(ByteUtil.getBytes(bytes,17,4));
-        this.headAngle = ByteUtil.getFloat(ByteUtil.getBytes(bytes,21,4));
-        this.headAngle2 = ByteUtil.getFloat(ByteUtil.getBytes(bytes,25,4));
+        this.x = byteBufferWrap.getFloat();
+        this.y = byteBufferWrap.getFloat();
+        this.z =byteBufferWrap.getFloat();
+        this.bodyAngle = byteBufferWrap.getFloat();
+        this.headAngle = byteBufferWrap.getFloat();
+        this.headAngle2 = byteBufferWrap.getFloat();
 
         if(userId==0) LogUtil.err("userId shold not be 0");
        // this.item = TextureManager.getItemDefinition( ItemType.values()[ bytes[1]]);
@@ -64,19 +75,7 @@ public class PosCmd extends   BaseGameCmd{
       //  this.item = TextureManager.getItemDefinition( ItemType.values()[ ByteUtil.getInt(bytes)]);
     }
     @Override
-    public void delete() {
-        this.deleted=true;
-    }
-
-    public int val;
-
-    @Override
-    public int val(){
-        return val;
-
-    }
-
-    public void setVal(int val){
-        this.val=val;
+    public CmdType getCmdType() {
+        return cmdType;
     }
 }

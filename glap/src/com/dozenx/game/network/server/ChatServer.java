@@ -1,9 +1,12 @@
 package com.dozenx.game.network.server;
 
+import cola.machine.game.myblocks.config.SecurityConfig;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.CmdType;
-import com.dozenx.game.network.server.handler.GameServerHandler;
-import com.dozenx.game.network.server.handler.LoginHandler;
+import com.dozenx.game.network.server.bean.ServerContext;
+import com.dozenx.game.network.server.handler.*;
+import com.dozenx.game.network.server.service.impl.UserService;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,25 +19,26 @@ import java.util.Stack;
  * Created by luying on 16/10/7.
  */
 public class ChatServer {
-
+    ServerContext serverContext =new ServerContext();
     public static void main(String args[]){
         ChatServer server =new ChatServer();
         server.start();
     }
-    public static HashMap<String,PlayerStatus> name2PalyerMap  =new HashMap();
 
-    //public HashMap<Integer , Socket> socketMap =new HashMap();
-    public Map<Integer,Worker> workerMap =new Hashtable();
-    public Stack<byte[]> messages=new Stack<>();
-    public Stack<String> livingThings=new Stack<>();
-    public static HashMap<CmdType,GameServerHandler> allHandlerMap =new HashMap<>();
+
     public  void start(){
+        CoreRegistry.put(UserService.class , new UserService());
         //注册所有服务
-        allHandlerMap.put(CmdType.LOGIN,new LoginHandler());
+        serverContext. getAllHandlerMap().put(CmdType.LOGIN,new LoginHandler(serverContext));
+        serverContext. allHandlerMap.put(CmdType.EQUIP,new EquipHandler(serverContext));
+        serverContext. allHandlerMap.put(CmdType.SAY,new SayHandler(serverContext));
+        serverContext. allHandlerMap.put(CmdType.POS,new PosHandler(serverContext));
 
+
+        GameServerHandler serverHandler = serverContext. allHandlerMap.get(CmdType.LOGIN);
         ServerSocket s = null;
 
-        Thread allSender =new AllSender(messages,workerMap);allSender.start();
+        Thread allSender =new AllSender(serverContext.messages,serverContext.workerMap);allSender.start();
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {
             //设定服务端的端口号
@@ -44,9 +48,9 @@ public class ChatServer {
 
             while(true){
                 Socket socket = s.accept();
-                Worker worker =new Worker(socket,messages);
+                Worker worker =new Worker(socket,serverContext);
                 worker.start();
-                workerMap.put(worker.hashCode(),worker);
+                serverContext.workerMap.put(worker.hashCode(),worker);
             }
 
 

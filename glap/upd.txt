@@ -1,0 +1,1 @@
+{"bodyAngle":0,"bodyEquip":0,"handEquip":0,"headAngle":0,"headAngle2":0,"headEquip":0,"id":8891,"isplayer":false,"legEquip":0,"loginTime":0,"logoffTime":0,"name":"1","pwd":"1","shoeEquip":0,"targetId":0,"type":0,"x":0,"y":0,"z":0}

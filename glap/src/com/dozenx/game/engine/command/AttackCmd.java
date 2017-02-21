@@ -19,4 +19,8 @@ public class AttackCmd extends BaseGameCmd{
     public void parse(byte[] byteArray){
         this.type = AttackType.values()[ ByteUtil.getInt(byteArray)];
     }
+    @Override
+    public CmdType getCmdType() {
+        return cmdType;
+    }
 }

@@ -552,9 +552,7 @@ if(!Switcher.SHADER_ENABLE)
     }
 
     private void initManagers() {
-        Client client = new Client();
-        client.start();
-        CoreRegistry.put(Client.class, client);
+
         BagController bagController = new BagController();
         CoreRegistry.put(BagController.class, bagController);
         CoreRegistry.put(InventoryController.class, new InventoryController());

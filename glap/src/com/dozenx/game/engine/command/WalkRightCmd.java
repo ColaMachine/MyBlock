@@ -8,4 +8,10 @@ public class WalkRightCmd extends BaseGameCmd{
     public WalkRightCmd(boolean forward, boolean left, boolean right, boolean back){
         
     }
+
+    private CmdType cmdType =CmdType.WALK;
+    @Override
+    public CmdType getCmdType() {
+        return cmdType;
+    }
 }

@@ -3,6 +3,8 @@ package cola.machine.game.myblocks.engine.modes;
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
+import com.dozenx.game.engine.command.ResultCmd;
+import com.dozenx.game.network.client.bean.GameCallBackTask;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.NuiManager;
@@ -36,6 +38,10 @@ Document document =new Document();
     EditField userName ;
     EditField pwd ;
     public void init(GameEngine engine) {  OpenglUtils.checkGLError();
+        Client client = new Client();
+        client.start();
+        CoreRegistry.put(Client.class, client);
+
         TextureManager textureManager =new TextureManager();
 
         ShaderManager manager = new ShaderManager();
@@ -286,8 +292,31 @@ if(!Switcher.SHADER_ENABLE) {
        if(BlockEngine.engine!=null ){
 
          //  CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText()));
-           ResultDTO dto = CoreRegistry.get(LoginClientController.class).login(userName.getText(),pwd.getText());
-           //BlockEngine.engine.changeState(new GamingState());
+          // ResultDTO dto = CoreRegistry.get(LoginClientController.class).login(userName.getText(),pwd.getText());
+           GameCallBackTask task = new GameCallBackTask(){
+               @Override
+               public void run(){
+                    if(getResult().getResult()==0){
+                        BlockEngine.engine.changeState(new GamingState());
+                    }else{
+                        return;
+                    }
+               }
+           };
+           int threadId = (int)(Math.random()*100000);
+           Client.taskMap.put(threadId, task);
+
+           CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText(),threadId));
+
+         /*  synchronized (task) {
+               try {
+                   task.wait();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+           LogUtil.println("接收到回执");
+           task.run();*/
        }
        else {
            NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
