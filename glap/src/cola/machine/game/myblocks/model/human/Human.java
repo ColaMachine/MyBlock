@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.network.client.Client;
@@ -62,6 +63,7 @@ public class Human extends LivingThing {
 
 	public Human(/*	BlockRepository blockRepository*/){
         super();
+        this.id= Constants.USER_ID;
         client =CoreRegistry.get(Client.class);
 /*
 

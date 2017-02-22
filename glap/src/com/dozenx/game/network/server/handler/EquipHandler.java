@@ -27,7 +27,7 @@ public class EquipHandler extends GameServerHandler {
         if(cmd.getCmdType()== CmdType.EQUIP){
            PlayerStatus info =  serverContext.id2PalyerMap.get(cmd.getUserId());
             if(info==null){
-                LogUtil.err(" palyer info can't be null");
+                LogUtil.println(" palyer info can't be null userId:"+cmd.getUserId());
                 return new ResultCmd(1,"失败",0);
 
             }

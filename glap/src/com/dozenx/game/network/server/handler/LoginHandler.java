@@ -1,6 +1,7 @@
 package com.dozenx.game.network.server.handler;
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.command.PlayerSynCmd;
 import com.dozenx.game.network.server.PlayerStatus;
 import com.dozenx.game.engine.command.GameCmd;
@@ -41,7 +42,7 @@ public class LoginHandler extends GameServerHandler {
                 userService.save(playerStatus);
             }
             if(playerStatus.getPwd().equals(pwd)){
-                return new ResultCmd(0,"登录成功",loginCmd.getThreadId());
+                return new ResultCmd(0, JSON.toJSONString(playerStatus),loginCmd.getThreadId());
             }else{
                 serverContext.messages.offer(new PlayerSynCmd(playerStatus).toBytes());
                 return new ResultCmd(1,"密码错误",loginCmd.getThreadId());

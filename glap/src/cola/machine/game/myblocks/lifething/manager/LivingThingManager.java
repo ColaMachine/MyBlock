@@ -7,14 +7,13 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.engine.command.EquipCmd;
-import com.dozenx.game.engine.command.EquipPartType;
-import com.dozenx.game.engine.command.PosCmd;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.server.PlayerStatus;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Vector;
 
@@ -280,6 +279,35 @@ public class LivingThingManager {
             if(livingThing!=null ){
                 if(cmd.getPart()== EquipPartType.BODY){
                     livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }else if(cmd.getPart()== EquipPartType.HEAD){
+                    livingThing.addHeadEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }else if(cmd.getPart()== EquipPartType.HAND){
+                    livingThing.addHandEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }else if(cmd.getPart()== EquipPartType.LEG){
+                    livingThing.addLegEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }else if(cmd.getPart()== EquipPartType.SHOE){
+                    livingThing.addShoeEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }
+            }
+
+
+
+
+        }
+
+        while(client.playerSync.size()>0 && client.playerSync.peek()!=null){
+            PlayerSynCmd cmd = (PlayerSynCmd)client.playerSync.pop();
+            PlayerStatus info  = cmd.getPlayerStatus();
+            int id =info.getId();
+            /*if(player.id == id){
+                continue;
+            }*/
+            //appendRow("color"+curColor, msg);
+            LivingThing livingThing = this.getLivingThingById(id);
+            if(livingThing!=null ){
+                if(info.getBodyEquip()>0){
+                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HEAD){
                     livingThing.addHeadEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HAND){

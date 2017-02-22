@@ -3,8 +3,10 @@ package cola.machine.game.myblocks.engine.modes;
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
+import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.command.ResultCmd;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
+import com.dozenx.game.network.server.PlayerStatus;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.NuiManager;
@@ -297,7 +299,14 @@ if(!Switcher.SHADER_ENABLE) {
                @Override
                public void run(){
                     if(getResult().getResult()==0){
-                        BlockEngine.engine.changeState(new GamingState());
+
+                        if(getResult().getMsg()!=null){
+                            PlayerStatus status = JSON.parseObject(getResult().getMsg(),PlayerStatus.class);
+                            GamingState state = new GamingState();
+                            Constants.USER_ID=status.getId() ;
+
+                        }
+
                     }else{
                         return;
                     }

@@ -1,6 +1,5 @@
 package com.dozenx.game.network.server;
 
-import cola.machine.game.myblocks.config.SecurityConfig;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.CmdType;
@@ -27,7 +26,7 @@ public class ChatServer {
 
 
     public  void start(){
-        CoreRegistry.put(UserService.class , new UserService());
+        CoreRegistry.put(UserService.class , new UserService(serverContext));
         //注册所有服务
         serverContext. getAllHandlerMap().put(CmdType.LOGIN,new LoginHandler(serverContext));
         serverContext. allHandlerMap.put(CmdType.EQUIP,new EquipHandler(serverContext));

@@ -38,8 +38,12 @@ public class Client extends Thread{
         pw.flush();*/
         try {
             byte[] oldByteAry = cmd.toBytes();
+
             if(ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4))>10){
                 LogUtil.err("错误");
+            }
+            if(ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4)) == 5){
+                LogUtil.println("错误");
             }
           /*  byte[] newByteAry =
 

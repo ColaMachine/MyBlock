@@ -14,6 +14,7 @@ public class ServerContext {
     public  HashMap<String,PlayerStatus> name2PalyerMap  =new HashMap();
     public  HashMap<Integer,PlayerStatus> id2PalyerMap  =new HashMap();
     public  HashMap<CmdType,GameServerHandler> allHandlerMap =new HashMap<>();
+    public HashMap<String ,PlayerStatus> name2InfoMap =new HashMap();
 
 
     //public HashMap<Integer , Socket> socketMap =new HashMap();

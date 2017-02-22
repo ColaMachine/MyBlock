@@ -14,9 +14,13 @@ public class PlayerSynCmd extends   BaseGameCmd{
     final CmdType cmdType = CmdType.EQUIP;
     private PlayerStatus playerStatus;
 
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
+    }
 
-
-
+    public void setPlayerStatus(PlayerStatus playerStatus) {
+        this.playerStatus = playerStatus;
+    }
 
     public PlayerSynCmd(byte[] bytes){
         parse(bytes);

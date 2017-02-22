@@ -40,7 +40,7 @@ public class PosCmd extends   BaseGameCmd{
     public byte[] toBytes(){
 
 
-        return  ByteUtil.createBuffer().put(CmdType.PLAYERSTATUS.getType())
+        return  ByteUtil.createBuffer().put(cmdType.getType())
                 .put( userId)
                 .put(x)
                 .put(y)

@@ -13,6 +13,8 @@ import java.nio.file.Paths;
  * Created by luying on 14-10-5.
  */
 public class Constants {
+
+    public static  int USER_ID=30;
     public static final int FPS=30;
     public static final int WINDOW_WIDTH=1152;
     public static final int WINDOW_HEIGHT=720;
