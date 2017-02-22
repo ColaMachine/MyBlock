@@ -7,6 +7,11 @@ import com.dozenx.game.engine.command.PosCmd;
 /**
  * Created by luying on 16/10/7.
  */
+
+/**
+ * 用来驱动livingThingManager 做networkupdate
+ * 并更新主角的状态到服务器上
+ */
 public class SynchronTask extends Thread{
     Client client ;
     LivingThingManager livingThingManager;

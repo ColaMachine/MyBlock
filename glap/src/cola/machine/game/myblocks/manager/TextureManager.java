@@ -176,7 +176,7 @@ public class TextureManager {
         }
         itemType2ItemDefinitionMap.put(ItemType.valueOf(name),item);
         if (name.equals("fur_helmet")) {
-            LogUtil.println("fur_helmet");
+            //LogUtil.println("fur_helmet");
         }
     }
 
@@ -230,7 +230,7 @@ public class TextureManager {
             if(StringUtil.isNotEmpty(textureIndex2NameMap.get(textureImg.textureHandle))){
                LogUtil.err("name exists"+name);
             }
-            LogUtil.println(name+":"+textureImg.textureHandle);
+//            LogUtil.println(name+":"+textureImg.textureHandle);
             textureIndex2NameMap.put(textureImg.textureHandle,name);
 
             imageMap.put(name, textureImg);
@@ -385,7 +385,7 @@ public class TextureManager {
             for(File file : fileList) {
                 String json = FileUtil.readFile2Str(file);
                 List<HashMap> list;
-                try {   LogUtil.println(json.substring(3616,3699));
+                try {   //LogUtil.println(json.substring(3616,3699));
                   list = JSON.parseArray(json, HashMap.class);
 
                 }catch (Exception e){

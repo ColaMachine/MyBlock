@@ -612,13 +612,13 @@ if(!Switcher.SHADER_ENABLE)
         human = new Human();
         human.setHuman(1, 53,-25, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
-
+        human.id= Constants.USER_ID;
        // LivingThing livingThing = new LivingThing();
        // livingThing.position = new GL_Vector(10,125, 0);
         livingThingManager.setPlayer(human);
         //livingThingManager.add(livingThing);
         SynchronTask task = new SynchronTask();
-       task.start();
+        task.start();
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
         CoreRegistry.put(Player.class,player);*/

@@ -31,7 +31,7 @@ public class UserService implements IUserService {
     public void save(PlayerStatus playerStatus){
 
         serverContext.name2InfoMap.put(playerStatus.getName(),playerStatus);
-        serverContext.id2PalyerMap.put(playerStatus.getId(),playerStatus);
+       // serverContext.id2PalyerMap.put(playerStatus.getId(),playerStatus);
         File file = PathManager.getInstance().getHomePath().resolve("upd.txt").toFile();
         try {
             FileUtil.writeFile(file,JSON.toJSONString(playerStatus)+"\r\n");
@@ -57,7 +57,7 @@ public class UserService implements IUserService {
                 if(StringUtil.isNotEmpty(s)){
                     PlayerStatus playerStatus = JSON.parseObject(s,PlayerStatus.class);
                     serverContext.name2InfoMap.put(playerStatus.getName(),playerStatus);
-                    serverContext.id2PalyerMap.put(playerStatus.getId(),playerStatus);
+                    //serverContext.id2PalyerMap.put(playerStatus.getId(),playerStatus);
                 }
             }
         } catch (IOException e) {

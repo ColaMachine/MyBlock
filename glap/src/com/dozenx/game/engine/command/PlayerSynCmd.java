@@ -57,21 +57,21 @@ public class PlayerSynCmd extends   BaseGameCmd{
         private String name;
         private String pwd;
 */
-        return  ByteUtil.createBuffer().put(CmdType.PLAYERSTATUS.getType())
-                .put( playerStatus.getX())
-                .put(playerStatus.getY())
-                .put(playerStatus.getZ())
-                .put(playerStatus.getBodyAngle())
-                .put(playerStatus.getHeadAngle())
-                .put(playerStatus.getHeadAngle2())
-                .put(playerStatus.getHeadEquip())
-                .put(playerStatus.getBodyEquip())
-                .put(playerStatus.getHandEquip())
-                .put(playerStatus.getLegEquip())
-                .put(playerStatus.getShoeEquip())
-
-        .put(playerStatus.getId())
-        .put(playerStatus.isIsplayer()).array();
+        return  ByteUtil.createBuffer()
+            .put(CmdType.PLAYERSTATUS.getType())
+            .put( playerStatus.getX())
+            .put(playerStatus.getY())
+            .put(playerStatus.getZ())
+            .put(playerStatus.getBodyAngle())
+            .put(playerStatus.getHeadAngle())
+            .put(playerStatus.getHeadAngle2())
+            .put(playerStatus.getHeadEquip())
+            .put(playerStatus.getBodyEquip())
+            .put(playerStatus.getHandEquip())
+            .put(playerStatus.getLegEquip())
+            .put(playerStatus.getShoeEquip())
+            .put(playerStatus.getId())
+            .put(playerStatus.isIsplayer()).array();
 
 
     }
@@ -90,7 +90,7 @@ public class PlayerSynCmd extends   BaseGameCmd{
         playerStatus.setHeadAngle2(byteBufferWrap.getFloat());
         playerStatus.setHeadEquip(byteBufferWrap.getInt());
         playerStatus.setBodyEquip(byteBufferWrap.getInt());
-        playerStatus.setBodyEquip(byteBufferWrap.getInt());
+
         playerStatus.setHandEquip(byteBufferWrap.getInt());
         playerStatus.setLegEquip(byteBufferWrap.getInt());
         playerStatus.setShoeEquip(byteBufferWrap.getInt());

@@ -21,4 +21,6 @@ public enum CmdType {
     public int getType(){
         return this.ordinal();
     }
+
+
 }

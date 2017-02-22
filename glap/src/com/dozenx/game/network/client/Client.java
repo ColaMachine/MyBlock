@@ -1,7 +1,11 @@
 package com.dozenx.game.network.client;
 
+import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
@@ -18,12 +22,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by luying on 16/10/7.
  */
 public class Client extends Thread{
-    public static Stack<GameCmd> messages=new Stack<GameCmd>();
-    public static Stack<GameCmd> equips=new Stack<GameCmd>();
-    public static Stack<GameCmd> movements=new Stack<GameCmd>();
-    public static Stack<GameCmd> newborns=new Stack<GameCmd>();
+    public static Stack<SayCmd> messages=new Stack<>();
+    public static Stack<EquipCmd> equips=new Stack<>();
+    public static Stack<PosCmd> movements=new Stack<>();
+   // public static Stack<GameCmd> newborns=new Stack<>();
     public static Map<Integer, GameCallBackTask> taskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
-    public static Queue<GameCmd> playerSync=new LinkedList<>();
+    public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();
     ChatFrame chatFrame;
     public Client(){
          chatFrame =  CoreRegistry.get(ChatFrame.class );
@@ -45,10 +49,13 @@ public class Client extends Thread{
             if(ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4)) == 5){
                 LogUtil.println("错误");
             }
+            if(cmd.getCmdType() == CmdType.POS){
+                LogUtil.println(" is moving");
+            }
           /*  byte[] newByteAry =
 
             ByteUtil.getBytes(oldByteAry,new byte[]{'\n'});*/
-            LogUtil.println("client 准备发送数据类型:"+ ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4))+"长度:"+(oldByteAry.length-4));
+            LogUtil.println("client 准备发送数据类型:"+ cmd.getCmdType()+"长度:"+(oldByteAry.length-4));
 
             outputStream.write(oldByteAry);
             LogUtil.println("send over");
@@ -117,10 +124,13 @@ public class Client extends Thread{
             int n=0;
             while(true){//不断读取数据 然后压入到messages里 由界面端显示出stack
                 //String str = br.readLine();
-
+                if(BlockEngine.engine.getState() instanceof StartMenuState){
+                    Thread.sleep( 1000);
+                    continue;
+                }
                 inputSteram.read(bytes,0,4);
                 int length = ByteUtil.getInt(bytes);
-                LogUtil.println("client received data length: "+length);
+              //  LogUtil.println("client received data length: "+length);
                 if(length<=0){
                   /* n=  inputSteram.read(bytes);
                     if(n==-1){*/
@@ -144,7 +154,7 @@ public class Client extends Thread{
                 if(ByteUtil.getInt(newBytes)>10){
                     LogUtil.err("错误");
                 }
-                LogUtil.println("client 准备接收数据类型:"+ ByteUtil.getInt(newBytes)+"长度:"+(length));
+                LogUtil.println("client 准备接收数据类型:"+ CmdType.values()[ByteUtil.getInt(newBytes)]+"长度:"+(length));
                 try {
                     if (n == 0) {
                         LogUtil.err("读取的数据为0");
@@ -154,15 +164,15 @@ public class Client extends Thread{
                     GameCmd cmd = CmdUtil.getCmd(newBytes);
                     LogUtil.println("the cmd was : "+cmd.getCmdType());
                     if (cmd.getCmdType()== CmdType.EQUIP) {//equip
-                        equips.push(cmd);
+                        equips.push((EquipCmd) cmd);
 
                     } else if (cmd.getCmdType()== CmdType.POS) {
-                        movements.push(cmd);
+                        movements.push((PosCmd)cmd);
                     } else if (cmd.getCmdType()== CmdType.SAY) {
-                        messages.push(cmd);
+                        messages.push((SayCmd)cmd);
                     }
                     else if (cmd.getCmdType()== CmdType.PLAYERSTATUS) {
-                        playerSync.offer(cmd);
+                        playerSync.offer((PlayerSynCmd)cmd);
                     }
                     else if (cmd.getCmdType()== CmdType.RESULT) {
                          ResultCmd result = (ResultCmd) cmd;

@@ -20,8 +20,16 @@ public class ServerContext {
     //public HashMap<Integer , Socket> socketMap =new HashMap();
     public Map<Integer,Worker> workerMap =new Hashtable();
     public Queue<byte[]> messages=new LinkedList<>();
-    public Queue<String> livingThings=new LinkedList<>();
+    public Queue<PlayerStatus> livingThings=new LinkedList<>();
 
+
+    public void addLivingThing(PlayerStatus status){
+
+        id2PalyerMap.put(status.getId(),status);
+    }
+    public void removeLivingThing(PlayerStatus status){
+        id2PalyerMap.remove(status.getId());
+    }
 
     public Queue<byte[]> getMessages() {
         return messages;
@@ -31,13 +39,7 @@ public class ServerContext {
         this.messages = messages;
     }
 
-    public Queue<String> getLivingThings() {
-        return livingThings;
-    }
 
-    public void setLivingThings(Queue<String> livingThings) {
-        this.livingThings = livingThings;
-    }
 
     public HashMap<CmdType, GameServerHandler> getAllHandlerMap() {
         return allHandlerMap;

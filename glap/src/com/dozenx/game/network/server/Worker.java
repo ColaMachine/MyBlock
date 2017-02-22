@@ -54,7 +54,7 @@ public class Worker extends Thread {
                     LogUtil.err("错误");
                 }
                 //
-                LogUtil.println("server 准备发送数据类型:"+ ByteUtil.getInt(ByteUtil.slice(bytes,4,4))+"长度:"+(bytes.length-4));
+                LogUtil.println("server 准备发送数据类型:"+ CmdType.values()[(ByteUtil.getInt(ByteUtil.slice(bytes,4,4)))]+"长度:"+(bytes.length-4));
 
                 pw.write(bytes);
             } catch (IOException e) {
@@ -112,7 +112,7 @@ public class Worker extends Thread {
                /* while(){
 
                 }*/
-            LogUtil.println("server 接收到数据类型:"+ ByteUtil.getInt(newBytes)+"长度:"+length);
+            LogUtil.println("server 接收到数据类型:"+CmdType.values()[(ByteUtil.getInt(newBytes))] +"长度:"+length);
                 GameCmd cmd = CmdUtil.getCmd(newBytes);
                 GameServerHandler handler = serverContext.allHandlerMap.get(cmd.getCmdType());
                 if(handler!= null ){
@@ -129,7 +129,7 @@ public class Worker extends Thread {
         } catch (Exception e) {
             // TODO Auto-generated catch block
            e.printStackTrace();
-            LogUtil.err(e);
+            LogUtil.println(e.getMessage());
         }finally{
             System.out.println("Close.....");
             try {

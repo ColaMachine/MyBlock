@@ -26,6 +26,9 @@ public class PosCmd extends   BaseGameCmd{
         parse(bytes);
     }
     public PosCmd(LivingThing livingThing){
+        if(livingThing.id==1024){
+            LogUtil.println("that 's bug");
+        }
         this.userId =livingThing.id;
         this.x = livingThing.position.x;
         this.y = livingThing.position.y;
@@ -58,16 +61,13 @@ public class PosCmd extends   BaseGameCmd{
         ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
         byteBufferWrap.getInt();
         this.userId= byteBufferWrap.getInt();
-
-       // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
-        //this.part = EquipPartType.values()[bytes[1]];
-        this.userId = ByteUtil.getInt(ByteUtil.getBytes(bytes,1,4));
-        this.x = byteBufferWrap.getFloat();
-        this.y = byteBufferWrap.getFloat();
-        this.z =byteBufferWrap.getFloat();
+        this.x=byteBufferWrap.getFloat();
+        this.y=byteBufferWrap.getFloat();
+        this.z=byteBufferWrap.getFloat();
         this.bodyAngle = byteBufferWrap.getFloat();
         this.headAngle = byteBufferWrap.getFloat();
         this.headAngle2 = byteBufferWrap.getFloat();
+
 
         if(userId==0) LogUtil.err("userId shold not be 0");
        // this.item = TextureManager.getItemDefinition( ItemType.values()[ bytes[1]]);

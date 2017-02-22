@@ -74,22 +74,11 @@ public class EquipCmd extends   BaseGameCmd{
         return ByteUtil.createBuffer().put(cmdType.getType())
                 .put(userId)
                 .put(getPart().getType())
-                .put(itemType.getType()).array();
+                .put(itemType == null ?-1: itemType.getType()).array();
 
 
 
 
-    }
-    public void parse(byte[] bytes){
-        ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
-        byteBufferWrap.getInt();
-        this.userId= byteBufferWrap.getInt();
-        this.part = EquipPartType.values()[byteBufferWrap.get()];
-        this.itemType=ItemType.values()[byteBufferWrap.get()];
-    }
-    @Override
-    public void delete() {
-        this.deleted=true;
     }
 
     @Override
@@ -97,15 +86,17 @@ public class EquipCmd extends   BaseGameCmd{
         return cmdType;
     }
 
-    public int val;
+    public void parse(byte[] bytes){
+        ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
+        byteBufferWrap.getInt();
+        this.userId= byteBufferWrap.getInt();
+        this.part = EquipPartType.values()[byteBufferWrap.get()];
+        int itemTypeVal = byteBufferWrap.getInt();
 
-    @Override
-    public int val(){
-        return val;
+        if(itemTypeVal>=0){
+            this.itemType=ItemType.values()[itemTypeVal];
+        }
 
     }
 
-    public void setVal(int val){
-        this.val=val;
-    }
 }

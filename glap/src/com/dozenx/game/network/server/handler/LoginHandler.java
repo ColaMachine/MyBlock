@@ -14,6 +14,9 @@ import com.dozenx.game.network.server.service.impl.UserService;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * Created by luying on 17/2/18.
  */
@@ -42,9 +45,21 @@ public class LoginHandler extends GameServerHandler {
                 userService.save(playerStatus);
             }
             if(playerStatus.getPwd().equals(pwd)){
-                return new ResultCmd(0, JSON.toJSONString(playerStatus),loginCmd.getThreadId());
-            }else{
                 serverContext.messages.offer(new PlayerSynCmd(playerStatus).toBytes());
+                //把所有人的信息都同步给他
+                serverContext.addLivingThing(playerStatus);
+                Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PalyerMap.entrySet().iterator();
+                for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PalyerMap.entrySet()){
+                    request.getWorker().send(new PlayerSynCmd(entry.getValue()).toBytes());
+                }
+                return new ResultCmd(0, JSON.toJSONString(playerStatus),loginCmd.getThreadId());
+
+                //把所有在线玩家的状态同步给他
+
+
+
+            }else{
+
                 return new ResultCmd(1,"密码错误",loginCmd.getThreadId());
             }
         }

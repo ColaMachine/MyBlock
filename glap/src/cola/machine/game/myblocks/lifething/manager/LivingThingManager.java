@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.lifething.manager;
 
 import cola.machine.game.myblocks.control.DropControlCenter;
+import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -15,6 +16,7 @@ import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.PlayerStatus;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector3f;
@@ -28,7 +30,7 @@ import java.util.Map;
  */
 public class LivingThingManager {
     public static List<LivingThing> livingThings = new ArrayList<>();
-
+    private Map<Integer,LivingThing> livingThingsMap =new HashMap();
     //public LivingThing target ;
     public static LivingThing player;
     Component bendComponent;
@@ -36,7 +38,7 @@ public class LivingThingManager {
 
         LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(1,65,-40);
-        livingThings.add(livingThing);
+        add(livingThing);
         /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -61,7 +63,7 @@ public class LivingThingManager {
         }
         return livingThingsMap.get(id);
     }
-    private Map<Integer,LivingThing> livingThingsMap =new HashMap();
+
 
     public void render(){
         //glUseProgram(ShaderManager.livingThingShaderConfig.getProgramId());
@@ -201,6 +203,7 @@ public class LivingThingManager {
 
     /**
      * 通过定时线程来控制
+     * 主要是网络同步各种状态到任务上
      */
     public void netWorkUpdate(){
         for(int i=livingThings.size()-1;i>=0;i--){
@@ -233,7 +236,13 @@ public class LivingThingManager {
         while(client.movements.size()>0 && client.movements.peek()!=null){
             PosCmd cmd = (PosCmd)client.movements.pop();
             int id = cmd.userId;
-
+            if(player.id == id){
+               /* player.setPosition(x,y,z);
+                player.WalkDir.x= x1;
+                player.WalkDir.y= y1;
+                player.WalkDir.z= z1;*/
+                continue;
+            }
 
             float x = cmd.x;//Float.valueOf(msg[1]);
             float y = cmd.y;//Float.valueOf(msg[2]);
@@ -243,23 +252,18 @@ public class LivingThingManager {
             float headAngle = cmd.headAngle;//Float.valueOf(msg[5]);
             float headAngle2 = cmd.headAngle2;//Float.valueOf(msg[6]);
 
-            if(player.id == id){
-               /* player.setPosition(x,y,z);
-                player.WalkDir.x= x1;
-                player.WalkDir.y= y1;
-                player.WalkDir.z= z1;*/
-                continue;
-            }
+
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
             if(livingThing==null ){
-
-                 livingThing =new LivingThing();livingThing.setPlayer(true);
+               // LogUtil.err("that's bug");
+                continue;
+               /*  livingThing =new LivingThing();livingThing.setPlayer(true);
                 livingThing.id=id;
                // livingThing.name=name;
                 livingThing.setPosition(x,y,z);
 
-                this.add(livingThing);
+                this.add(livingThing);*/
             }
             livingThing.setPosition(x,y,z);
             livingThing.bodyAngle=bodyAngle;
@@ -269,6 +273,7 @@ public class LivingThingManager {
         }
 
         while(client.equips.size()>0 && client.equips.peek()!=null){
+
             EquipCmd cmd = (EquipCmd)client.equips.pop();
             int id = cmd.getUserId();
             /*if(player.id == id){
@@ -295,8 +300,8 @@ public class LivingThingManager {
 
         }
 
-        while(client.playerSync.size()>0 && client.playerSync.peek()!=null){
-            PlayerSynCmd cmd = (PlayerSynCmd)client.playerSync.pop();
+        while(client.playerSync.size()>0 && client.playerSync.peek()!=null && BlockEngine.engine.getState() instanceof  GamingState){
+            PlayerSynCmd cmd = (PlayerSynCmd)client.playerSync.poll();
             PlayerStatus info  = cmd.getPlayerStatus();
             int id =info.getId();
             /*if(player.id == id){
@@ -304,22 +309,38 @@ public class LivingThingManager {
             }*/
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
-            if(livingThing!=null ){
-                if(info.getBodyEquip()>0){
-                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
-                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }else if(cmd.getPart()== EquipPartType.HEAD){
-                    livingThing.addHeadEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }else if(cmd.getPart()== EquipPartType.HAND){
-                    livingThing.addHandEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }else if(cmd.getPart()== EquipPartType.LEG){
-                    livingThing.addLegEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }else if(cmd.getPart()== EquipPartType.SHOE){
-                    livingThing.addShoeEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }
+            boolean exsits =true;
+            if(livingThing!=null ) {
+                livingThing = new LivingThing();
+                exsits =false;
+
             }
 
 
+                if(info.getBodyEquip()>0){
+                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getHeadEquip()>0){
+                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getHandEquip()>0){
+                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getLegEquip()>0){
+                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getShoeEquip()>0){
+                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }
+                livingThing.setPosition(info.getX(),info.getY(),info.getZ());
+                livingThing.headAngle = info.getHeadAngle();
+                livingThing.bodyAngle =info.getBodyAngle();
+                livingThing.headAngle2 = info .getHeadAngle2();
+                livingThing.isPlayer =info.isIsplayer();
+    if(!exsits) {
+        this.add(livingThing);
+    }
 
 
         }

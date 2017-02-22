@@ -31,4 +31,8 @@ public abstract class BaseGameCmd  implements  GameCmd{
     public void setVal(int val){
         this.val=val;
     }
+
+    /*public String toString(){
+        return this.getCmdType()+"";.
+    }*/
 }

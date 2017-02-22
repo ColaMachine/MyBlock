@@ -304,7 +304,8 @@ if(!Switcher.SHADER_ENABLE) {
                             PlayerStatus status = JSON.parseObject(getResult().getMsg(),PlayerStatus.class);
                             GamingState state = new GamingState();
                             Constants.USER_ID=status.getId() ;
-
+                            Constants.userName = userName.getText();
+                        BlockEngine.engine.changeState(state);
                         }
 
                     }else{
