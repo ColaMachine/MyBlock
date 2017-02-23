@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.network.server.PlayerStatus;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
@@ -130,8 +132,11 @@ public class LivingThing extends GameActor{
 
     public float speed=1;
 
-    public GL_Vector ViewDir;   //  观察方向
-    public GL_Vector WalkDir;   //  行走方向
+    public GL_Vector RightVector=new GL_Vector(1,0,0); ;
+    public GL_Vector UpVector =new GL_Vector(0,1,0);
+
+    public GL_Vector ViewDir = new GL_Vector(0,0,-1);  //  观察方向
+    public GL_Vector WalkDir = new GL_Vector(0,0,-1);    //  行走方向
     public float attackDistance=1;
     public GL_Vector position= new GL_Vector(0,0,0);    //  位置
     public GL_Vector nextPosition= new GL_Vector(0,0,0);    //  位置
@@ -627,6 +632,9 @@ this.currentState.update();
                 LogUtil.println("不能为空的");
                 return;
             }
+           /* if(parent.children.size()>0){
+                parent.children.remove(parent.children.size()-1);	changeProperty();
+            }*/
             parent.children.remove(parent.children.size()-1);	changeProperty();
             return;
         }
@@ -649,7 +657,13 @@ this.currentState.update();
     public void addLegEquip(ItemDefinition itemCfg)  {
         Component parent = 	bodyComponent.findChild("human_l_b_leg");
         if(itemCfg==null){
+
+            if( parent.children.size()== 0 ){
+                LogUtil.println("不能为空的");
+                return;
+            }
             parent.children.remove(parent.children.size()-1);	changeProperty();
+
             return;
         }
         Shape shape = itemCfg.getShape();
@@ -667,6 +681,11 @@ this.currentState.update();
     public void addBodyEquip(ItemDefinition itemCfg)  {
         Component parent = 	bodyComponent.findChild("human_body");
         if(itemCfg==null){
+
+            if( parent.children.size()== 0 ){
+                LogUtil.println("不能为空的");
+                return;
+            }
             parent.children.remove(parent.children.size()-1);	changeProperty();
             return;
         }
@@ -689,6 +708,11 @@ this.currentState.update();
         //Shape shape = itemCfg.getShape();
         Component parent = 	bodyComponent.findChild("rHumanHand");
         if(itemCfg==null){
+
+            if( parent.children.size()== 0 ){
+                LogUtil.println("不能为空的");
+                return;
+            }
             parent.children.clear();	changeProperty();
             return;
         }
@@ -708,5 +732,23 @@ this.currentState.update();
         // Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
         parent.addChild(component);
         changeProperty();
+    }
+
+    public void setPlayerStatus(PlayerStatus status){
+        this.id = status.getId();
+        this.position.x = status.getX();
+        this.position.y = status.getY();
+        this.position.z = status.getZ();
+        this.headAngle =status.getHeadAngle();
+        this.bodyAngle =status.getBodyAngle();
+        this.headAngle2 = status.getHeadAngle2();
+        this.addHeadEquip(TextureManager.getItemDefinition(ItemType.values()[status.getHeadEquip()]));
+        this.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[status.getBodyEquip()]));
+        this.addHandEquip(TextureManager.getItemDefinition(ItemType.values()[status.getHandEquip()]));
+        this.addLegEquip(TextureManager.getItemDefinition(ItemType.values()[status.getLegEquip()]));
+        this.addShoeEquip(TextureManager.getItemDefinition(ItemType.values()[status.getShoeEquip()]));
+        this.setPlayer(status.isIsplayer());
+        this.name=status.getName();
+
     }
 }

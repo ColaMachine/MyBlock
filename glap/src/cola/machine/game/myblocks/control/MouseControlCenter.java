@@ -671,7 +671,7 @@ public class MouseControlCenter {
             human.move(human.position);
         }
         else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
-            CoreRegistry.get(ToolBar.class).keyDown(1);
+           // CoreRegistry.get(ToolBar.class).keyDown(1);
         }
         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
             CoreRegistry.get(ToolBar.class).keyDown(1);

@@ -25,8 +25,7 @@ public class Human extends LivingThing {
 	static final float PIdiv180 = 0.0174532925f;
 	//public GL_Vector ViewDir;
    // public GL_Vector WalkDir;
-	public GL_Vector RightVector;
-	public GL_Vector UpVector;
+
 	//public GL_Vector position;
    // public GL_Vector oldposition=new GL_Vector();
     public final Client client;
@@ -191,6 +190,7 @@ public class Human extends LivingThing {
 	public void move(float x, float y, float z) {
 		/*float distance = GL_Vector.length(GL_Vector.sub(oldPosition,position));
         if(distance>0.02){*/
+
             this.oldPosition.copy(this.position);
 			GamingState.livingThingChanged=true;
 			GamingState.cameraChanged=true;

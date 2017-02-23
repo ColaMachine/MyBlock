@@ -20,13 +20,14 @@ public class LogUtil {
         Throwable e =new Throwable();
         StackTraceElement[] eles = e.getStackTrace();
         System.out.println(System.currentTimeMillis()+""+eles[1]+":"+s);
-        System.exit(0);
+       // System.exit(0);
     }
     public static void err(String s,Object[] objectes){
         String b= String.format(s,objectes);
         println(b);
         System.exit(0);
     }
+
 
     public static void err(Exception  e){
        // println(s);

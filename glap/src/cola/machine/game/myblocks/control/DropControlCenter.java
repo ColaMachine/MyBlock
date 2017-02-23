@@ -17,6 +17,10 @@ public class DropControlCenter {
 
 		//ȡ�����������������
 
+        if(human.position.y<=0){
+            human.position.y=1.5f;
+        }
+
 		if(!human.stable){
 			//System.out.println("��ǰ�����y:"+human.Position.y);
 //			int x = MathUtil.getNearOdd(human.Position.x );
@@ -36,6 +40,11 @@ public class DropControlCenter {
 			}
 
 		}else if(human.stable){
+
+            if(CoreRegistry.get(CrashCheck.class).check(human)){
+                human.position.y+=2;//找到最近的地方让他安顿;
+                return;
+            }
 //			int x = MathUtil.getNearOdd(human.Position.x );
 //			int y = MathUtil.getNearOdd(human.Position.y);
 //			int z = MathUtil.getNearOdd(human.Position.z );

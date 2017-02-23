@@ -50,15 +50,17 @@ public class Client extends Thread{
                 LogUtil.println("错误");
             }
             if(cmd.getCmdType() == CmdType.POS){
-                LogUtil.println(" is moving");
+                //LogUtil.println(" is moving");
             }
           /*  byte[] newByteAry =
 
             ByteUtil.getBytes(oldByteAry,new byte[]{'\n'});*/
-            LogUtil.println("client 准备发送数据类型:"+ cmd.getCmdType()+"长度:"+(oldByteAry.length-4));
+
+            CmdType.printSend(cmd);
+            //LogUtil.println("client 准备发送数据类型:"+ cmd.getCmdType()+"长度:"+(oldByteAry.length-4));
 
             outputStream.write(oldByteAry);
-            LogUtil.println("send over");
+            //LogUtil.println("send over");
             //outputStream.write('\n');
         } catch (IOException e) {
             e.printStackTrace();
@@ -145,16 +147,18 @@ public class Client extends Thread{
                     LogUtil.err("err");
                 }
                 n= inputSteram.read(bytes,0,length);
-              byte[] newBytes =  ByteUtil.slice(bytes,0,length);
+                byte[] newBytes =  ByteUtil.slice(bytes,0,length);
                /* if(str==null){
                     LogUtil.println("失去连接 正在重新连接");
                     //Thread.sleep(1000);
                     continue;
                 }*/
-                if(ByteUtil.getInt(newBytes)>10){
+
+                if(newBytes .length <4 ||ByteUtil.getInt(newBytes)>10 ){
                     LogUtil.err("错误");
                 }
-                LogUtil.println("client 准备接收数据类型:"+ CmdType.values()[ByteUtil.getInt(newBytes)]+"长度:"+(length));
+                CmdType.printReceive(newBytes);
+               // LogUtil.println("client 准备接收数据类型:"+ CmdType.values()[ByteUtil.getInt(newBytes)]+"长度:"+(length));
                 try {
                     if (n == 0) {
                         LogUtil.err("读取的数据为0");
@@ -162,7 +166,7 @@ public class Client extends Thread{
                         //continue;
                     }
                     GameCmd cmd = CmdUtil.getCmd(newBytes);
-                    LogUtil.println("the cmd was : "+cmd.getCmdType());
+                    //LogUtil.println("the cmd was : "+cmd.getCmdType());
                     if (cmd.getCmdType()== CmdType.EQUIP) {//equip
                         equips.push((EquipCmd) cmd);
 

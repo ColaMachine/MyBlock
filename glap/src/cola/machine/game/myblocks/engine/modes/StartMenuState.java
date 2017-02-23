@@ -3,7 +3,11 @@ package cola.machine.game.myblocks.engine.modes;
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import cola.machine.game.myblocks.model.human.Human;
 import com.alibaba.fastjson.JSON;
+import com.dozenx.game.engine.command.GetCmd;
 import com.dozenx.game.engine.command.ResultCmd;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.game.network.server.PlayerStatus;
@@ -305,7 +309,34 @@ if(!Switcher.SHADER_ENABLE) {
                             GamingState state = new GamingState();
                             Constants.USER_ID=status.getId() ;
                             Constants.userName = userName.getText();
-                        BlockEngine.engine.changeState(state);
+
+                            //创建Human
+                           Human  human = new Human();
+                            human.id = status.getId();
+                            human.setPlayerStatus(status);
+                            CoreRegistry.put(Human.class,human);
+
+                            LivingThingManager livingThingManager =new LivingThingManager();
+                            CoreRegistry.put(LivingThingManager.class,livingThingManager);
+
+                            livingThingManager.setPlayer(human);
+                            //livingThingManager.add(livingThing);
+state.human =human;
+                            BlockEngine.engine.changeState(state);
+                            /*int threadId = (int)(Math.random()*100000);
+
+                            GameCallBackTask task = new GameCallBackTask() {
+                                @Override
+                                public void run() {
+
+                                }
+                            };
+                            Client.taskMap.put(threadId, task);
+
+                            GetCmd getCmd =new GetCmd(threadId);*/
+
+
+
                         }
 
                     }else{

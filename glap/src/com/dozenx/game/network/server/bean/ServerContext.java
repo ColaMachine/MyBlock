@@ -11,10 +11,10 @@ import java.util.*;
  * Created by dozen.zhang on 2017/2/21.
  */
 public class ServerContext {
-    public  HashMap<String,PlayerStatus> name2PalyerMap  =new HashMap();
-    public  HashMap<Integer,PlayerStatus> id2PalyerMap  =new HashMap();
-    public  HashMap<CmdType,GameServerHandler> allHandlerMap =new HashMap<>();
-    public HashMap<String ,PlayerStatus> name2InfoMap =new HashMap();
+    public  Map<String,PlayerStatus> name2PlayerMap  =new HashMap();
+    public  Map<Integer,PlayerStatus> id2PlayerMap  =new HashMap();
+    public  Map<CmdType,GameServerHandler> allHandlerMap =new HashMap<>();
+    //public HashMap<String ,PlayerStatus> name2InfoMap =new HashMap();
 
 
     //public HashMap<Integer , Socket> socketMap =new HashMap();
@@ -25,10 +25,10 @@ public class ServerContext {
 
     public void addLivingThing(PlayerStatus status){
 
-        id2PalyerMap.put(status.getId(),status);
+        id2PlayerMap.put(status.getId(),status);
     }
     public void removeLivingThing(PlayerStatus status){
-        id2PalyerMap.remove(status.getId());
+        id2PlayerMap.remove(status.getId());
     }
 
     public Queue<byte[]> getMessages() {
@@ -41,7 +41,7 @@ public class ServerContext {
 
 
 
-    public HashMap<CmdType, GameServerHandler> getAllHandlerMap() {
+    public Map<CmdType, GameServerHandler> getAllHandlerMap() {
         return allHandlerMap;
 
     }
@@ -50,21 +50,21 @@ public class ServerContext {
         this.allHandlerMap = allHandlerMap;
     }
 
-    public HashMap<String, PlayerStatus> getName2PalyerMap() {
+    public Map<String, PlayerStatus> getName2PlayerMap() {
 
-        return name2PalyerMap;
+        return name2PlayerMap;
     }
 
-    public void setName2PalyerMap(HashMap<String, PlayerStatus> name2PalyerMap) {
-        this.name2PalyerMap = name2PalyerMap;
+    public void setName2PlayerMap(Map<String, PlayerStatus> name2PlayerMap) {
+        this.name2PlayerMap = name2PlayerMap;
     }
 
-    public HashMap<Integer, PlayerStatus> getId2PalyerMap() {
-        return id2PalyerMap;
+    public Map<Integer, PlayerStatus> getId2PlayerMap() {
+        return id2PlayerMap;
     }
 
-    public void setId2PalyerMap(HashMap<Integer, PlayerStatus> id2PalyerMap) {
-        this.id2PalyerMap = id2PalyerMap;
+    public void setId2PlayerMap(Map<Integer, PlayerStatus> id2PlayerMap) {
+        this.id2PlayerMap = id2PlayerMap;
     }
 
     public Map<Integer, Worker> getWorkerMap() {

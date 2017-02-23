@@ -21,7 +21,7 @@ public class CrashCheck {
     int blockX= 0;
     int blockY= 0;
     int blockZ= 0;
-    public boolean check(LivingThing livingThing){
+    public boolean  check(LivingThing livingThing){
 
         float plr_pos_x=livingThing.position.x;
         float plr_pos_y=livingThing.position.y;
@@ -42,8 +42,8 @@ public class CrashCheck {
                     }
                 }
                 if (chunk_corner == null) {
-                    LogUtil.err("the chunk_corner can't be null please debug it");
-
+                    LogUtil.err("may be the chunk_corner haven't been initialized the chunk_corner can't be null please debug it");
+                    return false;
                 }
 
                 for (int offset_y = 0; offset_y <= 2; offset_y += 2) {
@@ -56,7 +56,7 @@ public class CrashCheck {
                     int k = chunk_corner.getBlockData(blockX,
                             blockY, blockZ
                     );
-                    if (k > 0) {
+                    if (k > 0&& k !=8) {
                         //means it is crashed
 //                        System.out.println("warning crashed");
 //                        player.moveOld();

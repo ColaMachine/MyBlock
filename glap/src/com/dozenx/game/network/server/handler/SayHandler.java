@@ -17,7 +17,7 @@ public class SayHandler extends GameServerHandler {
 
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
-        LogUtil.println("server接收到说话了");
+        LogUtil.println("server接收到说话了 "+((SayCmd)request.getCmd()).getMsg());
         broadCast(request.getCmd());
         //更新其他附近人的此人的装备属性
         return null;

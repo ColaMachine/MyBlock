@@ -25,9 +25,9 @@ public class EquipHandler extends GameServerHandler {
         LogUtil.println("server接收到装备变化了");
         EquipCmd cmd =(EquipCmd)request.getCmd();
         if(cmd.getCmdType()== CmdType.EQUIP){
-           PlayerStatus info =  serverContext.id2PalyerMap.get(cmd.getUserId());
+           PlayerStatus info =  serverContext.id2PlayerMap.get(cmd.getUserId());
             if(info==null){
-                LogUtil.println(" palyer info can't be null userId:"+cmd.getUserId());
+                LogUtil.println(" Player info can't be null userId:"+cmd.getUserId());
                 return new ResultCmd(1,"失败",0);
 
             }

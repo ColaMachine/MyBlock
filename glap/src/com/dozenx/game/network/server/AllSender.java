@@ -51,6 +51,7 @@ public class AllSender extends Thread{
     public void run(){
         while(true) {
             if (messages.size() > 0) {
+               // LogUtil.println("messages 结果大于0");
                 byte[] bytes  = messages.peek();
                 if (bytes != null) {
                     messages.poll();
@@ -79,12 +80,13 @@ public class AllSender extends Thread{
                     }
                 }
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
 
-                }
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
             }
         }
     }

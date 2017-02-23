@@ -11,7 +11,7 @@ import core.log.LogUtil;
  * Created by luying on 17/2/7.
  */
 public class PlayerSynCmd extends   BaseGameCmd{
-    final CmdType cmdType = CmdType.EQUIP;
+    final CmdType cmdType = CmdType.PLAYERSTATUS;
     private PlayerStatus playerStatus;
 
     public PlayerStatus getPlayerStatus() {

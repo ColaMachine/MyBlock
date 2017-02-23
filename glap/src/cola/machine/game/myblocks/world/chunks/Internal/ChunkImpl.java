@@ -1173,7 +1173,8 @@ public class ChunkImpl implements Chunk {
     public int getBlockData(int x, int y, int z) {
         if (x < 0 || y < 0 || z < 0) {
             GLApp.msg("ChunkImpl  getBlockData error");
-            System.exit(0);
+            return blockData.get(0, 0, 0);
+            //System.exit(0);
         }
         return blockData.get(x, y, z);
     }

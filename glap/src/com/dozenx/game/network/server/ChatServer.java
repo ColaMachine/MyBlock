@@ -31,6 +31,7 @@ public class ChatServer {
         serverContext. getAllHandlerMap().put(CmdType.LOGIN,new LoginHandler(serverContext));
         serverContext. allHandlerMap.put(CmdType.EQUIP,new EquipHandler(serverContext));
         serverContext. allHandlerMap.put(CmdType.SAY,new SayHandler(serverContext));
+        serverContext. allHandlerMap.put(CmdType.GET,new GetHandler(serverContext));
         serverContext. allHandlerMap.put(CmdType.POS,new PosHandler(serverContext));
 
 

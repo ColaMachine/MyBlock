@@ -84,6 +84,8 @@ public class GamingState implements GameState {
     GUI gameGui;
     Document document ;
 
+
+
     public void init(GameEngine engine) {
         document= Document.getInstance();
         this.instance =this;
@@ -605,17 +607,18 @@ if(!Switcher.SHADER_ENABLE)
         // AssetManager assetManager =
         // CoreRegistry.putPermanently(AssetManager.class, new
         // AssetManager(moduleManager.getEnvironment()));
-        livingThingManager = new LivingThingManager();
+        //livingThingManager = new LivingThingManager();
+        livingThingManager= CoreRegistry.get(LivingThingManager.class);
     }
 
     private void initEntities() {
-        human = new Human();
+        /*human = new Human();
         human.setHuman(1, 53,-25, 0, 0, -1, 0, 1, 0);
         CoreRegistry.put(Human.class, human);
         human.id= Constants.USER_ID;
        // LivingThing livingThing = new LivingThing();
        // livingThing.position = new GL_Vector(10,125, 0);
-        livingThingManager.setPlayer(human);
+        livingThingManager.setPlayer(human);*/
         //livingThingManager.add(livingThing);
         SynchronTask task = new SynchronTask();
         task.start();

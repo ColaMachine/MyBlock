@@ -36,9 +36,9 @@ public class LivingThingManager {
     Component bendComponent;
     public LivingThingManager(){
 
-        LivingThing livingThing =new LivingThing();
+       /* LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(1,65,-40);
-        add(livingThing);
+        add(livingThing);*/
         /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -201,11 +201,19 @@ public class LivingThingManager {
     Client client =CoreRegistry.get(Client.class);
     long lastUpdateTime=System.currentTimeMillis();
 
+
+
     /**
      * 通过定时线程来控制
      * 主要是网络同步各种状态到任务上
      */
     public void netWorkUpdate(){
+        /*if(!(BlockEngine.engine.getState() instanceof  GamingState) ){
+            LogUtil.println("当前状态不对");
+            return;
+        }*/
+
+
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
             if(!livingThing.exist){
@@ -300,7 +308,7 @@ public class LivingThingManager {
 
         }
 
-        while(client.playerSync.size()>0 && client.playerSync.peek()!=null && BlockEngine.engine.getState() instanceof  GamingState){
+        while(client.playerSync.size()>0 && client.playerSync.peek()!=null /*&& BlockEngine.engine.getState() instanceof  GamingState*/){
             PlayerSynCmd cmd = (PlayerSynCmd)client.playerSync.poll();
             PlayerStatus info  = cmd.getPlayerStatus();
             int id =info.getId();
@@ -310,7 +318,7 @@ public class LivingThingManager {
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
             boolean exsits =true;
-            if(livingThing!=null ) {
+            if(livingThing==null ) {
                 livingThing = new LivingThing();
                 exsits =false;
 
@@ -333,7 +341,12 @@ public class LivingThingManager {
                     livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }
-                livingThing.setPosition(info.getX(),info.getY(),info.getZ());
+            try {
+                livingThing.setPosition(info.getX(), info.getY(), info.getZ());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            livingThing.id= info.getId();
                 livingThing.headAngle = info.getHeadAngle();
                 livingThing.bodyAngle =info.getBodyAngle();
                 livingThing.headAngle2 = info .getHeadAngle2();
