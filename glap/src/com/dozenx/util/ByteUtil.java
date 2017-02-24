@@ -9,7 +9,11 @@ import java.nio.charset.Charset;
 
 public class ByteUtil
 {
-
+    public static void clear(byte[] bytes){
+        for(int i=0;i<bytes.length;i++){
+            bytes[i]=0;
+        }
+    }
     public static ByteBufferWrap createBuffer(){
         return new ByteBufferWrap();
     }
@@ -221,7 +225,8 @@ public class ByteUtil
 
     public static void main(String[] args)
     {
-       /* short s = 122;
+        System.out.println((byte)254);
+       short s = 122;
         int i = 122;
         long l = 1222222;
 
@@ -263,7 +268,7 @@ public class ByteUtil
             System.out.println("个的gbk 16进制表示:"+Integer.toHexString(byteary[0]) +""+Integer.toHexString(byteary[1]) );
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }*/
+        }
     }
     public static String toFullBinaryString(int num) {
         char[] chs = new char[Integer.SIZE];

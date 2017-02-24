@@ -74,6 +74,15 @@ public class Vao {
         Vertices = vertices;
     }
 
-
-
+    public void shrink(){
+        int capacity = (int)(Vertices.capacity()*0.75);
+        this.Vertices =BufferUtils.createFloatBuffer(capacity);
+    }
+    public  void expand(){
+        int capacity = (int)(Vertices.capacity()*1.5);
+         FloatBuffer floatBuffer =BufferUtils.createFloatBuffer(capacity);
+        Vertices.flip();
+        floatBuffer.put(Vertices);
+        this.Vertices = floatBuffer;
+    }
 }

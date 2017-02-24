@@ -601,137 +601,80 @@ this.currentState.update();
     public void addHeadEquip(ItemDefinition itemCfg)  {
 
         Component parent = 	bodyComponent.findChild("human_head");
-        if(itemCfg==null ){
-            if( parent.children.size()== 0 ){
-                LogUtil.println("不能为空的");
-                return;
-            }
-            parent.children.remove(parent.children.size()-1);	changeProperty();
-            return;
-        }
-        Shape shape = itemCfg.getShape();
-
-        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
-        component.setShape(itemCfg.getShape());
-        component.id=itemCfg.getName();
-
-        if(parent==null){
-            LogUtil.println("未找到子component");
-            System.exit(0);
-        }
-        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        parent.addChild(component);	changeProperty();
+        addChild(parent,"cap",itemCfg);
     }
 
-    public void addShoeEquip(ItemDefinition itemCfg)  {
 
-        Component parent = 	bodyComponent.findChild("human_head");
-        if(itemCfg==null ){
-            if( parent.children.size()== 0 ){
-                LogUtil.println("不能为空的");
+    public void addChild(Component parent,String name,ItemDefinition itemCfg) {
+        Component shoe = bodyComponent.findChild(name);
+        if (shoe == null) {
+            if (itemCfg == null) {
                 return;
-            }
-           /* if(parent.children.size()>0){
-                parent.children.remove(parent.children.size()-1);	changeProperty();
-            }*/
-            parent.children.remove(parent.children.size()-1);	changeProperty();
-            return;
-        }
-        Shape shape = itemCfg.getShape();
-        if(shape == null){
-            LogUtil.err("load shape from itemDefinition:"+itemCfg.getName()+"failed");
-        }
-        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
-        component.setShape(itemCfg.getShape());
-        component.id=itemCfg.getName();
+            } else {
+                Shape shape = itemCfg.getShape();
+                if (shape == null) {
+                    LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
-        if(parent==null){
-            LogUtil.println("未找到子component");
-            System.exit(0);
+                }
+                Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
+                component.setShape(itemCfg.getShape());
+                component.id = name;
+
+                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+                parent.addChild(component);
+                changeProperty();
+            }
+        } else {
+
+            if (itemCfg == null) {
+                //删除shoe节点
+                parent.removeChild(shoe);
+            } else {
+                parent.removeChild(shoe);
+                Shape shape = itemCfg.getShape();
+                if (shape == null) {
+                    LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
+
+                }
+                Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
+                component.setShape(itemCfg.getShape());
+                component.id = name;
+
+                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+                parent.addChild(component);
+                changeProperty();
+            }
         }
-        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        parent.addChild(component);	changeProperty();
+    }
+    public void addShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
+        Component parent ;
+        if(leftFlag){
+            parent = bodyComponent.findChild("human_l_b_eg");
+        }else{
+            parent = bodyComponent.findChild("human_r_b_eg");
+        }
+        Component shoe =   bodyComponent.findChild("shoe");
+        addChild(parent,"shoe",itemCfg);
+    }
+    public void addShoeEquip(ItemDefinition itemCfg)  {
+        addShoeEquip(true, itemCfg);
+        addShoeEquip(false, itemCfg);
     }
     public void addLegEquip(ItemDefinition itemCfg)  {
         Component parent = 	bodyComponent.findChild("human_l_b_leg");
-        if(itemCfg==null){
-
-            if( parent.children.size()== 0 ){
-                LogUtil.println("不能为空的");
-                return;
-            }
-            parent.children.remove(parent.children.size()-1);	changeProperty();
-
-            return;
-        }
-        Shape shape = itemCfg.getShape();
-
-        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
-        component.setShape(itemCfg.getShape());
-        component.id=itemCfg.getName();
-
-        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-
-        //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        //parent.addConnector(connector);
-        parent.addChild(component);	changeProperty();
+        addChild(parent,"pants",itemCfg);
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
         Component parent = 	bodyComponent.findChild("human_body");
-        if(itemCfg==null){
-
-            if( parent.children.size()== 0 ){
-                LogUtil.println("不能为空的");
-                return;
-            }
-            parent.children.remove(parent.children.size()-1);	changeProperty();
-            return;
-        }
-
-        Shape shape = itemCfg.getShape();
-
-        Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
-        component.setShape(itemCfg.getShape());
-        component.id=itemCfg.getName();
-
-        if(parent==null){
-            LogUtil.println("未找到子component");
-            System.exit(0);
-        }
-        component.setOffset(new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        parent.addChild(component);	changeProperty();
+        addChild(parent,"armor",itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
         Component parent = 	bodyComponent.findChild("rHumanHand");
-        if(itemCfg==null){
-
-            if( parent.children.size()== 0 ){
-                LogUtil.println("不能为空的");
-                return;
-            }
-            parent.children.clear();	changeProperty();
-            return;
-        }
-
-
-        Component component= new Component(0.01f,1,1);
-        itemCfg.init();
-        component.setItem(itemCfg);
-        component.id=itemCfg.getName();
-
-        if(parent==null){
-            LogUtil.println("未找到子component");
-            System.exit(0);
-        }
-        component.setOffset(new Point3f(this.HAND_WIDTH/2,0,this.HAND_THICK/2),new Point3f(0,0,0));
-
-        // Connector connector = new Connector(component,new GL_Vector(this.player.HAND_WIDTH/2,0,this.player.HAND_THICK/2),new GL_Vector(0,0,0));
-        parent.addChild(component);
-        changeProperty();
+        addChild(parent,"weapon",itemCfg);
     }
 
     public void setPlayerStatus(PlayerStatus status){

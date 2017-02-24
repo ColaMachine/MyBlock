@@ -43,8 +43,8 @@ public class ChunkImpl implements Chunk {
     public int alphaDisplayId = 0;
     public IntBuffer vetices = BufferUtils.createIntBuffer(14);
     public int count = 0;
-    public Vao vao =new Vao(602400);
-    public Vao alphaVao =new Vao(602400);
+    public Vao vao =new Vao(102400);
+    public Vao alphaVao =new Vao(102400);
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {

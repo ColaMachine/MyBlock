@@ -1,5 +1,6 @@
 package com.dozenx.game.network.server;
 
+import cola.machine.game.myblocks.engine.Constants;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.util.ByteUtil;
@@ -27,9 +28,9 @@ public class Worker extends Thread {
 
    // Queue<byte[]> messages;
 
-    InputStream br = null;
+    InputStream inputSteram = null;
 
-    OutputStream pw = null;
+    OutputStream outputStream = null;
 
     ServerContext serverContext ;
     public void close(){
@@ -48,7 +49,7 @@ public class Worker extends Thread {
     }
 
     public void send(byte[] bytes){
-        if(pw!=null)
+        if(outputStream!=null)
             try {
                 if(ByteUtil.getInt(ByteUtil.slice(bytes,4,4))>10){
                     LogUtil.err("错误");
@@ -57,7 +58,8 @@ public class Worker extends Thread {
                 CmdType.printSend(ByteUtil.slice(bytes,4,4));
                 //LogUtil.println("server 准备发送数据类型:"+ CmdType.values()[(ByteUtil.getInt(ByteUtil.slice(bytes,4,4)))]+"长度:"+(bytes.length-4));
 
-                pw.write(bytes);
+                outputStream.write(bytes);
+                outputStream.write(Constants.end);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -66,20 +68,20 @@ public class Worker extends Thread {
     public void run(){
         byte[] bytes =new byte[100];
         try {
-            br =  socket.getInputStream();
+            inputSteram =  socket.getInputStream();
             //用于发送返回信息,可以不需要装饰这么多io流使用缓冲流时发送数据要注意调用.flush()方法
-            pw = socket.getOutputStream();
+            outputStream = socket.getOutputStream();
             while (!this.end && this.isAlive()) {
               // int n = br.read(bytes);
 
 
-                br.read(bytes,0,4);
-                int length = ByteUtil.getInt(bytes);
+                inputSteram.read(bytes,0,4);
+                int length = ByteUtil.getInt(bytes);ByteUtil.clear(bytes);
                 if(length<=0){
                   /* n=  inputSteram.read(bytes);
                     if(n==-1){*/
                     LogUtil.err("socket 读取数据有问题 +"+length+"+ 已经自动断开");
-
+                    beginRepair(inputSteram);
                     /*    break;
                     }*/
 
@@ -89,8 +91,14 @@ public class Worker extends Thread {
                 if(length>4096){
                     LogUtil.err("err");
                 }
-                int n= br.read(bytes,0,length);
-                byte[] newBytes =  ByteUtil.slice(bytes,0,length);
+                int n= inputSteram.read(bytes,0,length);
+                int end = inputSteram.read();
+                if(  n!=length || end!=Constants.end){
+                    LogUtil.err(" read error ");
+                    beginRepair(inputSteram);
+                }
+
+                byte[] newBytes =  ByteUtil.slice(bytes,0,length);ByteUtil.clear(bytes);
 
 
                /* if(bytes[n-1]!='\n'){
@@ -135,8 +143,8 @@ public class Worker extends Thread {
         }finally{
             System.out.println("Close.....");
             try {
-                br.close();
-                pw.close();
+                inputSteram.close();
+                this.outputStream.close();
                 socket.close();
                 this.close();
                 this.end=true;
@@ -146,7 +154,11 @@ public class Worker extends Thread {
             }
         }
     }
+    public void beginRepair(InputStream inputStream) throws IOException {
+        while( inputStream.read() != Constants.end){
 
+        }
+    }
 
     public static void main(String args[]){
         HashMap<CmdType, String > map =new HashMap();

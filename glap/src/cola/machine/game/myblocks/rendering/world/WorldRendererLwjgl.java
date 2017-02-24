@@ -115,7 +115,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         for (ChunkImpl chunk : chunksInProximity) {
              	chunk.update();
         }
-		skysphere.update();
+		//skysphere.update();
       /*  try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
@@ -153,7 +153,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 			}
 		}
 
-		skysphere.render();
+		//skysphere.render();
 	}
 
 	int vaoId, vbocId, vboId;

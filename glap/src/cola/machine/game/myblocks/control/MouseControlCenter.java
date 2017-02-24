@@ -580,7 +580,7 @@ public class MouseControlCenter {
     }
 
     public void keyDown(int keycode) {
-        if (keycode == Keyboard.KEY_G) {
+        if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
             human.receive(new AttackCmd(AttackType.ARROW));
         }
                                        /* if(Keyboard.isRepeatEvent()){
@@ -612,26 +612,26 @@ public class MouseControlCenter {
                                                 CoreRegistry.get(ToolBar.class).keyDown(9);
                                             }*/
 
-        if (keycode == Keyboard.KEY_F3) {
+        if (Keyboard.isKeyDown( Keyboard.KEY_F3)) {
             Switcher.PRINT_SWITCH = !Switcher.PRINT_SWITCH;
-        } else if (keycode == Keyboard.KEY_B) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
             // CoreRegistry.get(Bag.class).changeShow();
-        } else if (keycode == Keyboard.KEY_P) {
+        } else if (Keyboard.isKeyDown( Keyboard.KEY_P)) {
             Switcher.CAMERA_2_PLAYER++;
             if (Switcher.CAMERA_2_PLAYER > 10) {
                 Switcher.CAMERA_2_PLAYER = 10;
             }
-        } else if (keycode == Keyboard.KEY_O) {
+        } else if (Keyboard.isKeyDown( Keyboard.KEY_O)) {
             Switcher.CAMERA_2_PLAYER--;
             if (Switcher.CAMERA_2_PLAYER < 0) {
                 Switcher.CAMERA_2_PLAYER = 0;
             }
-        } else if (keycode == Keyboard.KEY_F4) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_F4)) {
             Switcher.IS_GOD = !Switcher.IS_GOD;
             System.out.println("god mode:" + Switcher.IS_GOD);
-        } else if (keycode == Keyboard.KEY_ESCAPE) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             // CoreRegistry.get(PauseMenu.class).show();
-        } else if (keycode == Keyboard.KEY_F5) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_F5)) {
             Switcher.CAMERA_MODEL++;
             if (Switcher.CAMERA_MODEL > 2) {
                 Switcher.CAMERA_MODEL = 0;

@@ -1,5 +1,7 @@
 package com.dozenx.game.network.server;
 
+import com.dozenx.game.engine.command.ItemType;
+
 /**
  * Created by dozen.zhang on 2017/2/16.
  */
@@ -91,6 +93,7 @@ public class PlayerStatus {
     public void setHandEquip(int handEquip) {
         this.handEquip = handEquip;
     }
+
 
     public int getShoeEquip() {
         return shoeEquip;

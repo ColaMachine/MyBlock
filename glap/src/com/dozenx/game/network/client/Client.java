@@ -60,6 +60,7 @@ public class Client extends Thread{
             //LogUtil.println("client 准备发送数据类型:"+ cmd.getCmdType()+"长度:"+(oldByteAry.length-4));
 
             outputStream.write(oldByteAry);
+            outputStream.write(Constants.end);
             //LogUtil.println("send over");
             //outputStream.write('\n');
         } catch (IOException e) {
@@ -96,6 +97,12 @@ public class Client extends Thread{
     }
     InputStream inputSteram;
     OutputStream outputStream;
+
+    public void beginRepair(InputStream inputStream) throws IOException {
+        while( inputStream.read() != Constants.end){
+
+        }
+    }
     public void run(){
         int curColor=0;
         try {
@@ -131,13 +138,13 @@ public class Client extends Thread{
                     continue;
                 }
                 inputSteram.read(bytes,0,4);
-                int length = ByteUtil.getInt(bytes);
+                int length = ByteUtil.getInt(bytes);ByteUtil.clear(bytes);
               //  LogUtil.println("client received data length: "+length);
                 if(length<=0){
                   /* n=  inputSteram.read(bytes);
                     if(n==-1){*/
                         LogUtil.err("socket 读取数据有问题 +"+length+"+ 已经自动断开");
-
+                        beginRepair(inputSteram);
                     /*    break;
                     }*/
 
@@ -145,9 +152,17 @@ public class Client extends Thread{
                 }
                 if(length>4096){
                     LogUtil.err("err");
+
                 }
                 n= inputSteram.read(bytes,0,length);
+                int end = inputSteram.read();
+                if(  n!=length || end!=Constants.end){
+                    LogUtil.err(" read error ");
+                    beginRepair(inputSteram);
+                   // continue;
+                }
                 byte[] newBytes =  ByteUtil.slice(bytes,0,length);
+                ByteUtil.clear(bytes);
                /* if(str==null){
                     LogUtil.println("失去连接 正在重新连接");
                     //Thread.sleep(1000);

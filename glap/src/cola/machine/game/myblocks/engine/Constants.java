@@ -14,6 +14,7 @@ import java.nio.file.Paths;
  */
 public class Constants {
 
+    public final static byte end=(byte)112;
     public static  int USER_ID=30;
     public static final int FPS=30;
     public static final int WINDOW_WIDTH=1152;

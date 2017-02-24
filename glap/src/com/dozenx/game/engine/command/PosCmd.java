@@ -13,6 +13,63 @@ public class PosCmd extends   BaseGameCmd{
     public int userId;
     public float x;
     public float y;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
+
+    public float getBodyAngle() {
+        return bodyAngle;
+    }
+
+    public void setBodyAngle(float bodyAngle) {
+        this.bodyAngle = bodyAngle;
+    }
+
+    public float getHeadAngle() {
+        return headAngle;
+    }
+
+    public void setHeadAngle(float headAngle) {
+        this.headAngle = headAngle;
+    }
+
+    public float getHeadAngle2() {
+        return headAngle2;
+    }
+
+    public void setHeadAngle2(float headAngle2) {
+        this.headAngle2 = headAngle2;
+    }
+
     public float z;
     public float bodyAngle;
     public float headAngle;

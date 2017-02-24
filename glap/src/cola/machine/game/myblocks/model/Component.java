@@ -59,6 +59,12 @@ public class Component {
     public void addChild(Component component){
         children.add(component);
     }
+    public void removeChild(Component component){
+        for(int i=children.size()-1;i>=0;i--){
+            Component child =  children.get(i);
+            children.remove(i);
+        }
+    }
     float width;
     float height;
 

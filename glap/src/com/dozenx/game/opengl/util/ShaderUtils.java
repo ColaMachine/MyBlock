@@ -1693,6 +1693,8 @@ try {
             FloatBuffer veticesBuffer = vao.getVertices();
             if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
             }
             veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
             veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);//p2

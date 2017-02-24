@@ -32,23 +32,23 @@ public class EquipHandler extends GameServerHandler {
 
             }
             if(cmd.getPart()==EquipPartType.HEAD){
-                info.setHeadEquip(cmd.getItemType().ordinal());
+                info.setHeadEquip(ItemType.getTypeVal(cmd.getItemType()));
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.BODY){
-                info.setBodyEquip(cmd.getItemType().ordinal());
+                info.setBodyEquip(ItemType.getTypeVal(cmd.getItemType()));
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.LEG){
-                info.setHeadEquip(cmd.getItemType().ordinal());
+                info.setHeadEquip(ItemType.getTypeVal(cmd.getItemType()));
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.SHOE){
-                info.setShoeEquip(cmd.getItemType().ordinal());
+                info.setShoeEquip(ItemType.getTypeVal(cmd.getItemType()));
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.HAND){
-                info.setHandEquip(cmd.getItemType().ordinal());
+                info.setHandEquip(ItemType.getTypeVal(cmd.getItemType()));
                 //TODO Item 's num may be over 256
             }
         }

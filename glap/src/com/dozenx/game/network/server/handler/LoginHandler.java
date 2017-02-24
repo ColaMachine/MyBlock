@@ -48,10 +48,10 @@ public class LoginHandler extends GameServerHandler {
                 serverContext.messages.offer(new PlayerSynCmd(playerStatus).toBytes());
                 //把所有人的信息都同步给他
                 serverContext.addLivingThing(playerStatus);
-                /*Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
+               Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
                 for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PlayerMap.entrySet()){
                     request.getWorker().send(new PlayerSynCmd(entry.getValue()).toBytes());
-                }*/
+                }
                 return new ResultCmd(0, JSON.toJSONString(playerStatus),loginCmd.getThreadId());
 
                 //把所有在线玩家的状态同步给他

@@ -8,4 +8,12 @@ public enum ItemType {
     public int getType(){
         return this.ordinal();
     }
+
+    public static int getTypeVal(ItemType itemType){
+        if(itemType==null || itemType==ItemType.NULL){
+            return 0;
+        }else{
+            return itemType.ordinal();
+        }
+    }
 }

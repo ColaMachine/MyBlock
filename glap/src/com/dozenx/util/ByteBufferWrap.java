@@ -15,7 +15,7 @@ public class ByteBufferWrap
 
     private ByteBuffer buffer;
     public ByteBufferWrap(){
-        this.buffer= ByteBuffer.allocate(256);
+        this.buffer= ByteBuffer.allocate(1256);
 
     }
     public ByteBufferWrap(byte[] bytes){
