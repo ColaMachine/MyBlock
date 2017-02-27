@@ -19,6 +19,10 @@ public class Button extends HtmlObject implements Cloneable{
         this.setColor(new Vector4f(1,1,1,1));
         this.setBackgroundColor(new Vector4f(0,0,0,1));
     }
+    public Button(String name){
+      this();
+        this.innerText = name;
+    }
     public void addCallback(Runnable callback) {
         model.addActionCallback(callback);
     }

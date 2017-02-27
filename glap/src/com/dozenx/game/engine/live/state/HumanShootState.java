@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.engine.command.GameCmd;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.ui.inventory.control.InventoryController;
 import glmodel.GL_Vector;
 
@@ -27,17 +28,40 @@ public class HumanShootState extends HumanState{
     protected LivingThing livingThing;
     public long startTime;
     boolean shooted=false;
+    public int currentState =0;
     public void update(){
 
         Long now=System.currentTimeMillis();
-        if(now-startTime > 0.5*1000 && !shooted){
-            Ball ball = new Ball(this.livingThing.position.getClone(), GL_Vector.sub(this.livingThing.getTarget().position,
-                    this.livingThing.position), 10, TextureManager.getShape("arrow"));
-            shooted=true;
-            AttackManager.add(ball);
+        if(!shooted) {
+            if (currentState == 0 && now - startTime > 1 * 1000) {
+//arch1
+                currentState = 1;
+                livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch1);
+
+
+            } else if (currentState == 1 && now - startTime > 3 * 1000) {
+//arch2
+                currentState++;
+                livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch2);
+
+            } else if (currentState == 2 && now - startTime > 5 * 1000) {
+
+                currentState++;
+                livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch3);
+
+            } else if (currentState == 3 && now - startTime > 7 * 1000) {
+
+                currentState = 4;
+                livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch);
+                Ball ball = new Ball(this.livingThing.position.getClone(), GL_Vector.sub(this.livingThing.getTarget().position,
+                        this.livingThing.position), 10, TextureManager.getShape("arrow"),livingThing);
+                shooted = true;
+                AttackManager.add(ball);
+            }
         }
-        if(now-startTime > 3*1000){
-            this.livingThing.changeState( new HumanState(this.livingThing));
+
+        if (now - startTime > 8 * 1000) {
+            this.livingThing.changeState(new HumanState(this.livingThing));
 
         }
 

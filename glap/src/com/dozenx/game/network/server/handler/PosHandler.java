@@ -3,8 +3,7 @@ package com.dozenx.game.network.server.handler;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.PosCmd;
 import com.dozenx.game.engine.command.ResultCmd;
-import com.dozenx.game.engine.command.SayCmd;
-import com.dozenx.game.network.server.PlayerStatus;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.ServerContext;
@@ -22,9 +21,9 @@ public class PosHandler extends GameServerHandler {
 
         PosCmd posCmd =(PosCmd) request.getCmd();
         int userId = posCmd.getUserId();
-        PlayerStatus playerStatus =  serverContext.getId2PlayerMap().get(userId);
+        PlayerStatus playerStatus =  serverContext.getOnlinePlayerById(userId).getStatus();
         playerStatus.setX(posCmd.getX());
-        playerStatus.setY(posCmd.getZ());
+        playerStatus.setY(posCmd.getY());
         playerStatus.setZ(posCmd.getZ());
 
         //TODO
@@ -37,6 +36,6 @@ public class PosHandler extends GameServerHandler {
         return null;
     }
     public void broadCast(GameCmd cmd){
-        serverContext. messages.offer(cmd.toBytes());
+        serverContext. broadCast(cmd.toBytes());
     }
 }

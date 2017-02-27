@@ -1,7 +1,6 @@
 package cola.machine.game.myblocks.lifething.manager;
 
 import cola.machine.game.myblocks.control.DropControlCenter;
-import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -14,9 +13,8 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
-import com.dozenx.game.network.server.PlayerStatus;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.opengl.util.ShaderUtils;
-import core.log.LogUtil;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector3f;
@@ -29,6 +27,8 @@ import java.util.Map;
  * Created by luying on 16/9/17.
  */
 public class LivingThingManager {
+
+
     public static List<LivingThing> livingThings = new ArrayList<>();
     private Map<Integer,LivingThing> livingThingsMap =new HashMap();
     //public LivingThing target ;
@@ -36,9 +36,9 @@ public class LivingThingManager {
     Component bendComponent;
     public LivingThingManager(){
 
-       /* LivingThing livingThing =new LivingThing();
+        LivingThing livingThing =new LivingThing();
         livingThing.position=new GL_Vector(1,65,-40);
-        add(livingThing);*/
+        add(livingThing);
         /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -341,6 +341,9 @@ public class LivingThingManager {
                     livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }
+            livingThing.isPlayer = info.isIsplayer();
+
+            //livingThing.setTarget()
             try {
                 livingThing.setPosition(info.getX(), info.getY(), info.getZ());
             }catch (Exception e){
@@ -356,6 +359,19 @@ public class LivingThingManager {
     }
 
 
+        }
+
+        while(client.attacks.size()>0 && client.attacks.peek()!=null){
+            AttackCmd cmd = (AttackCmd)client.attacks.pop();
+            int id = cmd.getUserId();
+
+            LivingThing livingThing = this.getLivingThingById(id);
+            if(livingThing==null ){
+                continue;
+            }
+            livingThing.setTarget(this.getLivingThingById(cmd.getTargetId()));
+
+            livingThing.receive(cmd);
         }
        /* while(client.newborns.size()>0 && client.newborns.peek()!=null){
             String[] msg = client.movements.pop();

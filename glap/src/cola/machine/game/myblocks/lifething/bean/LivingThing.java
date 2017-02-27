@@ -2,8 +2,8 @@ package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.network.server.PlayerStatus;
+import com.dozenx.game.engine.command.*;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
@@ -13,9 +13,6 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.engine.command.EquipCmd;
-import com.dozenx.game.engine.command.EquipPartType;
-import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.live.state.HumanState;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import glapp.GLApp;
@@ -541,11 +538,13 @@ this.currentState.update();
     public void beAttack(int damage){
         this.nowBlood-=damage;
         Document.needUpdate=true;
+        Client.messages.push(new SayCmd(this.id,this.name,"被攻击 损失"+damage+"点血"));
         if(this.nowBlood<=0){
             this.nowBlood=0;
             AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             manager.clear(bodyComponent);
             manager.apply(bodyComponent,"died");
+
         }
     }
 
@@ -601,12 +600,15 @@ this.currentState.update();
     public void addHeadEquip(ItemDefinition itemCfg)  {
 
         Component parent = 	bodyComponent.findChild("human_head");
-        addChild(parent,"cap",itemCfg);
+        addChild(parent, "cap", itemCfg);
     }
 
 
     public void addChild(Component parent,String name,ItemDefinition itemCfg) {
-        Component shoe = bodyComponent.findChild(name);
+        if(parent==null){
+            LogUtil.err("parent node is null");
+        }
+        Component shoe = parent.findChild(name);
         if (shoe == null) {
             if (itemCfg == null) {
                 return;
@@ -651,11 +653,11 @@ this.currentState.update();
     public void addShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
         Component parent ;
         if(leftFlag){
-            parent = bodyComponent.findChild("human_l_b_eg");
+            parent = bodyComponent.findChild("human_l_b_leg");
         }else{
-            parent = bodyComponent.findChild("human_r_b_eg");
+            parent = bodyComponent.findChild("human_r_b_leg");
         }
-        Component shoe =   bodyComponent.findChild("shoe");
+        //Component shoe =   bodyComponent.findChild("shoe");
         addChild(parent,"shoe",itemCfg);
     }
     public void addShoeEquip(ItemDefinition itemCfg)  {
@@ -664,17 +666,17 @@ this.currentState.update();
     }
     public void addLegEquip(ItemDefinition itemCfg)  {
         Component parent = 	bodyComponent.findChild("human_l_b_leg");
-        addChild(parent,"pants",itemCfg);
+        addChild(parent, "pants", itemCfg);
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
         Component parent = 	bodyComponent.findChild("human_body");
-        addChild(parent,"armor",itemCfg);
+        addChild(parent, "armor", itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
         Component parent = 	bodyComponent.findChild("rHumanHand");
-        addChild(parent,"weapon",itemCfg);
+        addChild(parent, "weapon", itemCfg);
     }
 
     public void setPlayerStatus(PlayerStatus status){

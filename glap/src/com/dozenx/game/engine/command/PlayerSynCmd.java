@@ -1,11 +1,8 @@
 package com.dozenx.game.engine.command;
 
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
-import com.dozenx.game.network.server.PlayerStatus;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.ByteUtil;
-import core.log.LogUtil;
 
 /**
  * Created by luying on 17/2/7.

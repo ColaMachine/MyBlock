@@ -9,10 +9,10 @@ import java.util.*;
  */
 public class AllSender extends Thread{
     Queue<byte[]> messages;
-    Map<Integer, Worker> workerMap;
-    public AllSender(Queue<byte[]> messages,Map<Integer,Worker> workerMap){
+    List<Worker>  workers;
+    public AllSender(Queue<byte[]> messages,List<Worker> workers){
         this.messages =messages;
-        this.workerMap=workerMap;
+        this.workers=workers;
     }
  Queue<Integer> waitDelList =new LinkedList<>();
 
@@ -55,29 +55,23 @@ public class AllSender extends Thread{
                 byte[] bytes  = messages.peek();
                 if (bytes != null) {
                     messages.poll();
-                    Iterator iter = workerMap.entrySet().iterator();
-                    while (iter.hasNext()) {
-                        Map.Entry<Integer,Worker> entry = (Map.Entry) iter.next();
 
-                        Worker val = (Worker) entry.getValue();
-                        if(val.end || !val.isAlive()){
+                    for(int i=workers.size()-1;i>=0;i--){
+                        Worker worker = workers.get(i);
+                        if(worker.end || !worker.isAlive()){
                             LogUtil.println("删除socket成功");
-                            val.interrupt();   val.end=true;
-                            waitDelList.offer(entry.getKey());
+                            worker.interrupt();   worker.end=true;
 
-
-
-
-
+                            workers.remove(i);
                         }else {
-                            val.send(bytes);
+                            worker.send(bytes);
                         }
                     }
 
-                    while(waitDelList.size()>0&& waitDelList.peek()!=null){
+                   /* while(waitDelList.size()>0&& waitDelList.peek()!=null){
                         Integer id = waitDelList.poll();
                         workerMap.remove(id);
-                    }
+                    }*/
                 }
 
 

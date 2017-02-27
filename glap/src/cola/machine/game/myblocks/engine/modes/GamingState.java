@@ -105,8 +105,8 @@ public class GamingState implements GameState {
             mouseControlCenter.livingThingManager = this.livingThingManager;
             initSelf();
 
-            behaviorManagerThread = new BehaviorManager();
-            behaviorManagerThread.start();
+            /*behaviorManagerThread = new BehaviorManager();
+            behaviorManagerThread.start();*/
 
             /*LWJGLRenderer renderer = null;//调用lwjgl能力
                 renderer = new LWJGLRenderer();
@@ -127,11 +127,16 @@ public class GamingState implements GameState {
             document.body.appendChild(new ToolBarView(10,1));
 
             document.body.appendChild(new ChatPanel());
-            document.body.appendChild(new HeadPanel());
-            HeadPanel headPanel =new HeadPanel();
-            headPanel.setVisible(false);
-            CoreRegistry.put(HeadPanel.class,headPanel);
-            document.body.appendChild(headPanel);
+
+
+            HeadPanel playerHeadPanel =new HeadPanel();
+            document.body.appendChild(playerHeadPanel);
+            playerHeadPanel.bind(human);
+            HeadPanel enemyHeadPanel =new HeadPanel();
+
+            enemyHeadPanel.setVisible(false);
+            CoreRegistry.put(HeadPanel.class,enemyHeadPanel);
+            document.body.appendChild(enemyHeadPanel);
 
             document.needUpdate=true;
         } catch (Exception e) {
@@ -403,8 +408,9 @@ if(!Switcher.SHADER_ENABLE)
             e.printStackTrace();
         }OpenglUtils.checkGLError();
        // livingThingManager.netWorkUpdate();;
-        if (!Switcher.IS_GOD)
-            if (/*Math.random()*/ 1> 0.5) {
+
+            if (Math.random() > 0.5) {
+            if (!Switcher.IS_GOD) {
                 //dcc.check(human);
                 livingThingManager.CrashCheck(dcc);
                 GL_Vector camera_pos = GL_Vector.add(human.position,
@@ -418,6 +424,7 @@ if(!Switcher.SHADER_ENABLE)
 
                     camera.viewDir(human.ViewDir);
                 }
+            }
                 if(GamingState.cameraChanged){
                     camera.changeCallBack();
                     GamingState.cameraChanged=false;

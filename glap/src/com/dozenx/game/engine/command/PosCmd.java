@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.command;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.util.ByteBufferWrap;
 import core.log.LogUtil;
 import com.dozenx.util.ByteUtil;
@@ -94,6 +95,17 @@ public class PosCmd extends   BaseGameCmd{
         this.headAngle = livingThing.headAngle;
         this.headAngle2 = livingThing.headAngle2;
        // this.part =pos;
+    }
+    public PosCmd(PlayerStatus playerStatus){
+
+        this.userId =playerStatus.getId();
+        this.x = playerStatus.getX();
+        this.y = playerStatus.getY();
+        this.z = playerStatus.getZ();
+        this.bodyAngle = playerStatus.getBodyAngle();
+        this.headAngle = playerStatus.getHeadAngle();
+        this.headAngle2 = playerStatus.getHeadAngle2();
+        // this.part =pos;
     }
 
 

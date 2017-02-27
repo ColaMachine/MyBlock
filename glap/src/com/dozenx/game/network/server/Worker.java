@@ -19,7 +19,9 @@ import java.util.Stack;
  * Created by luying on 16/10/7.
  */
 public class Worker extends Thread {
-
+    private long startTime;
+    private long lastReceiveTime;
+    private long lastSendTime;
     private Socket socket;
 
     public boolean end=false;
@@ -34,13 +36,44 @@ public class Worker extends Thread {
 
     ServerContext serverContext ;
     public void close(){
+
+        try{
+            if(inputSteram!=null ) {
+                try {
+                    inputSteram.close();
+                } catch (Exception e) {
+                    LogUtil.err(e);
+                }
+            }
+            if(outputStream!=null){
+                try {
+                    this.outputStream.close();
+                } catch (Exception e) {
+                    LogUtil.err(e);
+                }
+
+            }
+        if(socket!=null){
+            try {
+                socket.close();
+            } catch (Exception e) {
+                LogUtil.err(e);
+            }
+
+        }
+
+
+
+        }catch (Exception e){
+
+        }
         LogUtil.println("失去连接"+this.ip);
         this.end=true;
 
     }
 
     public Worker(Socket socket,ServerContext serverContext){
-
+        this.startTime =System.currentTimeMillis();
         this.ip=socket.getInetAddress().getHostAddress();
         LogUtil.println("连接服务器"+this.ip);
         this.socket =socket;
@@ -57,11 +90,15 @@ public class Worker extends Thread {
                 //
                 CmdType.printSend(ByteUtil.slice(bytes,4,4));
                 //LogUtil.println("server 准备发送数据类型:"+ CmdType.values()[(ByteUtil.getInt(ByteUtil.slice(bytes,4,4)))]+"长度:"+(bytes.length-4));
-
-                outputStream.write(bytes);
-                outputStream.write(Constants.end);
+                synchronized (this) {
+                    outputStream.write(bytes);
+                    outputStream.write(Constants.end);
+                }
+                lastSendTime= System.currentTimeMillis();
             } catch (IOException e) {
+
                 e.printStackTrace();
+                this.end=true;
             }
         //pw.println(message);
     }
@@ -81,6 +118,8 @@ public class Worker extends Thread {
                   /* n=  inputSteram.read(bytes);
                     if(n==-1){*/
                     LogUtil.err("socket 读取数据有问题 +"+length+"+ 已经自动断开");
+                    this.end=true;
+                   // this.close();
                     beginRepair(inputSteram);
                     /*    break;
                     }*/
@@ -121,10 +160,11 @@ public class Worker extends Thread {
                /* while(){
 
                 }*/
+                lastReceiveTime =System.currentTimeMillis();
                 CmdType.printReceive(newBytes);
             //LogUtil.println("server 接收到数据类型:"+CmdType.values()[(ByteUtil.getInt(newBytes))] +"长度:"+length);
                 GameCmd cmd = CmdUtil.getCmd(newBytes);
-                GameServerHandler handler = serverContext.allHandlerMap.get(cmd.getCmdType());
+                GameServerHandler handler = serverContext.getHandler(cmd.getCmdType());
                 if(handler!= null ){
                     ResultCmd resultCmd =handler.handler(new GameServerRequest(cmd,this),new GameServerResponse());
                     if(resultCmd!=null){
@@ -143,20 +183,41 @@ public class Worker extends Thread {
         }finally{
             System.out.println("Close.....");
             try {
-                inputSteram.close();
-                this.outputStream.close();
-                socket.close();
+
                 this.close();
-                this.end=true;
+
 
             } catch (Exception e2) {
-
+                LogUtil.err(e2);
             }
         }
     }
     public void beginRepair(InputStream inputStream) throws IOException {
-        while( inputStream.read() != Constants.end){
 
+        //判断是否正常链接
+        this.close();
+        return ;
+       /* if(isServerClose(socket)){
+            LogUtil.err("客户端已经断开连接");
+            this.close();
+            return;
+        }
+        while( inputStream.read() != Constants.end){
+            LogUtil.err("正在修正socket数据");
+        }*/
+    }
+
+    /**
+     * 判断是否断开连接，断开返回true,没有返回false
+     * @param socket
+     * @return
+     */
+    public Boolean isServerClose(Socket socket){
+        try{
+            socket.sendUrgentData(0xFF);//发送1个字节的紧急数据，默认情况下，服务器端没有开启紧急数据处理，不影响正常通信
+            return false;
+        }catch(Exception se){
+            return true;
         }
     }
 

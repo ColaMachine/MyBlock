@@ -54,6 +54,9 @@ public class ShaderManager {
     public static ShaderConfig skyShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
 
     public static ShaderConfig uiShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
+
+    public static ShaderConfig attackShaderConfig = new ShaderConfig("attack","chapt7/2dimg.frag","chapt7/2dimg.vert");
+
     public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
     public static ShaderConfig anotherShaderConfig = new ShaderConfig("another","chapt7/3dimg.frag","chapt7/3dimg.vert");
 

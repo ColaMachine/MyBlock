@@ -1,7 +1,6 @@
 package com.dozenx.game.network.server.handler;
 
 import com.dozenx.game.engine.command.*;
-import com.dozenx.game.network.server.PlayerStatus;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.ServerContext;
@@ -23,6 +22,6 @@ public class SayHandler extends GameServerHandler {
         return null;
     }
     public void broadCast(GameCmd cmd){
-        serverContext. messages.offer(cmd.toBytes());
+        serverContext.broadCast(cmd.toBytes());
     }
 }

@@ -8,6 +8,7 @@ import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import com.dozenx.game.network.client.Client;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import com.dozenx.game.engine.command.AttackCmd;
@@ -581,7 +582,9 @@ public class MouseControlCenter {
 
     public void keyDown(int keycode) {
         if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
-            human.receive(new AttackCmd(AttackType.ARROW));
+            CoreRegistry.get(Client.class).send(new AttackCmd(human,AttackType.ARROW,human.getTarget()));
+           // Client.messages.push(new AttackCmd(AttackType.ARROW));
+           // human.receive(new AttackCmd(AttackType.ARROW));
         }
                                        /* if(Keyboard.isRepeatEvent()){
                                             LogUtil.println("重复按键"+Keyboard.getKeyName(keycode));

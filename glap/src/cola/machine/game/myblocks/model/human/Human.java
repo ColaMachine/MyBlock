@@ -2,7 +2,9 @@ package cola.machine.game.myblocks.model.human;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.network.client.Client;
@@ -494,6 +496,7 @@ public class Human extends LivingThing {
 		// ��¼��ǰ��ʱ��
 		if(Switcher.IS_GOD){
 			this.position.y+=2;
+            GamingState.cameraChanged=true;
 		}else
 		if (this.stable) {
 			this.v=10.2f;

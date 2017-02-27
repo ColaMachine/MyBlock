@@ -1,4 +1,4 @@
-package com.dozenx.game.network.server;
+package com.dozenx.game.network.server.bean;
 
 import com.dozenx.game.engine.command.ItemType;
 
@@ -26,6 +26,33 @@ public class PlayerStatus {
     private int targetId;//目标
     private boolean isplayer;//是否是玩家
     private byte type;//生物种类
+
+
+    public int blood;  //  血量
+    public int energy; //  能量
+
+
+    public int physicAttack ;//物攻
+    public int mgicAttack ;//魔攻
+
+    public int fangyu;
+
+    public int nowBlood;        //血量
+    public int nowEnergy;       //蓝量
+
+
+
+    public int basePower=100;      //  基础力量
+    public int baseIntell=100;     //  基础智力
+    public int baseAgility=100;    //  基础敏捷
+    public int baseSpirit=100;     //  基础精神
+
+
+
+    public int totalPower;          //  现在的力量值
+    public int totalIntell;         //  智力值
+    public int totalAgility;        //  敏捷值
+    public int totalSpirit;         //  精神值
 
 
     public String getPwd() {

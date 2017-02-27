@@ -306,6 +306,9 @@ public class ItemDefinition {
         /*rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -90*3.14f/180, 0, 0));
             rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -45*3.14f/180));
 */
+        if(blocks==null){
+            this.init();
+        }
 
         for (Block block : blocks) {
           //  GL11.glColor3f(block.rf(), block.bf() , block.gf());

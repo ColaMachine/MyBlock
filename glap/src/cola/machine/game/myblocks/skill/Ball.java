@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.skill;
 
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -12,6 +13,7 @@ import org.lwjgl.opengl.GL11;
  * Created by luying on 16/9/25.
  */
 public class Ball  {
+    LivingThing from ;
     GL_Vector position;
     GL_Vector direction;
    float sumDistance=0;
@@ -22,7 +24,8 @@ public class Ball  {
     int height;
     Long startTime;
     Component component;
-    public Ball(GL_Vector position ,GL_Vector direction,float speed,Shape shape){
+    public Ball(GL_Vector position ,GL_Vector direction,float speed,Shape shape,LivingThing from){
+        this.from = from;
         component= new Component(1,1,1);
 startTime=System.currentTimeMillis();
         this.speed = speed;

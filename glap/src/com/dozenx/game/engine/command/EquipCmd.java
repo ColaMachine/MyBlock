@@ -1,10 +1,7 @@
 package com.dozenx.game.engine.command;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import com.dozenx.game.network.server.PlayerStatus;
 import com.dozenx.util.ByteBufferWrap;
-import core.log.LogUtil;
-import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import com.dozenx.util.ByteUtil;
 
@@ -52,6 +49,7 @@ public class EquipCmd extends   BaseGameCmd{
     }
 
     private EquipPartType part;
+
     public EquipCmd(byte[] bytes){
         parse(bytes);
     }
@@ -69,6 +67,7 @@ public class EquipCmd extends   BaseGameCmd{
     }
 
     //equip 4 |userId|part 2|item |itemId todo|
+    @Override
     public byte[] toBytes(){
 
         return ByteUtil.createBuffer().put(cmdType.getType())

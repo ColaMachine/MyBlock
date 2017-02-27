@@ -1,12 +1,16 @@
 package com.dozenx.game.engine.ui.inventory.bean;
 
+import com.dozenx.game.engine.command.ItemType;
+
 /**
  * Created by luying on 16/7/3.
  */
 public class ItemBean {
     int id;
+
     String name;
     int num;
+    int brokenDegree;// 1/100
     public ItemBean(String name, int num)
     {
         this.name=name;

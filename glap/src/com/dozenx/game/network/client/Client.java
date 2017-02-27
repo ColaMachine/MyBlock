@@ -25,9 +25,11 @@ public class Client extends Thread{
     public static Stack<SayCmd> messages=new Stack<>();
     public static Stack<EquipCmd> equips=new Stack<>();
     public static Stack<PosCmd> movements=new Stack<>();
+    public static Stack<AttackCmd> attacks=new Stack<>();
    // public static Stack<GameCmd> newborns=new Stack<>();
     public static Map<Integer, GameCallBackTask> taskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
     public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();
+
     ChatFrame chatFrame;
     public Client(){
          chatFrame =  CoreRegistry.get(ChatFrame.class );
@@ -35,6 +37,7 @@ public class Client extends Thread{
     Socket socket = null;
    // BufferedReader br = null;
     //PrintWriter pw = null;
+
     public  void send(GameCmd cmd ){
     //if(pw!=null){
        /* System.out.println(" send message"+message);
@@ -58,16 +61,19 @@ public class Client extends Thread{
 
             CmdType.printSend(cmd);
             //LogUtil.println("client 准备发送数据类型:"+ cmd.getCmdType()+"长度:"+(oldByteAry.length-4));
-
-            outputStream.write(oldByteAry);
-            outputStream.write(Constants.end);
+            synchronized (this) {
+                outputStream.write(oldByteAry);//需要加锁
+                outputStream.write(Constants.end);
+            }
             //LogUtil.println("send over");
             //outputStream.write('\n');
         } catch (IOException e) {
+            this.end=true;
             e.printStackTrace();
         }
         // }
     }
+    boolean end =false;
     public static void main(String args[]){
         //System.out.println(message);
         /*Client client =new Client();
@@ -115,6 +121,7 @@ public class Client extends Thread{
            /* br = new BufferedReader(new InputStreamReader(
                    ));*/
              outputStream = socket.getOutputStream();
+
            /* pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                     )));*/
             //pw.println("1");pw.flush();
@@ -192,6 +199,8 @@ public class Client extends Thread{
                     }
                     else if (cmd.getCmdType()== CmdType.PLAYERSTATUS) {
                         playerSync.offer((PlayerSynCmd)cmd);
+                    }else if (cmd.getCmdType()== CmdType.ATTACK) {
+                        attacks.push((AttackCmd)cmd);
                     }
                     else if (cmd.getCmdType()== CmdType.RESULT) {
                          ResultCmd result = (ResultCmd) cmd;

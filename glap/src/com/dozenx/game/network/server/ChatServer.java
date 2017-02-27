@@ -1,10 +1,12 @@
 package com.dozenx.game.network.server;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.CmdType;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.handler.*;
+import com.dozenx.game.network.server.service.EnemyManager;
 import com.dozenx.game.network.server.service.impl.UserService;
 
 import java.net.ServerSocket;
@@ -29,16 +31,20 @@ public class ChatServer {
         CoreRegistry.put(UserService.class , new UserService(serverContext));
         //注册所有服务
         serverContext. getAllHandlerMap().put(CmdType.LOGIN,new LoginHandler(serverContext));
-        serverContext. allHandlerMap.put(CmdType.EQUIP,new EquipHandler(serverContext));
-        serverContext. allHandlerMap.put(CmdType.SAY,new SayHandler(serverContext));
-        serverContext. allHandlerMap.put(CmdType.GET,new GetHandler(serverContext));
-        serverContext. allHandlerMap.put(CmdType.POS,new PosHandler(serverContext));
+        serverContext. registerHandler(CmdType.EQUIP,new EquipHandler(serverContext));
+        serverContext. registerHandler(CmdType.SAY,new SayHandler(serverContext));
+        serverContext. registerHandler(CmdType.GET,new GetHandler(serverContext));
+        serverContext. registerHandler(CmdType.POS,new PosHandler(serverContext));
 
-
-        GameServerHandler serverHandler = serverContext. allHandlerMap.get(CmdType.LOGIN);
+        serverContext. registerHandler(CmdType.ATTACK,new AttackHandler(serverContext));
+       // GameServerHandler serverHandler = serverContext. allHandlerMap.get(CmdType.LOGIN);
         ServerSocket s = null;
 
-        Thread allSender =new AllSender(serverContext.messages,serverContext.workerMap);allSender.start();
+        Thread allSender =new AllSender(serverContext.getMessages(),serverContext.getWorkers());allSender.start();
+
+        EnemyManager enemyManager =new EnemyManager(serverContext);
+       // enemyManager.run();
+        new Thread(enemyManager).start();
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {
             //设定服务端的端口号
@@ -50,7 +56,8 @@ public class ChatServer {
                 Socket socket = s.accept();
                 Worker worker =new Worker(socket,serverContext);
                 worker.start();
-                serverContext.workerMap.put(worker.hashCode(),worker);
+                serverContext.addWorker(worker);
+               // serverContext.workerMap.put(worker.hashCode(),worker);
             }
 
 

@@ -4,6 +4,8 @@ package com.dozenx.util;
  * Created by dozen.zhang on 2016/10/10.
  */
 
+import core.log.LogUtil;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
@@ -29,9 +31,14 @@ public class ByteUtil
     }
 
     public static byte[] slice(byte[] src,int start,int length){
-        byte[] bytes= new byte[length];
-         System.arraycopy(src, start, bytes, 0, length);
-        return bytes;
+        try {
+            byte[] bytes = new byte[length];
+            System.arraycopy(src, start, bytes, 0, length);
+            return bytes;
+        }catch (Exception e){
+            LogUtil.err(e);
+        }
+        return null;
     }
 
    /* public static ByteBuffer createBuffer(){

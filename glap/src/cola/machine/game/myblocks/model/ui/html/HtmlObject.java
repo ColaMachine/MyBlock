@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import com.dozenx.game.engine.edit.view.MouseClickHandler;
 import de.matthiasmann.twl.*;
 //import cola.machine.game.myblocks.input.Event;
 import cola.machine.game.myblocks.input.KeyEventReceiver;
@@ -1599,9 +1600,20 @@ public class HtmlObject implements Cloneable  {
         }
         return false;
     }
+    public MouseClickHandler onClick;
+    public boolean hasClick(){
+        return this.onClick!=null;
+    }
     protected boolean handleEvent(Event evt) {
         if(evt.isKeyEvent()) {
             return handleKeyEvent(evt);
+        }
+        if(this.hasClick() && evt.getType() == Event.Type.MOUSE_ENTERED){
+            return true;
+        }
+        if(this.hasClick() && evt.getType() == Event.Type.MOUSE_BTNDOWN){
+            onClick.evt= evt;
+           onClick.run();
         }
         return false;
     }

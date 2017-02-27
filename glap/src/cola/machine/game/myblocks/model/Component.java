@@ -62,7 +62,10 @@ public class Component {
     public void removeChild(Component component){
         for(int i=children.size()-1;i>=0;i--){
             Component child =  children.get(i);
-            children.remove(i);
+            if(child == component){
+                children.remove(i);
+            }
+
         }
     }
     float width;

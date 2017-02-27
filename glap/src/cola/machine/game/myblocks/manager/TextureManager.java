@@ -191,7 +191,9 @@ public class TextureManager {
     }
 
     public static ItemDefinition getItemDefinition(ItemType itemType) {
-
+        if(itemType ==null ||itemType ==  ItemType.NULL){
+            return null;
+        }
         ItemDefinition itemCfg = itemType2ItemDefinitionMap.get(itemType);
         if (itemCfg == null) {
             LogUtil.println("itemCfg 为null:" + itemType);
