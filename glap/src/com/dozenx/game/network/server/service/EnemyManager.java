@@ -1,9 +1,11 @@
 package com.dozenx.game.network.server.service;
 
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.engine.command.AttackCmd;
+import com.dozenx.game.engine.command.AttackType;
+import com.dozenx.game.engine.command.CmdType;
 import com.dozenx.game.engine.command.PosCmd;
-import com.dozenx.game.network.server.bean.LivingThingBean;
-import com.dozenx.game.network.server.bean.PlayerStatus;
-import com.dozenx.game.network.server.bean.ServerContext;
+import com.dozenx.game.network.server.bean.*;
 import com.dozenx.util.TimeUtil;
 import glmodel.GL_Vector;
 
@@ -16,11 +18,12 @@ public class EnemyManager implements  Runnable {
     public EnemyManager(ServerContext serverContext ){
         this.serverContext =serverContext;
     }
+
     @Override
     public void run() {
         while(true) {
             try {
-
+                this.doSomeThing();
                 this.findThing();
                // this.changeDir();
                 this.moveOrAttack();
@@ -66,7 +69,12 @@ public class EnemyManager implements  Runnable {
         }
     }
 
+    public void doSomeThing(){
+        for(LivingThingBean enemy : serverContext.getAllEnemies()) {
+           enemy.doSomeThing(serverContext);
 
+        }
+    }
     public void moveOrAttack() {
         for (LivingThingBean enemy : serverContext.getAllEnemies()) {
             if (enemy.getTargetId() > 0) {
@@ -76,19 +84,24 @@ public class EnemyManager implements  Runnable {
                 }
                 GL_Vector direction = GL_Vector.sub(target.getPosition(),enemy.getPosition());
                 enemy.setWalkDir(direction);
-                   if(GL_Vector.length(direction)<2){
+                   if(GL_Vector.length(direction)<12){
 
-
-                       // attack(livingThing,livingThing.getTarget());
+                       enemy.
+                        attack(enemy,enemy.getTarget());
                         //livingThing.nextPosition=null;
                     }else{
                        // this.getAnimationManager().apply(livingThing.bodyComponent,"walkerFoward");
                        GL_Vector newPosition = GL_Vector.add(enemy.getPosition(),GL_Vector.multiply(direction.normalize(),1*1));
                         enemy .setPosition(newPosition);
-                       serverContext.broadCast(new PosCmd(enemy.getStatus()).toBytes());
+                       serverContext.broadCast(new PosCmd(enemy).toBytes());
                    }
 
             }
         }
+    }
+
+    public void attack(LivingThingBean source ,LivingThingBean target){
+           serverContext.getAllHandlerMap().get(CmdType.ATTACK).handler(new GameServerRequest(new AttackCmd(source.getId(), AttackType.ARROW,target.getId()),null),new GameServerResponse());
+
     }
 }

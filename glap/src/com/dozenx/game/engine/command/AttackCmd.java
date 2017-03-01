@@ -45,14 +45,12 @@ public class AttackCmd extends BaseGameCmd{
     public AttackCmd(byte[] bytes){
         parse(bytes);
     }
-    public AttackCmd(LivingThing human,AttackType type,LivingThing target){
-        this.userId = human.id;
+    public AttackCmd(int sourceId,AttackType type,int  targetId){
+        this.userId = sourceId;
         this.attackType =type;
-        if(target == null){
-            this.targetId=0;
-        }else {
-            this.targetId = target.id;
-        }
+
+            this.targetId = targetId;
+
     }
     @Override
     public byte[] toBytes(){

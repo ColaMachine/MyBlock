@@ -9,13 +9,14 @@ import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.ui.inventory.control.InventoryController;
+import com.dozenx.game.network.server.bean.LivingThingBean;
 import glmodel.GL_Vector;
 
 /**
  * Created by luying on 17/2/7.
  */
-public class HumanShootState extends HumanState{
-    public HumanShootState(LivingThing livingThing){
+public class ShootState extends IdleState {
+    public ShootState(LivingThingBean livingThing){
         super(livingThing);
         this.livingThing = livingThing;
         startTime=System.currentTimeMillis();
@@ -25,7 +26,7 @@ public class HumanShootState extends HumanState{
         CoreRegistry.get(AnimationManager.class).clear(livingThing.bodyComponent);
         CoreRegistry.get(AnimationManager.class).apply(livingThing.bodyComponent,"shoot");
     }
-    protected LivingThing livingThing;
+    protected LivingThingBean livingThing;
     public long startTime;
     boolean shooted=false;
     public int currentState =0;
@@ -37,7 +38,7 @@ public class HumanShootState extends HumanState{
 //arch1
                 currentState = 1;
                 livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch1);
-
+                livingThing.setHandEquip();
 
             } else if (currentState == 1 && now - startTime > 3 * 1000) {
 //arch2
@@ -61,7 +62,7 @@ public class HumanShootState extends HumanState{
         }
 
         if (now - startTime > 8 * 1000) {
-            this.livingThing.changeState(new HumanState(this.livingThing));
+            this.livingThing.changeState(new IdleState(this.livingThing));
 
         }
 

@@ -1,7 +1,10 @@
 package com.dozenx.game.network.server.bean;
 
 import cola.machine.game.myblocks.lifething.bean.GameActor;
-import com.dozenx.game.engine.live.state.HumanState;
+import cola.machine.game.myblocks.manager.TextureManager;
+import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.live.state.IdleState;
+import com.dozenx.game.engine.live.state.WalkState;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -10,42 +13,41 @@ import java.lang.ref.WeakReference;
 /**
  * Created by luying on 16/9/16.
  */
-public class LivingThingBean extends GameActor {
+public class LivingThingBean extends PlayerStatus {
+
+    public LivingThingBean(){
+
+    }
     public long getLastHurtTime() {
         return lastHurtTime;
     }
     public void setWalkDir(GL_Vector dir){
         this.WalkDir = dir;
-        this.status.setBodyAngle((float) Math.atan(dir.z / dir.x));
-    }
-    public int getTargetId(){
-        return this.status.getTargetId();
+        this.setBodyAngle((float) Math.atan(dir.z / dir.x));
     }
 
-    public void setTargetId(int id ){
-        this.status.setTargetId(id);
-    }
 
     public void setLastHurtTime(long lastHurtTime) {
         this.lastHurtTime = lastHurtTime;
     }
 
     private long lastHurtTime = 0;
-    public String getName(){
-        return this.status.getName();
-    }
+
     public GL_Vector getPosition(){
-        return new GL_Vector(this.status.getX(),this.status.getY(),this.status.getZ());
+        return new GL_Vector(getX(),getY(),getZ());
     }
-    public int getId(){
-        return this.status.getId();
-    }
+
     private BagBean bag =new BagBean();
-    private PlayerStatus status ;
-    HumanState currentState ;
+    //private PlayerStatus status ;
+    protected IdleState currentState  = new WalkState(this);
     public LivingThingBean(PlayerStatus playerStatus){
 
-        this.status =playerStatus;
+        setPlayerStatus(playerStatus);
+
+
+
+
+
     }
 
     public long updateTime;
@@ -102,20 +104,20 @@ public class LivingThingBean extends GameActor {
     public int preY = 0;
 
     public String getState(){
-        return "力量:"+status.basePower+"/"+status.totalPower+"\n"
-                +"智力:"+status.baseIntell+"/"+status.totalIntell+"\n"
-                +"敏捷:"+status.baseAgility+"/"+status.totalAgility+"\n"
-                +"精神:"+status.baseSpirit+"/"+status.totalSpirit+"\n"
-                +"血量:"+status.nowBlood+"/"+status.blood+"\n"
-                +"魔法:"+status.nowEnergy+"/"+status.energy+"\n"
-                +"防御:"+status.fangyu+"";
+        return "力量:"+basePower+"/"+totalPower+"\n"
+                +"智力:"+baseIntell+"/"+totalIntell+"\n"
+                +"敏捷:"+baseAgility+"/"+totalAgility+"\n"
+                +"精神:"+baseSpirit+"/"+totalSpirit+"\n"
+                +"血量:"+nowBlood+"/"+blood+"\n"
+                +"魔法:"+nowEnergy+"/"+energy+"\n"
+                +"防御:"+fangyu+"";
     }
 
     public boolean died=false;
     public void died(){
-        this.status.nowBlood=0;
+        this.nowBlood=0;
         died=true;
-        
+
     }
     public void setPosition(GL_Vector position) {
 
@@ -126,9 +128,9 @@ public class LivingThingBean extends GameActor {
 
 
     }
-    public PlayerStatus getStatus(){
+    /*public PlayerStatus getStatus(){
         return this.status;
-    }
+    }*/
     public void setPosition(float posx, float posy, float posz) {
         this.minX=posx-0.5f;
         this.minY=posy;
@@ -141,9 +143,9 @@ public class LivingThingBean extends GameActor {
         position.x= posx;
         position.y = posy;
         position.z = posz;
-        this.status.setX(posx);
-        this.status.setY(posy);
-        this.status.setZ(posz);
+        this.setX(posx);
+        this.setY(posy);
+        this.setZ(posz);
        /* this.position.x=posx;
         this.position.y=posy;
         this.position.z=posz;*/
@@ -154,23 +156,77 @@ public class LivingThingBean extends GameActor {
 
 
 
+
+
+
     public void setPlayerStatus(PlayerStatus status){
-        this.status=status;
+
+        setX(status.getX());
+        setY(status.getY());
+        setZ(status.getZ());
+
+        setName(status.getName());
+
+        setPwd(status.getPwd());
+        setBodyAngle(status.getBodyAngle());
+        setHeadAngle(status.getHeadAngle());
+        setHeadAngle2(status.getHeadAngle2());
+        setHeadEquip(status.getHeadEquip());
+        setBodyEquip(status.getBodyEquip());
+        setHandEquip(status.getHandEquip());
+        setShoeEquip(status.getShoeEquip());
+        setLegEquip(status.getLegEquip());
+        setTargetId(status.getTargetId());
+        setIsplayer(status.isplayer());
+
+        this.id = status.getId();
         this.position.x = status.getX();
         this.position.y = status.getY();
         this.position.z = status.getZ();
+        this.headAngle =status.getHeadAngle();
+        this.bodyAngle =status.getBodyAngle();
+        this.headAngle2 = status.getHeadAngle2();
 
-
-
+        this.setIsplayer(status.isIsplayer());
+        this.name=status.getName();
 
     }
 
+    public void doSomeThing(ServerContext serverContext){
+       /* this.currentState.update();
+            if (this.getTargetId() >0) {
+                //检查举例 如果举例过远 放弃追逐
+                LivingThingBean player= serverContext.getOnlinePlayerById(enemy.getTargetId());
+                if(player==null){
+                    enemy.setTargetId(0);
+                }else
+                if (GL_Vector.length(GL_Vector.sub(player.getPosition(), player.getPosition())) >15 ) {
+                    if(TimeUtil.getNowMills()-enemy.getLastHurtTime()<10*1000) {//如果上次伤害还没超过多少时间
+
+                        enemy.setTargetId(0);
+                    }
+                    //enemy.setTarget(player);
+                }
+            }
+
+            for(LivingThingBean player: serverContext.getAllOnlinePlayer()){
 
 
+                if (GL_Vector.length(GL_Vector.sub(enemy.getPosition(), player.getPosition())) < 5) {
+                    enemy.setTargetId(player.getId());
+                    //enemy.setTarget(player);
+                }
 
+            }*/
 
+    }
 
-
-
-
+    public void changeState(IdleState humanState){
+        if(this.currentState!=null &&this.currentState != humanState ){
+            currentState.dispose();
+            this.currentState =humanState;
+        }else{
+            this.currentState =humanState;
+        }
+    }
 }

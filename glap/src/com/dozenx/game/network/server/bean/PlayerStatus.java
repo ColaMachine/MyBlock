@@ -5,27 +5,27 @@ import com.dozenx.game.engine.command.ItemType;
 /**
  * Created by dozen.zhang on 2017/2/16.
  */
-public class PlayerStatus {
-    private float x;
-    private float y;
-    private float z;
+public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
+    protected float x;
+    protected float y;
+    protected float z;
 
-    private String name;
-    private String pwd;
-    private float bodyAngle;
-    private float headAngle;
-    private float headAngle2;
-    private int headEquip;
-    private int bodyEquip;//省体装备
-    private int handEquip;//手部装备
-    private int shoeEquip;
-    private int legEquip;//腿部装备
-    private int id;//id
-    private long loginTime;//下线时间
-    private long logoffTime;//登录时间
-    private int targetId;//目标
-    private boolean isplayer;//是否是玩家
-    private byte type;//生物种类
+    protected String name;
+    protected String pwd;
+    protected float bodyAngle;
+    protected float headAngle;
+    protected float headAngle2;
+    protected int headEquip;
+    protected int bodyEquip;//省体装备
+    protected int handEquip;//手部装备
+    protected int shoeEquip;
+    protected int legEquip;//腿部装备
+    protected int id;//id
+    protected long loginTime;//下线时间
+    protected long logoffTime;//登录时间
+    protected int targetId;//目标
+    protected boolean isplayer;//是否是玩家
+    protected byte type;//生物种类
 
 
     public int blood;  //  血量

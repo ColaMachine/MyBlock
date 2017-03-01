@@ -3,6 +3,8 @@ package cola.machine.game.myblocks.lifething.bean;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.live.state.IdleState;
+import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -13,7 +15,6 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.engine.live.state.HumanState;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
@@ -27,12 +28,12 @@ import java.lang.ref.WeakReference;
 /**
  * Created by luying on 16/9/16.
  */
-public class LivingThing extends GameActor{
-   public  float bodyAngle =0  ;
+public class LivingThing extends LivingThingBean {
+   /*public  float bodyAngle =0  ;
     public float headAngle =0  ;
-    public float headAngle2 =0  ;
+    public float headAngle2 =0  ;*/
     public LivingThing(){
-        this.currentState = new HumanState(this);
+        this.currentState = new IdleState(this);
 
         this.id=(int)(Math.random()*1000000);
         this.WalkDir=new  GL_Vector(1,0,0);
@@ -90,7 +91,7 @@ public class LivingThing extends GameActor{
         this.nowEnergy=this.energy;
     }
 
-    public long updateTime;
+   /* public long updateTime;
     public int id;
     public String name;
     public float distance;
@@ -112,7 +113,7 @@ public class LivingThing extends GameActor{
     public int basePower=100;      //  基础力量
     public int baseIntell=100;     //  基础智力
     public int baseAgility=100;    //  基础敏捷
-    public int baseSpirit=100;     //  基础精神
+    public int baseSpirit=100;     //  基础精神*/
 
 
    /* public int totalPower;
@@ -120,14 +121,33 @@ public class LivingThing extends GameActor{
     public int totalAgility;
     public int totalSpirit;*/
 
-    public int level;          //  现在的等级
+  /*  public int level;          //  现在的等级
 
     public int totalPower;          //  现在的力量值
     public int totalIntell;         //  智力值
     public int totalAgility;        //  敏捷值
     public int totalSpirit;         //  精神值
 
-    public float speed=1;
+    public float speed=1;*/
+
+   // public AABB aabb;
+    protected  float HAND_HEIGHT=1.5f;
+    protected float HAND_WIDTH=0.5f;
+    protected float HAND_THICK=0.5f;
+
+    protected  float BODY_HEIGHT=1.5f;
+    protected float BODY_WIDTH=1f;
+    protected  float BODY_THICK=0.5f;
+
+
+    protected float LEG_HEIGHT=1.5f;
+    protected float LEG_WIDTH=0.5f;
+    protected  float LEG_THICK=0.5f;
+
+    protected float HEAD_HEIGHT=1f;
+    protected float HEAD_WIDTH=1f;
+    protected  float HEAD_THICK=1f;
+/*
 
     public GL_Vector RightVector=new GL_Vector(1,0,0); ;
     public GL_Vector UpVector =new GL_Vector(0,1,0);
@@ -137,7 +157,7 @@ public class LivingThing extends GameActor{
     public float attackDistance=1;
     public GL_Vector position= new GL_Vector(0,0,0);    //  位置
     public GL_Vector nextPosition= new GL_Vector(0,0,0);    //  位置
-    public GL_Vector oldPosition=new GL_Vector();   //  旧位置
+    public GL_Vector oldPosition=new GL_Vector();   //  旧位置*/
 
     public boolean stable = true;
     public void setStable(boolean flag) {
@@ -241,23 +261,7 @@ public class LivingThing extends GameActor{
     public void reset() {
         mark = limit = 0;
     }
-   // public AABB aabb;
-   protected  float HAND_HEIGHT=1.5f;
-    protected float HAND_WIDTH=0.5f;
-    protected float HAND_THICK=0.5f;
 
-    protected  float BODY_HEIGHT=1.5f;
-    protected float BODY_WIDTH=1f;
-    protected  float BODY_THICK=0.5f;
-
-
-    protected float LEG_HEIGHT=1.5f;
-    protected float LEG_WIDTH=0.5f;
-    protected  float LEG_THICK=0.5f;
-
-    protected float HEAD_HEIGHT=1f;
-    protected float HEAD_WIDTH=1f;
-    protected  float HEAD_THICK=1f;
 
     public float RotatedX, RotatedY, RotatedZ;
 
@@ -272,10 +276,10 @@ public class LivingThing extends GameActor{
         this.maxY=posy+4;
         this.maxZ=posz+0.5f;
      //
-        position = new GL_Vector(posx, posy, posz);
-       /* this.position.x=posx;
+        //position = new GL_Vector(posx, posy, posz);
+       this.position.x=posx;
         this.position.y=posy;
-        this.position.z=posz;*/
+        this.position.z=posz;
 
 
 
@@ -320,9 +324,9 @@ public class LivingThing extends GameActor{
 
 
 
-        GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
+        //GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
 
-        vector[1]=600-vector[1]-45;
+        //vector[1]=600-vector[1]-45;
 
 
     }
@@ -416,7 +420,7 @@ public class LivingThing extends GameActor{
 
         //GLApp.project(this.position.x, this.position.y+2, this.position.z, vector);
 
-        vector[1]=600-vector[1]-45;
+        //vector[1]=600-vector[1]-45;
 
         //TextureManager.getTextureInfo("human_head_front").draw(null,(int)result[0],(int)result[1],headWidth,headHeight);
        /* GLApp.pushAttrib();
@@ -441,9 +445,9 @@ public class LivingThing extends GameActor{
         }*/
     }
     public void update(){
-             this.dropControl();
-            build();
-this.currentState.update();
+         this.dropControl();
+        build();
+        this.currentState.update();
     }
     public void renderShader(){
         /*if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()==0){
@@ -507,18 +511,9 @@ this.currentState.update();
         GLApp.setOrthoOff();
         GLApp.popAttrib();*/
     }
-    final int headWidth =40;
-    final int headHeight=40;
-    final int space=2;
-    final int bloodWdith=150;
-    final int bloodHeight=20;
-    final int heightSpace = 10;
-    int lineWdith=1;
-   public  float[] vector=new float[3];
-    byte[] borderColor=new byte[]{0,0,0};
-    byte[] redColor=new byte[]{(byte)255,(byte)255,(byte)51};
-    byte[] whiteColor=new byte[]{(byte)245,(byte)245,(byte)245};
-    byte[] blue=new byte[]{(byte)0,(byte)0,(byte)250};
+
+
+
     public void adjust(float posx, float posy, float posz) {
         this.minX=posx-0.5f;
         this.minY=posy;
@@ -530,11 +525,9 @@ this.currentState.update();
         position = new GL_Vector(posx, posy, posz);
     }
 
-    public boolean isPlayer =false;
 
-    public void setPlayer(boolean playerFlag){
-        this.isPlayer=playerFlag;
-    }
+
+
     public void beAttack(int damage){
         this.nowBlood-=damage;
         Document.needUpdate=true;
@@ -548,18 +541,11 @@ this.currentState.update();
         }
     }
 
-     HumanState currentState ;
+     IdleState currentState ;
     public void receive(GameCmd cmd ){
         currentState.receive(cmd);
     }
-    public void changeState(HumanState humanState){
-        if(this.currentState!=null &&this.currentState != humanState ){
-            currentState.dispose();
-            this.currentState =humanState;
-        }else{
-            this.currentState =humanState;
-        }
-    }
+
     public ItemDefinition getMainWeapon(){
         Component component = bodyComponent.findChild("rHumanHand");
         if(component.children.size()>0){
@@ -680,20 +666,13 @@ this.currentState.update();
     }
 
     public void setPlayerStatus(PlayerStatus status){
-        this.id = status.getId();
-        this.position.x = status.getX();
-        this.position.y = status.getY();
-        this.position.z = status.getZ();
-        this.headAngle =status.getHeadAngle();
-        this.bodyAngle =status.getBodyAngle();
-        this.headAngle2 = status.getHeadAngle2();
+        super.setPlayerStatus(status);
         this.addHeadEquip(TextureManager.getItemDefinition(ItemType.values()[status.getHeadEquip()]));
         this.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[status.getBodyEquip()]));
         this.addHandEquip(TextureManager.getItemDefinition(ItemType.values()[status.getHandEquip()]));
         this.addLegEquip(TextureManager.getItemDefinition(ItemType.values()[status.getLegEquip()]));
         this.addShoeEquip(TextureManager.getItemDefinition(ItemType.values()[status.getShoeEquip()]));
-        this.setPlayer(status.isIsplayer());
-        this.name=status.getName();
+
 
     }
 }
