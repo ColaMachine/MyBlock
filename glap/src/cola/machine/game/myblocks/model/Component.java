@@ -29,8 +29,8 @@ public class Component {
         this.childLocation= childLocation;
     }
     Point3f childLocation =new Point3f();
-    public String id;
-
+    private int id;
+    private String name;
     TextureInfo front;
     TextureInfo back;
     TextureInfo top;
@@ -512,7 +512,8 @@ this.secnum =secnum;
         this.bottom=texture;
     }
     public void setEightFace(String name,TextureManager textureManager){
-        this.id= name;
+
+        this.name =name;
         this.front= textureManager.getTextureInfo(name+"_front");
         this.back= textureManager.getTextureInfo(name+"_back");
         this.left= textureManager.getTextureInfo(name+"_left");
@@ -521,7 +522,7 @@ this.secnum =secnum;
         this.bottom= textureManager.getTextureInfo(name+"_bottom");
     }
     public void setEightFace(String name){
-        this.id= name;
+        this.name =name;
         this.front= TextureManager.getTextureInfo(name+"_front");
         this.back= TextureManager.getTextureInfo(name+"_back");
         this.left= TextureManager.getTextureInfo(name+"_left");
@@ -532,7 +533,7 @@ this.secnum =secnum;
     public ItemDefinition itemDefinition;
     public void setItem(ItemDefinition itemDefinition){
     this.itemDefinition = itemDefinition;
-        this.id= itemDefinition.getName();
+        this.name= itemDefinition.getName();
        // this.front= itemCfgBean.getIcon();
        // this.back= itemCfgBean.getIcon();
         //this.left=itemCfgBean.getIcon();
@@ -545,7 +546,8 @@ this.secnum =secnum;
             this.itemDefinition=TextureManager.getItemDefinition(shape.getName());
             itemDefinition.init();
         }
-        this.id= shape.getName();
+
+        this.name= shape.getName();
         this.front= shape.getFront();
         this.back= shape.getBack();
         this.left=shape.getLeft();
@@ -557,11 +559,11 @@ this.secnum =secnum;
         GL11.glVertex3f(p.x,p.y,p.z);
     }
     public Component findChild(String nodeName)  {
-        if(this.id.equals(nodeName))
+        if(this.name.equals(nodeName))
             return this;
         if(children.size()>0){
             for(int i=0;i<children.size();i++){
-                if(children.get(i).id.equals(nodeName)){
+                if(children.get(i).name.equals(nodeName)){
                     return children.get(i);
                 }else{
                     Component child = children.get(i).findChild(nodeName);

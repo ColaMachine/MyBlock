@@ -86,8 +86,8 @@ public class EnemyManager implements  Runnable {
                 enemy.setWalkDir(direction);
                    if(GL_Vector.length(direction)<12){
 
-                       enemy.
-                        attack(enemy,enemy.getTarget());
+                      /* enemy.
+                        attack(enemy,enemy.getTarget());*/
                         //livingThing.nextPosition=null;
                     }else{
                        // this.getAnimationManager().apply(livingThing.bodyComponent,"walkerFoward");

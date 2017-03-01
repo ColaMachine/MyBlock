@@ -21,8 +21,9 @@ public class ShootState extends IdleState {
         this.livingThing = livingThing;
         startTime=System.currentTimeMillis();
         if(CoreRegistry.get(InventoryController.class).has("arrow")){
-            livingThing.addHandEquip(TextureManager.getItemDefinition("arrow"));
+           // livingThing.addHandEquip(TextureManager.getItemDefinition("arrow"));
         }
+        //state 不应该直接操作 animationmanager 那放在哪里好呢 ,放在changeanimationcallback里?
         CoreRegistry.get(AnimationManager.class).clear(livingThing.bodyComponent);
         CoreRegistry.get(AnimationManager.class).apply(livingThing.bodyComponent,"shoot");
     }
@@ -38,7 +39,7 @@ public class ShootState extends IdleState {
 //arch1
                 currentState = 1;
                 livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch1);
-                livingThing.setHandEquip();
+             //   livingThing.setHandEquip();
 
             } else if (currentState == 1 && now - startTime > 3 * 1000) {
 //arch2
