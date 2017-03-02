@@ -4,19 +4,23 @@ package com.dozenx.game.engine.command;
  * Created by dozen.zhang on 2017/2/13.
  */
 public enum EquipPartType {
-  /*  LHAND,
-    RHAND,*/
-    LEG,
-    SHOE,
+    HEAD,
     BODY,
-/*
+    HAND,
+  LHAND,
+    RHAND,
+    LEG,
+
     LLEG,
     RLEG,
+    FOOT,
 
-    LSHOE,
-    RSHOE,*/
-    HEAD,
-    HAND;
+
+
+    LFOOT,
+    RFOOT
+
+    ;
 
     public  byte getType(){
         return (byte)this.ordinal();

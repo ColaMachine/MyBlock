@@ -61,8 +61,8 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	private BlockRepository blockRepository = new BlockRepository(null);
 
-	private Human human = new Human();
-	private Human human2 = new Human();
+	private Human human = new Human(2);
+	private Human human2 = new Human(1);
 
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard

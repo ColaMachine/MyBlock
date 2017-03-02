@@ -84,16 +84,16 @@ public class PosCmd extends   BaseGameCmd{
         parse(bytes);
     }
     public PosCmd(LivingThing livingThing){
-        if(livingThing.id==1024){
+        if(livingThing.getId()==1024){
             LogUtil.println("that 's bug");
         }
-        this.userId =livingThing.id;
+        this.userId =livingThing.getId();
         this.x = livingThing.position.x;
         this.y = livingThing.position.y;
         this.z = livingThing.position.z;
-        this.bodyAngle = livingThing.bodyAngle;
-        this.headAngle = livingThing.headAngle;
-        this.headAngle2 = livingThing.headAngle2;
+        this.bodyAngle = livingThing.getBodyAngle();
+        this.headAngle = livingThing.getHeadAngle();
+        this.headAngle2 = livingThing.getHeadAngle2();
        // this.part =pos;
     }
     public PosCmd(PlayerStatus playerStatus){

@@ -1,6 +1,5 @@
 package com.dozenx.game.network.server.handler;
 
-import cola.machine.game.myblocks.model.human.Player;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.command.PlayerSynCmd;
@@ -43,22 +42,22 @@ public class LoginHandler extends GameServerHandler {
                 userService.addNew(playerInfo);
                 playerBean=new LivingThingBean(playerInfo);
             }
-            if(playerBean.getStatus().getPwd().equals(pwd)){
-                serverContext.broadCast(new PlayerSynCmd(playerBean.getStatus()).toBytes());
+            if(playerBean.getPwd().equals(pwd)){
+                serverContext.broadCast(new PlayerSynCmd(playerBean).toBytes());
                 //把所有人的信息都同步给他
-                serverContext.addOnlinePlayer(playerBean.getStatus());
+                serverContext.addOnlinePlayer(playerBean);
               /* Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
                 for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PlayerMap.entrySet()){
                     request.getWorker().send(new PlayerSynCmd(entry.getValue()).toBytes());
                 }*/
                 for(LivingThingBean player: serverContext.getAllOnlinePlayer()){
-                    request.getWorker().send(new PlayerSynCmd(player.getStatus()).toBytes());
+                    request.getWorker().send(new PlayerSynCmd(player).toBytes());
                 }
                 for(LivingThingBean player: serverContext.getAllEnemies()){
-                    request.getWorker().send(new PlayerSynCmd(player.getStatus()).toBytes());
+                    request.getWorker().send(new PlayerSynCmd(player).toBytes());
                 }
 
-                return new ResultCmd(0, JSON.toJSONString(playerBean.getStatus()),loginCmd.getThreadId());
+                return new ResultCmd(0, JSON.toJSONString(playerBean),loginCmd.getThreadId());
 
                 //把所有在线玩家的状态同步给他
 

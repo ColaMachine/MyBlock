@@ -29,8 +29,8 @@ public class Component {
         this.childLocation= childLocation;
     }
     Point3f childLocation =new Point3f();
-    private int id;
-    private String name;
+    public int id;
+    public  String name;
     TextureInfo front;
     TextureInfo back;
     TextureInfo top;

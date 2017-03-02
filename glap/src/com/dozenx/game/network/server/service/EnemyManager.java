@@ -24,7 +24,7 @@ public class EnemyManager implements  Runnable {
         while(true) {
             try {
                 this.doSomeThing();
-                this.findThing();
+                //this.findThing();
                // this.changeDir();
                 this.moveOrAttack();
                 try {

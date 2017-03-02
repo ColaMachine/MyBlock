@@ -62,7 +62,7 @@ public class EquipCmd extends   BaseGameCmd{
         }
 
         this.part =pos;
-        this.userId =live.id;
+        this.userId =live.getId();
 
     }
 

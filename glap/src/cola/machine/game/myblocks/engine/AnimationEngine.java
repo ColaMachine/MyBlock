@@ -127,9 +127,9 @@ public class AnimationEngine extends MyBlockEngine {
       //  GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
         //GL11.glEnable(GL11.GL_DEPTH_TEST);
        // GL11.glDepthFunc(GL11.GL_LEQUAL);
-		human = new Human(/*blockRepository*/);
+		human = new Human(1/*blockRepository*/);
 		//sword=new Sword(0,0,0);
-		human2 = new Human(/*blockRepository*/);
+		human2 = new Human(2/*blockRepository*/);
 		CoreRegistry.put(MyBlockEngine.class, this);
 		CoreRegistry.put(Human.class, human);
 		this.initManagers();

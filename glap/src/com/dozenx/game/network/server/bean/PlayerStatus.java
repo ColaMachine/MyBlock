@@ -162,7 +162,7 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
         this.legEquip = legEquip;
     }
 
-    public boolean isplayer() {
+    public boolean isPlayer() {
         return isplayer;
     }
 
@@ -200,9 +200,6 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
         this.targetId = targetId;
     }
 
-    public boolean isIsplayer() {
-        return isplayer;
-    }
 
     public void setIsplayer(boolean isplayer) {
         this.isplayer = isplayer;

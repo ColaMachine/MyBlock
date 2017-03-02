@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.live.state;
 
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.WalkCmd;
 import com.dozenx.game.network.server.bean.LivingThingBean;
@@ -16,7 +17,7 @@ public class WalkState extends IdleState {
     long forwardPressedTime;
     long leftTime;
     long backTime;
-    public WalkState(LivingThingBean livingThing){
+    public WalkState(LivingThing livingThing){
         super(livingThing);
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的

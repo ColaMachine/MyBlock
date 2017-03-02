@@ -21,7 +21,7 @@ public class PosHandler extends GameServerHandler {
 
         PosCmd posCmd =(PosCmd) request.getCmd();
         int userId = posCmd.getUserId();
-        PlayerStatus playerStatus =  serverContext.getOnlinePlayerById(userId).getStatus();
+        PlayerStatus playerStatus =  serverContext.getOnlinePlayerById(userId);
         playerStatus.setX(posCmd.getX());
         playerStatus.setY(posCmd.getY());
         playerStatus.setZ(posCmd.getZ());

@@ -62,8 +62,8 @@ public class Human extends LivingThing {
 	/*BlockRepository blockRepository;*/
 
 
-	public Human(/*	BlockRepository blockRepository*/){
-        super();
+	public Human(int id ){
+        super(id);
         this.id= Constants.USER_ID;
         client =CoreRegistry.get(Client.class);
 /*

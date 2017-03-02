@@ -36,7 +36,7 @@ public class LivingThingManager {
     Component bendComponent;
     public LivingThingManager(){
 
-        LivingThing livingThing =new LivingThing();
+        LivingThing livingThing =new LivingThing(999);
         livingThing.position=new GL_Vector(1,65,-40);
         add(livingThing);
         /*   component =new Component(2,16,2);
@@ -55,10 +55,10 @@ public class LivingThingManager {
     }
     public void add(LivingThing livingThing){
         livingThings.add(livingThing);
-        livingThingsMap.put(livingThing.id,livingThing);
+        livingThingsMap.put(livingThing.getId(),livingThing);
     }
     public LivingThing getLivingThingById(int id){
-        if(player.id == id){
+        if(player.getId() == id){
             return player;
         }
         return livingThingsMap.get(id);
@@ -128,7 +128,7 @@ public class LivingThingManager {
 
     public void CrashCheck(  DropControlCenter dcc){
         for(LivingThing livingThing:livingThings){
-            if(livingThing.isPlayer || !livingThing.exist)continue;//不对玩家进行校验 怕玩家离开自己太远的时候还进行校验
+            if(livingThing.isPlayer() || !livingThing.exist)continue;//不对玩家进行校验 怕玩家离开自己太远的时候还进行校验
             if(livingThing.position.y<0){
                 livingThing.position.y=0;
                 livingThing.stable=true;
@@ -217,7 +217,7 @@ public class LivingThingManager {
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
             if(!livingThing.exist){
-               this.livingThingsMap.remove(livingThing.id);
+               this.livingThingsMap.remove(livingThing.getId());
                 livingThings.remove(i);
             }
         }
@@ -244,7 +244,7 @@ public class LivingThingManager {
         while(client.movements.size()>0 && client.movements.peek()!=null){
             PosCmd cmd = (PosCmd)client.movements.pop();
             int id = cmd.userId;
-            if(player.id == id){
+            if(player.getId() == id){
                /* player.setPosition(x,y,z);
                 player.WalkDir.x= x1;
                 player.WalkDir.y= y1;
@@ -273,10 +273,11 @@ public class LivingThingManager {
 
                 this.add(livingThing);*/
             }
+            //同步用户的位置 面向
             livingThing.setPosition(x,y,z);
-            livingThing.bodyAngle=bodyAngle;
-            livingThing.headAngle= headAngle;
-            livingThing.headAngle2= headAngle2;
+            livingThing.setBodyAngle(bodyAngle);
+            livingThing.setHeadAngle( headAngle);
+            livingThing.setHeadAngle2( headAngle2);
 
         }
 
@@ -298,7 +299,7 @@ public class LivingThingManager {
                     livingThing.addHandEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.LEG){
                     livingThing.addLegEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }else if(cmd.getPart()== EquipPartType.SHOE){
+                }else if(cmd.getPart()== EquipPartType.FOOT){
                     livingThing.addShoeEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }
             }
@@ -319,7 +320,8 @@ public class LivingThingManager {
             LivingThing livingThing = this.getLivingThingById(id);
             boolean exsits =true;
             if(livingThing==null ) {
-                livingThing = new LivingThing();
+
+                livingThing = new LivingThing(info.getId());
                 exsits =false;
 
             }
@@ -341,7 +343,7 @@ public class LivingThingManager {
                     livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }
-            livingThing.isPlayer = info.isIsplayer();
+            livingThing.setIsplayer(info.isPlayer());
 
             //livingThing.setTarget()
             try {
@@ -349,11 +351,14 @@ public class LivingThingManager {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            livingThing.id= info.getId();
-                livingThing.headAngle = info.getHeadAngle();
-                livingThing.bodyAngle =info.getBodyAngle();
-                livingThing.headAngle2 = info .getHeadAngle2();
-                livingThing.isPlayer =info.isIsplayer();
+
+           // livingThing.setPosition(x,y,z);
+            livingThing.setBodyAngle(info.getBodyAngle());
+            livingThing.setHeadAngle( info.getHeadAngle());
+            livingThing.setHeadAngle2( info.getHeadAngle2());
+
+
+
     if(!exsits) {
         this.add(livingThing);
     }

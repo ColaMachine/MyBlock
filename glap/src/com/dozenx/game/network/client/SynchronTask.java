@@ -32,9 +32,9 @@ public class SynchronTask extends Thread{
 
                 if(LivingThingManager.player.updateTime>=lastUpdateTime-1000) {
                     lastUpdateTime=System.currentTimeMillis();
-                    String message = "move:" + LivingThingManager.player.id + "," + LivingThingManager.player.position.x
+                    /*String message = "move:" + LivingThingManager.player.id + "," + LivingThingManager.player.position.x
                             + "," + LivingThingManager.player.position.y
-                            + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;
+                            + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;*/
                     client.send(new PosCmd(LivingThingManager.player));
                 }
                 Thread.sleep(100);

@@ -158,12 +158,9 @@ public class LivingThingBean extends PlayerStatus {
 
 
 
-
     public void setPlayerStatus(PlayerStatus status){
 
-        setX(status.getX());
-        setY(status.getY());
-        setZ(status.getZ());
+
 
         setName(status.getName());
 
@@ -177,18 +174,17 @@ public class LivingThingBean extends PlayerStatus {
         setShoeEquip(status.getShoeEquip());
         setLegEquip(status.getLegEquip());
         setTargetId(status.getTargetId());
-        setIsplayer(status.isplayer());
+        setIsplayer(status.isplayer);
 
         this.id = status.getId();
-        this.position.x = status.getX();
-        this.position.y = status.getY();
-        this.position.z = status.getZ();
+        setPosition(status.x,status.y,status.z);
+
         this.headAngle =status.getHeadAngle();
         this.bodyAngle =status.getBodyAngle();
         this.headAngle2 = status.getHeadAngle2();
 
-        this.setIsplayer(status.isIsplayer());
-        this.name=status.getName();
+
+
 
     }
 

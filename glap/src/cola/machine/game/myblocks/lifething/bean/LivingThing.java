@@ -32,36 +32,36 @@ public class LivingThing extends LivingThingBean {
    /*public  float bodyAngle =0  ;
     public float headAngle =0  ;
     public float headAngle2 =0  ;*/
-    public LivingThing(){
+    public LivingThing(int id){
         this.currentState = new IdleState(this);
 
-        this.id=(int)(Math.random()*1000000);
+        this.id=id;//(int)(Math.random()*1000000);
         this.WalkDir=new  GL_Vector(1,0,0);
-        bodyComponent.id="human_body";
+        bodyComponent.id=id*10+EquipPartType.BODY.ordinal();
+        bodyComponent.name = "human_body";
         bodyComponent.setEightFace("human_body");
 
-
-        bodyComponent.id="human_body";
-        bodyComponent.setEightFace("human_body");
+        //rhand
         Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        rHandComponent.id=id*10+EquipPartType.RHAND.ordinal();
+        rHandComponent.name="rHumanHand";
         rHandComponent.setEightFace("human_hand");
-        rHandComponent.id="rHumanHand";
         rHandComponent.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
         bodyComponent.addChild(rHandComponent);
 
         //小手
 
-        //rhand
+        //lhand
         Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        lHandComponent.id=id*10+EquipPartType.LHAND.ordinal();
         lHandComponent.setEightFace("human_hand");
-        lHandComponent.id="lHumanHand";
         lHandComponent.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
         bodyComponent.addChild(lHandComponent);
 
         //lleg
         Component human_l_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
         human_l_b_leg.setEightFace("human_leg");
-        human_l_b_leg.id="human_l_b_leg";
+        human_l_b_leg.id=id*10+EquipPartType.LLEG.ordinal();
 
         human_l_b_leg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
         bodyComponent.addChild(human_l_b_leg);
@@ -72,7 +72,7 @@ public class LivingThing extends LivingThingBean {
         //rleg
         Component human_r_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
         human_r_b_leg.setEightFace("human_leg");
-        human_r_b_leg.id="human_r_b_leg";
+        human_r_b_leg.id=id*10 +EquipPartType.RLEG.ordinal();
         human_r_b_leg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
         bodyComponent.addChild(human_r_b_leg);
 
@@ -80,7 +80,7 @@ public class LivingThing extends LivingThingBean {
 
         Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
         head.setEightFace("human_head");
-
+        head.id=id*10+EquipPartType.HEAD.ordinal();
         head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
         bodyComponent.addChild(head);
 
@@ -267,23 +267,7 @@ public class LivingThing extends LivingThingBean {
 
     public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 
-    public void setPosition(float posx, float posy, float posz) {
-        this.minX=posx-0.5f;
-        this.minY=posy;
-        this.minZ=posz-0.5f;
 
-        this.maxX=posx+0.5f;
-        this.maxY=posy+4;
-        this.maxZ=posz+0.5f;
-     //
-        //position = new GL_Vector(posx, posy, posz);
-       this.position.x=posx;
-        this.position.y=posy;
-        this.position.z=posz;
-
-
-
-    }
     public void dropControl() {
         if(!Switcher.IS_GOD)
             if (!this.stable) {
@@ -369,9 +353,9 @@ public class LivingThing extends LivingThingBean {
 
             Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
             component.setShape(shape);
-            component.id="select";
+            component.name="select";
 
-
+        component.id=id*100+99;
             component.setOffset(new Point3f(0,4,0),new Point3f(0,0,0));
             //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
         bodyComponent.addChild(component);	//changeProperty()
@@ -573,7 +557,7 @@ public class LivingThing extends LivingThingBean {
     }
 
     public void addShoeEquipStart(ItemDefinition itemCfg) {
-        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.SHOE, itemCfg);
+        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.FOOT, itemCfg);
         CoreRegistry.get(Client.class).send(equipMentCmd);
         //NetWorkManager.push(equipMentCmd);
     }
@@ -606,7 +590,7 @@ public class LivingThing extends LivingThingBean {
                 }
                 Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
                 component.setShape(itemCfg.getShape());
-                component.id = name;
+                component.name = name;
 
                 component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
@@ -627,7 +611,7 @@ public class LivingThing extends LivingThingBean {
                 }
                 Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
                 component.setShape(itemCfg.getShape());
-                component.id = name;
+                component.name = name;
 
                 component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));

@@ -582,7 +582,7 @@ public class MouseControlCenter {
 
     public void keyDown(int keycode) {
         if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
-            CoreRegistry.get(Client.class).send(new AttackCmd(human,AttackType.ARROW,human.getTarget()));
+            CoreRegistry.get(Client.class).send(new AttackCmd(human.getId(),AttackType.ARROW,human.getTargetId()));
            // Client.messages.push(new AttackCmd(AttackType.ARROW));
            // human.receive(new AttackCmd(AttackType.ARROW));
         }

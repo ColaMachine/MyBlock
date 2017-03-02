@@ -16,7 +16,7 @@ import glmodel.GL_Vector;
  * Created by luying on 17/2/7.
  */
 public class ShootState extends IdleState {
-    public ShootState(LivingThingBean livingThing){
+    public ShootState(LivingThing livingThing){
         super(livingThing);
         this.livingThing = livingThing;
         startTime=System.currentTimeMillis();
@@ -27,7 +27,7 @@ public class ShootState extends IdleState {
         CoreRegistry.get(AnimationManager.class).clear(livingThing.bodyComponent);
         CoreRegistry.get(AnimationManager.class).apply(livingThing.bodyComponent,"shoot");
     }
-    protected LivingThingBean livingThing;
+    protected LivingThing livingThing;
     public long startTime;
     boolean shooted=false;
     public int currentState =0;

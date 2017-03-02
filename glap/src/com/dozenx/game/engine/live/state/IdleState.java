@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.live.state;
 
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.engine.item.ItemUtil;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import core.log.LogUtil;
