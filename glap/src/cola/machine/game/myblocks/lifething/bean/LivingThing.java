@@ -659,4 +659,9 @@ public class LivingThing extends LivingThingBean {
 
 
     }
+
+    public void changeAnimationState(String animationName){
+        CoreRegistry.get(AnimationManager.class).clear(bodyComponent);
+        CoreRegistry.get(AnimationManager.class).apply(bodyComponent,animationName);
+    }
 }

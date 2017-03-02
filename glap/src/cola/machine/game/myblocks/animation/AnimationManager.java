@@ -33,7 +33,7 @@ public class AnimationManager {
         while(it.hasNext()){
             Map.Entry<String,Object> entry=(Map.Entry)it.next();
             String id = entry.getKey();
-            if(id.startsWith(hashCode+component.id)){
+            if(id.startsWith(hashCode+component.name)){
                 id2animatorMap.get(id).complete=true;
             }
 
@@ -45,6 +45,7 @@ public class AnimationManager {
         }
 
     }
+
     public void apply(Component component , String action){
 
 

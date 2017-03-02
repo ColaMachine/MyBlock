@@ -36,7 +36,7 @@ public class StartMenuState implements GameState {
     public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
     GUI gui;
-Document document =new Document();
+    Document document =new Document();
 
     EditField userName ;
     EditField pwd ;
@@ -308,9 +308,9 @@ if(!Switcher.SHADER_ENABLE) {
                             Constants.userName = userName.getText();
 
                             //创建Human
-                           Human  human = new Human();
-                            human.id = status.getId();
-                            human.setPlayerStatus(status);
+                           Human  human = new Human(status.getId());
+
+                            //human.setPlayerStatus(status);
                             CoreRegistry.put(Human.class,human);
 
                             LivingThingManager livingThingManager =new LivingThingManager();

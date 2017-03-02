@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
+import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.ui.inventory.control.InventoryController;
@@ -16,7 +17,7 @@ import glmodel.GL_Vector;
  * Created by luying on 17/2/7.
  */
 public class ShootState extends IdleState {
-    public ShootState(LivingThing livingThing){
+    public ShootState(LivingThingBean livingThing){
         super(livingThing);
         this.livingThing = livingThing;
         startTime=System.currentTimeMillis();
@@ -24,10 +25,10 @@ public class ShootState extends IdleState {
            // livingThing.addHandEquip(TextureManager.getItemDefinition("arrow"));
         }
         //state 不应该直接操作 animationmanager 那放在哪里好呢 ,放在changeanimationcallback里?
-        CoreRegistry.get(AnimationManager.class).clear(livingThing.bodyComponent);
-        CoreRegistry.get(AnimationManager.class).apply(livingThing.bodyComponent,"shoot");
+
+        livingThing.changeAnimationState("shoot");
     }
-    protected LivingThing livingThing;
+    protected LivingThingBean livingThing;
     public long startTime;
     boolean shooted=false;
     public int currentState =0;

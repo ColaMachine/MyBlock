@@ -1,7 +1,10 @@
 package com.dozenx.game.network.server.bean;
 
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.bean.GameActor;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.engine.live.state.WalkState;
@@ -224,5 +227,9 @@ public class LivingThingBean extends PlayerStatus {
         }else{
             this.currentState =humanState;
         }
+    }
+
+    public void changeAnimationState(String animationName){
+
     }
 }
