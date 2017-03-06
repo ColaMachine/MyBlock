@@ -22,13 +22,11 @@ public class ResultCmd extends   BaseGameCmd{
         this.result = result;
     }
 
-    public String getMsg() {
+    public byte[] getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+
 
     public int getThreadId() {
 
@@ -39,29 +37,39 @@ public class ResultCmd extends   BaseGameCmd{
         this.threadId = threadId;
     }
 
-    String msg ;
+    byte[] msg ;
     int threadId;
     public ResultCmd(byte[] bytes){
 
         parse(bytes);
     }
-    public ResultCmd(int val,String msg,int threadId){
+    public ResultCmd(int val,byte[] bytes,int threadId){
 
        this.result=(byte)val;
-        this.msg = msg;
+        this.msg = bytes;
+        this.threadId =threadId;
+    }
+    public ResultCmd(int val,String msg ,int threadId){
+
+        this.result=(byte)val;
+        this.msg = new MsgCmd(msg).toBytes();
         this.threadId =threadId;
     }
 
+
     public static void main(String[] args){
-        ResultCmd cmd = new ResultCmd(0,"hello",123);
-        ResultCmd cmd2 = new ResultCmd(cmd.toBytes());
+        //ResultCmd cmd = new ResultCmd(0,"hello",123);
+        //ResultCmd cmd2 = new ResultCmd(cmd.toBytes());
     }
 
 
     //|result|length|msg|threadId|
     public byte[] toBytes(){
         LogUtil.println(JSON.toJSONString(this));
-        return ByteUtil.createBuffer().put(cmdType.getType()).put(result).putLenStr(msg).put(threadId).array();
+        if(msg == null){
+            LogUtil.err(" null str");
+        }
+        return ByteUtil.createBuffer().put(cmdType.getType()).put(result).put(msg.length).put(msg)/*putLenStr(msg)*/.put(threadId).array();
     }
 
 
@@ -69,9 +77,9 @@ public class ResultCmd extends   BaseGameCmd{
         ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
         byteBufferWrap.getInt();
         this.result= byteBufferWrap.get();
-        this.msg = byteBufferWrap.getLenStr();
+        this.msg = byteBufferWrap.getLenByteAry();
         this.threadId=byteBufferWrap.getInt();
-        LogUtil.println(JSON.toJSONString(this));
+       //   LogUtil.println(JSON.toJSONString(this));
     }
     @Override
     public CmdType getCmdType() {

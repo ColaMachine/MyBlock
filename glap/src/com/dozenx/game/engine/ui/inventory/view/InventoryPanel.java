@@ -30,7 +30,7 @@
 package com.dozenx.game.engine.ui.inventory.view;
 
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.registry.CoreRegistry;

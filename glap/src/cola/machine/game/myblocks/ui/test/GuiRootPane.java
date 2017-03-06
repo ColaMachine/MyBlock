@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.ui.test;
 
 import cola.machine.game.myblocks.control.MouseControlCenter;
-import cola.machine.game.myblocks.model.human.Human;
+import com.dozenx.game.engine.Role.bean.Player;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
@@ -72,7 +72,7 @@ public class GuiRootPane extends Widget {
         addButton("person","person", new ToggleFadeFrame(personDialog));personDialog.hide();
         addButton("inventory","inventory", new ToggleFadeFrame(inventoryDialog));inventoryDialog.hide();
         playerHeadDialog = new HeadDialog();
-        playerHeadDialog.bind(CoreRegistry.get(Human.class));
+        playerHeadDialog.bind(CoreRegistry.get(Player.class));
         //add(playerHeadDialog);
         targetHeadDialog =new HeadDialog();
         //add(targetHeadDialog);
@@ -224,7 +224,7 @@ public class GuiRootPane extends Widget {
                             inventoryDialog.setVisible(false);
                         }else if(targetHeadDialog.isVisible()){
                             targetHeadDialog.setVisible(false);
-                            CoreRegistry.get(Human.class).setTarget(null);
+                            CoreRegistry.get(Player.class).setTarget(null);
                         }
                     }
                 }

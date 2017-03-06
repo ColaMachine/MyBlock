@@ -3,6 +3,8 @@ package cola.machine.game.myblocks.lifething.manager;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
+import com.dozenx.game.network.server.bean.LivingThingBean;
 import glmodel.GL_Vector;
 
 /**
@@ -33,15 +35,17 @@ public class BehaviorManager extends    Thread{
         }
         return animationManager;
     }
-    public void attack(LivingThing from,LivingThing to){
-        getAnimationManager().apply(from.bodyComponent,"attack");
-        getAnimationManager().apply(to.bodyComponent,"beattack");
+    public void attack(LivingThingBean from,LivingThingBean to){
+        from.attack();
+        to.beAttack();
+        /*getAnimationManager().apply(from.bodyComponent,"attack");
+        getAnimationManager().apply(to.bodyComponent,"beattack");*/
 
     }
 
     public void moveOrAttack(){
         for(LivingThing livingThing : LivingThingManager.livingThings){
-            if(!livingThing.isPlayer)
+            if(!livingThing.isPlayer())
             if(livingThing.getTarget()!=null ){
                 GL_Vector direction =  GL_Vector.sub(LivingThingManager.player.position,livingThing.position);
                 livingThing.WalkDir= direction;
@@ -58,7 +62,7 @@ public class BehaviorManager extends    Thread{
     }
     public void findThing(){
         for(LivingThing livingThing : LivingThingManager.livingThings) {
-            if (!livingThing.isPlayer) {
+            if (!livingThing.isPlayer()) {
                 if (livingThing.getTarget() != null) continue;
                 if (GL_Vector.length(GL_Vector.sub(livingThing.position, LivingThingManager.player.position)) < livingThing.sight) {
                     livingThing.setTarget( LivingThingManager.player);

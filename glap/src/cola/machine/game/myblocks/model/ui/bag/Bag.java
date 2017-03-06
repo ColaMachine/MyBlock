@@ -1,12 +1,11 @@
 package cola.machine.game.myblocks.model.ui.bag;
 
 import cola.machine.game.myblocks.container.Slot;
-import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.input.BagMouseEventReceiver;
 import cola.machine.game.myblocks.input.ToolbarMouseEventReceiver;
 import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
+import com.dozenx.game.engine.Role.bean.Player;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.*;
@@ -16,14 +15,13 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import de.matthiasmann.twl.Event;
 import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
 /**
  * Created by luying on 14-8-29.
  */
 public class Bag extends RegionArea  {
-    public Human human;
+    public Player player;
     public Slot[] slots;//bag slot
     public TextureInfo textureInfo;
     public ToolBarSlop[] toolBarSlots = new ToolBarSlop[10];//toobar slot
@@ -276,7 +274,7 @@ td.name="work_tr"+i+"td"+j;
         this.putItem(4,new Item("sand",10));
         this.putItem(5,new Item("water",10));
         div.refresh();
-        this.human=CoreRegistry.get(Human.class);
+        this.player =CoreRegistry.get(Player.class);
     }
     public void buildVao(){
         this.div.buildVao();
@@ -344,7 +342,7 @@ if(!show)return;
             //GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
              GL11.glScalef(40f, 40f, 40f); // scale up
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
-            human.renderInMirror();
+            player.renderInMirror();
 
         }
         GL11.glPopMatrix();

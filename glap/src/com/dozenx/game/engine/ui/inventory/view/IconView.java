@@ -29,9 +29,9 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Image;
 

@@ -1,6 +1,8 @@
-package cola.machine.game.myblocks.model.textture;
+package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.Color;
+import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;

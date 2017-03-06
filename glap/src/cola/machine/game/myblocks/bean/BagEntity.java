@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.bean;
 
 import cola.machine.game.myblocks.engine.Constants;
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 
 /**
  * Created by luying on 16/7/3.

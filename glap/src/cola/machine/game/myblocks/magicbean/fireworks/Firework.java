@@ -1,7 +1,6 @@
 package cola.machine.game.myblocks.magicbean.fireworks;
 
-import cola.machine.game.myblocks.model.human.Human;
-import glapp.GLApp;
+import com.dozenx.game.engine.Role.bean.Player;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
@@ -76,7 +75,7 @@ public class Firework {
         }
     }
 
-    public void render(Human human) {
+    public void render(Player player) {
         //GL_Vector vector =human.WalkDir;
         //vector.set(-human.WalkDir.x,-human.WalkDir.y,-human.WalkDir.z);
 
@@ -132,13 +131,13 @@ public class Firework {
 
 
                 // GLApp.drawCursor().renderCube(x,y,z);
-                GL_Vector right = GL_Vector.add(new GL_Vector(particle[loop].x,particle[loop].y,particle[loop].z), GL_Vector.multiply(human.RightVector,
+                GL_Vector right = GL_Vector.add(new GL_Vector(particle[loop].x,particle[loop].y,particle[loop].z), GL_Vector.multiply(player.RightVector,
                         0.5f));
-                GL_Vector left = GL_Vector.add(right, GL_Vector.multiply(human.RightVector,
+                GL_Vector left = GL_Vector.add(right, GL_Vector.multiply(player.RightVector,
                         -1f));
-                GL_Vector lefttop = GL_Vector.add(left, GL_Vector.multiply(human.UpVector,
+                GL_Vector lefttop = GL_Vector.add(left, GL_Vector.multiply(player.UpVector,
                         0.5f));
-                GL_Vector righttop = GL_Vector.add(right, GL_Vector.multiply(human.UpVector,
+                GL_Vector righttop = GL_Vector.add(right, GL_Vector.multiply(player.UpVector,
                         0.5f));
                 GL11.glTexCoord2d(1, 1);
                // GL11.glVertex3f(x + 0.5f, y + 0.5f, z);

@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
+import com.dozenx.game.engine.Role.bean.Player;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -21,7 +22,6 @@ import org.slf4j.LoggerFactory;
 
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.GLBufferPool;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.cameras.Camera;
 import cola.machine.game.myblocks.world.Skysphere;
@@ -46,7 +46,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
     int groundTextureHandle = 0;
 	private WorldProvider worldProvider;
 	private LocalPlayerSystem localPlayerSystem;
-	private Human player;
+	private Player player;
 	private int chunkPosX = -1;// 当前的方块
 	private int chunkPosZ = -1;
 	private static final int MAX_CHUNKS = ViewDistance.MEGA.getChunkDistance()
@@ -66,7 +66,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	}
 	public WorldRendererLwjgl(WorldProvider worldProvider,
 			ChunkProvider chunkProvider, LocalPlayerSystem localPlayerSystem,
-			GLBufferPool bufferPool,Human player) {
+			GLBufferPool bufferPool,Player player) {
 
        // eqr=
             //    ByteBuffer.allocateDirect(4 * GLApp.SIZE_DOUBLE).order(ByteOrder.nativeOrder()).asDoubleBuffer();
@@ -381,7 +381,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
         GL11.glLoadMatrix(MatrixUtils.matrixToFloatBuffer(   viewMatrixReflectedLeftEye;));
     }*/
 
-public void setPlayer(Human human){
-	this.player=human;
+public void setPlayer(Player player){
+	this.player= player;
 }
 }

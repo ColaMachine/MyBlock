@@ -1,6 +1,6 @@
 package com.dozenx.game.network.client;
 
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.PosCmd;
 

@@ -9,6 +9,7 @@ import core.log.LogUtil;
 public enum CmdType {
     SAY,
     RESULT,
+    MSG,
     LOGIN,
     EQUIP,
     POS,

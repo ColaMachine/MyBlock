@@ -31,7 +31,7 @@ package com.dozenx.game.engine.ui.inventory.view;
 
 import cola.machine.game.myblocks.engine.Constants;
 import core.log.LogUtil;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.ui.inventory.control.InventoryController;

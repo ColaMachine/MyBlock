@@ -2,11 +2,11 @@ package com.dozenx.game.engine.ui.inventory.control;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.ui.inventory.bean.InventoryBean;
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
 
 /**
@@ -15,7 +15,7 @@ import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
 public class InventoryController {
     InventoryBean inventoryBean =new InventoryBean();
     ToolBarBean toolBarBean =new ToolBarBean();
-    Human human;
+    Player player;
     public boolean has(String name){
        // if()
         ItemBean[] itemBeans = inventoryBean.getItemBean();
@@ -27,8 +27,8 @@ public class InventoryController {
         return false;
     }
     public void loadEquip(int slotType, ItemBean itemBean){
-        if(human==null) {
-            human = CoreRegistry.get(Human.class);
+        if(player ==null) {
+            player = CoreRegistry.get(Player.class);
         }
 
         if(itemBean !=null ) {//穿上装备
@@ -40,37 +40,37 @@ public class InventoryController {
 
             if (slotType == Constants.SLOT_TYPE_HEAD) {
 
-                human.addHeadEquipStart(itemDef);
+                player.addHeadEquipStart(itemDef);
             }
             if (slotType == Constants.SLOT_TYPE_LEG) {
-                human.addLegEquipStart(itemDef);
+                player.addLegEquipStart(itemDef);
             }
             if (slotType== Constants.SLOT_TYPE_BODY) {
-                human.addBodyEquipStart(itemDef);
+                player.addBodyEquipStart(itemDef);
             }
             if (slotType == Constants.SLOT_TYPE_HAND) {
-                human.addHandEquipStart(itemDef);
+                player.addHandEquipStart(itemDef);
 
             } if (slotType == Constants.SLOT_TYPE_FOOT) {
-                human.addShoeEquipStart(itemDef);
+                player.addShoeEquipStart(itemDef);
 
             }
         }else{//卸下装备
             if (slotType == Constants.SLOT_TYPE_HEAD) {
-                human.addHeadEquipStart(null);
+                player.addHeadEquipStart(null);
             }
             if (slotType == Constants.SLOT_TYPE_LEG) {
-                human.addLegEquipStart(null);
+                player.addLegEquipStart(null);
 
             }
             if (slotType == Constants.SLOT_TYPE_BODY) {
-                human.addBodyEquipStart(null);
+                player.addBodyEquipStart(null);
             }
             if (slotType == Constants.SLOT_TYPE_HAND) {
-                human.addHandEquipStart(null);
+                player.addHandEquipStart(null);
             }
             if (slotType == Constants.SLOT_TYPE_FOOT) {
-                human.addShoeEquipStart(null);
+                player.addShoeEquipStart(null);
 
             }
         }

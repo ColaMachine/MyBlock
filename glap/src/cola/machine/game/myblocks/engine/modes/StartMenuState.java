@@ -3,11 +3,10 @@ package cola.machine.game.myblocks.engine.modes;
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
-import cola.machine.game.myblocks.model.human.Human;
-import com.alibaba.fastjson.JSON;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
+import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.command.PlayerSynCmd;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
-import com.dozenx.game.network.server.bean.PlayerStatus;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.NuiManager;
@@ -302,23 +301,24 @@ if(!Switcher.SHADER_ENABLE) {
                     if(getResult().getResult()==0){
 
                         if(getResult().getMsg()!=null){
-                            PlayerStatus status = JSON.parseObject(getResult().getMsg(),PlayerStatus.class);
+                            PlayerSynCmd cmd =new  PlayerSynCmd(getResult().getMsg());
+                            //PlayerStatus status = JSON.parseObject(getResult().getMsg(),PlayerStatus.class);
                             GamingState state = new GamingState();
-                            Constants.USER_ID=status.getId() ;
+                            Constants.USER_ID=cmd.getPlayerStatus().getId();
                             Constants.userName = userName.getText();
 
                             //创建Human
-                           Human  human = new Human(status.getId());
-
+                           Player player = new Player(cmd.getPlayerStatus().getId());
+                            player.setPlayerStatus(cmd.getPlayerStatus() );
                             //human.setPlayerStatus(status);
-                            CoreRegistry.put(Human.class,human);
+                            CoreRegistry.put(Player.class, player);
 
                             LivingThingManager livingThingManager =new LivingThingManager();
                             CoreRegistry.put(LivingThingManager.class,livingThingManager);
 
-                            livingThingManager.setPlayer(human);
+                            livingThingManager.setPlayer(player);
                             //livingThingManager.add(livingThing);
-state.human =human;
+state.player = player;
                             BlockEngine.engine.changeState(state);
                             /*int threadId = (int)(Math.random()*100000);
 

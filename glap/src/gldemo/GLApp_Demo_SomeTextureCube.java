@@ -2,6 +2,7 @@ package gldemo;
 
 import java.nio.FloatBuffer;
 
+import com.dozenx.game.engine.Role.bean.Player;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.*;
 
@@ -9,7 +10,6 @@ import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import glapp.*;
 import glmodel.GL_Vector;
@@ -61,8 +61,8 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	private BlockRepository blockRepository = new BlockRepository(null);
 
-	private Human human = new Human(2);
-	private Human human2 = new Human(1);
+	private Player player = new Player(2);
+	private Player player2 = new Player(1);
 
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -113,16 +113,16 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 		// set camera 1 position
 		camera1.setCamera(0, 4, 15, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(0, 2, 0, 0, 0, 1, 0, 1, 0);
+		player.setHuman(0, 2, 0, 0, 0, 1, 0, 1, 0);
 
-		human2.setHuman(20, 2, 20, 0, 0, 1, 0, 1, 0);
+		player2.setHuman(20, 2, 20, 0, 0, 1, 0, 1, 0);
 
 		/*human.startWalk();*/
 		
-		mouseControlCenter= new MouseControlCenter(human,cam.camera);
+		mouseControlCenter= new MouseControlCenter(player,cam.camera);
 		mouseControlCenter.centerX=this.displayWidth/2;
 		mouseControlCenter.centerY=this.displayHeight/2;
-		mouseControlCenter.human= human;
+		mouseControlCenter.player = player;
 		mouseControlCenter.camera= camera1;
 		// load the airplane model and make it a display list
 		// = new GLModel("models/JetFire/JetFire.obj");
@@ -182,7 +182,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	public void draw() {
 		
-		dcc.check(human);
+		dcc.check(player);
 		
 		//mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
 
@@ -193,10 +193,10 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	
 		// ������ﱳ��ĵ�
-		GL_Vector camera_pos = GL_Vector.add(human.position,
-				GL_Vector.multiply(human.ViewDir, -10));
+		GL_Vector camera_pos = GL_Vector.add(player.position,
+				GL_Vector.multiply(player.ViewDir, -10));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
-		camera1.viewDir(human.ViewDir);
+		camera1.viewDir(player.ViewDir);
 		cam.render();
 
 		GL11.glPushMatrix();
@@ -245,7 +245,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			human.render();
+			player.render();
 
 		}
 		GL11.glPopMatrix();
@@ -258,7 +258,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			human2.render();
+			player2.render();
 		}
 		GL11.glPopMatrix();
 	}

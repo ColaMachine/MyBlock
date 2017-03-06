@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.server;
 
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;

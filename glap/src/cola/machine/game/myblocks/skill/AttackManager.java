@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.skill;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Vector;

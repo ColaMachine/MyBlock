@@ -1,6 +1,6 @@
 package com.dozenx.game.engine.ui.toolbar.control;
 
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
 
 /**

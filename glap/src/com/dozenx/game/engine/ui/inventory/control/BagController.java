@@ -1,7 +1,7 @@
 package com.dozenx.game.engine.ui.inventory.control;
 
 import cola.machine.game.myblocks.bean.BagEntity;
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import cola.machine.game.myblocks.service.BagService;
 
 import java.util.Map;

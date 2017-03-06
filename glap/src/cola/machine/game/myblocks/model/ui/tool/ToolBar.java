@@ -1,9 +1,7 @@
 package cola.machine.game.myblocks.model.ui.tool;
 
-import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.html.*;
 import glapp.GLApp;
 

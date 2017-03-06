@@ -29,9 +29,9 @@
  */
 package cola.machine.game.myblocks.ui.inventory;
 
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.skill.SkillDefinition;
 import de.matthiasmann.twl.*;

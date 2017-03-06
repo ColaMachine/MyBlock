@@ -84,13 +84,14 @@ public class Worker extends Thread {
     public void send(byte[] bytes){
         if(outputStream!=null)
             try {
-                if(ByteUtil.getInt(ByteUtil.slice(bytes,4,4))>10){
+                /*if(ByteUtil.getInt(ByteUtil.slice(bytes,4,4))>10){
                     LogUtil.err("错误");
-                }
+                }*/
                 //
-                CmdType.printSend(ByteUtil.slice(bytes,4,4));
+                //CmdType.printSend(ByteUtil.slice(bytes,4,4));
                 //LogUtil.println("server 准备发送数据类型:"+ CmdType.values()[(ByteUtil.getInt(ByteUtil.slice(bytes,4,4)))]+"长度:"+(bytes.length-4));
                 synchronized (this) {
+                    outputStream.write(ByteUtil.getBytes(bytes.length));
                     outputStream.write(bytes);
                     outputStream.write(Constants.end);
                 }

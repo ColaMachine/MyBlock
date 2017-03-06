@@ -36,7 +36,14 @@ public class ShootState extends IdleState {
 
         Long now=System.currentTimeMillis();
         if(!shooted) {
-            if (currentState == 0 && now - startTime > 1 * 1000) {
+           // this.changeAnimation("shoot");
+            //第一种方案 AnimationManager.getAnimation("shoot").apply(this)new Runnable(){
+            //      生成一个攻击点 new AttackBallCmd();//服务器端也有state 但是是一个功能弱的state 他除了 state 就是cmd 别无其他 没有component
+            // })
+            //Delayed();
+            //作这个的目的我想让服务器开始接手一些沙盘推演的工作
+            //服务器什么都不做的话 联网功能 就会越做越不对了
+            /*if (currentState == 0 && now - startTime > 1 * 1000) {
 //arch1
                 currentState = 1;
                 livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch1);
@@ -52,10 +59,10 @@ public class ShootState extends IdleState {
                 currentState++;
                 livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch3);
 
-            } else if (currentState == 3 && now - startTime > 7 * 1000) {
+            } else */if (/*currentState == 3 && */now - startTime > 1 * 1000) {
 
                 currentState = 4;
-                livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch);
+                //livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch);
                 Ball ball = new Ball(this.livingThing.position.getClone(), GL_Vector.sub(this.livingThing.getTarget().position,
                         this.livingThing.position), 10, TextureManager.getShape("arrow"),livingThing);
                 shooted = true;
@@ -70,7 +77,9 @@ public class ShootState extends IdleState {
 
     }
     public void dispose(){
-        CoreRegistry.get(AnimationManager.class).clear(livingThing.bodyComponent);
+
+            livingThing.changeAnimationState(null);
+       // CoreRegistry.get(AnimationManager.class).clear(livingThing.bodyComponent);
     }
     public void receive(GameCmd gameCmd){
 

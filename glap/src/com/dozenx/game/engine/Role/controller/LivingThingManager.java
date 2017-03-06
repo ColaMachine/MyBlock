@@ -1,18 +1,25 @@
-package cola.machine.game.myblocks.lifething.manager;
+package com.dozenx.game.engine.Role.controller;
 
 import cola.machine.game.myblocks.control.DropControlCenter;
+import cola.machine.game.myblocks.engine.BlockEngine;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
+import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.item.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Vector;
@@ -71,7 +78,7 @@ public class LivingThingManager {
 
         //}
         //livingThing render
-
+        //TODO targetId 已经设置好了 但是target还是为空的
         ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
         //livingthing update
         for (LivingThing livingThing : livingThings) {
@@ -95,9 +102,9 @@ public class LivingThingManager {
 
         for(LivingThing livingThing:livingThings){
             if(Switcher.SHADER_ENABLE){
-                livingThing.renderShader();
+                //livingThing.renderShader();
             }else{
-                livingThing.render();
+                livingThing.getModel().render();
             }
 
             //livingThing.renderBloodBar();
@@ -106,13 +113,13 @@ public class LivingThingManager {
         }
         //player render
         if(Switcher.SHADER_ENABLE){
-            this.player.renderShader();
+            //this.player.renderShader();
             //livingThing.renderShader();
         }else{
            /* this.player.position.x+=0.01;
             if(this.player.position.x>10)
                 this.player.position.x=0;*/
-            this.player.render();
+            this.player.getModel().render();
             //livingThing.render();
         }
         ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
@@ -160,7 +167,7 @@ public class LivingThingManager {
     public void chooseObject(LivingThing livingThing){
        if(livingThing==null && player.getTarget()!=null){
            CoreRegistry.get(HeadPanel.class).setVisible(false);
-           player.getTarget().unSelect();
+          // player.getTarget().getModel().unSelect();
            player.setTarget(null);
            Document.needUpdate=true;
        }
@@ -290,17 +297,23 @@ public class LivingThingManager {
             }*/
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
-            if(livingThing!=null ){
+            //y原来是直接绑定到itemDefinition 现在要对应到有id的items里的物品
+            ItemBean itemBean = livingThing.getItemById(cmd.getItemId());
+
+            if(livingThing!=null  && itemBean!=null ){
                 if(cmd.getPart()== EquipPartType.BODY){
-                    livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+
+                    livingThing.setHeadEquip(livingThing.getItemById(cmd.getItemId()));
+
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HEAD){
-                    livingThing.addHeadEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addHeadEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HAND){
-                    livingThing.addHandEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addHandEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.LEG){
-                    livingThing.addLegEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addLegEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.FOOT){
-                    livingThing.addShoeEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addShoeEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }
             }
 
@@ -328,22 +341,22 @@ public class LivingThingManager {
 
 
                 if(info.getBodyEquip()>0){
-                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }if(info.getHeadEquip()>0){
-                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }if(info.getHandEquip()>0){
-                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }if(info.getLegEquip()>0){
-                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }if(info.getShoeEquip()>0){
-                    livingThing.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }
-            livingThing.setIsplayer(info.isPlayer());
+            livingThing.setPlayer(info.isPlayer());
 
             //livingThing.setTarget()
             try {
@@ -424,5 +437,130 @@ public class LivingThingManager {
     }*/
     public void beAttack(){
 
+
+    }
+
+
+
+
+
+    public void login(String userName,String pwd){
+        //  CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText()));
+        // ResultDTO dto = CoreRegistry.get(LoginClientController.class).login(userName.getText(),pwd.getText());
+       // String userName1 =userName;
+        GameCallBackTask task = new GameCallBackTask(){
+            @Override
+            public void run(){
+                if(getResult().getResult()==0){
+
+                    if(getResult().getMsg()!=null){
+                        PlayerSynCmd cmd =new  PlayerSynCmd(getResult().getMsg());
+                        //PlayerStatus status = JSON.parseObject(getResult().getMsg(),PlayerStatus.class);
+                        GamingState state = new GamingState();
+                        Constants.USER_ID=cmd.getPlayerStatus().getId();
+                        Constants.userName = cmd.getPlayerStatus().getName();
+
+                        //创建Human
+                        Player player = new Player(cmd.getPlayerStatus().getId());
+                        //player.setPlayerStatus(cmd.getPlayerStatus() );
+                        changePlayerInfoToPlayer(player,cmd.getPlayerStatus());
+                        //human.setPlayerStatus(status);
+                        CoreRegistry.put(Player.class, player);
+
+                        LivingThingManager livingThingManager =new LivingThingManager();
+                        CoreRegistry.put(LivingThingManager.class,livingThingManager);
+
+                        livingThingManager.setPlayer(player);
+                        //livingThingManager.add(livingThing);
+                        state.player = player;
+                        BlockEngine.engine.changeState(state);
+                            /*int threadId = (int)(Math.random()*100000);
+
+                            GameCallBackTask task = new GameCallBackTask() {
+                                @Override
+                                public void run() {
+
+                                }
+                            };
+                            Client.taskMap.put(threadId, task);
+
+                            GetCmd getCmd =new GetCmd(threadId);*/
+
+
+
+                    }
+
+                }else{
+                    return;
+                }
+            }
+        };
+        int threadId = (int)(Math.random()*100000);
+        Client.taskMap.put(threadId, task);
+
+        CoreRegistry.get(Client.class).send(new LoginCmd(userName,pwd,threadId));
+    }
+    public void loadPlayerInfoFromServer(){
+
+    }
+
+    public void changePlayerInfoToPlayer(Role role ,PlayerStatus info ){
+        //  super.setPlayerStatus(status);
+
+
+        role.setId(info.getId());
+        //setPwd(status.getPwd());
+        role. setBodyAngle(info.getBodyAngle());
+        role. setHeadAngle(info.getHeadAngle());
+        role. setHeadAngle2(info.getHeadAngle2());
+
+        role. setTargetId(info.getTargetId());
+        role. setTarget(null);
+        // role. setIsplayer(status.isplayer);
+
+        //this.id = status.getId();
+        role.setPosition(info.getX(),info.getY(),info.getZ());
+
+
+
+
+        role.setHeadEquip(role.getItemById(info.getHeadEquip()));
+        role.setBodyEquip(role.getItemById(info.getBodyEquip()));
+        role.setHandEquip(role.getItemById(info.getHandEquip()));
+        role.setLegEquip(role.getItemById(info.getLegEquip()));
+        role.setFootEquip(role.getItemById(info.getShoeEquip()));
+
+
+    }
+
+
+
+
+    public void addBodyEquipStart(ItemBean itemCfg) {
+        EquipCmd equipMentCmd = new EquipCmd( player, EquipPartType.BODY, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+    public void addLegEquipStart(ItemBean itemCfg) {
+        EquipCmd equipMentCmd = new EquipCmd(player, EquipPartType.LEG, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+
+    public void addHandEquipStart(ItemBean itemCfg) {
+        EquipCmd equipMentCmd = new EquipCmd(player, EquipPartType.HAND, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+
+    public void addShoeEquipStart(ItemBean itemCfg) {
+        EquipCmd equipMentCmd = new EquipCmd(player, EquipPartType.FOOT, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
+    }
+    public void addHeadEquipStart(ItemBean itemCfg) {
+        EquipCmd equipMentCmd = new EquipCmd(player, EquipPartType.HEAD, itemCfg);
+        CoreRegistry.get(Client.class).send(equipMentCmd);
+        //NetWorkManager.push(equipMentCmd);
     }
 }

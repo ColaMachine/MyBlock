@@ -44,6 +44,13 @@ public class ByteBufferWrap
         buffer.put(val);
         return this;
     }
+    public ByteBufferWrap put(byte[] ary){
+        for(int i=0;i<ary.length;i++){
+            buffer.put(ary[i]);
+        }
+
+        return this;
+    }
     public ByteBufferWrap put(int val){
         buffer.put(ByteUtil.getBytes(val));
         return this;
@@ -71,9 +78,24 @@ public class ByteBufferWrap
 
 
     }
+    public byte[] getByteAry(int length){
+        byte[] bytes = new byte[length];
+        for(int i = 0;i<length;i++){
+            bytes[i]= this.get();
+        }
+        return bytes;
+
+    }
+    public byte[] getLenByteAry(){
+        int length = this.getInt();;
+        byte[] msg = this.getByteAry(length);
+       return msg;
+
+
+    }
 
     public byte[] array(){
-        int length = buffer.position();
+       /* int length = buffer.position();
         byte[] bytes = new byte[length+4];
         byte[] lenAry = ByteUtil.getBytes(length);
         bytes[0]= lenAry[0];
@@ -81,7 +103,21 @@ public class ByteBufferWrap
         bytes[2]= lenAry[2];
         bytes[3]= lenAry[3];
         buffer.flip();
-        buffer.get(bytes,4,length);
+
+        buffer.get(bytes,4,length);*/
+
+        int length = buffer.position();
+        byte[] bytes = new byte[length];
+        byte[] lenAry = ByteUtil.getBytes(length);
+       /* bytes[0]= lenAry[0];
+        bytes[1]= lenAry[1];
+        bytes[2]= lenAry[2];
+        bytes[3]= lenAry[3];*/
+        buffer.flip();
+
+        buffer.get(bytes,0,length);
+
+
         return bytes;
     }
 

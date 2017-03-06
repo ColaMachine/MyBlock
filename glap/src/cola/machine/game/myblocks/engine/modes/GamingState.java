@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine.modes;
 
+import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
@@ -9,15 +10,12 @@ import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
-import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import com.dozenx.game.engine.ui.inventory.control.InventoryController;
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
-import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
@@ -60,7 +58,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class GamingState implements GameState {
     public static GamingState instance;
-    public static Human human;//= new Human();
+    public static Player player;//= new Human();
     public static String catchThing;
     public static boolean cameraChanged=false;
     public static boolean livingThingChanged=true;
@@ -131,7 +129,7 @@ public class GamingState implements GameState {
 
             HeadPanel playerHeadPanel =new HeadPanel();
             document.body.appendChild(playerHeadPanel);
-            playerHeadPanel.bind(human);
+            playerHeadPanel.bind(player);
             HeadPanel enemyHeadPanel =new HeadPanel();
 
             enemyHeadPanel.setVisible(false);
@@ -413,16 +411,16 @@ if(!Switcher.SHADER_ENABLE)
             if (!Switcher.IS_GOD) {
                 //dcc.check(human);
                 livingThingManager.CrashCheck(dcc);
-                GL_Vector camera_pos = GL_Vector.add(human.position,
-                        GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
+                GL_Vector camera_pos = GL_Vector.add(player.position,
+                        GL_Vector.multiply(player.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
                 camera.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
 
                 if (Switcher.CAMERA_MODEL == 2) {
                     // camera1.ViewDir.reverse();
-                    camera.ViewDir = new GL_Vector(human.ViewDir.x * -1, human.ViewDir.y * -1, human.ViewDir.z * -1);
+                    camera.ViewDir = new GL_Vector(player.ViewDir.x * -1, player.ViewDir.y * -1, player.ViewDir.z * -1);
                 } else {
 
-                    camera.viewDir(human.ViewDir);
+                    camera.viewDir(player.ViewDir);
                 }
             }
                 if(GamingState.cameraChanged){
@@ -638,7 +636,7 @@ if(!Switcher.SHADER_ENABLE)
         //dcc.blockRepository = blockRepository;
         bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
-        mouseControlCenter = new MouseControlCenter(human, camera, this);
+        mouseControlCenter = new MouseControlCenter(player, camera, this);
         CoreRegistry.put(MouseControlCenter.class, mouseControlCenter);
         mouseControlCenter.bulletPhysics = bulletPhysics;
     }
@@ -671,7 +669,7 @@ if(!Switcher.SHADER_ENABLE)
             CoreRegistry.put(ChunkProvider.class, chunkProvider);
             WorldProvider WorldProvider = new WorldProviderWrapper();
 
-            WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, human);
+            WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, player);
 
             this.worldRenderer = worldRenderer;
         } catch (Exception e) {
@@ -695,7 +693,7 @@ if(!Switcher.SHADER_ENABLE)
 //        print(30, viewportH - 75, "press key wasd qe walk and turn direction ");
 //        print(30, viewportH - 90, "press space jump ");
 //        print(30, viewportH - 105, "press up down look up down ");
-        GLApp.print(30, 600 - 120, "cam:" + human.ViewDir);
+        GLApp.print(30, 600 - 120, "cam:" + player.ViewDir);
         // GLApp.print(30, 600 - 135, "fps:" + time.tick());
     }
 

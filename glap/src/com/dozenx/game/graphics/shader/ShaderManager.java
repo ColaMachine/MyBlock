@@ -190,9 +190,9 @@ public class ShaderManager {
     public static void humanPosChangeListener(){
 
 
-        GamingState.instance.lightPos.x= GamingState.instance.human.position.x;
-        GamingState.instance.lightPos.y= GamingState.instance.human.position.y+30;
-        GamingState.instance.lightPos.z= GamingState.instance.human.position.z;
+        GamingState.instance.lightPos.x= GamingState.instance.player.position.x;
+        GamingState.instance.lightPos.y= GamingState.instance.player.position.y+30;
+        GamingState.instance.lightPos.z= GamingState.instance.player.position.z;
 
         /*glUseProgram(lightShaderConfig.getProgramId());
 

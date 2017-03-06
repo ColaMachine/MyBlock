@@ -1,8 +1,10 @@
 package com.dozenx.game.engine.command;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.engine.Role.bean.Role;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.util.ByteBufferWrap;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.ByteUtil;
 
 /**
@@ -36,8 +38,19 @@ public class EquipCmd extends   BaseGameCmd{
         this.part = part;
     }
     private ItemType itemType;
+
+    private int itemId;
    // private ItemDefinition item;
     private int userId;
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
+
     final CmdType cmdType = CmdType.EQUIP;
 
     public ItemType getItemType() {
@@ -53,10 +66,11 @@ public class EquipCmd extends   BaseGameCmd{
     public EquipCmd(byte[] bytes){
         parse(bytes);
     }
-    public EquipCmd(LivingThing live, EquipPartType pos, ItemDefinition item){
+    public EquipCmd(Role live, EquipPartType pos, ItemBean itemBean){
        // this.livingThing =live;
-        if(item!=null){
-            this.itemType = item.getItemType();
+        if(itemBean!=null){
+            this.itemType = itemBean.getItemDefinition().getItemType();
+            this.itemId=itemBean.getId();
         }else{
 
         }
@@ -73,7 +87,7 @@ public class EquipCmd extends   BaseGameCmd{
         return ByteUtil.createBuffer().put(cmdType.getType())
                 .put(userId)
                 .put(getPart().getType())
-                .put(itemType == null ?-1: itemType.getType()).array();
+                .put(itemType == null ?-1: itemType.getType()).put(itemId).array();
 
 
 
@@ -95,6 +109,7 @@ public class EquipCmd extends   BaseGameCmd{
         if(itemTypeVal>=0){
             this.itemType=ItemType.values()[itemTypeVal];
         }
+        this.itemId = byteBufferWrap.getInt();;
 
     }
 

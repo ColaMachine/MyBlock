@@ -46,12 +46,12 @@ public class Client extends Thread{
         try {
             byte[] oldByteAry = cmd.toBytes();
 
-            if(ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4))>10){
+            /*if(ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4))>10){
                 LogUtil.err("错误");
             }
             if(ByteUtil.getInt(ByteUtil.slice(oldByteAry,4,4)) == 5){
                 LogUtil.println("错误");
-            }
+            }*/
             if(cmd.getCmdType() == CmdType.POS){
                 //LogUtil.println(" is moving");
             }
@@ -59,9 +59,10 @@ public class Client extends Thread{
 
             ByteUtil.getBytes(oldByteAry,new byte[]{'\n'});*/
 
-            CmdType.printSend(cmd);
+           // CmdType.printSend(cmd);
             //LogUtil.println("client 准备发送数据类型:"+ cmd.getCmdType()+"长度:"+(oldByteAry.length-4));
             synchronized (this) {
+                outputStream.write(ByteUtil.getBytes(oldByteAry.length));
                 outputStream.write(oldByteAry);//需要加锁
                 outputStream.write(Constants.end);
             }

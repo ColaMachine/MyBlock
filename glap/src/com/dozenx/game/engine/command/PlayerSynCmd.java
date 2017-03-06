@@ -68,7 +68,7 @@ public class PlayerSynCmd extends   BaseGameCmd{
             .put(playerStatus.getLegEquip())
             .put(playerStatus.getShoeEquip())
             .put(playerStatus.getId())
-            .put(playerStatus.isIsplayer()).array();
+            .put(playerStatus.isPlayer()).array();
 
 
     }

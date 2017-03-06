@@ -1,12 +1,13 @@
 package cola.machine.game.myblocks.engine;
 
+import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.SynchronTask;
 import cola.machine.game.myblocks.skill.AttackManager;
@@ -31,7 +32,6 @@ import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.magicbean.fireworks.Firework;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
@@ -115,7 +115,7 @@ public class MyBlockEngine extends GLApp {
 
     // public BlockRepository blockRepository = new BlockRepository(this);
     BulletPhysics bulletPhysics;
-    public Human human;
+    public Player player;
     // private Human human2;
     private Skysphere skysphere = new Skysphere();
     /**
@@ -284,7 +284,7 @@ public class MyBlockEngine extends GLApp {
         //dcc.blockRepository = blockRepository;
         bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
-        mouseControlCenter = new MouseControlCenter(human, camera1);
+        mouseControlCenter = new MouseControlCenter(player, camera1);
         CoreRegistry.put(MouseControlCenter.class,mouseControlCenter);
         mouseControlCenter.bulletPhysics = bulletPhysics;
     }
@@ -316,10 +316,10 @@ public class MyBlockEngine extends GLApp {
 
         if (Switcher.CAMERA_MODEL == 2) {
             // camera1.ViewDir.reverse();
-            camera1.ViewDir = new GL_Vector(human.ViewDir.x * -1, human.ViewDir.y * -1, human.ViewDir.z * -1);
+            camera1.ViewDir = new GL_Vector(player.ViewDir.x * -1, player.ViewDir.y * -1, player.ViewDir.z * -1);
         } else {
 
-            camera1.viewDir(human.ViewDir);
+            camera1.viewDir(player.ViewDir);
         }
         Util.checkGLError();
         cam.render();
@@ -363,7 +363,7 @@ public class MyBlockEngine extends GLApp {
             CoreRegistry.put(ChunkProvider.class, chunkProvider);
             WorldProvider WorldProvider = new WorldProviderWrapper();
 
-            WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, human);
+            WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, player);
 
             this.worldRenderer = worldRenderer;
         }catch(Exception e ){
@@ -374,13 +374,13 @@ public class MyBlockEngine extends GLApp {
     }
     //Player player;
     private void initEntities(){
-        human = new Human();
-        human.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
-        CoreRegistry.put(Human.class, human);
+        player = new Player(1);
+        player.setHuman(1, 4, 5, 0, 0, -1, 0, 1, 0);
+        CoreRegistry.put(Player.class, player);
 
-        LivingThing livingThing =new LivingThing();
+        LivingThing livingThing =new LivingThing(1);
         livingThing.position=new GL_Vector(10,4,0);
-        livingThingManager.setPlayer(human);
+        livingThingManager.setPlayer(player);
         livingThingManager.add(livingThing);
         SynchronTask task =new SynchronTask();
         task.start();
@@ -423,7 +423,7 @@ public class MyBlockEngine extends GLApp {
 //        print(30, viewportH - 75, "press key wasd qe walk and turn direction ");
 //        print(30, viewportH - 90, "press space jump ");
 //        print(30, viewportH - 105, "press up down look up down ");
-        print(30, viewportH - 120, "cam:"+human.ViewDir);
+        print(30, viewportH - 120, "cam:"+ player.ViewDir);
         print(30, viewportH - 135, "fps:" + time.tick());
     }
 

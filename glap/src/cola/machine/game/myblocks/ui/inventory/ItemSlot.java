@@ -30,9 +30,9 @@
 package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.engine.Constants;
+import com.dozenx.game.engine.Role.bean.Player;
 import core.log.LogUtil;
-import cola.machine.game.myblocks.model.human.Human;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import de.matthiasmann.twl.*;
@@ -71,40 +71,40 @@ public class ItemSlot extends Widget {
         this.iconWidget = iconWidget;
         if(iconWidget !=null ) {
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
-                Human human = CoreRegistry.get(Human.class);
-                human.addHeadEquip(iconWidget.getItemCfg());
+                Player player = CoreRegistry.get(Player.class);
+                player.addHeadEquip(iconWidget.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
-                Human human = CoreRegistry.get(Human.class);
-                human.addLegEquip(iconWidget.getItemCfg());
+                Player player = CoreRegistry.get(Player.class);
+                player.addLegEquip(iconWidget.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
-                Human human = CoreRegistry.get(Human.class);
-                human.addBodyEquip(iconWidget.getItemCfg());
+                Player player = CoreRegistry.get(Player.class);
+                player.addBodyEquip(iconWidget.getItemCfg());
             }
             if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
-                Human human = CoreRegistry.get(Human.class);
-                human.addHandEquip(iconWidget.getItemCfg());
+                Player player = CoreRegistry.get(Player.class);
+                player.addHandEquip(iconWidget.getItemCfg());
             }
         }else{
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
-                Human human = CoreRegistry.get(Human.class);
-                human.addHeadEquip(null);
+                Player player = CoreRegistry.get(Player.class);
+                player.addHeadEquip(null);
             }
             if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
-                Human human = CoreRegistry.get(Human.class);
-                human.addLegEquip(null);
+                Player player = CoreRegistry.get(Player.class);
+                player.addLegEquip(null);
 
             }
             if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
-                Human human = CoreRegistry.get(Human.class);
-                human.addBodyEquip(null);
+                Player player = CoreRegistry.get(Player.class);
+                player.addBodyEquip(null);
 
             }
             if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
-                Human human = CoreRegistry.get(Human.class);
+                Player player = CoreRegistry.get(Player.class);
 
-                human.addHandEquip(null);
+                player.addHandEquip(null);
             }
         }
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){

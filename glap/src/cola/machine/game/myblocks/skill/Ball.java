@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.server.bean.LivingThingBean;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -13,7 +14,7 @@ import org.lwjgl.opengl.GL11;
  * Created by luying on 16/9/25.
  */
 public class Ball  {
-    LivingThing from ;
+    LivingThingBean from ;
     GL_Vector position;
     GL_Vector direction;
    float sumDistance=0;
@@ -24,7 +25,7 @@ public class Ball  {
     int height;
     Long startTime;
     Component component;
-    public Ball(GL_Vector position ,GL_Vector direction,float speed,Shape shape,LivingThing from){
+    public Ball(GL_Vector position ,GL_Vector direction,float speed,Shape shape,LivingThingBean from){
         this.from = from;
         component= new Component(1,1,1);
 startTime=System.currentTimeMillis();

@@ -1,28 +1,34 @@
-package com.dozenx.game.engine.ui.inventory.bean;
-
-import com.dozenx.game.engine.command.ItemType;
+package com.dozenx.game.engine.item.bean;
 
 /**
  * Created by luying on 16/7/3.
  */
 public class ItemBean {
     int id;
+    ItemDefinition itemDefinition;
 
-    String name;
+    public ItemDefinition getItemDefinition() {
+        return itemDefinition;
+    }
+
+    public void setItemDefinition(ItemDefinition itemDefinition) {
+        this.itemDefinition = itemDefinition;
+    }
+
     int num;
     int brokenDegree;// 1/100
-    public ItemBean(String name, int num)
+    public ItemBean(ItemDefinition itemDefinition, int num)
     {
-        this.name=name;
+        this.itemDefinition=itemDefinition;
         this.num=num;
     }
-    public String getName() {
+    /*public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
+    }*/
 
     public int getNum() {
         return num;

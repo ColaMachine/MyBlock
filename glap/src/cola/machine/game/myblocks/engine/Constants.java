@@ -86,4 +86,10 @@ public class Constants {
 
     public static final int INVENTORY_SLOT_X_NUM=6;
     public static final int INVENTORY_SLOT_Y_NUM=6;
+
+    public static float camSpeedR = 15; // degrees per second
+    public static float camSpeedXZ = 2.4f; // units per second
+    public static float camSpeedY = 0.1f; // units per second
+
+    static final float PIdiv180 = (float)Math.PI/2;
 }

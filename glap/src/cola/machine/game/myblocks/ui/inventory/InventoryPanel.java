@@ -31,7 +31,7 @@ package cola.machine.game.myblocks.ui.inventory;
 
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import java.util.Map;

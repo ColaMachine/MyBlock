@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.service;
 
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 
 import java.util.HashMap;
 import java.util.Map;

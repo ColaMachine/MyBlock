@@ -1,6 +1,5 @@
 package cola.machine.game.myblocks.skill;
 
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 

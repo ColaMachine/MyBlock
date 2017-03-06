@@ -32,7 +32,6 @@ package com.dozenx.game.engine.ui.inventory.view;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
-import cola.machine.game.myblocks.ui.inventory.*;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.engine.Constants;
@@ -100,7 +99,7 @@ public class PersonPanel extends SlotPanel {
 
     public void update(){
         super.update();
-        attriDiv.innerText=GamingState.human.getState();
+        attriDiv.innerText=GamingState.player.getState();
     }
 
 

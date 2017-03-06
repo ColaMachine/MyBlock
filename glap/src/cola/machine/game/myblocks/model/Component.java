@@ -3,7 +3,7 @@ package cola.machine.game.myblocks.model;
 import cola.machine.game.myblocks.engine.Constants;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.textture.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.opengl.util.OpenglUtils;

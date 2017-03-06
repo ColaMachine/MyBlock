@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
+import com.dozenx.game.engine.Role.bean.Player;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.*;
 import glmodel.GLModel;
@@ -15,7 +16,6 @@ import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.item.weapons.Sword;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
@@ -89,8 +89,8 @@ public class AnimationEngine extends MyBlockEngine {
 
 	public BlockRepository blockRepository = new BlockRepository(this);
 	BulletPhysics bulletPhysics;
-	public Human human;
-	private Human human2 ;
+	public Player player;
+	private Player player2;
 	private Skysphere skysphere =new Skysphere();
 	/**
 	 * Start the application. run() calls setup(), handles mouse and keyboard
@@ -127,11 +127,11 @@ public class AnimationEngine extends MyBlockEngine {
       //  GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
         //GL11.glEnable(GL11.GL_DEPTH_TEST);
        // GL11.glDepthFunc(GL11.GL_LEQUAL);
-		human = new Human(1/*blockRepository*/);
+		player = new Player(1/*blockRepository*/);
 		//sword=new Sword(0,0,0);
-		human2 = new Human(2/*blockRepository*/);
+		player2 = new Player(2/*blockRepository*/);
 		CoreRegistry.put(MyBlockEngine.class, this);
-		CoreRegistry.put(Human.class, human);
+		CoreRegistry.put(Player.class, player);
 		this.initManagers();
 		setPerspective();
 		/*
@@ -211,14 +211,14 @@ public class AnimationEngine extends MyBlockEngine {
 		//textureImg = loadImage("assets.images/gui.png");
 		// set camera 1 position
 		camera1.setCamera(5, 20, 5, 0, 0f, -1, 0, 1, 0);
-		human.setHuman(1, 34, 5, 0, 0, -1, 0, 1, 0);
+		player.setHuman(1, 34, 5, 0, 0, -1, 0, 1, 0);
 		//human.setHuman(-25, 50, 1, 1, 0, 0, 0, 1, 0);
 
-		human2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
+		player2.setHuman(1, 1, 1, 0, 0, 1, 0, 1, 0);
 
 		/*human.startWalk();*/
 
-		mouseControlCenter = new MouseControlCenter(human, camera1);
+		mouseControlCenter = new MouseControlCenter(player, camera1);
 		mouseControlCenter.bulletPhysics = bulletPhysics;
 
 
@@ -444,8 +444,8 @@ public class AnimationEngine extends MyBlockEngine {
             GL11.glLoadIdentity();
 
 
-            GL_Vector camera_pos = GL_Vector.add(human.position,
-                    GL_Vector.multiply(human.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
+            GL_Vector camera_pos = GL_Vector.add(player.position,
+                    GL_Vector.multiply(player.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
             camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
             // camera1.MoveTo(human.Position.x, human.Position.y + 4,
             // human.Position.z);
@@ -453,10 +453,10 @@ public class AnimationEngine extends MyBlockEngine {
 
             if (Switcher.CAMERA_MODEL == 2) {
                 // camera1.ViewDir.reverse();
-                camera1.ViewDir = new GL_Vector(human.ViewDir.x * -1, human.ViewDir.y * -1, human.ViewDir.z * -1);
+                camera1.ViewDir = new GL_Vector(player.ViewDir.x * -1, player.ViewDir.y * -1, player.ViewDir.z * -1);
             } else {
 
-                camera1.viewDir(human.ViewDir);
+                camera1.viewDir(player.ViewDir);
             }
             cam.render();
 
@@ -645,7 +645,7 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
           GL11.glPushMatrix();
         {
             if(Switcher.CAMERA_2_PLAYER<-2|| Switcher.CAMERA_2_PLAYER>2){
-                human.render();
+                player.render();
             }/*else
             human.renderPart();*/
 

@@ -11,7 +11,7 @@ import glmodel.GL_Vector;
 /**
  * Created by luying on 17/2/7.
  */
-public class IdleState {
+public class IdleState extends State{
     public void dispose(){
 
     }

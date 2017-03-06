@@ -1,8 +1,6 @@
 package com.dozenx.game.engine.ui.toolbar.bean;
 
-import cola.machine.game.myblocks.engine.Constants;
-import com.dozenx.game.engine.ui.inventory.bean.IconBean;
-import com.dozenx.game.engine.ui.inventory.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemBean;
 
 /**
  * Created by luying on 17/2/5.

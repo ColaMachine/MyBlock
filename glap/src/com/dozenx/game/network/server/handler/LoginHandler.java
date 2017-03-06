@@ -2,11 +2,8 @@ package com.dozenx.game.network.server.handler;
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSON;
-import com.dozenx.game.engine.command.PlayerSynCmd;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.*;
-import com.dozenx.game.engine.command.GameCmd;
-import com.dozenx.game.engine.command.LoginCmd;
-import com.dozenx.game.engine.command.ResultCmd;
 import com.dozenx.game.network.server.service.impl.UserService;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
@@ -27,7 +24,7 @@ public class LoginHandler extends GameServerHandler {
         String userName = loginCmd.getUserName();
         String pwd = loginCmd.getPwd();
         if(StringUtil.isBlank(userName)){
-            return new ResultCmd(1,"密码不能为空",loginCmd.getThreadId());
+            return new ResultCmd(1,new MsgCmd("密码不能为空").toBytes(),loginCmd.getThreadId());
         }else{
 
             LivingThingBean playerBean = userService.getUserInfoByUserName(userName);
@@ -57,7 +54,7 @@ public class LoginHandler extends GameServerHandler {
                     request.getWorker().send(new PlayerSynCmd(player).toBytes());
                 }
 
-                return new ResultCmd(0, JSON.toJSONString(playerBean),loginCmd.getThreadId());
+                return new ResultCmd(0, new PlayerSynCmd(playerBean).toBytes(),loginCmd.getThreadId());
 
                 //把所有在线玩家的状态同步给他
 
@@ -65,7 +62,7 @@ public class LoginHandler extends GameServerHandler {
 
             }else{
 
-                return new ResultCmd(1,"密码错误",loginCmd.getThreadId());
+                return new ResultCmd(1,new MsgCmd("密码错误").toBytes(),loginCmd.getThreadId());
             }
         }
 

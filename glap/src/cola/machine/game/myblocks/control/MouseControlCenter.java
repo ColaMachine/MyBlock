@@ -7,10 +7,10 @@ import java.awt.Robot;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
-import cola.machine.game.myblocks.lifething.manager.LivingThingManager;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
+import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.network.client.Client;
 import core.log.LogUtil;
-import cola.machine.game.myblocks.model.ui.tool.ToolBar;
 import com.dozenx.game.engine.command.AttackCmd;
 import com.dozenx.game.engine.command.AttackType;
 import com.dozenx.game.opengl.util.OpenglUtils;
@@ -21,7 +21,6 @@ import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
-import cola.machine.game.myblocks.model.human.Human;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -30,7 +29,7 @@ import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.util.MathUtil;
 
 public class MouseControlCenter {
-    public Human human;
+    public Player player;
     public GLCamera camera;
     //public MyBlockEngine engine;
     public double preKeyTime = 0;
@@ -47,14 +46,14 @@ public class MouseControlCenter {
      * Add last mouse motion to the line, only if left mouse button is down.
      */
     Point mousepoint;
-    public MouseControlCenter(Human human, GLCamera camera,GameState gameState) {
-        this( human,  camera) ;
+    public MouseControlCenter(Player player, GLCamera camera,GameState gameState) {
+        this(player,  camera) ;
         this.gameState=gameState;
     }
 
-    public MouseControlCenter(Human human, GLCamera camera) {
+    public MouseControlCenter(Player player, GLCamera camera) {
         //this.engine = engine;
-        this.human = human;
+        this.player = player;
         this.camera = camera;
         this.livingThingManager = CoreRegistry.get(LivingThingManager.class);
         centerX = Display.getX() + GLApp.displayWidth / 2;
@@ -109,34 +108,34 @@ public class MouseControlCenter {
                 Switcher.CAMERA_2_PLAYER = 0;
             }
         } if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            human.bodyRotate(human.camSpeedR * seconds,0);
+            player.bodyRotate(player.camSpeedR * seconds,0);
         }   if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             // Turn right
 
-            human.bodyRotate( -human.camSpeedR * seconds,0);
+            player.bodyRotate( -player.camSpeedR * seconds,0);
         }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            human.StrafeRight(-human.camSpeedXZ * seconds);
+            player.StrafeRight(-player.camSpeedXZ * seconds);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
-            human.StrafeRight(human.camSpeedXZ * seconds);
+            player.StrafeRight(player.camSpeedXZ * seconds);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-            human.MoveForward(-human.camSpeedXZ * seconds);
+            player.MoveForward(-player.camSpeedXZ * seconds);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_G)) { // tilt down
             //human.MoveForward(-human.camSpeedXZ * seconds);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
-            human.MoveForward(human.camSpeedXZ * seconds);
+            player.MoveForward(player.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-            human.position.y = human.position.y - 3 * seconds;
-            human.move(human.position);
+            player.position.y = player.position.y - 3 * seconds;
+            player.move(player.position);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
-            human.position.y = human.position.y + 3 * seconds;
-            human.move(human.position);
+            player.position.y = player.position.y + 3 * seconds;
+            player.move(player.position);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             double timenow = GLApp.getTimeInSeconds();
@@ -146,9 +145,9 @@ public class MouseControlCenter {
             }
             preKeyTime = timenow;
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-                human.jumpHigh();
+                player.jumpHigh();
             // System.out.println("ͬʱ������w��");
-            human.jump();
+            player.jump();
             // System.out.println("jump");
         }
                                                         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
@@ -533,7 +532,7 @@ public class MouseControlCenter {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
-            human.bodyRotate( -(x - prevMouseX),(y - prevMouseY));
+            player.bodyRotate( -(x - prevMouseX),(y - prevMouseY));
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli = false;
@@ -541,9 +540,9 @@ public class MouseControlCenter {
             // save mouse position
             prevMouseX = x;
             prevMouseY = y;
-            camera.ViewDir.x= human.ViewDir.x;
-            camera.ViewDir.y= human.ViewDir.y;
-            camera.ViewDir.z= human.ViewDir.z;
+            camera.ViewDir.x= player.ViewDir.x;
+            camera.ViewDir.y= player.ViewDir.y;
+            camera.ViewDir.z= player.ViewDir.z;
             GamingState.cameraChanged=true;
            // camera.changeCallBack();
             // �ƶ���ͷ
@@ -562,7 +561,7 @@ public class MouseControlCenter {
             // System.out.println(x-prevMouseX);
             camera.fenli = true;
 
-            human.headRotate(-(x - prevMouseX), (y - prevMouseY));
+            player.headRotate(-(x - prevMouseX), (y - prevMouseY));
             // camera.RotateX(-(x - prevMouseX) / 5);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             //camera.RotateY((y - prevMouseY) / 5);
@@ -571,9 +570,9 @@ public class MouseControlCenter {
             // save mouse position
             prevMouseX = x;
             prevMouseY = y;
-            camera.ViewDir.x= human.ViewDir.x;
-            camera.ViewDir.y= human.ViewDir.y;
-            camera.ViewDir.z= human.ViewDir.z;
+            camera.ViewDir.x= player.ViewDir.x;
+            camera.ViewDir.y= player.ViewDir.y;
+            camera.ViewDir.z= player.ViewDir.z;
             GamingState.cameraChanged=true;
             //camera.changeCallBack();
             // �ƶ���ͷ
@@ -582,7 +581,7 @@ public class MouseControlCenter {
 
     public void keyDown(int keycode) {
         if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
-            CoreRegistry.get(Client.class).send(new AttackCmd(human.getId(),AttackType.ARROW,human.getTargetId()));
+            CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),AttackType.ARROW, player.getTarget().getId()));
            // Client.messages.push(new AttackCmd(AttackType.ARROW));
            // human.receive(new AttackCmd(AttackType.ARROW));
         }
@@ -667,11 +666,11 @@ public class MouseControlCenter {
 
             //human.MoveForward(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-            human.position.y = human.position.y - 3 * seconds;
-            human.move(human.position);
+            player.position.y = player.position.y - 3 * seconds;
+            player.move(player.position);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
-            human.position.y = human.position.y + 3 * seconds;
-            human.move(human.position);
+            player.position.y = player.position.y + 3 * seconds;
+            player.move(player.position);
         }
         else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
            // CoreRegistry.get(ToolBar.class).keyDown(1);
@@ -759,9 +758,9 @@ preKeyTime = timenow;
             }
             preKeyTime = timenow;
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-                human.jumpHigh();
+                player.jumpHigh();
             // System.out.println("ͬʱ������w��");
-            human.jump();
+            player.jump();
             // System.out.println("jump");
         }
 

@@ -88,6 +88,9 @@ public class PosCmd extends   BaseGameCmd{
             LogUtil.println("that 's bug");
         }
         this.userId =livingThing.getId();
+        if(userId<=0){
+            LogUtil.err("userId should not be 0");
+        }
         this.x = livingThing.position.x;
         this.y = livingThing.position.y;
         this.z = livingThing.position.z;
@@ -99,6 +102,9 @@ public class PosCmd extends   BaseGameCmd{
     public PosCmd(PlayerStatus playerStatus){
 
         this.userId =playerStatus.getId();
+        if(userId<=0){
+            LogUtil.err("userId should not be 0");
+        }
         this.x = playerStatus.getX();
         this.y = playerStatus.getY();
         this.z = playerStatus.getZ();
