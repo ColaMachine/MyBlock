@@ -14,6 +14,7 @@ public enum CmdType {
     EQUIP,
     POS,
     PLAYERSTATUS,
+    BAG,
     GET,
     ATTACK,
     DROP,

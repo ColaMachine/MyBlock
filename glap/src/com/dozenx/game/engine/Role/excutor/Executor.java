@@ -1,6 +1,8 @@
 package com.dozenx.game.engine.Role.excutor;
 
+import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.model.Model;
+import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.engine.live.state.State;
@@ -10,8 +12,10 @@ import com.dozenx.game.engine.live.state.State;
  */
 public class Executor {
 
-    Model model;
-
+    Model model ;
+    public Executor(Role role ){
+        model = new PlayerModel(role);
+    }
     public Model getModel() {
         return model;
     }

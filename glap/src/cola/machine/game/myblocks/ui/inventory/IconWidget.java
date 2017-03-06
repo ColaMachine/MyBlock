@@ -81,11 +81,11 @@ public class IconWidget extends Widget {
       // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        icon2= TextureManager.getItemDefinition(itemBean.getName()).getIcon();
+        icon2=itemBean.getItemDefinition().getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }
-        this.itemCfg = TextureManager.getItemDefinition(itemBean.getName());
+        this.itemCfg =itemBean.getItemDefinition();
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
@@ -100,7 +100,7 @@ public class IconWidget extends Widget {
         if(icon2==  null){
             assert icon2!=null;
         }
-        this.itemCfg = TextureManager.getItemDefinition(itemBean.getName());
+        this.itemCfg = itemBean.getItemDefinition();
         if(itemCfg==  null) {
             assert this.itemCfg!=null;
         }
@@ -112,7 +112,7 @@ public class IconWidget extends Widget {
         this.itemBean.setNum(num);
     }
     public String getItem() {
-        return itemBean.getName();
+        return itemBean.getItemDefinition().getName();
     }
 
     public void setItem(ItemBean itemBean) {
@@ -129,9 +129,9 @@ public class IconWidget extends Widget {
     public TextureInfo getIcon2() {
         return icon2;
     }
-    public void setIcon(Image icon) {
+/*    public void setIcon(Image icon) {
         this. icon=icon;
-    }
+    }*/
     public void setIcon(TextureInfo icon) {
         this. icon2=icon;
     }
@@ -147,20 +147,21 @@ public class IconWidget extends Widget {
 
 
     //@Override
-    protected void applyTheme(ThemeInfo themeInfo) {
+  /*  protected void applyTheme(ThemeInfo themeInfo) {
         super.applyTheme(themeInfo);
         icons = themeInfo.getParameterMap("icons");
-
-        findIcon();
+*//*
+        findIcon();*//*
       //  this.setBackground(icon);
-    }
+    }*/
     
     private void findIcon() {
         if(itemBean == null || icons == null) {
-            icon = null;
+            icon2 = null;
         } else {
-            icon2= TextureManager.getTextureInfo(itemBean.getName());
-            icon = icons.getImage(itemBean.getName());
+            //icon2= itemBean.getName();
+            //icon = icons.getImage(itemBean.getName());
+            //icon = icons.getImage(itemBean.getName());
         }
     }
 
@@ -181,9 +182,9 @@ public class IconWidget extends Widget {
         this.itemBean = itemBean;
     }
 
-    public void setIcon2(TextureInfo icon2) {
+ /*   public void setIcon2(TextureInfo icon2) {
         this.icon2 = icon2;
-    }
+    }*/
 
     public Label getLabel() {
         return label;

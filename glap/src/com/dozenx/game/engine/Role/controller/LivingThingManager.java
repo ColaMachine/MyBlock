@@ -504,6 +504,36 @@ public class LivingThingManager {
 
     }
 
+
+
+    public void changePlayerToInfo(Role role ,PlayerStatus info ){
+        //  super.setPlayerStatus(status);
+
+
+        role.setId(info.getId());
+        //setPwd(status.getPwd());
+        role. setBodyAngle(info.getBodyAngle());
+        role. setHeadAngle(info.getHeadAngle());
+        role. setHeadAngle2(info.getHeadAngle2());
+
+        role. setTargetId(info.getTargetId());
+        role. setTarget(null);
+        // role. setIsplayer(status.isplayer);
+
+        //this.id = status.getId();
+        role.setPosition(info.getX(),info.getY(),info.getZ());
+
+
+
+
+        role.setHeadEquip(role.getItemById(info.getHeadEquip()));
+        role.setBodyEquip(role.getItemById(info.getBodyEquip()));
+        role.setHandEquip(role.getItemById(info.getHandEquip()));
+        role.setLegEquip(role.getItemById(info.getLegEquip()));
+        role.setFootEquip(role.getItemById(info.getShoeEquip()));
+
+
+    }
     public void changePlayerInfoToPlayer(Role role ,PlayerStatus info ){
         //  super.setPlayerStatus(status);
 

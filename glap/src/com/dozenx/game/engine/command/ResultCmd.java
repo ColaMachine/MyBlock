@@ -36,13 +36,20 @@ public class ResultCmd extends   BaseGameCmd{
     public void setThreadId(int threadId) {
         this.threadId = threadId;
     }
-
+    GameCmd[] cmds;
     byte[] msg ;
     int threadId;
     public ResultCmd(byte[] bytes){
 
         parse(bytes);
     }
+  /*  public ResultCmd(int val,GameCmd ... bytes){
+
+        this.result=(byte)val;
+        this.cmds = cmds
+        this.msg = bytes;
+        this.threadId =threadId;
+    }*/
     public ResultCmd(int val,byte[] bytes,int threadId){
 
        this.result=(byte)val;

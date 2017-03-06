@@ -31,14 +31,15 @@ public class UserService implements IUserService {
 
     }
 
-    public void addNew(PlayerStatus playerStatus){
+    public LivingThingBean addNew(PlayerStatus playerStatus){
        // serverContext.addNew(playerStatus);
 
-        serverContext.addNewPlayer(playerStatus);
+       return  serverContext.addNewPlayer(playerStatus);
        // serverContext.name2PlayerMap.put(playerStatus.getName(),playerStatus);
        // serverContext.id2PlayerMap.put(playerStatus.getId(),playerStatus);
 
     }
+
     /*public PlayerStatus getUserInfoByUserName(int id){
         if(serverContext.name2PlayerMap == null){
             loadAllUserInfo();

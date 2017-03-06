@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.lifething.manager;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import glmodel.GL_Vector;
@@ -35,7 +36,7 @@ public class BehaviorManager extends    Thread{
         }
         return animationManager;
     }
-    public void attack(LivingThingBean from,LivingThingBean to){
+    public void attack(Role from, Role to){
         from.attack();
         to.beAttack();
         /*getAnimationManager().apply(from.bodyComponent,"attack");
@@ -48,12 +49,12 @@ public class BehaviorManager extends    Thread{
             if(!livingThing.isPlayer())
             if(livingThing.getTarget()!=null ){
                 GL_Vector direction =  GL_Vector.sub(LivingThingManager.player.position,livingThing.position);
-                livingThing.WalkDir= direction;
+                livingThing.walkDir= direction;
                 if(GL_Vector.length(direction)<livingThing.attackDistance){
                     attack(livingThing,livingThing.getTarget());
                     livingThing.nextPosition=null;
                 }else{
-                    this.getAnimationManager().apply(livingThing.bodyComponent,"walkerFoward");
+                    this.getAnimationManager().apply(livingThing.getModel().bodyComponent,"walkerFoward");
                     livingThing.position = GL_Vector.add(livingThing.position,GL_Vector.multiply(direction.normalize(),livingThing.speed*1));
                 }
 

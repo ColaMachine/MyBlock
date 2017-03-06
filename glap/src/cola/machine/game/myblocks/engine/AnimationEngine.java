@@ -445,7 +445,7 @@ public class AnimationEngine extends MyBlockEngine {
 
 
             GL_Vector camera_pos = GL_Vector.add(player.position,
-                    GL_Vector.multiply(player.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
+                    GL_Vector.multiply(player.viewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
             camera1.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
             // camera1.MoveTo(human.Position.x, human.Position.y + 4,
             // human.Position.z);
@@ -453,10 +453,10 @@ public class AnimationEngine extends MyBlockEngine {
 
             if (Switcher.CAMERA_MODEL == 2) {
                 // camera1.ViewDir.reverse();
-                camera1.ViewDir = new GL_Vector(player.ViewDir.x * -1, player.ViewDir.y * -1, player.ViewDir.z * -1);
+                camera1.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);
             } else {
 
-                camera1.viewDir(player.ViewDir);
+                camera1.viewDir(player.viewDir);
             }
             cam.render();
 
@@ -645,7 +645,7 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
           GL11.glPushMatrix();
         {
             if(Switcher.CAMERA_2_PLAYER<-2|| Switcher.CAMERA_2_PLAYER>2){
-                player.render();
+               // player.render();
             }/*else
             human.renderPart();*/
 

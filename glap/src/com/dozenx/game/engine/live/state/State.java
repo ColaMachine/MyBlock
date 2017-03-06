@@ -17,6 +17,9 @@ public class State {
     public void update(){
 
     }
+    public State(){
+
+    }
     protected LivingThingBean livingThing;
     public State(LivingThingBean livingThing){
         this.livingThing = livingThing;
@@ -35,7 +38,7 @@ public class State {
                     LogUtil.println("超出距离");
                     return;
                 }
-                if(ItemUtil.isFarWeapon(livingThing.getHandEquip())){
+                if(ItemUtil.isFarWeapon(livingThing.getHandEquip().getItemDefinition().getItemType().ordinal())){
                     this.livingThing.changeState( new ShootState(this.livingThing));
 
                 }

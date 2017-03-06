@@ -316,10 +316,10 @@ public class MyBlockEngine extends GLApp {
 
         if (Switcher.CAMERA_MODEL == 2) {
             // camera1.ViewDir.reverse();
-            camera1.ViewDir = new GL_Vector(player.ViewDir.x * -1, player.ViewDir.y * -1, player.ViewDir.z * -1);
+            camera1.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);
         } else {
 
-            camera1.viewDir(player.ViewDir);
+            camera1.viewDir(player.viewDir);
         }
         Util.checkGLError();
         cam.render();
@@ -423,7 +423,7 @@ public class MyBlockEngine extends GLApp {
 //        print(30, viewportH - 75, "press key wasd qe walk and turn direction ");
 //        print(30, viewportH - 90, "press space jump ");
 //        print(30, viewportH - 105, "press up down look up down ");
-        print(30, viewportH - 120, "cam:"+ player.ViewDir);
+        print(30, viewportH - 120, "cam:"+ player.viewDir);
         print(30, viewportH - 135, "fps:" + time.tick());
     }
 

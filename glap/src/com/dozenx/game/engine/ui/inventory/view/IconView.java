@@ -93,12 +93,12 @@ public class IconView extends HtmlObject {
       // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        this.setBackgroundImage(new Image(TextureManager.getItemDefinition(itemBean.getName()).getIcon()));
+        this.setBackgroundImage(new Image(itemBean.getItemDefinition().getIcon()));
    /*     icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }*/
-        this.itemDefinition = TextureManager.getItemDefinition(itemBean.getName());
+        this.itemDefinition = itemBean.getItemDefinition();
         if(itemDefinition==  null) {
             assert this.itemDefinition!=null;
         }
@@ -126,7 +126,7 @@ public class IconView extends HtmlObject {
         this.itemBean.setNum(num);
     }
     public String getItem() {
-        return itemBean.getName();
+        return itemBean.getItemDefinition().getName();
     }
 
     public void setItem(ItemBean itemBean) {

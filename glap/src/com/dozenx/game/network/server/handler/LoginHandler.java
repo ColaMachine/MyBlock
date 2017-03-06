@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.*;
 import com.dozenx.game.network.server.service.impl.UserService;
+import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 
@@ -36,25 +37,31 @@ public class LoginHandler extends GameServerHandler {
                 playerInfo.setId((int)(Math.random()*10000));
                 playerInfo.setName(userName);
                 playerInfo.setPwd(pwd);
-                userService.addNew(playerInfo);
-                playerBean=new LivingThingBean(playerInfo);
+                playerBean= userService.addNew(playerInfo);
+
+
+
             }
             if(playerBean.getPwd().equals(pwd)){
-                serverContext.broadCast(new PlayerSynCmd(playerBean).toBytes());
+                serverContext.broadCast(new PlayerSynCmd(playerBean.getPlayerInfo()).toBytes());
                 //把所有人的信息都同步给他
-                serverContext.addOnlinePlayer(playerBean);
+                serverContext.addOnlinePlayer(playerBean.getPlayerInfo());
               /* Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
                 for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PlayerMap.entrySet()){
                     request.getWorker().send(new PlayerSynCmd(entry.getValue()).toBytes());
                 }*/
                 for(LivingThingBean player: serverContext.getAllOnlinePlayer()){
-                    request.getWorker().send(new PlayerSynCmd(player).toBytes());
+                    request.getWorker().send(new PlayerSynCmd(player.getPlayerInfo()).toBytes());
                 }
                 for(LivingThingBean player: serverContext.getAllEnemies()){
-                    request.getWorker().send(new PlayerSynCmd(player).toBytes());
+                    request.getWorker().send(new PlayerSynCmd(player.getPlayerInfo()).toBytes());
                 }
-
-                return new ResultCmd(0, new PlayerSynCmd(playerBean).toBytes(),loginCmd.getThreadId());
+                //把当前人的物品信息传递给他
+                // 怎么将
+                ByteBufferWrap wrap =new ByteBufferWrap();
+                wrap.put( new PlayerSynCmd(playerBean.getPlayerInfo()).toBytes());
+                wrap.put( new BagCmd(playerBean.getId(),serverContext.getItemByUserId(playerBean.getId())).toBytes());
+                return new ResultCmd(0, new PlayerSynCmd(playerBean.getPlayerInfo()).toBytes(),loginCmd.getThreadId());
 
                 //把所有在线玩家的状态同步给他
 

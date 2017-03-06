@@ -1,11 +1,23 @@
 package com.dozenx.game.engine.item.bean;
 
+import cola.machine.game.myblocks.manager.TextureManager;
+
 /**
  * Created by luying on 16/7/3.
  */
-public class ItemBean {
+public class ItemBean  {
     int id;
+    int position;
     ItemDefinition itemDefinition;
+    int num;
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
 
     public ItemDefinition getItemDefinition() {
         return itemDefinition;
@@ -15,11 +27,21 @@ public class ItemBean {
         this.itemDefinition = itemDefinition;
     }
 
-    int num;
+
     int brokenDegree;// 1/100
+    public ItemBean()
+    {
+
+    }
     public ItemBean(ItemDefinition itemDefinition, int num)
     {
         this.itemDefinition=itemDefinition;
+        this.num=num;
+    }
+
+    public ItemBean(String itemName, int num)
+    {
+        this.itemDefinition= TextureManager.getItemDefinition(itemName);
         this.num=num;
     }
     /*public String getName() {

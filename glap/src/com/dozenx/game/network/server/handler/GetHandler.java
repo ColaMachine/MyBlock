@@ -23,10 +23,10 @@ public class GetHandler extends GameServerHandler {
         GetCmd cmd = (GetCmd)request.getCmd();
         //Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
         for(LivingThingBean player: serverContext.getAllOnlinePlayer()){
-            request.getWorker().send(new PlayerSynCmd(player).toBytes());
+            request.getWorker().send(new PlayerSynCmd(player.getPlayerInfo()).toBytes());
         }
         for(LivingThingBean player: serverContext.getAllEnemies()){
-            request.getWorker().send(new PlayerSynCmd(player).toBytes());
+            request.getWorker().send(new PlayerSynCmd(player.getPlayerInfo()).toBytes());
         }
         /*
         for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PlayerMap.entrySet()){

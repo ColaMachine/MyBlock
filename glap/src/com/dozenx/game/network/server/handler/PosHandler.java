@@ -22,7 +22,7 @@ public class PosHandler extends GameServerHandler {
 
         PosCmd posCmd =(PosCmd) request.getCmd();
         int userId = posCmd.getUserId();
-        PlayerStatus playerStatus =  serverContext.getOnlinePlayerById(userId);
+        PlayerStatus playerStatus =  serverContext.getOnlinePlayerById(userId).getPlayerInfo();
         if(playerStatus==null){
             LogUtil.err("userId:"+userId+" find playerStatus is null");
         }

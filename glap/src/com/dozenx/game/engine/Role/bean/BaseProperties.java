@@ -20,9 +20,9 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     /* protected float x;
         protected float y;
         protected float z;*/
-    protected GL_Vector position ;
-    protected GL_Vector walkDir;
-    protected  GL_Vector viewDir;
+    protected GL_Vector position =new GL_Vector() ;
+    protected GL_Vector walkDir =new GL_Vector() ;
+    protected  GL_Vector viewDir =new GL_Vector() ;
 
 
     protected String name;

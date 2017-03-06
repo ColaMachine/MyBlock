@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Point;
 import java.awt.Robot;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
@@ -108,28 +109,28 @@ public class MouseControlCenter {
                 Switcher.CAMERA_2_PLAYER = 0;
             }
         } if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            player.bodyRotate(player.camSpeedR * seconds,0);
+            player.bodyRotate(Constants.camSpeedR * seconds,0);
         }   if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             // Turn right
 
-            player.bodyRotate( -player.camSpeedR * seconds,0);
+            player.bodyRotate( -Constants.camSpeedR * seconds,0);
         }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            player.StrafeRight(-player.camSpeedXZ * seconds);
+            player.StrafeRight(-Constants.camSpeedXZ * seconds);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
-            player.StrafeRight(player.camSpeedXZ * seconds);
+            player.StrafeRight(Constants.camSpeedXZ * seconds);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-            player.MoveForward(-player.camSpeedXZ * seconds);
+            player.MoveForward(-Constants.camSpeedXZ * seconds);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_G)) { // tilt down
             //human.MoveForward(-human.camSpeedXZ * seconds);
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
-            player.MoveForward(player.camSpeedXZ * seconds);
+            player.MoveForward(Constants.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             player.position.y = player.position.y - 3 * seconds;
             player.move(player.position);
@@ -267,17 +268,17 @@ public class MouseControlCenter {
 //        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
 
 
-        GL_Vector viewdir = OpenglUtils.getLookAtDirection2(camera.getViewDir(),x, y);
-        //viewdir.y=-viewdir.y;
-//        // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
+        GL_Vector viewDir = OpenglUtils.getLookAtDirection2(camera.getViewDir(),x, y);
+        //viewDir.y=-viewDir.y;
+//        // this.human.viewDir;//OpenglUtil.getLookAtDirection(x, y);
 //
 //        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
-//        // viewdir.x,viewdir.y,viewdir.z);
+//        // viewDir.x,viewDir.y,viewDir.z);
 //
 
 
         GL_Vector to = GL_Vector.add(camera.Position,
-                GL_Vector.multiply(viewdir, 100));
+                GL_Vector.multiply(viewDir, 100));
 
        /* GamingState.instance.lightPos.x= to.x;
         GamingState.instance.lightPos.y= to.y;
@@ -287,12 +288,12 @@ public class MouseControlCenter {
         //this.engine.mouseEnd = to;
 //        ChunkProvider localChunkProvider = CoreRegistry
 //                .get(ChunkProvider.class);
-//        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
+//        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewDir,
 //                20, engine.currentObject, false);
-        // camera.getViewDir().add();
-        livingThingManager.chooseObject(camera.Position, viewdir);
+        // camera.getviewDir().add();
+        livingThingManager.chooseObject(camera.Position, viewDir);
         //livingThingManager.attack();
-       /*Ball ball =new Ball(this.camera.Position,viewdir,17.3f, TextureManager.getShape("arrow"));
+       /*Ball ball =new Ball(this.camera.Position,viewDir,17.3f, TextureManager.getShape("arrow"));
 
         AttackManager.add(ball);*/
         //  20);
@@ -325,19 +326,19 @@ public class MouseControlCenter {
                                     /* GL_Vector from =camera.Position; */
         LogUtil.println("mouse clikc at  %d %d \r\n ", x, y);
        // System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
-        GL_Vector viewdir = OpenglUtils.getLookAtDirection(x, y);
-        // this.human.ViewDir;//OpenglUtil.getLookAtDirection(x, y);
+        GL_Vector viewDir = OpenglUtils.getLookAtDirection(x, y);
+        // this.human.viewDir;//OpenglUtil.getLookAtDirection(x, y);
 
         // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
-        // viewdir.x,viewdir.y,viewdir.z);
+        // viewDir.x,viewDir.y,viewDir.z);
 
         GL_Vector to = GL_Vector.add(camera.Position,
-                GL_Vector.multiply(viewdir, 10));
+                GL_Vector.multiply(viewDir, 10));
        // this.engine.lineStart = camera.Position;
        // this.engine.mouseEnd = to;
         ChunkProvider localChunkProvider = CoreRegistry
                 .get(ChunkProvider.class);
-        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewdir,
+        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewDir,
                 20, StartMenuState.catchThing, true);
         if (hitPoint != null) {
             // Block block=new
@@ -375,9 +376,9 @@ public class MouseControlCenter {
                                                                      * = cam.camera.Position.x; lineStart.y
                                                                      * = cam.camera.Position.y; lineStart.z
                                                                      * = cam.camera.Position.z; // //
-                                                                     * lineStart.x =human.ViewDir.x; //
-                                                                     * lineStart.y =human.ViewDir.y; //
-                                                                     * lineStart.z = human.ViewDir.z;
+                                                                     * lineStart.x =human.viewDir.x; //
+                                                                     * lineStart.y =human.viewDir.y; //
+                                                                     * lineStart.z = human.viewDir.z;
                                                                      *
                                                                      * prevMouseX = x; prevMouseY = y;
                                                                      *
@@ -426,9 +427,9 @@ public class MouseControlCenter {
     public void mouseMove(int x, int y) {
         if(mouseRightPressed){
             this.mouseRightDrag(x,y);
-           /* camera.ViewDir.x= human.ViewDir.x;
-            camera.ViewDir.y= human.ViewDir.y;
-            camera.ViewDir.z= human.ViewDir.z;*/
+           /* camera.viewDir.x= human.viewDir.x;
+            camera.viewDir.y= human.viewDir.y;
+            camera.viewDir.z= human.viewDir.z;*/
         }
         if(mouseLeftPressed){
             this.mouseLeftDrag(x,y);
@@ -540,9 +541,9 @@ public class MouseControlCenter {
             // save mouse position
             prevMouseX = x;
             prevMouseY = y;
-            camera.ViewDir.x= player.ViewDir.x;
-            camera.ViewDir.y= player.ViewDir.y;
-            camera.ViewDir.z= player.ViewDir.z;
+            camera.ViewDir.x= player.viewDir.x;
+            camera.ViewDir.y= player.viewDir.y;
+            camera.ViewDir.z= player.viewDir.z;
             GamingState.cameraChanged=true;
            // camera.changeCallBack();
             // �ƶ���ͷ
@@ -570,9 +571,9 @@ public class MouseControlCenter {
             // save mouse position
             prevMouseX = x;
             prevMouseY = y;
-            camera.ViewDir.x= player.ViewDir.x;
-            camera.ViewDir.y= player.ViewDir.y;
-            camera.ViewDir.z= player.ViewDir.z;
+            camera.ViewDir.x= player.viewDir.x;
+            camera.ViewDir.y= player.viewDir.y;
+            camera.ViewDir.z= player.viewDir.z;
             GamingState.cameraChanged=true;
             //camera.changeCallBack();
             // �ƶ���ͷ

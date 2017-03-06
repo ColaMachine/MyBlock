@@ -93,7 +93,7 @@ public class EnemyManager implements  Runnable {
                        // this.getAnimationManager().apply(livingThing.bodyComponent,"walkerFoward");
                        GL_Vector newPosition = GL_Vector.add(enemy.getPosition(),GL_Vector.multiply(direction.normalize(),1*1));
                         enemy .setPosition(newPosition);
-                       serverContext.broadCast(new PosCmd(enemy).toBytes());
+                       serverContext.broadCast(new PosCmd(enemy.getPlayerInfo()).toBytes());
                    }
 
             }

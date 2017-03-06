@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.EquipCmd;
 import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
@@ -36,7 +37,8 @@ public class PlayerModel extends  Model{
     protected float HEAD_WIDTH=1f;
     protected  float HEAD_THICK=1f;
 
-    public PlayerModel(){
+    public PlayerModel(Role role ){
+        this.role =role;
         int id =role.getId();
         bodyComponent.id=id*10+EquipPartType.BODY.ordinal();
         bodyComponent.name = "human_body";
@@ -91,7 +93,7 @@ public class PlayerModel extends  Model{
 
     }
 
-    public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
+    //public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 
 /*
 

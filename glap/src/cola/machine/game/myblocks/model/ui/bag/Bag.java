@@ -342,7 +342,7 @@ if(!show)return;
             //GL11.glRotatef(rotation, 0, 1, 0); // rotate around Y axis
              GL11.glScalef(40f, 40f, 40f); // scale up
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
-            player.renderInMirror();
+           // player.renderInMirror();
 
         }
         GL11.glPopMatrix();

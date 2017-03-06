@@ -412,15 +412,15 @@ if(!Switcher.SHADER_ENABLE)
                 //dcc.check(human);
                 livingThingManager.CrashCheck(dcc);
                 GL_Vector camera_pos = GL_Vector.add(player.position,
-                        GL_Vector.multiply(player.ViewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
+                        GL_Vector.multiply(player.viewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
                 camera.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
 
                 if (Switcher.CAMERA_MODEL == 2) {
                     // camera1.ViewDir.reverse();
-                    camera.ViewDir = new GL_Vector(player.ViewDir.x * -1, player.ViewDir.y * -1, player.ViewDir.z * -1);
+                    camera.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);
                 } else {
 
-                    camera.viewDir(player.ViewDir);
+                    camera.viewDir(player.viewDir);
                 }
             }
                 if(GamingState.cameraChanged){
@@ -693,7 +693,7 @@ if(!Switcher.SHADER_ENABLE)
 //        print(30, viewportH - 75, "press key wasd qe walk and turn direction ");
 //        print(30, viewportH - 90, "press space jump ");
 //        print(30, viewportH - 105, "press up down look up down ");
-        GLApp.print(30, 600 - 120, "cam:" + player.ViewDir);
+        GLApp.print(30, 600 - 120, "cam:" + player.viewDir);
         // GLApp.print(30, 600 - 135, "fps:" + time.tick());
     }
 

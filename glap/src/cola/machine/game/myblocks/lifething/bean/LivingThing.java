@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import com.dozenx.game.engine.Role.bean.Role;
+import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.network.server.bean.LivingThingBean;
@@ -32,7 +34,7 @@ public class LivingThing extends LivingThingBean {
     public float headAngle2 =0  ;*/
     public LivingThing(int id){
         this.currentState = new IdleState(this);
-
+       this.setExecutor(new Executor(this));
         this.setId(id);//(int)(Math.random()*1000000);
         this.walkDir=new  GL_Vector(1,0,0);
 
@@ -83,47 +85,13 @@ public class LivingThing extends LivingThingBean {
     public float speed=1;*/
 
    // public AABB aabb;
-    protected  float HAND_HEIGHT=1.5f;
-    protected float HAND_WIDTH=0.5f;
-    protected float HAND_THICK=0.5f;
-
-    protected  float BODY_HEIGHT=1.5f;
-    protected float BODY_WIDTH=1f;
-    protected  float BODY_THICK=0.5f;
 
 
-    protected float LEG_HEIGHT=1.5f;
-    protected float LEG_WIDTH=0.5f;
-    protected  float LEG_THICK=0.5f;
 
-    protected float HEAD_HEIGHT=1f;
-    protected float HEAD_WIDTH=1f;
-    protected  float HEAD_THICK=1f;
-/*
-
-    public GL_Vector RightVector=new GL_Vector(1,0,0); ;
-    public GL_Vector UpVector =new GL_Vector(0,1,0);
-
-    public GL_Vector ViewDir = new GL_Vector(0,0,-1);  //  观察方向
-    public GL_Vector WalkDir = new GL_Vector(0,0,-1);    //  行走方向
-    public float attackDistance=1;
-    public GL_Vector position= new GL_Vector(0,0,0);    //  位置
-    public GL_Vector nextPosition= new GL_Vector(0,0,0);    //  位置
-    public GL_Vector oldPosition=new GL_Vector();   //  旧位置*/
-
-    public boolean stable = true;
     public void setStable(boolean flag) {
         this.stable = flag;
     }
 
-    public long lastTime = 0;
-    public long lastMoveTime = 0;
-    public float v = 6.2f;
-    public float g = 19.6f;
-    public float s = 0;
-    public float nextZ = 0;
-    public int limit = 0;
-    public boolean exist=true;
     //private WeakReference<LivingThing> target;
     /*public LivingThing getTarget(){
         if(target==null)return null;
@@ -138,9 +106,7 @@ public class LivingThing extends LivingThingBean {
         }else
         this.target=new WeakReference<LivingThing>(target);
     }*/
-    public int mark = 0;
-    public
-    int preY = 0;
+
     public void disapper(){
         this.exist=false;
     }
@@ -162,11 +128,11 @@ public class LivingThing extends LivingThingBean {
         lastTime = Sys.getTime();
 
     }
-    public boolean died=false;
+
     public void died(){
         this.nowBlood=0;
         died=true;
-        
+
     }
     public void changeProperty( ){
    // totalPower = basePower+
@@ -372,6 +338,7 @@ public class LivingThing extends LivingThingBean {
             CoreRegistry.get(AnimationManager.class).apply(getModel().bodyComponent, animationName);
         }
     }
+
     public void attack(){
 
 

@@ -194,9 +194,9 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 	
 		// ������ﱳ��ĵ�
 		GL_Vector camera_pos = GL_Vector.add(player.position,
-				GL_Vector.multiply(player.ViewDir, -10));
+				GL_Vector.multiply(player.viewDir, -10));
 		camera1.MoveTo(camera_pos.x, camera_pos.y + 4, camera_pos.z);
-		camera1.viewDir(player.ViewDir);
+		camera1.viewDir(player.viewDir);
 		cam.render();
 
 		GL11.glPushMatrix();
@@ -245,7 +245,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			player.render();
+			//player.render();
 
 		}
 		GL11.glPopMatrix();
@@ -258,7 +258,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, humanTextureHandle);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 					GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			player2.render();
+			//player2.render();
 		}
 		GL11.glPopMatrix();
 	}

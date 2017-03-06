@@ -5,6 +5,8 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.dozenx.game.engine.command.CmdType;
+import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.Worker;
 import com.dozenx.game.network.server.handler.GameServerHandler;
 import com.dozenx.util.FileUtil;
@@ -21,6 +23,7 @@ public class ServerContext {
     private List<LivingThingBean> enemyList = new ArrayList<>();
     private List<LivingThingBean> onLinePlayer =  new ArrayList<>();
     private List<LivingThingBean> allPlayer =  new ArrayList<>();
+    private Map<Integer,List<ItemServerBean>> itemsMap =  new HashMap<Integer,List<ItemServerBean>>();
 
     public List<Worker> getWorkers() {
         return workers;
@@ -56,7 +59,7 @@ public class ServerContext {
     //public Map<Integer,Worker> workerMap =new Hashtable();
     private Queue<byte[]> messages=new LinkedList<>();
   //  public Queue<PlayerStatus> livingThings=new LinkedList<>();
-    public void addNewPlayer(PlayerStatus info){
+    public LivingThingBean addNewPlayer(PlayerStatus info){
         info.setIsplayer(true);
         File file = PathManager.getInstance().getHomePath().resolve("saves").resolve("player").resolve(info.getId()+".txt").toFile();
         try {
@@ -64,6 +67,23 @@ public class ServerContext {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        List<ItemServerBean> items= new ArrayList<>();
+        ItemServerBean item =new ItemServerBean();
+        item.setId(1);
+        item.setItemType(ItemType.arrow.ordinal());
+        items.add(item);
+        File file2 = PathManager.getInstance().getHomePath().resolve("saves").resolve("item").resolve(info.getId()+"").toFile();
+        try {
+            FileUtil.writeFile(file2, JSON.toJSONString(items));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        LivingThingBean playerBean=new LivingThingBean();
+        playerBean.setInfo(info);
+        return playerBean;
     }
     public void loadAllEnemy(){
         File player =PathManager.getInstance().getHomePath().resolve("saves").resolve("enemy").toFile();
@@ -74,9 +94,11 @@ public class ServerContext {
         for(File file :files){
             try {
                 String s = FileUtil.readFile2Str(file);
-                enemyList.add( new LivingThingBean(JSON.parseObject(s,
+                LivingThingBean livingThingBean =new LivingThingBean();
+                livingThingBean.setInfo(JSON.parseObject(s,
                         new TypeReference<PlayerStatus>() {
-                        }))) ;
+                        }));
+                enemyList.add(livingThingBean);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -85,6 +107,30 @@ public class ServerContext {
 
 
     }
+
+    public void loadItems(){
+        File item =PathManager.getInstance().getHomePath().resolve("saves").resolve("item").toFile();
+        if(!item.exists()){
+            item.mkdirs();
+        }
+        List<File> files =  FileUtil.listFile(item);
+        for(File file :files){
+            try {
+                String s = FileUtil.readFile2Str(file);
+                List<ItemServerBean> itemList =new ArrayList<ItemServerBean>();
+                itemList = JSON.parseArray(s,
+                        ItemServerBean.class);
+
+                itemsMap.put(Integer.valueOf(item.getName()),itemList);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
     public void loadAllUserInfo(){
         File player =PathManager.getInstance().getHomePath().resolve("saves").resolve("player").toFile();
         if(!player.exists()){
@@ -94,15 +140,23 @@ public class ServerContext {
         for(File file :files){
             try {
                 String s = FileUtil.readFile2Str(file);
-                allPlayer.add( new LivingThingBean(JSON.parseObject(s,
+                LivingThingBean livingThingBean =new LivingThingBean();
+                livingThingBean.setInfo(JSON.parseObject(s,
                         new TypeReference<PlayerStatus>() {
-                        }))) ;
+                        }));
+                allPlayer.add(livingThingBean);
+
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
+
+    }
+
+    public List<ItemServerBean> getItemByUserId(Integer id){
+        return  itemsMap.get(id);
 
     }
     public LivingThingBean getAllPlayerByName(String name){
@@ -141,7 +195,9 @@ public class ServerContext {
                 return;
             }
         }
-        onLinePlayer.add(new LivingThingBean(status));
+        LivingThingBean livingThingBean=new LivingThingBean();
+        livingThingBean.setInfo(status);
+        onLinePlayer.add(livingThingBean);
     }
 
     public void removeOnlinePlayer(int id ){

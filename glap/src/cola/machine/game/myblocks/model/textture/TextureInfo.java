@@ -58,7 +58,7 @@ public float x1;
         }*/
    // public Texture texture;
     public String imageName;
-    String name;
+    public String name;
     int imgWidth ;
     int imgHeight;
     public TextureInfo(String imgName,float minX,float minY,float width,float height,String name){

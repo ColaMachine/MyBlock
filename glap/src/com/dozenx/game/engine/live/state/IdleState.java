@@ -36,7 +36,7 @@ public class IdleState extends State{
                     LogUtil.println("超出距离");
                     return;
                 }
-                if(ItemUtil.isFarWeapon(livingThing.getHandEquip())){
+                if(ItemUtil.isFarWeapon(livingThing.getHandEquip().getItemDefinition().getItemType().ordinal())){
                     this.livingThing.changeState( new ShootState(this.livingThing));
 
                 }

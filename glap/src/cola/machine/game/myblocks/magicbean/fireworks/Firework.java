@@ -135,9 +135,9 @@ public class Firework {
                         0.5f));
                 GL_Vector left = GL_Vector.add(right, GL_Vector.multiply(player.RightVector,
                         -1f));
-                GL_Vector lefttop = GL_Vector.add(left, GL_Vector.multiply(player.UpVector,
+                GL_Vector lefttop = GL_Vector.add(left, GL_Vector.multiply(player.upVector,
                         0.5f));
-                GL_Vector righttop = GL_Vector.add(right, GL_Vector.multiply(player.UpVector,
+                GL_Vector righttop = GL_Vector.add(right, GL_Vector.multiply(player.upVector,
                         0.5f));
                 GL11.glTexCoord2d(1, 1);
                // GL11.glVertex3f(x + 0.5f, y + 0.5f, z);

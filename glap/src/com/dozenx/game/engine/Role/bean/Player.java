@@ -74,9 +74,9 @@ public class Player extends LivingThing {
 
     }
 
-    public void render() {
-        super.render();
-    }
+  /*  public void render() {
+        super.getrender();
+    }*/
 
 
     public void move(float x, float y, float z) {
@@ -193,7 +193,7 @@ public class Player extends LivingThing {
     public void StrafeRight(float Distance) {
         if (Math.abs(Distance) > 0.02) {
             AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-            manager.apply(bodyComponent, "walkerLeft");
+            manager.apply(getModel().bodyComponent, "walkerLeft");
             //if (this.stable) {
             lastMoveTime = Sys.getTime();
             this.move(GL_Vector.add(position, GL_Vector.multiply(RightVector,
@@ -208,7 +208,7 @@ public class Player extends LivingThing {
         if (Math.abs(Distance) > 0.02) {
             //Player player= CoreRegistry.get(Player.class);
             AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-            manager.apply(bodyComponent, "walkerFoward");
+            manager.apply(getModel().bodyComponent, "walkerFoward");
             this.move(GL_Vector.add(position, GL_Vector.multiplyWithoutY(walkDir,
                     Distance)));
 //        LogUtil.println(position+"");
@@ -258,6 +258,10 @@ public class Player extends LivingThing {
         }
         //Component shoe =   bodyComponent.findChild("shoe");
         getModel().addChild(parent,"shoe",itemCfg);
+    }
+    public void addHeadEquip(ItemDefinition itemCfg)  {
+        Component parent = 	getModel().bodyComponent.findChild("human_head");
+        getModel().addChild(parent, "helmet", itemCfg);
     }
     public void addShoeEquip(ItemDefinition itemCfg)  {
         addShoeEquip(true, itemCfg);

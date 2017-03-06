@@ -300,6 +300,7 @@ if(!Switcher.SHADER_ENABLE) {
                public void run(){
                     if(getResult().getResult()==0){
 
+
                         if(getResult().getMsg()!=null){
                             PlayerSynCmd cmd =new  PlayerSynCmd(getResult().getMsg());
                             //PlayerStatus status = JSON.parseObject(getResult().getMsg(),PlayerStatus.class);
@@ -309,7 +310,7 @@ if(!Switcher.SHADER_ENABLE) {
 
                             //创建Human
                            Player player = new Player(cmd.getPlayerStatus().getId());
-                            player.setPlayerStatus(cmd.getPlayerStatus() );
+                            player.setInfo(cmd.getPlayerStatus() );
                             //human.setPlayerStatus(status);
                             CoreRegistry.put(Player.class, player);
 
@@ -318,7 +319,7 @@ if(!Switcher.SHADER_ENABLE) {
 
                             livingThingManager.setPlayer(player);
                             //livingThingManager.add(livingThing);
-state.player = player;
+                            state.player = player;
                             BlockEngine.engine.changeState(state);
                             /*int threadId = (int)(Math.random()*100000);
 

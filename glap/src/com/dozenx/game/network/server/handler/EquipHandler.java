@@ -21,7 +21,7 @@ public class EquipHandler extends GameServerHandler {
             if(bean ==null ){
                 return new ResultCmd(1,"失败",0);
             }
-           PlayerStatus info = bean ;//id2PlayerMap.get(cmd.getUserId());
+           PlayerStatus info = bean.getPlayerInfo() ;//id2PlayerMap.get(cmd.getUserId());
 
             if(info==null){
                 LogUtil.println(" Player info can't be null userId:"+cmd.getUserId());
