@@ -66,23 +66,23 @@ public class PersonPanel extends SlotPanel {
         div.setDisplay(HtmlObject.INLINE);
         attriDiv.setDisplay(HtmlObject.INLINE);
         div.setWidth(numSlotsX*40+1);
-        slot[0] = new ItemSlotView(Constants.SLOT_TYPE_HEAD);
+        slot[0] = new ItemSlotView(Constants.SLOT_TYPE_HEAD,0);
         slot[0].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[0]);
 
-        slot[1] = new ItemSlotView(Constants.SLOT_TYPE_BODY);
+        slot[1] = new ItemSlotView(Constants.SLOT_TYPE_BODY,1);
         slot[1].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[1]);
 
-        slot[2] = new ItemSlotView(Constants.SLOT_TYPE_LEG);
+        slot[2] = new ItemSlotView(Constants.SLOT_TYPE_LEG,2);
         slot[2].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[2]);
 
-        slot[3] = new ItemSlotView(Constants.SLOT_TYPE_FOOT);
+        slot[3] = new ItemSlotView(Constants.SLOT_TYPE_FOOT,3);
         slot[3].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[3]);
 
-        slot[4] = new ItemSlotView(Constants.SLOT_TYPE_HAND);
+        slot[4] = new ItemSlotView(Constants.SLOT_TYPE_HAND,4);
         slot[4].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[4]);
 

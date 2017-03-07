@@ -29,6 +29,7 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
+import cola.machine.game.myblocks.engine.Constants;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
@@ -78,7 +79,7 @@ public class SlotPanel extends HtmlObject {
         };
 
         for(int i=0 ; i<slot.length ; i++) {
-            slot[i] = new ItemSlotView(0);
+            slot[i] = new ItemSlotView(Constants.SLOT_TYPE_COMMON,i);
             slot[i].setListener(listener);//所有的slot都绑定了一个listener
             appendChild(slot[i]);
         }
@@ -161,18 +162,22 @@ public class SlotPanel extends HtmlObject {
               IconView dropItem = dropSlot.getIconView();
                 IconView dragItem = dragSlot.getIconView();
                 //如果是相同的元素 允许堆叠
-                if(dropItem==null){
+                //这个逻辑服务器也要执行一遍
+                if(dropItem==null){//拖过去
                     dropSlot.setIconView(dragItem);
                     dragSlot.setIconView(null);
 
                 }else
-                if(dropItem.getItem().equals(dragItem.getItem())){
+                if(dropItem.getItem().equals(dragItem.getItem())){//堆叠
                     dropItem.setNum(dropItem.getNum()+dragItem.getNum());
                     dragSlot.setIconView(null);
-                }else{
+                }else{//交换
                     dropSlot.setIconView(dragItem);
                     dragSlot.setIconView(dropItem);
+
                 }
+                //背包数据同步
+
 
             /*    slot.setItemWrap(null);
                 dropSlot.setItemWrap(dragSlot.getItemWrap());

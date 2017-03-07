@@ -53,7 +53,7 @@ public class Constants {
     public static final int ICON_TYPE_SKILL =1<<2;
     public static final int SLOT_TYPE_ALL=0;
 
-
+    public static final int SLOT_TYPE_COMMON=0;
     public static final int SLOT_TYPE_HEAD=1<<0;
     public static final int SLOT_TYPE_BODY=1<<1;
     public static final int SLOT_TYPE_LEG=1<<2;
