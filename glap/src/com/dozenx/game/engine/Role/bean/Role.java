@@ -129,54 +129,6 @@ public class Role extends EquipProperties {
 
 
 
-    public PlayerStatus getPlayerInfo(){
-        //  super.setPlayerStatus(status);
-
-        PlayerStatus info =new PlayerStatus();
-        info.setId(getId());
-
-        //setPwd(status.getPwd());
-        info. setBodyAngle(getBodyAngle());
-        info. setHeadAngle(getHeadAngle());
-        info. setHeadAngle2(info.getHeadAngle2());
-
-        info. setTargetId(info.getTargetId());
-
-        // role. setIsplayer(status.isplayer);
-
-        //this.id = status.getId();
-        info.setX(info.getX());
-        info.setY(info.getY());
-        info.setZ(info.getZ());
-
-
-
-
-        if(getHeadEquip()!=null){
-            info.setHeadEquip(getHeadEquip().getItemDefinition().getItemType().ordinal());
-        }
-        if(getBodyEquip()!=null){
-            info.setBodyEquip(getBodyEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-        if(getHandEquip()!=null){
-            info.setHandEquip(getHandEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-        if(getLegEquip()!=null){
-            info.setLegEquip(getLegEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-        if(getFootEquip()!=null){
-            info.setShoeEquip(getFootEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-
-
-
-
-        return info;
-    }
 
     public void attack(){
 
