@@ -53,6 +53,10 @@ public class SlotPanel extends Widget {
     int mouseY =0;
     Font font;
     ItemSlot.DragListener listener;
+
+    public void reload(){
+
+    }
     public SlotPanel(int numSlotsX, int numSlotsY) {
 
         this.numSlotsX = numSlotsX;

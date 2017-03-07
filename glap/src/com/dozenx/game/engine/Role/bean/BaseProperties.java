@@ -1,12 +1,45 @@
 package com.dozenx.game.engine.Role.bean;
 
 import cola.machine.game.myblocks.math.AABB;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import glmodel.GL_Vector;
 
 /**
  * Created by luying on 17/3/5.
  */
 public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
+
+    public void getInfo(PlayerStatus info) {
+        info.setId(getId());
+        info.setName(getName());
+
+        //setPwd(status.getPwd());
+        info. setBodyAngle(getBodyAngle());
+        info. setHeadAngle(getHeadAngle());
+        info. setHeadAngle2(getHeadAngle2());
+
+       // info. setTargetId(getTargetId());
+
+        // role. setIsplayer(status.isplayer);
+
+        //this.id = status.getId();
+        info.setX(getX());
+        info.setY(getY());
+        info.setZ(getZ());
+
+    }
+
+    public void setInfo(PlayerStatus info ){
+
+        this.setId(info.getId());
+        this.setName(info.getName());
+        this.setPwd(info.getPwd());
+        //setPwd(status.getPwd());
+        this. setBodyAngle(info.getBodyAngle());
+        this. setHeadAngle(info.getHeadAngle());
+        this. setHeadAngle2(info.getHeadAngle2());
+        this.setPosition(info.getX(),info.getY(),info.getZ());
+  }
     int id ;
 
     public int getId() {
@@ -20,9 +53,9 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     /* protected float x;
         protected float y;
         protected float z;*/
-    protected GL_Vector position =new GL_Vector() ;
-    protected GL_Vector walkDir =new GL_Vector() ;
-    protected  GL_Vector viewDir =new GL_Vector() ;
+    public GL_Vector position =new GL_Vector() ;
+    public GL_Vector walkDir =new GL_Vector() ;
+    public  GL_Vector viewDir =new GL_Vector() ;
 
 
     protected String name;

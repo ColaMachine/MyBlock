@@ -501,13 +501,13 @@ public class LivingThingBean extends Role {
         currentState.receive(cmd);
     }
 
-    public ItemDefinition getMainWeapon(){
+    public ItemType getMainWeapon(){
         /*Component component = bodyComponent.findChild("rHumanHand");
         if(component.children.size()>0){
             Component weapon = component.children.get(0);
           return weapon.itemDefinition;
         }*/
-        return getHandEquip().getItemDefinition();
+        return getHandEquip();
     }
 
 
@@ -550,87 +550,20 @@ public class LivingThingBean extends Role {
 
 
     public void setInfo( PlayerStatus info ){
-        //  super.setPlayerStatus(status);
-
-
-        this.setId(info.getId());
-        this.setPwd(info.getPwd());
-        //setPwd(status.getPwd());
-        this. setBodyAngle(info.getBodyAngle());
-        this. setHeadAngle(info.getHeadAngle());
-        this. setHeadAngle2(info.getHeadAngle2());
-
-        this. setTargetId(info.getTargetId());
-        this. setTarget(null);
-        // role. setIsplayer(status.isplayer);
-
-        //this.id = status.getId();
-        this.setPosition(info.getX(),info.getY(),info.getZ());
-
-
-        this.setHeadEquip(this.getItemById(info.getHeadEquip()));
-        this.setBodyEquip(this.getItemById(info.getBodyEquip()));
-        this.setHandEquip(this.getItemById(info.getHandEquip()));
-        this.setLegEquip(this.getItemById(info.getLegEquip()));
-        this.setFootEquip(this.getItemById(info.getShoeEquip()));
-
-      /*  this.setHeadEquip(this.getItemById(info.getHeadEquip()));
-        this.setBodyEquip(this.getItemById(info.getBodyEquip()));
-        this.setHandEquip(this.getItemById(info.getHandEquip()));
-        this.setLegEquip(this.getItemById(info.getLegEquip()));
-        this.setFootEquip(this.getItemById(info.getShoeEquip()));*/
-
-
+        super.setInfo(info);
     }
 
 
+    public void getInfo(PlayerStatus info ){
+     //   PlayerStatus info =new PlayerStatus();
+        super.getInfo(info);
+      //  return info;
+    }
+
     public PlayerStatus getInfo(){
-        //  super.setPlayerStatus(status);
-
-        PlayerStatus info =new PlayerStatus();
-        info.setId(getId());
-
-        //setPwd(status.getPwd());
-        info. setBodyAngle(getBodyAngle());
-        info. setHeadAngle(getHeadAngle());
-        info. setHeadAngle2(info.getHeadAngle2());
-
-        info. setTargetId(info.getTargetId());
-
-        // role. setIsplayer(status.isplayer);
-
-        //this.id = status.getId();
-        info.setX(info.getX());
-        info.setY(info.getY());
-        info.setZ(info.getZ());
-
-
-
-
-        if(getHeadEquip()!=null){
-            info.setHeadEquip(getHeadEquip().getItemDefinition().getItemType().ordinal());
-        }
-        if(getBodyEquip()!=null){
-            info.setBodyEquip(getBodyEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-        if(getHandEquip()!=null){
-            info.setHandEquip(getHandEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-        if(getLegEquip()!=null){
-            info.setLegEquip(getLegEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-        if(getFootEquip()!=null){
-            info.setShoeEquip(getFootEquip().getItemDefinition().getItemType().ordinal());
-        }
-
-
-
-
-
-        return info;
+          PlayerStatus info =new PlayerStatus();
+         super.getInfo(info);
+          return info;
     }
 
 }

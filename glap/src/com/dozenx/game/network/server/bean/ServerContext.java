@@ -53,6 +53,7 @@ public class ServerContext {
     public ServerContext(){
         loadAllUserInfo();
         loadAllEnemy();
+        loadItems();
     }
     //public HashMap<Integer , Socket> socketMap =new HashMap();
     private List<Worker> workers = new ArrayList<>( );
@@ -121,7 +122,7 @@ public class ServerContext {
                 itemList = JSON.parseArray(s,
                         ItemServerBean.class);
 
-                itemsMap.put(Integer.valueOf(item.getName()),itemList);
+                itemsMap.put(Integer.valueOf(file.getName()),itemList);
 
             } catch (IOException e) {
                 e.printStackTrace();

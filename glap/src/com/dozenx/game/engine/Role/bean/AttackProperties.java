@@ -1,9 +1,20 @@
 package com.dozenx.game.engine.Role.bean;
 
+import com.dozenx.game.network.server.bean.PlayerStatus;
+
 /**
  * Created by luying on 17/3/5.
  */
 public class AttackProperties extends BaseProperties{
+    public void getInfo(PlayerStatus info) {
+        super.getInfo(info);
+
+    }
+
+    public void setInfo(PlayerStatus info ){
+        super.setInfo(info);
+
+    }
 
     private long lastHurtTime = 0;
 

@@ -309,27 +309,9 @@ public class LivingThing extends LivingThingBean {
         currentState.receive(cmd);
     }
 
-    public ItemDefinition getMainWeapon(){
-        /*Component component = bodyComponent.findChild("rHumanHand");
-        if(component.children.size()>0){
-            Component weapon = component.children.get(0);
-          return weapon.itemDefinition;
-        }*/
-        return getHandEquip().getItemDefinition();
-    }
 
 
 
-    /*public void setPlayerStatus(PlayerStatus status){
-        super.setPlayerStatus(status);
-        this.addHeadEquip(TextureManager.getItemDefinition(ItemType.values()[status.getHeadEquip()]));
-        this.addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[status.getBodyEquip()]));
-        this.addHandEquip(TextureManager.getItemDefinition(ItemType.values()[status.getHandEquip()]));
-        this.addLegEquip(TextureManager.getItemDefinition(ItemType.values()[status.getLegEquip()]));
-        this.addShoeEquip(TextureManager.getItemDefinition(ItemType.values()[status.getShoeEquip()]));
-
-
-    }*/
 
     public void changeAnimationState(String animationName){
 
@@ -353,4 +335,43 @@ public class LivingThing extends LivingThingBean {
                 .apply(getModel().bodyComponent,"beattack");
 
     }
+
+
+
+
+    public void setInfo( PlayerStatus info ){
+        super.setInfo(info);
+
+
+        if(info.getBodyEquip()>0){
+            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
+            //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        }if(info.getHeadEquip()>0){
+            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+            //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        }if(info.getHandEquip()>0){
+            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
+            //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        }if(info.getLegEquip()>0){
+            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
+            //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        }if(info.getFootEquip()>0){
+            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getFootEquip()]));
+            //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        }
+    }
+
+
+    public void getInfo(PlayerStatus info ){
+        //   PlayerStatus info =new PlayerStatus();
+        super.getInfo(info);
+        //  return info;
+    }
+
+    public PlayerStatus getInfo(){
+        PlayerStatus info =new PlayerStatus();
+        super.getInfo(info);
+        return info;
+    }
+
 }

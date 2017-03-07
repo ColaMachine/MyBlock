@@ -34,7 +34,9 @@ import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.ui.inventory.control.InventoryController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,7 +48,19 @@ public class InventoryPanel extends SlotPanel {
     private BagEntity bagEntity;
     private BagController bagController;
 
-    
+    public void reload(){
+        ItemBean[] itemBeanList=bagController.getItemBeanList();
+
+     /*   for(ItemBean itemBean :itemBeanList){
+            slot[itemBean.getPosition()].setIconView(null);
+        }*/
+        for(ItemBean itemBean :itemBeanList){
+            if(itemBean!=null){
+                slot[itemBean.getPosition()].setIconView(new IconView(itemBean));
+            }
+
+        }
+    }
     public InventoryPanel(int numSlotsX, int numSlotsY) {
         super(numSlotsX,numSlotsY);
         this.bagController = CoreRegistry.get(BagController.class);
@@ -57,12 +71,12 @@ public class InventoryPanel extends SlotPanel {
         //Assert.checkNonNull(bagEntity,"bagEntity miss in CoreRegistry");
 
 
-        Map<Integer,ItemBean> itemEntityMap=bagController.getAllItemEntity();
+     /*   Map<Integer,ItemBean> itemEntityMap=bagController.getAllItemEntity();
         Set<Integer> set = itemEntityMap.keySet();
         for(int key:set){
             slot[key].setIconView(new IconView(itemEntityMap.get(key)));
-        }
-
+        }*/
+        reload();
 
         this.setPosition(HtmlObject.POSITION_ABSOLUTE);
 
@@ -74,6 +88,7 @@ public class InventoryPanel extends SlotPanel {
       //  inputMap.addKeyStroke(ks);
         //setCanAcceptKeyboardFocus(true);
        // this.setInputMap(inputMap);
+        CoreRegistry.put(InventoryPanel.class,this);
     }
 
 

@@ -14,6 +14,8 @@ import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemServerBean;
+import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -212,7 +214,7 @@ public class LivingThingManager {
 
     /**
      * 通过定时线程来控制
-     * 主要是网络同步各种状态到任务上
+     * 主要是网络同步各种状态到任务上 you synctask 驱动
      */
     public void netWorkUpdate(){
         /*if(!(BlockEngine.engine.getState() instanceof  GamingState) ){
@@ -298,12 +300,12 @@ public class LivingThingManager {
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
             //y原来是直接绑定到itemDefinition 现在要对应到有id的items里的物品
-            ItemBean itemBean = livingThing.getItemById(cmd.getItemId());
-
-            if(livingThing!=null  && itemBean!=null ){
+            //ItemBean itemBean = livingThing.getItemById(cmd.getItemId());
+           // ItemType itemType =
+            if(livingThing!=null  /*&& itemBean!=null*/ ){
                 if(cmd.getPart()== EquipPartType.BODY){
 
-                    livingThing.setHeadEquip(livingThing.getItemById(cmd.getItemId()));
+
 
                     livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HEAD){
@@ -321,7 +323,7 @@ public class LivingThingManager {
 
 
         }
-
+        //偶尔发生 或者当该用户登录 或者被创建的时候
         while(client.playerSync.size()>0 && client.playerSync.peek()!=null /*&& BlockEngine.engine.getState() instanceof  GamingState*/){
             PlayerSynCmd cmd = (PlayerSynCmd)client.playerSync.poll();
             PlayerStatus info  = cmd.getPlayerStatus();
@@ -340,7 +342,7 @@ public class LivingThingManager {
             }
 
 
-                if(info.getBodyEquip()>0){
+       /*         if(info.getBodyEquip()>0){
                     livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }if(info.getHeadEquip()>0){
@@ -355,11 +357,11 @@ public class LivingThingManager {
                 }if(info.getShoeEquip()>0){
                     livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }
-            livingThing.setPlayer(info.isPlayer());
+                }*/
+            livingThing.setInfo(info);
 
             //livingThing.setTarget()
-            try {
+           /* try {
                 livingThing.setPosition(info.getX(), info.getY(), info.getZ());
             }catch (Exception e){
                 e.printStackTrace();
@@ -368,7 +370,7 @@ public class LivingThingManager {
            // livingThing.setPosition(x,y,z);
             livingThing.setBodyAngle(info.getBodyAngle());
             livingThing.setHeadAngle( info.getHeadAngle());
-            livingThing.setHeadAngle2( info.getHeadAngle2());
+            livingThing.setHeadAngle2( info.getHeadAngle2());*/
 
 
 
@@ -390,6 +392,21 @@ public class LivingThingManager {
             livingThing.setTarget(this.getLivingThingById(cmd.getTargetId()));
 
             livingThing.receive(cmd);
+        }
+
+        while(client.bags.size()>0 && client.bags.peek()!=null){
+            BagCmd cmd = (BagCmd)client.bags.pop();
+            int userId = cmd.getUserId();
+            List<ItemServerBean> items =cmd.getItemBeanList();
+
+            LivingThing livingThing = this.getLivingThingById(userId);
+            if(livingThing==null ){
+                continue;
+            }
+            livingThing.setItems(items);
+
+            CoreRegistry.get(BagController.class).refreshBag();
+            //livingThing.receive(cmd);
         }
        /* while(client.newborns.size()>0 && client.newborns.peek()!=null){
             String[] msg = client.movements.pop();
@@ -508,8 +525,9 @@ public class LivingThingManager {
 
     public void changePlayerToInfo(Role role ,PlayerStatus info ){
         //  super.setPlayerStatus(status);
+        role.getInfo(info);
 
-
+/*
         role.setId(info.getId());
         //setPwd(status.getPwd());
         role. setBodyAngle(info.getBodyAngle());
@@ -530,14 +548,14 @@ public class LivingThingManager {
         role.setBodyEquip(role.getItemById(info.getBodyEquip()));
         role.setHandEquip(role.getItemById(info.getHandEquip()));
         role.setLegEquip(role.getItemById(info.getLegEquip()));
-        role.setFootEquip(role.getItemById(info.getShoeEquip()));
+        role.setFootEquip(role.getItemById(info.getShoeEquip()));*/
 
 
     }
     public void changePlayerInfoToPlayer(Role role ,PlayerStatus info ){
         //  super.setPlayerStatus(status);
 
-
+/*
         role.setId(info.getId());
         //setPwd(status.getPwd());
         role. setBodyAngle(info.getBodyAngle());
@@ -558,7 +576,9 @@ public class LivingThingManager {
         role.setBodyEquip(role.getItemById(info.getBodyEquip()));
         role.setHandEquip(role.getItemById(info.getHandEquip()));
         role.setLegEquip(role.getItemById(info.getLegEquip()));
-        role.setFootEquip(role.getItemById(info.getShoeEquip()));
+        role.setFootEquip(role.getItemById(info.getShoeEquip()));*/
+
+        role.setInfo(info);
 
 
     }

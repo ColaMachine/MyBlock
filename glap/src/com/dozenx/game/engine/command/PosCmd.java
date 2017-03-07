@@ -84,7 +84,7 @@ public class PosCmd extends   BaseGameCmd{
         parse(bytes);
     }
     public PosCmd(LivingThing livingThing){
-        if(livingThing.getId()==1024){
+        if(livingThing.getId()==1024 || livingThing.getId()<=0){
             LogUtil.println("that 's bug");
         }
         this.userId =livingThing.getId();

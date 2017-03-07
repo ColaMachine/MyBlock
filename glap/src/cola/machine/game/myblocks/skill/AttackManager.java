@@ -25,7 +25,7 @@ public class AttackManager {
             for(int j=LivingThingManager.livingThings.size()-1;j>=0;j--){
                 LivingThing livingThing = LivingThingManager.livingThings.get(j);
                 //LogUtil.println(LivingThingManager.livingThings.get(j).position.length(vector)+"");
-                if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.position))<0.5){
+                if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<0.5){
                     ball.died=true;
                     LivingThingManager.livingThings.get(j).beAttack(5);
                 }
@@ -47,7 +47,7 @@ public class AttackManager {
 
 //                LogUtil.println(LivingThingManager.livingThings.get(j).position.length(vector)+"");
 
-                if(GL_Vector.length(new GL_Vector(vector,LivingThingManager.livingThings.get(j).position))<0.5){
+                if(GL_Vector.length(new GL_Vector(vector,LivingThingManager.livingThings.get(j).getPosition()))<0.5){
                     ball.died=true;
                     LivingThingManager.livingThings.get(j).beAttack(5);
                 }

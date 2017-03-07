@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.Role.bean;
 
 import cola.machine.game.myblocks.model.Component;
+import com.dozenx.game.engine.Role.bean.item.CommonEquipProperties;
 import com.dozenx.game.engine.Role.bean.item.EquipProperties;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.Role.model.Model;
@@ -14,7 +15,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by luying on 17/3/5.
  */
-public class Role extends EquipProperties {
+public class Role extends CommonEquipProperties {
     private WeakReference<Role> target;
     private boolean isPlayer;
 
@@ -46,10 +47,10 @@ public class Role extends EquipProperties {
     public GL_Vector RightVector=new GL_Vector(1,0,0); ;
     public GL_Vector upVector =new GL_Vector(0,1,0);
 
-    public GL_Vector viewDir = new GL_Vector(0,0,-1);  //  观察方向
-    public GL_Vector walkDir = new GL_Vector(0,0,-1);    //  行走方向
+//    public GL_Vector viewDir = new GL_Vector(0,0,-1);  //  观察方向
+//    public GL_Vector walkDir = new GL_Vector(0,0,-1);    //  行走方向
     public float attackDistance=1;
-    public GL_Vector position= new GL_Vector(0,0,0);    //  位置
+//    public GL_Vector position= new GL_Vector(0,0,0);    //  位置
     public GL_Vector nextPosition= new GL_Vector(0,0,0);    //  位置
     public GL_Vector oldPosition=new GL_Vector();   //  旧位置
     public int getTargetId() {

@@ -21,7 +21,7 @@ public class EquipHandler extends GameServerHandler {
             if(bean ==null ){
                 return new ResultCmd(1,"失败",0);
             }
-           PlayerStatus info = bean.getPlayerInfo() ;//id2PlayerMap.get(cmd.getUserId());
+           PlayerStatus info = bean.getInfo() ;//id2PlayerMap.get(cmd.getUserId());
 
             if(info==null){
                 LogUtil.println(" Player info can't be null userId:"+cmd.getUserId());
@@ -41,7 +41,7 @@ public class EquipHandler extends GameServerHandler {
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.FOOT){
-                info.setShoeEquip(ItemType.getTypeVal(cmd.getItemType()));
+                info.setFootEquip(ItemType.getTypeVal(cmd.getItemType()));
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.HAND){

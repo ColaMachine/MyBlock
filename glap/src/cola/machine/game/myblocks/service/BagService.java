@@ -1,8 +1,11 @@
 package cola.machine.game.myblocks.service;
 
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.item.bean.ItemBean;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,5 +27,10 @@ public class BagService {
         itemEntityMap.put(9,new ItemBean("arch",1));
         itemEntityMap.put(10,new ItemBean("gold_sword",1));
         return itemEntityMap;
+    }
+
+    public ItemBean[] getItemBeanList(){
+       Player human = CoreRegistry.get(Player.class);
+        return human.getItemBeans();
     }
 }

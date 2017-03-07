@@ -25,6 +25,8 @@ public class CmdUtil {
             return new LoginCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.ATTACK.ordinal()){
             return new AttackCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.BAG.ordinal()){
+            return new BagCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

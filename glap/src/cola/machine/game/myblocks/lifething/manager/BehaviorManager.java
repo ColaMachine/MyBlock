@@ -48,7 +48,7 @@ public class BehaviorManager extends    Thread{
         for(LivingThing livingThing : LivingThingManager.livingThings){
             if(!livingThing.isPlayer())
             if(livingThing.getTarget()!=null ){
-                GL_Vector direction =  GL_Vector.sub(LivingThingManager.player.position,livingThing.position);
+                GL_Vector direction =  GL_Vector.sub(LivingThingManager.player.getPosition(),livingThing.getPosition());
                 livingThing.walkDir= direction;
                 if(GL_Vector.length(direction)<livingThing.attackDistance){
                     attack(livingThing,livingThing.getTarget());

@@ -18,7 +18,7 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
     protected int headEquip;
     protected int bodyEquip;//省体装备
     protected int handEquip;//手部装备
-    protected int shoeEquip;
+    protected int footEquip;
     protected int legEquip;//腿部装备
     protected int id;//id
     protected long loginTime;//下线时间
@@ -97,6 +97,14 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
         this.z = z;
     }
 
+    public int getFootEquip() {
+        return footEquip;
+    }
+
+    public void setFootEquip(int footEquip) {
+        this.footEquip = footEquip;
+    }
+
     public int getHeadEquip() {
         return headEquip;
     }
@@ -122,13 +130,6 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
     }
 
 
-    public int getShoeEquip() {
-        return shoeEquip;
-    }
-
-    public void setShoeEquip(int shoeEquip) {
-        this.shoeEquip = shoeEquip;
-    }
 
     public int getLegEquip() {
         return legEquip;

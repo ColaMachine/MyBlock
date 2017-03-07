@@ -88,7 +88,7 @@ public class Worker extends Thread {
                     LogUtil.err("错误");
                 }*/
                 //
-                //CmdType.printSend(ByteUtil.slice(bytes,4,4));
+               // CmdType.printSend(ByteUtil.slice(bytes,4,4));
                 //LogUtil.println("server 准备发送数据类型:"+ CmdType.values()[(ByteUtil.getInt(ByteUtil.slice(bytes,4,4)))]+"长度:"+(bytes.length-4));
                 synchronized (this) {
                     outputStream.write(ByteUtil.getBytes(bytes.length));

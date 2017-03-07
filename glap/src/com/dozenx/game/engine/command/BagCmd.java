@@ -15,6 +15,23 @@ import java.util.List;
  */
 public class BagCmd extends   BaseGameCmd{
     final CmdType cmdType = CmdType.BAG;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public List<ItemServerBean> getItemBeanList() {
+        return itemBeanList;
+    }
+
+    public void setItemBeanList(List<ItemServerBean> itemBeanList) {
+        this.itemBeanList = itemBeanList;
+    }
+
     private int userId;
     private List<ItemServerBean> itemBeanList =new ArrayList<ItemServerBean>();
 
@@ -23,8 +40,10 @@ public class BagCmd extends   BaseGameCmd{
         parse(bytes);
     }
     public BagCmd(int userId ,  List<ItemServerBean>  itemBeanList){
+        if(itemBeanList!=null)
+            this.itemBeanList =itemBeanList;
         this.userId =userId;
-        this.itemBeanList =itemBeanList;
+
 
 
     }
@@ -33,7 +52,7 @@ public class BagCmd extends   BaseGameCmd{
     public byte[] toBytes(){
 
         ByteBufferWrap wrap =   ByteUtil.createBuffer()
-            .put(CmdType.PLAYERSTATUS.getType())
+            .put(cmdType.getType())
                 .put( userId) .put( itemBeanList.size());;
 
         for(int i=0;i<itemBeanList.size();i++){
@@ -46,7 +65,7 @@ public class BagCmd extends   BaseGameCmd{
     }
     public void parse(byte[] bytes){
         ByteBufferWrap  byteBufferWrap = ByteUtil.createBuffer(bytes);
-
+        byteBufferWrap.getInt();
         this.userId =  byteBufferWrap.getInt();
         int size =  byteBufferWrap.getInt();
         this.itemBeanList =new ArrayList<>();
