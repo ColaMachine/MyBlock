@@ -8,18 +8,27 @@ import com.dozenx.util.ByteUtil;
  */
 public class GetCmd extends   BaseGameCmd{
 
-
+byte[] data;
     private int threadId;
 
-    final CmdType cmdType = CmdType.LOGIN;
+    final CmdType cmdType = CmdType.GET;
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
 
     public GetCmd(byte[] bytes){
 
         parse(bytes);
     }
-    public GetCmd(int threadId){
+    public GetCmd(GameCmd cmd ,int threadId){
 
         this.threadId =threadId;
+        this.data = cmd.toBytes();
 
     }
 
@@ -27,9 +36,12 @@ public class GetCmd extends   BaseGameCmd{
     public byte[] toBytes(){
 
         return ByteUtil.createBuffer().put(cmdType.getType())
-
+                .put(data.length)
+                .put(data)
                 .put(this.threadId)
                .array();
+
+
         // ByteUtil.createBuffer().put(userNameLength);
 
     }
@@ -47,6 +59,8 @@ public class GetCmd extends   BaseGameCmd{
 
         ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
         byteBufferWrap.getInt();
+        int length = byteBufferWrap.getInt();
+        this.data= byteBufferWrap.getByteAry(length);
         this.threadId = byteBufferWrap.getInt();
 
 

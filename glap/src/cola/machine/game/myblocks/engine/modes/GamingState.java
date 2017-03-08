@@ -14,7 +14,7 @@ import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.html.Document;
-import com.dozenx.game.engine.ui.inventory.control.InventoryController;
+
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
 import com.dozenx.game.network.client.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
@@ -58,7 +58,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class GamingState implements GameState {
     public static GamingState instance;
-    public static Player player;//= new Human();
+    public static  Player player;//= new Human();
     public static String catchThing;
     public static boolean cameraChanged=false;
     public static boolean livingThingChanged=true;
@@ -137,6 +137,10 @@ public class GamingState implements GameState {
             document.body.appendChild(enemyHeadPanel);
 
             document.needUpdate=true;
+
+
+            SynchronTask task = new SynchronTask();
+            task.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -560,9 +564,9 @@ if(!Switcher.SHADER_ENABLE)
 
     private void initManagers() {
 
-        BagController bagController = new BagController();
+        BagController bagController = new BagController(player);
         CoreRegistry.put(BagController.class, bagController);
-        CoreRegistry.put(InventoryController.class, new InventoryController());
+        //CoreRegistry.put(InventoryController.class, new InventoryController());
         // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
@@ -625,8 +629,7 @@ if(!Switcher.SHADER_ENABLE)
        // livingThing.position = new GL_Vector(10,125, 0);
         livingThingManager.setPlayer(human);*/
         //livingThingManager.add(livingThing);
-        SynchronTask task = new SynchronTask();
-        task.start();
+
      /*    player =new Player(CoreRegistry.get(TextureManager.class));
           human.setPlayer(player);
         CoreRegistry.put(Player.class,player);*/

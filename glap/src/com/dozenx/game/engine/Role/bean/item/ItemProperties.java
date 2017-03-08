@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class ItemProperties extends SkillProperties {
 
+    ItemBean[] itemBeans =new ItemBean[45];
     public void getInfo(PlayerStatus info) {
         super.getInfo(info);
     }
@@ -21,6 +22,18 @@ public class ItemProperties extends SkillProperties {
     public ItemBean[] getItemBeans() {
         return itemBeans;
     }
+    public List<ItemServerBean> getItemBeansList() {
+        List<ItemServerBean> itemServerBeanList =new ArrayList<ItemServerBean>();
+        for(ItemBean itemBean:itemBeans){
+            ItemServerBean itemServerBean =ItemUtil.toItemServerBean(itemBean);
+            if(itemServerBean!=null){
+                itemServerBeanList.add(itemServerBean);
+            }
+        }
+        return itemServerBeanList;
+    }
+
+
 /*
 
     public void setItemBeans(List<ItemBean> itemBeans) {
@@ -33,7 +46,7 @@ public class ItemProperties extends SkillProperties {
 
     }
     public void setItem(int position, ItemBean itemBean){
-        itemBeans[position] = itemBean;
+        itemBeans[position] = itemBean;itemBean.setPosition(position);
     }
     public void  setItems(List<ItemServerBean > list){
        // itemBeans.clear();
@@ -46,7 +59,6 @@ public class ItemProperties extends SkillProperties {
            setItem(bean.getPosition(), ItemUtil.toItemBean(bean));
        }
     }
-   ItemBean[] itemBeans =new ItemBean[12];
 
 
     public ItemBean getItemById(int id ){

@@ -15,6 +15,7 @@ public enum CmdType {
     POS,
     PLAYERSTATUS,
     BAG,
+    BAGCHANGE,
     GET,
     ATTACK,
     DROP,

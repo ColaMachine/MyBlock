@@ -56,6 +56,7 @@ public class SlotPanel extends HtmlObject {
     int mouseX = 0;
     int mouseY =0;
     //Font font;
+
     ItemSlotView.DragListener listener;
     public SlotPanel(int numSlotsX, int numSlotsY) {
         this.setBorderColor(new Vector4f(1,1,1,1));

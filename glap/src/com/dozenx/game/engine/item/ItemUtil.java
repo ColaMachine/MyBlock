@@ -24,4 +24,13 @@ public class ItemUtil {
         itemBean.setPosition(itemServerBean.getPosition());
         return itemBean;
     }
+    public static ItemServerBean toItemServerBean(ItemBean itemBean){
+        if(itemBean==null)return null;
+        ItemServerBean  itemServerBean=new ItemServerBean();
+        itemServerBean.setId(itemBean.getId());
+        itemServerBean.setItemType(itemBean.getItemDefinition().getItemType().ordinal());
+        itemServerBean.setNum(itemBean.getNum());
+        itemServerBean.setPosition(itemBean.getPosition());
+        return itemServerBean;
+    }
 }

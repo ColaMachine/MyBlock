@@ -32,6 +32,8 @@ package com.dozenx.game.engine.ui.inventory.view;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.engine.Constants;
@@ -49,11 +51,24 @@ public class PersonPanel extends SlotPanel {
     private int numSlotsY=5;
 
 
+    public void reload(){
+        ItemBean[] itemBeanList=bagController.getItemBeanList();
 
+
+        for(int i=20;i<=24;i++){
+            if(itemBeanList[i]!=null) {
+                slot[i-20].setIconView(new IconView(itemBeanList[i]));
+            }else{
+                slot[i-20].setIconView(null);
+            }
+        }
+
+    }
     Div attriDiv =new Div();
     public PersonPanel(int numSlotsX, int numSlotsY) {
-        super( numSlotsX,  numSlotsY);
 
+        super( numSlotsX,  numSlotsY);
+        CoreRegistry.put(PersonPanel.class,this);
         this.setBorderColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));
         this.setBackgroundColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));
         this.setBorderWidth(2);
@@ -66,23 +81,23 @@ public class PersonPanel extends SlotPanel {
         div.setDisplay(HtmlObject.INLINE);
         attriDiv.setDisplay(HtmlObject.INLINE);
         div.setWidth(numSlotsX*40+1);
-        slot[0] = new ItemSlotView(Constants.SLOT_TYPE_HEAD,0);
+        slot[0] = new ItemSlotView(Constants.SLOT_TYPE_HEAD,20);
         slot[0].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[0]);
 
-        slot[1] = new ItemSlotView(Constants.SLOT_TYPE_BODY,1);
+        slot[1] = new ItemSlotView(Constants.SLOT_TYPE_BODY,21);
         slot[1].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[1]);
 
-        slot[2] = new ItemSlotView(Constants.SLOT_TYPE_LEG,2);
+        slot[2] = new ItemSlotView(Constants.SLOT_TYPE_LEG,22);
         slot[2].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[2]);
 
-        slot[3] = new ItemSlotView(Constants.SLOT_TYPE_FOOT,3);
+        slot[3] = new ItemSlotView(Constants.SLOT_TYPE_FOOT,23);
         slot[3].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[3]);
 
-        slot[4] = new ItemSlotView(Constants.SLOT_TYPE_HAND,4);
+        slot[4] = new ItemSlotView(Constants.SLOT_TYPE_HAND,24);
         slot[4].setListener(listener);//所有的slot都绑定了一个listener
         div.appendChild(slot[4]);
 
@@ -93,7 +108,7 @@ public class PersonPanel extends SlotPanel {
 
         this.setTop(300);
         this.setLeft(600);
-
+         bagController =  CoreRegistry.get(BagController.class);
 
     }
 

@@ -35,7 +35,7 @@ import core.log.LogUtil;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.dozenx.game.engine.ui.inventory.control.InventoryController;
+
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.renderer.AnimationState.StateKey;
 
@@ -61,6 +61,7 @@ public class ItemSlotView extends HtmlObject {
     public int index;
     private IconView iconView;
     public ItemSlotView(int type,int index ) {
+        this.index =index;
         this.itemType=type;
         this.setBorderColor(new Vector4f(1,1,1,1));
         this.setBorderWidth(1);
@@ -98,13 +99,15 @@ public class ItemSlotView extends HtmlObject {
         }*/
         if(this.iconView==iconView)return;
         BagController inventoryController = CoreRegistry.get(BagController.class);
-        inventoryController.changePosition(iconView.getItemBean(),this.index);
+        if(iconView!=null){
+
+            inventoryController.changePosition(iconView.getItemBean(),this.index);
+        }
+
         this.iconView = iconView;
         this.removeChild();
         this.appendChild(iconView);
         if(this.getItemType()>0){
-
-
             inventoryController.loadEquip(this.getItemType(),iconView==null?null:iconView.getItemBean());
         }
 

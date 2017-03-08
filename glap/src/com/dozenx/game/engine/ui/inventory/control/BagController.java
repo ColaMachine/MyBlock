@@ -2,16 +2,22 @@ package com.dozenx.game.engine.ui.inventory.control;
 
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
-import com.dozenx.game.engine.command.BagCmd;
+import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.item.ItemUtil;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import cola.machine.game.myblocks.service.BagService;
 import com.dozenx.game.engine.ui.inventory.bean.InventoryBean;
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
+import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
 import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
+import com.dozenx.game.network.client.Client;
+import com.dozenx.util.ByteUtil;
+import core.log.LogUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +29,8 @@ public class BagController {
      /*  private BagEntity bag;*/
         private BagService bagService =new BagService();
 
-    public BagController (){
+    public BagController (Player player){
+        this.player =player;
         CoreRegistry.put(BagController.class,this);
     }
    /*    public BagEntity getBag(){
@@ -79,14 +86,23 @@ public class BagController {
         return bagService.getBagItemEntitys();
     }
     InventoryPanel inventoryPanel ;
+    PersonPanel personPanel ;
     public void refreshBag(){
         if( inventoryPanel ==null) {
             inventoryPanel = CoreRegistry.get(InventoryPanel.class);
 
         }
-        if( inventoryPanel!=null) {
-            inventoryPanel.reload();
+        if( personPanel ==null) {
+            personPanel = CoreRegistry.get(PersonPanel.class);
+
         }
+       // if( inventoryPanel!=null) {
+            inventoryPanel.reload();
+       // }
+        //if( personPanel!=null) {
+            personPanel.reload();
+       // }
+        Document.needUpdate=true;
     }
     public ItemBean[] getItemBeanList(){
         return bagService.getItemBeanList();
@@ -160,6 +176,7 @@ public class BagController {
     }
 
     public void changePosition(ItemBean itemBean, int position){
+
         int destPosition = position;
         int fromPosition = itemBean.getPosition();
 
@@ -177,21 +194,25 @@ public class BagController {
         }
         itemBeans[position]= itemBean;
         itemBean.setPosition(position);*/
-
         if(destBean==null){//拖过去
-            itemBeans[destPosition]= destBean;
+            itemBeans[destPosition]= itemBean;itemBean.setPosition(destPosition);
             itemBeans[fromPosition]= null;
-
-
         }else
         if(destBean.getItemDefinition().getItemType()== itemBean .getItemDefinition().getItemType()){//堆叠
             destBean.setNum(destBean.getNum()+itemBean.getNum());
             itemBeans[fromPosition]= null;
         }else{//交换
-            itemBeans[fromPosition]= destBean;
-            itemBeans[destPosition]= itemBean;
+            itemBeans[fromPosition]= destBean;destBean.setPosition(fromPosition);
+            itemBeans[destPosition]= itemBean;itemBean.setPosition(destPosition);
 
         }
-        BagCmd bagCmd =new BagCmd(player.getItemBeans());
+
+        BagChangeCmd bagCmd =new BagChangeCmd(player.getId(), ItemUtil.toItemServerBean(itemBean),fromPosition,destPosition);
+      ResultCmd resultCmd =  CoreRegistry.get(Client.class).syncSend( bagCmd);
+        if(resultCmd!=null &&resultCmd.getResult()==0 ){
+            LogUtil.err("执行成功了");
+        }else{
+            LogUtil.err(resultCmd.toString());
+        }
     }
 }

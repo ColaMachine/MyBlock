@@ -1,9 +1,8 @@
 package com.dozenx.game.network.server.handler;
 
-import com.dozenx.game.engine.command.GetCmd;
-import com.dozenx.game.engine.command.PlayerSynCmd;
-import com.dozenx.game.engine.command.ResultCmd;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.*;
+import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
 
 import java.util.Iterator;
@@ -19,20 +18,28 @@ public class GetHandler extends GameServerHandler {
 
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
-        LogUtil.println("server接收到说话了");
+
         GetCmd cmd = (GetCmd)request.getCmd();
-        //Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
-        for(LivingThingBean player: serverContext.getAllOnlinePlayer()){
-            request.getWorker().send(new PlayerSynCmd(player.getInfo()).toBytes());
+
+
+        byte[] data = cmd.getData();
+        GameCmd childCmd = CmdUtil.getCmd(data);
+
+
+        GameServerHandler handler = serverContext.getHandler(childCmd.getCmdType());
+        if(handler!= null ){
+            ResultCmd resultCmd =handler.handler(new GameServerRequest(childCmd,request.getWorker()),new GameServerResponse());
+            if(resultCmd!=null){
+                resultCmd.setThreadId(cmd.getThreadId());
+                return   resultCmd;
+            }else{
+                LogUtil.err("resultCmd is null");
+            }
+        }else{
+            LogUtil.err("handler is null");
         }
-        for(LivingThingBean player: serverContext.getAllEnemies()){
-            request.getWorker().send(new PlayerSynCmd(player.getInfo()).toBytes());
-        }
-        /*
-        for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PlayerMap.entrySet()){
-            request.getWorker().send(new PlayerSynCmd(entry.getValue()).toBytes());
-        }*/
-        return new ResultCmd(0, "成功",cmd.getThreadId());
+
+        return new ResultCmd(1, "失败",cmd.getThreadId());
 
         //更新其他附近人的此人的装备属性
 

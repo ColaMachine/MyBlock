@@ -35,7 +35,9 @@ public class ChatServer {
         serverContext. registerHandler(CmdType.SAY,new SayHandler(serverContext));
         serverContext. registerHandler(CmdType.GET,new GetHandler(serverContext));
         serverContext. registerHandler(CmdType.POS,new PosHandler(serverContext));
-
+        serverContext. registerHandler(CmdType.GET,new GetHandler(serverContext));
+        serverContext. registerHandler(CmdType.BAG,new BagHandler(serverContext));
+        serverContext. registerHandler(CmdType.BAGCHANGE,new BagChangeHandler(serverContext));
         serverContext. registerHandler(CmdType.ATTACK,new AttackHandler(serverContext));
        // GameServerHandler serverHandler = serverContext. allHandlerMap.get(CmdType.LOGIN);
         ServerSocket s = null;

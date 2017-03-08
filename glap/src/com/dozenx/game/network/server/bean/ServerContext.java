@@ -23,8 +23,8 @@ public class ServerContext {
     private List<LivingThingBean> enemyList = new ArrayList<>();
     private List<LivingThingBean> onLinePlayer =  new ArrayList<>();
     private List<LivingThingBean> allPlayer =  new ArrayList<>();
-    private Map<Integer,List<ItemServerBean>> itemsMap =  new HashMap<Integer,List<ItemServerBean>>();
-
+    //private Map<Integer,List<ItemServerBean>> itemsMap =  new HashMap<Integer,List<ItemServerBean>>();
+    private Map<Integer,ItemServerBean[]> itemArrayMap =  new HashMap<Integer,ItemServerBean[]>();
     public List<Worker> getWorkers() {
         return workers;
     }
@@ -69,18 +69,23 @@ public class ServerContext {
             e.printStackTrace();
         }
 
-
+        //添加新人员物品
         List<ItemServerBean> items= new ArrayList<>();
         ItemServerBean item =new ItemServerBean();
         item.setId(1);
         item.setItemType(ItemType.arrow.ordinal());
         items.add(item);
+        item.setPosition(0);
         File file2 = PathManager.getInstance().getHomePath().resolve("saves").resolve("item").resolve(info.getId()+"").toFile();
         try {
             FileUtil.writeFile(file2, JSON.toJSONString(items));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ItemServerBean[] itemServerBeenAry =new ItemServerBean[25];
+        itemServerBeenAry[0]=item;
+
+        itemArrayMap.put(info.getId(),itemServerBeenAry);
 
         LivingThingBean playerBean=new LivingThingBean();
         playerBean.setInfo(info);
@@ -121,8 +126,12 @@ public class ServerContext {
                 List<ItemServerBean> itemList =new ArrayList<ItemServerBean>();
                 itemList = JSON.parseArray(s,
                         ItemServerBean.class);
-
-                itemsMap.put(Integer.valueOf(file.getName()),itemList);
+                ItemServerBean[] beanAry = new ItemServerBean[45];
+                for(ItemServerBean itemServerBean : itemList){
+                    beanAry[itemServerBean.getPosition()]=itemServerBean;
+                }
+                itemArrayMap.put(Integer.valueOf(file.getName()),beanAry);
+               // itemsMap.put(Integer.valueOf(file.getName()),itemList);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -156,8 +165,22 @@ public class ServerContext {
 
     }
 
+    public ItemServerBean[] getItemAryUserId(Integer id){
+
+        ItemServerBean[] ary = itemArrayMap.get(id);
+
+        return  ary;
+
+    }
     public List<ItemServerBean> getItemByUserId(Integer id){
-        return  itemsMap.get(id);
+        List<ItemServerBean> list = new ArrayList<>();
+        ItemServerBean[] ary = itemArrayMap.get(id);
+        for(ItemServerBean itemServerBean :ary){
+            if(itemServerBean!=null){
+                list.add(itemServerBean);
+            }
+        }
+        return  list;
 
     }
     public LivingThingBean getAllPlayerByName(String name){

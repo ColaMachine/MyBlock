@@ -72,7 +72,7 @@ public class ResultCmd extends   BaseGameCmd{
 
     //|result|length|msg|threadId|
     public byte[] toBytes(){
-        LogUtil.println(JSON.toJSONString(this));
+       // LogUtil.println(JSON.toJSONString(this));
         if(msg == null){
             LogUtil.err(" null str");
         }

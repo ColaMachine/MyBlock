@@ -43,9 +43,6 @@ public class BagCmd extends   BaseGameCmd{
         if(itemBeanList!=null)
             this.itemBeanList =itemBeanList;
         this.userId =userId;
-
-
-
     }
 
     //equip 4 |userId|part 2|item |itemId|

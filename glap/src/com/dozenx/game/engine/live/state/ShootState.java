@@ -9,7 +9,8 @@ import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.engine.ui.inventory.control.InventoryController;
+
+import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import glmodel.GL_Vector;
 
@@ -21,7 +22,7 @@ public class ShootState extends IdleState {
         super(livingThing);
         this.livingThing = livingThing;
         startTime=System.currentTimeMillis();
-        if(CoreRegistry.get(InventoryController.class).has("arrow")){
+        if(CoreRegistry.get(BagController.class).has("arrow")){
            // livingThing.addHandEquip(TextureManager.getItemDefinition("arrow"));
         }
         //state 不应该直接操作 animationmanager 那放在哪里好呢 ,放在changeanimationcallback里?

@@ -34,7 +34,7 @@ import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import cola.machine.game.myblocks.bean.BagEntity;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.dozenx.game.engine.ui.inventory.control.InventoryController;
+
 
 import java.util.List;
 import java.util.Map;
@@ -54,12 +54,19 @@ public class InventoryPanel extends SlotPanel {
      /*   for(ItemBean itemBean :itemBeanList){
             slot[itemBean.getPosition()].setIconView(null);
         }*/
-        for(ItemBean itemBean :itemBeanList){
+        for(int i=0;i<20;i++){
+            if(itemBeanList[i]!=null) {
+                slot[i].setIconView(new IconView(itemBeanList[i]));
+            }else{
+                slot[i].setIconView(null);
+            }
+        }
+       /* for(ItemBean itemBean :itemBeanList){
             if(itemBean!=null){
                 slot[itemBean.getPosition()].setIconView(new IconView(itemBean));
             }
 
-        }
+        }*/
     }
     public InventoryPanel(int numSlotsX, int numSlotsY) {
         super(numSlotsX,numSlotsY);
@@ -89,6 +96,8 @@ public class InventoryPanel extends SlotPanel {
         //setCanAcceptKeyboardFocus(true);
        // this.setInputMap(inputMap);
         CoreRegistry.put(InventoryPanel.class,this);
+
+        reload();
     }
 
 

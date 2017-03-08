@@ -79,7 +79,7 @@ public class MyBlockEngine extends GLApp {
 
     Time time = new Time();
     MouseControlCenter mouseControlCenter;
-    BagController bagController =new BagController();
+    //BagController bagController =new BagController(player);
     // Light position: if last value is 0, then this describes light direction.
     // If 1, then light position.
     //float lightPosition[] = { 5f, 45f, 5f, 0f };
@@ -256,7 +256,7 @@ public class MyBlockEngine extends GLApp {
             Client client =new Client();
             client.start();
             CoreRegistry.put(Client.class,client);
-            CoreRegistry.put(BagController.class,bagController);
+          //  CoreRegistry.put(BagController.class,bagController);
             this.initManagers();
             this.initEntities();
             this.initEvent();

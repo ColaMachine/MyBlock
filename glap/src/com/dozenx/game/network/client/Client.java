@@ -4,6 +4,8 @@ import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import core.log.LogUtil;
@@ -74,6 +76,53 @@ public class Client extends Thread{
             e.printStackTrace();
         }
         // }
+    }
+
+    private final Object obj = new Object();
+    public  ResultCmd syncSend(GameCmd cmd ){
+        try {
+            byte[] oldByteAry = cmd.toBytes();
+            synchronized (this) {
+
+                GameCallBackTask task = new GameCallBackTask(){
+                    @Override
+                    public void run(){
+                        /*if(getResult().getResult()==0){
+                            if(getResult().getMsg()!=null){
+                                PlayerSynCmd cmd =new  PlayerSynCmd(getResult().getMsg());
+                                //PlayerStatus status = JSON.parseObject(getResult().getMsg(),PlayerStatus.class);
+                            }
+                        }else{
+                            return;
+                        }*/
+                        synchronized (obj) {
+                            obj.notifyAll(); // 收到响应，唤醒线程
+                        }
+                    }
+                };
+                int threadId = (int)(Math.random()*100000);
+                Client.taskMap.put(threadId, task);
+
+                //CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText(),threadId));
+                GetCmd sendCmd = new GetCmd(cmd,threadId);
+                byte[] data = sendCmd.toBytes();
+                outputStream.write(ByteUtil.getBytes(data.length));
+
+                outputStream.write(data);//需要加锁
+                outputStream.write(Constants.end);
+
+                synchronized (obj) {
+                    obj.wait(); // 未收到响应，使线程等待
+                }
+                //清除task
+                taskMap.remove(threadId);
+                return task.getResult();
+            }
+        } catch (Exception e) {
+            this.end=true;
+            e.printStackTrace();
+        }
+        return null;
     }
     boolean end =false;
     public static void main(String args[]){
