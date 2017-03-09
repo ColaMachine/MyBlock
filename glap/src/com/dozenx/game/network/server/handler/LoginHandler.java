@@ -4,6 +4,8 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.*;
+import com.dozenx.game.network.server.service.impl.BagService;
+import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
 import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.StringUtil;
@@ -14,9 +16,13 @@ import core.log.LogUtil;
  */
 public class LoginHandler extends GameServerHandler {
     private UserService userService ;
+    private BagService bagService;
+    private EnemyService enemyService;
     public LoginHandler(ServerContext serverContext){
         super(serverContext);
-        userService = CoreRegistry.get(UserService.class);
+        bagService = (BagService)serverContext.getService(BagService.class);
+        enemyService =(EnemyService)serverContext.getService(EnemyService.class);
+        userService =(UserService)serverContext.getService(UserService.class);
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
         LogUtil.println("server接收到登录请求了");
@@ -45,15 +51,15 @@ public class LoginHandler extends GameServerHandler {
             if(playerBean.getPwd().equals(pwd)){
                 serverContext.broadCast(new PlayerSynCmd(playerBean.getInfo()).toBytes());
                 //把所有人的信息都同步给他
-                serverContext.addOnlinePlayer(playerBean.getInfo());
+                userService.addOnlinePlayer(playerBean.getInfo());
               /* Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
                 for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PlayerMap.entrySet()){
                     request.getWorker().send(new PlayerSynCmd(entry.getValue()).toBytes());
                 }*/
-                for(LivingThingBean player: serverContext.getAllOnlinePlayer()){
+                for(LivingThingBean player: userService.getAllOnlinePlayer()){
                     request.getWorker().send(new PlayerSynCmd(player.getInfo()).toBytes());
                 }
-                for(LivingThingBean player: serverContext.getAllEnemies()){
+                for(LivingThingBean player: enemyService.getAllEnemies()){
                     request.getWorker().send(new PlayerSynCmd(player.getInfo()).toBytes());
                 }
                 //把当前人的物品信息传递给他
@@ -65,7 +71,7 @@ public class LoginHandler extends GameServerHandler {
 
             /*    wrap.put( new PlayerSynCmd(info).toBytes());
                 wrap.put( new BagCmdb(playerBean.getId(),serverContext.getItemByUserId(playerBean.getId())).toBytes());*/
-              BagCmd bagCmd    =new BagCmd(playerBean.getId(),serverContext.getItemByUserId(playerBean.getId()));
+              BagCmd bagCmd    =new BagCmd(playerBean.getId(),bagService.getItemByUserId(playerBean.getId()));
                 byte[] bagBytes=bagCmd.toBytes();
                 request.getWorker().send(bagBytes);
                 return new ResultCmd(0, new PlayerSynCmd(info).toBytes(),loginCmd.getThreadId());

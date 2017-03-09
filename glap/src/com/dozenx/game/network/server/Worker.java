@@ -105,13 +105,18 @@ public class Worker extends Thread {
     }
     public void run(){
         byte[] bytes =new byte[100];
+
         try {
             inputSteram =  socket.getInputStream();
             //用于发送返回信息,可以不需要装饰这么多io流使用缓冲流时发送数据要注意调用.flush()方法
             outputStream = socket.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
             while (!this.end && this.isAlive()) {
               // int n = br.read(bytes);
-
+                try {
 
                 inputSteram.read(bytes,0,4);
                 int length = ByteUtil.getInt(bytes);ByteUtil.clear(bytes);
@@ -167,8 +172,10 @@ public class Worker extends Thread {
                 GameCmd cmd = CmdUtil.getCmd(newBytes);
                 GameServerHandler handler = serverContext.getHandler(cmd.getCmdType());
                 if(handler!= null ){
-                    ResultCmd resultCmd =handler.handler(new GameServerRequest(cmd,this),new GameServerResponse());
-                    if(resultCmd!=null){
+
+                        ResultCmd resultCmd = handler.handler(new GameServerRequest(cmd, this), new GameServerResponse());
+
+                        if(resultCmd!=null){
                         send(resultCmd.toBytes());
                     }
                 }
@@ -176,22 +183,24 @@ public class Worker extends Thread {
                // System.out.println("Client Socket Message:"+str);
                 //Thread.sleep(1000);
                 //pw.println("Message Received");
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-           e.printStackTrace();
-            LogUtil.println(e.getMessage());
-        }finally{
-            System.out.println("Close.....");
-            try {
 
-                this.close();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    LogUtil.println(e.getMessage());
+                }finally{
+                    System.out.println("Close.....");
+            /*try {
+
+                //this.close();
 
 
             } catch (Exception e2) {
                 LogUtil.err(e2);
+            }*/
+                }
             }
-        }
+
     }
     public void beginRepair(InputStream inputStream) throws IOException {
 

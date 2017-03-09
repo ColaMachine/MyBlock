@@ -6,7 +6,10 @@ import com.dozenx.game.engine.command.AttackType;
 import com.dozenx.game.engine.command.CmdType;
 import com.dozenx.game.engine.command.PosCmd;
 import com.dozenx.game.network.server.bean.*;
+import com.dozenx.game.network.server.service.impl.EnemyService;
+import com.dozenx.game.network.server.service.impl.UserService;
 import com.dozenx.util.TimeUtil;
+import com.sun.jna.platform.win32.Netapi32Util;
 import glmodel.GL_Vector;
 
 /**
@@ -17,8 +20,11 @@ public class EnemyManager implements  Runnable {
 
     public EnemyManager(ServerContext serverContext ){
         this.serverContext =serverContext;
+        this.userService  =(UserService) serverContext.getService(UserService.class);
+        this.enemyService =(EnemyService) serverContext.getService(EnemyService.class);
     }
-
+    UserService userService;
+    EnemyService enemyService;
     @Override
     public void run() {
         while(true) {
@@ -40,10 +46,10 @@ public class EnemyManager implements  Runnable {
 
 
     public void findThing(){
-        for(LivingThingBean enemy : serverContext.getAllEnemies()) {
+        for(LivingThingBean enemy : enemyService.getAllEnemies()) {
             if (enemy.getTargetId() >0) {
                 //检查举例 如果举例过远 放弃追逐
-                LivingThingBean player= serverContext.getOnlinePlayerById(enemy.getTargetId());
+                LivingThingBean player= userService.getOnlinePlayerById(enemy.getTargetId());
                 if(player==null){
                     enemy.setTargetId(0);
                 }else
@@ -56,7 +62,7 @@ public class EnemyManager implements  Runnable {
                 }
             }
 
-            for(LivingThingBean player: serverContext.getAllOnlinePlayer()){
+            for(LivingThingBean player: userService.getAllOnlinePlayer()){
 
 
                     if (GL_Vector.length(GL_Vector.sub(enemy.getPosition(), player.getPosition())) < 5) {
@@ -70,15 +76,15 @@ public class EnemyManager implements  Runnable {
     }
 
     public void doSomeThing(){
-        for(LivingThingBean enemy : serverContext.getAllEnemies()) {
+        for(LivingThingBean enemy : enemyService.getAllEnemies()) {
            enemy.doSomeThing(serverContext);
 
         }
     }
     public void moveOrAttack() {
-        for (LivingThingBean enemy : serverContext.getAllEnemies()) {
+        for (LivingThingBean enemy : enemyService.getAllEnemies()) {
             if (enemy.getTargetId() > 0) {
-                LivingThingBean target = serverContext.getOnlinePlayerById(enemy.getTargetId());
+                LivingThingBean target = userService.getOnlinePlayerById(enemy.getTargetId());
                 if(target== null){
                     continue;
                 }

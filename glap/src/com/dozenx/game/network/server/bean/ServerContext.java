@@ -9,6 +9,7 @@ import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.Worker;
 import com.dozenx.game.network.server.handler.GameServerHandler;
+import com.dozenx.game.network.server.service.GameServerService;
 import com.dozenx.util.FileUtil;
 import core.log.LogUtil;
 
@@ -20,11 +21,11 @@ import java.util.*;
  * Created by dozen.zhang on 2017/2/21.
  */
 public class ServerContext {
-    private List<LivingThingBean> enemyList = new ArrayList<>();
-    private List<LivingThingBean> onLinePlayer =  new ArrayList<>();
-    private List<LivingThingBean> allPlayer =  new ArrayList<>();
+    public List<LivingThingBean> enemyList = new ArrayList<>();
+    public List<LivingThingBean> onLinePlayer =  new ArrayList<>();
+    public List<LivingThingBean> allPlayer =  new ArrayList<>();
     //private Map<Integer,List<ItemServerBean>> itemsMap =  new HashMap<Integer,List<ItemServerBean>>();
-    private Map<Integer,ItemServerBean[]> itemArrayMap =  new HashMap<Integer,ItemServerBean[]>();
+    public Map<Integer,ItemServerBean[]> itemArrayMap =  new HashMap<Integer,ItemServerBean[]>();
     public List<Worker> getWorkers() {
         return workers;
     }
@@ -37,30 +38,37 @@ public class ServerContext {
         public  Map<String,PlayerStatus> name2PlayerMap  =new HashMap();
         public  Map<Integer,PlayerStatus> id2PlayerMap  =new HashMap();*/
    private  Map<CmdType,GameServerHandler> allHandlerMap =new HashMap<>();
+
+    private Map<Class,GameServerService> allServiceMap =new HashMap<>();
     //public HashMap<String ,PlayerStatus> name2InfoMap =new HashMap();
-    public List<LivingThingBean> getAllOnlinePlayer(){
-        return onLinePlayer;
-    }
+
     public void registerHandler(CmdType type,GameServerHandler handler ){
         allHandlerMap.put(type,handler);
+    }
+
+    public GameServerService getService(Class t){
+        return allServiceMap.get(t);
+    }
+    public void registerService(Class t,GameServerService serverService ){
+        allServiceMap.put(t,serverService);
     }
       public GameServerHandler getHandler(CmdType type){
           return allHandlerMap.get(type);
       }
-    public List<LivingThingBean> getAllEnemies(){
+ /*   public List<LivingThingBean> getAllEnemies(){
         return enemyList;
-    }
+    }*/
     public ServerContext(){
-        loadAllUserInfo();
+      /*  loadAllUserInfo();
         loadAllEnemy();
-        loadItems();
+        loadItems();*/
     }
     //public HashMap<Integer , Socket> socketMap =new HashMap();
     private List<Worker> workers = new ArrayList<>( );
     //public Map<Integer,Worker> workerMap =new Hashtable();
     private Queue<byte[]> messages=new LinkedList<>();
   //  public Queue<PlayerStatus> livingThings=new LinkedList<>();
-    public LivingThingBean addNewPlayer(PlayerStatus info){
+  /*  public LivingThingBean addNewPlayer(PlayerStatus info){
         info.setIsplayer(true);
         File file = PathManager.getInstance().getHomePath().resolve("saves").resolve("player").resolve(info.getId()+".txt").toFile();
         try {
@@ -90,57 +98,11 @@ public class ServerContext {
         LivingThingBean playerBean=new LivingThingBean();
         playerBean.setInfo(info);
         return playerBean;
-    }
-    public void loadAllEnemy(){
-        File player =PathManager.getInstance().getHomePath().resolve("saves").resolve("enemy").toFile();
-        if(!player.exists()){
-            player.mkdirs();
-        }
-        List<File> files =  FileUtil.listFile(player);
-        for(File file :files){
-            try {
-                String s = FileUtil.readFile2Str(file);
-                LivingThingBean livingThingBean =new LivingThingBean();
-                livingThingBean.setInfo(JSON.parseObject(s,
-                        new TypeReference<PlayerStatus>() {
-                        }));
-                enemyList.add(livingThingBean);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    }*/
 
 
-    }
 
-    public void loadItems(){
-        File item =PathManager.getInstance().getHomePath().resolve("saves").resolve("item").toFile();
-        if(!item.exists()){
-            item.mkdirs();
-        }
-        List<File> files =  FileUtil.listFile(item);
-        for(File file :files){
-            try {
-                String s = FileUtil.readFile2Str(file);
-                List<ItemServerBean> itemList =new ArrayList<ItemServerBean>();
-                itemList = JSON.parseArray(s,
-                        ItemServerBean.class);
-                ItemServerBean[] beanAry = new ItemServerBean[45];
-                for(ItemServerBean itemServerBean : itemList){
-                    beanAry[itemServerBean.getPosition()]=itemServerBean;
-                }
-                itemArrayMap.put(Integer.valueOf(file.getName()),beanAry);
-               // itemsMap.put(Integer.valueOf(file.getName()),itemList);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-
+/*
     public void loadAllUserInfo(){
         File player =PathManager.getInstance().getHomePath().resolve("saves").resolve("player").toFile();
         if(!player.exists()){
@@ -163,6 +125,31 @@ public class ServerContext {
         }
 
 
+    }*//*
+    public void loadItems(){
+        File item =PathManager.getInstance().getHomePath().resolve("saves").resolve("item").toFile();
+        if(!item.exists()){
+            item.mkdirs();
+        }
+        List<File> files =  FileUtil.listFile(item);
+        for(File file :files){
+            try {
+                String s = FileUtil.readFile2Str(file);
+                List<ItemServerBean> itemList =new ArrayList<ItemServerBean>();
+                itemList = JSON.parseArray(s,
+                        ItemServerBean.class);
+                ItemServerBean[] beanAry = new ItemServerBean[45];
+                for(ItemServerBean itemServerBean : itemList){
+                    beanAry[itemServerBean.getPosition()]=itemServerBean;
+                }
+                itemArrayMap.put(Integer.valueOf(file.getName()),beanAry);
+                // itemsMap.put(Integer.valueOf(file.getName()),itemList);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public ItemServerBean[] getItemAryUserId(Integer id){
@@ -182,8 +169,8 @@ public class ServerContext {
         }
         return  list;
 
-    }
-    public LivingThingBean getAllPlayerByName(String name){
+    }*/
+  /*  public LivingThingBean getAllPlayerByName(String name){
         for(LivingThingBean player : allPlayer){
             if(name.equals(player.getName())){
 
@@ -201,8 +188,8 @@ public class ServerContext {
         }
         return null;
 
-    }
-    public  LivingThingBean  getEnemyById(int id ){
+    }*/
+    /*public  LivingThingBean  getEnemyById(int id ){
         for(LivingThingBean player : enemyList){
             if(player.getId() == id){
 
@@ -212,7 +199,30 @@ public class ServerContext {
         return null;
 
     }
-    public void addOnlinePlayer(PlayerStatus status){
+
+    public void loadAllEnemy(){
+        File player =PathManager.getInstance().getHomePath().resolve("saves").resolve("enemy").toFile();
+        if(!player.exists()){
+            player.mkdirs();
+        }
+        List<File> files =  FileUtil.listFile(player);
+        for(File file :files){
+            try {
+                String s = FileUtil.readFile2Str(file);
+                LivingThingBean livingThingBean =new LivingThingBean();
+                livingThingBean.setInfo(JSON.parseObject(s,
+                        new TypeReference<PlayerStatus>() {
+                        }));
+                enemyList.add(livingThingBean);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }*/
+  /*  public void addOnlinePlayer(PlayerStatus status){
         for(LivingThingBean player : onLinePlayer){
             if(player.getId() == status.getId()){
                 LogUtil.println("player:"+status.getId()+"already exist in online list");
@@ -234,7 +244,7 @@ public class ServerContext {
                 }
             }
         }
-    }
+    }*/
 
    /* public void removeLivingThing(PlayerStatus status){
         id2PlayerMap.remove(status.getId());

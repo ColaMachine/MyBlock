@@ -2,22 +2,24 @@ package com.dozenx.game.network.server.handler;
 
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.*;
+import com.dozenx.game.network.server.service.impl.EnemyService;
+import com.dozenx.game.network.server.service.impl.UserService;
 import core.log.LogUtil;
 
 /**
  * Created by luying on 17/2/18.
  */
 public class EquipHandler extends GameServerHandler {
-
+    UserService userService;
     public EquipHandler(ServerContext serverContext){
         super(serverContext);
-
+        userService = (UserService)serverContext.getService(UserService.class);
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
         LogUtil.println("server接收到装备变化了");
         EquipCmd cmd =(EquipCmd)request.getCmd();
         if(cmd.getCmdType()== CmdType.EQUIP){
-            LivingThingBean bean = serverContext.getOnlinePlayerById(cmd.getUserId());
+            LivingThingBean bean = userService.getOnlinePlayerById(cmd.getUserId());
             if(bean ==null ){
                 return new ResultCmd(1,"失败",0);
             }

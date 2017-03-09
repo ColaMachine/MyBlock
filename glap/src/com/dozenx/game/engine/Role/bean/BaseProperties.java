@@ -13,7 +13,7 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
         info.setId(getId());
         info.setName(getName());
 
-        //setPwd(status.getPwd());
+        info. setPwd(info.getPwd());
         info. setBodyAngle(getBodyAngle());
         info. setHeadAngle(getHeadAngle());
         info. setHeadAngle2(getHeadAngle2());

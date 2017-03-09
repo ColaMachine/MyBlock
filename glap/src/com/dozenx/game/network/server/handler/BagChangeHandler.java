@@ -8,6 +8,8 @@ import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.ServerContext;
+import com.dozenx.game.network.server.service.impl.BagService;
+import com.dozenx.game.network.server.service.impl.EnemyService;
 import core.log.LogUtil;
 
 import java.util.List;
@@ -16,10 +18,10 @@ import java.util.List;
  * Created by luying on 17/2/18.
  */
 public class BagChangeHandler extends GameServerHandler {
-
+  BagService bagService;
     public BagChangeHandler(ServerContext serverContext){
         super(serverContext);
-
+        bagService = (BagService)serverContext.getService(BagService.class);
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
 
@@ -29,7 +31,7 @@ public class BagChangeHandler extends GameServerHandler {
         int destPos=cmd.getDestPosition();
       //  List<ItemServerBean>  itemList =serverContext.getItemByUserId(userId);
 
-        ItemServerBean[] itemBeans = serverContext.getItemAryUserId(userId);
+        ItemServerBean[] itemBeans = bagService.getItemAryUserId(userId);
        // ItemServerBean clientItemBean  = cmd.getItemBean();
         ItemServerBean fromBean  = itemBeans[fromPos];
 

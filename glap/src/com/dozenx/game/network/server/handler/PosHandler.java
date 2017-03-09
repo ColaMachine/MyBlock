@@ -7,22 +7,23 @@ import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.ServerContext;
+import com.dozenx.game.network.server.service.impl.UserService;
 import core.log.LogUtil;
 
 /**
  * Created by luying on 17/2/18.
  */
 public class PosHandler extends GameServerHandler {
-
+    UserService userService;
     public PosHandler(ServerContext serverContext){
         super(serverContext);
-
+        userService = (UserService)serverContext.getService(UserService.class);
     }
     public ResultCmd handler(GameServerRequest request, GameServerResponse response){
 
         PosCmd posCmd =(PosCmd) request.getCmd();
         int userId = posCmd.getUserId();
-        PlayerStatus playerStatus =  serverContext.getOnlinePlayerById(userId).getInfo();
+        PlayerStatus playerStatus =  userService.getOnlinePlayerById(userId).getInfo();
         if(playerStatus==null){
             LogUtil.err("userId:"+userId+" find playerStatus is null");
         }
