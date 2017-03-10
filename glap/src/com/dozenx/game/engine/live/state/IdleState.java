@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.engine.command.AttackType;
 import com.dozenx.game.engine.item.ItemUtil;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import core.log.LogUtil;
@@ -29,6 +30,11 @@ public class IdleState extends State{
             if(livingThing.getNowSkill()){
 
             }*/
+            AttackCmd cmd =(AttackCmd) gameCmd;
+            if(cmd.getAttackType()== AttackType.KAN){
+                //getExecutor().getCurrentState().dispose();
+                //livingThing.getExecutor().getModel().
+            }
             if(this.livingThing!=null && this.livingThing.getTarget()!=null ) {
                 GL_Vector direction =  GL_Vector.sub(this.livingThing.getTarget().position,
                         this.livingThing.position);

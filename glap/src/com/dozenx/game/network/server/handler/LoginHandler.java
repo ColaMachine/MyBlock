@@ -51,7 +51,7 @@ public class LoginHandler extends GameServerHandler {
             if(playerBean.getPwd().equals(pwd)){
                 serverContext.broadCast(new PlayerSynCmd(playerBean.getInfo()).toBytes());
                 //把所有人的信息都同步给他
-                userService.addOnlinePlayer(playerBean.getInfo());
+                userService.addOnlinePlayer(playerBean);
               /* Iterator<Map.Entry<Integer , PlayerStatus>> it = serverContext.id2PlayerMap.entrySet().iterator();
                 for(Map.Entry<Integer, PlayerStatus> entry :serverContext.id2PlayerMap.entrySet()){
                     request.getWorker().send(new PlayerSynCmd(entry.getValue()).toBytes());

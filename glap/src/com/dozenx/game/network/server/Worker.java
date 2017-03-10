@@ -113,83 +113,87 @@ public class Worker extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        try {
             while (!this.end && this.isAlive()) {
-              // int n = br.read(bytes);
-                try {
+                // int n = br.read(bytes);
 
-                inputSteram.read(bytes,0,4);
-                int length = ByteUtil.getInt(bytes);ByteUtil.clear(bytes);
-                if(length<=0){
+
+                    inputSteram.read(bytes, 0, 4);
+                    int length = ByteUtil.getInt(bytes);
+                    ByteUtil.clear(bytes);
+                    if (length <= 0) {
                   /* n=  inputSteram.read(bytes);
                     if(n==-1){*/
-                    LogUtil.err("socket 读取数据有问题 +"+length+"+ 已经自动断开");
-                    this.end=true;
-                   // this.close();
-                    beginRepair(inputSteram);
+                        LogUtil.err("socket 读取数据有问题 +" + length + "+ 已经自动断开");
+                        this.end = true;
+                        // this.close();
+                        beginRepair(inputSteram);
                     /*    break;
                     }*/
 
 
-                }
+                    }
 
-                if(length>4096){
-                    LogUtil.err("err");
-                }
-                int n= inputSteram.read(bytes,0,length);
-                int end = inputSteram.read();
-                if(  n!=length || end!=Constants.end){
-                    LogUtil.err(" read error ");
-                    beginRepair(inputSteram);
-                }
+                    if (length > 4096) {
+                        LogUtil.err("err");
+                    }
+                    int n = inputSteram.read(bytes, 0, length);
+                    int end = inputSteram.read();
+                    if (n != length || end != Constants.end) {
+                        LogUtil.err(" read error ");
+                        beginRepair(inputSteram);
+                    }
 
-                byte[] newBytes =  ByteUtil.slice(bytes,0,length);ByteUtil.clear(bytes);
+                    byte[] newBytes = ByteUtil.slice(bytes, 0, length);
+                    ByteUtil.clear(bytes);
 
 
                /* if(bytes[n-1]!='\n'){
                     LogUtil.err("socket read end is not \n:"+n);
                 }*/
-                if(n==0){
-                    LogUtil.println("isOutputShutdown"+socket.isOutputShutdown());
-                    LogUtil.println("isClosed"+socket.isClosed());
-                    LogUtil.println("isConnected"+socket.isConnected());
-                    LogUtil.println("isInputShutdown"+socket.isInputShutdown());
-                    System.out.println("socket null so end");
-                    this.end=true;
-                    break;
+                    if (n == 0) {
+                        LogUtil.println("isOutputShutdown" + socket.isOutputShutdown());
+                        LogUtil.println("isClosed" + socket.isClosed());
+                        LogUtil.println("isConnected" + socket.isConnected());
+                        LogUtil.println("isInputShutdown" + socket.isInputShutdown());
+                        System.out.println("socket null so end");
+                        this.end = true;
+                        break;
 
 
-                }
+                    }
                /* if("END".equals(str)){
                     break;
                 }*/
                /* while(){
 
                 }*/
-                lastReceiveTime =System.currentTimeMillis();
-                CmdType.printReceive(newBytes);
-            //LogUtil.println("server 接收到数据类型:"+CmdType.values()[(ByteUtil.getInt(newBytes))] +"长度:"+length);
-                GameCmd cmd = CmdUtil.getCmd(newBytes);
-                GameServerHandler handler = serverContext.getHandler(cmd.getCmdType());
-                if(handler!= null ){
+                try {
+                    lastReceiveTime = System.currentTimeMillis();
+                    CmdType.printReceive(newBytes);
+                    //LogUtil.println("server 接收到数据类型:"+CmdType.values()[(ByteUtil.getInt(newBytes))] +"长度:"+length);
+                    GameCmd cmd = CmdUtil.getCmd(newBytes);
+                    GameServerHandler handler = serverContext.getHandler(cmd.getCmdType());
+                    if (handler != null) {
 
                         ResultCmd resultCmd = handler.handler(new GameServerRequest(cmd, this), new GameServerResponse());
 
-                        if(resultCmd!=null){
-                        send(resultCmd.toBytes());
+                        if (resultCmd != null) {
+                            send(resultCmd.toBytes());
+                        }
                     }
-                }
-                //messages.push(ByteUtil.copy(bytes,0,n));
-               // System.out.println("Client Socket Message:"+str);
-                //Thread.sleep(1000);
-                //pw.println("Message Received");
+                    //messages.push(ByteUtil.copy(bytes,0,n));
+                    // System.out.println("Client Socket Message:"+str);
+                    //Thread.sleep(1000);
+                    //pw.println("Message Received");
 
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     LogUtil.println(e.getMessage());
-                }finally{
-                    System.out.println("Close.....");
+                    System.out.println("socket 业务逻辑错误.....");
+                } finally {
+
             /*try {
 
                 //this.close();
@@ -200,6 +204,21 @@ public class Worker extends Thread {
             }*/
                 }
             }
+        }catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            LogUtil.println(e.getMessage());
+        } finally {
+            System.out.println("Close.....");
+            try {
+
+                //this.close();
+
+
+            } catch (Exception e2) {
+                LogUtil.err(e2);
+            }
+        }
 
     }
     public void beginRepair(InputStream inputStream) throws IOException {

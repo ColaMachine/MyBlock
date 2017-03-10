@@ -78,6 +78,17 @@ public class UserService extends GameServerService {
         serverContext.onLinePlayer.add(livingThingBean);
     }
 
+    public void addOnlinePlayer(LivingThingBean status){
+        for(LivingThingBean player : serverContext.onLinePlayer){
+            if(player.getId() == status.getId()){
+                LogUtil.println("player:"+status.getId()+"already exist in online list");
+                return;
+            }
+        }
+
+        serverContext.onLinePlayer.add(status);
+    }
+
     public void removeOnlinePlayer(int id ){
         synchronized (serverContext.onLinePlayer) {
         for(int i=serverContext.onLinePlayer.size()-1;i>=0;i--){
