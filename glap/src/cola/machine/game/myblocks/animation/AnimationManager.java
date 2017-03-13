@@ -1,7 +1,9 @@
 package cola.machine.game.myblocks.animation;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.util.FileUtil;
 
 import java.io.*;
 import java.util.*;
@@ -49,19 +51,19 @@ public class AnimationManager {
     public void apply(Component component , String action){
 
 
-        Animation animation = domAnimationsMap.get(component.id+":"+action);
+        Animation animation = domAnimationsMap.get(component.name+":"+action);
 
 
         if(animation!=null){
 
-            if(id2animatorMap.get(component.hashCode()+component.id+":"+action)!=null ){
+            if(id2animatorMap.get(component.hashCode()+component.name+":"+action)!=null ){
 
                 return;
                 //animatorMap.get(component.id).complete=true;
             }else{
                 Animator animator = new Animator(animation,component);
                 animators.add(animator);
-                id2animatorMap.put(component.hashCode()+component.id+":"+action,animator);
+                id2animatorMap.put(component.hashCode()+component.name+":"+action,animator);
             }
 
         }
@@ -81,7 +83,7 @@ public class AnimationManager {
            // LogUtil.println("画完前:"+animator.component.rotateX);
 
             if(animator.complete){
-                id2animatorMap.remove(animator.component.hashCode()+animator.component.id+":"+animator.animation.action);
+                id2animatorMap.remove(animator.component.hashCode()+animator.component.name+":"+animator.animation.action);
                // id2animatorMap.put(animator.component.id+":"+animator.animation.action,null);
 //                LogUtil.println("移除动画"+animators.get(i).animation.action);
                 animators.remove(i);
@@ -356,8 +358,12 @@ public class AnimationManager {
 
 
      //   AnimationManager manager =new AnimationManager();
+        List<File> fileLists = FileUtil.listFile(PathManager.getInstance().getHomePath().resolve("config/animation").toFile());
         try {
-            this.readConfigFile(AnimationManager.class.getResource("animation.cfg").getPath());
+            for(File file:fileLists){
+                this.readConfigFile(file.getPath());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

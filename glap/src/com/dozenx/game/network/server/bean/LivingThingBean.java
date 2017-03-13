@@ -3,6 +3,7 @@ package com.dozenx.game.network.server.bean;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.GameActor;
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.Shape;
@@ -10,6 +11,7 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Role;
+import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.live.state.IdleState;
@@ -28,6 +30,20 @@ import java.lang.ref.WeakReference;
  * Created by luying on 16/9/16.
  */
 public class LivingThingBean extends Role {
+
+    public LivingThingBean(int id){
+        this.currentState = new IdleState(this);
+
+        this.setId(id);//(int)(Math.random()*1000000);
+        this.walkDir=new  GL_Vector(1,0,0);
+
+
+        changeProperty();
+
+        /*this.nowBlood=this.blood;
+        this.nowEnergy=this.energy;*/
+    }
+
 
     public LivingThingBean(){
 
@@ -188,18 +204,7 @@ public class LivingThingBean extends Role {
     /*public  float bodyAngle =0  ;
     public float headAngle =0  ;
     public float headAngle2 =0  ;*/
-    public LivingThingBean(int id){
-        this.currentState = new IdleState(this);
 
-        this.setId(id);//(int)(Math.random()*1000000);
-        this.walkDir=new  GL_Vector(1,0,0);
-
-
-        changeProperty();
-
-        this.nowBlood=this.blood;
-        this.nowEnergy=this.energy;
-    }
 
    /* public long updateTime;
     public int id;
@@ -307,9 +312,11 @@ public class LivingThingBean extends Role {
                 +"智力:"+baseIntell+"/"+totalIntell+"\n"
                 +"敏捷:"+baseAgility+"/"+totalAgility+"\n"
                 +"精神:"+baseSpirit+"/"+totalSpirit+"\n"
-                +"血量:"+nowBlood+"/"+blood+"\n"
-                +"魔法:"+nowEnergy+"/"+energy+"\n"
-                +"防御:"+fangyu+"";
+                +"血量:"+nowHP+"/"+HP+"\n"
+                +"魔法:"+nowMP+"/"+MP+"\n"
+                +"防御:"+defense+"\n"
+                +"攻击:"+pattack+"\n";
+
     }
     public void drop() {
 
@@ -320,28 +327,10 @@ public class LivingThingBean extends Role {
         lastTime = TimeUtil.getNowMills();
 
     }
-    public boolean died=false;
+    //public boolean died=false;
     public void died(){
-        this.nowBlood=0;
+        this.nowHP=0;
         died=true;
-
-    }
-    public void changeProperty( ){
-        // totalPower = basePower+
-
-       // acculateProperty(this.getExecutor().getModel().bodyComponent);
-
-        this.totalPower+=this.basePower;
-
-        totalAgility+=this.baseAgility;
-        totalIntell+=this.baseIntell;
-
-        totalSpirit+=this.baseSpirit;
-
-        this.blood=this.totalPower;
-        this.energy=this.totalIntell;
-
-
 
     }
 
@@ -373,7 +362,7 @@ public class LivingThingBean extends Role {
     }
 
 
-    public float RotatedX, RotatedY, RotatedZ;
+   // public float RotatedX, RotatedY, RotatedZ;
 
     /*public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 */
@@ -462,7 +451,7 @@ public class LivingThingBean extends Role {
 
     public void update(){
         this.dropControl();
-        this.getModel().build();
+       // this.getModel().build();
         this.currentState.update();
     }
 
@@ -484,11 +473,11 @@ public class LivingThingBean extends Role {
 
 
     public void beAttack(int damage){
-        this.nowBlood-=damage;
+        this.nowHP-=damage;
         Document.needUpdate=true;
         Client.messages.push(new SayCmd(this.getId(),this.name,"被攻击 损失"+damage+"点血"));
-        if(this.nowBlood<=0){
-            this.nowBlood=0;
+        if(this.nowHP<=0){
+            this.nowHP=0;
          /*   AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             manager.clear(getModel().bodyComponent);
             manager.apply(getModel().bodyComponent,"died");*/
@@ -538,13 +527,13 @@ public class LivingThingBean extends Role {
                 .apply(getModel().bodyComponent,"attack");*/
     }
 
-    public void beAttack(){
-
-/*
+    /*public void beAttack(int harm){
+        super.beAttack(harm);
+*//*
         CoreRegistry.get(AnimationManager.class)
-                .apply(getModel().bodyComponent,"beattack");*/
+                .apply(getModel().bodyComponent,"beattack");*//*
 
-    }
+    }*/
 
 
 

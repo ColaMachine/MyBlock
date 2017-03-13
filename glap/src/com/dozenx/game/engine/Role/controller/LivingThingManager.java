@@ -9,9 +9,11 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
@@ -405,6 +407,21 @@ public class LivingThingManager {
             }
             livingThing.setItems(items);
 
+            CoreRegistry.get(BagController.class).refreshBag();
+            //livingThing.receive(cmd);
+        }
+
+        while(client.drops.size()>0 && client.drops.peek()!=null){
+            DropCmd cmd = client.drops.pop();
+            int userId = cmd.getUserId();
+            if(userId == player.getId()){
+                player.getItemBeans()[24]=null;
+            }else{
+
+            }
+
+
+            ItemManager.add(new Ball(player.getPosition(),null,0,TextureManager.getShape("arrow"),player));
             CoreRegistry.get(BagController.class).refreshBag();
             //livingThing.receive(cmd);
         }

@@ -67,7 +67,7 @@ public class ChatServer {
 
 
         timer = new Timer();
-        timer.schedule(new SaveTask(serverContext), 60*1000);
+        timer.schedule(new SaveTask(serverContext),0, 60*1000);
         System.out.println("Task scheduled.");
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {

@@ -1,7 +1,10 @@
 package com.dozenx.game.engine.Role.bean.item;
 
+import cola.machine.game.myblocks.item.ItemManager;
 import com.dozenx.game.engine.Role.bean.SynInfo;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.item.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 
 /**
@@ -27,6 +30,36 @@ public class ComplexEquipProperties extends CommonEquipProperties implements Syn
         this.setLegEquip(ItemType.values()[info.getLegEquip()]);
         this.setFootEquip(ItemType.values()[info.getFootEquip()]);
     }
+    public void changeProperty( ){
+        super.changeProperty();
+        // totalPower = basePower+
 
+        // acculateProperty(this.getExecutor().getModel().bodyComponent);
+        ItemType[] itemTypes = new ItemType[]{this.headEquip,this.handEquip,this.bodyEquip,this.legEquip,this.footEquip};
+        for(int i=0;i<itemTypes.length;i++){
+            ItemType itemType  = itemTypes[i];
+
+           ItemDefinition itemDefinition =  ItemManager.getItemDefinition(itemType);
+            if(itemDefinition!=null){
+                this.totalPower+=itemDefinition.getStrenth();
+                this.totalAgility+=itemDefinition.getAgile();
+                this.totalIntell+=itemDefinition.getIntelli();
+                this.totalSpirit+=itemDefinition.getSpirit();
+            }
+
+        }
+
+
+
+
+        this.HP=this.totalPower;
+        this.MP=this.totalIntell;
+        this.pattack = (int)(this.totalPower*0.6+this.totalAgility*0.4);
+        this.defense =this.totalAgility;
+
+
+
+
+    }
 
 }

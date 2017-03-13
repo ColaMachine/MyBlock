@@ -80,33 +80,45 @@ public class Model {
     }
 
 
-    public void addShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
+    public void addLRShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
         Component parent ;
         if(leftFlag){
-            parent = bodyComponent.findChild("human_l_b_leg");
+            parent = bodyComponent.findChild(EquipPartType.LFOOT.getName());
         }else{
-            parent = bodyComponent.findChild("human_r_b_leg");
+            parent = bodyComponent.findChild(EquipPartType.RFOOT.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,"shoe",itemCfg);
+        addChild(parent,EquipPartType.SHOOE.getName(),itemCfg);
     }
     public void addShoeEquip(ItemDefinition itemCfg)  {
-        addShoeEquip(true, itemCfg);
-        addShoeEquip(false, itemCfg);
+        addLRShoeEquip(true, itemCfg);
+        addLRShoeEquip(false, itemCfg);
     }
+
+    public void addLRegEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
+        Component parent ;
+        if(leftFlag){
+            parent = bodyComponent.findChild(EquipPartType.LLEG.getName());
+        }else{
+            parent = bodyComponent.findChild(EquipPartType.RLEG.getName());
+        }
+        //Component shoe =   bodyComponent.findChild("shoe");
+        addChild(parent,EquipPartType.PANTS.getName(),itemCfg);
+    }
+
     public void addLegEquip(ItemDefinition itemCfg)  {
-        Component parent = 	bodyComponent.findChild("human_l_b_leg");
-        addChild(parent, "pants", itemCfg);
+        addLRegEquip(true, itemCfg);
+        addLRegEquip(false, itemCfg);
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
-        Component parent = 	bodyComponent.findChild("human_body");
-        addChild(parent, "armor", itemCfg);
+        Component parent = 	bodyComponent.findChild(EquipPartType.BODY.getName());
+        addChild(parent, EquipPartType.ARMOR.getName(), itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
-        Component parent = 	bodyComponent.findChild("rhuman_hand");
-        addChild(parent, "weapon", itemCfg);
+        Component parent = 	bodyComponent.findChild(EquipPartType.RARM.getName());
+        addChild(parent, EquipPartType.RHAND.getName(), itemCfg);
     }
     // int vaoId;
     //int trianglesCount =0;

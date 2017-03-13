@@ -93,7 +93,7 @@ public class IconView extends HtmlObject {
       // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        this.setBackgroundImage(new Image(itemBean.getItemDefinition().getIcon()));
+        this.setBackgroundImage(new Image(itemBean.getItemDefinition().getItemModel().getIcon()));
    /*     icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;

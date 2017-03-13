@@ -41,191 +41,58 @@ public class PlayerModel extends  Model{
         this.role =role;
         int id =role.getId();
         bodyComponent.id=id*10+EquipPartType.BODY.ordinal();
-        bodyComponent.name = "human_body";
+        bodyComponent.name = EquipPartType.BODY.getName();
         bodyComponent.setEightFace("human_body");
 
         //rhand
-        Component rHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        rHandComponent.id=id*10+EquipPartType.RHAND.ordinal();
+        Component rArm= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        rArm.id=id*10+EquipPartType.RARM.ordinal();
 
-        rHandComponent.setEightFace("human_hand");
-        rHandComponent.name="rhuman_hand";
-        rHandComponent.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
-        bodyComponent.addChild(rHandComponent);
+        rArm.setEightFace("human_hand");
+        rArm.name=EquipPartType.RARM.getName();
+        rArm.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addChild(rArm);
 
         //小手
 
         //lhand
-        Component lHandComponent= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        lHandComponent.id=id*10+EquipPartType.LHAND.ordinal();
-        lHandComponent.setEightFace("human_hand");
-        lHandComponent.name="lhuman_hand";
+        Component lArm= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        lArm.id=id*10+EquipPartType.LARM.ordinal();
+        lArm.setEightFace("human_hand");
+        lArm.name=EquipPartType.LARM.getName();
         //rHandComponent.name="rHumanHand";
-        lHandComponent.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
-        bodyComponent.addChild(lHandComponent);
+        lArm.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
+        bodyComponent.addChild(lArm);
 
         //lleg
-        Component human_l_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        human_l_b_leg.setEightFace("human_leg");
-        human_l_b_leg.id=id*10+EquipPartType.LLEG.ordinal();
-        human_l_b_leg.name= "human_l_b_leg";
-        human_l_b_leg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
-        bodyComponent.addChild(human_l_b_leg);
+        Component lleg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        lleg.setEightFace("human_leg");
+        lleg.id=id*10+EquipPartType.LLEG.ordinal();
+        lleg.name= EquipPartType.LLEG.getName();
+        lleg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
+        bodyComponent.addChild(lleg);
 
 
 
 
         //rleg
-        Component human_r_b_leg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        human_r_b_leg.setEightFace("human_leg");
-        human_r_b_leg.name= "human_r_b_leg";
-        human_r_b_leg.id=id*10 +EquipPartType.RLEG.ordinal();
-        human_r_b_leg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
-        bodyComponent.addChild(human_r_b_leg);
+        Component rleg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        rleg.setEightFace("human_leg");
+        rleg.name= EquipPartType.RLEG.getName();
+        rleg.id=id*10 +EquipPartType.RLEG.ordinal();
+        rleg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
+        bodyComponent.addChild(rleg);
 
         //head
 
         Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
         head.setEightFace("human_head");
         head.id=id*10+EquipPartType.HEAD.ordinal();
+        head.name=EquipPartType.HEAD.getName();
         head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
         bodyComponent.addChild(head);
 
     }
-
-    //public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
-
-/*
-
-
-    public void addBodyEquipStart(ItemDefinition itemCfg) {
-        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.BODY, itemCfg);
-        CoreRegistry.get(Client.class).send(equipMentCmd);
-        //NetWorkManager.push(equipMentCmd);
-    }
-    public void addLegEquipStart(ItemDefinition itemCfg) {
-        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.LEG, itemCfg);
-        CoreRegistry.get(Client.class).send(equipMentCmd);
-        //NetWorkManager.push(equipMentCmd);
-    }
-
-    public void addHandEquipStart(ItemDefinition itemCfg) {
-        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.HAND, itemCfg);
-        CoreRegistry.get(Client.class).send(equipMentCmd);
-        //NetWorkManager.push(equipMentCmd);
-    }
-
-    public void addShoeEquipStart(ItemDefinition itemCfg) {
-        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.FOOT, itemCfg);
-        CoreRegistry.get(Client.class).send(equipMentCmd);
-        //NetWorkManager.push(equipMentCmd);
-    }
-    public void addHeadEquipStart(ItemDefinition itemCfg) {
-        EquipCmd equipMentCmd = new EquipCmd(this, EquipPartType.HEAD, itemCfg);
-        CoreRegistry.get(Client.class).send(equipMentCmd);
-        //NetWorkManager.push(equipMentCmd);
-    }
-
-    public void addHeadEquip(ItemDefinition itemCfg)  {
-
-        Component parent = 	bodyComponent.findChild("human_head");
-        addChild(parent, "cap", itemCfg);
-    }
-
-
-
-
-
-    */
-/*
-
-    public void addChild(Component parent,String name,ItemDefinition itemCfg) {
-        if(parent==null){
-            LogUtil.err("parent node is null");
-        }
-        Component shoe = parent.findChild(name);
-        if (shoe == null) {
-            if (itemCfg == null) {
-                return;
-            } else {
-                Shape shape = itemCfg.getShape();
-                if (shape == null) {
-                    LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
-
-                }
-                Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
-                component.setShape(itemCfg.getShape());
-                component.name = name;
-
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
-                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-                parent.addChild(component);
-                changeProperty();
-            }
-        } else {
-
-            if (itemCfg == null) {
-                //删除shoe节点
-                parent.removeChild(shoe);
-            } else {
-                parent.removeChild(shoe);
-                Shape shape = itemCfg.getShape();
-                if (shape == null) {
-                    LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
-
-                }
-                Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
-                component.setShape(itemCfg.getShape());
-                component.name = name;
-
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
-                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-                parent.addChild(component);
-                changeProperty();
-            }
-        }
-    }*/
-    public void addShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
-        Component parent ;
-        if(leftFlag){
-            parent = bodyComponent.findChild("human_l_b_leg");
-        }else{
-            parent = bodyComponent.findChild("human_r_b_leg");
-        }
-        //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,"shoe",itemCfg);
-    }
-    public void addShoeEquip(ItemDefinition itemCfg)  {
-        addShoeEquip(true, itemCfg);
-        addShoeEquip(false, itemCfg);
-    }
-    public void addLegEquip(ItemDefinition itemCfg)  {
-        Component parent = 	bodyComponent.findChild("human_l_b_leg");
-        addChild(parent, "pants", itemCfg);
-    }
-    public void addBodyEquip(ItemDefinition itemCfg)  {
-        Component parent = 	bodyComponent.findChild("human_body");
-        addChild(parent, "armor", itemCfg);
-    }
-
-    public void addHandEquip(ItemDefinition itemCfg)  {
-        //Shape shape = itemCfg.getShape();
-        Component parent = 	bodyComponent.findChild("rhuman_hand");
-        addChild(parent, "weapon", itemCfg);
-    }
-
-
-         /*trianglesCount= floatBuffer.position()/8;
-        if(trianglesCount<=0){
-            LogUtil.println("trianglesCount can't be 0");
-            System.exit(1);
-        }*/
-        // ShaderManager.livingThingShaderConfig.getVao().setVertices();
-        // ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
-        /*if(ShaderManager.livingThingShaderConfig.getVao().getVaoId()<=0){
-            LogUtil.println("vaoId can't be 0");
-            System.exit(1);
-        }*/
 
 
         public void renderShader(){

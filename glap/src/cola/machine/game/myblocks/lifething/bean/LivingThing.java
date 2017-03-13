@@ -33,16 +33,8 @@ public class LivingThing extends LivingThingBean {
     public float headAngle =0  ;
     public float headAngle2 =0  ;*/
     public LivingThing(int id){
-        this.currentState = new IdleState(this);
-       this.setExecutor(new Executor(this));
-        this.setId(id);//(int)(Math.random()*1000000);
-        this.walkDir=new  GL_Vector(1,0,0);
-
-
-        changeProperty();
-
-        this.nowBlood=this.blood;
-        this.nowEnergy=this.energy;
+       super(id);
+        this.setExecutor(new Executor(this));
     }
 
    /* public long updateTime;
@@ -88,9 +80,6 @@ public class LivingThing extends LivingThingBean {
 
 
 
-    public void setStable(boolean flag) {
-        this.stable = flag;
-    }
 
     //private WeakReference<LivingThing> target;
     /*public LivingThing getTarget(){
@@ -107,7 +96,7 @@ public class LivingThing extends LivingThingBean {
         this.target=new WeakReference<LivingThing>(target);
     }*/
 
-    public void disapper(){
+    /*public void disapper(){
         this.exist=false;
     }
     public String getState(){
@@ -115,11 +104,11 @@ public class LivingThing extends LivingThingBean {
                 +"智力:"+baseIntell+"/"+totalIntell+"\n"
                 +"敏捷:"+baseAgility+"/"+totalAgility+"\n"
                 +"精神:"+baseSpirit+"/"+totalSpirit+"\n"
-                +"血量:"+nowBlood+"/"+blood+"\n"
-                +"魔法:"+nowEnergy+"/"+energy+"\n"
-                +"防御:"+fangyu+"";
-    }
-    public void drop() {
+                +"血量:"+nowHP+"/"+HP+"\n"
+                +"魔法:"+nowMP+"/"+MP+"\n"
+                +"防御:"+defense+"";
+    }*/
+   /* public void drop() {
 
         // ��¼��ǰ��ʱ��
         this.stable=false;
@@ -127,13 +116,8 @@ public class LivingThing extends LivingThingBean {
         preY = (int) this.position.y;
         lastTime = Sys.getTime();
 
-    }
-
-    public void died(){
-        this.nowBlood=0;
-        died=true;
-
-    }
+    }*/
+/*
     public void changeProperty( ){
    // totalPower = basePower+
 
@@ -151,9 +135,9 @@ public class LivingThing extends LivingThingBean {
 
 
 
-    }
+    }*/
 
-    public void acculateProperty(Component component){
+    /*public void acculateProperty(Component component){
         //try{
         if(component!=null && component.children!=null)
         for(int i=component.children.size()-1;i>=0;i--){
@@ -167,11 +151,11 @@ public class LivingThing extends LivingThingBean {
             if(child.children!=null){
                 acculateProperty(child);
             }
-        }/*}catch(StackOverflowError e ){
+        }*//*}catch(StackOverflowError e ){
             e.printStackTrace();
-        }*/
-    }
-    public void flip(int y) {
+        }*//*
+    }*/
+   /* public void flip(int y) {
         mark = y;
         limit = 0;
     }
@@ -181,11 +165,11 @@ public class LivingThing extends LivingThingBean {
     }
 
 
-    public float RotatedX, RotatedY, RotatedZ;
+    public float RotatedX, RotatedY, RotatedZ;*/
 
     /*public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 */
-
+/*
     public void dropControl() {
         if(!Switcher.IS_GOD)
             if (!this.stable) {
@@ -208,7 +192,7 @@ public class LivingThing extends LivingThingBean {
                 }
 
             }
-    }
+    }*/
 
    // int vaoId;
     //int trianglesCount =0;
@@ -269,12 +253,14 @@ public class LivingThing extends LivingThingBean {
     }
 
     public void update(){
-         this.dropControl();
+        super.update();
+
         this.getModel().build();
-        this.currentState.update();
+       // this.currentState.update();
     }
 
 
+/*
 
 
     public void adjust(float posx, float posy, float posz) {
@@ -288,25 +274,18 @@ public class LivingThing extends LivingThingBean {
         position = new GL_Vector(posx, posy, posz);
     }
 
+*/
 
 
 
     public void beAttack(int damage){
-        this.nowBlood-=damage;
-        Document.needUpdate=true;
-        Client.messages.push(new SayCmd(this.getId(),this.name,"被攻击 损失"+damage+"点血"));
-        if(this.nowBlood<=0){
-            this.nowBlood=0;
+        super.beAttack(damage);
+        if(this.nowHP<=0){
             AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             manager.clear(getModel().bodyComponent);
             manager.apply(getModel().bodyComponent,"died");
 
         }
-    }
-
-     IdleState currentState ;
-    public void receive(GameCmd cmd ){
-        currentState.receive(cmd);
     }
 
 
@@ -325,16 +304,15 @@ public class LivingThing extends LivingThingBean {
 
 
         CoreRegistry.get(AnimationManager.class)
-                .apply(getModel().bodyComponent,"attack");
+                .apply(getModel().bodyComponent,"kan");
     }
 
-    public void beAttack(){
+    /*public void beAttack(){
+        super.beAttack();
 
 
-        CoreRegistry.get(AnimationManager.class)
-                .apply(getModel().bodyComponent,"beattack");
 
-    }
+    }*/
 
 
 

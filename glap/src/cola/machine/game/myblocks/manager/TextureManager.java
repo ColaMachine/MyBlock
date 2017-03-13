@@ -329,7 +329,7 @@ public class TextureManager {
 
                     String icon = (String) map.get("icon");
                     item.setName(name);
-                    item.setIcon(this.getTextureInfo(icon));
+                    item.getItemModel().setIcon(this.getTextureInfo(icon));
                     String type = (String) map.get("type");
                /* if (type.equals("wear")) {*/
                     item.setType(Constants.ICON_TYPE_WEAR);

@@ -49,6 +49,9 @@ public class LoginHandler extends GameServerHandler {
 
             }
             if(playerBean.getPwd().equals(pwd)){
+
+                //初始化用户信息
+                playerBean.changeProperty();
                 serverContext.broadCast(new PlayerSynCmd(playerBean.getInfo()).toBytes());
                 //把所有人的信息都同步给他
                 userService.addOnlinePlayer(playerBean);

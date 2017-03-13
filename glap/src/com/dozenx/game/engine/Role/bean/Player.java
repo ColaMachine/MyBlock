@@ -50,7 +50,7 @@ public class Player extends LivingThing {
         // \r\n",UpVector.x,UpVector.y,UpVector.z);
 
         RightVector = GL_Vector.crossProduct(viewDir, upVector);
-        RotatedX = RotatedY = RotatedZ = 0.0f; // TO DO: should set these to
+        //RotatedX = RotatedY = RotatedZ = 0.0f; // TO DO: should set these to
         // correct values
 
 		/*head.setHead(0,  3, 0, dirx, diry, dirz, upx, upy, upz);

@@ -50,7 +50,7 @@ public class BagCmd extends   BaseGameCmd{
 
         ByteBufferWrap wrap =   ByteUtil.createBuffer()
             .put(cmdType.getType())
-                .put( userId) .put( itemBeanList.size());;
+                 .put( userId) .put( itemBeanList.size());;
 
         for(int i=0;i<itemBeanList.size();i++){
             ItemServerBean itemBean  =  itemBeanList .get(i);

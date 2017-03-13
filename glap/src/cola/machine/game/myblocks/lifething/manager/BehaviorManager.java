@@ -37,10 +37,10 @@ public class BehaviorManager extends    Thread{
         return animationManager;
     }
     public void attack(Role from, Role to){
-        from.attack();
-        to.beAttack();
-        /*getAnimationManager().apply(from.bodyComponent,"attack");
-        getAnimationManager().apply(to.bodyComponent,"beattack");*/
+       /* from.attack();
+        to.beAttack();*/
+        getAnimationManager().apply(from.getModel().bodyComponent,"kan");
+        getAnimationManager().apply(to.getModel().bodyComponent,"kan");
 
     }
 

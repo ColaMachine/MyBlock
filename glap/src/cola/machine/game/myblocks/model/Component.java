@@ -234,7 +234,7 @@ this.secnum =secnum;
 
 
         if(this.itemDefinition !=null){
-            this.itemDefinition.renderShader( config ,   matrix);
+            this.itemDefinition.getItemModel().renderShader( config ,   matrix);
             // return;
         }
 
@@ -297,7 +297,7 @@ this.secnum =secnum;
         }*/
 
         if(this.itemDefinition !=null){
-            this.itemDefinition.render();
+            this.itemDefinition.getItemModel().render();
            // return;
         }
 
@@ -544,7 +544,7 @@ this.secnum =secnum;
     public void setShape(Shape shape){
         if(shape.getShapeType()==2){
             this.itemDefinition=TextureManager.getItemDefinition(shape.getName());
-            itemDefinition.init();
+            itemDefinition.getItemModel().init();
         }
 
         this.name= shape.getName();

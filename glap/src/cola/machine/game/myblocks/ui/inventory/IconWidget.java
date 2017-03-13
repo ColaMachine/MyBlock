@@ -81,7 +81,7 @@ public class IconWidget extends Widget {
       // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
-        icon2=itemBean.getItemDefinition().getIcon();
+        icon2=itemBean.getItemDefinition().getItemModel().getIcon();
         if(icon2==  null){
             assert icon2!=null;
         }

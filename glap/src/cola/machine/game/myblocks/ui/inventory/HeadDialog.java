@@ -130,13 +130,13 @@ public class HeadDialog extends FadeFrame {
 
 
             OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 4, 150, 20, lineWdith, borderColor, whiteColor);
-            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 4, 150 * livingThing.nowBlood / livingThing.blood, 20, lineWdith, borderColor, redColor);
+            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 4, 150 * livingThing.nowHP / livingThing.HP, 20, lineWdith, borderColor, redColor);
 
             OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 30, 150, 20, lineWdith, borderColor, whiteColor);
-            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 30, 150 * livingThing.nowEnergy / livingThing.energy, 20, lineWdith, borderColor, blue);
+            OpenglUtils.glFillRect(this.getInnerX() + 44, this.getInnerY() + 30, 150 * livingThing.nowMP / livingThing.MP, 20, lineWdith, borderColor, blue);
 
-            font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+4,livingThing.nowBlood+"/"+livingThing.blood);
-            font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+30,livingThing.nowEnergy+"/"+livingThing.energy);
+            font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+4,livingThing.nowHP+"/"+livingThing.HP);
+            font.drawText(getAnimationState(),getInnerX()+44,getInnerY()+30,livingThing.nowMP+"/"+livingThing.MP);
 
 
 /*

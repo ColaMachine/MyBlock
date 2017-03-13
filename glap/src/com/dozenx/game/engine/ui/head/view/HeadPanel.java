@@ -120,11 +120,11 @@ public class HeadPanel extends HtmlObject {
 
         if(livingThing!=null){
 
-            int width_= 100*livingThing.nowBlood/livingThing.blood;
+            int width_= 100*livingThing.nowHP/livingThing.HP;
             if(width_ ==0)width_=1;
             this.bloodBar.setWidth(width_);
 
-            this.blueBar.setWidth(100*livingThing.nowEnergy/livingThing.energy);
+            this.blueBar.setWidth(100*livingThing.nowMP/livingThing.MP);
             super.update();
         }else{
             this.setVisible(false);
@@ -134,8 +134,8 @@ public class HeadPanel extends HtmlObject {
     }
     public HeadPanel bind(LivingThing livingThing){
         this.livingThing=livingThing;
-        this.bloodBar.setWidth(100*livingThing.nowBlood/livingThing.blood);
-        this.blueBar.setWidth(100*livingThing.nowEnergy/livingThing.energy);
+        this.bloodBar.setWidth(100*livingThing.nowHP/livingThing.HP);
+        this.blueBar.setWidth(100*livingThing.nowMP/livingThing.MP);
         Document.needUpdate=true;
         return this;
     }

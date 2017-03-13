@@ -20,9 +20,19 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ItemDefinition {
-    Block[] blocks;
+   /* Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
+    TextureInfo icon;*/
     private ItemType itemType;
+    private ItemModel itemModel = new ItemModel();
+
+    public ItemModel getItemModel() {
+        return itemModel;
+    }
+
+    public void setItemModel(ItemModel itemModel) {
+        this.itemModel = itemModel;
+    }
 
     public ItemType getItemType() {
         return itemType;
@@ -33,7 +43,7 @@ public class ItemDefinition {
     }
 
     String name;
-    TextureInfo icon;
+
     int type;
     String remark;
     int spirit;
@@ -49,14 +59,14 @@ public class ItemDefinition {
     public void setShape(Shape shape) {
         this.shape = shape;
     }
-
+/*
     public TextureInfo getIcon() {
         return icon;
     }
 
     public void setIcon(TextureInfo icon) {
         this.icon = icon;
-    }
+    }*/
 
     int position;
 
@@ -125,7 +135,7 @@ public class ItemDefinition {
     public void setPosition(int position) {
         this.position = position;
     }
-
+/*
 
     public void init1(){
         List<Block> list = new ArrayList<Block>();
@@ -140,8 +150,8 @@ public class ItemDefinition {
             int maxX = (int)(height*this.icon.maxX);
             int minY=height-(int)(height*this.icon.maxY);
             int maxY= height-(int)(height*this.icon.minY);
-           /* int minY=height-(int)(height*this.icon.maxY);
-            int maxY= height-(int)(height*this.icon.minY);*/
+           *//* int minY=height-(int)(height*this.icon.maxY);
+            int maxY= height-(int)(height*this.icon.minY);*//*
             int[] pix = this.icon.img.getPixelInts();
             int length = pix.length;
             for (int i = minX; i < maxX; i++)
@@ -166,7 +176,7 @@ public class ItemDefinition {
             // VIP Auto-generated catch block
             e.printStackTrace();
         }
-    }
+    }*//*
     public void init() {
         if(blocks!=null){
             return;
@@ -240,8 +250,8 @@ public class ItemDefinition {
             // VIP Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
+    }*/
+/*
     public void init3 () {
         int height=  this.icon.img
                 .h;
@@ -279,7 +289,7 @@ public class ItemDefinition {
             // VIP Auto-generated catch block
             e.printStackTrace();
         }
-    }
+    }*/
 
     public static void main(String args[]){
         int value = 111111111;
@@ -303,11 +313,11 @@ public class ItemDefinition {
 
     }
 
-    public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix){
+    /*public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix){
             //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
-        /*rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -90*3.14f/180, 0, 0));
+        *//*rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -90*3.14f/180, 0, 0));
             rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -45*3.14f/180));
-*/
+*//*
         if(blocks==null){
             this.init();
         }
@@ -345,5 +355,5 @@ public class ItemDefinition {
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             //GL11.glTranslatef(-x+2,-y, -z);
             //GL11.glRotated(-180, 0, 1, 0);
-        }
+        }*/
 }

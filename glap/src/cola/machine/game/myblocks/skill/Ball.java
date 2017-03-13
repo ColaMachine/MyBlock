@@ -16,6 +16,15 @@ import org.lwjgl.opengl.GL11;
 public class Ball  {
     LivingThingBean from ;
     GL_Vector position;
+
+    public GL_Vector getPosition() {
+        return position;
+    }
+
+    public void setPosition(GL_Vector position) {
+        this.position = position;
+    }
+
     GL_Vector direction;
    float sumDistance=0;
     int distance=40;

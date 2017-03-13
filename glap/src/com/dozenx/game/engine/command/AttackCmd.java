@@ -42,6 +42,16 @@ public class AttackCmd extends BaseGameCmd{
     }
 
     private CmdType cmdType = CmdType.ATTACK;
+    private int attackValue ;
+
+    public int getAttackValue() {
+        return attackValue;
+    }
+
+    public void setAttackValue(int attackValue) {
+        this.attackValue = attackValue;
+    }
+
     public AttackCmd(byte[] bytes){
         parse(bytes);
     }
@@ -58,6 +68,7 @@ public class AttackCmd extends BaseGameCmd{
                 .put(userId)
                 .put(attackType.ordinal())
                 .put(targetId)
+                .put(attackValue)
                .array();
 
     }
@@ -68,7 +79,7 @@ public class AttackCmd extends BaseGameCmd{
 
         int attackTypeVal = byteBufferWrap.getInt();
         this.targetId= byteBufferWrap.getInt();
-
+        this.attackValue= byteBufferWrap.getInt();
         if(attackTypeVal>=0){
             this.attackType=AttackType.values()[attackTypeVal];
         }

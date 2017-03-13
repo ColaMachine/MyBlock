@@ -1,11 +1,16 @@
 package com.dozenx.game.engine.Role.bean;
 
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.model.ui.html.Document;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.Role.bean.item.CommonEquipProperties;
 import com.dozenx.game.engine.Role.bean.item.EquipProperties;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.Role.model.Model;
+import com.dozenx.game.engine.command.SayCmd;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -134,8 +139,27 @@ public class Role extends CommonEquipProperties {
     public void attack(){
 
     }
-    public void beAttack(){
+    public void beAttack(int harmValue){
+        if(this.died){
+
+        return;
+
+        }
+        CoreRegistry.get(AnimationManager.class)
+                .apply(getModel().bodyComponent,"kan");
+        int damage=harmValue;
+        this.nowHP-=damage;
+        Document.needUpdate=true;
+        Client.messages.push(new SayCmd(this.getId(),this.name,"被攻击 损失"+damage+"点血"));
+        if(this.nowHP<=0){
+            this.died=true;
+            this.nowHP=0;
+            return;
+
+
+        }
 
     }
+
 
 }

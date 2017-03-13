@@ -87,5 +87,28 @@ public class EquipProperties extends ItemProperties{
         }
 
 
+    public void changeProperty( ){
+        super.changeProperty();
+        /*// totalPower = basePower+
 
+        // acculateProperty(this.getExecutor().getModel().bodyComponent);
+        ItemBean
+        if(this.handEquip!=null){
+            this.totalPower+=this.handEquip.getItemDefinition().getStrenth();
+            this.totalAgility+=this.handEquip.getItemDefinition().getStrenth();
+        }
+
+
+        totalAgility=this.baseAgility;
+        totalIntell=this.baseIntell;
+
+        totalSpirit=this.baseSpirit;
+
+        this.HP=this.totalPower;
+        this.MP=this.totalIntell;
+
+*/
+
+
+    }
 }
