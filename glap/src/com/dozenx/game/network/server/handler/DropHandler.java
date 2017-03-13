@@ -1,9 +1,6 @@
 package com.dozenx.game.network.server.handler;
 
-import com.dozenx.game.engine.command.AttackCmd;
-import com.dozenx.game.engine.command.DropCmd;
-import com.dozenx.game.engine.command.GameCmd;
-import com.dozenx.game.engine.command.ResultCmd;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
@@ -28,17 +25,38 @@ public class DropHandler extends GameServerHandler {
         super(serverContext);
         enemyService = (EnemyService)serverContext.getService(EnemyService.class);
         userService = (UserService)serverContext.getService(UserService.class);
+        bagService =(BagService)serverContext.getService(BagService.class);
     }
     public ResultCmd handler(GameServerRequest request, GameServerResponse response){
 
         DropCmd cmd =(DropCmd) request.getCmd();
+
         LivingThingBean from = userService.getOnlinePlayerById(cmd.getUserId());
+        if(from!=null){
+            ItemServerBean[] itemAry = bagService.getItemAryUserId(from.getId());
 
-        ItemServerBean[] itemAry = bagService.getItemAryUserId(from.getId());
+            for(int i=0;i<itemAry.length;i++){
+                if(itemAry[i]!=null && itemAry[i].getId() == cmd.getItemId()){
+                    itemAry[i].setX(from.getX());
+                    itemAry[i].setY(from.getY());
+                    itemAry[i].setZ(from.getZ());
 
-        itemAry[42]=null;
+                    bagService.addWorldItem( itemAry[i]);
+                    cmd.setItemType(ItemType.values()[itemAry[i].getItemType()]);
+                    cmd.setNum(itemAry[i].getNum());
+                    cmd.setX(from.getX());
+                    cmd.setY(from.getY());
+                    cmd.setZ(from.getZ());
+                    itemAry[i]=null;
+                    broadCast(cmd);
+                    return null;
+                }
+            }
+            //worldItem add something
 
-        broadCast(cmd);
+        }
+
+
         //更新其他附近人的此人的装备属性
         return null;
     }

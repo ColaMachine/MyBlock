@@ -307,5 +307,14 @@ public class GLCamera {
 
 		org.lwjgl.opengl.Util.checkGLError();
 
+
+
+		glUseProgram(GamingState.instance.shaderManager.dropItemShaderConfig.getProgramId());
+		org.lwjgl.opengl.Util.checkGLError();
+
+		glUniformMatrix4(GamingState.instance.shaderManager.dropItemShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
+
+		org.lwjgl.opengl.Util.checkGLError();
+
 	}
 }

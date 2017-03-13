@@ -82,4 +82,13 @@ public class BagService extends GameServerService {
 
 
     }
+
+
+
+    public void addWorldItem(ItemServerBean item){
+        serverContext.worldItem.add(item);
+    }
+    public void removeWorldItem(ItemServerBean item){
+        serverContext.worldItem.remove(item);
+    }
 }

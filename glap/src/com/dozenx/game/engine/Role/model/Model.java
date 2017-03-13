@@ -165,6 +165,7 @@ public class Model {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
                 }
+
                 Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
                 component.setShape(itemCfg.getShape());
                 component.name = name;

@@ -37,8 +37,8 @@ public class SynchronTask extends Thread{
                             + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;*/
                     client.send(new PosCmd(LivingThingManager.player));
                 }
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
+                Thread.sleep(1000);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
@@ -33,8 +34,9 @@ public class LivingThing extends LivingThingBean {
     public float headAngle =0  ;
     public float headAngle2 =0  ;*/
     public LivingThing(int id){
-       super(id);
+        super(id);
         this.setExecutor(new Executor(this));
+        this.getExecutor().setCurrentState(new IdleState(this));
     }
 
    /* public long updateTime;
@@ -322,19 +324,19 @@ public class LivingThing extends LivingThingBean {
 
 
         if(info.getBodyEquip()>0){
-            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
+            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         }if(info.getHeadEquip()>0){
-            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         }if(info.getHandEquip()>0){
-            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
+            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         }if(info.getLegEquip()>0){
-            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
+            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         }if(info.getFootEquip()>0){
-            getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getFootEquip()]));
+            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         }
     }

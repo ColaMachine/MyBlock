@@ -32,8 +32,8 @@ public class TextureManager {
 
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
-    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
-    public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();
+/*    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
+    public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();*/
     public static HashMap<String, Shape> shapeMap = new HashMap<String, Shape>();
 
     public HashMap<String, ImageInfo> ImageInfoMap = new HashMap<>();
@@ -47,7 +47,7 @@ public class TextureManager {
             loadImage();
             loadTexture();
             loadShape();
-            loadItem();
+            //loadItem();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -167,6 +167,7 @@ public class TextureManager {
 
     }
 
+/*
 
     public void putItemDefinition(String name, ItemDefinition item) {
         this.itemDefinitionMap.put(name, item);
@@ -202,6 +203,7 @@ public class TextureManager {
         }
         return itemCfg;
     }
+*/
 
     public void putImage(String name, String textureImagePath) {
         File file = installPath.resolve(textureImagePath).toFile();
@@ -313,6 +315,7 @@ public class TextureManager {
         }
 
     }
+/*
 
     public void loadItem() throws Exception {
 
@@ -329,9 +332,11 @@ public class TextureManager {
 
                     String icon = (String) map.get("icon");
                     item.setName(name);
-                    item.getItemModel().setIcon(this.getTextureInfo(icon));
+
                     String type = (String) map.get("type");
-               /* if (type.equals("wear")) {*/
+               */
+/* if (type.equals("wear")) {*//*
+
                     item.setType(Constants.ICON_TYPE_WEAR);
                     String position = (String) map.get("position");
                     if (position.equals("head")) {
@@ -357,16 +362,24 @@ public class TextureManager {
                     item.setStrenth(strenth);
 
                     String shapeName = (String) map.get("shape");
+
+
+                    item.getItemModel().setIcon(this.getTextureInfo(icon));
                     Shape shape = this.getShape(shapeName);
-                  /*  if(shapeName.equals("iron_helmet")){
-                        System.out.println(shape==null);
-                    }*/
                     item.setShape(shape);
+                  */
+/*  if(shapeName.equals("iron_helmet")){
+                        System.out.println(shape==null);
+                    }*//*
+
+
 
                     //item.init();
-               /* } else if (type.equals("food")) {
+               */
+/* } else if (type.equals("food")) {
                     item.setType(Constants.ICON_TYPE_FOOD);
-                }*/
+                }*//*
+
                     this.putItemDefinition(name, item);
 
 
@@ -379,6 +392,7 @@ public class TextureManager {
         }
 
     }
+*/
 
 
     public void loadShape() throws Exception {
@@ -490,8 +504,8 @@ public class TextureManager {
         TextureInfo textureInfo = textureInfoMap.get(name);
         if (textureInfo == null) {
             assert textureInfo != null;
-            LogUtil.println("textureinfo 为空" + name);
-            System.exit(0);
+            LogUtil.err("textureinfo 为空" + name);
+           // System.exit(0);
         }
         return textureInfo;
     }

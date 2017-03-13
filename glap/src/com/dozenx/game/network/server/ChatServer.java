@@ -4,12 +4,14 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.CmdType;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.handler.*;
 import com.dozenx.game.network.server.service.EnemyManager;
 import com.dozenx.game.network.server.service.impl.BagService;
 import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
+import core.log.LogUtil;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -46,8 +48,16 @@ public class ChatServer {
         serverContext. registerHandler(CmdType.BAG,new BagHandler(serverContext));
         serverContext. registerHandler(CmdType.BAGCHANGE,new BagChangeHandler(serverContext));
         serverContext. registerHandler(CmdType.ATTACK,new AttackHandler(serverContext));
+        serverContext. registerHandler(CmdType.DROP,new DropHandler(serverContext));
 
-
+        ItemManager itemManager =new ItemManager();
+        CoreRegistry.put(ItemManager.class,itemManager);
+        try {
+            itemManager.loadItem();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.err(e);
+        }
 
         /*  loadAllUserInfo();
         loadAllEnemy();
@@ -67,7 +77,7 @@ public class ChatServer {
 
 
         timer = new Timer();
-        timer.schedule(new SaveTask(serverContext),0, 60*1000);
+        timer.schedule(new SaveTask(serverContext),0, 10*1000);
         System.out.println("Task scheduled.");
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {

@@ -74,7 +74,7 @@ public class LoginHandler extends GameServerHandler {
 
             /*    wrap.put( new PlayerSynCmd(info).toBytes());
                 wrap.put( new BagCmdb(playerBean.getId(),serverContext.getItemByUserId(playerBean.getId())).toBytes());*/
-              BagCmd bagCmd    =new BagCmd(playerBean.getId(),bagService.getItemByUserId(playerBean.getId()));
+                BagCmd bagCmd    =new BagCmd(playerBean.getId(),bagService.getItemByUserId(playerBean.getId()));
                 byte[] bagBytes=bagCmd.toBytes();
                 request.getWorker().send(bagBytes);
                 return new ResultCmd(0, new PlayerSynCmd(info).toBytes(),loginCmd.getThreadId());

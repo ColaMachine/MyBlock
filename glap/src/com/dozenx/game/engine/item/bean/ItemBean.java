@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.manager.TextureManager;
+import com.dozenx.game.engine.item.action.ItemManager;
 
 /**
  * Created by luying on 16/7/3.
@@ -41,7 +42,7 @@ public class ItemBean  {
 
     public ItemBean(String itemName, int num)
     {
-        this.itemDefinition= TextureManager.getItemDefinition(itemName);
+        this.itemDefinition= ItemManager.getItemDefinition(itemName);
         this.num=num;
     }
     /*public String getName() {

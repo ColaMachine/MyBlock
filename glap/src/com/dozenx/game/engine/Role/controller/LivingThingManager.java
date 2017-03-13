@@ -309,15 +309,15 @@ public class LivingThingManager {
 
 
 
-                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addBodyEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HEAD){
-                    livingThing.getModel().addHeadEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addHeadEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HAND){
-                    livingThing.getModel().addHandEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addHandEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.LEG){
-                    livingThing.getModel().addLegEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addLegEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.FOOT){
-                    livingThing.getModel().addShoeEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                    livingThing.getModel().addShoeEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }
             }
 
@@ -414,15 +414,21 @@ public class LivingThingManager {
         while(client.drops.size()>0 && client.drops.peek()!=null){
             DropCmd cmd = client.drops.pop();
             int userId = cmd.getUserId();
-            if(userId == player.getId()){
+
+            LivingThing from = this.getLivingThingById(userId);
+            if(from != null){
+                from.getExecutor().receive(cmd);
+            }else{
+                player.getExecutor().receive(cmd);
+            }
+
+         /*   if(userId == player.getId()){
                 player.getItemBeans()[24]=null;
             }else{
 
             }
-
-
-            ItemManager.add(new Ball(player.getPosition(),null,0,TextureManager.getShape("arrow"),player));
-            CoreRegistry.get(BagController.class).refreshBag();
+            ItemManager.add(new Ball(player.getPosition().getClone(),player.getWalkDir().getClone(),0,TextureManager.getShape("arrow"),player));
+            CoreRegistry.get(BagController.class).refreshBag();*/
             //livingThing.receive(cmd);
         }
        /* while(client.newborns.size()>0 && client.newborns.peek()!=null){

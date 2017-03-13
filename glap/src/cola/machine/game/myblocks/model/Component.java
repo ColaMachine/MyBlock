@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.engine.Constants;
+import com.dozenx.game.engine.item.action.ItemManager;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
@@ -210,6 +211,40 @@ this.secnum =secnum;
         GL_Vector newVector = GL_Vector.rotateWithZ(oldVector,degree);
         GL_Vector newPoint = GL_Vector.add(newAxis,newVector);
         return newPoint;
+    }
+    public void build2d(ShaderConfig config ,  GL_Matrix matrix){
+
+        if(this.itemDefinition !=null){
+            this.itemDefinition.getItemModel().renderShader( config ,   matrix);
+            // return;
+       }
+
+    /*    if(front!=null) {
+            // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
+            ShaderUtils.draw3dImage(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer, config);
+        }
+        if(back!=null) {
+            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
+            ShaderUtils.draw3dImage(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),back,floatBuffer, config);
+        }
+        if(top!=null) {
+            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
+            ShaderUtils.draw3dImage(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),top,floatBuffer, config);
+        }
+
+        if(bottom!=null) {
+            ShaderUtils.draw3dImage(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),bottom,floatBuffer, config);
+        }
+        if(left!=null) {
+            ShaderUtils.draw3dImage(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),left,floatBuffer, config);
+        }
+        if(right!=null) {
+            ShaderUtils.draw3dImage(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),right,floatBuffer, config);
+        }
+        for(int i=0;i<children.size();i++){
+            children.get(i).build(config,rotateMatrix);
+        }
+*/
     }
     public void build(ShaderConfig config ,  GL_Matrix matrix){
         FloatBuffer floatBuffer = config.getVao().getVertices();
@@ -543,7 +578,7 @@ this.secnum =secnum;
     }
     public void setShape(Shape shape){
         if(shape.getShapeType()==2){
-            this.itemDefinition=TextureManager.getItemDefinition(shape.getName());
+            this.itemDefinition= ItemManager.getItemDefinition(shape.getName());
             itemDefinition.getItemModel().init();
         }
 

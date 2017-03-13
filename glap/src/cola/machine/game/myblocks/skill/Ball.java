@@ -4,8 +4,12 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.bean.LivingThingBean;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -34,14 +38,15 @@ public class Ball  {
     int height;
     Long startTime;
     Component component;
-    public Ball(GL_Vector position ,GL_Vector direction,float speed,Shape shape,LivingThingBean from){
+    ItemDefinition itemDefinition;
+    public Ball(GL_Vector position , GL_Vector direction, float speed, ItemType itemType, LivingThingBean from){
         this.from = from;
         component= new Component(1,1,1);
-startTime=System.currentTimeMillis();
+        startTime=System.currentTimeMillis();
         this.speed = speed;
         this.position =position;
         this.direction=direction;
-        component.setShape(shape);
+        itemDefinition = ItemManager.getItemDefinition(itemType);
         //component.setItem();
     }
    /* public Ball(GL_Vector position ,GL_Vector direction,float speed,ItemD shape){
@@ -53,19 +58,18 @@ startTime=System.currentTimeMillis();
         component.setShape(shape);
         component.setItem();
     }*/
-    public void update(){
-        Long nowTime=System.currentTimeMillis()-startTime;
-        startTime= System.currentTimeMillis();
-        float _distance = speed*nowTime/1000;
-        sumDistance+=_distance;
-        this.position.x+= this.direction.x*_distance;
-        this.position.y+= this.direction.y*_distance;
-        this.position.z+= this.direction.z*_distance;
+    public boolean jinzhi;
+    public void update(ShaderConfig shaderConfig ){
+        if( speed>0) {
+            Long nowTime = System.currentTimeMillis() - startTime;
+            startTime = System.currentTimeMillis();
+            float _distance = speed * nowTime / 1000;
+            sumDistance += _distance;
+            this.position.x += this.direction.x * _distance;
+            this.position.y += this.direction.y * _distance;
+            this.position.z += this.direction.z * _distance;
 
-       /* GamingState.instance.lightPos.x= this.position.x;
-        GamingState.instance.lightPos.y= this.position.y;
-        GamingState.instance.lightPos.z= this.position.z;
-        GamingState.lightPosChanged=true;*/
+        }
         if(sumDistance>distance){
             this.died=true;
         }
@@ -81,7 +85,8 @@ startTime=System.currentTimeMillis();
 
 
        //GL_Matrix.rotateMatrix(direction.x,direction.y,direction.z);
-        component.build(ShaderManager.anotherShaderConfig,rotateMatrix);
+       // component.build2d (shaderConfig,rotateMatrix);
+        this.itemDefinition.getItemModel().renderShader( shaderConfig ,   rotateMatrix);
     }
     public void render(){
 //        LogUtil.println(position.toString());

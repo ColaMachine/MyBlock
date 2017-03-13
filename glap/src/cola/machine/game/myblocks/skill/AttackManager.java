@@ -30,7 +30,7 @@ public class AttackManager {
                     LivingThingManager.livingThings.get(j).beAttack(5);
                 }
             }
-            ball.update();
+            ball.update(ShaderManager.anotherShaderConfig);
             if(ball.died){
                 list.remove(i);
             }
@@ -38,7 +38,7 @@ public class AttackManager {
         ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),new int[]{3,3,3,1});
     }
 
-    public static void update2(){
+   /* public static void update2(){
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
             GL_Vector vector = ball.position;
@@ -58,7 +58,7 @@ public class AttackManager {
             }
         }
 
-    }
+    }*/
     public static void render(){
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);

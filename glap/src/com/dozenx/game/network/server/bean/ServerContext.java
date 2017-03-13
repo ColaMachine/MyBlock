@@ -26,9 +26,11 @@ public class ServerContext {
     public List<LivingThingBean> allPlayer =  new ArrayList<>();
     //private Map<Integer,List<ItemServerBean>> itemsMap =  new HashMap<Integer,List<ItemServerBean>>();
     public Map<Integer,ItemServerBean[]> itemArrayMap =  new HashMap<Integer,ItemServerBean[]>();
+    public List<ItemServerBean> worldItem = new ArrayList<>();
     public List<Worker> getWorkers() {
         return workers;
     }
+
 
     public void addWorker(Worker worker){
         this.workers.add(worker);

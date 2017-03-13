@@ -65,7 +65,7 @@ public class ShootState extends IdleState {
                 currentState = 4;
                 //livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch);
                 Ball ball = new Ball(this.livingThing.position.getClone(), GL_Vector.sub(this.livingThing.getTarget().position,
-                        this.livingThing.position), 10, TextureManager.getShape("arrow"),livingThing);
+                        this.livingThing.position), 10, ItemType.arrow,livingThing);
                 shooted = true;
                 AttackManager.add(ball);
             }

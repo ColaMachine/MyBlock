@@ -1,6 +1,6 @@
 package com.dozenx.game.engine.command;
 
-import cola.machine.game.myblocks.item.ItemManager;
+import cola.machine.game.myblocks.item.Item;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.ByteUtil;
@@ -10,6 +10,59 @@ import com.dozenx.util.ByteUtil;
  */
 public class DropCmd extends BaseGameCmd{
     private int userId;
+
+
+    private int itemId;
+
+    private ItemType  itemType;
+    private float x;
+    private float y;
+    private float z;
+    private int num;
+
+    private CmdType cmdType = CmdType.DROP;
+
+
+    public DropCmd(byte[] bytes){
+        parse(bytes);
+    }
+    public DropCmd(int userId, int itemId){
+        this.userId = userId;
+        this.itemId =itemId;
+
+    }
+    @Override
+    public byte[] toBytes(){
+        return ByteUtil.createBuffer().put(cmdType.getType())
+                .put(userId)
+                .put(itemId)
+                .put(itemType==null?0:itemType.ordinal())
+                .put(x).put(y).put(z).put(num)
+               .array();
+
+    }
+    public void parse(byte[] bytes){
+
+
+        ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
+        byteBufferWrap.getInt();
+        this.userId= byteBufferWrap.getInt();
+        itemId=byteBufferWrap.getInt();
+        int itemTypeIndex= byteBufferWrap.getInt();
+
+        this.itemType =ItemType.values()[itemTypeIndex];
+        this.x=byteBufferWrap.getFloat();
+        this.y=byteBufferWrap.getFloat();
+        this.z= byteBufferWrap.getFloat();;
+       this.num =  byteBufferWrap.getInt();
+
+
+    }
+    @Override
+    public CmdType getCmdType() {
+        return cmdType;
+    }
+
 
     public int getUserId() {
         return userId;
@@ -27,39 +80,43 @@ public class DropCmd extends BaseGameCmd{
         this.itemId = itemId;
     }
 
-    private int itemId;
-    private CmdType cmdType = CmdType.ATTACK;
-
-
-    public DropCmd(byte[] bytes){
-        parse(bytes);
+    public ItemType getItemType() {
+        return itemType;
     }
-    public DropCmd(int userId, int itemId){
-        this.userId = userId;
-        this.itemId =itemId;
 
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
     }
-    @Override
-    public byte[] toBytes(){
-        return ByteUtil.createBuffer().put(cmdType.getType())
-                .put(userId)
-                .put(itemId)
 
-               .array();
-
+    public float getX() {
+        return x;
     }
-    public void parse(byte[] bytes){
-        int num;
-        ItemType itemType ;
-        int itemId;
-        ByteBufferWrap byteBufferWrap = ByteUtil.createBuffer(bytes);
-        byteBufferWrap.getInt();
-        this.userId= byteBufferWrap.getInt();
-        itemId=byteBufferWrap.getInt();
 
+    public void setX(float x) {
+        this.x = x;
     }
-    @Override
-    public CmdType getCmdType() {
-        return cmdType;
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }

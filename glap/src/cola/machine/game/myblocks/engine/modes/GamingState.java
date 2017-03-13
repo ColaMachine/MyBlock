@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.engine.modes;
 
 import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
@@ -40,6 +41,7 @@ import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import core.log.LogUtil;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
@@ -441,7 +443,7 @@ if(!Switcher.SHADER_ENABLE)
 
             }
         document.update();OpenglUtils.checkGLError();
-
+        ItemManager.update();
     }
 
 
@@ -518,6 +520,7 @@ if(!Switcher.SHADER_ENABLE)
         }
         OpenglUtils.checkGLError();
         document.render();
+        ItemManager.render();
         AttackManager.render();
         OpenglUtils.checkGLError();
         //OpenglUtils.checkGLError();
@@ -618,6 +621,16 @@ if(!Switcher.SHADER_ENABLE)
         // AssetManager(moduleManager.getEnvironment()));
         //livingThingManager = new LivingThingManager();
         livingThingManager= CoreRegistry.get(LivingThingManager.class);
+
+
+        ItemManager itemManager =new ItemManager();
+        CoreRegistry.put(ItemManager.class,itemManager);
+        try {
+            itemManager.loadItem();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.err(e);
+        }
     }
 
     private void initEntities() {
