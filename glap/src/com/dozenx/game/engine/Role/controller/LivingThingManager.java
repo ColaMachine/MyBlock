@@ -431,6 +431,30 @@ public class LivingThingManager {
             CoreRegistry.get(BagController.class).refreshBag();*/
             //livingThing.receive(cmd);
         }
+
+        while(client.picks.size()>0 && client.picks.peek()!=null){
+            PickCmd cmd  = client.picks.pop();
+            int userId = cmd.getUserId();
+
+            LivingThing from = this.getLivingThingById(userId);
+            /*if(from != null){
+                from.getExecutor().receive(cmd);
+            }else{*/
+                player.getExecutor().receive(cmd);
+            //}
+
+
+            ItemManager.removeWorldItem(cmd.getItemId());
+
+         /*   if(userId == player.getId()){
+                player.getItemBeans()[24]=null;
+            }else{
+
+            }
+            ItemManager.add(new Ball(player.getPosition().getClone(),player.getWalkDir().getClone(),0,TextureManager.getShape("arrow"),player));
+            CoreRegistry.get(BagController.class).refreshBag();*/
+            //livingThing.receive(cmd);
+        }
        /* while(client.newborns.size()>0 && client.newborns.peek()!=null){
             String[] msg = client.movements.pop();
             int id = Integer.getInteger(msg[0]);

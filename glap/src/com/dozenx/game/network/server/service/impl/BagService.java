@@ -57,6 +57,18 @@ public class BagService extends GameServerService {
         return  ary;
 
     }
+
+    public ItemServerBean getWorldItemById(Integer id){
+
+        for(ItemServerBean item:serverContext.worldItem){
+            if(item.getId()== id ){
+                return item;
+            }
+        }
+
+        return  null;
+
+    }
     public List<ItemServerBean> getItemByUserId(Integer id){
         List<ItemServerBean> list = new ArrayList<>();
         ItemServerBean[] ary = serverContext.itemArrayMap.get(id);

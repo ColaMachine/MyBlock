@@ -31,8 +31,8 @@ public class CmdUtil {
             return new BagChangeCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.GET.ordinal()){
             return new GetCmd(bytes);
-        }else  if (cmdTypeVal ==  CmdType.DROP.ordinal()){
-            return new DropCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.PICK.ordinal()){
+            return new PickCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

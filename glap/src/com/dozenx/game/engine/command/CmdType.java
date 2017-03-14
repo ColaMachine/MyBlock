@@ -1,7 +1,11 @@
 package com.dozenx.game.engine.command;
 
+import com.dozenx.game.network.server.handler.GameServerHandler;
+import com.dozenx.game.network.server.handler.LoginHandler;
+import com.dozenx.game.network.server.handler.SayHandler;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
+import sun.plugin2.main.server.ResultHandler;
 
 /**
  * Created by dozen.zhang on 2017/2/13.
@@ -9,7 +13,7 @@ import core.log.LogUtil;
 public enum CmdType {
     SAY,
     RESULT,
-    MSG,
+    //MSG(MsgCmd,MsgHandler.class),
     LOGIN,
     EQUIP,
     POS,
@@ -17,6 +21,7 @@ public enum CmdType {
     BAG,
     BAGCHANGE,
     GET,
+    PICK,
     ATTACK,
     DROP,
     GROUP,
@@ -25,6 +30,10 @@ public enum CmdType {
     LIVI,
     WALK;
 
+    /*public CmdType(class<T> extends BaseGameCmd,class<T> extends GameServerHandler){
+
+
+    }*/
     public int getType(){
         return this.ordinal();
     }

@@ -18,6 +18,16 @@ import org.lwjgl.opengl.GL11;
  * Created by luying on 16/9/25.
  */
 public class Ball  {
+    int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     LivingThingBean from ;
     GL_Vector position;
 
@@ -86,7 +96,7 @@ public class Ball  {
 
        //GL_Matrix.rotateMatrix(direction.x,direction.y,direction.z);
        // component.build2d (shaderConfig,rotateMatrix);
-        this.itemDefinition.getItemModel().renderShader( shaderConfig ,   rotateMatrix);
+        this.itemDefinition.getItemModel().renderShader(shaderConfig, rotateMatrix);
     }
     public void render(){
 //        LogUtil.println(position.toString());

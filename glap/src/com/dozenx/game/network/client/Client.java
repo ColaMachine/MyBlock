@@ -30,6 +30,7 @@ public class Client extends Thread{
     public static Stack<AttackCmd> attacks=new Stack<>();
     public static Stack<BagCmd> bags=new Stack<>();
     public static Stack<DropCmd> drops=new Stack<>();
+    public static Stack<PickCmd> picks=new Stack<>();
    // public static Stack<GameCmd> newborns=new Stack<>();
     public static Map<Integer, GameCallBackTask> taskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
     public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();

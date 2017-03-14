@@ -33,7 +33,16 @@ import java.util.List;
  */
 public class ItemManager {
 
+public static void removeWorldItem(int itemId){
+    int index =0;
+    for(int i=list.size()-1;i>=0;i--){
+        Ball ball = list.get(i);
+        if(ball.getId() == itemId){
+            list.remove(i);
+        }
+    }
 
+}
 
     public static List<Ball> list =new ArrayList<>();
     public static void add(Ball ball){
