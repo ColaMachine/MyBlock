@@ -45,6 +45,7 @@ public class SayHandler extends GameServerHandler {
                     for(int i=0;i<beans.length;i++){
                         if(beans[i]==null){
                             beans[i]=new ItemServerBean();
+                            beans[i].setPosition(i);
                             beans[i].setId((int)(Math.random()*1000));
                             beans[i].setItemType(Integer.valueOf(arr[2]));
                             beans[i].setNum(Integer.valueOf(arr[3]));

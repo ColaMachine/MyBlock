@@ -15,9 +15,12 @@ import cola.machine.game.myblocks.skill.Ball;
 import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
+import com.dozenx.game.engine.command.DropCmd;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.command.PickCmd;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
 import core.log.LogUtil;
@@ -48,13 +51,19 @@ public static void removeWorldItem(int itemId){
     public static void add(Ball ball){
         list.add(ball);
     }
+    static float distance =0;
     public static void update(){
         ShaderManager.dropItemShaderConfig.getVao().getVertices().rewind();
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
             GL_Vector vector = ball.getPosition();
                 LivingThing player = CoreRegistry.get(Player.class);
-                if( GL_Vector.length(new GL_Vector(vector,player.getPosition()))<0.5){
+            distance = GL_Vector.length(new GL_Vector(vector,player.getPosition()));
+                if( distance<1.8){
+                    if(player.getItemBeansList().size()<24){
+                        CoreRegistry.get(Client.class).send(new PickCmd(player.getId(),ball.getId()));
+                    }
+
 
                     //TODO 拾取
                    // ball.=true;
@@ -75,8 +84,11 @@ public static void removeWorldItem(int itemId){
             Ball ball = list.get(i);
             ball.render();
         }
+        if(list.size()>0){
+            ShaderUtils.finalDraw(ShaderManager.dropItemShaderConfig,ShaderManager.dropItemShaderConfig.getVao());
+        }
 
-        ShaderUtils.finalDraw(ShaderManager.dropItemShaderConfig,ShaderManager.dropItemShaderConfig.getVao());
+
     }
 
     public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();

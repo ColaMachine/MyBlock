@@ -1,6 +1,7 @@
 package com.dozenx.game.network.server;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.service.impl.BagService;
@@ -31,6 +32,7 @@ public class SaveTask extends TimerTask {
         //保存包裹信息
         for(LivingThingBean livingThing:userService.getAllOnlinePlayer()){
             userService.save(livingThing.getInfo());
+
             bagService.save(livingThing.getId(),bagService.getItemByUserId(livingThing.getId()));
 
         }

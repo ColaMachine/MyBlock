@@ -33,6 +33,8 @@ public class CmdUtil {
             return new GetCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.PICK.ordinal()){
             return new PickCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.DROP.ordinal()){
+            return new DropCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

@@ -6,10 +6,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.skill.Ball;
-import com.dozenx.game.engine.command.AttackCmd;
-import com.dozenx.game.engine.command.AttackType;
-import com.dozenx.game.engine.command.DropCmd;
-import com.dozenx.game.engine.command.GameCmd;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.ItemUtil;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
@@ -44,8 +41,8 @@ public class State {
 
            // 遍历所有的物品
             if(livingThing== GamingState.player && cmd.getUserId() == livingThing.getId()){//是主角掉落的
-                ItemBean[] itemBeens = livingThing.getItemBeans();
-                for(int i=0;i<itemBeens.length;i++){
+                /* ItemBean[] itemBeens = livingThing.getItemBeans();
+               for(int i=0;i<itemBeens.length;i++){
                 ItemBean nowBean = itemBeens[i];
                 if(nowBean!=null && nowBean.getId()== cmd.getItemId()){
                     itemBeens[i]=null;
@@ -56,11 +53,38 @@ public class State {
 
 
                 }
-            }
+            }*/
             }else{//就是其他人掉落的 或者是数据同步到你机器上的 早就掉落的
 
             }
-            ItemManager.add(new Ball(new GL_Vector(cmd.getX(),cmd.getY(),cmd.getZ()),livingThing.getWalkDir().getClone(),0, cmd.getItemType(),livingThing));
+            ItemManager.add(new Ball(cmd.getItemId(),new GL_Vector(cmd.getX(),cmd.getY(),cmd.getZ()),livingThing.getWalkDir().getClone(),0, cmd.getItemType(),livingThing));
+            //livingThing.getItemBeans()[24]=null;
+
+
+
+
+        }else if(gameCmd instanceof PickCmd){
+            PickCmd cmd = (PickCmd ) gameCmd;
+
+            /*// 遍历所有的物品
+            if(livingThing== GamingState.player && cmd.getUserId() == livingThing.getId()){//是主角掉落的
+                ItemBean[] itemBeens = livingThing.getItemBeans();
+                for(int i=0;i<itemBeens.length;i++){
+                    ItemBean nowBean = itemBeens[i];
+                    if(nowBean==null && nowBean.getId()== cmd.getItemId()){
+                        itemBeens[i]=null;
+                        if(livingThing== GamingState.player){
+                            CoreRegistry.get(BagController.class).refreshBag();
+                            break;
+                        }
+
+
+                    }
+                }
+            }else{//就是其他人掉落的 或者是数据同步到你机器上的 早就掉落的
+
+            }*/
+            ItemManager.removeWorldItem(cmd.getItemId());
             //livingThing.getItemBeans()[24]=null;
 
 

@@ -431,7 +431,17 @@ public class LivingThingManager {
             CoreRegistry.get(BagController.class).refreshBag();*/
             //livingThing.receive(cmd);
         }
+        while(client.humanStates.size()>0 && client.humanStates.peek()!=null) {
+            UserBaseCmd cmd = (UserBaseCmd)client.humanStates.pop();
+            int userId = cmd.getUserId();
 
+            LivingThing from = this.getLivingThingById(userId);
+            if (from != null) {
+                from.getExecutor().receive(cmd);
+            } else {
+                player.getExecutor().receive(cmd);
+            }
+        }
         while(client.picks.size()>0 && client.picks.peek()!=null){
             PickCmd cmd  = client.picks.pop();
             int userId = cmd.getUserId();

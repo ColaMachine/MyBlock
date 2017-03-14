@@ -49,7 +49,26 @@ public class BagService extends GameServerService {
         }
 
     }
+    public boolean  addItemToSomeOneFromWorld(int userId,int itemId){
+        ItemServerBean item = getWorldItemById(itemId);
+        if(item!=null) {
 
+            ItemServerBean[] itemAry = getItemAryUserId(userId);
+
+            if (itemAry != null) {
+                for (int i = 0; i < itemAry.length; i++) {
+                    if (itemAry[i] == null) {
+                        itemAry[i] = item;
+                        item.setPosition(i);
+                        removeWorldItem(item);
+                        return true;
+
+                    }
+                }
+            }
+        }
+        return false;
+    }
     public ItemServerBean[] getItemAryUserId(Integer id){
 
         ItemServerBean[] ary = serverContext.itemArrayMap.get(id);
@@ -69,6 +88,8 @@ public class BagService extends GameServerService {
         return  null;
 
     }
+
+
     public List<ItemServerBean> getItemByUserId(Integer id){
         List<ItemServerBean> list = new ArrayList<>();
         ItemServerBean[] ary = serverContext.itemArrayMap.get(id);

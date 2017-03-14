@@ -42,7 +42,7 @@ public class CrashCheck {
                     }
                 }
                 if (chunk_corner == null) {
-                    LogUtil.err("may be the chunk_corner haven't been initialized the chunk_corner can't be null please debug it");
+                   // LogUtil.err("may be the chunk_corner haven't been initialized the chunk_corner can't be null please debug it");
                     return false;
                 }
 

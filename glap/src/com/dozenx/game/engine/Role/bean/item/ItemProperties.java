@@ -50,6 +50,14 @@ public class ItemProperties extends SkillProperties {
     }
     public void  setItems(List<ItemServerBean > list){
        // itemBeans.clear();
+        for(int i=0;i<this.itemBeans.length;i++){
+           /*if(bean.getPosition()>=list.size()){
+                   for(int i=0;i<list.size()-bean.getPosition()+1;i++){
+                       itemBeans.add(null);
+                   }
+           }*/
+            itemBeans[i]=null;
+        }
        for(ItemServerBean bean : list){
            /*if(bean.getPosition()>=list.size()){
                    for(int i=0;i<list.size()-bean.getPosition()+1;i++){

@@ -40,7 +40,7 @@ public class Ball  {
     }
 
     GL_Vector direction;
-   float sumDistance=0;
+    float sumDistance=0;
     int distance=40;
     boolean died=false;
     int width;
@@ -49,7 +49,8 @@ public class Ball  {
     Long startTime;
     Component component;
     ItemDefinition itemDefinition;
-    public Ball(GL_Vector position , GL_Vector direction, float speed, ItemType itemType, LivingThingBean from){
+    public Ball(int id ,GL_Vector position , GL_Vector direction, float speed, ItemType itemType, LivingThingBean from){
+        this.id=id;
         this.from = from;
         component= new Component(1,1,1);
         startTime=System.currentTimeMillis();

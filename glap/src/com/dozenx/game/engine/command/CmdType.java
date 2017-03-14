@@ -13,7 +13,7 @@ import sun.plugin2.main.server.ResultHandler;
 public enum CmdType {
     SAY,
     RESULT,
-    //MSG(MsgCmd,MsgHandler.class),
+    MSG,
     LOGIN,
     EQUIP,
     POS,

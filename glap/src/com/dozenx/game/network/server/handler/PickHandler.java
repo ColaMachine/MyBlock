@@ -28,8 +28,14 @@ public class PickHandler extends GameServerHandler {
 
         PickCmd cmd =(PickCmd) request.getCmd();
 
-        LivingThingBean from = userService.getOnlinePlayerById(cmd.getUserId());
-        if(from!=null){
+       // LivingThingBean from = userService.getOnlinePlayerById(cmd.getUserId());
+        if(bagService.addItemToSomeOneFromWorld(cmd.getUserId(),cmd.getItemId())){
+            broadCast(cmd);
+            BagCmd bagCmd = new BagCmd(cmd.getUserId(),bagService.getItemByUserId(cmd.getUserId()));
+            request.getWorker().send(bagCmd.toBytes());
+        }
+
+       /* if(from!=null){
             ItemServerBean item = bagService.getWorldItemById(cmd.getItemId());
 
             if(item!=null){
@@ -39,13 +45,16 @@ public class PickHandler extends GameServerHandler {
 
                     ItemServerBean[] itemAry = bagService.getItemAryUserId(from.getId());
 
+
+
                     for(int i=0;i<itemAry.length;i++){
                         if(itemAry[i]==null ){
                             itemAry[i]=item;
-
+                            item.setPosition(i);
                             bagService.removeWorldItem( item);
-                            
                             broadCast(cmd);
+                            BagCmd bagCmd = new BagCmd(from.getId(),bagService.getItemByUserId(from.getId()));
+                            request.getWorker().send(bagCmd.toBytes());
                             return null;
                         }
                     }
@@ -54,7 +63,7 @@ public class PickHandler extends GameServerHandler {
 
             //worldItem add something
 
-        }
+        }*/
 
 
         //更新其他附近人的此人的装备属性

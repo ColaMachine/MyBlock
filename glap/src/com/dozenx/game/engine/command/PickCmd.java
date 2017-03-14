@@ -6,15 +6,12 @@ import com.dozenx.util.ByteUtil;
 /**
  * Created by luying on 17/2/7.
  */
-public class PickCmd extends BaseGameCmd{
-    private int userId;
-
-
+public class PickCmd extends UserBaseCmd{
     private int itemId;
 
 
 
-    private CmdType cmdType = CmdType.DROP;
+    private CmdType cmdType = CmdType.PICK;
 
 
     public PickCmd(byte[] bytes){

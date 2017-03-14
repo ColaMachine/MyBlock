@@ -44,14 +44,19 @@ public class DropHandler extends GameServerHandler {
                     bagService.addWorldItem( itemAry[i]);
                     cmd.setItemType(ItemType.values()[itemAry[i].getItemType()]);
                     cmd.setNum(itemAry[i].getNum());
-                    cmd.setX(from.getX());
+                    cmd.setX(from.getX()-4);
                     cmd.setY(from.getY());
                     cmd.setZ(from.getZ());
                     itemAry[i]=null;
                     broadCast(cmd);
+                    BagCmd bagCmd =new BagCmd(from.getId(),from.getItemBeansList());
+                    request.getWorker().send(bagCmd.toBytes());
                     return null;
                 }
             }
+            //如果都没有遍历到那么强制更新物品包信息
+            BagCmd bagCmd =new BagCmd(from.getId(),from.getItemBeansList());
+            request.getWorker().send(bagCmd.toBytes());
             //worldItem add something
 
         }

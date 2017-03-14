@@ -31,6 +31,7 @@ public class Client extends Thread{
     public static Stack<BagCmd> bags=new Stack<>();
     public static Stack<DropCmd> drops=new Stack<>();
     public static Stack<PickCmd> picks=new Stack<>();
+    public static Stack<GameCmd> humanStates=new Stack<>();
    // public static Stack<GameCmd> newborns=new Stack<>();
     public static Map<Integer, GameCallBackTask> taskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
     public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();
@@ -258,6 +259,8 @@ public class Client extends Thread{
                         bags.push((BagCmd)cmd);
                     }else if (cmd.getCmdType()== CmdType.DROP) {
                        drops.push((DropCmd)cmd);
+                    }else if (cmd.getCmdType()== CmdType.PICK) {
+                        humanStates.push(cmd);
                     }
                     else if (cmd.getCmdType()== CmdType.RESULT) {
                          ResultCmd result = (ResultCmd) cmd;
