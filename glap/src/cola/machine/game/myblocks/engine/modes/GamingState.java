@@ -41,6 +41,7 @@ import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
@@ -97,7 +98,7 @@ public class GamingState implements GameState {
 
             initGL();
 
-            lastTime= System.currentTimeMillis();
+            lastTime= TimeUtil.getNowMills();
             this.initManagers();
             this.initEntities();
             this.initEvent();
@@ -395,7 +396,8 @@ if(!Switcher.SHADER_ENABLE)
     long nowTime=0;
     int fps=0;
     public void update(float delta) {
-        nowTime=System.currentTimeMillis();
+        TimeUtil.update();
+        nowTime= TimeUtil.getNowMills();
         if((nowTime-lastTime)>60000){
             fps =frameCount;
             frameCount=0;
@@ -476,7 +478,7 @@ if(!Switcher.SHADER_ENABLE)
 
         //glTranslatef( 0.0f, 0.0f, -5.0f );
 
-        Long time = System.currentTimeMillis();
+        Long time = TimeUtil.getNowMills();
        /* try {
             Thread.sleep(50);
         } catch (InterruptedException e) {

@@ -535,4 +535,11 @@ public class GL_Vector
 		floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
 		floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
 	}
+
+	public static GL_Vector getFromXZAngle(float angle){
+		GL_Vector viewDir =new GL_Vector();
+		viewDir.x = (float) Math.cos(angle);
+		viewDir.z = (float) Math.sin(angle);
+		return viewDir;
+	}
 }

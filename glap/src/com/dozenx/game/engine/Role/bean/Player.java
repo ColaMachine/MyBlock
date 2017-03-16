@@ -12,6 +12,7 @@ import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.util.TimeUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -90,7 +91,7 @@ public class Player extends LivingThing {
 
 
         this.position.set(x, y, z);
-        this.updateTime = System.currentTimeMillis();
+        this.updateTime =  TimeUtil.getNowMills();
         if (!Switcher.IS_GOD)
             if (CoreRegistry.get(CrashCheck.class).check(this)) {
                 this.position.copy(oldPosition);
@@ -133,8 +134,10 @@ public class Player extends LivingThing {
         //LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
 
         headAngle += Math.toRadians(-leftRightDegree);
-        headAngle = headAngle;
+        headAngle=(float)(headAngle%Math.PI);
+        //headAngle = headAngle;
         headAngle2 += Math.toRadians(updownDegree);
+        headAngle2 = (float)(headAngle2%Math.PI);
         if (leftRightDegree != 0) {
 
             viewDir.x = (float) Math.cos(headAngle);
@@ -159,7 +162,7 @@ public class Player extends LivingThing {
 
         viewDir.normalize();
 
-
+        this.updateTime = TimeUtil.getNowMills();
         //  System.out.println(vd);
     }
 

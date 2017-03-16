@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.TimeUtil;
 import de.matthiasmann.twl.Event;
 
 import java.util.HashMap;
@@ -101,7 +102,7 @@ public class Document extends HtmlObject {
     private int mouseClickedX;
     private int mouseClickedY;
     public final boolean handleMouse(int mouseX, int mouseY, int button, boolean pressed) {
-        curTime=System.currentTimeMillis();
+        curTime= TimeUtil.getNowMills();
         mouseEventTime = curTime;
         tooltipEventTime = curTime;
         event.mouseButton = button;

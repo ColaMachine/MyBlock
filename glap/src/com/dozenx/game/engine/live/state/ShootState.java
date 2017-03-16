@@ -12,6 +12,7 @@ import com.dozenx.game.engine.command.ItemType;
 
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.network.server.bean.LivingThingBean;
+import com.dozenx.util.TimeUtil;
 import glmodel.GL_Vector;
 
 /**
@@ -21,7 +22,7 @@ public class ShootState extends IdleState {
     public ShootState(LivingThingBean livingThing){
         super(livingThing);
         this.livingThing = livingThing;
-        startTime=System.currentTimeMillis();
+        startTime= TimeUtil.getNowMills();
         if(CoreRegistry.get(BagController.class).has("arrow")){
            // livingThing.addHandEquip(TextureManager.getItemDefinition("arrow"));
         }
@@ -35,7 +36,7 @@ public class ShootState extends IdleState {
     public int currentState =0;
     public void update(){
 
-        Long now=System.currentTimeMillis();
+        Long now= TimeUtil.getNowMills();
         if(!shooted) {
            // this.changeAnimation("shoot");
             //第一种方案 AnimationManager.getAnimation("shoot").apply(this)new Runnable(){

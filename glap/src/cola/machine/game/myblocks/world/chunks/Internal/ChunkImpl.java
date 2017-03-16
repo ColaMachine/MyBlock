@@ -96,7 +96,15 @@ public class ChunkImpl implements Chunk {
         return null;
     }
 
-    public TeraArray blockData;
+    private TeraArray blockData;
+
+    public TeraArray getBlockData() {
+        return blockData;
+    }
+
+    public void setBlockData(TeraArray blockData) {
+        this.blockData = blockData;
+    }
 
     @Override
     public Block setBlock(int x, int y, int z, Block block) {
@@ -1179,7 +1187,7 @@ public class ChunkImpl implements Chunk {
         return blockData.get(x, y, z);
     }
 
-    public boolean disposed = true;
+    public boolean disposed = false;
 
     public void disposeMesh() {
 
@@ -1204,7 +1212,7 @@ public class ChunkImpl implements Chunk {
                 // VIP Auto-generated catch block
                 e.printStackTrace();
             }
-            this.blockData = null;
+            //this.blockData = null;
         } else {
             System.out.println("为什么要对没有初始化的chunkimpl取消");
         }
@@ -1214,16 +1222,17 @@ public class ChunkImpl implements Chunk {
 
     public void update() {
         if(Switcher.SHADER_ENABLE) {
-            if (this.disposed) {
+            if (this.disposed ) {
                 // if(this.displayId==0){
 
-                this.buildVao();//this.buildAlpha();
-                this.disposed = false;
-            }
+
+               // this.disposed = false;
+            }else
             if (this.vao.getVaoId() == 0) {
-                int error = GL11.glGetError();
+                this.buildVao();//this.buildAlpha();
+               /* int error = GL11.glGetError();
                 System.out.println("error: " + GLU.gluErrorString(error));
-                System.out.println("vaoid should not be 0 in preRender");
+                System.out.println("vaoid should not be 0 in preRender");*/
             }
         }else {
             if (this.disposed) {

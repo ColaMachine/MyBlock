@@ -44,9 +44,15 @@ public class DropHandler extends GameServerHandler {
                     bagService.addWorldItem( itemAry[i]);
                     cmd.setItemType(ItemType.values()[itemAry[i].getItemType()]);
                     cmd.setNum(itemAry[i].getNum());
-                    cmd.setX(from.getX()-4);
-                    cmd.setY(from.getY());
-                    cmd.setZ(from.getZ());
+                    //计算丢物品的角度
+                    float bodyAngle = from.getBodyAngle();
+                    GL_Vector bodyDir = GL_Vector.getFromXZAngle(bodyAngle);
+                    GL_Vector postion
+                     =  GL_Vector.add( new GL_Vector(from.getX(),from.getY(),from.getZ()),GL_Vector .multiply(bodyDir,5));
+
+                    cmd.setX(postion.x);
+                    cmd.setY(postion.y);
+                    cmd.setZ(postion.z);
                     itemAry[i]=null;
                     broadCast(cmd);
                     BagCmd bagCmd =new BagCmd(from.getId(),from.getItemBeansList());

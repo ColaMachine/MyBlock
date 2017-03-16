@@ -196,10 +196,10 @@ public class WorldRendererLwjgl implements WorldRenderer {
 						} else {
 							logger.warn("chunk is null");
 							// chunkProvider.
-							chunkProvider.createOrLoadChunk(new Vector3i(x, 0,
+							chunkProvider.createOrLoadChunk(new Vector3i(newChunkPosX +x, 0,
 									newChunkPosZ + z));
 							chunksCurrentlyPending = true;
-							c = chunkProvider.getChunk(x, 0, newChunkPosZ + z);
+							c = chunkProvider.getChunk(newChunkPosX +x, 0, newChunkPosZ + z);
 							chunksInProximity.add(c);
 						}
 					}

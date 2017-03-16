@@ -3,6 +3,7 @@
 package cola.machine.game.myblocks.world.chunks;
 
 import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.math.Vector2i;
 import cola.machine.game.myblocks.math.Vector3i;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import cola.machine.game.myblocks.switcher.Switcher;
+import core.log.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +39,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 
     private static final Logger logger = LoggerFactory.getLogger(LocalChunkProvider.class);
 
-    private ConcurrentMap<Vector3i, ChunkImpl> nearCache = Maps.newConcurrentMap();//旁边缓存
+    private ConcurrentMap<Vector2i, ChunkImpl> nearCache = Maps.newConcurrentMap();//旁边缓存
 
     private StorageManager storageManager;//保存系统
 
@@ -58,7 +60,9 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 		ChunkImpl chunk=nearCache.get(chunkPos);
 		if(chunk == null){
 			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
-			
+			if(chunkPos.x==-2 && chunkPos.z==-5){
+				LogUtil.err("block data may be null");
+			}
 			Path chunkPath =
                         PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
 				if(!Switcher.test&&Files.isRegularFile(chunkPath)){
@@ -71,7 +75,10 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 					           // TeraArray user=(TeraArray)(in.readObject());  
 							  TeraArray user= new TeraDenseArray16Bit(); 
 					            user.readExternal(in);
-							chunkImpl.blockData= user;
+							chunkImpl.setBlockData(user) ;
+							if(chunkImpl.getBlockData()==null){
+								LogUtil.err("block data  is null");
+							}
 							in.close();
 							//byte[] chunkData =Files.readAllBytes(chunkPath);
 						} catch (Exception e) {
@@ -81,20 +88,21 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 					// ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
 					// chunk= chunkStore.getChunk();
 					 
-					 if(nearCache.putIfAbsent(chunkPos, chunkImpl)!=null){
+					 if(nearCache.putIfAbsent(new Vector2i(chunkPos.x,chunkPos.z), chunkImpl)!=null){
 						 logger.warn("Chunk {} is already in the near cache", chunkPos);
 					 }
 				}else{
 					 chunk = new ChunkImpl(chunkPos);
                     generator.createChunk(chunk);
                  //   chunk.build();
-                    if (nearCache.putIfAbsent(chunkPos, chunk) != null) {
+                    if (nearCache.putIfAbsent(new Vector2i(chunkPos.x,chunkPos.z), chunk) != null) {
                         logger.warn("Chunk {} is already in the near cache", chunkPos);
                     }
                    // chunk.build();
 				}
 			}
-		
+		 chunk=nearCache.get(chunkPos);
+
 		
 	}
 	public Vector3i getPosition() {
@@ -182,12 +190,13 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 
 	@Override
 	public ChunkImpl getChunk(int x, int y, int z) {
-		  ChunkImpl chunk = nearCache.get(new Vector3i(x,y,z));
+		 // ChunkImpl chunk = nearCache.get(new Vector3i(x,y,z));
+		ChunkImpl chunk = nearCache.get(new Vector2i(x,z));
 	        /*if(chunk==null){
 	        	createOrLoadChunk(new Vector3i(x,y,z));
 	        	 chunk = nearCache.get(new Vector3i(x,y,z));
 	        }*/
-		  if(chunk!=null&& chunk.blockData==null){
+		  if(chunk!=null&& chunk.getBlockData()==null){
 			  System.out.println("found the null blockdata chunk in nearCache 。solve it！！！");
 		  }
 	            return chunk;
@@ -204,6 +213,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 	public void removeChunk(ChunkImpl c) {
 		this.nearCache.remove(c.getPos());
 		if(nearCache.get(c.getPos())!=null){
+			LogUtil.err("unload chunk failed");
 			System.out.println("删除失败!");
 		}
 	}
