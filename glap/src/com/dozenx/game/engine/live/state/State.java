@@ -112,6 +112,8 @@ public class State {
                 Document.needUpdate=true;
                 //getExecutor().getCurrentState().dispose();
                 //livingThing.getExecutor().getModel().
+            }else if(cmd.getAttackType()== AttackType.ARROW){
+                this.livingThing.changeState( new ShootState(this.livingThing));
             }
             /*if(this.livingThing!=null && this.livingThing.getTarget()!=null ) {
                 GL_Vector direction =  GL_Vector.sub(this.livingThing.getTarget().position,

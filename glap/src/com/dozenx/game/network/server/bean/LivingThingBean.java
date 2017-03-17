@@ -32,14 +32,11 @@ import java.lang.ref.WeakReference;
 public class LivingThingBean extends Role {
 
     public LivingThingBean(int id){
-        this.currentState = new IdleState(this);
 
+       /* this.getExecutor().setCurrentState(new IdleState(this));*/
         this.setId(id);//(int)(Math.random()*1000000);
         this.walkDir=new  GL_Vector(1,0,0);
-
-
         changeProperty();
-
         /*this.nowBlood=this.blood;
         this.nowEnergy=this.energy;*/
     }
@@ -452,7 +449,7 @@ public class LivingThingBean extends Role {
     public void update(){
         this.dropControl();
        // this.getModel().build();
-        this.currentState.update();
+        this.getExecutor().getCurrentState().update();
     }
 
 
@@ -485,9 +482,9 @@ public class LivingThingBean extends Role {
         }
     }
 
-    IdleState currentState ;
+    //IdleState currentState ;
     public void receive(GameCmd cmd ){
-        currentState.receive(cmd);
+        this.getExecutor().getCurrentState().receive(cmd);
     }
 
     public ItemType getMainWeapon(){
@@ -514,10 +511,10 @@ public class LivingThingBean extends Role {
 
     public void changeAnimationState(String animationName){
 
-    /*    CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
+        CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
         if(animationName!=null) {
             CoreRegistry.get(AnimationManager.class).apply(getModel().bodyComponent, animationName);
-        }*/
+        }
     }
 
     public void attack(){

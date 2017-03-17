@@ -27,7 +27,7 @@ public class SynchronTask extends Thread{
         while (true) {
             try {
 
-            livingThingManager.netWorkUpdate();
+           // livingThingManager.netWorkUpdate();
 
                //Thread.sleep(100);
 

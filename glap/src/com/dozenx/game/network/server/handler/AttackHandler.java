@@ -2,6 +2,7 @@ package com.dozenx.game.network.server.handler;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.engine.command.AttackCmd;
+import com.dozenx.game.engine.command.AttackType;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.ResultCmd;
 import com.dozenx.game.network.server.bean.*;
@@ -36,10 +37,12 @@ public class AttackHandler extends GameServerHandler {
             if (target != null &&!target.died ) {//并且 目标是活着的 且 在攻击方位内
                 //判断距离
                 float length = GL_Vector.length(GL_Vector.sub(from.getPosition(),target.getPosition()));
-                if(length>5){
+                if(cmd.getAttackType()== AttackType.KAN && length>5){
 
 
                     return null;
+
+                }else if(cmd.getAttackType()== AttackType.ARROW){
 
                 }
                 from.setLastAttackTime(nowTime);

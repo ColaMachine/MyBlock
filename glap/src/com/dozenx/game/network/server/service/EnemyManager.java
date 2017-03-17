@@ -83,7 +83,7 @@ public class EnemyManager implements  Runnable {
     }
     public void moveOrAttack() {
         for (LivingThingBean enemy : enemyService.getAllEnemies()) {
-            if (enemy.getTargetId() > 0) {
+            if (!enemy.isDied() && enemy.getTargetId() > 0) {
                 LivingThingBean target = userService.getOnlinePlayerById(enemy.getTargetId());
                 if(target== null){
                     continue;

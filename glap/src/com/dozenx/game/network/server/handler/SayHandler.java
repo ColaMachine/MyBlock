@@ -35,7 +35,7 @@ public class SayHandler extends GameServerHandler {
 
         if(cmd.getMsg().startsWith("/give")){
             String[] arr = cmd.getMsg().split(" ");
-            if(arr.length>=4 && StringUtil.isNumeric(arr[2]) && StringUtil.isNumeric(arr[3])) {
+            if(arr.length>=4  && StringUtil.isNumeric(arr[3])) {
                 String name = arr[1];
                 String item = arr[2];
                 String num = arr[3];
@@ -47,7 +47,12 @@ public class SayHandler extends GameServerHandler {
                             beans[i]=new ItemServerBean();
                             beans[i].setPosition(i);
                             beans[i].setId((int)(Math.random()*1000));
-                            beans[i].setItemType(Integer.valueOf(arr[2]));
+                            if(StringUtil.isNumeric(arr[2])){
+                                beans[i].setItemType(Integer.valueOf(arr[2]));
+                            }else{
+                                beans[i].setItemType(ItemType.valueOf(arr[2]).ordinal());
+                            }
+
                             beans[i].setNum(Integer.valueOf(arr[3]));
                             BagCmd bagCmd =new BagCmd(livingThingBean.getId(),bagService.getItemByUserId(livingThingBean.getId()));
 

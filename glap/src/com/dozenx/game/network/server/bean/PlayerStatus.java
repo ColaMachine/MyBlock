@@ -28,8 +28,8 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
     protected byte type;//生物种类
 
 
-    public int blood;  //  血量
-    public int energy; //  能量
+    public int HP;  //  血量
+    public int MP; //  能量
 
 
     public int physicAttack ;//物攻
@@ -37,8 +37,8 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
 
     public int fangyu;
 
-    public int nowBlood;        //血量
-    public int nowEnergy;       //蓝量
+    public int nowHP;        //血量
+    public int nowMP;       //蓝量
 
 
 

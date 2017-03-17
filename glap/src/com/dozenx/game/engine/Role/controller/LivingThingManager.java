@@ -47,9 +47,9 @@ public class LivingThingManager {
     Component bendComponent;
     public LivingThingManager(){
 
-        LivingThing livingThing =new LivingThing(999);
+      /*  LivingThing livingThing =new LivingThing(999);
         livingThing.position=new GL_Vector(1,65,-40);
-        add(livingThing);
+        add(livingThing);*/
         /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -138,6 +138,7 @@ public class LivingThingManager {
     }
 
     public void CrashCheck(  DropControlCenter dcc){
+
         for(LivingThing livingThing:livingThings){
             if(livingThing.isPlayer() || !livingThing.exist)continue;//不对玩家进行校验 怕玩家离开自己太远的时候还进行校验
             if(livingThing.position.y<0){
@@ -218,7 +219,7 @@ public class LivingThingManager {
      * 通过定时线程来控制
      * 主要是网络同步各种状态到任务上 you synctask 驱动
      */
-    public void netWorkUpdate(){
+    public void update(){
         /*if(!(BlockEngine.engine.getState() instanceof  GamingState) ){
             LogUtil.println("当前状态不对");
             return;
@@ -227,7 +228,7 @@ public class LivingThingManager {
 
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
-            if(!livingThing.exist){
+            if(livingThing.died || livingThing.nowHP<=0){
                this.livingThingsMap.remove(livingThing.getId());
                 livingThings.remove(i);
             }
@@ -306,20 +307,22 @@ public class LivingThingManager {
            // ItemType itemType =
             if(livingThing!=null  /*&& itemBean!=null*/ ){
                 if(cmd.getPart()== EquipPartType.BODY){
-
-
-
+                    livingThing.setBodyEquip(cmd.getItemType());
                     livingThing.getModel().addBodyEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HEAD){
+                    livingThing.setHeadEquip(cmd.getItemType());
                     livingThing.getModel().addHeadEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.HAND){
+                    livingThing.setHandEquip(cmd.getItemType());
                     livingThing.getModel().addHandEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.LEG){
+                    livingThing.setLegEquip(cmd.getItemType());
                     livingThing.getModel().addLegEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }else if(cmd.getPart()== EquipPartType.FOOT){
+                    livingThing.setFootEquip(cmd.getItemType());
                     livingThing.getModel().addShoeEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }
-
+                //change trigger
                 livingThing.changeProperty();
 
             }
@@ -363,6 +366,12 @@ public class LivingThingManager {
                     livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }*/
+            if(livingThing.died && info.nowHP>0){
+                livingThing.exist=true;
+                livingThing.getExecutor().getModel().bodyComponent.rotateX=0;
+            }else{
+
+            }
             livingThing.setInfo(info);
 
             //livingThing.setTarget()
@@ -371,19 +380,13 @@ public class LivingThingManager {
             }catch (Exception e){
                 e.printStackTrace();
             }
-
            // livingThing.setPosition(x,y,z);
             livingThing.setBodyAngle(info.getBodyAngle());
             livingThing.setHeadAngle( info.getHeadAngle());
             livingThing.setHeadAngle2( info.getHeadAngle2());*/
-
-
-
-    if(!exsits) {
-        this.add(livingThing);
-    }
-
-
+            if(!exsits) {
+                this.add(livingThing);
+            }
         }
 
         while(client.attacks.size()>0 && client.attacks.peek()!=null){

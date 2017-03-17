@@ -134,10 +134,10 @@ public class Player extends LivingThing {
         //LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
 
         headAngle += Math.toRadians(-leftRightDegree);
-        headAngle=(float)(headAngle%Math.PI);
+        headAngle=(float)(headAngle%(2*Math.PI));
         //headAngle = headAngle;
         headAngle2 += Math.toRadians(updownDegree);
-        headAngle2 = (float)(headAngle2%Math.PI);
+        headAngle2 = (float)(headAngle2%(2*Math.PI));
         if (leftRightDegree != 0) {
 
             viewDir.x = (float) Math.cos(headAngle);

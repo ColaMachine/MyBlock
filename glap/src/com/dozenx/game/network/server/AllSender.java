@@ -1,5 +1,6 @@
 package com.dozenx.game.network.server;
 
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 
 import java.util.*;
@@ -50,6 +51,7 @@ public class AllSender extends Thread{
     }
     public void run(){
         while(true) {
+            TimeUtil.update();
             if (messages.size() > 0) {
                // LogUtil.println("messages 结果大于0");
                 byte[] bytes  = messages.peek();

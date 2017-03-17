@@ -10,12 +10,25 @@ public class AttackProperties extends BaseProperties{
     Long lastAttackTime=0l;
     public void getInfo(PlayerStatus info) {
         super.getInfo(info);
+        info.HP=this.getHP();
+        info.nowHP =this.getNowHP();
+        info.nowMP =this.getNowMP();
+        info.MP =this.getMP();
+        if(info.HP>0){
+            this.died=false;;
 
+        }
     }
 
     public void setInfo(PlayerStatus info ){
         super.setInfo(info);
-
+       this.setHP(info.HP);
+       this.setNowHP(info.nowHP);
+       this.setNowMP( info.nowMP );
+       this.setMP( info.MP);
+        if(info.HP>0){
+            this.died=false;;
+        }
     }
 
     private long lastHurtTime = 0;

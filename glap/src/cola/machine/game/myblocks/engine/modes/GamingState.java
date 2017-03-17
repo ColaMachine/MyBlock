@@ -417,7 +417,7 @@ if(!Switcher.SHADER_ENABLE)
             e.printStackTrace();
         }OpenglUtils.checkGLError();
        // livingThingManager.netWorkUpdate();;
-
+        livingThingManager.update();
             if (Math.random() > 0.5) {
             if (!Switcher.IS_GOD) {
                 //dcc.check(human);

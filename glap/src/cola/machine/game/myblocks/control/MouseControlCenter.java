@@ -11,6 +11,7 @@ import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.DropCmd;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.network.client.Client;
 import core.log.LogUtil;
 import com.dozenx.game.engine.command.AttackCmd;
@@ -584,7 +585,7 @@ public class MouseControlCenter {
     public void keyDown(int keycode) {
         if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
             if(player.getTarget()!=null){
-                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),AttackType.KAN, player.getTarget().getId()));
+                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, player.getTarget().getId()));
             }
 
            // Client.messages.push(new AttackCmd(AttackType.ARROW));
