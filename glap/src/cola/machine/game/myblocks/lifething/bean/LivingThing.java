@@ -339,6 +339,7 @@ public class LivingThing extends LivingThingBean {
             getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         }
+       this.changeProperty();
     }
 
 

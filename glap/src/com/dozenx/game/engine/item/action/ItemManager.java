@@ -52,7 +52,7 @@ public static void removeWorldItem(int itemId){
         list.add(ball);
     }
     static float distance =0;
-    public static void update(){
+    public  void update(){
         ShaderManager.dropItemShaderConfig.getVao().getVertices().rewind();
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
@@ -95,6 +95,7 @@ public static void removeWorldItem(int itemId){
     public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();
 
     public ItemManager(){
+
         ItemConfig config =new ItemConfig();
         //config.init();
         ItemRepository itemRepository =new ItemRepository();

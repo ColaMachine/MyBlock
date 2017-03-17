@@ -23,33 +23,35 @@ public class EquipHandler extends GameServerHandler {
             if(bean ==null ){
                 return new ResultCmd(1,"失败",0);
             }
-           PlayerStatus info = bean.getInfo() ;//id2PlayerMap.get(cmd.getUserId());
+          // PlayerStatus info = bean.getInfo() ;//id2PlayerMap.get(cmd.getUserId());
 
-            if(info==null){
+            if(bean==null){
                 LogUtil.println(" Player info can't be null userId:"+cmd.getUserId());
                 return new ResultCmd(1,"失败",0);
 
             }
             if(cmd.getPart()==EquipPartType.HEAD){
-                info.setHeadEquip(ItemType.getTypeVal(cmd.getItemType()));
+                bean.setHeadEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.BODY){
-                info.setBodyEquip(ItemType.getTypeVal(cmd.getItemType()));
+                bean.setBodyEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.LEG){
-                info.setHeadEquip(ItemType.getTypeVal(cmd.getItemType()));
+                bean.setHeadEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.FOOT){
-                info.setFootEquip(ItemType.getTypeVal(cmd.getItemType()));
+                bean.setFootEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
             }
             if(cmd.getPart()==EquipPartType.HAND){
-                info.setHandEquip(ItemType.getTypeVal(cmd.getItemType()));
+                bean.setHandEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
             }
+            bean.changeProperty();
+
         }
         //更新其他附近人的此人的装备属性
         broadCast(cmd);

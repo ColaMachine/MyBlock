@@ -453,8 +453,8 @@ public class MyBlockEngine extends GLApp {
            livingThingManager.netWorkUpdate();Util.checkGLError();
             livingThingManager.render();Util.checkGLError();
 
-            AttackManager.update();Util.checkGLError();
-            AttackManager.render();Util.checkGLError();
+            //AttackManager.update();Util.checkGLError();
+          //  AttackManager.render();Util.checkGLError();
             //GL11.glScaled(10,10,10);
            /* TextureInfo ti = TextureManager.getTextureInfo("human");
             ti.bind();*/

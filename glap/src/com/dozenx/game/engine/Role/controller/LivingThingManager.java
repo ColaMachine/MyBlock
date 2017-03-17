@@ -40,10 +40,10 @@ import java.util.Map;
 public class LivingThingManager {
 
 
-    public static List<LivingThing> livingThings = new ArrayList<>();
+    public  List<LivingThing> livingThings = new ArrayList<>();
     private Map<Integer,LivingThing> livingThingsMap =new HashMap();
     //public LivingThing target ;
-    public static LivingThing player;
+    public  LivingThing player;
     Component bendComponent;
     public LivingThingManager(){
 
@@ -319,6 +319,9 @@ public class LivingThingManager {
                 }else if(cmd.getPart()== EquipPartType.FOOT){
                     livingThing.getModel().addShoeEquip(ItemManager.getItemDefinition(cmd.getItemType()));
                 }
+
+                livingThing.changeProperty();
+
             }
 
 

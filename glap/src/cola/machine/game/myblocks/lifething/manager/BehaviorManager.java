@@ -12,6 +12,7 @@ import glmodel.GL_Vector;
  * Created by luying on 16/9/17.
  */
 public class BehaviorManager extends    Thread{
+    LivingThingManager livingThingManager;
     public void drop(){
 
     }
@@ -45,10 +46,10 @@ public class BehaviorManager extends    Thread{
     }
 
     public void moveOrAttack(){
-        for(LivingThing livingThing : LivingThingManager.livingThings){
+        for(LivingThing livingThing : livingThingManager.livingThings){
             if(!livingThing.isPlayer())
             if(livingThing.getTarget()!=null ){
-                GL_Vector direction =  GL_Vector.sub(LivingThingManager.player.getPosition(),livingThing.getPosition());
+                GL_Vector direction =  GL_Vector.sub(livingThingManager.player.getPosition(),livingThing.getPosition());
                 livingThing.walkDir= direction;
                 if(GL_Vector.length(direction)<livingThing.attackDistance){
                     attack(livingThing,livingThing.getTarget());
@@ -62,11 +63,11 @@ public class BehaviorManager extends    Thread{
         }
     }
     public void findThing(){
-        for(LivingThing livingThing : LivingThingManager.livingThings) {
+        for(LivingThing livingThing : livingThingManager.livingThings) {
             if (!livingThing.isPlayer()) {
                 if (livingThing.getTarget() != null) continue;
-                if (GL_Vector.length(GL_Vector.sub(livingThing.position, LivingThingManager.player.position)) < livingThing.sight) {
-                    livingThing.setTarget( LivingThingManager.player);
+                if (GL_Vector.length(GL_Vector.sub(livingThing.position, livingThingManager.player.position)) < livingThing.sight) {
+                    livingThing.setTarget( livingThingManager.player);
                 }
             }
         }

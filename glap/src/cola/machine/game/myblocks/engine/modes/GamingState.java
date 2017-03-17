@@ -65,7 +65,9 @@ public class GamingState implements GameState {
     public static String catchThing;
     public static boolean cameraChanged=false;
     public static boolean livingThingChanged=true;
+    public AttackManager attackManager;
 
+    public ItemManager itemManager;
     public static boolean lightPosChanged =true;
     //LearnOpenglColor learnOpenglColor;
     //GUI startGui;
@@ -88,6 +90,7 @@ public class GamingState implements GameState {
 
 
     public void init(GameEngine engine) {
+
         document= Document.getInstance();
         this.instance =this;
         ShaderManager shaderManager =new ShaderManager();
@@ -407,7 +410,7 @@ if(!Switcher.SHADER_ENABLE)
 
       }
 //        LogUtil.println("帧率"+frameCount*1000/(nowTime-lastTime));
-        AttackManager.update();OpenglUtils.checkGLError();
+        attackManager.update();OpenglUtils.checkGLError();
         try {
             animationManager.update();
         } catch (Exception e) {
@@ -445,7 +448,7 @@ if(!Switcher.SHADER_ENABLE)
 
             }
         document.update();OpenglUtils.checkGLError();
-        ItemManager.update();
+        itemManager.update();
     }
 
 
@@ -522,8 +525,8 @@ if(!Switcher.SHADER_ENABLE)
         }
         OpenglUtils.checkGLError();
         document.render();
-        ItemManager.render();
-        AttackManager.render();
+        itemManager.render();
+        attackManager.render();
         OpenglUtils.checkGLError();
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();
@@ -625,7 +628,9 @@ if(!Switcher.SHADER_ENABLE)
         livingThingManager= CoreRegistry.get(LivingThingManager.class);
 
 
-        ItemManager itemManager =new ItemManager();
+         itemManager =new ItemManager();
+        attackManager =new AttackManager(livingThingManager);
+
         CoreRegistry.put(ItemManager.class,itemManager);
         try {
             itemManager.loadItem();

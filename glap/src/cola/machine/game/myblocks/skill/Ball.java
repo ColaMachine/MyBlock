@@ -95,12 +95,13 @@ public class Ball  {
         }
         if(type==1){
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
-            float angle = /*(float)(Math.PI)+*/GamingState.player.getHeadAngle();
+            float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
             GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 
 
+            ShaderUtils.draw3dImage(p2,p1,p4,p3,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
 
             ShaderUtils.draw3dImage(p1,p2,p3,p4,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
 
