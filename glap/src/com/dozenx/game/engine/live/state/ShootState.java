@@ -62,7 +62,7 @@ public class ShootState extends IdleState {
                 currentState++;
                 livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch3);
 
-            } else */if (/*currentState == 3 && */now - startTime > 1 * 1000) {
+            } else */if (/*currentState == 3 && */now - startTime >  200) {
 
                 currentState = 4;
                 //livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch);
@@ -73,7 +73,7 @@ public class ShootState extends IdleState {
             }
         }
 
-        if (now - startTime > 8 * 1000) {
+        if (now - startTime > 1 * 1000) {
             this.livingThing.changeState(new IdleState(this.livingThing));
 
         }

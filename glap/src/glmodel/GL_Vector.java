@@ -536,10 +536,21 @@ public class GL_Vector
 		floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);
 	}
 
-	public static GL_Vector getFromXZAngle(float angle){
+	public static GL_Vector getVectorFromXZAngle(float angle){
 		GL_Vector viewDir =new GL_Vector();
 		viewDir.x = (float) Math.cos(angle);
 		viewDir.z = (float) Math.sin(angle);
 		return viewDir;
 	}
+    public static float getAnagleFromXZVectory(GL_Vector dir){
+
+
+       float angle = (float)Math.atan(dir.z/dir.x);
+        if(dir.z<0 && dir.x<0){
+            angle+=Math.PI;
+        }else if(dir.z>0 && dir.x<0){
+            angle+=Math.PI;
+        }
+        return angle;
+    }
 }

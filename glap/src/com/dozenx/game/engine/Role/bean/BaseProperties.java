@@ -2,6 +2,7 @@ package com.dozenx.game.engine.Role.bean;
 
 import cola.machine.game.myblocks.math.AABB;
 import com.dozenx.game.network.server.bean.PlayerStatus;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 
 /**
@@ -10,7 +11,9 @@ import glmodel.GL_Vector;
 public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
 
     public void getInfo(PlayerStatus info) {
-        info.setId(getId());
+
+            info.setId(getId());
+
         info.setName(getName());
 
         info. setPwd(getPwd());
@@ -30,14 +33,13 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     }
 
     public void setInfo(PlayerStatus info ){
-
-        this.setId(info.getId());
+            this.setId(info.getId());
         this.setName(info.getName());
         this.setPwd(info.getPwd());
         //setPwd(status.getPwd());
         this. setBodyAngle(info.getBodyAngle());
-        this. setHeadAngle(info.getHeadAngle());
-        this. setHeadAngle2(info.getHeadAngle2());
+        //this. setHeadAngle(info.getHeadAngle());
+        //this. setHeadAngle2(info.getHeadAngle2());
         this.setPosition(info.getX(),info.getY(),info.getZ());
   }
     int id ;
@@ -47,6 +49,9 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     }
 
     public void setId(int id) {
+        if(id==0){
+            LogUtil.err("id can't be 0");
+        }
         this.id = id;
     }
 

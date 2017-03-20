@@ -2,81 +2,38 @@ package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
-import org.lwjgl.Sys;
 
 /**
  * Created by luying on 17/2/7.
  */
-public class WalkState extends State {
+public class ChaseState extends State {
     //private LivingThing livingThing;
-    float speedForward;
-    float speedLeft;
-    float speedRight;
-    float speedBack;
-    long forwardPressedTime;
-    long leftTime;
-    long backTime;
-    GL_Vector from ;
-    GL_Vector to;
     long startTime;
-    GL_Vector walkDir;
-    float distance ;
-    public WalkState(LivingThingBean livingThing, GL_Vector from ,GL_Vector to ){
+    public ChaseState(LivingThingBean livingThing,ChaseCmd chaseCmd){
 
         super(livingThing);
-        if(from== null || to == null){
-            LogUtil.err("from and to can't be null ");
-        }
-        this.from = from.getClone();
-        this.to =to.getClone();
+        //livingThing.setTargetId(chaseCmd.getTargetId());
+        //livingThing.setTarget(livingThingMa);
+        lastMoveTime = startTime = TimeUtil.getNowMills();
 
-        this.startTime = TimeUtil.getNowMills();
-        walkDir = GL_Vector.sub(to,from);
-
-        this.distance = GL_Vector.length(walkDir);
-        this.walkDir.normalize();
-        livingThing.walkDir =walkDir;
-        livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
         if(GamingState.player!=null){
             CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");
         }
 
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的
-    public void receive(GameCmd gameCmd){//11
-        if(gameCmd .getCmdType() == CmdType.WALK){
-
-            if(from== null || to == null){
-                LogUtil.err("from and to can't be null ");
-            }
-            this.from = from.getClone();
-            this.to =to.getClone();
-
-            this.startTime = TimeUtil.getNowMills();
-            walkDir = GL_Vector.sub(to,from);
-
-            this.distance = GL_Vector.length(walkDir);
-            this.walkDir.normalize();
-            livingThing.walkDir =walkDir;
-            livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
-            if(GamingState.player!=null){
-                CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");
-            }
-            /*if(gameCmd.val()== WalkCmd.FORWARD ){
-
-            }*/
-            //gameCmd.delete();
-
-
-        }else if(gameCmd .getCmdType() == CmdType.DIED) {
+    public void receive(GameCmd gameCmd){
+        super.receive(gameCmd);
+    //11
+         /*if(gameCmd .getCmdType() == CmdType.DIED) {
             this.livingThing.changeState( new DiedState(this.livingThing));
 
         }else if(gameCmd .getCmdType() == CmdType.ATTACK) {
@@ -87,11 +44,11 @@ public class WalkState extends State {
             }else{
                 return;
             }
-            /*Wep
+            *//*Wep
             SkillDefinition skill = livingThing.getNowSkill();
             if(livingThing.getNowSkill()){
 
-            }*/
+            }*//*
             AttackCmd cmd =(AttackCmd) gameCmd;
             if(cmd.getAttackType()== AttackType.KAN){
                 CoreRegistry.get(AnimationManager.class).apply(livingThing.getModel().bodyComponent,"kan");
@@ -104,24 +61,43 @@ public class WalkState extends State {
                 livingThing.getTarget().beAttack(cmd.getAttackValue());
             }
 
-        }
+        }*/
     }
     long lastMoveTime ;
+    @Override
     public void update(){
-       if(this.disposed){
-           LogUtil.err("该state 应该已经结束了 错误了");
-           return;
-       }
+        preCheck();
+        diedProcessor();
+        noTargetProcessor();
         long nowTime = TimeUtil.getNowMills();
         if (nowTime - lastMoveTime >200) {
             //Player player= CoreRegistry.get(Player.class);
             //AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             //manager.apply(getModel().bodyComponent, "walkerFoward");
-            livingThing.setPosition(GL_Vector.add(from, GL_Vector.multiplyWithoutY(walkDir,
-                    0.2f* (nowTime-startTime)/200)));
-            if(GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),from))>distance){
-                this.livingThing.changeState( new IdleState(this.livingThing));
+            try {
+               LivingThingManager.chaseCanAttack(livingThing,nowTime-lastMoveTime);
+               // GL_Vector walkDir = GL_Vector.sub(livingThing.getTarget().getPosition(), livingThing.getPosition()).normalize();
+                /*GL_Vector distanceVector = GL_Vector.sub(livingThing.getTarget().getPosition(), livingThing.getPosition());
+                float distance = GL_Vector.length(distanceVector);
+                if(distance<2){
+                    return;
+                }
+                GL_Vector walkDir  = distanceVector.normalize();
+                GL_Vector walkDistance= GL_Vector.multiplyWithoutY(walkDir,
+                        0.2f* (nowTime-lastMoveTime)/200);
+                if(GL_Vector.length(walkDistance)<distance){
+                    livingThing.setPosition(GL_Vector.add(livingThing.position, walkDistance));
+                }else{
+                    livingThing.setPosition(livingThing.getTarget().getPosition().getClone());
+                }*/
+
+
+            }catch (Exception e ){
+                e.printStackTrace();
             }
+           /* if(GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),from))>distance){
+                this.livingThing.changeState( new IdleState(this.livingThing));
+            }*/
 //        LogUtil.println(position+"");
             lastMoveTime = TimeUtil.getNowMills();
             // System.out.printf("position: %f %f %f viewdir: %f %f %f

@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.Role.bean.item.CommonEquipProperties;
+import com.dozenx.game.engine.Role.bean.item.ComplexEquipProperties;
 import com.dozenx.game.engine.Role.bean.item.EquipProperties;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.Role.model.Model;
@@ -20,7 +21,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by luying on 17/3/5.
  */
-public class Role extends CommonEquipProperties {
+public class Role extends ComplexEquipProperties {
     private WeakReference<Role> target;
     private boolean isPlayer;
 
@@ -43,8 +44,11 @@ public class Role extends CommonEquipProperties {
     public void setTarget(Role target){
         if(target==null){
             this.target=null;
-        }else
-            this.target=new WeakReference<Role>(target);
+            this.targetId = 0;
+        }else {
+            this.target = new WeakReference<Role>(target);
+            this.targetId = target.getId();
+        }
     }
 
    // Role target;
@@ -104,7 +108,7 @@ public class Role extends CommonEquipProperties {
 
     public float nextZ = 0;
     public int limit = 0;
-    public boolean exist=true;
+    //public boolean exist=true;
 
 
 
@@ -140,9 +144,9 @@ public class Role extends CommonEquipProperties {
 
     }
     public void beAttack(int harmValue){
-        if(this.died){
+        if(this.isDied()){
 
-        return;
+            return;
 
         }
         CoreRegistry.get(AnimationManager.class)
@@ -152,7 +156,7 @@ public class Role extends CommonEquipProperties {
         Document.needUpdate=true;
         Client.messages.push(new SayCmd(this.getId(),this.name,"被攻击 损失"+damage+"点血"));
         if(this.nowHP<=0){
-            this.died=true;
+           // this.died=true;
             this.nowHP=0;
             return;
 

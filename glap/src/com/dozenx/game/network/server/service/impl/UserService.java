@@ -3,6 +3,7 @@ package com.dozenx.game.network.server.service.impl;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.alibaba.fastjson.TypeReference;
+import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.bean.LivingThingBean;
@@ -73,7 +74,7 @@ public class UserService extends GameServerService {
                 return;
             }
         }
-        LivingThingBean livingThingBean=new LivingThingBean();
+        LivingThingBean livingThingBean=new LivingThingBean(status.getId());
         livingThingBean.setInfo(status);
         serverContext.onLinePlayer.add(livingThingBean);
     }
@@ -130,7 +131,7 @@ public class UserService extends GameServerService {
 
         serverContext.itemArrayMap.put(info.getId(),itemServerBeenAry);
 
-        LivingThingBean playerBean=new LivingThingBean();
+        LivingThingBean playerBean=new LivingThingBean(info.getId());
         playerBean.setInfo(info);
         return playerBean;
     }
@@ -143,10 +144,11 @@ public class UserService extends GameServerService {
         for(File file :files){
             try {
                 String s = FileUtil.readFile2Str(file);
-                LivingThingBean livingThingBean =new LivingThingBean();
-                livingThingBean.setInfo(JSON.parseObject(s,
+                PlayerStatus info = JSON.parseObject(s,
                         new TypeReference<PlayerStatus>() {
-                        }));
+                        });
+                LivingThingBean livingThingBean =new LivingThingBean(info.getId());
+                livingThingBean.setInfo(info);
                 serverContext.allPlayer.add(livingThingBean);
 
 

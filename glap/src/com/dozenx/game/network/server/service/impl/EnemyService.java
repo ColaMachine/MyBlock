@@ -46,10 +46,12 @@ public class EnemyService extends GameServerService {
         for(File file :files){
             try {
                 String s = FileUtil.readFile2Str(file);
-                LivingThingBean livingThingBean =new LivingThingBean();
-                livingThingBean.setInfo(JSON.parseObject(s,
+
+                PlayerStatus playerStatus = JSON.parseObject(s,
                         new TypeReference<PlayerStatus>() {
-                        }));
+                        });
+                LivingThingBean livingThingBean =new LivingThingBean(playerStatus.getId());
+                livingThingBean.setInfo(playerStatus);
                 serverContext.enemyList.add(livingThingBean);
 
             } catch (IOException e) {

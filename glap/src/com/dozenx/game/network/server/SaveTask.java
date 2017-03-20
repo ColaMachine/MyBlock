@@ -3,6 +3,7 @@ package com.dozenx.game.network.server;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.engine.command.PlayerSynCmd;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
+import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.service.impl.BagService;
@@ -31,17 +32,21 @@ public class SaveTask extends TimerTask {
         enemyService = (EnemyService)serverContext.getService(EnemyService.class);
         bagService = (BagService)serverContext.getService(BagService.class);
     }
+    //如何把小怪物的动作行动同步到各个客户端呢 一个办法是告诉客户端 怪物的一个5秒动作 即是 要到哪个点 要执行哪个动作 这样能减少客户端的数据交互 所以最终还是得看指令
     public void run(){
         Long now = TimeUtil.getNowMills();
         for(LivingThingBean livingThing:enemyService.getAllEnemies()){
-            if(livingThing.died && now - livingThing.getLastHurtTime()>10*1000 ){
+            if(livingThing.isDied()&& now - livingThing.getLastHurtTime()>10*1000 ){
                 livingThing.setNowHP(livingThing.getHP());
-                livingThing.setX(livingThing.getX()+5);
-                livingThing.setDied(false);
+                livingThing.setY(livingThing.getY());
+                //livingThing.setDied(false);
                 int nowHP = livingThing.nowHP+10;
                 if(nowHP > livingThing.HP){
                     nowHP=livingThing.HP;
                 }
+                livingThing.setTarget(null);
+                livingThing.setTargetId(0);
+                livingThing.getExecutor().setCurrentState(new IdleState( livingThing));
                 livingThing.setNowHP(nowHP);
 
             }

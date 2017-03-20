@@ -24,8 +24,10 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
+import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.TimeUtil;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector3f;
@@ -86,6 +88,11 @@ public class LivingThingManager {
         ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
         //livingthing update
         for (LivingThing livingThing : livingThings) {
+           // this.getLivingThingById();
+            /*if(livingThing.getTargetId()>0 && livingThing.getTarget() == null ){
+                livingThing.setTarget(this.getLivingThingById(livingThing.getTargetId()));
+
+            }*/
             livingThing.update();
 
 
@@ -140,7 +147,7 @@ public class LivingThingManager {
     public void CrashCheck(  DropControlCenter dcc){
 
         for(LivingThing livingThing:livingThings){
-            if(livingThing.isPlayer() || !livingThing.exist)continue;//不对玩家进行校验 怕玩家离开自己太远的时候还进行校验
+            if(livingThing.isPlayer() )continue;//不对玩家进行校验 怕玩家离开自己太远的时候还进行校验
             if(livingThing.position.y<0){
                 livingThing.position.y=0;
                 livingThing.stable=true;
@@ -220,6 +227,7 @@ public class LivingThingManager {
      * 主要是网络同步各种状态到任务上 you synctask 驱动
      */
     public void update(){
+        Long nowTime = TimeUtil.getNowMills();
         /*if(!(BlockEngine.engine.getState() instanceof  GamingState) ){
             LogUtil.println("当前状态不对");
             return;
@@ -228,7 +236,7 @@ public class LivingThingManager {
 
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
-            if(livingThing.died || livingThing.nowHP<=0){
+            if((/*livingThing.died || */livingThing.nowHP<=0)&& nowTime - livingThing.getLastHurtTime()> 10000 ){
                this.livingThingsMap.remove(livingThing.getId());
                 livingThings.remove(i);
             }
@@ -366,8 +374,8 @@ public class LivingThingManager {
                     livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
                     //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
                 }*/
-            if(livingThing.died && info.nowHP>0){
-                livingThing.exist=true;
+            if(livingThing.isDied() && info.nowHP>0){//原来是死的 现在是活的 复活了
+               // livingThing.exist=true;
                 livingThing.getExecutor().getModel().bodyComponent.rotateX=0;
             }else{
 
@@ -442,6 +450,9 @@ public class LivingThingManager {
             int userId = cmd.getUserId();
 
             LivingThing from = this.getLivingThingById(userId);
+            if(cmd.getCmdType() == CmdType.CHASE ){
+                from.setTarget(this.getLivingThingById(((ChaseCmd )cmd).getTargetId()));
+            }
             if (from != null) {
                 from.getExecutor().receive(cmd);
             } else {
@@ -675,5 +686,29 @@ public class LivingThingManager {
         EquipCmd equipMentCmd = new EquipCmd(player, EquipPartType.HEAD, itemCfg);
         CoreRegistry.get(Client.class).send(equipMentCmd);
         //NetWorkManager.push(equipMentCmd);
+    }
+
+    public static void enemyLoop(List<LivingThingBean > livingThingBeanList){
+
+
+    }
+
+    public static float chaseCanAttack(LivingThingBean livingThing,long interval){
+        GL_Vector distanceVector = GL_Vector.sub(livingThing.getTarget().getPosition(), livingThing.getPosition());
+        float distance = GL_Vector.length(distanceVector);
+        if(distance>2){
+            GL_Vector walkDir  = distanceVector.normalize();
+            GL_Vector walkDistance= GL_Vector.multiplyWithoutY(walkDir,
+                    1f* (interval)/1000);
+            livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
+            if(GL_Vector.length(walkDistance)<distance){
+                livingThing.setPosition(GL_Vector.add(livingThing.position, walkDistance));
+            }else{
+                livingThing.setPosition(livingThing.getTarget().getPosition().getClone());
+            }
+        }
+        return distance;
+
+
     }
 }

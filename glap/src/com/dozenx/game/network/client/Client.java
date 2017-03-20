@@ -230,7 +230,7 @@ public class Client extends Thread{
                     continue;
                 }*/
 
-                if(newBytes .length <4 ||ByteUtil.getInt(newBytes)>10 ){
+                if(newBytes .length <4 /*||ByteUtil.getInt(newBytes)>10*/ ){
                     LogUtil.err("错误");
                 }
                 CmdType.printReceive(newBytes);
@@ -259,7 +259,7 @@ public class Client extends Thread{
                         bags.push((BagCmd)cmd);
                     }else if (cmd.getCmdType()== CmdType.DROP) {
                        drops.push((DropCmd)cmd);
-                    }else if (cmd.getCmdType()== CmdType.PICK) {
+                    }else if (cmd instanceof  UserBaseCmd ||cmd.getCmdType()== CmdType.PICK || cmd.getCmdType()== CmdType.WALK || cmd.getCmdType()== CmdType.DIED|| cmd.getCmdType()== CmdType.REBORN) {
                         humanStates.push(cmd);
                     }
                     else if (cmd.getCmdType()== CmdType.RESULT) {

@@ -35,6 +35,14 @@ public class CmdUtil {
             return new PickCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.DROP.ordinal()){
             return new DropCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.WALK.ordinal()){
+            return new WalkCmd2(bytes);
+        }else  if (cmdTypeVal ==  CmdType.DIED.ordinal()){
+            return new DiedCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.REBORN.ordinal()){
+            return new RebornCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.CHASE.ordinal()){
+            return new ChaseCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

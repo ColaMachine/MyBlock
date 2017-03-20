@@ -31,7 +31,7 @@ public class AttackManager {
                 //LogUtil.println(LivingThingManager.livingThings.get(j).position.length(vector)+"");
                 if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<0.5){
                     ball.died=true;
-                    livingThingManager.livingThings.get(j).beAttack(5);
+                    //livingThingManager.livingThings.get(j).beAttack(5);
                 }
             }
             ball.update(ShaderManager.anotherShaderConfig);

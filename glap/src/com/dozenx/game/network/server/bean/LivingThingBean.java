@@ -15,6 +15,7 @@ import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.live.state.IdleState;
+import com.dozenx.game.engine.live.state.State;
 import com.dozenx.game.engine.live.state.WalkState;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.ByteUtil;
@@ -33,18 +34,27 @@ public class LivingThingBean extends Role {
 
     public LivingThingBean(int id){
 
+
+
        /* this.getExecutor().setCurrentState(new IdleState(this));*/
         this.setId(id);//(int)(Math.random()*1000000);
+
+        this.setExecutor(new Executor(this));
+        this.getExecutor().setCurrentState(new IdleState(this));
+
+
         this.walkDir=new  GL_Vector(1,0,0);
         changeProperty();
+
+
         /*this.nowBlood=this.blood;
         this.nowEnergy=this.energy;*/
     }
 
 
-    public LivingThingBean(){
+   /* public LivingThingBean(){
 
-    }
+    }*/
 
 
     /*public GL_Vector getPosition(){
@@ -156,8 +166,8 @@ public class LivingThingBean extends Role {
     }
 
     public void doSomeThing(ServerContext serverContext){
-       /* this.currentState.update();
-            if (this.getTargetId() >0) {
+        this.getExecutor().getCurrentState().update();
+            /*if (this.getTargetId() >0) {
                 //检查举例 如果举例过远 放弃追逐
                 LivingThingBean player= serverContext.getOnlinePlayerById(enemy.getTargetId());
                 if(player==null){
@@ -184,7 +194,7 @@ public class LivingThingBean extends Role {
 
     }
 
-    public void changeState(IdleState humanState){
+    public void changeState(State humanState){
         if(this.getExecutor().getCurrentState()!=null &&getExecutor().getCurrentState() != humanState ){
             getExecutor().getCurrentState().dispose();
 
@@ -283,7 +293,7 @@ public class LivingThingBean extends Role {
     public float s = 0;
     public float nextZ = 0;
     public int limit = 0;
-    public boolean exist=true;
+    //public boolean exist=true;
     //private WeakReference<LivingThing> target;
     /*public LivingThing getTarget(){
         if(target==null)return null;
@@ -301,9 +311,9 @@ public class LivingThingBean extends Role {
     public int mark = 0;
     public
     int preY = 0;
-    public void disapper(){
+    /*public void disapper(){
         this.exist=false;
-    }
+    }*/
     public String getState(){
         return "力量:"+basePower+"/"+totalPower+"\n"
                 +"智力:"+baseIntell+"/"+totalIntell+"\n"
@@ -327,7 +337,7 @@ public class LivingThingBean extends Role {
     //public boolean died=false;
     public void died(){
         this.nowHP=0;
-        died=true;
+        //died=true;
 
     }
 
@@ -471,6 +481,7 @@ public class LivingThingBean extends Role {
 
     public void beAttack(int damage){
         this.nowHP-=damage;
+        this.setLastHurtTime(TimeUtil.getNowMills());
         Document.needUpdate=true;
         Client.messages.push(new SayCmd(this.getId(),this.name,"被攻击 损失"+damage+"点血"));
         if(this.nowHP<=0){

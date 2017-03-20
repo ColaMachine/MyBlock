@@ -1,10 +1,7 @@
 package com.dozenx.game.network.server.handler;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import com.dozenx.game.engine.command.AttackCmd;
-import com.dozenx.game.engine.command.AttackType;
-import com.dozenx.game.engine.command.GameCmd;
-import com.dozenx.game.engine.command.ResultCmd;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.*;
 import com.dozenx.game.network.server.service.impl.BagService;
 import com.dozenx.game.network.server.service.impl.EnemyService;
@@ -27,14 +24,14 @@ public class AttackHandler extends GameServerHandler {
 
         AttackCmd cmd =(AttackCmd) request.getCmd();
         LivingThingBean from = userService.getOnlinePlayerById(cmd.getUserId());
-        if(from!=null && ! from.died&& cmd.getTargetId()>0) {//如果攻击者活着并且攻击者 的攻击时间合适 如果是有目标的
+        if(from!=null && ! from.isDied()&& cmd.getTargetId()>0) {//如果攻击者活着并且攻击者 的攻击时间合适 如果是有目标的
             Long nowTime= TimeUtil.getNowMills();
             if(nowTime-from.getLastAttackTime() < 500){
                     return null;
             }
             LivingThingBean target = enemyService.getEnemyById(cmd.getTargetId());//并且目标存在在列表里
 
-            if (target != null &&!target.died ) {//并且 目标是活着的 且 在攻击方位内
+            if (target != null &&!target.isDied() ) {//并且 目标是活着的 且 在攻击方位内
                 //判断距离
                 float length = GL_Vector.length(GL_Vector.sub(from.getPosition(),target.getPosition()));
                 if(cmd.getAttackType()== AttackType.KAN && length>5){
@@ -56,11 +53,12 @@ public class AttackHandler extends GameServerHandler {
                 int nowBlood = target.getNowHP() - shanghai;
                 if(nowBlood<=0){
                     nowBlood=0;
-
+                    broadCast(new DiedCmd(target.getId()));
+                   // target.setDied(true);
                 }else{
                     nowBlood-=shanghai;
                 }
-                target.setDied(true);
+
 
                 target.setNowHP(nowBlood);
                 broadCast(request.getCmd());

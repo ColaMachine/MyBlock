@@ -20,10 +20,11 @@ import glmodel.GL_Vector;
 public class IdleState extends State{
 
 
-    public void dispose(){
 
-    }
     public void update(){
+        if(!this.livingThing.isPlayer()){
+
+        }
 
     }
 

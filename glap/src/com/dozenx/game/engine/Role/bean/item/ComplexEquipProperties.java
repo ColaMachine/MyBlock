@@ -14,7 +14,7 @@ public class ComplexEquipProperties extends CommonEquipProperties implements Syn
 
     @Override
     public void getInfo(PlayerStatus info) {
-        super.setInfo(info);
+        super.getInfo(info);
         info.setHandEquip(this.getHeadEquip().ordinal());
         info.setBodyEquip(this.getBodyEquip().ordinal());
         info.setHandEquip(this.getHandEquip().ordinal());
@@ -30,6 +30,7 @@ public class ComplexEquipProperties extends CommonEquipProperties implements Syn
         this.setLegEquip(ItemType.values()[info.getLegEquip()]);
         this.setFootEquip(ItemType.values()[info.getFootEquip()]);
     }
+    @Override
     public void changeProperty( ){
         super.changeProperty();
         // totalPower = basePower+

@@ -14,10 +14,10 @@ public class AttackProperties extends BaseProperties{
         info.nowHP =this.getNowHP();
         info.nowMP =this.getNowMP();
         info.MP =this.getMP();
-        if(info.HP>0){
+        /*if(info.HP>0){
             this.died=false;;
 
-        }
+        }*/
     }
 
     public void setInfo(PlayerStatus info ){
@@ -26,9 +26,9 @@ public class AttackProperties extends BaseProperties{
        this.setNowHP(info.nowHP);
        this.setNowMP( info.nowMP );
        this.setMP( info.MP);
-        if(info.HP>0){
+        /*if(info.HP>0){
             this.died=false;;
-        }
+        }*/
     }
 
     private long lastHurtTime = 0;
@@ -102,12 +102,12 @@ public class AttackProperties extends BaseProperties{
     }
 
     public boolean isDied() {
-        return died;
+        return nowHP<=0;
     }
 
-    public void setDied(boolean died) {
+    /*public void setDied(boolean died) {
         this.died = died;
-    }
+    }*/
 
     public int MP; //  能量
 
@@ -208,10 +208,10 @@ public class AttackProperties extends BaseProperties{
                 +"防御:"+defense+"";
     }
 
-    public boolean died=false;
+   // private boolean died=false;
     public void died(){
         this.nowHP=0;
-        died=true;
+        //died=true;
 
     }
 

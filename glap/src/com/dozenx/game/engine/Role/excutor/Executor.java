@@ -14,7 +14,7 @@ public class Executor {
 
     Model model ;
     public Executor(Role role ){
-        model = new PlayerModel(role);
+        //model = new PlayerModel(role);
     }
     public Model getModel() {
         return model;
@@ -36,5 +36,7 @@ public class Executor {
     public void receive(GameCmd cmd ){
         currentState.receive(cmd);
     }
+
+
 
 }

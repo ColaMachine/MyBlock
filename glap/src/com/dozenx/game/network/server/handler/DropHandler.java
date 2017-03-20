@@ -46,7 +46,7 @@ public class DropHandler extends GameServerHandler {
                     cmd.setNum(itemAry[i].getNum());
                     //计算丢物品的角度
                     float bodyAngle = from.getBodyAngle();
-                    GL_Vector bodyDir = GL_Vector.getFromXZAngle(bodyAngle);
+                    GL_Vector bodyDir = GL_Vector.getVectorFromXZAngle(bodyAngle);
                     GL_Vector postion
                      =  GL_Vector.add( new GL_Vector(from.getX(),from.getY(),from.getZ()),GL_Vector .multiply(bodyDir,5));
 

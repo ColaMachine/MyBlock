@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.excutor.Executor;
+import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.live.state.IdleState;
@@ -35,8 +36,8 @@ public class LivingThing extends LivingThingBean {
     public float headAngle2 =0  ;*/
     public LivingThing(int id){
         super(id);
-        this.setExecutor(new Executor(this));
-        this.getExecutor().setCurrentState(new IdleState(this));
+
+        this.getExecutor().setModel( new PlayerModel(this));
     }
 
    /* public long updateTime;
