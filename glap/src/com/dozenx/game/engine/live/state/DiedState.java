@@ -2,6 +2,7 @@ package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.CmdType;
 import com.dozenx.game.engine.command.GameCmd;
@@ -23,7 +24,7 @@ public class DiedState extends State {
         this.livingThing.nowHP=0;
         this.livingThing.nowMP=0;
 
-
+        Document.needUpdate=true;
         if(GamingState.player!=null){
             CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "died");
         }

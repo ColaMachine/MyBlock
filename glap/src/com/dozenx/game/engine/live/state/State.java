@@ -39,7 +39,13 @@ public class State {
         this.livingThing = livingThing;
     }
     public void receive(GameCmd gameCmd){
-        if(gameCmd.getCmdType()==CmdType.CHASE){
+        if(gameCmd.getCmdType()==CmdType.DIED){
+            DiedCmd diedCmd = (DiedCmd)gameCmd;
+            /*this.from = walkCmd2.from;
+            this.to=walkCmd2.to;*/
+          /* CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");*/
+            this.livingThing.changeState( new DiedState(this.livingThing));
+        }else if(gameCmd.getCmdType()==CmdType.CHASE){
             ChaseCmd chaseCmd = (ChaseCmd)gameCmd;
             /*this.from = walkCmd2.from;
             this.to=walkCmd2.to;*/
@@ -174,6 +180,7 @@ public class State {
 
     public void commonCmdReceive(GameCmd gameCmd){
         if(gameCmd .getCmdType() == CmdType.DIED) {
+
             this.livingThing.changeState( new DiedState(this.livingThing));
 
         }else if(gameCmd .getCmdType() == CmdType.ATTACK) {
