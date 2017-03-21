@@ -30,7 +30,9 @@ public class AttackHandler extends GameServerHandler {
                     return null;
             }
             LivingThingBean target = enemyService.getEnemyById(cmd.getTargetId());//并且目标存在在列表里
-
+            if(target==null ){
+                target=userService.getOnlinePlayerById(cmd.getTargetId());
+            }
             if (target != null &&!target.isDied() ) {//并且 目标是活着的 且 在攻击方位内
                 //判断距离
                 float length = GL_Vector.length(GL_Vector.sub(from.getPosition(),target.getPosition()));

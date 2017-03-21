@@ -60,6 +60,8 @@ public class ShaderManager {
     public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
     public static ShaderConfig anotherShaderConfig = new ShaderConfig("another","chapt7/3dimg.frag","chapt7/3dimg.vert");
     public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop","chapt7/3dimg.frag","chapt7/3dimg.vert");
+    public static ShaderConfig uifloatShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
+
 
     public HashMap<String,ShaderConfig> configMap =new HashMap<>();
     public void registerConfig(ShaderConfig config) throws Exception {
@@ -79,6 +81,8 @@ public class ShaderManager {
         this.createProgram(livingThingShaderConfig);
         this.createProgram(anotherShaderConfig);
         this.createProgram(dropItemShaderConfig);
+        this.createProgram(uifloatShaderConfig);
+
        // this.CreateTerrainVAO();
        // ShaderUtils.initProModelView(terrainShaderConfig);
         //ShaderUtils.initProModelView(lightShaderConfig);
@@ -91,9 +95,10 @@ public class ShaderManager {
         this.initUniform(skyShaderConfig);
         this.initUniform(anotherShaderConfig);
         this.initUniform(dropItemShaderConfig);
+        this.initUniform(uifloatShaderConfig);
         //this.createProgram(lightShaderConfig);
         this.CreateLightVAO(lightShaderConfig);
-        this.CreateUiVAO(uiShaderConfig);
+       // this.CreateUiVAO(uiShaderConfig);
         //this.CreateTerrainVAO(terrainShaderConfig);
       //  this.CreateLivingVAO(livingThingShaderConfig);
         //this.uniformLight();

@@ -1,13 +1,17 @@
 package cola.machine.game.myblocks.skill;
 
+import cola.machine.game.myblocks.Color;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.TimeUtil;
 import glmodel.GL_Vector;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.vecmath.Vector4f;
+import java.util.*;
 
 /**
  * Created by luying on 16/9/25.
@@ -18,6 +22,8 @@ public class AttackManager {
     }
     private LivingThingManager livingThingManager;
     public static List<Ball> list =new ArrayList<>();
+    Vector4f color =new Vector4f(1,0,0,1);
+    public Queue<TimeString> texts= new LinkedList<TimeString>();
     public static void add(Ball ball){
         list.add(ball);
     }
@@ -30,7 +36,9 @@ public class AttackManager {
                 LivingThing livingThing = livingThingManager.livingThings.get(j);
                 //LogUtil.println(LivingThingManager.livingThings.get(j).position.length(vector)+"");
                 if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<0.5){
+
                     ball.died=true;
+                    texts.offer(new TimeString(5+""));
                     //livingThingManager.livingThings.get(j).beAttack(5);
                 }
             }
@@ -39,8 +47,34 @@ public class AttackManager {
                 list.remove(i);
             }
         }
-        ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),new int[]{3,3,3,1});
+        ShaderManager.uifloatShaderConfig.getVao().getVertices().rewind();
+        Iterator<TimeString> shanghais = texts.iterator();
+        int index=0;
+        Long now= TimeUtil.getNowMills();
+        while (shanghais.hasNext()) {
+
+            TimeString shanghai = shanghais.next();
+            if (now - shanghai.getStartTime() > 5000) {
+                texts.poll();
+            }
+        }
+        shanghais = texts.iterator();
+        while (shanghais.hasNext()){
+            index++;
+            TimeString shanghai = shanghais.next();
+                //GL11.glColor4f(1, 1, 1, 1);
+            color.w= 1-(now- shanghai.getStartTime())/5000;
+                ShaderUtils.printText(shanghai.getText(),Constants.WINDOW_WIDTH/2,Constants.WINDOW_HEIGHT/2 -(int)(now- shanghai.getStartTime())*100/5000,0,24,color,ShaderManager.uifloatShaderConfig );
+                OpenglUtils.checkGLError();
+                //GLApp.print((int)minX,(int)minY,this.innerText);
+        }
+
+        ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),anotherShaderConfig);
+        ShaderUtils.createVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao(),uiFloatShaderConfig);
+
     }
+    int anotherShaderConfig[] = new int[]{3,3,3,1};
+    int uiFloatShaderConfig[] = new int[]{3,2,1,4};
 
    /* public static void update2(){
         for(int i=list.size()-1;i>=0;i--){
@@ -70,6 +104,7 @@ public class AttackManager {
         }
 
         ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.finalDraw(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
     }
 
 }

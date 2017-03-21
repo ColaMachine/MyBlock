@@ -80,7 +80,7 @@ public class Constants {
     public static final int SKILL_DAMAGE_TYPE_PHYSIC=1;
     public static final int SKILL_DAMAGE_TYPE_MAGIC=2;
 
-    public static final int serverPort =8082;
+    public static final int serverPort =6060;
 
     public static String userName;
 

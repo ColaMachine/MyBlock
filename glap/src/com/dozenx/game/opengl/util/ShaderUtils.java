@@ -1419,7 +1419,62 @@ try {
 
 
     }
+    public static void printText(String s, int innerX, int innerY,float z, float fontSize,Vector4f color,ShaderConfig  config) {
+        int preX=0;
+        int preY=0;
+        TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(ch=='\n'){
+                preX=0-(int)fontSize;
+                preY+=fontSize;
+            }else{
+                if(i!=0)
+                    preX+=fontSize;
+            }
+            if(FontUtil.zhongwenMap==null)
+            {LogUtil.err("font load failed");
 
+            }
+            Glyph location = FontUtil.zhongwenMap.get(ch);
+            float height =ti.getImgHeight();
+            float width = ti.getImgWidth();
+            if(location!=null){
+                ti.minX=location.x/width;
+                ti.minY=(height-location.y-location.height)/height;
+                ti.maxX=(location.x+location.width)/width;
+                ti.maxY=(height-location.y)/height;
+                ShaderUtils.draw2dImg(new Image(ti), innerX+preX,innerY+preY,z,(int)fontSize,(int)fontSize,color,config);
+                OpenglUtils.checkGLError();
+            }
+
+        }
+
+
+    }
+
+
+    public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height,Vector4f color,ShaderConfig config) {
+        Vao vao = config.getVao();
+
+        TextureInfo ti = image.getTexture();
+
+        float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
+        float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
+        float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+    }
     /*public static void drawLine(Vector4f color,int startX,int startY,int endX,int endY) {
 
         float startXF = startX/Constants.WINDOW_WIDTH*2-1f;
