@@ -149,8 +149,8 @@ public class Role extends ComplexEquipProperties {
             return;
 
         }
-        CoreRegistry.get(AnimationManager.class)
-                .apply(getModel().bodyComponent,"kan");
+        /*CoreRegistry.get(AnimationManager.class)
+                .apply(getModel().bodyComponent,"kan");*/
         int damage=harmValue;
         this.nowHP-=damage;
         Document.needUpdate=true;

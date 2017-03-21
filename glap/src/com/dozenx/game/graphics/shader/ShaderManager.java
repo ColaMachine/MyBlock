@@ -2,6 +2,7 @@ package com.dozenx.game.graphics.shader;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.math.Vector2i;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -15,6 +16,8 @@ import glmodel.GL_Vector;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Util;
 
+import javax.vecmath.Point4f;
+import javax.vecmath.Vector2f;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -193,6 +196,21 @@ public class ShaderManager {
     GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 
+    public Vector2f wordPositionToXY(GL_Vector position,GL_Vector cameraPosition,GL_Vector viewDir ){
+
+       GL_Matrix view=
+                GL_Matrix.LookAt(cameraPosition,viewDir);
+
+        GL_Matrix modal = GL_Matrix.translateMatrix(position.x,position.y,position.z);
+GL_Matrix step1 = GL_Matrix.multiply(projection,view);
+        GL_Matrix step2 = GL_Matrix.multiply(step1,modal);
+        Point4f final4f = GL_Matrix.multiply(step2,
+
+                new javax.vecmath.Point4f(position.x,position.y,position.z,0f)
+        );
+
+        return new Vector2f(final4f.x,final4f.y);
+    }
     public static void humanPosChangeListener(){
 
 
@@ -215,6 +233,8 @@ public class ShaderManager {
         lightPosChangeListener();*/
 
     }
+
+
     public static void lightPosChangeListener() {
 
         glUseProgram(terrainShaderConfig.getProgramId());

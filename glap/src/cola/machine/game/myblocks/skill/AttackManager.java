@@ -2,14 +2,17 @@ package cola.machine.game.myblocks.skill;
 
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.TimeUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 import java.util.*;
 
@@ -27,6 +30,7 @@ public class AttackManager {
     public static void add(Ball ball){
         list.add(ball);
     }
+    GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     public  void update(){
         ShaderManager.anotherShaderConfig.getVao().getVertices().rewind();
         for(int i=list.size()-1;i>=0;i--){
@@ -38,7 +42,9 @@ public class AttackManager {
                 if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<0.5){
 
                     ball.died=true;
-                    texts.offer(new TimeString(5+""));
+                    //stexts.offer(new TimeString(5+""));
+                    Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
+                    texts.offer(new TimeString(5+"",xy.x*Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
                     //livingThingManager.livingThings.get(j).beAttack(5);
                 }
             }
@@ -64,7 +70,7 @@ public class AttackManager {
             TimeString shanghai = shanghais.next();
                 //GL11.glColor4f(1, 1, 1, 1);
             color.w= 1-(now- shanghai.getStartTime())/5000;
-                ShaderUtils.printText(shanghai.getText(),Constants.WINDOW_WIDTH/2,Constants.WINDOW_HEIGHT/2 -(int)(now- shanghai.getStartTime())*100/5000,0,24,color,ShaderManager.uifloatShaderConfig );
+                ShaderUtils.printText(shanghai.getText(),(int)shanghai.x,(int)shanghai.y -(int)(now- shanghai.getStartTime())*100/5000,0,24,color,ShaderManager.uifloatShaderConfig );
                 OpenglUtils.checkGLError();
                 //GLApp.print((int)minX,(int)minY,this.innerText);
         }

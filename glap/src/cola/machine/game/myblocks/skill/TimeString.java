@@ -6,8 +6,10 @@ import com.dozenx.util.TimeUtil;
  * Created by dozen.zhang on 2017/3/21.
  */
 public class TimeString {
-    public TimeString(String text){
+    public TimeString(String text,float x,float y){
         this.text =text;
+        this.x =x ;
+        this.y = y ;
         this.setStartTime(TimeUtil.getNowMills());
     }
     private long startTime;

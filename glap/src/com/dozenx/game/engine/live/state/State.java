@@ -130,8 +130,7 @@ public class State {
             }*/
             AttackCmd cmd =(AttackCmd) gameCmd;
             if(cmd.getAttackType()== AttackType.KAN){
-                if(GamingState.player!=null)
-                CoreRegistry.get(AnimationManager.class).apply(livingThing.getModel().bodyComponent,"kan");
+                livingThing.changeAnimationState("kan");
                 livingThing.getTarget().beAttack(cmd.getAttackValue());
                 Document.needUpdate=true;
                 //getExecutor().getCurrentState().dispose();
@@ -198,9 +197,8 @@ public class State {
             }*/
             AttackCmd cmd =(AttackCmd) gameCmd;
             if(cmd.getAttackType()== AttackType.KAN){
-                if(GamingState.player!=null) {
-                    CoreRegistry.get(AnimationManager.class).apply(livingThing.getModel().bodyComponent, "kan");
-                }
+                livingThing.changeAnimationState("kan");
+
                 livingThing.getTarget().beAttack(cmd.getAttackValue());
                 Document.needUpdate=true;
                 //getExecutor().getCurrentState().dispose();

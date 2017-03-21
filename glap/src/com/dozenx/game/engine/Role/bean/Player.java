@@ -195,8 +195,8 @@ public class Player extends LivingThing {
 
     public void StrafeRight(float Distance) {
         if (Math.abs(Distance) > 0.02) {
-            AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-            manager.apply(getModel().bodyComponent, "walkerLeft");
+
+            this.changeAnimationState("walkerLeft");
             //if (this.stable) {
             lastMoveTime = Sys.getTime();
             this.move(GL_Vector.add(position, GL_Vector.multiply(RightVector,

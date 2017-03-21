@@ -283,31 +283,23 @@ public class LivingThing extends LivingThingBean {
 
     public void beAttack(int damage){
         super.beAttack(damage);
-        if(this.nowHP<=0){
+        /*if(this.nowHP<=0){
             AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             manager.clear(getModel().bodyComponent);
             manager.apply(getModel().bodyComponent,"died");
 
-        }
+        }*/
     }
 
 
 
 
-
-    public void changeAnimationState(String animationName){
-
-        CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
-        if(animationName!=null) {
-            CoreRegistry.get(AnimationManager.class).apply(getModel().bodyComponent, animationName);
-        }
-    }
 
     public void attack(){
 
 
-        CoreRegistry.get(AnimationManager.class)
-                .apply(getModel().bodyComponent,"kan");
+       /* CoreRegistry.get(AnimationManager.class)
+                .apply(getModel().bodyComponent,"kan");*/
     }
 
     /*public void beAttack(){

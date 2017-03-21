@@ -23,10 +23,10 @@ public class ChaseState extends State {
         //livingThing.setTargetId(chaseCmd.getTargetId());
         //livingThing.setTarget(livingThingMa);
         lastMoveTime = startTime = TimeUtil.getNowMills();
-
-        if(GamingState.player!=null){
+        livingThing.changeAnimationState("walkerFoward");
+        /*if(GamingState.player!=null){
             CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");
-        }
+        }*/
 
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的

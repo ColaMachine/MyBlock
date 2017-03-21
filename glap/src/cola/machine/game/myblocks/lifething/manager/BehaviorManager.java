@@ -37,11 +37,12 @@ public class BehaviorManager extends    Thread{
         }
         return animationManager;
     }
+    @Deprecated
     public void attack(Role from, Role to){
        /* from.attack();
         to.beAttack();*/
-        getAnimationManager().apply(from.getModel().bodyComponent,"kan");
-        getAnimationManager().apply(to.getModel().bodyComponent,"kan");
+       /* getAnimationManager().apply(from.getModel().bodyComponent,"kan");
+        getAnimationManager().apply(to.getModel().bodyComponent,"kan");*/
 
     }
 
@@ -55,7 +56,7 @@ public class BehaviorManager extends    Thread{
                     attack(livingThing,livingThing.getTarget());
                     livingThing.nextPosition=null;
                 }else{
-                    this.getAnimationManager().apply(livingThing.getModel().bodyComponent,"walkerFoward");
+                    //this.getAnimationManager().apply(livingThing.getModel().bodyComponent,"walkerFoward");
                     livingThing.position = GL_Vector.add(livingThing.position,GL_Vector.multiply(direction.normalize(),livingThing.speed*1));
                 }
 

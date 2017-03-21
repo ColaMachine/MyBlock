@@ -18,6 +18,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
 
+import javax.vecmath.Point4f;
+import javax.vecmath.Vector2f;
+
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
@@ -395,6 +398,27 @@ public class OpenglUtils {
     }
 
 
+    public static void main(String args[]){
+        GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+        Vector2f dd =wordPositionToXY(projection,new GL_Vector(5,5,-14),new GL_Vector(0.3f,0,0),new GL_Vector(0,0,-1));
+            System.out.println(dd.x);
+        System.out.println(dd.y);
+    }
+    public static Vector2f wordPositionToXY(GL_Matrix projection ,GL_Vector position,GL_Vector cameraPosition,GL_Vector viewDir ){
+
+        GL_Matrix view=
+                GL_Matrix.LookAt(cameraPosition,viewDir);
+
+        GL_Matrix modal = GL_Matrix.rotateMatrix(0,0,0);
+        GL_Matrix step1 = GL_Matrix.multiply(projection,view);
+        GL_Matrix step2 = GL_Matrix.multiply(step1,modal);
+        Point4f final4f = GL_Matrix.multiply(step2,
+
+                new javax.vecmath.Point4f(position.x,position.y,position.z,1f)
+        );
+
+        return new Vector2f(final4f.x/final4f.w/2+0.5f,1-final4f.y/final4f.w-0.5f);
+    }
 
     public static void bind(int textureHandle){
 

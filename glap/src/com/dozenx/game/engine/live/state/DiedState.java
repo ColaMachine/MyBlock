@@ -25,9 +25,8 @@ public class DiedState extends State {
         this.livingThing.nowMP=0;
 
         Document.needUpdate=true;
-        if(GamingState.player!=null){
-            CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "died");
-        }
+        livingThing.changeAnimationState("died");
+
 
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的

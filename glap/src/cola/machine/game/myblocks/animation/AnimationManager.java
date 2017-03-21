@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.util.FileUtil;
+import core.log.LogUtil;
 
 import java.io.*;
 import java.util.*;
@@ -35,8 +36,12 @@ public class AnimationManager {
         while(it.hasNext()){
             Map.Entry<String,Object> entry=(Map.Entry)it.next();
             String id = entry.getKey();
+
             if(id.startsWith(hashCode+component.name)){
                 id2animatorMap.get(id).complete=true;
+                if(id.endsWith("died")){
+                    LogUtil.println("移除动画");
+                }
             }
 
         }
@@ -85,7 +90,10 @@ public class AnimationManager {
             if(animator.complete){
                 id2animatorMap.remove(animator.component.hashCode()+animator.component.name+":"+animator.animation.action);
                // id2animatorMap.put(animator.component.id+":"+animator.animation.action,null);
-//                LogUtil.println("移除动画"+animators.get(i).animation.action);
+             LogUtil.println("移除动画" + animators.get(i).animation.action);
+                if(animators.get(i).animation.action.equals("died")){
+                    LogUtil.println("移除动画" + animators.get(i).animation.action);
+                }
                 animators.remove(i);
 
             }else {

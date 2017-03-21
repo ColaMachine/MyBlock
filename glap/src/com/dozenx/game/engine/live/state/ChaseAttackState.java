@@ -44,9 +44,10 @@ public class ChaseAttackState extends State {
         this.walkDir.normalize();
         livingThing.walkDir =walkDir;
         livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
-        if(GamingState.player!=null){
+        livingThing.changeAnimationState("walkerFoward");
+        /*if(GamingState.player!=null){
             CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");
-        }
+        }*/
 
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的

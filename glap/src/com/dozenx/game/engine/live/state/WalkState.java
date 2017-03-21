@@ -45,9 +45,7 @@ public class WalkState extends State {
         this.walkDir.normalize();
         livingThing.walkDir =walkDir;
         livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
-        if(GamingState.player!=null){
-            CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");
-        }
+        livingThing.changeAnimationState("walkerFoward");
 
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的
@@ -67,9 +65,8 @@ public class WalkState extends State {
             this.walkDir.normalize();
             livingThing.walkDir =walkDir;
             livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
-            if(GamingState.player!=null){
-                CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");
-            }
+            livingThing.changeAnimationState("walkerFoward");
+
             /*if(gameCmd.val()== WalkCmd.FORWARD ){
 
             }*/
@@ -94,7 +91,7 @@ public class WalkState extends State {
             }*/
             AttackCmd cmd =(AttackCmd) gameCmd;
             if(cmd.getAttackType()== AttackType.KAN){
-                CoreRegistry.get(AnimationManager.class).apply(livingThing.getModel().bodyComponent,"kan");
+                livingThing.changeAnimationState("kan");
                 livingThing.getTarget().beAttack(cmd.getAttackValue());
                 Document.needUpdate=true;
                 //getExecutor().getCurrentState().dispose();
