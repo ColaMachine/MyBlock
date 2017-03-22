@@ -77,6 +77,13 @@ public class BagService extends GameServerService {
 
     }
 
+    public ItemServerBean[] getWorldItem(){
+
+        ItemServerBean[] ary =new ItemServerBean[serverContext.worldItem.size()];
+        return  serverContext.worldItem.toArray(ary);
+
+    }
+
     public ItemServerBean getWorldItemById(Integer id){
 
         for(ItemServerBean item:serverContext.worldItem){

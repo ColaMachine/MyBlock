@@ -41,8 +41,8 @@ public class AttackHandler extends GameServerHandler {
 
                     return null;
 
-                }else if(cmd.getAttackType()== AttackType.ARROW){
-
+                }else if(cmd.getAttackType()== AttackType.ARROW && length>35){
+                    return null;
                 }
                 from.setLastAttackTime(nowTime);
 
@@ -51,6 +51,9 @@ public class AttackHandler extends GameServerHandler {
 
                 //结算伤害
                 int shanghai = from.getPattack() - target.getDefense();
+                if(shanghai<=0){
+                    shanghai=0;
+                }
                 cmd.setAttackValue(shanghai);
                 int nowBlood = target.getNowHP() - shanghai;
                 if(nowBlood<=0){

@@ -193,7 +193,7 @@ public class Player extends LivingThing {
 
     }
 
-    public void StrafeRight(float Distance) {
+    public void StrafeRight(float Distance) { if(isDied())return;
         if (Math.abs(Distance) > 0.02) {
 
             this.changeAnimationState("walkerLeft");
@@ -205,7 +205,9 @@ public class Player extends LivingThing {
         //}
     }
 
-    public void MoveForward(float Distance) {// System.out.printf("%f %f %f
+    public void MoveForward(float Distance) {
+        if(isDied())return;
+        // System.out.printf("%f %f %f
 //        LogUtil.println("MoveForward");							// \r\n",ViewDir.x,ViewDir.y,ViewDir.z);
         //if (this.stable) {
         if (Math.abs(Distance) > 0.02) {
@@ -227,7 +229,7 @@ public class Player extends LivingThing {
 
 
     public void jumpHigh() {
-
+        if(isDied())return;
         // ��¼��ǰ��ʱ��
         if (this.stable) {
             this.v = 12.6f;
@@ -237,7 +239,7 @@ public class Player extends LivingThing {
         }
     }
 
-    public void jump() {
+    public void jump() { if(isDied())return;
         //this.position.y+=1;
         // ��¼��ǰ��ʱ��
         if (Switcher.IS_GOD) {

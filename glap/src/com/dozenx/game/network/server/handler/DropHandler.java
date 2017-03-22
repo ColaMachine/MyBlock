@@ -54,8 +54,8 @@ public class DropHandler extends GameServerHandler {
                     cmd.setY(postion.y);
                     cmd.setZ(postion.z);
                     itemAry[i]=null;
-                    broadCast(cmd);
-                    BagCmd bagCmd =new BagCmd(from.getId(),from.getItemBeansList());
+                    broadCast(cmd);//发给别人我丢了什么东西 分发drop时间
+                    BagCmd bagCmd =new BagCmd(from.getId(),bagService.getItemByUserId(from.getId()));
                     request.getWorker().send(bagCmd.toBytes());
                     return null;
                 }

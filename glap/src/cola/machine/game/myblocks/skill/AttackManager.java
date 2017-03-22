@@ -26,9 +26,12 @@ public class AttackManager {
     private LivingThingManager livingThingManager;
     public static List<Ball> list =new ArrayList<>();
     Vector4f color =new Vector4f(1,0,0,1);
-    public Queue<TimeString> texts= new LinkedList<TimeString>();
+    public static Queue<TimeString> texts= new LinkedList<TimeString>();
     public static void add(Ball ball){
         list.add(ball);
+    }
+    public static void addText(TimeString timeString){
+        texts.offer(timeString);
     }
     GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     public  void update(){
@@ -54,17 +57,16 @@ public class AttackManager {
             }
         }
         ShaderManager.uifloatShaderConfig.getVao().getVertices().rewind();
-        Iterator<TimeString> shanghais = texts.iterator();
+      // Iterator<TimeString> shanghais = texts.iterator();
         int index=0;
         Long now= TimeUtil.getNowMills();
-        while (shanghais.hasNext()) {
+        while (texts.peek()!=null && (now -texts.peek().getStartTime()) >5000) {
 
-            TimeString shanghai = shanghais.next();
-            if (now - shanghai.getStartTime() > 5000) {
+
                 texts.poll();
-            }
+
         }
-        shanghais = texts.iterator();
+        Iterator<TimeString> shanghais = texts.iterator();
         while (shanghais.hasNext()){
             index++;
             TimeString shanghai = shanghais.next();

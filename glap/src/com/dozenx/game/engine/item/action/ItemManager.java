@@ -23,6 +23,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -49,31 +50,59 @@ public static void removeWorldItem(int itemId){
 
     public static List<Ball> list =new ArrayList<>();
     public static void add(Ball ball){
-        list.add(ball);
+        long now =TimeUtil.getNowMills();
+
+        for(int i=list.size()-1;i>=0;i--){
+            Ball checkBall = list.get(i);
+            if(checkBall.getId()== ball.getId()){
+                ball.lastSynTime=now;
+                //更新ball的位置信息
+                return;
+            }
+        }ball.lastSynTime=now;
+        list.add(ball);//如果没有重复 就添加
     }
     static float distance =0;
+    long lastCheckTime =0;
     public  void update(){
+        long now = TimeUtil.getNowMills();
+        if(now-lastCheckTime<1000){//减少检查和网络发送
+            return;
+        }
+        lastCheckTime=now;
+        int deleteIndex = -1;
         ShaderManager.dropItemShaderConfig.getVao().getVertices().rewind();
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
-            GL_Vector vector = ball.getPosition();
+            if(now-ball.lastSynTime>50000) {
+                deleteIndex=i;
+                continue;
+            }
+            if(now-ball.lastPickTime>2000) {
+                GL_Vector vector = ball.getPosition();
                 LivingThing player = CoreRegistry.get(Player.class);
-            distance = GL_Vector.length(new GL_Vector(vector,player.getPosition()));
+                distance = GL_Vector.length(new GL_Vector(vector,player.getPosition()));
                 if( distance<1.8){
                     if(player.getItemBeansList().size()<24){
+                        ball.lastPickTime=now;
                         CoreRegistry.get(Client.class).send(new PickCmd(player.getId(),ball.getId()));
                     }
 
 
                     //TODO 拾取
-                   // ball.=true;
-                   // LivingThingManager.livingThings.get(j).beAttack(5);
+                    // ball.=true;
+                    // LivingThingManager.livingThings.get(j).beAttack(5);
                 }
+            }
+
 
             ball.update(ShaderManager.dropItemShaderConfig);
            /* if(ball.died){
                 list.remove(i);
             }*/
+        }
+        if(deleteIndex>=0){
+            list.remove(deleteIndex);
         }
         ShaderUtils.createVao(ShaderManager.dropItemShaderConfig, ShaderManager.dropItemShaderConfig.getVao(), new int[]{3, 3, 3, 1});
     }

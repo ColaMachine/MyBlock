@@ -429,12 +429,15 @@ public class LivingThingManager {
             DropCmd cmd = client.drops.pop();
             int userId = cmd.getUserId();
 
+            if(userId==0){//说明是世界掉落物品更新
+                player.getExecutor().receive(cmd);
+            }else{
             LivingThing from = this.getLivingThingById(userId);
             if(from != null){
                 from.getExecutor().receive(cmd);
             }else{
                 player.getExecutor().receive(cmd);
-            }
+            }}
 
          /*   if(userId == player.getId()){
                 player.getItemBeans()[24]=null;

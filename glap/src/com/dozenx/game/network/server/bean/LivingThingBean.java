@@ -522,7 +522,7 @@ public class LivingThingBean extends Role {
 
     public void changeAnimationState(String animationName){
     if(GamingState.player!=null) {
-        CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
+        //CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
         if (animationName != null) {
             CoreRegistry.get(AnimationManager.class).apply(getModel().bodyComponent, animationName);
         }

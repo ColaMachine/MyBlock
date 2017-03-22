@@ -1,6 +1,8 @@
 package com.dozenx.game.network.server;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.engine.command.DropCmd;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.command.PlayerSynCmd;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.engine.live.state.IdleState;
@@ -34,38 +36,51 @@ public class SaveTask extends TimerTask {
     }
     //如何把小怪物的动作行动同步到各个客户端呢 一个办法是告诉客户端 怪物的一个5秒动作 即是 要到哪个点 要执行哪个动作 这样能减少客户端的数据交互 所以最终还是得看指令
     public void run(){
-        Long now = TimeUtil.getNowMills();
-        for(LivingThingBean livingThing:enemyService.getAllEnemies()){
-            if(livingThing.isDied()&& now - livingThing.getLastHurtTime()>10*1000 ){
-                livingThing.setNowHP(livingThing.getHP());
-                livingThing.setY(livingThing.getY());
-                //livingThing.setDied(false);
-                int nowHP = livingThing.nowHP+10;
-                if(nowHP > livingThing.HP){
-                    nowHP=livingThing.HP;
+        try {
+            Long now = TimeUtil.getNowMills();
+            for (LivingThingBean livingThing : enemyService.getAllEnemies()) {
+                if (livingThing.isDied() && now - livingThing.getLastHurtTime() > 10 * 1000) {
+                    livingThing.setNowHP(livingThing.getHP());
+                    livingThing.setY(livingThing.getY());
+                    //livingThing.setDied(false);
+                    int nowHP = livingThing.nowHP + 10;
+                    if (nowHP > livingThing.HP) {
+                        nowHP = livingThing.HP;
+                    }
+                    livingThing.setTarget(null);
+                    livingThing.setTargetId(0);
+                    livingThing.getExecutor().setCurrentState(new IdleState(livingThing));
+                    livingThing.setNowHP(nowHP);
+
                 }
-                livingThing.setTarget(null);
-                livingThing.setTargetId(0);
-                livingThing.getExecutor().setCurrentState(new IdleState( livingThing));
+
+                serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
+
+            }
+            //保存用户信息
+            //保存包裹信息
+            for (LivingThingBean livingThing : userService.getAllOnlinePlayer()) {
+                int nowHP = livingThing.nowHP + 10;
+                if (nowHP > livingThing.HP) {
+                    nowHP = livingThing.HP;
+                }
                 livingThing.setNowHP(nowHP);
+                userService.save(livingThing.getInfo());
+                serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
+                bagService.save(livingThing.getId(), bagService.getItemByUserId(livingThing.getId()));
 
             }
-
-            serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
-
-        }
-        //保存用户信息
-        //保存包裹信息
-        for(LivingThingBean livingThing:userService.getAllOnlinePlayer()){
-            int nowHP = livingThing.nowHP+10;
-            if(nowHP > livingThing.HP){
-                nowHP=livingThing.HP;
+            for (ItemServerBean itemServerBean : bagService.getWorldItem()) {
+                DropCmd dropCmd = new DropCmd(0, itemServerBean.getId());
+                dropCmd.setX(itemServerBean.getX());
+                dropCmd.setY(itemServerBean.getY());
+                dropCmd.setZ(itemServerBean.getZ());
+                dropCmd.setItemType(ItemType.values()[itemServerBean.getItemType()]);
+                serverContext.getMessages().offer(dropCmd.toBytes());
             }
-            livingThing.setNowHP(nowHP);
-            userService.save(livingThing.getInfo());
-            serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
-            bagService.save(livingThing.getId(),bagService.getItemByUserId(livingThing.getId()));
 
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

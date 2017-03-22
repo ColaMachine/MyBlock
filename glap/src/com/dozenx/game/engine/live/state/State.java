@@ -2,11 +2,14 @@ package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.animation.Animation;
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
+import cola.machine.game.myblocks.skill.TimeString;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.ItemUtil;
 import com.dozenx.game.engine.item.action.ItemManager;
@@ -14,9 +17,13 @@ import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.network.server.bean.LivingThingBean;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+
+import javax.vecmath.Vector2f;
 
 /**
  * Created by luying on 17/3/5.
@@ -38,6 +45,7 @@ public class State {
     public State(LivingThingBean livingThing){
         this.livingThing = livingThing;
     }
+    GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     public void receive(GameCmd gameCmd){
         if(gameCmd.getCmdType()==CmdType.DIED){
             DiedCmd diedCmd = (DiedCmd)gameCmd;
@@ -61,7 +69,9 @@ public class State {
         }else
         if(gameCmd.getCmdType()==CmdType.DROP ){
             DropCmd cmd = (DropCmd ) gameCmd;
+            if(cmd.getUserId()==0){
 
+            }else
            // 遍历所有的物品
             if(livingThing== GamingState.player && cmd.getUserId() == livingThing.getId()){//是主角掉落的
                 /* ItemBean[] itemBeens = livingThing.getItemBeans();
@@ -132,12 +142,22 @@ public class State {
             if(cmd.getAttackType()== AttackType.KAN){
                 livingThing.changeAnimationState("kan");
                 livingThing.getTarget().beAttack(cmd.getAttackValue());
+//                AttackManager.add(new TimeString(cmd.getAttackValue(),));
+
+                Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getTarget().getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
+                AttackManager.addText(new TimeString("砍伤"+cmd.getAttackValue(),xy.x* Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
                 Document.needUpdate=true;
                 //getExecutor().getCurrentState().dispose();
                 //livingThing.getExecutor().getModel().
             }else if(cmd.getAttackType()== AttackType.ARROW){
                 this.livingThing.changeState( new ShootState(this.livingThing));
-                livingThing.getTarget().beAttack(cmd.getAttackValue());
+                if(livingThing.getTarget()!=null){
+                    livingThing.getTarget().beAttack(cmd.getAttackValue());
+                    Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getTarget().getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
+                    AttackManager.addText(new TimeString("箭伤"+cmd.getAttackValue(),xy.x* Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
+                    Document.needUpdate=true;
+                }
+
             }
             /*if(this.livingThing!=null && this.livingThing.getTarget()!=null ) {
                 GL_Vector direction =  GL_Vector.sub(this.livingThing.getTarget().position,

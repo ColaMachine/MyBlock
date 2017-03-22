@@ -21,6 +21,8 @@ import org.lwjgl.opengl.GL11;
  * Created by luying on 16/9/25.
  */
 public class Ball  {
+   public  long lastSynTime;
+    public  long lastPickTime;
     int id;
 
     public int getId() {
