@@ -76,7 +76,7 @@ public class Model {
     public void addHeadEquip(ItemDefinition itemCfg)  {
 
         Component parent = 	bodyComponent.findChild("human_head");
-        addChild(parent, "cap", itemCfg);
+        addChild(parent, "helmet", itemCfg);
     }
 
 

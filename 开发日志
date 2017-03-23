@@ -30,3 +30,6 @@ saveTask需要增加trycatch 不然就崩掉了
 打算显示血槽的数值
 修正伤害计算错误
 对方玩家的移动闪现化.
+2017-3-23 11:54:26
+装备位置错误 盔甲 和头盔 大小 位置错误
+ComplexEquipProperties设置setinfo的时候handEquip是2

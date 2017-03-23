@@ -64,7 +64,7 @@ public static void removeWorldItem(int itemId){
     }
     static float distance =0;
     long lastCheckTime =0;
-    public  void update(){/*
+    public  void update(){
         long now = TimeUtil.getNowMills();
         if(now-lastCheckTime<1000){//减少检查和网络发送
             return;
@@ -97,15 +97,15 @@ public static void removeWorldItem(int itemId){
 
 
             ball.update(ShaderManager.dropItemShaderConfig);
-           *//* if(ball.died){
+          /* if(ball.died){
                 list.remove(i);
-            }*//*
+            }*/
         }
         if(deleteIndex>=0){
             list.remove(deleteIndex);
         }
         ShaderUtils.createVao(ShaderManager.dropItemShaderConfig, ShaderManager.dropItemShaderConfig.getVao(), new int[]{3, 3, 3, 1});
-    */}
+   }
 
 
     public static void render(){
@@ -137,33 +137,33 @@ public static void removeWorldItem(int itemId){
     public void loadItem() throws Exception {
 
         try {
+            for (int i = 1; i < ItemType.values().length; i++) {
+                ItemDefinition item = new ItemDefinition();
+                item.setName(ItemType.values()[i].toString());
+                this.putItemDefinition(ItemType.values()[i].toString(), item);
 
+                if(GamingState.player!=null){//区分服务器版本和客户端版本
+
+                    TextureInfo ti = TextureManager.getTextureInfo(ItemType.values()[i].toString());
+                    if(ti!=null){//先不要shape了 因为很多都没有shape 后续在 item.cfg里配置的去读取shape
+                        item.getItemModel().setIcon(TextureManager.getTextureInfo(ItemType.values()[i].toString()));
+                        Shape shape=new Shape();
+                        shape.setShapeType(2);
+                        shape.setWidth(0.5f);
+                        shape.setHeight(0.5f);
+                        shape.setThick(0.5f);
+                        item.setShape(shape);
+                        item.getItemModel().init();
+                    }
+
+
+                }
+            }
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
             for(File file : fileList) {
                 String json = FileUtil.readFile2Str(file);
                 List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
-                for (int i = 1; i < ItemType.values().length; i++) {
-                    ItemDefinition item = new ItemDefinition();
-                    item.setName(ItemType.values()[i].toString());
-                    this.putItemDefinition(ItemType.values()[i].toString(), item);
 
-                    if(GamingState.player!=null){//区分服务器版本和客户端版本
-
-                        TextureInfo ti = TextureManager.getTextureInfo(ItemType.values()[i].toString());
-                        if(ti!=null){
-                            item.getItemModel().setIcon(TextureManager.getTextureInfo(ItemType.values()[i].toString()));
-                            Shape shape=new Shape();
-                            shape.setShapeType(2);
-                            shape.setWidth(0.5f);
-                            shape.setHeight(0.5f);
-                            shape.setThick(0.5f);
-                            item.setShape(shape);
-                            item.getItemModel().init();
-                        }
-
-
-                    }
-                }
                 for (int i = 0; i < textureCfgBeanList.size(); i++) {
                     HashMap map = textureCfgBeanList.get(i);
                     ItemDefinition item = new ItemDefinition();
@@ -243,7 +243,7 @@ public static void removeWorldItem(int itemId){
         ItemDefinition itemCfg = itemDefinitionMap.get(name);
         if (itemCfg == null) {
             LogUtil.println("itemCfg 为null:" + name);
-            System.exit(0);
+           // System.exit(0);
         }
         return itemCfg;
     }

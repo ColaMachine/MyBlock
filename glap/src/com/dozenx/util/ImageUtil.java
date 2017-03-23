@@ -108,7 +108,7 @@ public class ImageUtil {
     {
         //ImageIO.read( ImageIO.read(PathManager.getInstance().getInstallPath().resolve(filename).toUri())));
         originalImage.getColorModel();
-        System.out.println(originalImage.getColorModel());
+        //System.out.println(originalImage.getColorModel());
 
         int green=0,red=0,blue=0,rgb;
         int imageWidth = originalImage.getWidth();

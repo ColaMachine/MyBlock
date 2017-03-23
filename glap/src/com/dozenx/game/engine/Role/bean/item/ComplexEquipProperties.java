@@ -15,9 +15,9 @@ public class ComplexEquipProperties extends CommonEquipProperties implements Syn
     @Override
     public void getInfo(PlayerStatus info) {
         super.getInfo(info);
-        if(this.getHeadEquip()!=null){
+       /* if(this.getHeadEquip()!=null){
             info.setHandEquip(this.getHeadEquip().ordinal());
-        }
+        }*/
         if(this.getHeadEquip()!=null)
         info.setHeadEquip(this.getHeadEquip().ordinal());
         if(this.getBodyEquip()!=null)
