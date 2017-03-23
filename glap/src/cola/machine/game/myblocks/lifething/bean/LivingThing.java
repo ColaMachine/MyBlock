@@ -316,22 +316,26 @@ public class LivingThing extends LivingThingBean {
         super.setInfo(info);
 
 
-        if(info.getBodyEquip()>0){
+        //if(info.getBodyEquip()>0){
             getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-        }if(info.getHeadEquip()>0){
-            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+        //}else {
+            getModel().addBodyEquip(null);
+
+        //}if(info.getHeadEquip()>0){
+                getModel().addHeadEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+                //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+         //   }
+        //}if(info.getHandEquip()>0){
+            getModel().addHandEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-        }if(info.getHandEquip()>0){
-            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
+        //}if(info.getLegEquip()>0){
+            getModel().addLegEquip(ItemManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-        }if(info.getLegEquip()>0){
-            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
+       //// }if(info.getFootEquip()>0){
+            getModel().addShoeEquip(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-        }if(info.getFootEquip()>0){
-            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]));
-            //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-        }
+        //}
        this.changeProperty();
     }
 

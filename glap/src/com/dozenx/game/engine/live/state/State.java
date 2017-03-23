@@ -141,12 +141,14 @@ public class State {
             AttackCmd cmd =(AttackCmd) gameCmd;
             if(cmd.getAttackType()== AttackType.KAN){
                 livingThing.changeAnimationState("kan");
-                livingThing.getTarget().beAttack(cmd.getAttackValue());
+                if(livingThing.getTarget()!=null)
+                    {
+                        livingThing.getTarget().beAttack(cmd.getAttackValue());
 //                AttackManager.add(new TimeString(cmd.getAttackValue(),));
-
-                Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getTarget().getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
-                AttackManager.addText(new TimeString("砍伤"+cmd.getAttackValue(),xy.x* Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
-                Document.needUpdate=true;
+                        Vector2f xy = OpenglUtils.wordPositionToXY(projection, livingThing.getTarget().getPosition(), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
+                        AttackManager.addText(new TimeString("砍伤" + cmd.getAttackValue(), xy.x * Constants.WINDOW_WIDTH, xy.y * Constants.WINDOW_HEIGHT));
+                        Document.needUpdate = true;
+                    }
                 //getExecutor().getCurrentState().dispose();
                 //livingThing.getExecutor().getModel().
             }else if(cmd.getAttackType()== AttackType.ARROW){

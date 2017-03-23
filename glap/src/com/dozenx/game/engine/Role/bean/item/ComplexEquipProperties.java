@@ -19,7 +19,7 @@ public class ComplexEquipProperties extends CommonEquipProperties implements Syn
             info.setHandEquip(this.getHeadEquip().ordinal());
         }
         if(this.getHeadEquip()!=null)
-        info.setHandEquip(this.getHeadEquip().ordinal());
+        info.setHeadEquip(this.getHeadEquip().ordinal());
         if(this.getBodyEquip()!=null)
         info.setBodyEquip(this.getBodyEquip().ordinal());
         if(this.getHandEquip()!=null)

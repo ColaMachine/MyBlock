@@ -64,7 +64,7 @@ public static void removeWorldItem(int itemId){
     }
     static float distance =0;
     long lastCheckTime =0;
-    public  void update(){
+    public  void update(){/*
         long now = TimeUtil.getNowMills();
         if(now-lastCheckTime<1000){//减少检查和网络发送
             return;
@@ -97,15 +97,15 @@ public static void removeWorldItem(int itemId){
 
 
             ball.update(ShaderManager.dropItemShaderConfig);
-           /* if(ball.died){
+           *//* if(ball.died){
                 list.remove(i);
-            }*/
+            }*//*
         }
         if(deleteIndex>=0){
             list.remove(deleteIndex);
         }
         ShaderUtils.createVao(ShaderManager.dropItemShaderConfig, ShaderManager.dropItemShaderConfig.getVao(), new int[]{3, 3, 3, 1});
-    }
+    */}
 
 
     public static void render(){

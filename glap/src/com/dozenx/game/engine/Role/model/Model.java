@@ -83,9 +83,9 @@ public class Model {
     public void addLRShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
         Component parent ;
         if(leftFlag){
-            parent = bodyComponent.findChild(EquipPartType.LFOOT.getName());
+            parent = bodyComponent.findChild(EquipPartType.LLEG.getName());
         }else{
-            parent = bodyComponent.findChild(EquipPartType.RFOOT.getName());
+            parent = bodyComponent.findChild(EquipPartType.RLEG.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
         addChild(parent,EquipPartType.SHOOE.getName(),itemCfg);

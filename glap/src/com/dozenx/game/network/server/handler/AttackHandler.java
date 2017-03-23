@@ -56,12 +56,13 @@ public class AttackHandler extends GameServerHandler {
                 }
                 cmd.setAttackValue(shanghai);
                 int nowBlood = target.getNowHP() - shanghai;
+                System.out.println(shanghai+"还剩多少血"+nowBlood);
                 if(nowBlood<=0){
                     nowBlood=0;
                     broadCast(new DiedCmd(target.getId()));
                    // target.setDied(true);
                 }else{
-                    nowBlood-=shanghai;
+                   // nowBlood-=shanghai;
                 }
 
 

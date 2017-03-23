@@ -46,8 +46,8 @@ public class AttackManager {
 
                     ball.died=true;
                     //stexts.offer(new TimeString(5+""));
-                    Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
-                    texts.offer(new TimeString(5+"",xy.x*Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
+                    //Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
+                    //texts.offer(new TimeString(5+"",xy.x*Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
                     //livingThingManager.livingThings.get(j).beAttack(5);
                 }
             }

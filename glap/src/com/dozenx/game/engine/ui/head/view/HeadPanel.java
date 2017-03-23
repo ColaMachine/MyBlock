@@ -32,10 +32,7 @@ package com.dozenx.game.engine.ui.head.view;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.ui.html.Div;
-import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.model.ui.html.HtmlObject;
-import cola.machine.game.myblocks.model.ui.html.Image;
+import cola.machine.game.myblocks.model.ui.html.*;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.ui.test.FadeFrame;
@@ -94,7 +91,7 @@ public class HeadPanel extends HtmlObject {
         bloodBar.setBackgroundColor(new Vector4f(1,0,0,1));
         leftDiv.appendChild(bloodBar);
 
-
+        leftDiv.appendChild(new Br());
 
         blueBar.setHeight(20);
         blueBar.setBorderWidth(1);
@@ -123,7 +120,7 @@ public class HeadPanel extends HtmlObject {
             int width_= 100*livingThing.nowHP/livingThing.HP;
             if(width_ ==0)width_=1;
             this.bloodBar.setWidth(width_);
-
+            this.bloodBar.innerText = livingThing.nowHP+"/"+livingThing.HP;
             this.blueBar.setWidth(100*livingThing.nowMP/livingThing.MP);
             super.update();
         }else{
@@ -135,6 +132,7 @@ public class HeadPanel extends HtmlObject {
     public HeadPanel bind(LivingThing livingThing){
         this.livingThing=livingThing;
         this.bloodBar.setWidth(100*livingThing.nowHP/livingThing.HP);
+        this.bloodBar.innerText = livingThing.nowHP+"/"+livingThing.HP;
         this.blueBar.setWidth(100*livingThing.nowMP/livingThing.MP);
         Document.needUpdate=true;
         return this;
