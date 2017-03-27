@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.engine.GameEngine;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.PlayerSynCmd;
+import com.dozenx.game.engine.edit.view.SelectTextureEditPanel;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -84,7 +85,7 @@ public class StartMenuState implements GameState {
         //button.setBackgroundColor(new Vector4f(1,1,1,0));
         div.appendChild(button);
         document.body.appendChild(div);
-        //document.body.appendChild(new SelectTextureEditPanel());
+        document.body.appendChild(new SelectTextureEditPanel());
        // div=new Div();
        // bag =new Bag();
 

@@ -259,7 +259,8 @@ public class Client extends Thread{
                         bags.push((BagCmd)cmd);
                     }else if (cmd.getCmdType()== CmdType.DROP) {
                        drops.push((DropCmd)cmd);
-                    }else if (cmd instanceof  UserBaseCmd ||cmd.getCmdType()== CmdType.PICK || cmd.getCmdType()== CmdType.WALK || cmd.getCmdType()== CmdType.DIED|| cmd.getCmdType()== CmdType.REBORN) {
+                    }else if (cmd instanceof  UserBaseCmd ||cmd.getCmdType()== CmdType.PICK || cmd.getCmdType()== CmdType.WALK || cmd.getCmdType()== CmdType.DIED|| cmd.getCmdType()== CmdType.REBORN
+                            || cmd.getCmdType()== CmdType.JUMP) {
                         humanStates.push(cmd);
                     }
                     else if (cmd.getCmdType()== CmdType.RESULT) {

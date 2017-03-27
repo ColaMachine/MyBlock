@@ -1,6 +1,9 @@
 package com.dozenx.game.engine.Role.model;
 
+import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.BodyComponent;
 import cola.machine.game.myblocks.model.Component;
+import cola.machine.game.myblocks.model.HandComponent;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -10,26 +13,29 @@ import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector4f;
 
 /**
  * Created by luying on 17/3/5.
  */
 public class Model {
-
-    Role role ;
-    protected  float HAND_HEIGHT=1.5f;
-    protected float HAND_WIDTH=0.5f;
-    protected float HAND_THICK=0.5f;
-
     protected  float BODY_HEIGHT=1.5f;
     protected float BODY_WIDTH=1f;
     protected  float BODY_THICK=0.5f;
+    Role role ;
+   /* protected  float HAND_HEIGHT=1.5f;
+    protected float HAND_WIDTH=0.5f;
+    protected float HAND_THICK=0.5f;
+
+
 
 
     protected float LEG_HEIGHT=1.5f;
@@ -38,9 +44,9 @@ public class Model {
 
     protected float HEAD_HEIGHT=1f;
     protected float HEAD_WIDTH=1f;
-    protected  float HEAD_THICK=1f;
+    protected  float HEAD_THICK=1f;*/
 
-    public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
+    public Component bodyComponent = new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 
 /*
 
@@ -118,12 +124,19 @@ public class Model {
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
         Component parent = 	bodyComponent.findChild(EquipPartType.RARM.getName());
-        addChild(parent, EquipPartType.RHAND.getName(), itemCfg);
+        this.addHandChild(parent, EquipPartType.RHAND.getName(), itemCfg);
     }
     // int vaoId;
     //int trianglesCount =0;
     public void build(){//当发生改变变的时候触发这里
+
+
+
         if(Switcher.SHADER_ENABLE){
+
+
+
+
             GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.75f, role.getZ());
             //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
             GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
@@ -133,10 +146,29 @@ public class Model {
             //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
             bodyComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
 
+            if(StringUtil.isNotEmpty(role.getName())){
+
+            //
+            GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 3.5f, role.getZ());
+            float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
+            GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
+
+            rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
+
+           // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
+                rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(-2f, 0,0));
+
+            ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 24, new Vector4f(1,1,1,1),ShaderManager.livingThingShaderConfig);
+
+
+
+            }
 
         }else{
 
         }
+
+
 
          /*trianglesCount= floatBuffer.position()/8;
         if(trianglesCount<=0){
@@ -149,6 +181,10 @@ public class Model {
             LogUtil.println("vaoId can't be 0");
             System.exit(1);
         }*/
+
+        //显示头标
+
+
     }
 
     public void addChild(Component parent,String name,ItemDefinition itemCfg) {
@@ -166,8 +202,9 @@ public class Model {
 
                 }
 
-                Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
-                component.setShape(itemCfg.getShape());
+                Component component = new BodyComponent(shape.getWidth(), shape.getHeight(), shape.getThick());
+                //component.setShape(itemCfg.getShape());
+                component.setItem(itemCfg);
                 component.name = name;
 
                 component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
@@ -187,8 +224,58 @@ public class Model {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
                 }
-                Component component = new Component(shape.getWidth(), shape.getHeight(), shape.getThick());
-                component.setShape(itemCfg.getShape());
+                Component component = new BodyComponent(shape.getWidth(), shape.getHeight(), shape.getThick());
+               // component.setShape(itemCfg.getShape());
+                component.setItem(itemCfg);
+                component.name = name;
+
+                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+                parent.addChild(component);
+                //changeProperty();
+            }
+        }
+    }
+    public void addHandChild(Component parent,String name,ItemDefinition itemCfg) {
+        if(parent==null){
+            LogUtil.err("parent node is null");
+        }
+        Component shoe = parent.findChild(name);
+        if (shoe == null) {
+            if (itemCfg == null) {
+                return;
+            } else {
+                Shape shape = itemCfg.getShape();
+                if (shape == null) {
+                    LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
+
+                }
+
+                Component component = new HandComponent(shape.getWidth(), shape.getHeight(), shape.getThick());
+                //component.setShape(itemCfg.getShape());
+                component.setItem(itemCfg);
+                component.name = name;
+
+                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+                parent.addChild(component);
+                //changeProperty();
+            }
+        } else {
+
+            if (itemCfg == null) {
+                //删除shoe节点
+                parent.removeChild(shoe);
+            } else {
+                parent.removeChild(shoe);
+                Shape shape = itemCfg.getShape();
+                if (shape == null) {
+                    LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
+
+                }
+                Component component = new HandComponent(shape.getWidth(), shape.getHeight(), shape.getThick());
+                // component.setShape(itemCfg.getShape());
+                component.setItem(itemCfg);
                 component.name = name;
 
                 component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));

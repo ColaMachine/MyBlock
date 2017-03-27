@@ -70,6 +70,9 @@ public class AttackHandler extends GameServerHandler {
                 broadCast(request.getCmd());
             }
 
+        }else{
+            //无目标攻击
+            broadCast(request.getCmd());
         }
 
         //更新其他附近人的此人的装备属性

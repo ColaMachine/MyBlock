@@ -43,6 +43,8 @@ public class CmdUtil {
             return new RebornCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.CHASE.ordinal()){
             return new ChaseCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.JUMP.ordinal()){
+            return new JumpCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

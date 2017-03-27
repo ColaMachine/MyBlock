@@ -1419,6 +1419,77 @@ try {
 
 
     }
+
+    public static void draw3dText(String s, GL_Matrix matrix, float fontSize,Vector4f color,ShaderConfig shaderConfig) {
+        int preX=0;
+        int preY=0;
+
+        GL_Vector p1 =new GL_Vector(0,0,0);
+        GL_Vector p2 =new GL_Vector(1,0,0);
+        GL_Vector p3 =new GL_Vector(1,1,0);
+        GL_Vector p4 =new GL_Vector(0,1,0);
+        GL_Vector normal =new GL_Vector(0,0,1);
+
+        TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(ch=='\n'){
+                preX=0-(int)fontSize;
+                preY+=fontSize;
+            }else{
+                if(i!=0)
+                    preX+=fontSize;
+            }
+            if(FontUtil.zhongwenMap==null)
+            {LogUtil.err("font load failed");
+
+            }
+            Glyph location = FontUtil.zhongwenMap.get(ch);
+            float height =ti.getImgHeight();
+            float width = ti.getImgWidth();
+            if(location!=null){
+                ti.minX=location.x/width;
+                ti.minY=(height-location.y-location.height)/height;
+                ti.maxX=(location.x+location.width)/width;
+                ti.maxY=(height-location.y)/height;
+
+               // ShaderUtils.draw2dImg(new Image(ti), innerX+preX,innerY+preY,z,(int)fontSize,(int)fontSize,color);
+                p1.x+=1;
+                p2.x+=1;
+                p3.x+=1;
+                p4.x+=1;
+                ShaderUtils.draw3dImage(p1,p2,p3,p4,matrix,normal,ti,shaderConfig.getVao().getVertices(),shaderConfig);
+
+               // ShaderUtils.draw3dImg(p1,p2,p3,p4,new Image(ti), x,y,z,(int)fontSize,(int)fontSize,color);
+                OpenglUtils.checkGLError();
+            }
+
+        }
+
+
+    }
+
+    /*public static void draw3dImg(Image image, int posX, int posY, float z,int width, int height,Vector4f color,ShaderConfig config) {
+        Vao vao = config.getVao();
+
+        TextureInfo ti = image.getTexture();
+
+        float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
+        float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
+        float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+    }*/
     public static void printText(String s, int innerX, int innerY,float z, float fontSize,Vector4f color,ShaderConfig  config) {
         int preX=0;
         int preY=0;
@@ -1562,6 +1633,11 @@ try {
     public static HashMap<Integer ,Integer> texHandle2glTexLocMap =new HashMap<Integer ,Integer>();
     public static int globalActiveIndex=0;
 
+    /**
+     * 从静态变量texHandle2glTexLocMap(textureHandle (生成的纹理id)==>映射 绑定激活的GL_TEXTUREN 序号 TexLoc(glActiveTexture的纹理位置GL13.GL_TEXTURE__N__))
+     * @param textureHandle
+     * @return
+     */
     public  static Integer getActiveTextureLoc(int textureHandle){
         Integer activeTextureLoc = texHandle2glTexLocMap.get(textureHandle);
         if(activeTextureLoc==null){
@@ -1605,12 +1681,13 @@ try {
         }
         return activeTextureLoc;
     }
+
     public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
         }
 
-        Integer glTexLoc = getActiveTextureLoc(textureHandle);
+        Integer glTexLoc = getActiveTextureLoc(textureHandle);//从
         Integer sampleLoc = config.getSampleLocMap().get(glTexLoc);
 
        /* if(index == null){
@@ -1659,6 +1736,8 @@ try {
 
                 glUniform1i(config.texture6Loc, glTexLoc);
                 OpenglUtils.checkGLError();
+            }else{
+                LogUtil.err("超出预想的范围了");
             }
             glUseProgram(0);
         }

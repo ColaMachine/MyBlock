@@ -232,10 +232,10 @@ public class LivingThing extends LivingThingBean {
 
 
 
-            Shape shape = TextureManager.getShape("iron_pants");
-
-            Component component= new Component(shape.getWidth(),shape.getHeight(),shape.getThick());
-            component.setShape(shape);
+            //Shape shape = TextureManager.getShape("iron_pants");
+            ItemDefinition cfg= ItemManager.getItemDefinition("iron_pants");
+            Component component= new Component(cfg.getShape().getWidth(),cfg.getShape().getHeight(),cfg.getShape().getThick());
+            component.setItem(cfg);//.setShape(shape);
             component.name="select";
 
         component.id=getId()*100+99;
@@ -320,7 +320,7 @@ public class LivingThing extends LivingThingBean {
             getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //}else {
-            getModel().addBodyEquip(null);
+            //getModel().addBodyEquip(null);
 
         //}if(info.getHeadEquip()>0){
                 getModel().addHeadEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));

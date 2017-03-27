@@ -8,14 +8,13 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
-import com.dozenx.game.engine.command.DropCmd;
-import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
-import com.dozenx.game.engine.command.AttackCmd;
-import com.dozenx.game.engine.command.AttackType;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import glapp.GLApp;
 import glapp.GLCamera;
@@ -583,10 +582,24 @@ public class MouseControlCenter {
     }
 
     public void keyDown(int keycode) {
+        long now =TimeUtil.getNowMills();
         if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
-            if(player.getTarget()!=null){
+           /* if(player.getTarget()!=null){
                 CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, player.getTarget().getId()));
-            }
+            }else*/{
+                //选取当前人面前的目标
+                if(now-player.getLastAttackTime()>1000){
+                    LivingThing livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
+                   if(livingThing!=null) {
+                       player.setTarget(livingThing);
+                       CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
+                       CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
+
+                   }
+                    CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, 0));
+
+                }
+               }
 
            // Client.messages.push(new AttackCmd(AttackType.ARROW));
             //player.receive(new AttackCmd(AttackType.ARROW));

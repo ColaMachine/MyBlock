@@ -1,0 +1,7 @@
+Integer glTexLoc = getActiveTextureLoc(textureHandle);
+//从
+Integer sampleLoc = config.getSampleLocMap().get(glTexLoc);
+
+//本系统采用3层映射
+1所有的纹理生成的时候会生成一个id 我称它为纹理id 是未被激活的
+texHandle2glTexLocMap 我怀疑是共用的这个导致了问题出现

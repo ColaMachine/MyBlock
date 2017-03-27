@@ -578,8 +578,13 @@ if(!Switcher.SHADER_ENABLE)
         // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());
-        TextureManager textureManager = CoreRegistry.put(TextureManager.class,
-                new TextureManager());
+
+        TextureManager textureManager = CoreRegistry.get(TextureManager.class);
+
+        if(textureManager==null){//再开始菜单的时候已经初始化过了
+            textureManager= CoreRegistry.put(TextureManager.class,
+                    new TextureManager());
+        }
 
         CoreRegistry.put(BlockManager.class,
                 new BlockManagerImpl());

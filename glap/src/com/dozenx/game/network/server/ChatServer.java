@@ -50,6 +50,7 @@ public class ChatServer {
         serverContext. registerHandler(CmdType.ATTACK,new AttackHandler(serverContext));
         serverContext. registerHandler(CmdType.DROP,new DropHandler(serverContext));
         serverContext. registerHandler(CmdType.PICK,new PickHandler(serverContext));
+        serverContext. registerHandler(CmdType.JUMP,new JumpHandler(serverContext));
 
         ItemManager itemManager =new ItemManager();
         CoreRegistry.put(ItemManager.class,itemManager);

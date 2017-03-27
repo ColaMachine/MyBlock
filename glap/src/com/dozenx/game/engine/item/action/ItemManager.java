@@ -233,8 +233,8 @@ public static void removeWorldItem(int itemId){
             LogUtil.err(name);
         }
         itemType2ItemDefinitionMap.put(ItemType.valueOf(name),item);
-        if (name.equals("fur_helmet")) {
-            //LogUtil.println("fur_helmet");
+        if (name.equals("wood_axe")) {
+            LogUtil.println("fur_helmet");
         }
     }
 

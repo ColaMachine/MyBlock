@@ -67,6 +67,7 @@ public class PlayerSynCmd extends   BaseGameCmd{
             .put(playerStatus.getHandEquip())
             .put(playerStatus.getLegEquip())
             .put(playerStatus.getFootEquip())
+                .putLenStr(playerStatus.getName())
             .put(playerStatus.getId())
                 .put(playerStatus.HP)
                 .put(playerStatus.MP)
@@ -95,6 +96,7 @@ public class PlayerSynCmd extends   BaseGameCmd{
         playerStatus.setHandEquip(byteBufferWrap.getInt());
         playerStatus.setLegEquip(byteBufferWrap.getInt());
         playerStatus.setFootEquip(byteBufferWrap.getInt());
+        playerStatus.setName(byteBufferWrap.getLenStr());
         playerStatus.setId(byteBufferWrap.getInt());
         playerStatus.HP=byteBufferWrap.getInt();
                 playerStatus.MP= byteBufferWrap.getInt();

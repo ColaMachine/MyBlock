@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.Role.model;
 
+import cola.machine.game.myblocks.model.BodyComponent;
 import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -45,7 +46,7 @@ public class PlayerModel extends  Model{
         bodyComponent.setEightFace("human_body");
 
         //rhand
-        Component rArm= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        Component rArm= new BodyComponent(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         rArm.id=id*10+EquipPartType.RARM.ordinal();
 
         rArm.setEightFace("human_hand");
@@ -56,7 +57,7 @@ public class PlayerModel extends  Model{
         //小手
 
         //lhand
-        Component lArm= new Component(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
+        Component lArm= new BodyComponent(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         lArm.id=id*10+EquipPartType.LARM.ordinal();
         lArm.setEightFace("human_hand");
         lArm.name=EquipPartType.LARM.getName();
@@ -65,7 +66,7 @@ public class PlayerModel extends  Model{
         bodyComponent.addChild(lArm);
 
         //lleg
-        Component lleg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        Component lleg= new BodyComponent(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
         lleg.setEightFace("human_leg");
         lleg.id=id*10+EquipPartType.LLEG.ordinal();
         lleg.name= EquipPartType.LLEG.getName();
@@ -76,7 +77,7 @@ public class PlayerModel extends  Model{
 
 
         //rleg
-        Component rleg= new Component(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
+        Component rleg= new BodyComponent(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
         rleg.setEightFace("human_leg");
         rleg.name= EquipPartType.RLEG.getName();
         rleg.id=id*10 +EquipPartType.RLEG.ordinal();
@@ -85,12 +86,14 @@ public class PlayerModel extends  Model{
 
         //head
 
-        Component head= new Component(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
+        Component head= new BodyComponent(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
         head.setEightFace("human_head");
         head.id=id*10+EquipPartType.HEAD.ordinal();
         head.name=EquipPartType.HEAD.getName();
         head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
         bodyComponent.addChild(head);
+
+
 
     }
 

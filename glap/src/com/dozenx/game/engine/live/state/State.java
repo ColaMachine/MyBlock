@@ -124,6 +124,11 @@ public class State {
 
 
         }else
+        if(gameCmd.getCmdType()== CmdType.JUMP){
+             JumpCmd jumpCmd = (JumpCmd) gameCmd;
+           // this.livingThing.jump();
+            this.livingThing.changeState( new JumpState(this.livingThing,jumpCmd));
+        }else
 
         if(gameCmd instanceof AttackCmd){
 
@@ -139,6 +144,7 @@ public class State {
 
             }*/
             AttackCmd cmd =(AttackCmd) gameCmd;
+
             if(cmd.getAttackType()== AttackType.KAN){
                 livingThing.changeAnimationState("kan");
                 if(livingThing.getTarget()!=null)

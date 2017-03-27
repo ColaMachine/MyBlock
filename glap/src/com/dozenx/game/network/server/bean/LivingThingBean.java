@@ -377,7 +377,8 @@ public class LivingThingBean extends Role {
     public void dropControl() {
         if(!Switcher.IS_GOD)
             if (!this.stable) {
-                long t = Sys.getTime() - this.lastTime;//�˶���ʱ��
+                long t = TimeUtil.getNowMills() - this.lastTime;//�˶���ʱ��
+                if(t<=0)return;
                 GamingState.livingThingChanged=true;
                 GamingState.cameraChanged=true;
                 s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���

@@ -51,6 +51,7 @@ public class ItemDefinition {
     int intelli;
     int strenth;
     Shape shape;
+    ShapeType shapeType;
 
     public Shape getShape() {
         return shape;

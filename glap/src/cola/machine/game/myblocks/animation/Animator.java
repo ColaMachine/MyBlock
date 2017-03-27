@@ -12,7 +12,7 @@ public class Animator {
     public boolean complete =false;
     Animation animation;
     Long startTime;
-    Long endTime;
+    //Long endTime;
     Long currentTime;
     Component component;
     int startValue;
@@ -29,13 +29,13 @@ public class Animator {
 
         timeSlice = new int[frames.length];
         this.lastTime=this.startTime=new Date().getTime();
-        this.endTime=this.startTime+animation.animation_duration;
+        //this.endTime=this.startTime+animation.animation_duration;
         //统计有哪些属性需要关注
         boolean rotateX=false;
 
 
         for(int i=0;i<frames.length;i++){
-            timeSlice[i]=animation.animation_duration*1000/100*frames[i].num;//毫秒为单位
+            timeSlice[i]=animation.animation_duration*1000/100*frames[i].num;//毫秒为单位 为什么除以100呢 当初这样写都不明白为什么了
         }
         if(frames[0].num==0){
             if(frames[1].transform.rotateX!=null ){

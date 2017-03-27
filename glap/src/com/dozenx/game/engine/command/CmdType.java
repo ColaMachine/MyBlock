@@ -31,6 +31,7 @@ public enum CmdType {
     DIED,
     REBORN,
     CHASE,
+    JUMP,
     WALK;
 
     /*public CmdType(class<T> extends BaseGameCmd,class<T> extends GameServerHandler){

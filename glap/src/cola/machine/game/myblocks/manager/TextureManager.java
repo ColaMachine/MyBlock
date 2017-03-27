@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.manager;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
@@ -40,7 +41,7 @@ public class TextureManager {
 
     public TextureManager() {
 
-
+        CoreRegistry.put(TextureManager.class,this);
         installPath = PathManager.getInstance().getInstallPath();
         try {
             Util.checkGLError();
