@@ -2,43 +2,38 @@
 
 package cola.machine.game.myblocks.world.chunks;
 
-import cola.machine.game.myblocks.math.Region3i;
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.math.Vector2i;
 import cola.machine.game.myblocks.math.Vector3i;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
-
-import cola.machine.game.myblocks.switcher.Switcher;
-import core.log.LogUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.persistence.ChunkStore;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import core.log.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * 本地的方块提供者
  * @author Immortius
  */
-public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider {
+public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(LocalChunkProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServerChunkProvider.class);
 
     private ConcurrentMap<Vector2i, ChunkImpl> nearCache = Maps.newConcurrentMap();//旁边缓存
 
@@ -47,13 +42,13 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
     private final Set<Vector3i> preparingChunks = Sets.newSetFromMap(Maps.<Vector3i, Boolean>newConcurrentMap());
     private WorldGenerator generator;//世界生成机制
     private BlockManager blockManager;
-    public LocalChunkProvider(StorageManager storageManager,WorldGenerator generator){
+    public ServerChunkProvider(StorageManager storageManager, WorldGenerator generator){
     	blockManager=CoreRegistry.get(BlockManager.class);
     	this.storageManager=storageManager;
     	this.generator=generator;
     }
-    
-    public LocalChunkProvider(){
+
+    public ServerChunkProvider(){
     	
     }
     public void createOrLoadChunk(Vector3i chunkPos){
@@ -66,12 +61,11 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 			}
 			Path chunkPath =
                         PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
-				if(!Switcher.test&&Files.isRegularFile(chunkPath)){//从本地读取 或者生成
+				if(!Switcher.test&&Files.isRegularFile(chunkPath)){
 					
-					//ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
-                    /*ObjectInputStream in=null;
+					ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
 						try {
-							   in=new ObjectInputStream(new FileInputStream(chunkPath.toFile()));
+							  ObjectInputStream in=new ObjectInputStream(new FileInputStream(chunkPath.toFile()));
 							  
 					            //读取UserInfo对象并调用它的toString()方法   
 					           // TeraArray user=(TeraArray)(in.readObject());  
@@ -81,24 +75,16 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 							if(chunkImpl.getBlockData()==null){
 								LogUtil.err("block data  is null");
 							}
-							//in.close();
+							in.close();
 							//byte[] chunkData =Files.readAllBytes(chunkPath);
 						} catch (Exception e) {
 							// VIP Auto-generated catch block
 							e.printStackTrace();
-						}finally {
-                            if(in!=null){
-                                try {
-                                    in.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }*/
-                    ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
-					chunk= chunkStore.getChunk();
+						}
+					// ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
+					// chunk= chunkStore.getChunk();
 					 
-					 if(nearCache.putIfAbsent(new Vector2i(chunkPos.x,chunkPos.z), chunk)!=null){
+					 if(nearCache.putIfAbsent(new Vector2i(chunkPos.x,chunkPos.z), chunkImpl)!=null){
 						 logger.warn("Chunk {} is already in the near cache", chunkPos);
 					 }
 				}else{
@@ -209,7 +195,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 		  if(chunk!=null&& chunk.getBlockData()==null){
 			  System.out.println("found the null blockdata chunk in nearCache 。solve it！！！");
 		  }
-        return chunk;
+	            return chunk;
 	     
 	}
 

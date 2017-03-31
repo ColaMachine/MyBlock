@@ -2,6 +2,12 @@ package com.dozenx.game.network.server.bean;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.persistence.StorageManager;
+import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
+import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
+import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
+import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;
+import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.dozenx.game.engine.command.CmdType;
@@ -64,7 +70,16 @@ public class ServerContext {
       /*  loadAllUserInfo();
         loadAllEnemy();
         loadItems();*/
+
+
+        StorageManager storageManager = new StorageManagerInternal();
+        PerlinWorldGenerator worldGenerator = new PerlinWorldGenerator();
+        worldGenerator.initialize();
+        worldGenerator.setWorldSeed("123123123");
+         chunkProvider = new ServerChunkProvider(storageManager, worldGenerator);
+
     }
+    public GeneratingChunkProvider chunkProvider;
     //public HashMap<Integer , Socket> socketMap =new HashMap();
     private List<Worker> workers = new ArrayList<>( );
     //public Map<Integer,Worker> workerMap =new Hashtable();

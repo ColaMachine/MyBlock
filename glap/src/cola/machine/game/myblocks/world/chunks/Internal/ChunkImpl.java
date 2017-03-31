@@ -45,6 +45,7 @@ public class ChunkImpl implements Chunk {
     public int count = 0;
     public Vao vao =new Vao(102400);
     public Vao alphaVao =new Vao(102400);
+    private TeraArray blockData;
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
@@ -96,7 +97,7 @@ public class ChunkImpl implements Chunk {
         return null;
     }
 
-    private TeraArray blockData;
+
 
     public TeraArray getBlockData() {
         return blockData;
