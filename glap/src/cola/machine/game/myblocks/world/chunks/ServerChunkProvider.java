@@ -206,7 +206,7 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 	}
 
 	@Override
-	public void removeChunk(ChunkImpl c) {
+	public void removeChunk(Chunk c) {
 		this.nearCache.remove(c.getPos());
 		if(nearCache.get(c.getPos())!=null){
 			LogUtil.err("unload chunk failed");

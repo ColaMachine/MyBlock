@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
+import cola.machine.game.myblocks.world.chunks.Chunk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,6 @@ import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
 import cola.machine.game.myblocks.persistence.internal.*;
 public  interface  StorageManager{
-    ChunkStore loadChunkStore(Vector3i chunkPos);
+    Chunk loadChunkStore(Vector3i chunkPos);
     boolean containsChunkStoreFor(Vector3i chunkPos);
 }

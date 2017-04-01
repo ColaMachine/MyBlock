@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.Role.bean.Player;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
@@ -51,7 +52,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	private int chunkPosZ = -1;
 	private static final int MAX_CHUNKS = ViewDistance.MEGA.getChunkDistance()
 			* ViewDistance.MEGA.getChunkDistance();
-	private final List<ChunkImpl> chunksInProximity = Lists
+	private final List<Chunk> chunksInProximity = Lists
 			.newArrayListWithCapacity(MAX_CHUNKS);
 	private final PriorityQueue<ChunkImpl> renderQueueChunksOpaque = new PriorityQueue<>(
 			256, new ChunkFrontToBackComparator());
@@ -112,8 +113,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
        // if(true)return;
         this.updateChunksInProximity(false);
         //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
-        for (ChunkImpl chunk : chunksInProximity) {
-             	chunk.update();
+        for (Chunk chunk : chunksInProximity) {
+            ((ChunkImpl)chunk).update();
         }
 		//skysphere.update();
       /*  try{
@@ -125,13 +126,13 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
 		//TextureManager.getTextureInfo("mantle").bind();
 
-		for (ChunkImpl chunk : chunksInProximity) {
+		for (Chunk chunk : chunksInProximity) {
 			if(!Switcher.SHADER_ENABLE) {
 				GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
 						chunk.getChunkWorldPosZ());
 			}
 
-			 chunk.render();
+            ((ChunkImpl)chunk).render();
 
 			if(!Switcher.SHADER_ENABLE) {
 				GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
@@ -139,13 +140,13 @@ public class WorldRendererLwjgl implements WorldRenderer {
 			}
 		}
 
-		for (ChunkImpl chunk : chunksInProximity) {
+		for (Chunk chunk : chunksInProximity) {
 			if(!Switcher.SHADER_ENABLE) {
 				GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
 						chunk.getChunkWorldPosZ());
 			}
 
-			chunk.renderAlpha();
+            ((ChunkImpl)chunk).renderAlpha();
 
 			if(!Switcher.SHADER_ENABLE) {
 				GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
@@ -189,7 +190,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 				chunksInProximity.clear();
 				for (int x = -(viewingDistance / 2); x < viewingDistance / 2; x++) {
 					for (int z = -(viewingDistance / 2); z < viewingDistance / 2; z++) {
-						ChunkImpl c = chunkProvider.getChunk(newChunkPosX + x,
+						Chunk c = chunkProvider.getChunk(newChunkPosX + x,
 								0, newChunkPosZ + z);
 						if (c != null) {
 							chunksInProximity.add(c);
@@ -218,11 +219,11 @@ public class WorldRendererLwjgl implements WorldRenderer {
 						for (int y = r.minY(); y <= r.maxY(); ++y) {
 							System.out.printf(
 									"delete chunk  x:%d y:%d z:%d \n", x, 0, y);
-							ChunkImpl c = chunkProvider.getChunk(x, 0, y);
+							Chunk c = chunkProvider.getChunk(x, 0, y);
 							// System.out.println("delete chunk x: %d y: %d ",x,y);
 							if (c != null) {
 								chunksInProximity.remove(c);
-								c.disposeMesh();
+                                ((ChunkImpl)c).disposeMesh();
 								chunkProvider.removeChunk(c);
 
 							}
@@ -236,7 +237,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 						for (int y = r.minY(); y <= r.maxY(); ++y) {
 							System.out.printf("add chunk  x:%d y:%d z:%d \n",
 									x, 0, y);
-							ChunkImpl c = chunkProvider.getChunk(x, 0, y);
+							Chunk c = chunkProvider.getChunk(x, 0, y);
 							// System.out.println("delete chunk x: %d y: %d ",x,y);
 							if (c != null) {
 								chunksInProximity.add(c);
@@ -346,9 +347,9 @@ public class WorldRendererLwjgl implements WorldRenderer {
 	}
     public void save(){
         for(int i=0;i<chunksInProximity.size();i++){
-            ChunkImpl chunk =chunksInProximity.get(i);
+            Chunk chunk =chunksInProximity.get(i);
             if(chunk!=null){
-                chunk.save();
+                ((ChunkImpl)chunk).save();
             }
         }
     }

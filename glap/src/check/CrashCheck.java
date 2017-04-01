@@ -1,6 +1,7 @@
 package check;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.world.chunks.Chunk;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.GLApp;
@@ -13,8 +14,8 @@ import java.util.List;
  */
 public class CrashCheck {
     //Human player;
-    List<ChunkImpl> chunksInProximity;
-    public CrashCheck(/*Human player,*/List<ChunkImpl> chunksInProximity){
+    List<Chunk> chunksInProximity;
+    public CrashCheck(/*Human player,*/List<Chunk> chunksInProximity){
        // this.player=player;
         this.chunksInProximity=chunksInProximity;
     }
@@ -29,11 +30,11 @@ public class CrashCheck {
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//这个人的碰撞体积厚度
-                ChunkImpl chunk_corner = null;
+                Chunk chunk_corner = null;
                 int chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_pos_x);
                 int chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_pos_z);
                 for (int i = 0; i < chunksInProximity.size(); i++) {
-                    ChunkImpl chunk_temp = chunksInProximity.get(i);
+                    Chunk chunk_temp = chunksInProximity.get(i);
                     if (chunk_temp.getPos().x == chunk_pos_x_16 &&//0
                             chunk_temp.getPos().z == chunk_pos_z_16) {//0
                         chunk_corner = chunk_temp;break;
@@ -91,11 +92,11 @@ public class CrashCheck {
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//厚度的大小
-                ChunkImpl chunk_corner = null;
+                Chunk chunk_corner = null;
                 int chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_pos_x);
                 int chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_pos_z);
                 for (int i = 0; i < chunksInProximity.size(); i++) {
-                    ChunkImpl chunk_temp = chunksInProximity.get(i);
+                    Chunk chunk_temp = chunksInProximity.get(i);
                     if (chunk_temp.getPos().x == chunk_pos_x_16 &&
                             chunk_temp.getPos().z == chunk_pos_z_16) {
                         chunk_corner = chunk_temp;break;
@@ -167,7 +168,7 @@ public class CrashCheck {
         int chunk_pos_x_16 = MathUtil.getBelongChunkInt(x);
         int chunk_pos_z_16 = MathUtil.getBelongChunkInt(z);
         for (int i = 0; i < chunksInProximity.size(); i++) {
-            ChunkImpl chunk_temp = chunksInProximity.get(i);
+            Chunk chunk_temp = chunksInProximity.get(i);
             if (chunk_temp.getPos().x == chunk_pos_x_16 &&
                     chunk_temp.getPos().z == chunk_pos_z_16) {
                 blockX = MathUtil.getOffesetChunk(x);

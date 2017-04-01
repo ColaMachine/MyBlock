@@ -3,6 +3,8 @@ package cola.machine.game.myblocks.world.chunks;
 
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.protobuf.ChunksProtobuf;
+import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 
 
 public interface Chunk {
@@ -45,6 +47,10 @@ public interface Chunk {
     int getChunkSizeX();
 
     int getChunkSizeY();
-
+    void setBlockData(TeraArray blockData);
     int getChunkSizeZ();
+
+   TeraArray getBlockData();
+
+    int  getBlockData(int x,int y,int z);
 }

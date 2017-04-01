@@ -40,7 +40,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 
     private static final Logger logger = LoggerFactory.getLogger(LocalChunkProvider.class);
 
-    private ConcurrentMap<Vector2i, ChunkImpl> nearCache = Maps.newConcurrentMap();//旁边缓存
+    private ConcurrentMap<Vector2i, Chunk> nearCache = Maps.newConcurrentMap();//旁边缓存
 
     private StorageManager storageManager;//保存系统
 
@@ -58,7 +58,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
     }
     public void createOrLoadChunk(Vector3i chunkPos){
     	//System.out.printf("加载或创建地图  x:%d y:%d z:%d \n",chunkPos.x,chunkPos.y,chunkPos.z);
-		ChunkImpl chunk=nearCache.get(chunkPos);
+		Chunk chunk=nearCache.get(chunkPos);
 		if(chunk == null){
 			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
 			if(chunkPos.x==-2 && chunkPos.z==-5){
@@ -95,9 +95,9 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
                                 }
                             }
                         }*/
-                    ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
-					chunk= chunkStore.getChunk();
-					 
+                   // ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
+					//chunk= chunkStore.getChunk();
+					 chunk = storageManager.loadChunkStore(chunkPos);
 					 if(nearCache.putIfAbsent(new Vector2i(chunkPos.x,chunkPos.z), chunk)!=null){
 						 logger.warn("Chunk {} is already in the near cache", chunkPos);
 					 }
@@ -150,8 +150,8 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 		return false;
 	}
 
-	  public ChunkImpl getChunk(Vector3i pos) {
-	        ChunkImpl chunk = nearCache.get(pos);
+	  public Chunk getChunk(Vector3i pos) {
+	        Chunk chunk = nearCache.get(pos);
 	        /*if(chunk==null){
 	        	createOrLoadChunk(pos);
 	        	 chunk = nearCache.get(pos);
@@ -199,9 +199,9 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 	}
 
 	@Override
-	public ChunkImpl getChunk(int x, int y, int z) {
+	public Chunk getChunk(int x, int y, int z) {
 		 // ChunkImpl chunk = nearCache.get(new Vector3i(x,y,z));
-		ChunkImpl chunk = nearCache.get(new Vector2i(x,z));
+		Chunk chunk = nearCache.get(new Vector2i(x,z));
 	        /*if(chunk==null){
 	        	createOrLoadChunk(new Vector3i(x,y,z));
 	        	 chunk = nearCache.get(new Vector3i(x,y,z));
@@ -220,7 +220,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 	}
 
 	@Override
-	public void removeChunk(ChunkImpl c) {
+	public void removeChunk(Chunk c) {
 		this.nearCache.remove(c.getPos());
 		if(nearCache.get(c.getPos())!=null){
 			LogUtil.err("unload chunk failed");

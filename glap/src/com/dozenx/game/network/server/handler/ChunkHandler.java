@@ -1,5 +1,7 @@
 package com.dozenx.game.network.server.handler;
 
+import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;
@@ -31,14 +33,15 @@ public class ChunkHandler extends GameServerHandler {
     public ResultCmd handler(GameServerRequest request, GameServerResponse response){
 
         ChunkRequestCmd cmd =(ChunkRequestCmd) request.getCmd();
-       ChunkImpl chunk =  chunkProvider.getChunk(cmd.getX(), 0, cmd.getZ());
-        TeraArray ary = chunk .getBlockData();
+       Chunk chunk =  chunkProvider.getChunk(cmd.getX(), 0, cmd.getZ());
+       // TeraArray ary = chunk .getBlockData();
+        ChunkResponseCmd chunkCmd =new ChunkResponseCmd(chunk);
 
-       return new ChunkResponseCmd(.serialize);
+       return new ResultCmd( chunkCmd.toBytes());
 
 
         //更新其他附近人的此人的装备属性
-        return null;
+        //return null;
     }
     public void broadCast(GameCmd cmd){
         serverContext. broadCast(cmd.toBytes());

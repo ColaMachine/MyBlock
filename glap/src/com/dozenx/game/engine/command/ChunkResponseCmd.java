@@ -1,6 +1,8 @@
 package com.dozenx.game.engine.command;
 
 import cola.machine.game.myblocks.protobuf.ChunksProtobuf;
+import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.util.ByteBufferWrap;
@@ -15,12 +17,14 @@ import java.util.List;
 public class ChunkResponseCmd extends   BaseGameCmd{
     final CmdType cmdType = CmdType.CHUNK;
 
-    TeraArray blockData;
+    Chunk chunk;
     public ChunkResponseCmd(byte[] bytes){
         parse(bytes);
     }
-    public ChunkResponseCmd(TeraArray blockData){
-        this.blockData =blockData;
+    public ChunkResponseCmd(Chunk chunk){
+        this.chunk =chunk;
+
+
     }
 
     //equip 4 |userId|part 2|item |itemId|
@@ -28,33 +32,33 @@ public class ChunkResponseCmd extends   BaseGameCmd{
 
         ByteBufferWrap wrap =   ByteUtil.createBuffer()
             .put(cmdType.getType());
-
-
-        for(int i=0;i<blockData..size();i++){
-            ItemServerBean itemBean  =  itemBeanList .get(i);
-            wrap.put(itemBean.getId()).put(itemBean.getNum()).put(itemBean.getItemType()).put(itemBean.getPosition());
+        wrap.put(chunk.getChunkWorldPosX()).put(chunk.getChunkWorldPosY()).put(chunk.getChunkWorldPosZ());
+        for(int i=0;i< chunk.getChunkSizeX();i++){
+            for(int j=0;i< chunk.getChunkSizeY();j++){
+                for(int k=0;i< chunk.getChunkSizeZ();k++){
+                    wrap.put((byte)chunk.getBlock(i,j,k).getId());
+                }
+            }
         }
+
+
             return wrap.array();
 
 
     }
+    public int x;
+    public int y;
+    public int z;
+    public byte[] data =null;
     public void parse(byte[] bytes){
+
         ByteBufferWrap  byteBufferWrap = ByteUtil.createBuffer(bytes);
         byteBufferWrap.getInt();
-        this.userId =  byteBufferWrap.getInt();
-        int size =  byteBufferWrap.getInt();
-        this.itemBeanList =new ArrayList<>();
-        for(int i=0;i<size;i++){
-            ItemServerBean itemBean =new ItemServerBean();
-            itemBean.setId(byteBufferWrap.getInt());
-            itemBean.setNum(byteBufferWrap.getInt());
-            itemBean.setItemType(byteBufferWrap.getInt());
-            itemBean.setPosition(byteBufferWrap.getInt());
-            itemBeanList.add(itemBean);
-        }
+        this.x = byteBufferWrap.getInt();
+        this.y=byteBufferWrap.getInt();
+        this.z = byteBufferWrap.getInt();
+        data=  byteBufferWrap.array(16);
 
-
-         // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
 
     }
 

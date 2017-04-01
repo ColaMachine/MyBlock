@@ -108,7 +108,7 @@ public class ByteBufferWrap
 
         int length = buffer.position();
         byte[] bytes = new byte[length];
-        byte[] lenAry = ByteUtil.getBytes(length);
+        //byte[] lenAry = ByteUtil.getBytes(length);
        /* bytes[0]= lenAry[0];
         bytes[1]= lenAry[1];
         bytes[2]= lenAry[2];
@@ -116,6 +116,24 @@ public class ByteBufferWrap
         buffer.flip();
 
         buffer.get(bytes,0,length);
+
+
+        return bytes;
+    }
+
+    public byte[] array(int index){
+
+
+        int dataLen = buffer.position();
+        byte[] bytes = new byte[dataLen-index];
+        //byte[] lenAry = ByteUtil.getBytes(length);
+       /* bytes[0]= lenAry[0];
+        bytes[1]= lenAry[1];
+        bytes[2]= lenAry[2];
+        bytes[3]= lenAry[3];*/
+        buffer.flip();
+
+        buffer.get(bytes,index,dataLen-index);
 
 
         return bytes;

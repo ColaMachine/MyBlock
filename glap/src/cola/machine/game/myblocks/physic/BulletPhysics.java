@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.physic;
 
+import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.util.MathUtil;
 import glmodel.GL_Vector;
 import cola.machine.game.myblocks.model.BaseBlock;
@@ -45,7 +46,7 @@ public class BulletPhysics  {
     		
     		int chunk_pos_x =  MathUtil.floor(((float)_x)/16);
     		int chunk_pos_z =  MathUtil.floor(((float)_z)/16);
-    		ChunkImpl chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
+    		Chunk chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
     		//System.out.printf(" %d %d %d",_x,_y,_z);
     		//先获取chunk 在获取block
 			//blockRepository.haveObject(_x,_y,_z)
@@ -56,8 +57,8 @@ public class BulletPhysics  {
     			if(delete){
     				Block block=new BaseBlock("water",0,false);
     				chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z),block);
-    				chunk.build();
-                    chunk.buildAlpha();
+                    ((ChunkImpl)chunk).build();
+                    ((ChunkImpl)chunk).buildAlpha();
     				return null;
     			}
     			x-=0.1;
@@ -69,7 +70,7 @@ public class BulletPhysics  {
     			BlockManager blockManager = CoreRegistry.get(BlockManager.class);
     			Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId(),false);
     			
-    			ChunkImpl _chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
+    			Chunk _chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
     			//_chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor(_y), MathUtil.getOffesetChunk(_z), block);
 //    			chunk.setBlock(MathUtil.floor(from.x+x*to.x)%16,
 //    					MathUtil.floor(from.y+x*to.y),
