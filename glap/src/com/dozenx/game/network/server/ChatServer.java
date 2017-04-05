@@ -3,6 +3,8 @@ package com.dozenx.game.network.server;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.world.block.BlockManager;
+import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
 import com.dozenx.game.engine.command.CmdType;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.network.server.bean.ServerContext;
@@ -31,6 +33,7 @@ public class ChatServer {
 
 
     public  void start(){
+        CoreRegistry.put(BlockManager.class,new BlockManagerImpl());
         CoreRegistry.put(UserService.class , new UserService(serverContext));
         //注册所有服务
         //注册所有service
@@ -51,7 +54,7 @@ public class ChatServer {
         serverContext. registerHandler(CmdType.DROP,new DropHandler(serverContext));
         serverContext. registerHandler(CmdType.PICK,new PickHandler(serverContext));
         serverContext. registerHandler(CmdType.JUMP,new JumpHandler(serverContext));
-        serverContext. registerHandler(CmdType.CHUNK,new ChunkHandler(serverContext));
+        serverContext. registerHandler(CmdType.CHUNKREQUEST,new ChunkHandler(serverContext));
 
         ItemManager itemManager =new ItemManager();
         CoreRegistry.put(ItemManager.class,itemManager);

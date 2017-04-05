@@ -29,52 +29,69 @@ public class BulletPhysics  {
         //������յ�λ��
 
     	//ÿ���ƶ�0.1
-    	int preIndex=-1;
-    	int index=0;
-    	for(float x=0.1f;x<distance;x+=0.1){
-    		int _x = MathUtil.floor(from.x+x*to.x);
-    		int _y = MathUtil.floor(from.y+x*to.y);
-    		int _z = MathUtil.floor(from.z+x*to.z);
-    		index=_x*10000+_z*100+_y;
-    		if(index==preIndex)
+    	int preBlockIndex=-1;
+    	int blockIndex=0;
+        Chunk bianliChunk=null;
+        int chunkX;
+        int chunkY;
+        int chunkZ;
+       // int preBlockIndex =0;
+    	for(float x=0.1f;x<distance;x+=0.1){//一点一点推进 看撞到了哪个物体 every time add a little
+    		int _x = MathUtil.floor(from.x+x*to.x);//x 代表推进的举例 推进后的x
+    		int _y = MathUtil.floor(from.y+x*to.y);//推进后的y
+    		int _z = MathUtil.floor(from.z+x*to.z);//推进后的z
+            blockIndex=_x*10000+_z*100+_y;//推进后落入的blockINdex
+    		if(blockIndex==preBlockIndex)//如果和之前判断的还是同一个的话 略过
     			continue;
     		//ȥ����Ƿ���һ������֮��
     		//ChunkImpl chunk = localChunkProvider.getChunk(new Vector3i(MathUtil.floor((float)_x/16),0,MathUtil.floor((float)_z/16)));
-    		int newX=MathUtil.getBelongChunkInt(from.x+x*to.x);
-    		int newZ=MathUtil.getBelongChunkInt(from.z+x*to.z);
-    		//every time add a little
+    		 chunkX=MathUtil.getBelongChunkInt(from.x+x*to.x);//换算出新的chunkX
+    		 chunkZ=MathUtil.getBelongChunkInt(from.z+x*to.z);//换算出新的chunkZ
+
+            int  nowChunkIndex =  chunkX*10000+chunkZ;
+            if(nowChunkIndex!=preBlockIndex){
+                bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
+
+            }
+                // 得到当前chunk 改变的次数有限
+    		//
     		
-    		int chunk_pos_x =  MathUtil.floor(((float)_x)/16);
-    		int chunk_pos_z =  MathUtil.floor(((float)_z)/16);
-    		Chunk chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
-    		//System.out.printf(" %d %d %d",_x,_y,_z);
+    		//int chunk_pos_x =  MathUtil.floor(((float)_x)/16);
+    		//int chunk_pos_z =  MathUtil.floor(((float)_z)/16);
+            //System.out.printf(" %d %d %d",_x,_y,_z);
     		//先获取chunk 在获取block
 			//blockRepository.haveObject(_x,_y,_z)
 			
 			//detect if there is block
-    		
-    		if(chunk.getBlockData(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z))>0){
-    			if(delete){
-    				Block block=new BaseBlock("water",0,false);
-    				chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z),block);
-                    ((ChunkImpl)chunk).build();
-                    ((ChunkImpl)chunk).buildAlpha();
-    				return null;
+    		if(bianliChunk !=null){
+    		if(bianliChunk.getBlockData(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z))>0){
+    			if(delete){//如果是删除 就删除对应的方块
+    				//Block block=new BaseBlock("water",0,false);
+                   // bianliChunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z),block);
+                    //((ChunkImpl)bianliChunk).build();
+                   // ((ChunkImpl)bianliChunk).buildAlpha();
+                    //bianliChunk.build();
+    				//return null;
+                    return new GL_Vector(MathUtil.floor(from.x+x*to.x),
+                            MathUtil.floor(from.y+x*to.y),
+                            MathUtil.floor(from.z+x*to.z));
     			}
-    			x-=0.1;
+    			x-=0.1;//退回来 如果是增加放置一个block的话
     			 _x = MathUtil.floor(from.x+x*to.x);
         		 _y = MathUtil.floor(from.y+x*to.y);
         		 _z = MathUtil.floor(from.z+x*to.z);
-        		 chunk_pos_x =  MathUtil.floor(((float)_x)/16);
-         		 chunk_pos_z =  MathUtil.floor(((float)_z)/16);
-    			BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-    			Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId(),false);
+        		 chunkX =  MathUtil.floor(((float)_x)/16);
+                chunkZ =  MathUtil.floor(((float)_z)/16);
+    			BlockManager blockManager = CoreRegistry.get(BlockManager.class);//创建新的方块
+    			//Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId(),false);
     			
-    			Chunk _chunk = localChunkProvider.getChunk(new Vector3i(chunk_pos_x,0,chunk_pos_z));
+    			//Chunk _chunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));
     			//_chunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor(_y), MathUtil.getOffesetChunk(_z), block);
-//    			chunk.setBlock(MathUtil.floor(from.x+x*to.x)%16,
-//    					MathUtil.floor(from.y+x*to.y),
-//    					MathUtil.floor(from.z+x*to.z)%16, block);
+               /* _chunk.setBlock(MathUtil.floor(from.x+x*to.x)%16,
+    					MathUtil.floor(from.y+x*to.y),
+    					MathUtil.floor(from.z+x*to.z)%16, block);*/
+                //_chunk.disposeMesh();
+                //_chunk.update();
     			//重新更新
     			//_chunk.build();
                 //_chunk.buildAlpha();
@@ -83,8 +100,8 @@ public class BulletPhysics  {
     					MathUtil.floor(from.z+x*to.z));//����ײ��ǰ�ķ���λ��
         		
     		}
-    		preIndex=index;
-    	}
+                preBlockIndex=blockIndex;
+    	}}
     	return null;
     	
     }

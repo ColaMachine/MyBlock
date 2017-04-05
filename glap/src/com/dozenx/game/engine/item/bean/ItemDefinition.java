@@ -3,6 +3,7 @@ package com.dozenx.game.engine.item.bean;
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import com.dozenx.game.engine.command.ItemMainType;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;
@@ -23,43 +24,24 @@ public class ItemDefinition {
    /* Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
-    private ItemType itemType;
-    private ItemModel itemModel = new ItemModel();
+    private ItemType itemType;//物品的具体类型 详见ItemType
+    private ItemModel itemModel = new ItemModel();//模型描述
 
-    public ItemModel getItemModel() {
-        return itemModel;
-    }
 
-    public void setItemModel(ItemModel itemModel) {
-        this.itemModel = itemModel;
-    }
+    String name;//英文名称
 
-    public ItemType getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(ItemType itemType) {
-        this.itemType = itemType;
-    }
-
-    String name;
-
-    int type;
-    String remark;
+    ItemMainType type;//大类
+    String remark;//中文描述
+    /**武器属性**/
     int spirit;
     int agile;
     int intelli;
     int strenth;
-    Shape shape;
-    ShapeType shapeType;
 
-    public Shape getShape() {
-        return shape;
-    }
+    int position;//如果是装备的画就会起作用 head body leg foot hand arm
+    Shape shape;//含着一些box 绘制的属性
+    ShapeType shapeType;//描述 是饼状 盒形 icon状
 
-    public void setShape(Shape shape) {
-        this.shape = shape;
-    }
 /*
     public TextureInfo getIcon() {
         return icon;
@@ -69,73 +51,8 @@ public class ItemDefinition {
         this.icon = icon;
     }*/
 
-    int position;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public int getSpirit() {
-        return spirit;
-    }
-
-    public void setSpirit(int spirit) {
-        this.spirit = spirit;
-    }
-
-    public int getAgile() {
-        return agile;
-    }
-
-    public void setAgile(int agile) {
-        this.agile = agile;
-    }
-
-    public int getIntelli() {
-        return intelli;
-    }
-
-    public void setIntelli(int intelli) {
-        this.intelli = intelli;
-    }
-
-    public int getStrenth() {
-        return strenth;
-    }
-
-    public void setStrenth(int strenth) {
-        this.strenth = strenth;
-    }
-
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
 /*
 
     public void init1(){
@@ -357,4 +274,114 @@ public class ItemDefinition {
             //GL11.glTranslatef(-x+2,-y, -z);
             //GL11.glRotated(-180, 0, 1, 0);
         }*/
+
+
+    public ItemModel getItemModel() {
+        return itemModel;
+    }
+
+    public void setItemModel(ItemModel itemModel) {
+        this.itemModel = itemModel;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
+
+
+    public Shape getShape() {
+        return shape;
+    }
+
+    public void setShape(Shape shape) {
+        this.shape = shape;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ItemMainType getType() {
+        return type;
+    }
+
+    public void setType(ItemMainType type) {
+        this.type = type;
+    }
+
+    public ShapeType getShapeType() {
+        return shapeType;
+    }
+
+    public void setShapeType(ShapeType shapeType) {
+        this.shapeType = shapeType;
+    }
+
+
+    /*public int getType() {
+        return type;
+    }
+
+
+    public void setType(int type) {
+        this.type = type;
+    }*/
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public int getSpirit() {
+        return spirit;
+    }
+
+    public void setSpirit(int spirit) {
+        this.spirit = spirit;
+    }
+
+    public int getAgile() {
+        return agile;
+    }
+
+    public void setAgile(int agile) {
+        this.agile = agile;
+    }
+
+    public int getIntelli() {
+        return intelli;
+    }
+
+    public void setIntelli(int intelli) {
+        this.intelli = intelli;
+    }
+
+    public int getStrenth() {
+        return strenth;
+    }
+
+    public void setStrenth(int strenth) {
+        this.strenth = strenth;
+    }
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 }

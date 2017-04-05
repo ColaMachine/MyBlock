@@ -211,7 +211,7 @@ public class ItemSlotView extends HtmlObject {
             return true;
         }
         try {
-            if (this.itemType != 0 && itemDefinition.getType() != 0 && (this.itemType & itemDefinition.getPosition()) != 0)
+            if (this.itemType != 0 && itemDefinition.getType() !=null && (this.itemType & itemDefinition.getPosition()) != 0)
                 return true;//itemWrap == null;
             else
                 return false;

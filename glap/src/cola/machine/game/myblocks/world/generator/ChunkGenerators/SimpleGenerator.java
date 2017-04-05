@@ -57,14 +57,16 @@ public class SimpleGenerator implements FirstPassGenerator {
 
     public SimpleGenerator() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        mantle = blockManager.getBlock("mantle");
-        water = blockManager.getBlock("water");
-        stone = blockManager.getBlock("stone");
-        sand = blockManager.getBlock("sand");
-        grass = blockManager.getBlock("soil");
-        snow = blockManager.getBlock("soil");
-        dirt = blockManager.getBlock("soil");
-        ice = blockManager.getBlock("soil");
+        if(blockManager!=null ) {
+            mantle = blockManager.getBlock("mantle");
+            water = blockManager.getBlock("water");
+            stone = blockManager.getBlock("stone");
+            sand = blockManager.getBlock("sand");
+            grass = blockManager.getBlock("soil");
+            snow = blockManager.getBlock("soil");
+            dirt = blockManager.getBlock("soil");
+            ice = blockManager.getBlock("soil");
+        }
 
     }
 

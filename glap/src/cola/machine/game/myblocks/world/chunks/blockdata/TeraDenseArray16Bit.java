@@ -19,6 +19,7 @@ package cola.machine.game.myblocks.world.chunks.blockdata;
 import cola.machine.game.myblocks.world.chunks.deflate.TeraVisitingDeflator;
 
 import com.google.common.base.Preconditions;
+import core.log.LogUtil;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -93,6 +94,9 @@ public class TeraDenseArray16Bit extends TeraDenseArray {
     @Override
     public int set(int x, int y, int z, int value) {
         int pos = pos(x, y, z);
+        if(pos<0){
+            LogUtil.err("不能为负数");
+        }
         int old = data[pos];
         data[pos] = (short) value;
         return old;

@@ -53,7 +53,7 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
     }
     public void createOrLoadChunk(Vector3i chunkPos){
     	//System.out.printf("加载或创建地图  x:%d y:%d z:%d \n",chunkPos.x,chunkPos.y,chunkPos.z);
-		ChunkImpl chunk=nearCache.get(chunkPos);
+		ChunkImpl chunk=nearCache.get(new Vector2i(chunkPos.x,chunkPos.z));
 		if(chunk == null){
 			String fileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".chunk";
 			if(chunkPos.x==-2 && chunkPos.z==-5){
@@ -97,7 +97,7 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
                    // chunk.build();
 				}
 			}
-		 chunk=nearCache.get(chunkPos);
+		 chunk=nearCache.get(new Vector2i(chunkPos.x,chunkPos.z));
 
 		
 	}
@@ -188,10 +188,10 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 	public ChunkImpl getChunk(int x, int y, int z) {
 		 // ChunkImpl chunk = nearCache.get(new Vector3i(x,y,z));
 		ChunkImpl chunk = nearCache.get(new Vector2i(x,z));
-	        /*if(chunk==null){
+	        if(chunk==null){
 	        	createOrLoadChunk(new Vector3i(x,y,z));
-	        	 chunk = nearCache.get(new Vector3i(x,y,z));
-	        }*/
+	        	 chunk = nearCache.get(new Vector2i(x,z));
+	        }
 		  if(chunk!=null&& chunk.getBlockData()==null){
 			  System.out.println("found the null blockdata chunk in nearCache 。solve it！！！");
 		  }
@@ -207,8 +207,8 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 
 	@Override
 	public void removeChunk(Chunk c) {
-		this.nearCache.remove(c.getPos());
-		if(nearCache.get(c.getPos())!=null){
+		this.nearCache.remove(new Vector2i(c.getPos().x,c.getPos().z));
+		if(nearCache.get(new Vector2i(c.getPos().x,c.getPos().z))!=null){
 			LogUtil.err("unload chunk failed");
 			System.out.println("删除失败!");
 		}

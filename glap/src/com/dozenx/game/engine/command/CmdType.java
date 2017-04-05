@@ -11,21 +11,22 @@ import sun.plugin2.main.server.ResultHandler;
  * Created by dozen.zhang on 2017/2/13.
  */
 public enum CmdType {
-    SAY,
-    RESULT,
-    MSG,
-    LOGIN,
-    EQUIP,
-    POS,
-    PLAYERSTATUS,
-    BAG,
-    BAGCHANGE,
-    GET,
-    PICK,
-    ATTACK,
-    DROP,
-    GROUP,
-    CHUNK,
+    SAY,//0
+    RESULT,//1
+    MSG,//2
+    LOGIN,//3
+    EQUIP,//4
+    POS,//5
+    PLAYERSTATUS,//6
+    BAG,//7
+    BAGCHANGE,//8
+    GET,//9
+    PICK,//10
+    ATTACK,//1
+    DROP,//12
+    GROUP,//13
+    CHUNKREQUEST,//14
+    CHUNKRESPONSE,//15
     BACK,
     LIVI,
     DIED,
@@ -72,3 +73,4 @@ public enum CmdType {
 
     }
 }
+

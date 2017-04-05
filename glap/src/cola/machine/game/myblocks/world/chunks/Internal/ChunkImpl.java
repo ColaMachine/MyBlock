@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.*;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.IntBuffer;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import glmodel.GL_Vector;
 import org.lwjgl.BufferUtils;
@@ -116,6 +119,12 @@ public class ChunkImpl implements Chunk {
 			 */
         }
         return blockManager.getBlock((short) oldValue);
+    }
+
+    @Override
+    public void setBlock(int x, int y, int z, int block) {
+        blockData.set(x, y, z, block);
+
     }
 
     TextureInfo ti = TextureManager.getTextureInfo("mantle");
@@ -248,8 +257,11 @@ public class ChunkImpl implements Chunk {
         //System.out.println(this.count);
         GLApp.endDisplayList();
     }
-
+@Override
     public void build() {
+        if(Switcher.SHADER_ENABLE){
+            this.buildVao();return;
+        }
 
         displayId = GLApp.beginDisplayList();
         ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
@@ -423,6 +435,7 @@ public class ChunkImpl implements Chunk {
     }
 
     public void buildVao() {
+        vao.getVertices().clear();
 
         //glUseProgram(ShaderManager.terrainShaderConfig.getProgramId());
         ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
@@ -1189,7 +1202,7 @@ public class ChunkImpl implements Chunk {
     }
 
     public boolean disposed = false;
-
+@Override
     public void disposeMesh() {
 
         // if(this.displayId!=0){
@@ -1198,9 +1211,9 @@ public class ChunkImpl implements Chunk {
             //GL11.glDeleteLists(this.alphaDisplayId, 1);
             // this.displayId=0;
             this.disposed = true;
-
+//
             //保存数据
-            String fileName = "" + chunkPos.x + "_" + chunkPos.y + "_" + chunkPos.z + ".chunk";
+           /* String fileName = "" + chunkPos.x + "_" + chunkPos.y + "_" + chunkPos.z + ".chunk";
             try {
                 Path path = PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path.toFile()));
@@ -1212,7 +1225,7 @@ public class ChunkImpl implements Chunk {
             } catch (IOException e) {
                 // VIP Auto-generated catch block
                 e.printStackTrace();
-            }
+            }*/
             //this.blockData = null;
         } else {
             System.out.println("为什么要对没有初始化的chunkimpl取消");
@@ -1323,5 +1336,26 @@ public class ChunkImpl implements Chunk {
             // VIP Auto-generated catch block
             e.printStackTrace();
         }
+    }
+@Override
+    public Integer[] zip(){
+        List<Integer> arr = new ArrayList<>();
+        for(int x =0;x<16;x++){
+
+            for(int y =0;y<16;y++){
+
+                for(int z =0;z<16;z++){
+                    int value = blockData.get(x,y,z);
+                    //x<<12 && y<<8&& z <<4 && value
+                    if(value>0){
+                        arr.add(ByteUtil.unionBinary(x,y,z,value));
+                    }
+
+                }
+            }
+        }
+    Integer newArr[] = new Integer[arr.size()];
+         arr.toArray(newArr);
+        return newArr;
     }
 }

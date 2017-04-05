@@ -3,6 +3,8 @@ package cola.machine.game.myblocks.rendering.world;
 import check.CrashCheck;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.network.client.Client;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -87,8 +89,9 @@ public class WorldRendererLwjgl implements WorldRenderer {
         CoreRegistry.put(WorldRendererLwjgl.class,this);
 		this.player = player;
 		this.setup();
+        this.client = CoreRegistry.get(Client.class);
 	}
-
+Client client;
 	public void updateVisibleQuads() {
 
 		/*
@@ -115,6 +118,16 @@ public class WorldRendererLwjgl implements WorldRenderer {
         //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
         for (Chunk chunk : chunksInProximity) {
             ((ChunkImpl)chunk).update();
+        }
+
+        //偶尔发生 或者当该用户登录 或者被创建的时候
+       // CoreRegistry.get(Client.class);
+        while(client.chunks.size()>0 && client.chunks.peek()!=null ) {
+            ChunkRequestCmd cmd = (ChunkRequestCmd) client.chunks.poll();
+            Chunk chunk = chunkProvider.getChunk(new Vector3i(cmd.x,0,cmd.z));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
+            chunk.setBlock(cmd.cx,cmd.cy,cmd.cz,cmd.blockType);
+            chunk.build();
+
         }
 		//skysphere.update();
       /*  try{

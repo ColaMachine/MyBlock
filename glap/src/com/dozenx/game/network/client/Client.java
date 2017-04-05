@@ -30,6 +30,7 @@ public class Client extends Thread{
     public static Stack<AttackCmd> attacks=new Stack<>();
     public static Stack<BagCmd> bags=new Stack<>();
     public static Stack<DropCmd> drops=new Stack<>();
+    public static Queue<ChunkRequestCmd> chunks=new LinkedList<>();
     public static Stack<PickCmd> picks=new Stack<>();
     public static Stack<GameCmd> humanStates=new Stack<>();
    // public static Stack<GameCmd> newborns=new Stack<>();
@@ -98,7 +99,8 @@ public class Client extends Thread{
                         }else{
                             return;
                         }*/
-                        synchronized (obj) {
+                        LogUtil.println("进入恢复任务");
+                        synchronized (obj) {LogUtil.println("通知线程恢复");
                             obj.notifyAll(); // 收到响应，唤醒线程
                         }
                     }
@@ -115,8 +117,10 @@ public class Client extends Thread{
                 outputStream.write(Constants.end);
 
                 synchronized (obj) {
+                    LogUtil.println("挂起线程");
                     obj.wait(); // 未收到响应，使线程等待
                 }
+                LogUtil.println("线程恢复");
                 //清除task
                 taskMap.remove(threadId);
                 return task.getResult();
@@ -259,6 +263,8 @@ public class Client extends Thread{
                         bags.push((BagCmd)cmd);
                     }else if (cmd.getCmdType()== CmdType.DROP) {
                        drops.push((DropCmd)cmd);
+                    }else if (cmd.getCmdType()== CmdType.CHUNKREQUEST) {
+                        chunks.offer((ChunkRequestCmd)cmd);
                     }else if (cmd instanceof  UserBaseCmd ||cmd.getCmdType()== CmdType.PICK || cmd.getCmdType()== CmdType.WALK || cmd.getCmdType()== CmdType.DIED|| cmd.getCmdType()== CmdType.REBORN
                             || cmd.getCmdType()== CmdType.JUMP) {
                         humanStates.push(cmd);
@@ -270,6 +276,7 @@ public class Client extends Thread{
                             GameCallBackTask task = taskMap.get(result.getThreadId());
                             if(task!=null){
                                 task .setResult(result);
+                                LogUtil.println("任务开跑");
                                 task.run();
                                // task.notifyAll();
                             }else{

@@ -45,8 +45,10 @@ public class CmdUtil {
             return new ChaseCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.JUMP.ordinal()){
             return new JumpCmd(bytes);
-        }else  if (cmdTypeVal ==  CmdType.JUMP.ordinal()){
-            return new JumpCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.CHUNKREQUEST.ordinal()){
+            return new ChunkRequestCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.CHUNKRESPONSE.ordinal()){
+            return new ChunkResponseCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

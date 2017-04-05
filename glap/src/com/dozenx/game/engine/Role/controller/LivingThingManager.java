@@ -339,7 +339,9 @@ public class LivingThingManager {
 
 
         }
-        //偶尔发生 或者当该用户登录 或者被创建的时候
+
+
+            //偶尔发生 或者当该用户登录 或者被创建的时候
         while(client.playerSync.size()>0 && client.playerSync.peek()!=null /*&& BlockEngine.engine.getState() instanceof  GamingState*/){
             PlayerSynCmd cmd = (PlayerSynCmd)client.playerSync.poll();
             PlayerStatus info  = cmd.getPlayerStatus();

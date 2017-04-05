@@ -16,13 +16,16 @@ import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.DropCmd;
+import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.command.PickCmd;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ShapeType;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
+import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -137,10 +140,11 @@ public static void removeWorldItem(int itemId){
     public void loadItem() throws Exception {
 
         try {
+            //先按照itemtype enum加载数据 这里是偷懒了 不想都写item.cfg
             for (int i = 1; i < ItemType.values().length; i++) {
-                ItemDefinition item = new ItemDefinition();
-                item.setName(ItemType.values()[i].toString());
-                this.putItemDefinition(ItemType.values()[i].toString(), item);
+                ItemDefinition item = new ItemDefinition();//
+                item.setName(ItemType.values()[i].toString());//简单设置英文名称
+                this.putItemDefinition(ItemType.values()[i].toString(), item);//入仓库
 
                 if(GamingState.player!=null){//区分服务器版本和客户端版本
 
@@ -148,19 +152,20 @@ public static void removeWorldItem(int itemId){
                     if(ti!=null){//先不要shape了 因为很多都没有shape 后续在 item.cfg里配置的去读取shape
                         item.getItemModel().setIcon(TextureManager.getTextureInfo(ItemType.values()[i].toString()));
                         Shape shape=new Shape();
-                        shape.setShapeType(2);
+                        shape.setShapeType(ShapeType.CAKE.ordinal());
                         shape.setWidth(0.5f);
                         shape.setHeight(0.5f);
                         shape.setThick(0.5f);
                         item.setShape(shape);
-                        item.getItemModel().init();
+                        item.getItemModel().init();//如果是cake 就需要初始化block
                     }
 
 
                 }
             }
+            //读取item文件夹下所有的配置信息
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
-            for(File file : fileList) {
+            for(File file : fileList) {//遍历配置文件
                 String json = FileUtil.readFile2Str(file);
                 List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
 
@@ -169,38 +174,59 @@ public static void removeWorldItem(int itemId){
                     ItemDefinition item = new ItemDefinition();
                     String name = (String) map.get("name");
 
-                    String icon = (String) map.get("icon");
+                    String icon = (String) map.get("icon");//获取icon图片
                     item.setName(name);
                     // item.setIcon(this.getTextureInfo(icon));
                     String type = (String) map.get("type");
-               /* if (type.equals("wear")) {*/
-                    item.setType(Constants.ICON_TYPE_WEAR);
-                    String position = (String) map.get("position");
-                    if (position.equals("head")) {
-                        item.setPosition(Constants.WEAR_POSI_HEAD);
-                    } else if (position.equals("body")) {
-                        item.setPosition(Constants.WEAR_POSI_BODY);
-                    } else if (position.equals("leg")) {
-                        item.setPosition(Constants.WEAR_POSI_LEG);
-                    } else if (position.equals("foot")) {
-                        item.setPosition(Constants.WEAR_POSI_FOOT);
-                    } else if (position.equals("hand")) {
-                        item.setPosition(Constants.WEAR_POSI_HAND);
+               if (type.equals("wear")) {
+                   //item.setType(Constants.ICON_TYPE_WEAR);
+                   item.setType(ItemMainType.WEAR);
+                   String position = (String) map.get("position");
+                   if (position != null) {
+                       if (position.equals("head")) {
+                           item.setPosition(Constants.WEAR_POSI_HEAD);
+                       } else if (position.equals("body")) {
+                           item.setPosition(Constants.WEAR_POSI_BODY);
+                       } else if (position.equals("leg")) {
+                           item.setPosition(Constants.WEAR_POSI_LEG);
+                       } else if (position.equals("foot")) {
+                           item.setPosition(Constants.WEAR_POSI_FOOT);
+                       } else if (position.equals("hand")) {
+                           item.setPosition(Constants.WEAR_POSI_HAND);
+                       }
+                   }
+               }else if(type.equals("food")){
+
+               }else if(type.equals("block")){
+                    item.setType(ItemMainType.BLOCK);
+               }
+                    /*String spiritStr = map.get("spirit");
+                    if(StringUtil.isNotEmpty(spiritStr)){
+                        item.setSpirit(spirit);
+                    }*/
+                    if(map.get("spirit")!=null){
+                        int spirit = (int) map.get("spirit");
+                        item.setSpirit(spirit);
                     }
-                    int spirit = (int) map.get("spirit");
-                    item.setSpirit(spirit);
-                    int agile = (int) map.get("agile");
-                    item.setAgile(agile);
+                    if(map.get("agile")!=null){
+                        int agile = (int) map.get("agile");
+                        item.setAgile(agile);
+                    }
+                    if(map.get("intelli")!=null){
+                        int intelli = (int) map.get("intelli");
+                        item.setIntelli(intelli);
+                    }
+                    if(map.get("strenth")!=null){
+                        int strenth = (int) map.get("strenth");
+                        item.setStrenth(strenth);
+                    }
 
-                    int intelli = (int) map.get("intelli");
-                    item.setIntelli(intelli);
 
-                    int strenth = (int) map.get("strenth");
-                    item.setStrenth(strenth);
+
 
 
                     this.putItemDefinition(name, item);
-
+                    //补充shape
                     if(GamingState.player!=null){//区分服务器版本和客户端版本
                         String shapeName = (String) map.get("shape");
 

@@ -232,6 +232,8 @@ public class ByteUtil
 
     public static void main(String[] args)
     {
+
+
         System.out.println((byte)254);
        short s = 122;
         int i = 122;
@@ -261,9 +263,9 @@ public class ByteUtil
         System.out.println(getDouble(getBytes(d)));
         System.out.println(getString(getBytes(string)));
 
-        System.out.println(toFullBinaryString(-13602928));
-        System.out.println(toHex(-13602928));
-        System.out.println(toHex(-13537135));
+        System.out.println("toFullBinaryString"+toBinaryStr(-13602928));
+        System.out.println("toHex"+toHex(-13602928));
+        System.out.println("toHex"+toHex(-13537135));
         System.out.println("00000001 转int:"+binaryStr2int("00000001"));
 
         byte[] bytes = hexStr2Bytes("B8F6");
@@ -276,8 +278,39 @@ public class ByteUtil
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        int[] arr = getValueSplit4Slot(unionBinary(1,2,3,4));
+        System.out.println(""+arr[0]+arr[1]+arr[2]+arr[3]);
+        System.out.println(toBinaryStr(15));
+        System.out.println(toBinaryStr(15&HEX_0_0_0_1));
+        System.out.println(unionBinary(1,2,3,4));
     }
-    public static String toFullBinaryString(int num) {
+
+    public  static int unionBinary(int a,int b,int c,int d){
+        return (((a&HEX_0_0_0_1 ) <<12 )|
+        ((b&HEX_0_0_0_1 ) <<8 )|
+        ((c&HEX_0_0_0_1 ) <<4 )|
+        ((d&HEX_0_0_0_1 ) <<0 ));
+
+    }
+
+    public static int [] getValueSplit4Slot(int value ){
+
+        return new int[]{get16_12Value(value),get12_8Value(value),get8_4Value(value),get4_0Value(value)};
+
+    }
+    public static int get16_12Value(int value ){
+        return (value & HEX_1_0_0_0 )>>12;
+    }
+    public static int get12_8Value(int value ){
+        return (value & HEX_0_1_0_0 )>>8;
+    }
+    public static int get8_4Value(int value ){
+        return (value & HEX_0_0_1_0 )>>4;
+    }
+    public static int get4_0Value(int value ){
+        return (value & HEX_0_0_0_1)>>0;
+    }
+    public static String toBinaryStr(int num) {
         char[] chs = new char[Integer.SIZE];
         for(int i = 0; i < Integer.SIZE; i++) {
             chs[Integer.SIZE - 1 - i] = (char)(((num >> i) & 1) + '0');
@@ -293,6 +326,9 @@ public class ByteUtil
     public static void toBinary(int value){
 
     }
+    /*public static void toBinaryStr(int value){
+
+    }*/
 
     public static int[] to8BinaryInt(byte b){
         int[] bites = new int[8];
@@ -420,6 +456,7 @@ public class ByteUtil
         return strRet;
     }
 
+
     /**
      *unicode的String转换成String的字符串
      */
@@ -440,4 +477,12 @@ public class ByteUtil
         }
         return str.toString();
     }
+    //1111 0000 0000 0000
+    // 0000 1111 0000 0000
+    // 0000 0000 1111 0000
+    //0000 0000 0000 1111
+    public final static short HEX_1_0_0_0 =(short) (15<<12);
+    public final static short HEX_0_1_0_0 = 15<<8;
+    public final static short HEX_0_0_1_0 = 15<<4;
+    public final static short HEX_0_0_0_1 = 15<<0;
 }

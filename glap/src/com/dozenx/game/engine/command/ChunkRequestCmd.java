@@ -12,10 +12,16 @@ import java.util.List;
  * Created by luying on 17/2/7.
  */
 public class ChunkRequestCmd extends   BaseGameCmd{
-    final CmdType cmdType = CmdType.CHUNK;
+    final CmdType cmdType = CmdType.CHUNKREQUEST;
 
-    private int x;
-    private int z;
+    public int x;
+    public int z;
+
+    public int cx;
+    public int cy;
+    public int cz;
+    public int type;//0 all  1add 2delete
+    public int blockType;
 
     public int getX() {
         return x;
@@ -47,7 +53,7 @@ public class ChunkRequestCmd extends   BaseGameCmd{
 
         ByteBufferWrap wrap =   ByteUtil.createBuffer()
             .put(cmdType.getType())
-                 .put( x) .put( z);
+                 .put( x) .put( z) .put( cx) .put( cy) .put( cz) .put( type) .put( blockType);
 
 
         return wrap.array();
@@ -60,6 +66,11 @@ public class ChunkRequestCmd extends   BaseGameCmd{
         this.x=byteBufferWrap.getInt();
         this.z=byteBufferWrap.getInt();
 
+        this.cx=byteBufferWrap.getInt();
+        this.cy=byteBufferWrap.getInt();
+        this.cz=byteBufferWrap.getInt();
+        this.type=byteBufferWrap.getInt();
+        this.blockType=byteBufferWrap.getInt();
 
     }
 

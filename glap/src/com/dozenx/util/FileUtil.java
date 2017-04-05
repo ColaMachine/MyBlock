@@ -77,8 +77,8 @@ public class FileUtil {
             templateStr.append(s + "\r\n");
         }
         if(templateStr==null || templateStr.toString().length()==0){
-            LogUtil.println("file is empty: "+file);
-            System.exit(0);
+            LogUtil.err("file is empty: "+file);
+           // System.exit(0);
         }
 //        LogUtil.println(templateStr.toString());
         return templateStr.toString();
@@ -97,7 +97,7 @@ public class FileUtil {
             bufferWritter.write(content);
             bufferWritter.close();
 
-            System.out.println("Done");
+           // System.out.println("Done");
 
         } catch (IOException e) {
             e.printStackTrace();

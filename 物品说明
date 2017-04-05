@@ -1,0 +1,4 @@
+//item.cfg 生成itemDefinition
+itemDefinition 有很多中类型 一类是wear 一类是 block 一类是 food 一类是handkit 一类是other
+
+结合texture shape 构成

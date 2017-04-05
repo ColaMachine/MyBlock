@@ -33,6 +33,9 @@ public class ByteBufferWrap
     public int getInt(){
         return buffer.getInt();
     }
+    public short getShort(){
+        return buffer.getShort();
+    }
     public char getChar(){
         return buffer.getChar();
     }
@@ -52,6 +55,10 @@ public class ByteBufferWrap
         return this;
     }
     public ByteBufferWrap put(int val){
+        buffer.put(ByteUtil.getBytes(val));
+        return this;
+    }
+    public ByteBufferWrap put(short val){
         buffer.put(ByteUtil.getBytes(val));
         return this;
     }

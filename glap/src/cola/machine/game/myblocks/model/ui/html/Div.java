@@ -5,7 +5,7 @@ package cola.machine.game.myblocks.model.ui.html;
  */
 public class Div extends HtmlObject implements Cloneable{
 
-    public Runnable click;
+   // public Runnable click;
    /* public void handle(Event event ){
         System.out.println("进来了");
 

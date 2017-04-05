@@ -18,6 +18,7 @@ import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ChunkResponseCmd;
 import com.dozenx.game.engine.command.ResultCmd;
 import com.dozenx.game.network.client.Client;
+import core.log.LogUtil;
 
 public class StorageManagerInternal implements StorageManager{
 	@Override
@@ -25,11 +26,13 @@ public class StorageManagerInternal implements StorageManager{
         BlockManager blockManager =CoreRegistry.get(BlockManager.class);
 
         //CoreRegistry.get(Client.class).send();
+        LogUtil.println("客户端加载chunk:" + chunkPos.x + "," + chunkPos.z + "");
         ResultCmd resultCmd =  CoreRegistry.get(Client.class).syncSend(new ChunkRequestCmd(chunkPos));
+        LogUtil.println("接收到");
 		ChunkResponseCmd responseCmd = new ChunkResponseCmd(resultCmd.getMsg());
 
 
-        Chunk chunk =new ChunkImpl(responseCmd.x,responseCmd.y,responseCmd.z);
+       /* Chunk chunk =new ChunkImpl(responseCmd.x,responseCmd.y,responseCmd.z);
         TeraArray blockData = new TeraDenseArray16Bit();
 
         //blockData.copy()
@@ -42,8 +45,8 @@ public class StorageManagerInternal implements StorageManager{
                 }
             }
         }
-        chunk.setBlockData(blockData);
-        return chunk;
+        chunk.setBlockData(blockData);*/
+        return responseCmd.chunk;
 	}
 
 	@Override

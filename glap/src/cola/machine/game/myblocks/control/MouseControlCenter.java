@@ -9,9 +9,14 @@ import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.math.Vector3i;
+import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.world.block.BlockManager;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
@@ -269,7 +274,7 @@ public class MouseControlCenter {
 //        System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
 
 
-        GL_Vector viewDir = OpenglUtils.getLookAtDirection2(camera.getViewDir(),x, y);
+        //GL_Vector viewDir = OpenglUtils.getLookAtDirection2(camera.getViewDir(),x, y);
         //viewDir.y=-viewDir.y;
 //        // this.human.viewDir;//OpenglUtil.getLookAtDirection(x, y);
 //
@@ -278,45 +283,42 @@ public class MouseControlCenter {
 //
 
 
-        GL_Vector to = GL_Vector.add(camera.Position,
-                GL_Vector.multiply(viewDir, 100));
-
-       /* GamingState.instance.lightPos.x= to.x;
-        GamingState.instance.lightPos.y= to.y;
-        GamingState.instance.lightPos.z= to.z;
-        GamingState.lightPosChanged=true;*/
-        //this.engine.lineStart = camera.Position;
-        //this.engine.mouseEnd = to;
+//        GL_Vector to = GL_Vector.add(camera.Position,
+//                GL_Vector.multiply(viewDir, 100));
+//
+//       /* GamingState.instance.lightPos.x= to.x;
+//        GamingState.instance.lightPos.y= to.y;
+//        GamingState.instance.lightPos.z= to.z;
+//        GamingState.lightPosChanged=true;*/
+//        //this.engine.lineStart = camera.Position;
+//        //this.engine.mouseEnd = to;
+//        //获取客户端的方块管理器
 //        ChunkProvider localChunkProvider = CoreRegistry
 //                .get(ChunkProvider.class);
-//        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewDir,
-//                20, engine.currentObject, false);
+//        GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x,player.getPosition().y+2,player.getPosition().z), viewDir,
+//                20, "soil", true);
         // camera.getviewDir().add();
-        livingThingManager.chooseObject(camera.Position, viewDir);
+        livingThingManager.chooseObject(camera.Position, camera.getViewDir());
         //livingThingManager.attack();
        /*Ball ball =new Ball(this.camera.Position,viewDir,17.3f, TextureManager.getShape("arrow"));
 
         AttackManager.add(ball);*/
         //  20);
-//        if (hitPoint != null) {
-//            // Block block=new
-//            // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
-//                                        /*
-//                                         * if("wood".equals(engine.currentObject)){ block =new
-//                                         * Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-//                                         * if("glass".equals(engine.currentObject)){ block =new
-//                                         * Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-//                                         * if("soil".equals(engine.currentObject)){ block =new
-//                                         * Soil((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-//                                         * if("water".equals(engine.currentObject)){ block =new
-//                                         * Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }
-//                                         */
-//                                        /*
-//                                         * if(block!=null){ bulletPhysics.blockRepository.put(block);
-//                                         * this.engine.blockRepository.reBuild(engine.currentObject); }
-//                                         */
-//
-//        }
+        /*if (hitPoint != null) {
+            Block block=new
+                    BaseBlock("soil",(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+                                          if("wood".equals(engine.currentObject)){ block =new
+                                          Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+                                          if("glass".equals(engine.currentObject)){ block =new
+                                          Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+                                          if("soil".equals(engine.currentObject)){ block =new
+                                          Soil((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+                                          if("water".equals(engine.currentObject)){ block =new
+                                          Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }
+                                          if(block!=null){ bulletPhysics.blockRepository.put(block);
+                                          this.engine.blockRepository.reBuild(engine.currentObject); }
+
+        }*/
         //CoreRegistry.get(Bag.class).click(x, y);
         // CoreRegistry.get(PauseMenu.class).click(x, y);
     }
@@ -604,11 +606,51 @@ public class MouseControlCenter {
            // Client.messages.push(new AttackCmd(AttackType.ARROW));
             //player.receive(new AttackCmd(AttackType.ARROW));
         }
+        if (Keyboard.isKeyDown( Keyboard.KEY_V)) {
+            GL_Vector to = GL_Vector.add(camera.Position,
+                    GL_Vector.multiply(camera.getViewDir(), 100));
 
+       /* GamingState.instance.lightPos.x= to.x;
+        GamingState.instance.lightPos.y= to.y;
+        GamingState.instance.lightPos.z= to.z;
+        GamingState.lightPosChanged=true;*/
+            //this.engine.lineStart = camera.Position;
+            //this.engine.mouseEnd = to;
+            //获取客户端的方块管理器
+            ChunkProvider localChunkProvider = CoreRegistry
+                    .get(ChunkProvider.class);
+            boolean delete = false;
+            if(ItemManager.getItemDefinition(player.getHandEquip()).getType() == ItemMainType.BLOCK){
+                delete=false;
+            }else {
+                delete=true;
+
+            }
+            GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+                    20, "soil", delete);
+            if(hitPoint!=null){
+                //得出当前人手上拿的是不是方块
+                int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
+                int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
+                int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
+                int blockY = MathUtil.floor(hitPoint.y);
+                int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+                ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+                cmd.cx = blockX;
+                cmd.cz = blockZ;
+                cmd.cy = blockY;
+
+
+                cmd.type = delete?2:1;
+                cmd.blockType = delete?0:(1);
+                CoreRegistry.get(Client.class).send(cmd);
+            }
+        }
         if (Keyboard.isKeyDown( Keyboard.KEY_T)) {
             if(player.getItemBeans()[24]!=null){
                 CoreRegistry.get(Client.class).send(new DropCmd(player.getId(),player.getItemBeans()[24].getId()));
             }
+
 
             // Client.messages.push(new AttackCmd(AttackType.ARROW));
             //player.receive(new AttackCmd(AttackType.ARROW));

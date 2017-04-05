@@ -449,22 +449,28 @@ public class TextureManager {
                             LogUtil.err("can 't find shape" + parent);
                         }
                         // String c_posi_xStr =  MapUtil.getStringValue(map,"c_posi_x");
-                        try {
-                            shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                        try {//有shape 不一定有parentShape
+                            /*if(shape==null || parentShape ==null){
+                                LogUtil.err(" is null");
+                            }*/
+                            if(/*shape!=null &&*/ parentShape!=null && StringUtil.isNotEmpty(MapUtil.getStringValue(map, "c_posi_x"))) {
 
-                            //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
-                            shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                            shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
+                                shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                            shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                            shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                            shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
+                                shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                    }catch(Exception e){
-                        LogUtil.err(e);
-                    }  }
+                            }
+                        }catch(Exception e){
+                            LogUtil.err(e);
+                        }
+                    }
                     if (shapeType == 3) {
                         if (!isEmpty(front)) {
                             shape.setFront(this.getTextureInfo(front));

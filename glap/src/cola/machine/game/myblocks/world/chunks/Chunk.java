@@ -8,12 +8,17 @@ import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 
 
 public interface Chunk {
+    /**
+     * 得到chunk的 大块区域坐标 类似时区
+     * @return
+     */
     Vector3i getPos();
 
     Block getBlock(Vector3i pos);
 
     Block getBlock(int x, int y, int z);
 
+    public void setBlock(int x, int y, int z, int block) ;
     Block setBlock(int x, int y, int z, Block block);
 
     Block setBlock(Vector3i pos, Block block);
@@ -28,6 +33,10 @@ public interface Chunk {
 
     Vector3i getChunkWorldPos();
 
+    /**
+     * 得到精准的世界坐标 类似经纬度
+     * @return
+     */
     int getChunkWorldPosX();
 
     int getChunkWorldPosY();
@@ -53,4 +62,8 @@ public interface Chunk {
    TeraArray getBlockData();
 
     int  getBlockData(int x,int y,int z);
+    Integer[] zip();
+
+    public void disposeMesh();
+    public void build() ;
 }

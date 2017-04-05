@@ -34,6 +34,7 @@ public class BagService extends GameServerService {
             try {
                 String s = FileUtil.readFile2Str(file);
                 List<ItemServerBean> itemList =new ArrayList<ItemServerBean>();
+
                 itemList = JSON.parseArray(s,
                         ItemServerBean.class);
                 ItemServerBean[] beanAry = new ItemServerBean[45];

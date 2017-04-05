@@ -13,6 +13,7 @@ import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.service.impl.BagService;
 import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
+import core.log.LogUtil;
 
 /**
  * Created by luying on 17/2/18.
@@ -35,11 +36,20 @@ public class ChunkHandler extends GameServerHandler {
         ChunkRequestCmd cmd =(ChunkRequestCmd) request.getCmd();
        Chunk chunk =  chunkProvider.getChunk(cmd.getX(), 0, cmd.getZ());
        // TeraArray ary = chunk .getBlockData();
-        ChunkResponseCmd chunkCmd =new ChunkResponseCmd(chunk);
 
-       return new ResultCmd( chunkCmd.toBytes());
+        if(cmd.type==0){
+            LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z);
+            ChunkResponseCmd chunkCmd =new ChunkResponseCmd(chunk);
 
+            // return new ResultCmd( chunkCmd.toBytes());
+            return new ResultCmd(0,chunkCmd.toBytes(),0);
+        }else if(cmd.type==1||cmd.type==2){
+            LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z+"");
+            chunk.setBlock(cmd.cx,cmd.cy,cmd.cz,cmd.blockType);
+            broadCast(cmd);
+        }
 
+        return null;
         //更新其他附近人的此人的装备属性
         //return null;
     }

@@ -23,7 +23,7 @@ public class TextureEditPanel extends HtmlObject{
     public TextureEditPanel(){
         List<String> list=null;
         try {
-            list = FileUtil.readFile2List(PathManager.getInstance().getHomePath().resolve("newItems.cfg").toString());
+            list = FileUtil.readFile2List(PathManager.getInstance().getHomePath().resolve("newBLockItems.cfg").toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class TextureEditPanel extends HtmlObject{
         wrap.setBackgroundColor(new Vector4f(0,1,0,1));
         this.setPosition(HtmlObject.POSITION_ABSOLUTE);
         //wrap.setPosition(HtmlObject.POSITION_ABSOLUTE);
-        wrap.setBackgroundImage(new Image(TextureManager.getTextureInfo("items")));
+        wrap.setBackgroundImage(new Image(TextureManager.getTextureInfo("terrain")));
         wrap.setBorderWidth(1);
         wrap.setBorderColor(new Vector4f(1, 1, 1, 1));
         wrap.setWidth(totalWidth);
@@ -58,16 +58,21 @@ public class TextureEditPanel extends HtmlObject{
                 div.setHeight(totalHeight/16);
                 div.setBorderWidth(1);
                 div.setBorderColor(new Vector4f(1, 1, 1, 1));
-              /* div.click=new Runnable() {
-                   @Override
-                   public void run() {
-                      // chooseObj=get;
-                       titleEdit.setText(getId());
-                       Document.needUpdate=true;
-                   }
-               };*/
+
+
                 div.setDisplay(HtmlObject.INLINE);
-                EditField edit = new EditField();
+
+
+                final EditField edit = new EditField();
+                div.onClick=new MouseClickHandler() {
+                    @Override
+                    public void run() {
+                        // chooseObj=get;
+                        edit.setVisible(!edit.isVisible());
+                       // titleEdit.setText(getId());
+                        Document.needUpdate=true;
+                    }
+                };
                 int index =i*16+j;
                 if(list!=null && list.size()>index){
                     String name = list.get(index);
@@ -134,8 +139,8 @@ public class TextureEditPanel extends HtmlObject{
 
                 }
                 try {
-                    FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("newItems.cfg").toFile(),sb.toString());
-                    FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("itemEnum.cfg").toFile(),enumsb.toString());
+                    FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("newBLockItems.cfg").toFile(),sb.toString());
+                    FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("newBLockItemsEnum.cfg").toFile(),enumsb.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
