@@ -27,9 +27,11 @@ import javax.vecmath.Vector4f;
  * Created by luying on 17/3/5.
  */
 public class Model {
-    protected  float BODY_HEIGHT=1.5f;
-    protected float BODY_WIDTH=1f;
-    protected  float BODY_THICK=0.5f;
+
+    float bili =0.3f;
+    protected  float BODY_HEIGHT=1.5f*bili;
+    protected float BODY_WIDTH=1f*bili;
+    protected  float BODY_THICK=0.5f*bili;
     Role role ;
    /* protected  float HAND_HEIGHT=1.5f;
     protected float HAND_WIDTH=0.5f;
@@ -137,15 +139,18 @@ public class Model {
 
 
 
-            GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.75f, role.getZ());
+            GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.75f, role.getZ());//-BODY_THICK/2
             //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
             GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
 
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+
+            GL_Matrix newtranslateMatrix=GL_Matrix.translateMatrix(-BODY_WIDTH/2, 0, -BODY_THICK/2);
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
             //.getVao().getVertices()
             //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
             bodyComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
-
+            //渲染头部名字
             if(StringUtil.isNotEmpty(role.getName())){
 
             //

@@ -623,8 +623,8 @@ public class MouseControlCenter {
             boolean delete = false;
             //获取当前的block item
             ItemDefinition  handItem = ItemManager.getItemDefinition(player.getHandEquip());
-
-            if(handItem.getType() == ItemMainType.BLOCK){
+            //如果当前手上有拿block 就是放置的动作 如果没有 就是拆方块的节奏
+            if(handItem!=null && handItem.getType() == ItemMainType.BLOCK){
                 delete=false;
             }else {
                 delete=true;

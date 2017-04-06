@@ -21,22 +21,25 @@ import javax.vecmath.Point3f;
  * Created by luying on 17/3/5.
  */
 public class PlayerModel extends  Model{
-    protected  float HAND_HEIGHT=1.5f;
-    protected float HAND_WIDTH=0.5f;
-    protected float HAND_THICK=0.5f;
-
-    protected  float BODY_HEIGHT=1.5f;
-    protected float BODY_WIDTH=1f;
-    protected  float BODY_THICK=0.5f;
 
 
-    protected float LEG_HEIGHT=1.5f;
-    protected float LEG_WIDTH=0.5f;
-    protected  float LEG_THICK=0.5f;
 
-    protected float HEAD_HEIGHT=1f;
-    protected float HEAD_WIDTH=1f;
-    protected  float HEAD_THICK=1f;
+    protected  float HAND_HEIGHT=1.5f*bili;
+    protected float HAND_WIDTH=0.5f*bili;
+    protected float HAND_THICK=0.5f*bili;
+
+    protected  float BODY_HEIGHT=1.5f*bili;
+    protected float BODY_WIDTH=1f*bili;
+    protected  float BODY_THICK=0.5f*bili;
+
+
+    protected float LEG_HEIGHT=1.5f*bili;
+    protected float LEG_WIDTH=0.5f*bili;
+    protected  float LEG_THICK=0.5f*bili;
+
+    protected float HEAD_HEIGHT=1f*bili;
+    protected float HEAD_WIDTH=1f*bili;
+    protected  float HEAD_THICK=1f*bili;
 
     public PlayerModel(Role role ){
         this.role =role;
