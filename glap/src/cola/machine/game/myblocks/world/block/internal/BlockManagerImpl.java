@@ -7,19 +7,20 @@ import java.util.Map;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.world.block.BlockManager;
+import com.dozenx.game.engine.command.ItemType;
 
 public class BlockManagerImpl extends BlockManager {
 	private HashMap<String,Block> blockInfoNameMap=new HashMap();
     private HashMap<Integer,Block> blockInfoIdMap=new HashMap();
 	public BlockManagerImpl(){
         Block air=new BaseBlock("air",0,false);
-		Block stone=new BaseBlock("stone",1,false);
-		Block soil =new BaseBlock("soil",3,false);
-		Block glass=new BaseBlock("glass",20,true);
-		Block sand=new BaseBlock("sand",12,false);
-		Block mantle=new BaseBlock("mantle",7,false);
-		Block water=new BaseBlock("water",8,true);
-		Block wood=new BaseBlock("wood",5,false);
+		Block stone=new BaseBlock("stone", ItemType.stone_block.ordinal(),false);
+		Block soil =new BaseBlock("soil",ItemType.soil_block.ordinal(),false);
+		Block glass=new BaseBlock("glass",ItemType.glass_block.ordinal(),true);
+		Block sand=new BaseBlock("sand",ItemType.sand_block.ordinal(),false);
+		Block mantle=new BaseBlock("mantle",ItemType.mantle_block.ordinal(),false);
+		Block water=new BaseBlock("water",ItemType.water_block.ordinal(),true);
+		Block wood=new BaseBlock("wood",ItemType.wood_block.ordinal(),false);
         blockInfoNameMap.put("air", air);
         blockInfoNameMap.put("water", water);
         blockInfoNameMap.put("stone", stone);

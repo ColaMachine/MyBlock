@@ -234,7 +234,7 @@ public class Player extends LivingThing {
         if (this.stable) {
             this.v = 12.6f;
             preY = (int) this.position.y;
-            lastTime = Sys.getTime();
+            lastTime =  TimeUtil.getNowMills();//Sys.getTime();
             this.stable = false;
         }
     }
@@ -248,7 +248,7 @@ public class Player extends LivingThing {
         } else if (this.stable) {
             this.v = 10.2f;
             preY = (int) this.position.y;
-            lastTime = Sys.getTime();
+            lastTime = TimeUtil.getNowMills();//Sys.getTime();
             this.stable = false;
         }
     }

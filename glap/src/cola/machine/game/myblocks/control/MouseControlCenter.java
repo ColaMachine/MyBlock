@@ -17,6 +17,7 @@ import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
@@ -620,7 +621,10 @@ public class MouseControlCenter {
             ChunkProvider localChunkProvider = CoreRegistry
                     .get(ChunkProvider.class);
             boolean delete = false;
-            if(ItemManager.getItemDefinition(player.getHandEquip()).getType() == ItemMainType.BLOCK){
+            //获取当前的block item
+            ItemDefinition  handItem = ItemManager.getItemDefinition(player.getHandEquip());
+
+            if(handItem.getType() == ItemMainType.BLOCK){
                 delete=false;
             }else {
                 delete=true;
@@ -642,7 +646,9 @@ public class MouseControlCenter {
 
 
                 cmd.type = delete?2:1;
-                cmd.blockType = delete?0:(1);
+                //blockType 应该和IteType类型联系起来
+                cmd.blockType = delete?0:(handItem.getItemType().ordinal());
+
                 CoreRegistry.get(Client.class).send(cmd);
             }
         }

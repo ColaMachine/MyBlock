@@ -293,19 +293,53 @@ public class ByteUtil
 
     }
 
+    /**
+     * 将3个小于16的数 和一个 最大24bit的数据结合再一起
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @return
+     */
+    public  static int unionBinary4_4_4_24(int a,int b,int c,int d){
+        return (((a&HEX_0_0_0_1 ) <<28 )|
+                ((b&HEX_0_0_0_1 ) <<24 )|
+                ((c&HEX_0_0_0_1 ) << 20)|
+                ((d<<12 >>12 )  ));
+
+    }
+
     public static int [] getValueSplit4Slot(int value ){
 
         return new int[]{get16_12Value(value),get12_8Value(value),get8_4Value(value),get4_0Value(value)};
 
     }
+    public static int [] getValueSplit8Slot(int value ){
+
+        return new int[]{get32_28Value(value),get28_24Value(value),get24_20Value(value),get20_16Value(value),get16_12Value(value),get12_8Value(value),get8_4Value(value),get4_0Value(value)};
+
+    }
+    public static int get32_28Value(int value ){
+        return (value>>16 & HEX_1_0_0_0 )>>12 &HEX_0_0_0_1;
+    }
+    public static int get28_24Value(int value ){
+        return (value>>16 & HEX_0_1_0_0 )>>8&HEX_0_0_0_1;
+    }
+    public static int get24_20Value(int value ){
+        return (value>>16 & HEX_0_0_1_0 )>>4&HEX_0_0_0_1;
+    }
+    public static int get20_16Value(int value ){
+        return (value>>16 & HEX_0_0_0_1)>>0&HEX_0_0_0_1;
+    }
+
     public static int get16_12Value(int value ){
-        return (value & HEX_1_0_0_0 )>>12;
+        return (value & HEX_1_0_0_0 )>>12&HEX_0_0_0_1;
     }
     public static int get12_8Value(int value ){
-        return (value & HEX_0_1_0_0 )>>8;
+        return (value & HEX_0_1_0_0 )>>8&HEX_0_0_0_1;
     }
     public static int get8_4Value(int value ){
-        return (value & HEX_0_0_1_0 )>>4;
+        return (value & HEX_0_0_1_0 )>>4&HEX_0_0_0_1;
     }
     public static int get4_0Value(int value ){
         return (value & HEX_0_0_0_1)>>0;

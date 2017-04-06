@@ -78,8 +78,8 @@ public class ChunkResponseCmd extends   BaseGameCmd{
         data = new Integer[length];
         for(int i=0;i<length;i++){
             data[i]=byteBufferWrap.getInt();
-            tt= ByteUtil.getValueSplit4Slot(data[i]);
-            chunk.setBlock(tt[0],tt[1],tt[2],tt[3]);
+            tt= ByteUtil.getValueSplit8Slot(data[i]);
+            chunk.setBlock(tt[0],tt[1],tt[2],data[i]<<16 >>16);
         }
 
 

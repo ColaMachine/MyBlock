@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -110,7 +111,7 @@ public class ChunkImpl implements Chunk {
         this.blockData = blockData;
     }
 
-    @Override
+    @Override//返回原来的block 类型id  设置当前的block进入数据数组
     public Block setBlock(int x, int y, int z, Block block) {
         int oldValue = blockData.set(x, y, z, block.getId());
         if (oldValue != block.getId()) {
@@ -142,6 +143,9 @@ public class ChunkImpl implements Chunk {
         }
 //如果一个是透明的 另一个是不透明的 就需要绘制
         //如果两个都是不透明的就不需要绘制
+        if(blockManager.getBlock(selfType)==null || blockManager.getBlock(blockType)==null){
+            LogUtil.err("block is null");
+        }
         if ((!blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha())) {
             return false;
         } else if (blockManager.getBlock(selfType).getAlpha() && blockManager.getBlock(blockType).getAlpha()) {
@@ -585,16 +589,7 @@ public class ChunkImpl implements Chunk {
         vetices.position(0);
     }
 
-    public static void main(String[] args) {
-        IntBuffer vetices1 = BufferUtils.createIntBuffer(16);
-        vetices1.put(1);
-        vetices1.put(3);
-        vetices1.position(vetices1.position() - 1);
-        System.out.println(vetices1.get());
-        vetices1.put(2);
-        vetices1.position(vetices1.position() - 1);
-        System.out.println(vetices1.get());
-    }
+
 
     BlockDefManager blockDefManager;
 
@@ -602,8 +597,20 @@ public class ChunkImpl implements Chunk {
 
         boolean flat = true;
         //blockDefManager.getBlockById()
+
+        if(this.currentBlockType== ItemType.stone_block.ordinal()){
+            ti = TextureManager.getTextureInfo("stone");
+        }else if(this.currentBlockType== ItemType.soil_block.ordinal()){
+            ti = TextureManager.getTextureInfo("soil");
+        }else if(this.currentBlockType== ItemType.mantle_block.ordinal()){
+            ti = TextureManager.getTextureInfo("mantle");
+        }else if(this.currentBlockType== ItemType.wood_block.ordinal()){
+            ti = TextureManager.getTextureInfo("wood");
+        }else {
+            ti = TextureManager.getTextureInfo("wood");
+        }/*
         switch (this.currentBlockType) {
-            case 1:
+            case ItemType.stone_block.ordinal():
                 ti = TextureManager.getTextureInfo("stone");
 
                 break;
@@ -644,7 +651,8 @@ public class ChunkImpl implements Chunk {
                 break;
             default:
                 System.out.println("添纹理的时候 什么都没对应上");
-        }
+        }*/
+        //}
         // GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
         // GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         // GL11.glBegin(GL11.GL_QUADS);
@@ -1337,6 +1345,11 @@ public class ChunkImpl implements Chunk {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 将chunk 数据压缩 block 的xyz和blockvalue 组成一个int值存储
+     * @return
+     */
 @Override
     public Integer[] zip(){
         List<Integer> arr = new ArrayList<>();
@@ -1348,7 +1361,13 @@ public class ChunkImpl implements Chunk {
                     int value = blockData.get(x,y,z);
                     //x<<12 && y<<8&& z <<4 && value
                     if(value>0){
-                        arr.add(ByteUtil.unionBinary(x,y,z,value));
+                        int unionValue = ByteUtil.unionBinary4_4_4_24(x, y, z, value);
+                        arr.add(unionValue);
+
+                         int newArr[]= ByteUtil.getValueSplit8Slot(unionValue);
+                        if(newArr[0]!=x || newArr[1]!=y || newArr[2]!=z){
+                            LogUtil.err("some err xyz is not negative");
+                        }
                     }
 
                 }
@@ -1358,4 +1377,27 @@ public class ChunkImpl implements Chunk {
          arr.toArray(newArr);
         return newArr;
     }
+
+    public static void main(String args[]){
+        int x =8,y=0,z=0,value=102;
+        int unionValue = ByteUtil.unionBinary4_4_4_24(x,y,z,value);
+        int[] terr = ByteUtil.getValueSplit8Slot(unionValue);
+
+        System.out.println( ByteUtil.toBinaryStr( ByteUtil.get32_28Value(unionValue)));
+//       System.out.println( ByteUtil.toBinaryStr(unionValue));
+//        System.out.println( 102<<12 >>12);
+//        System.out.println( (ByteUtil.toBinaryStr((8&ByteUtil.HEX_0_0_0_1 ) )));
+
+    }
+
+   /* public static void main(String[] args) {
+        IntBuffer vetices1 = BufferUtils.createIntBuffer(16);
+        vetices1.put(1);
+        vetices1.put(3);
+        vetices1.position(vetices1.position() - 1);
+        System.out.println(vetices1.get());
+        vetices1.put(2);
+        vetices1.position(vetices1.position() - 1);
+        System.out.println(vetices1.get());
+    }*/
 }
