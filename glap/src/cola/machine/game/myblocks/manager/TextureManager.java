@@ -16,10 +16,12 @@ import glapp.GLApp;
 import glapp.GLImage;
 
 import java.io.File;
+import java.nio.FloatBuffer;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.Util;
 import com.dozenx.util.MapUtil;
 
@@ -287,6 +289,8 @@ public class TextureManager {
             for (int i = 0; i < textureCfgBeanList.size(); i++) {
                 TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
                 String xywh = textureCfgBean.getXywh();
+                String color = textureCfgBean.getColor();
+
                 String ary[] = xywh.split(",");
                 String splitx = textureCfgBean.getSplitx();
                 String splity = textureCfgBean.getSplity();
@@ -298,12 +302,24 @@ public class TextureManager {
                 if (StringUtil.isNotEmpty(splitx)) {
                     //createGridImage(x,y,w,h,);
                 }
+
+               TextureInfo ti =  new TextureInfo(textureCfgBean.getImage(), x,
+                        y,
+                        w,
+                        h, textureCfgBean.getName()
+                );
+
+                if(StringUtil.isNotEmpty(color)){
+                    String[] colorAry = color.split(",");
+                    GL_Vector color_v = new GL_Vector(Float.valueOf(colorAry[0])/255,
+                            Float.valueOf(colorAry[1])/255,
+                            Float.valueOf(colorAry[2])/255
+                    );
+
+                    ti.color=color_v;
+                }
                 try {
-                    textureInfoMap.put(textureCfgBean.getName().replace(" ", "_"), new TextureInfo(textureCfgBean.getImage(), x,
-                            y,
-                            w,
-                            h, textureCfgBean.getName()
-                    ));
+                    textureInfoMap.put(textureCfgBean.getName().replace(" ", "_"), ti);
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.exit(0);

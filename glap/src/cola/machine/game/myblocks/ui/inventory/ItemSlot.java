@@ -31,6 +31,7 @@ package cola.machine.game.myblocks.ui.inventory;
 
 import cola.machine.game.myblocks.engine.Constants;
 import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import core.log.LogUtil;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -72,39 +73,39 @@ public class ItemSlot extends Widget {
         if(iconWidget !=null ) {
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
                 Player player = CoreRegistry.get(Player.class);
-                player.addHeadEquip(iconWidget.getItemCfg());
+                player.getModel().addHeadEquip(new ItemBean(iconWidget.getItemCfg(),1));
             }
             if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
                 Player player = CoreRegistry.get(Player.class);
-                player.addLegEquip(iconWidget.getItemCfg());
+                player.addLegEquip(new ItemBean(iconWidget.getItemCfg(),1));
             }
             if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
                 Player player = CoreRegistry.get(Player.class);
-                player.addBodyEquip(iconWidget.getItemCfg());
+                player.addBodyEquip(new ItemBean(iconWidget.getItemCfg(),1));
             }
             if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
                 Player player = CoreRegistry.get(Player.class);
-                player.addHandEquip(iconWidget.getItemCfg());
+                player.addHandEquip(new ItemBean(iconWidget.getItemCfg(),1));
             }
         }else{
             if (this.getItemType() == Constants.SLOT_TYPE_HEAD) {
                 Player player = CoreRegistry.get(Player.class);
-                player.addHeadEquip(null);
+                player.clearHeadEquip();
             }
             if (this.getItemType() == Constants.SLOT_TYPE_LEG) {
                 Player player = CoreRegistry.get(Player.class);
-                player.addLegEquip(null);
+                player.clearLegEquip();
 
             }
             if (this.getItemType() == Constants.SLOT_TYPE_BODY) {
                 Player player = CoreRegistry.get(Player.class);
-                player.addBodyEquip(null);
+                player.clearBodyEquip();
 
             }
             if (this.getItemType() == Constants.SLOT_TYPE_HAND) {
                 Player player = CoreRegistry.get(Player.class);
 
-                player.addHandEquip(null);
+                player.clearHandEquip();
             }
         }
       /*  if(itemWrap!=null && itemWrap.getParent()!=null){

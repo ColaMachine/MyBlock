@@ -1,18 +1,12 @@
 package com.dozenx.game.engine.Role.bean;
 
-import cola.machine.game.myblocks.animation.AnimationManager;
-import cola.machine.game.myblocks.model.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.dozenx.game.engine.Role.bean.item.CommonEquipProperties;
 import com.dozenx.game.engine.Role.bean.item.ComplexEquipProperties;
-import com.dozenx.game.engine.Role.bean.item.EquipProperties;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.Role.model.Model;
+import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.command.SayCmd;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
-import com.dozenx.game.network.server.bean.PlayerStatus;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -80,8 +74,8 @@ public class Role extends ComplexEquipProperties {
 
     Executor executor ;
 
-    public Model getModel(){
-        return executor.getModel();
+    public PlayerModel getModel(){
+        return (PlayerModel)executor.getModel();
     }
 
     public Executor getExecutor() {

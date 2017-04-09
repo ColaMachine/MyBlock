@@ -3,6 +3,7 @@ package com.dozenx.game.engine.item.bean;
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import com.dozenx.game.engine.Role.bean.item.ItemProperties;
 import com.dozenx.game.engine.command.ItemMainType;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
@@ -20,17 +21,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * item 模板存放在
+ */
 public class ItemDefinition {
    /* Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
     private ItemType itemType;//物品的具体类型 详见ItemType
-    private ItemModel itemModel = new ItemModel();//模型描述
+    public  ItemModel itemModel = new ItemModel();//模型描述
 
-
+    public ItemTypeProperties itemTypeProperties ;//block food wear
     String name;//英文名称
 
     ItemMainType type;//大类
+
+    //TODO del
     String remark;//中文描述
     /**武器属性**/
     int spirit;
@@ -298,6 +304,7 @@ public class ItemDefinition {
     }
 
     public void setShape(Shape shape) {
+
         this.shape = shape;
     }
 

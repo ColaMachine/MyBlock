@@ -5,10 +5,11 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import glapp.GLImage;
 
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
 public class TextureInfo extends RegionArea{
-	
+	public GL_Vector color ;
 	/*public float minX=0;
 	public float minY=0;
 	public float maxX=0;

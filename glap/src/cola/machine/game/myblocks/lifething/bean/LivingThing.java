@@ -1,29 +1,15 @@
 package cola.machine.game.myblocks.lifething.bean;
 
-import cola.machine.game.myblocks.animation.AnimationManager;
-import cola.machine.game.myblocks.engine.modes.GamingState;
-import com.dozenx.game.engine.Role.bean.Role;
-import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
-import com.dozenx.game.engine.live.state.IdleState;
+import com.dozenx.game.engine.item.bean.ItemBean;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
-import core.log.LogUtil;
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.Component;
+import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
-import cola.machine.game.myblocks.model.textture.Shape;
-import cola.machine.game.myblocks.model.ui.html.Document;
-import com.dozenx.game.network.client.Client;
-import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.graphics.shader.ShaderManager;
 import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
-import org.lwjgl.Sys;
-import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Point3f;
 
@@ -235,18 +221,18 @@ public class LivingThing extends LivingThingBean {
             //Shape shape = TextureManager.getShape("iron_pants");
             ItemDefinition cfg= ItemManager.getItemDefinition("iron_pants");
             Component component= new Component(cfg.getShape().getWidth(),cfg.getShape().getHeight(),cfg.getShape().getThick());
-            component.setItem(cfg);//.setShape(shape);
+            component.setItem(new ItemBean(cfg,1));//.setShape(shape);
             component.name="select";
 
         component.id=getId()*100+99;
             component.setOffset(new Point3f(0,4,0),new Point3f(0,0,0));
             //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        getModel().bodyComponent.addChild(component);	//changeProperty()
+        getModel().rootComponent.addChild(component);	//changeProperty()
 
     }
     public void unSelect(){
-        if("select".equals(getModel().bodyComponent.children.get(getModel().bodyComponent.children.size()-1).id)){
-            getModel().bodyComponent.children.remove(getModel().bodyComponent.children.size()-1);
+        if("select".equals(getModel().rootComponent.children.get(getModel().rootComponent.children.size()-1).id)){
+            getModel().rootComponent.children.remove(getModel().rootComponent.children.size()-1);
         }
 
 
@@ -258,7 +244,7 @@ public class LivingThing extends LivingThingBean {
     public void update(){
         super.update();
 
-        this.getModel().build();
+        this.getModel().build(ShaderManager.livingThingShaderConfig,new GL_Matrix());
        // this.currentState.update();
     }
 
@@ -317,29 +303,32 @@ public class LivingThing extends LivingThingBean {
 
 
         //if(info.getBodyEquip()>0){
-            getModel().addBodyEquip(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
+            getModel().addBodyEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]),1));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //}else {
             //getModel().addBodyEquip(null);
 
         //}if(info.getHeadEquip()>0){
-                getModel().addHeadEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+            getModel().addHeadEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]),1));
                 //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
          //   }
         //}if(info.getHandEquip()>0){
-            getModel().addHandEquip(ItemManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
+            getModel().addHandEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getHandEquip()]),1));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //}if(info.getLegEquip()>0){
-            getModel().addLegEquip(ItemManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
+            getModel().addLegEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getLegEquip()]),1));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
        //// }if(info.getFootEquip()>0){
-            getModel().addShoeEquip(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]));
+            getModel().addShoeEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]),1));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //}
        this.changeProperty();
     }
 
+    /*public ItemBean getItemBean(){
 
+    }
+*/
     public void getInfo(PlayerStatus info ){
         //   PlayerStatus info =new PlayerStatus();
         super.getInfo(info);

@@ -5,17 +5,15 @@ import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
-import cola.machine.game.myblocks.model.Component;
+import com.dozenx.game.engine.Role.model.PlayerModel;
+import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.network.client.Client;
@@ -26,8 +24,10 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.TimeUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector3f;
@@ -93,16 +93,16 @@ public class LivingThingManager {
                 livingThing.setTarget(this.getLivingThingById(livingThing.getTargetId()));
 
             }*/
-            livingThing.update();
+            livingThing.update();//先更新
 
 
             //livingThing.renderBloodBar();
-            livingThing.distance = GL_Vector.length(GL_Vector.sub(player.position, livingThing.position));
+           // livingThing.distance = GL_Vector.length(GL_Vector.sub(player.position, livingThing.position));
 
         }
 
         //player update
-        this.player.update();
+        this.player.update();//心更新
         if (Switcher.SHADER_ENABLE) {
             ShaderUtils.createVao(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao(),new int[]{3,3,3,1});
             //ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
@@ -110,12 +110,12 @@ public class LivingThingManager {
         //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
         GamingState.livingThingChanged = false;
 
-
+/*
         for(LivingThing livingThing:livingThings){
             if(Switcher.SHADER_ENABLE){
                 //livingThing.renderShader();
             }else{
-                livingThing.getModel().render();
+                livingThing.getModel().build(ShaderManager.livingThingShaderConfig,new GL_Matrix());
             }
 
             //livingThing.renderBloodBar();
@@ -127,12 +127,12 @@ public class LivingThingManager {
             //this.player.renderShader();
             //livingThing.renderShader();
         }else{
-           /* this.player.position.x+=0.01;
+           *//* this.player.position.x+=0.01;
             if(this.player.position.x>10)
-                this.player.position.x=0;*/
-            this.player.getModel().render();
+                this.player.position.x=0;*//*
+            this.player.getModel().build(ShaderManager.livingThingShaderConfig,new GL_Matrix());
             //livingThing.render();
-        }
+        }*/
         ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
        // component.renderBend();
 
@@ -305,9 +305,9 @@ public class LivingThingManager {
 
             EquipCmd cmd = (EquipCmd)client.equips.pop();
             int id = cmd.getUserId();
-            /*if(player.id == id){
+            if(player.getId() == id){
                 continue;
-            }*/
+            }
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
             //y原来是直接绑定到itemDefinition 现在要对应到有id的items里的物品
@@ -316,19 +316,19 @@ public class LivingThingManager {
             if(livingThing!=null  /*&& itemBean!=null*/ ){
                 if(cmd.getPart()== EquipPartType.BODY){
                     livingThing.setBodyEquip(cmd.getItemType());
-                    livingThing.getModel().addBodyEquip(ItemManager.getItemDefinition(cmd.getItemType()));
+                    ((PlayerModel)livingThing.getModel()).addBodyEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
                 }else if(cmd.getPart()== EquipPartType.HEAD){
                     livingThing.setHeadEquip(cmd.getItemType());
-                    livingThing.getModel().addHeadEquip(ItemManager.getItemDefinition(cmd.getItemType()));
+                    ((PlayerModel)livingThing.getModel()).addHeadEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()),1));
                 }else if(cmd.getPart()== EquipPartType.HAND){
                     livingThing.setHandEquip(cmd.getItemType());
-                    livingThing.getModel().addHandEquip(ItemManager.getItemDefinition(cmd.getItemType()));
+                    ((PlayerModel)livingThing.getModel()).addHandEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()),1));
                 }else if(cmd.getPart()== EquipPartType.LEG){
                     livingThing.setLegEquip(cmd.getItemType());
-                    livingThing.getModel().addLegEquip(ItemManager.getItemDefinition(cmd.getItemType()));
+                    ((PlayerModel)livingThing.getModel()).addLegEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()),1));
                 }else if(cmd.getPart()== EquipPartType.FOOT){
                     livingThing.setFootEquip(cmd.getItemType());
-                    livingThing.getModel().addShoeEquip(ItemManager.getItemDefinition(cmd.getItemType()));
+                    ((PlayerModel)livingThing.getModel()).addShoeEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()),1));
                 }
                 //change trigger
                 livingThing.changeProperty();
@@ -378,7 +378,7 @@ public class LivingThingManager {
                 }*/
             if(livingThing.isDied() && info.nowHP>0){//原来是死的 现在是活的 复活了
                // livingThing.exist=true;
-                livingThing.getExecutor().getModel().bodyComponent.rotateX=0;
+                livingThing.getExecutor().getModel().getRootComponent().rotateX=0;
             }else{
 
             }

@@ -2,18 +2,14 @@ package com.dozenx.game.engine.Role.bean;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
-import cola.machine.game.myblocks.engine.BlockEngine;
-import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.model.Component;
+import com.dozenx.game.engine.element.bean.Component;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.util.TimeUtil;
-import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import org.lwjgl.Sys;
@@ -213,7 +209,7 @@ public class Player extends LivingThing {
         if (Math.abs(Distance) > 0.02) {
             //Player player= CoreRegistry.get(Player.class);
             AnimationManager manager = CoreRegistry.get(AnimationManager.class);
-            manager.apply(getModel().bodyComponent, "walkerFoward");
+            manager.apply(getModel().rootComponent, "walkerFoward");
             this.move(GL_Vector.add(position, GL_Vector.multiplyWithoutY(walkDir,
                     Distance)));
 //        LogUtil.println(position+"");
@@ -254,18 +250,86 @@ public class Player extends LivingThing {
     }
 
 
-    public void addShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
+    public void addShoeEquip(boolean leftFlag ,ItemBean itemCfg)  {
         Component parent ;
         if(leftFlag){
-            parent = getModel().bodyComponent.findChild("human_l_b_leg");
+            parent = getModel().rootComponent.findChild("human_l_b_leg");
         }else{
-            parent = getModel().bodyComponent.findChild("human_r_b_leg");
+            parent = getModel().rootComponent.findChild("human_r_b_leg");
         }
         //Component shoe =   bodyComponent.findChild("shoe");
         getModel().addChild(parent,"shoe",itemCfg);
     }
+    public void addHeadEquip(ItemBean itemCfg)  {
+        Component parent = 	getModel().rootComponent.findChild("human_head");
+        getModel().addChild(parent, "helmet",itemCfg);
+    }
+
+    public void clearHeadEquip(){
+        Component parent = 	getModel().rootComponent.findChild("human_head");
+        parent.children.remove(0);
+    }
+    public void addShoeEquip(ItemBean itemCfg)  {
+        addShoeEquip(true, itemCfg);
+        addShoeEquip(false, itemCfg);
+    }
+    public void clearShoeEquip(){
+        clearShoeEquip(true);
+        clearShoeEquip(false);
+    }
+    public void addLegEquip(ItemBean itemCfg)  {
+        Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
+        getModel().addChild(parent, "pants", itemCfg);
+    }
+
+    public void clearLegEquip()  {
+        Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
+        getModel().removeChild(parent, "pants");
+    }
+    public void addBodyEquip(ItemBean itemCfg)  {
+        Component parent = 	getModel().rootComponent.findChild("human_body");
+        getModel().addChild(parent, "armor", itemCfg);
+    }
+    public void clearBodyEquip()  {
+        Component parent = 	getModel().rootComponent.findChild("human_body");
+        getModel().removeChild(parent, "armor");
+    }
+
+    public void addHandEquip(ItemBean itemCfg)  {
+        //Shape shape = itemCfg.getShape();
+        Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
+        getModel().addChild(parent, "weapon", itemCfg);
+    }
+    public void clearHandEquip()  {
+        //Shape shape = itemCfg.getShape();
+        Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
+        getModel().removeChild(parent, "weapon");
+    }
+
+
+    public void addShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
+        Component parent ;
+        if(leftFlag){
+            parent = getModel().rootComponent.findChild("human_l_b_leg");
+        }else{
+            parent = getModel().rootComponent.findChild("human_r_b_leg");
+        }
+        //Component shoe =   bodyComponent.findChild("shoe");
+        getModel().addChild(parent,"shoe",itemCfg);
+    }
+
+    public void clearShoeEquip(boolean leftFlag)  {
+        Component parent ;
+        if(leftFlag){
+            parent = getModel().rootComponent.findChild("human_l_b_leg");
+        }else{
+            parent = getModel().rootComponent.findChild("human_r_b_leg");
+        }
+        //Component shoe =   bodyComponent.findChild("shoe");
+        getModel().removeChild(parent,"shoe");
+    }
     public void addHeadEquip(ItemDefinition itemCfg)  {
-        Component parent = 	getModel().bodyComponent.findChild("human_head");
+        Component parent = 	getModel().rootComponent.findChild("human_head");
         getModel().addChild(parent, "helmet", itemCfg);
     }
     public void addShoeEquip(ItemDefinition itemCfg)  {
@@ -273,17 +337,17 @@ public class Player extends LivingThing {
         addShoeEquip(false, itemCfg);
     }
     public void addLegEquip(ItemDefinition itemCfg)  {
-        Component parent = 	getModel().bodyComponent.findChild("human_l_b_leg");
+        Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
         getModel().addChild(parent, "pants", itemCfg);
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
-        Component parent = 	getModel().bodyComponent.findChild("human_body");
+        Component parent = 	getModel().rootComponent.findChild("human_body");
         getModel().addChild(parent, "armor", itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
-        Component parent = 	getModel().bodyComponent.findChild("rhuman_hand");
+        Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
         getModel().addChild(parent, "weapon", itemCfg);
     }
 }

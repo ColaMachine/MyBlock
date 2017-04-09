@@ -1,14 +1,11 @@
 package cola.machine.game.myblocks.skill;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.model.Component;
-import cola.machine.game.myblocks.model.textture.Shape;
+import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;

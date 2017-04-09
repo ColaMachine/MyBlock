@@ -1,10 +1,11 @@
-package com.dozenx.game.engine.item.bean;
+package com.dozenx.game.engine.element.model;
 
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import com.dozenx.game.engine.element.model.ModelTemplate;
+import com.dozenx.game.engine.Role.model.Model;
+import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.ImageUtil;
 import core.log.LogUtil;
@@ -18,26 +19,30 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 物品模型
+ * 物品模型-饼状模型
  * Created by dozen.zhang on 2017/3/7.
  */
-public class ItemModel extends ModelTemplate {
+public class CakeModel implements Model {
     public TextureInfo getIcon() {
         return icon;
     }
 
-    public void setIcon(TextureInfo icon) {
-        this.icon = icon;
+    public CakeModel(TextureInfo ti){
+        if(ti==null){
+            LogUtil.err("ti can't be null" );
+        }
+        this.icon = ti;
+        this.init();
     }
-
     Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;
 
-    public void init() {
+    private void init() {
         if(blocks!=null){
             return;
         }
+
         this.blocks =  map.get(this.icon.name);
         if(blocks!=null){
             return;
@@ -109,7 +114,12 @@ public class ItemModel extends ModelTemplate {
         }
     }
 
-    public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix){
+    @Override
+    public Component getRootComponent() {
+        return null;
+    }
+
+    public void build(ShaderConfig config , GL_Matrix rotateMatrix){
         //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
         /*rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -90*3.14f/180, 0, 0));
             rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -45*3.14f/180));
@@ -123,33 +133,5 @@ public class ItemModel extends ModelTemplate {
             block.renderShader(config,rotateMatrix);
         }
     }
-    public void render(){
 
-
-        // 先缩小
-        //GL11.glRotated(180, 0, 1, 0);
-
-        //GL11.glTranslatef(x-2,y, z);
-
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);//GL11.glTranslatef(2,0f,-4f);
-        // GL11.glRotated(135, 1,0 , 0);
-        //  GL11.glRotated(90, 0, 0, 1);
-
-        GL11.glScalef(0.1f, 0.1f, 0.1f);
-        //GL11.glTranslatef(-3.5f,-0.5f, -11f);
-        for (Block block : blocks) {
-            GL11.glColor3f(block.rf(), block.bf(), block.gf());
-            block.render();
-        }
-        // GL11.glTranslatef(3.5f,0.5f,11f);
-        GL11.glScalef(10f, 10f, 10f);
-
-        // GL11.glRotated(-90, 0, 0, 1);
-        //GL11.glRotated(-135, 1, 0, 0);//GL11.glTranslatef(-2f,0f,4f);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        //GL11.glTranslatef(-x+2,-y, -z);
-        //GL11.glRotated(-180, 0, 1, 0);
-    }
 }

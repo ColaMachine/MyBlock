@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.animation;
 
 import core.log.LogUtil;
-import cola.machine.game.myblocks.model.Component;
+import com.dozenx.game.engine.element.bean.Component;
 
 import java.util.Date;
 

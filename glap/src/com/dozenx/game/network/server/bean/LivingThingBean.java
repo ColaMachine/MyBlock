@@ -2,30 +2,19 @@ package com.dozenx.game.network.server.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.lifething.bean.GameActor;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.Component;
-import cola.machine.game.myblocks.model.textture.Shape;
+import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.command.*;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.engine.live.state.State;
-import com.dozenx.game.engine.live.state.WalkState;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
-import core.log.LogUtil;
 import glmodel.GL_Vector;
-import org.lwjgl.Sys;
-
-import javax.vecmath.Point3f;
-import java.lang.ref.WeakReference;
 
 /**
  * Created by luying on 16/9/16.
@@ -346,11 +335,11 @@ public class LivingThingBean extends Role {
         if(component!=null && component.children!=null)
             for(int i=component.children.size()-1;i>=0;i--){
                 Component child = component.children.get(i);
-                if(child.itemDefinition !=null){
-                    totalPower +=child.itemDefinition.getStrenth();
-                    totalAgility+=child.itemDefinition.getAgile();
-                    totalIntell+=child.itemDefinition.getIntelli();
-                    totalSpirit+=child.itemDefinition.getSpirit();
+                if(child.itemBean !=null){
+                    totalPower +=child.itemBean.itemDefinition.getStrenth();
+                    totalAgility+=child.itemBean.itemDefinition.getAgile();
+                    totalIntell+=child.itemBean.itemDefinition.getIntelli();
+                    totalSpirit+=child.itemBean.itemDefinition.getSpirit();
                 }
                 if(child.children!=null){
                     acculateProperty(child);
@@ -458,10 +447,11 @@ public class LivingThingBean extends Role {
     }
 
     public void update(){
-        this.dropControl();
+        //this.dropControl();
        // this.getModel().build();
         this.getExecutor().getCurrentState().update();
     }
+
 
 
 
@@ -525,7 +515,7 @@ public class LivingThingBean extends Role {
     if(GamingState.player!=null) {
         //CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
         if (animationName != null) {
-            CoreRegistry.get(AnimationManager.class).apply(getModel().bodyComponent, animationName);
+            CoreRegistry.get(AnimationManager.class).apply(getModel().rootComponent, animationName);
         }
     }
     }

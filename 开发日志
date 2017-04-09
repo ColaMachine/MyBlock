@@ -64,5 +64,11 @@ ComplexEquipProperties设置setinfo的时候handEquip是2
 现在的问题 是 怎么把以String类型的name属性来区分block类型的物品 切换成 以enum 类型为区分标准
 2017-4-6 12:20:09
 修正人物的大小 调整人物在镜头中的位置 调整人物的移动速度
+2017-04-07 22:32:07
+block 类型物品再世界掉落应该是一个方块结构 在背包栏里显示也是一个伪3d效果
+2017-04-08 13:14:02
+item 初步修正 究竟是itembean 包含 component 还是component 包含itemBean;
+打算虚化component 以前component 是一个盒子
+需要有个地方记录下当前是再哪个环境下 身上 还是手上 还是野外 还是放置
 
 

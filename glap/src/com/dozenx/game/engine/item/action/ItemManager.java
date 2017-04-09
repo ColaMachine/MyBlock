@@ -15,12 +15,11 @@ import cola.machine.game.myblocks.skill.Ball;
 import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
-import com.dozenx.game.engine.command.DropCmd;
-import com.dozenx.game.engine.command.ItemMainType;
-import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.engine.command.PickCmd;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.game.engine.item.bean.ShapeType;
+import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.element.model.BoxModel;
+import com.dozenx.game.engine.element.model.CakeModel;
+import com.dozenx.game.engine.element.model.IconModel;
+import com.dozenx.game.engine.item.bean.*;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -178,65 +177,147 @@ public static void removeWorldItem(int itemId){
                     item.setName(name);
                     // item.setIcon(this.getTextureInfo(icon));
                     String type = (String) map.get("type");
+
+
+
                if (type.equals("wear")) {
                    //item.setType(Constants.ICON_TYPE_WEAR);
-                   item.setType(ItemMainType.WEAR);
+                   ItemWearProperties properties = new ItemWearProperties();
+                    item.itemTypeProperties =properties;
+
+                   if(map.get("spirit")!=null){
+                       int spirit = (int) map.get("spirit");
+                       item.setSpirit(spirit);
+                       properties.spirit =spirit;
+                   }
+                   if(map.get("agile")!=null){
+                       int agile = (int) map.get("agile");
+                       item.setAgile(agile);
+                       properties.agile =agile;
+                   }
+                   if(map.get("intelli")!=null){
+                       int intelli = (int) map.get("intelli");
+                       item.setIntelli(intelli);
+                       properties.intel =intelli;
+                   }
+                   if(map.get("strenth")!=null){
+                       int strenth = (int) map.get("strenth");
+                       item.setStrenth(strenth);
+                       properties.strength =strenth;
+                   }
                    String position = (String) map.get("position");
                    if (position != null) {
                        if (position.equals("head")) {
                            item.setPosition(Constants.WEAR_POSI_HEAD);
+                           properties.part = EquipPartType.HEAD;
                        } else if (position.equals("body")) {
                            item.setPosition(Constants.WEAR_POSI_BODY);
+                           properties.part = EquipPartType.BODY;
                        } else if (position.equals("leg")) {
                            item.setPosition(Constants.WEAR_POSI_LEG);
+                           properties.part = EquipPartType.LEG;
                        } else if (position.equals("foot")) {
                            item.setPosition(Constants.WEAR_POSI_FOOT);
+                           properties.part = EquipPartType.FOOT;
                        } else if (position.equals("hand")) {
                            item.setPosition(Constants.WEAR_POSI_HAND);
+                           properties.part = EquipPartType.HAND;
                        }
                    }
+                   item.setType(ItemMainType.WEAR);
+
                }else if(type.equals("food")){
+                   ItemFoodProperties  foodProperties = new ItemFoodProperties();
+                   if(map.get("hp")!=null) {
+                       foodProperties.hp = (int)map.get("hp");
+                   }
+                   if(map.get("mp")!=null) {
+                       foodProperties.mp = (int)map.get("mp");
+                   }
+                   item.itemTypeProperties=foodProperties;
+                   item.setType(ItemMainType.FOOD);
+
+
 
                }else if(type.equals("block")){
+                   ItemBlockProperties blockProperties = new ItemBlockProperties();
+
+                   if(map.get("hardness")!=null) {
+                       blockProperties.hardness=(int)map.get("hardness");
+                   }
+                   item.itemTypeProperties=blockProperties;
                     item.setType(ItemMainType.BLOCK);
+
                }
                     /*String spiritStr = map.get("spirit");
                     if(StringUtil.isNotEmpty(spiritStr)){
                         item.setSpirit(spirit);
                     }*/
-                    if(map.get("spirit")!=null){
-                        int spirit = (int) map.get("spirit");
-                        item.setSpirit(spirit);
-                    }
-                    if(map.get("agile")!=null){
-                        int agile = (int) map.get("agile");
-                        item.setAgile(agile);
-                    }
-                    if(map.get("intelli")!=null){
-                        int intelli = (int) map.get("intelli");
-                        item.setIntelli(intelli);
-                    }
-                    if(map.get("strenth")!=null){
-                        int strenth = (int) map.get("strenth");
-                        item.setStrenth(strenth);
-                    }
 
 
 
 
-
-                    this.putItemDefinition(name, item);
-                    //补充shape
+                    //补充shape model
                     if(GamingState.player!=null){//区分服务器版本和客户端版本
                         String shapeName = (String) map.get("shape");
-
+                        if(icon.equals("fur_helmet")){
+                            LogUtil.println("123");
+                        }
                         item.getItemModel().setIcon(TextureManager.getTextureInfo(icon));
                         Shape shape = TextureManager.getShape(shapeName);
                         if(shape==null){
                             item.getItemModel().init();
-                        }else
-                         item.setShape(shape);
+                        }else{
+                            item.setShape(shape);
+                           /* if(item.itemModel.wearModel instanceof  BoxModel){
+                                ((BoxModel) item.itemModel.wearModel).setShape(shape);
+                            }else if(item.itemModel.wearModel instanceof  CakeModel){
+                                ((CakeModel) item.itemModel.wearModel).init();
+                            }
+                            if(item.itemModel.handModel instanceof  BoxModel){
+                                ((BoxModel) item.itemModel.handModel).setShape(shape);
+                            }
+                            if(item.itemModel.outdoorModel instanceof  BoxModel){
+                                ((BoxModel) item.itemModel.outdoorModel).setShape(shape);
+                            }
+                            if(item.itemModel.placeModel instanceof  BoxModel){
+                                ((BoxModel) item.itemModel.placeModel).setShape(shape);
+                            }*/
+
+
+                            if (type.equals("wear")) {
+
+                                //item.itemModel = new ItemModel();
+
+                                item.itemModel.wearModel = new BoxModel(shape);
+                                item.itemModel.handModel = new CakeModel(item.itemModel.getIcon());
+                                item.itemModel.outdoorModel = new IconModel(item.itemModel.getIcon());
+
+                                item.itemModel.placeModel = null;
+                            }else if(type.equals("food")){
+
+                                //item.itemModel = new ItemModel();
+
+                                item.itemModel.wearModel = null;
+                                item.itemModel.handModel = new CakeModel(item.itemModel.getIcon());
+                                item.itemModel.outdoorModel = new IconModel(item.itemModel.getIcon());
+
+                                item.itemModel.placeModel = null;
+
+                            }else if(type.equals("block")){
+
+                               // item.itemModel = new ItemModel();
+                                item.itemModel.wearModel = null;
+                                item.itemModel.handModel = new BoxModel(shape);
+                                item.itemModel.outdoorModel =  item.itemModel.handModel;
+
+                                item.itemModel.placeModel =  item.itemModel.handModel;
+                            }
+                        }
                     }
+
+                    this.putItemDefinition(name, item);
+
 
                 }
             }

@@ -644,7 +644,9 @@ public class MouseControlCenter {
                 cmd.cz = blockZ;
                 cmd.cy = blockY;
 
-
+                if(cmd.cy<0){
+                    LogUtil.err("y can't be <0 ");
+                }
                 cmd.type = delete?2:1;
                 //blockType 应该和IteType类型联系起来
                 cmd.blockType = delete?0:(handItem.getItemType().ordinal());

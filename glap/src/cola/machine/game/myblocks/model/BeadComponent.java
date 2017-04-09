@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model;
 
+import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.bean.ShapeType;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -8,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by luying on 16/7/23.
  */
-public class BeadComponent extends Component{
+public class BeadComponent extends Component {
     float secdis;
     float angle;
     float banjin;

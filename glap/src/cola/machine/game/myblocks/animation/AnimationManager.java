@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.animation;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.model.Component;
+import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.util.FileUtil;
 import core.log.LogUtil;

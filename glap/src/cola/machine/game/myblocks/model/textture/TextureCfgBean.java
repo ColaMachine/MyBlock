@@ -10,6 +10,16 @@ String name;
     String image;
     String splitx;
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    String color;
+
     public String getSplitx() {
         return splitx;
     }
@@ -39,6 +49,8 @@ String name;
     public String getXywh() {
         return xywh;
     }
+
+
 
     public void setXywh(String xywh) {
         this.xywh = xywh;

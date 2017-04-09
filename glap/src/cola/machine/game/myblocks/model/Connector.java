@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model;
 
+import com.dozenx.game.engine.element.bean.Component;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 

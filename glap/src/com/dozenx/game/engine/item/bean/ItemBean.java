@@ -7,9 +7,10 @@ import com.dozenx.game.engine.item.action.ItemManager;
  * Created by luying on 16/7/3.
  */
 public class ItemBean  {
+    int belongTo ; //1 身上 2 手上 3丢弃 4安置 5 背包
     int id;
     int position;
-    ItemDefinition itemDefinition;
+    public ItemDefinition itemDefinition;
     int num;
     public int getPosition() {
         return position;

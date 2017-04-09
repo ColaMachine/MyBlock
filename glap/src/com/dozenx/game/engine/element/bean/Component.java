@@ -1,9 +1,8 @@
-package cola.machine.game.myblocks.model;
+package com.dozenx.game.engine.element.bean;
 
 import cola.machine.game.myblocks.engine.Constants;
-import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ShapeType;
-import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.textture.Shape;
@@ -22,33 +21,37 @@ import java.util.List;
 
 /**
  * Created by luying on 16/7/23.
+ * 2017-04-07 22:59:08移入当前element 目录 是希望她发挥更大左右 她应该是世界一切物体的本源 有点元素的味道
  */
 public class Component {
-     ShapeType shapeType;
-    Point3f parentLocation =new Point3f();
 
-    Point3f childLocation =new Point3f();
-    public int id;
-    public  String name;
-    TextureInfo front;
-    TextureInfo back;
-    TextureInfo top;
-    TextureInfo left;
-    TextureInfo right;
-    TextureInfo bottom;
+    public int belongTo = 0 ;//private int belongTo = 2; //1 身上 2 手上 3丢弃 4安置 5 背包
+    public ItemBean itemBean;
+    public  ShapeType shapeType;    //形状类型
+    public Point3f parentLocation =new Point3f();   //父亲节点的位置
+
+    public Point3f childLocation =new Point3f();    //子节点对应的位置
+     public int id;      //每个元素都有唯一id
+     public  String name;    //适用的名称
+    public TextureInfo front; //如果是盒状的话有四面 其实应该纳入什么模型具体对象中的
+    public TextureInfo back;
+    public TextureInfo top;
+    public TextureInfo left;
+    public TextureInfo right;
+    public TextureInfo bottom;
 
     public float rotateX;
     public float rotateY;
     public float rotateZ;
-    GL_Vector offsetPosition=new GL_Vector(0,0,0);
-    GL_Vector P1;
-    GL_Vector P2;
-    GL_Vector P3;
-    GL_Vector P4;
-    GL_Vector P5;
-    GL_Vector P6;
-    GL_Vector P7;
-    GL_Vector P8;
+    public GL_Vector offsetPosition=new GL_Vector(0,0,0);
+    public GL_Vector P1;
+    public GL_Vector P2;
+    public  GL_Vector P3;
+    public  GL_Vector P4;
+    public GL_Vector P5;
+    public GL_Vector P6;
+    public GL_Vector P7;
+    public GL_Vector P8;
    // public List<Connector> connectors =new ArrayList<Connector>();
    public List<Component> children =new ArrayList<Component>();
  /*   public void addConnector(Connector connector){
@@ -76,7 +79,9 @@ public class Component {
 
     float thick;
    // int secnum;
+   public Component(){
 
+   }
     public Component(float width,float height,float thick){
         this.width=width;
         this.height=height;
@@ -113,17 +118,25 @@ public class Component {
         } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
          translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
         rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
-        if(this.shapeType==ShapeType.ICON){
-            if(this.itemDefinition !=null){
-                this.itemDefinition.getItemModel().renderShader( config ,   matrix);
+        /*if(this.shapeType==ShapeType.ICON){
+            if(this.itemBean !=null){
+                this.itemBean.getItemDefinition().getItemModel().renderShader( config ,   matrix);
                 // return;
             }
-        }else
-        if(this.shapeType==ShapeType.CAKE){
-            if(this.itemDefinition !=null){
-                this.itemDefinition.getItemModel().renderShader( config ,   matrix);
+        }else*/
+        //if(this.shapeType==ShapeType.CAKE){
+            if(this.itemBean !=null) {
+                if (this.belongTo == 2) {
+                    this.itemBean.getItemDefinition().getItemModel().handModel.build(config, matrix);
+                } else if (this.belongTo == 1) {
+                    this.itemBean.getItemDefinition().getItemModel().wearModel.build(config, matrix);
+                } else if (this.belongTo == 3) {
+                    this.itemBean.getItemDefinition().getItemModel().outdoorModel.build(config, matrix);
+                }
+               // this.itemBean.getItemDefinition().getItemModel().renderShader(config, matrix);
                 // return;
-            }
+            //}
+            //}
         }else if(this.shapeType==ShapeType.BOX){
 
             if(front!=null) {
@@ -187,8 +200,8 @@ public class Component {
             throw e;
         }*/
 
-        if(this.itemDefinition !=null){
-            this.itemDefinition.getItemModel().render();
+        if(this.itemBean !=null){
+            this.itemBean.getItemDefinition().getItemModel().render();
            // return;
         }
 
@@ -323,9 +336,20 @@ public class Component {
     }
     public ItemDefinition itemDefinition;
     public void setItem(ItemDefinition itemDefinition){
-    this.itemDefinition = itemDefinition;
+        this.itemDefinition = itemDefinition;
         this.name= itemDefinition.getName();
-        this.setShape123(itemDefinition.getShape());
+       // this.setShape123(itemDefinition.getShape());
+        // this.front= itemCfgBean.getIcon();
+        // this.back= itemCfgBean.getIcon();
+        //this.left=itemCfgBean.getIcon();
+        //this.right=itemCfgBean.getIcon();
+        //this.top= itemCfgBean.getIcon();
+        // this.bottom= itemCfgBean.getIcon();
+    }
+    public void setItem(ItemBean itemBean){
+    this.itemBean = itemBean;
+        this.name= itemBean.getItemDefinition().getName();
+        //this.setShape123(itemDefinition.getShape());
        // this.front= itemCfgBean.getIcon();
        // this.back= itemCfgBean.getIcon();
         //this.left=itemCfgBean.getIcon();
@@ -333,7 +357,7 @@ public class Component {
         //this.top= itemCfgBean.getIcon();
        // this.bottom= itemCfgBean.getIcon();
     }
-    public void setShape123(Shape shape){//这个逻辑是错误的 shape 是不应该有itemDefinition属性的
+   /* public void setShape123(Shape shape){//这个逻辑是错误的 shape 是不应该有itemDefinition属性的
         if(shape.getShapeType()==2){
            // this.itemDefinition= ItemManager.getItemDefinition(shape.getName());
             itemDefinition.getItemModel().init();
@@ -346,7 +370,7 @@ public class Component {
         this.right=shape.getRight();
         this.top= shape.getTop();
         this.bottom= shape.getBottom();
-    }
+    }*/
     public void glVertex3fv(GL_Vector p){
         GL11.glVertex3f(p.x,p.y,p.z);
     }

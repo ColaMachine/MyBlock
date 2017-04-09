@@ -61,9 +61,11 @@ public class MathUtil {
     }
 
     public static int getBelongChunkInt(float f) {
-        int g = (int) (f / 16);
+        /*int g = (int) (f / 16);
+
         if (f < 0) g -= 1;
-        return g;
+        return g;*/
+        return MathUtil.floor(f / 16);
     }
 
     public static int getOffesetChunk(float f) {

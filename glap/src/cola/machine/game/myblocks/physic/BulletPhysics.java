@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.physic;
 
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.util.MathUtil;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
@@ -39,6 +40,9 @@ public class BulletPhysics  {
     	for(float x=0.1f;x<distance;x+=0.1){//一点一点推进 看撞到了哪个物体 every time add a little
     		int _x = MathUtil.floor(from.x+x*to.x);//x 代表推进的举例 推进后的x
     		int _y = MathUtil.floor(from.y+x*to.y);//推进后的y
+            if(_y<0){
+                return null;//说明已经穿透地板了
+            }
     		int _z = MathUtil.floor(from.z+x*to.z);//推进后的z
             blockIndex=_x*10000+_z*100+_y;//推进后落入的blockINdex
     		if(blockIndex==preBlockIndex)//如果和之前判断的还是同一个的话 略过
@@ -72,6 +76,9 @@ public class BulletPhysics  {
                    // ((ChunkImpl)bianliChunk).buildAlpha();
                     //bianliChunk.build();
     				//return null;
+                    if(from.y+x*to.y<0){
+                        LogUtil.err("y can't be <0 ");
+                    }
                     return new GL_Vector(MathUtil.floor(from.x+x*to.x),
                             MathUtil.floor(from.y+x*to.y),
                             MathUtil.floor(from.z+x*to.z));
@@ -95,6 +102,9 @@ public class BulletPhysics  {
     			//重新更新
     			//_chunk.build();
                 //_chunk.buildAlpha();
+                if(from.y+x*to.y<0){
+                    LogUtil.err("y can't be <0 ");
+                }
     			return new GL_Vector(MathUtil.floor(from.x+x*to.x),
     					MathUtil.floor(from.y+x*to.y),
     					MathUtil.floor(from.z+x*to.z));//����ײ��ǰ�ķ���λ��

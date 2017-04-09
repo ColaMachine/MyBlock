@@ -1830,12 +1830,22 @@ try {
                 vao.expand();
                 veticesBuffer=vao.getVertices();
             }
-            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
-            veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);//p2
-            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
-            veticesBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);//p4
-            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
-            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
+            if(ti.color!=null){
+                veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p1
+                veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p2
+                veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p3
+                veticesBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p4
+                veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p1
+                veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p3
+
+            }else {
+                veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
+                veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);//p2
+                veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
+                veticesBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);//p4
+                veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
+                veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
+            }
         }catch(Exception e){
             e.printStackTrace();
             throw e;

@@ -1,7 +1,7 @@
 package com.dozenx.game.engine.item.view;
 
 import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.Component;
+import com.dozenx.game.engine.element.bean.Component;
 
 import java.util.HashMap;
 
