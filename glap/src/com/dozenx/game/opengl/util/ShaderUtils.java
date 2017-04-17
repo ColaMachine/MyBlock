@@ -399,13 +399,13 @@ public class ShaderUtils {
     }*/
 
     public static void checkGLError() {
-        try{
+        //try{
              OpenglUtils.checkGLError();
-        }catch (Exception e ){
-            e.printStackTrace();
+        //}catch (Exception e ){
+         //   e.printStackTrace();
             //LogUtil.println(e.getMessage());
             //throw e;
-        }
+       // }
     }
 
    // public static ShaderConfig twodImgConfig ;
@@ -1296,6 +1296,16 @@ try {
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0);
     }
 
+    public static void draw2dImg(ShaderConfig config ,Vao vao, int textureHandler) {
+        int index = ShaderUtils.bindAndGetTextureIndex(config,textureHandler);
+        vao.getVertices().put(-0.5f).put(-0.5f).put(-0.5f).put(-0.5f);
+        vao.getVertices().put(0.5f).put(-0.5f).put(0.5f).put(-0.5f);
+        vao.getVertices().put(0.5f).put(0.5f).put(0.5f).put(0.5f);
+        vao.getVertices().put(-0.5f).put(0.5f).put(-0.5f).put(0.5f);
+        vao.getVertices().put(-0.5f).put(-0.5f).put(-0.5f).put(-0.5f);
+        vao.getVertices().put(0.5f).put(0.5f).put(0.5f).put(0.5f);
+    }
+
     /**
      * 带颜色的绘制图片
      * @param image
@@ -1634,6 +1644,14 @@ try {
     public static int globalActiveIndex=0;
 
     /**
+     * 一般绑定到使用一个纹理经过这几个步骤  先申请一个纹理glGenTextures 在告诉系统我要使用这个纹理给他赋予一些基本的信息 GL11.glBindTexture
+     *  GL11.glTexImage2D 赋予图片信息
+     *  然后  GL11.glTexParameteri 赋予 延伸的属性
+     *  在绘制的时候 我们先激活一个纹理顺序
+     *  GL13.glActiveTexture(GL13.GL_TEXTURE0);
+
+     再把这个shader激活纹理顺序和纹理id绑定 glBindTexture(GL_TEXTURE_2D, textureHandle);
+
      * 从静态变量texHandle2glTexLocMap(textureHandle (生成的纹理id)==>映射 绑定激活的GL_TEXTUREN 序号 TexLoc(glActiveTexture的纹理位置GL13.GL_TEXTURE__N__))
      * @param textureHandle
      * @return
@@ -1682,12 +1700,20 @@ try {
         return activeTextureLoc;
     }
 
+    /**
+     * 绑定纹理到全局的 纹理index 再把纹理index 对应到本地的texture0~9
+     * @param config
+     * @param textureHandle
+     * @return 在shader frag 程序中的 纹理顺序
+     */
     public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
         }
-
+        //先根据纹理id 得到 绑定的纹理顺序值  如果已经绑定了 就返回这个顺序, 如果没绑定就自增并返回
         Integer glTexLoc = getActiveTextureLoc(textureHandle);//从
+
+        //根据纹理顺序从config的sample 中返回值 没有就让textureINdex自增并绑定到这个值上
         Integer sampleLoc = config.getSampleLocMap().get(glTexLoc);
 
        /* if(index == null){
@@ -1709,32 +1735,69 @@ try {
             //uniform texture
             if(sampleLoc==0){
 
-                glUniform1i(config.texture0Loc, glTexLoc);
+                glUniform1i(config.getTexture0Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
             }else if(sampleLoc==1){
 
-                glUniform1i(config.texture1Loc, glTexLoc);
+                glUniform1i(config.getTexture1Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
             }else if(sampleLoc==2){
 
-                glUniform1i(config.texture2Loc, glTexLoc);
+                glUniform1i(config.getTexture2Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
             }else if(sampleLoc==3){
 
-                glUniform1i(config.texture3Loc, glTexLoc);
+                glUniform1i(config.getTexture3Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
             }
             else if(sampleLoc==4){
-
-                glUniform1i(config.texture4Loc, glTexLoc);
+                glUniform1i(config.getTexture4Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
             } else if(sampleLoc==5){
-
-                glUniform1i(config.texture5Loc, glTexLoc);
+                glUniform1i(config.getTexture5Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
             }else if(sampleLoc==6){
+                glUniform1i(config.getTexture6Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else{
+                LogUtil.err("超出预想的范围了");
+            }
+            glUseProgram(0);
+        }
+        return sampleLoc;
 
-                glUniform1i(config.texture6Loc, glTexLoc);
+    }
+
+    public static Integer bindDepth(ShaderConfig config,int textureHandle) {
+        if(config.getProgramId()==0){
+            LogUtil.err("no programid");
+        }
+        //先根据纹理id 得到 绑定的纹理顺序值  如果已经绑定了 就返回这个顺序, 如果没绑定就自增并返回
+        Integer glTexLoc = getActiveTextureLoc(textureHandle);//从
+
+        //根据纹理顺序从config的sample 中返回值 没有就让textureINdex自增并绑定到这个值上
+        Integer sampleLoc = config.getSampleLocMap().get(glTexLoc);
+
+       /* if(index == null){
+            index = config.getTextureIndexMap().get(textureHandle);
+            if(index !=null){
+
+            }
+        }*/
+        //texturenhande ===> ative texture====>uniformloc
+        if(sampleLoc==null){
+
+            glUseProgram(config.getProgramId());
+            OpenglUtils.checkGLError();
+            //index =textureIndex;
+            sampleLoc=99;
+            config.getSampleLocMap().put(glTexLoc,sampleLoc);
+            config.textureIndex++;
+            //textureIndex++;
+            //uniform texture
+            if(sampleLoc==99){
+
+                glUniform1i(config.getDepthMapLoc(), glTexLoc);
                 OpenglUtils.checkGLError();
             }else{
                 LogUtil.err("超出预想的范围了");
@@ -1768,38 +1831,38 @@ try {
                 GL13.glActiveTexture(GL13.GL_TEXTURE0);
 
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture0Loc, 0);
+                glUniform1i(config.getTexture0Loc(), 0);
                 OpenglUtils.checkGLError();
             }else if(index==1){
                 GL13.glActiveTexture(GL13.GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture1Loc, 1);
+                glUniform1i(config.getTexture1Loc(), 1);
                 OpenglUtils.checkGLError();
             }else if(index==2){
                 GL13.glActiveTexture(GL13.GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture2Loc, 2);
+                glUniform1i(config.getTexture2Loc(), 2);
                 OpenglUtils.checkGLError();
             }else if(index==3){
                 GL13.glActiveTexture(GL13.GL_TEXTURE3);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture3Loc, 3);
+                glUniform1i(config.getTexture3Loc(), 3);
                 OpenglUtils.checkGLError();
             }
             else if(index==4){
                 GL13.glActiveTexture(GL13.GL_TEXTURE4);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture4Loc, 4);
+                glUniform1i(config.getTexture4Loc(), 4);
                 OpenglUtils.checkGLError();
             } else if(index==5){
                 GL13.glActiveTexture(GL13.GL_TEXTURE5);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture5Loc, 5);
+                glUniform1i(config.getTexture5Loc(), 5);
                 OpenglUtils.checkGLError();
             }else if(index==6){
                 GL13.glActiveTexture(GL13.GL_TEXTURE6);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
-                glUniform1i(config.texture6Loc, 6);
+                glUniform1i(config.getTexture6Loc(), 6);
                 OpenglUtils.checkGLError();
             }
             glUseProgram(0);
@@ -1931,56 +1994,73 @@ try {
         }*/
         if(position==0)
             return;
-        int length =0;
-        for(int i=0;i<attris.length;i++){
-            length += attris[i];
-        }
+
+
+
         if(vao.getVaoId()>0){
 
 
             //glBindVertexArray(vao.getVaoId());
             // LogUtil.err("vao have been initialized");
+           // glBindVertexArray(vao.getVaoId());
+            //设置顶点组的数目
+            vao.setPoints(vao.getVertices().position()/config.getParamTotalLen());
+            glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+            vao.getVertices().rewind();
+
+            glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+
         }else {
+
+            int length =0;
+            for(int i=0;i<attris.length;i++){
+                length += attris[i];
+            }
+            //设置参数总长度
+            config.setParamTotalLen(length);
+            //设置参数长度数组
+            config.setParamLenAry(attris);
             vao.setVaoId(glGenVertexArrays());
             OpenglUtils.checkGLError();
             //  glBindVertexArray(vao.getVaoId());
-            int VboId=glGenBuffers();//create vbo
+            int VboId = glGenBuffers();//create vbo
             vao.setVboId(VboId);
            /* int eboId = glGenBuffers();
             vao.setEboId(eboId);*/
-        }
-        //绑定vao
-        glBindVertexArray(vao.getVaoId());
-        OpenglUtils.checkGLError();
-        //create vbo
-        //顶点 vbo
-        //create vbo 创建vbo  vertex buffer objects
-        //创建顶点数组
+            //}
+            //绑定vao
+            glBindVertexArray(vao.getVaoId());
+            OpenglUtils.checkGLError();
+            //create vbo
+            //顶点 vbo
+            //create vbo 创建vbo  vertex buffer objects
+            //创建顶点数组
 
 
-        vao.setPoints(vao.getVertices().position()/length);
+            vao.setPoints(vao.getVertices().position() / length);
 
-        //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
-        vao.getVertices().rewind();
-        // vao.setVertices(twoDImgBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+            //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+            vao.getVertices().rewind();
+            // vao.setVertices(twoDImgBuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
 
-        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
-        //create ebo
-        // float width = 1;
-        OpenglUtils.checkGLError();
-        // System.out.println("float.size:" + FlFLOAToat.SIZE);
-        //图片位置 //0代表再glsl里的变量的location位置值.
+            glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+            //create ebo
+            // float width = 1;
+            OpenglUtils.checkGLError();
+            // System.out.println("float.size:" + FlFLOAToat.SIZE);
+            //图片位置 //0代表再glsl里的变量的location位置值.
 
-        int sum=0;
+            int sum = 0;
 
-        for(int i=0;i<attris.length;i++){
-            glVertexAttribPointer(i, attris[i], GL_FLOAT, false, length * 4, sum*4);
+            for (int i = 0; i < attris.length; i++) {
+                glVertexAttribPointer(i, attris[i], GL_FLOAT, false, length * 4, sum * 4);
 
-            Util.checkGLError();
-            glEnableVertexAttribArray(i);
-            Util.checkGLError();
-            sum+=attris[i];
+                Util.checkGLError();
+                glEnableVertexAttribArray(i);
+                Util.checkGLError();
+                sum += attris[i];
+            }
         }
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
 

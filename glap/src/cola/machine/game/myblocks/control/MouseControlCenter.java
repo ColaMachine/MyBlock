@@ -750,6 +750,10 @@ public class MouseControlCenter {
             player.position.y = player.position.y + 3 * seconds;
             player.move(player.position);
         }
+        else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
+            // CoreRegistry.get(ToolBar.class).keyDown(1);
+            LogUtil.println(player.position.toString());
+        }
         else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
            // CoreRegistry.get(ToolBar.class).keyDown(1);
         }

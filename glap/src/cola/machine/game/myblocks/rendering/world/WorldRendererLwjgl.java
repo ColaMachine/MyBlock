@@ -5,6 +5,8 @@ import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -111,15 +113,33 @@ Client client;
 	}
     private IntBuffer TextureIDBuffer = BufferUtils.createIntBuffer(1);
 
-	public void render() {
 
+    public void render(ShaderConfig config ){
+        this.updateChunksInProximity(false);
+        //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
+        for (Chunk chunk : chunksInProximity) {
+            if(chunk!=null)
+            ((ChunkImpl)chunk).update();//重新构建build
+        }
+
+        for (Chunk chunk : chunksInProximity) {
+
+            if(chunk!=null)
+            ((ChunkImpl)chunk).render(config);//调用draw方法
+
+
+        }
+    }
+	public void render() {
+        OpenglUtils.checkGLError();
        // if(true)return;
         this.updateChunksInProximity(false);
         //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
         for (Chunk chunk : chunksInProximity) {
-            ((ChunkImpl)chunk).update();
+            if(chunk!=null)
+            ((ChunkImpl)chunk).update();//重新构建build
         }
-
+        OpenglUtils.checkGLError();
         //偶尔发生 或者当该用户登录 或者被创建的时候
        // CoreRegistry.get(Client.class);
         while(client.chunks.size()>0 && client.chunks.peek()!=null ) {
@@ -138,14 +158,16 @@ Client client;
         }*/
 
 		//TextureManager.getTextureInfo("mantle").bind();
+        //shadow
 
 		for (Chunk chunk : chunksInProximity) {
 			if(!Switcher.SHADER_ENABLE) {
 				GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
 						chunk.getChunkWorldPosZ());
 			}
-
-            ((ChunkImpl)chunk).render();
+            OpenglUtils.checkGLError();
+            if(chunk!=null)
+            ((ChunkImpl)chunk).render();//调用draw方法
 
 			if(!Switcher.SHADER_ENABLE) {
 				GL11.glTranslated(-chunk.getChunkWorldPosX(), 0,
@@ -158,7 +180,8 @@ Client client;
 				GL11.glTranslated(chunk.getChunkWorldPosX(), 0,
 						chunk.getChunkWorldPosZ());
 			}
-
+            OpenglUtils.checkGLError();
+            if(chunk!=null)
             ((ChunkImpl)chunk).renderAlpha();
 
 			if(!Switcher.SHADER_ENABLE) {
@@ -214,6 +237,7 @@ Client client;
 									newChunkPosZ + z));
 							chunksCurrentlyPending = true;
 							c = chunkProvider.getChunk(newChunkPosX +x, 0, newChunkPosZ + z);
+                            if(c!=null)
 							chunksInProximity.add(c);
 						}
 					}
@@ -260,6 +284,7 @@ Client client;
 										0, y));
 								chunksCurrentlyPending = true;
 								c = chunkProvider.getChunk(x, 0, y);
+                                if(c!=null)
 								chunksInProximity.add(c);
 							}
 						}

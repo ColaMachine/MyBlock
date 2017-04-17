@@ -447,7 +447,7 @@ public class LivingThingBean extends Role {
     }
 
     public void update(){
-        //this.dropControl();
+        this.dropControl();
        // this.getModel().build();
         this.getExecutor().getCurrentState().update();
     }

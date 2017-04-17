@@ -48,7 +48,7 @@ public class StartMenuState implements GameState {
 
         TextureManager textureManager =new TextureManager();
 
-        ShaderManager manager = new ShaderManager();
+        ShaderManager manager =  ShaderManager.getInstance();
         manager.init();
        // manager.createProgram(manager.uiShaderConfig);
         //manager.initUniform(manager.uiShaderConfig);

@@ -34,7 +34,8 @@ public class ChunkHandler extends GameServerHandler {
     public ResultCmd handler(GameServerRequest request, GameServerResponse response){
 
         ChunkRequestCmd cmd =(ChunkRequestCmd) request.getCmd();
-       Chunk chunk =  chunkProvider.getChunk(cmd.getX(), 0, cmd.getZ());
+
+        Chunk chunk =  chunkProvider.getChunk(cmd.getX(), 0, cmd.getZ());
        // TeraArray ary = chunk .getBlockData();
 
         if(cmd.type==0){

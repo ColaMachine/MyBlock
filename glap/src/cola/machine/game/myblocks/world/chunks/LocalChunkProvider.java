@@ -98,6 +98,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
                    // ChunkStore chunkStore = storageManager.loadChunkStore(chunkPos);
 					//chunk= chunkStore.getChunk();
 					 chunk = storageManager.loadChunkStore(chunkPos);
+                    if(chunk!=null)
 					 if(nearCache.putIfAbsent(new Vector2i(chunkPos.x,chunkPos.z), chunk)!=null){
 						 logger.warn("Chunk {} is already in the near cache", chunkPos);
 					 }
@@ -110,6 +111,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
                     }*/
 
                     chunk = storageManager.loadChunkStore(chunkPos);
+                    if(chunk!=null)
                     if(nearCache.putIfAbsent(new Vector2i(chunkPos.x,chunkPos.z), chunk)!=null){
                         logger.warn("Chunk {} is already in the near cache", chunkPos);
                     }
@@ -118,7 +120,7 @@ public class LocalChunkProvider implements ChunkProvider,GeneratingChunkProvider
 			}
 
 
-		 chunk=nearCache.get(chunkPos);
+		// chunk=nearCache.get(chunkPos);
 
 		
 	}

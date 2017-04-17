@@ -28,6 +28,7 @@ public class StorageManagerInternal implements StorageManager{
         //CoreRegistry.get(Client.class).send();
         LogUtil.println("客户端加载chunk:" + chunkPos.x + "," + chunkPos.z + "");
         ResultCmd resultCmd =  CoreRegistry.get(Client.class).syncSend(new ChunkRequestCmd(chunkPos));
+        if(resultCmd!=null){
         LogUtil.println("接收到");
 		ChunkResponseCmd responseCmd = new ChunkResponseCmd(resultCmd.getMsg());
 
@@ -47,6 +48,11 @@ public class StorageManagerInternal implements StorageManager{
         }
         chunk.setBlockData(blockData);*/
         return responseCmd.chunk;
+
+        }
+        else{
+            return null;
+        }
 	}
 
 	@Override

@@ -89,14 +89,14 @@ public class Worker extends Thread {
                 }*/
                 //
                // CmdType.printSend(ByteUtil.slice(bytes,4,4));
-                LogUtil.println("server 准备发送数据类型:");
+//                LogUtil.println("server 准备发送数据类型:");
                 //LogUtil.println("server 准备发送数据类型:"+ CmdType.values()[(ByteUtil.getInt(ByteUtil.slice(bytes,4,4)))]+"长度:"+(bytes.length-4));
                 synchronized (this) {
                     outputStream.write(ByteUtil.getBytes(bytes.length));
                     outputStream.write(bytes);
                     outputStream.write(Constants.end);
                 }
-                LogUtil.println("server 接收完毕:");
+//                LogUtil.println("server 接收完毕:");
                 lastSendTime= System.currentTimeMillis();
             } catch (IOException e) {
 

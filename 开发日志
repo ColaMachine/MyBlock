@@ -71,4 +71,11 @@ item 初步修正 究竟是itembean 包含 component 还是component 包含itemB
 打算虚化component 以前component 是一个盒子
 需要有个地方记录下当前是再哪个环境下 身上 还是手上 还是野外 还是放置
 
+2017-04-15 00:26:46
+增加了shaderManager 的shadow的config的创建 initProgram 和uniform改造
+修改了box.frag 和box.vert 增加了frag深度纹理的传输和计算
+2017-04-16 13:16:35
+增加shadow
+解决光块不现实问题 发现一个重大bug 取shaderuniform的位置的时候 如果取不到的时候是-1 当初使用>0来判断的 导致位置是0的时候就不赋值了
+ 不应该每次都绘制阴影贴图 而应该再方块有变动后生成1次纹理贴图
 

@@ -92,4 +92,8 @@ public class Constants {
     public static float camSpeedY = 0.1f; // units per second
 
     static final float PIdiv180 = (float)Math.PI/2;
+
+    public static boolean SHADOW_ENABLE=true;
+
+    public static boolean HDR_ENABLE=true;
 }

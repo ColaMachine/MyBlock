@@ -90,7 +90,8 @@ public float x1;
         textureHandle= img.textureHandle;
 
     }
-
+    public TextureInfo(){
+    }
     public TextureInfo(String imgName){
         GLImage img=TextureManager.getImage(imgName);
         withWH(0, 0, 1, 1);

@@ -5,6 +5,7 @@ package com.dozenx.util;
  */
 
 import cola.machine.game.myblocks.engine.Constants;
+import org.lwjgl.BufferUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.*;
@@ -49,6 +50,14 @@ public class ByteBufferWrap
     }
     public ByteBufferWrap put(byte[] ary){
         for(int i=0;i<ary.length;i++){
+           // if(buffer.remaining()<10){
+                if(buffer.position()>buffer.limit()-10){
+                    ByteBuffer  newfloatBuffer= BufferUtils.createByteBuffer(buffer.limit() *2);
+                    newfloatBuffer.put(buffer);
+                  //  config.getVao().setVertices(newfloatBuffer);
+                    buffer = newfloatBuffer;
+                }
+           // }
             buffer.put(ary[i]);
         }
 

@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -751,7 +752,7 @@ public class ChunkImpl implements Chunk {
 
     }
     public void addToVao( GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Vector normal){
-        if(currentBlockType==6 || currentBlockType==3){
+        if(currentBlockType!=3&& currentBlockType!=6){
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
         }else{
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,alphaVao,p1, p2, p3,p4, normal, ti);
@@ -1272,7 +1273,15 @@ public class ChunkImpl implements Chunk {
     }
 
 
+    public void render(ShaderConfig config ) {
+            if (vao.getVaoId() == 0) {
+                int error =GL11.glGetError();
+                System.out.println(this.chunkPos + "displayId should not be 0 in render");
+            } else {
+                ShaderUtils.finalDraw(config,vao);
+            }
 
+    }
 
     public void render() {
         if(Switcher.SHADER_ENABLE){

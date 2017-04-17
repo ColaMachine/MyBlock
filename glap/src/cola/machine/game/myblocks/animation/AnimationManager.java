@@ -90,9 +90,9 @@ public class AnimationManager {
             if(animator.complete){
                 id2animatorMap.remove(animator.component.hashCode()+animator.component.name+":"+animator.animation.action);
                // id2animatorMap.put(animator.component.id+":"+animator.animation.action,null);
-             LogUtil.println("移除动画" + animators.get(i).animation.action);
+//             LogUtil.println("移除动画" + animators.get(i).animation.action);
                 if(animators.get(i).animation.action.equals("died")){
-                    LogUtil.println("移除动画" + animators.get(i).animation.action);
+                    //LogUtil.println("移除动画" + animators.get(i).animation.action);
                 }
                 animators.remove(i);
 

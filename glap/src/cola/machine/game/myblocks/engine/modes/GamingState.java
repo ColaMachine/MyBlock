@@ -1,5 +1,9 @@
 package cola.machine.game.myblocks.engine.modes;
 
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.Image;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
@@ -51,10 +55,12 @@ import glapp.GLCamera;
 import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
 
+import javax.vecmath.Vector4f;
 import java.io.IOException;
+import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
@@ -93,7 +99,7 @@ public class GamingState implements GameState {
 
         document= Document.getInstance();
         this.instance =this;
-        ShaderManager shaderManager =new ShaderManager();
+        ShaderManager shaderManager = ShaderManager.getInstance();
         /*shaderManager.init();*/
         //learnOpenglColor=new LearnOpenglColor();
 
@@ -143,7 +149,13 @@ public class GamingState implements GameState {
             document.body.appendChild(enemyHeadPanel);
 
             document.needUpdate=true;
-
+             shadowDiv =new Div();
+            shadowDiv.setBorderWidth(2);
+            shadowDiv.setBorderColor(new Vector4f(1f, 1f, 1f, 1f));
+            shadowDiv.setWidth(200);
+            shadowDiv.setHeight(200);
+            shadowDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("items")));
+            document.body.appendChild(shadowDiv);
 
             SynchronTask task = new SynchronTask();
             task.start();
@@ -151,7 +163,7 @@ public class GamingState implements GameState {
             e.printStackTrace();
         }
 
-    }
+    }Div shadowDiv;
 
     public void dispose() {
 
@@ -160,7 +172,7 @@ public ShaderManager shaderManager;
     public void initGL() {
         if (Switcher.SHADER_ENABLE) {
             if(shaderManager==null){
-                shaderManager=new ShaderManager();
+                shaderManager= ShaderManager.getInstance();
             }
 
             //shaderManager.init();
@@ -269,6 +281,13 @@ if(!Switcher.SHADER_ENABLE)
 
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
+                    TextureInfo info =new TextureInfo();
+                    info.textureHandle=shaderManager.hdrTextureHandler;
+                    info.minX=0;
+                    info.minY=0;
+                    info.maxX=1;
+                    info.maxY=1;
+                    shadowDiv.setBackgroundImage(new Image(info));
                 }
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
                     mouseControlCenter.mouseLeftUp(cursorX, cursorY);
@@ -381,13 +400,13 @@ if(!Switcher.SHADER_ENABLE)
             shaderManager.lightPosChangeListener();
 
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_I)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
             lightPos.y += 1.1;
 
             shaderManager. lightPosChangeListener();
 
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_K)) {
             lightPos.y -= 1.1;
 
             shaderManager.lightPosChangeListener();
@@ -465,18 +484,47 @@ if(!Switcher.SHADER_ENABLE)
     public void  keyDown(int key){
         mouseControlCenter.keyDown(key);
     }
+
+    boolean shadow =false;
+
+    /**
+     * 主要绘制流程
+     */
     public void render() {
+
+        //不应该每次都绘制 二应该放入
+        if(Constants.SHADOW_ENABLE &&  Math.random()>0.1) {
+
+            GL20.glUseProgram(shaderManager.shadowShaderConfig.getProgramId());
+           // glEnable(GL_DEPTH_TEST);
+            //glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+            glViewport(0, 0, 1024, 1024);
+            //绑定使用帧缓冲 fbo
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.depthMapFBO);
+            glClear(GL_DEPTH_BUFFER_BIT);
+            //GL30.RenderScene(simpleDepthShader);
+            worldRenderer.render(shaderManager.shadowShaderConfig);
+            //去掉fbo
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+            glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+           // glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+        }
+
+
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_BLEND);
+        //亮度按照人眼做调整 2.2次方
+       // glEnable(GL30.GL_FRAMEBUFFER_SRGB);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        OpenglUtils.checkGLError();
+       // OpenglUtils.checkGLError();
         if(!Switcher.SHADER_ENABLE) {
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
+            OpenglUtils.checkGLError();
         }
-        OpenglUtils.checkGLError();
+
 //        Util.checkGLError();
 
         //glTranslatef( 0.0f, 0.0f, -5.0f );
@@ -498,6 +546,27 @@ if(!Switcher.SHADER_ENABLE)
         Util.checkGLError();
         glBindVertexArray(0);
         Util.checkGLError();*/
+
+       // if(Constants.HDR_ENABLE &&  Math.random()>0.1) {
+
+            //绑定使用帧缓冲 fbo
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.hdrFBO);
+            // ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.lightShaderConfig.getVao());
+            glClear(GL_DEPTH_BUFFER_BIT);
+            worldRenderer.render();
+            livingThingManager.render();
+            //去掉fbo
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+            //把上一帧的画面留给缓冲帧对应的纹理 保存下来
+//            GL20.glUseProgram(shaderManager.hdrShaderConfig.getProgramId());
+//
+//            // glActiveTexture(GL_TEXTURE0);
+//            shaderManager.hdrShaderConfig.getVao().getVertices().rewind();
+//            ShaderUtils.draw2dImg(shaderManager.hdrShaderConfig,shaderManager.hdrShaderConfig.getVao(),TextureManager.getTextureInfo("items").textureHandle/*shaderManager.hdrTextureHandler*/);
+//            ShaderUtils.createVao(shaderManager.hdrShaderConfig,shaderManager.hdrShaderConfig.getVao(),new int[]{2,2});
+//            ShaderUtils.finalDraw(shaderManager.hdrShaderConfig,shaderManager.hdrShaderConfig.getVao());
+            //用制定的hdr进行重新绘制
+        //}
         if (Switcher.SHADER_ENABLE) {
 
 
@@ -507,12 +576,16 @@ if(!Switcher.SHADER_ENABLE)
             glDrawArrays(GL_TRIANGLES, 0, 36);
             Util.checkGLError();
             glBindVertexArray(0);*/
+
+            ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
+
+//
+            OpenglUtils.checkGLError();
             worldRenderer.render();
             OpenglUtils.checkGLError();
             livingThingManager.render();
             OpenglUtils.checkGLError();
 
-            ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
 
         } else {
             camera.Render();

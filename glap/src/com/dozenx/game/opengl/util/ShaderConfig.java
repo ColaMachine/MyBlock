@@ -13,11 +13,45 @@ public class ShaderConfig {
 
     public int textureIndex;
 
-    public int texture0Loc;
-    public int texture1Loc;
-    public int texture2Loc;
-    public int texture3Loc;
-    public int texture4Loc;
+    public int getDepthMapLoc() {
+        return depthMapLoc;
+    }
+
+    public void setDepthMapLoc(int depthMapLoc) {
+        this.depthMapLoc = depthMapLoc;
+    }
+
+    private int texture0Loc;
+    private int texture1Loc;
+    private int texture2Loc;
+    private int texture3Loc;
+    private int texture4Loc;
+
+    private int texture5Loc;
+    private int texture6Loc;
+    private int texture7Loc;
+    private int texture8Loc;
+    private int depthMapLoc;
+
+    public int[] getParamLenAry() {
+        return paramLenAry;
+    }
+
+    public void setParamLenAry(int[] paramLenAry) {
+        this.paramLenAry = paramLenAry;
+    }
+
+    private int[] paramLenAry;
+
+    private int paramTotalLen;
+
+    public int getParamTotalLen() {
+        return paramTotalLen;
+    }
+
+    public void setParamTotalLen(int paramTotalLen) {
+        this.paramTotalLen = paramTotalLen;
+    }
 
     public int getTexture0Loc() {
         return texture0Loc;
@@ -26,6 +60,8 @@ public class ShaderConfig {
     public void setTexture0Loc(int texture0Loc) {
         this.texture0Loc = texture0Loc;
     }
+
+
 
     public int getTexture1Loc() {
         return texture1Loc;
@@ -83,10 +119,7 @@ public class ShaderConfig {
         this.texture7Loc = texture7Loc;
     }
 
-    public int texture5Loc;
-    public int texture6Loc;
-    public int texture7Loc;
-    public int texture8Loc;
+
 
     public int getTexture8Loc() {
         return texture8Loc;
@@ -147,8 +180,17 @@ private int viewPosLoc;
     private String vertPath;
     private int programId;
 
+    public int getShadowLightViewLoc() {
+        return shadowLightViewLoc;
+    }
+
+    public void setShadowLightViewLoc(int shadowLightViewLoc) {
+        this.shadowLightViewLoc = shadowLightViewLoc;
+    }
+
     private int lightPosLoc;
 
+     private int shadowLightViewLoc;
     public int getLightPosLoc() {
         return lightPosLoc;
     }

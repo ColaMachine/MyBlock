@@ -3,6 +3,7 @@ package com.dozenx.game.graphics.shader;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.math.Vector2i;
+import com.sun.prism.ps.Shader;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -14,27 +15,32 @@ import com.dozenx.util.StringUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Util;
+import org.lwjgl.opengl.*;
 
 import javax.vecmath.Point4f;
 import javax.vecmath.Vector2f;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * Created by luying on 16/11/14.
  */
 public class ShaderManager {
-
-
     //Vao terrainVao = new Vao();
 
     /*public  int terrainProgramId;
@@ -50,31 +56,78 @@ public class ShaderManager {
    int lightPosInTerrainLoc;
    int lightPosLoc;*/
 
+    public ShaderManager() {
+        LogUtil.println("hello");
+    }
 
-    public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain","chapt16/box.frag","chapt16/box.vert");
-    public static ShaderConfig lightShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
+    public static ShaderManager instance;
 
-    public static ShaderConfig skyShaderConfig = new ShaderConfig("light","chapt13/light.frag","chapt13/light.vert");
+    public static ShaderManager getInstance() {
+        if (instance == null) {
+            instance = new ShaderManager();
+            return instance;
+        }
+        return instance;
+    }
 
-    public static ShaderConfig uiShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
+    //地形
+    public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert");
+    //灯光方块
+    public static ShaderConfig lightShaderConfig = new ShaderConfig("light", "chapt13/light.frag", "chapt13/light.vert");
+    //天空盒子
+    public static ShaderConfig skyShaderConfig = new ShaderConfig("sky", "chapt13/light.frag", "chapt13/light.vert");
+    //ui
+    public static ShaderConfig uiShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert");
+    //攻击物体
+    public static ShaderConfig attackShaderConfig = new ShaderConfig("attack", "chapt7/2dimg.frag", "chapt7/2dimg.vert");
+    //生物
+    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
+    //扔在地上的东关系
+    public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
+    //扔在地上的东西
+    public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
+    //伤害字符
+    public static ShaderConfig uifloatShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert");
+    //阴影
+    public static ShaderConfig shadowShaderConfig = new ShaderConfig("shadow", "chapt16/shadow.frag", "chapt16/shadow.vert");
+    //hdr
+    public static ShaderConfig hdrShaderConfig = new ShaderConfig("hdr", "chapt16/hdr.frag", "chapt16/hdr.vert");
 
-    public static ShaderConfig attackShaderConfig = new ShaderConfig("attack","chapt7/2dimg.frag","chapt7/2dimg.vert");
 
-    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living","chapt7/3dimg.frag","chapt7/3dimg.vert");
-    public static ShaderConfig anotherShaderConfig = new ShaderConfig("another","chapt7/3dimg.frag","chapt7/3dimg.vert");
-    public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop","chapt7/3dimg.frag","chapt7/3dimg.vert");
-    public static ShaderConfig uifloatShaderConfig = new ShaderConfig("ui","chapt7/2dimg.frag","chapt7/2dimg.vert");
+    public HashMap<String, ShaderConfig> configMap = new HashMap<>();
+    //阴影纹理
+    public int depthMap;
+    //阴影缓冲帧
+    public int depthMapFBO;
+    //阴影生成的时候用到的光线视角矩阵
+    GL_Matrix lightViewMatrix;
+    //透视矩阵
+    GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+    //相机
+    FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 
 
-    public HashMap<String,ShaderConfig> configMap =new HashMap<>();
     public void registerConfig(ShaderConfig config) throws Exception {
-        if(StringUtil.isBlank(config.getName())){
+        if (StringUtil.isBlank(config.getName())) {
             throw new Exception("not allow shader config has no name!");
         }
-        configMap.put(config.getName(),config);
+        configMap.put(config.getName(), config);
 
     }
-    public void init(){
+
+    public void init() {
+
+        //公用的阴影
+        if (Constants.SHADOW_ENABLE) {
+            shadowInit();
+            this.createProgram(shadowShaderConfig);
+            this.initUniform(shadowShaderConfig);
+
+        }
+        if (Constants.HDR_ENABLE) {
+            initHdr();
+        }
+
         //Vao terrainVao = new Vao();
         this.createProgram(terrainShaderConfig);
         //terrainShaderConfig.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
@@ -85,13 +138,16 @@ public class ShaderManager {
         this.createProgram(anotherShaderConfig);
         this.createProgram(dropItemShaderConfig);
         this.createProgram(uifloatShaderConfig);
+        this.createProgram(hdrShaderConfig);
 
-       // this.CreateTerrainVAO();
-       // ShaderUtils.initProModelView(terrainShaderConfig);
+        // this.CreateTerrainVAO();
+        // ShaderUtils.initProModelView(terrainShaderConfig);
         //ShaderUtils.initProModelView(lightShaderConfig);
         //ShaderUtils.initProModelView(livingThingShaderConfig);
 
         this.initUniform(terrainShaderConfig);
+
+
         this.initUniform(lightShaderConfig);
         this.initUniform(livingThingShaderConfig);
         this.initUniform(uiShaderConfig);
@@ -99,119 +155,275 @@ public class ShaderManager {
         this.initUniform(anotherShaderConfig);
         this.initUniform(dropItemShaderConfig);
         this.initUniform(uifloatShaderConfig);
+        this.initUniform(hdrShaderConfig);
+        // this.initUniform(shadowShaderConfig);
+
         //this.createProgram(lightShaderConfig);
         this.CreateLightVAO(lightShaderConfig);
-       // this.CreateUiVAO(uiShaderConfig);
+        // this.CreateUiVAO(uiShaderConfig);
         //this.CreateTerrainVAO(terrainShaderConfig);
-      //  this.CreateLivingVAO(livingThingShaderConfig);
+        //  this.CreateLivingVAO(livingThingShaderConfig);
         //this.uniformLight();
-    }
 
-
-    public void CreateTerrainVAO1() {
-
-
-       int  VaoId = glGenVertexArrays();
-        OpenglUtils.checkGLError();
-
-        glBindVertexArray(VaoId);
-        OpenglUtils.checkGLError();
-        this.CreateTerrainVBO123();
-
-        glBindVertexArray(0);
-        OpenglUtils.checkGLError();
-    }
-
-    public void CreateTerrainVBO123() {
-        //顶点 vbo
-        //create vbo 创建vbo  vertex buffer objects
-        float VerticesArray[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-                0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-                -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-                -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-
-                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-                0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-                -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-
-                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-                -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-                -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-
-                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-                0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-                0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-
-                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-                0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-                -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-
-                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-                0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-                -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f};
-        FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
-
-
-        Vertices.put(VerticesArray);
-        Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
-        int VboId = glGenBuffers();//create vbo
-
-
-        glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
-        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
-
-        // System.out.println("float.size:" + FlFLOAToat.SIZE);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
-
-        OpenglUtils.checkGLError();
-        glEnableVertexAttribArray(0);
-        OpenglUtils.checkGLError();
-
-        glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * 4, 3 * 4);
-
-        OpenglUtils.checkGLError();
-        glEnableVertexAttribArray(1);
-        OpenglUtils.checkGLError();
+        //;
 
 
     }
 
-    GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
-    FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
+    public  int hdrFBO;
+    public int hdrTextureHandler;
+    public void initHdr(){
+        //创建hdrFBo帧缓冲
+         hdrFBO = glGenFramebuffers();
+        //绑定告诉系统当前使用的帧缓冲是这个
+        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+//        int colorTexture0= glGenTextures();
+//        int colorTexture1= glGenTextures();
+        //创建一个帧缓冲的纹理和创建普通纹理差不多：
+         hdrTextureHandler =glGenTextures();
 
-    public Vector2f wordPositionToXY(GL_Vector position,GL_Vector cameraPosition,GL_Vector viewDir ){
+        glBindTexture(GL_TEXTURE_2D, hdrTextureHandler);
 
-       GL_Matrix view=
-                GL_Matrix.LookAt(cameraPosition,viewDir);
+        glTexImage2D(
+                GL_TEXTURE_2D, 0, GL_RGB16F, Constants.WINDOW_WIDTH, Constants.WINDOW_WIDTH, 0, GL_RGB, GL_FLOAT, (ByteBuffer)null
+        );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+       // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+      //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
 
-        GL_Matrix modal = GL_Matrix.translateMatrix(position.x,position.y,position.z);
-GL_Matrix step1 = GL_Matrix.multiply(projection,view);
-        GL_Matrix step2 = GL_Matrix.multiply(step1,modal);
-        Point4f final4f = GL_Matrix.multiply(step2,
+       // glBindTexture(GL_TEXTURE_2D, 0);
+        // 帧缓冲连接上纹理
 
-                new javax.vecmath.Point4f(position.x,position.y,position.z,0f)
+        //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, hdrFBO);
+        ShaderUtils.checkGLError();
+        glFramebufferTexture2D(
+                GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 , GL_TEXTURE_2D, hdrTextureHandler, 0
         );
 
-        return new Vector2f(final4f.x,final4f.y);
+       // GL11.glDrawBuffer(GL11.GL_NONE);
+       // GL11.glReadBuffer(GL11.GL_NONE);
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        ShaderUtils.checkGLError();
+//        ///=====================
+//        depthMapFBO = glGenFramebuffers();
+//
+//        //然后，创建一个2D纹理，提供给帧缓冲的深度缓冲使用：
+//        int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+//        depthMap = GL11.glGenTextures();
+//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthMap);
+//
+//        GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
+//                0,                        // level of detail
+//                GL11.GL_DEPTH_COMPONENT,            // internal format for texture is RGB with Alpha
+//                SHADOW_WIDTH, SHADOW_HEIGHT,                    // size of texture image
+//                0,                        // no border
+//                GL11.GL_DEPTH_COMPONENT,            // incoming pixel format: 4 bytes in RGBA order
+//                GL11.GL_UNSIGNED_BYTE,    // incoming pixel data type: unsigned bytes
+//                (ByteBuffer) null);                // incoming pixels
+//
+//
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+//
+//        //把我们把生成的深度纹理作为帧缓冲的深度缓冲：
+//        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, depthMapFBO);
+//        //将texture 和fbo结合 这个fbo最后用于存储我们绘制的一帧 这个帧画面存储到纹理中 这里的GL_DEPTH_ATTACHMENT 是
+//        //当把一个纹理链接到帧缓冲的颜色缓冲上时，我们可以指定一个颜色附件
+//        //一直使用着GL_COLOR_ATTACHMENT0，  也可指定GL_COLOR_ATTACHMENT1
+//        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthMap, 0);
+//        GL11.glDrawBuffer(GL11.GL_NONE);
+//        GL11.glReadBuffer(GL11.GL_NONE);
+//        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+//        ShaderUtils.checkGLError();
+        //int attachments[]={GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+        //glDrawBuffers(2, attachments);
+
     }
-    public static void humanPosChangeListener(){
+    public void initBloom(){
+        //创建hdrFBo帧缓冲
+        int hdrFBO = glGenFramebuffers();
+        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+//        int colorTexture0= glGenTextures();
+//        int colorTexture1= glGenTextures();
+        int colorTextureAry[] = {glGenTextures(),glGenTextures()};
+
+        for(int i=0;i<2;i++){
+            glBindTexture(GL_TEXTURE_2D, colorTextureAry[i]);
+
+            glTexImage2D(
+                    GL_TEXTURE_2D, 0, GL_RGB16F, Constants.WINDOW_WIDTH, Constants.WINDOW_WIDTH, 0, GL_RGB, GL_FLOAT, (ByteBuffer)null
+            );
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+            // 帧缓冲连接上纹理
+            glFramebufferTexture2D(
+                    GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorTextureAry[i], 0
+            );
+
+        }
+
+        int attachments[]={GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+        IntBuffer intBuffer = BufferUtils.createIntBuffer(2);
+        intBuffer.put(attachments);
+        intBuffer.rewind();
+        glDrawBuffers( intBuffer);
+
+    }
+
+    /**
+     * 阴影缓冲帧的初始化
+     */
+    public void shadowInit() {
+        //初始化正交矩阵 阴影灯的视角用
+        float near_plane = 1.0f, far_plane = 107.5f;
+        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+        lightViewMatrix = GL_Matrix.multiply(ortho, GL_Matrix.LookAt(new GL_Vector(0, 15, 5), new GL_Vector(0, -0.3f, -1f)));
+
+        //首先，我们要为渲染的深度贴图创建一个帧缓冲对象：
+        depthMapFBO = glGenFramebuffers();
+
+        //然后，创建一个2D纹理，提供给帧缓冲的深度缓冲使用：
+        int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+        depthMap = GL11.glGenTextures();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthMap);
+
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
+                0,                        // level of detail
+                GL11.GL_DEPTH_COMPONENT,            // internal format for texture is RGB with Alpha
+                SHADOW_WIDTH, SHADOW_HEIGHT,                    // size of texture image
+                0,                        // no border
+                GL11.GL_DEPTH_COMPONENT,            // incoming pixel format: 4 bytes in RGBA order
+                GL11.GL_UNSIGNED_BYTE,    // incoming pixel data type: unsigned bytes
+                (ByteBuffer) null);                // incoming pixels
+
+
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+
+        //把我们把生成的深度纹理作为帧缓冲的深度缓冲：
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, depthMapFBO);
+        //将texture 和fbo结合 这个fbo最后用于存储我们绘制的一帧 这个帧画面存储到纹理中 这里的GL_DEPTH_ATTACHMENT 是
+        //当把一个纹理链接到帧缓冲的颜色缓冲上时，我们可以指定一个颜色附件
+        //一直使用着GL_COLOR_ATTACHMENT0，  也可指定GL_COLOR_ATTACHMENT1
+        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthMap, 0);
+        GL11.glDrawBuffer(GL11.GL_NONE);
+        GL11.glReadBuffer(GL11.GL_NONE);
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        ShaderUtils.checkGLError();
+        //阴影矩阵unfiorm 已经移入initUniform里了 shadowLightVeiwMatrix model矩阵其实可以弃用了
+    }
+
+    //应该删除了
+//    public void CreateTerrainVAO1() {
+//
+//
+//        int VaoId = glGenVertexArrays();
+//        OpenglUtils.checkGLError();
+//
+//        glBindVertexArray(VaoId);
+//        OpenglUtils.checkGLError();
+//        this.CreateTerrainVBO123();
+//
+//        glBindVertexArray(0);
+//        OpenglUtils.checkGLError();
+//    }
+
+//    public void CreateTerrainVBO123() {
+//        //顶点 vbo
+//        //create vbo 创建vbo  vertex buffer objects
+//        float VerticesArray[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+//                0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+//                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+//                0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+//                -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+//                -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+//
+//                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+//                0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+//                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+//                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+//                -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+//                -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+//
+//                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+//                -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+//                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+//                -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+//                -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+//                -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+//
+//                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+//                0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+//                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+//                0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+//                0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+//                0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+//
+//                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+//                0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+//                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+//                0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+//                -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+//                -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+//
+//                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+//                0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+//                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+//                0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+//                -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+//                -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f};
+//        FloatBuffer Vertices = BufferUtils.createFloatBuffer(VerticesArray.length);
+//
+//
+//        Vertices.put(VerticesArray);
+//        Vertices.rewind(); // rewind, otherwise LWJGL thinks our buffer is empty
+//        int VboId = glGenBuffers();//create vbo
+//
+//
+//        glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
+//        glBufferData(GL_ARRAY_BUFFER, Vertices, GL_STATIC_DRAW);//put data
+//
+//        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+//        glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * 4, 0);
+//
+//        OpenglUtils.checkGLError();
+//        glEnableVertexAttribArray(0);
+//        OpenglUtils.checkGLError();
+//
+//        glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * 4, 3 * 4);
+//
+//        OpenglUtils.checkGLError();
+//        glEnableVertexAttribArray(1);
+//        OpenglUtils.checkGLError();
+//
+//
+//    }
+
+
+    public Vector2f wordPositionToXY(GL_Vector position, GL_Vector cameraPosition, GL_Vector viewDir) {
+
+        GL_Matrix view =
+                GL_Matrix.LookAt(cameraPosition, viewDir);
+
+        GL_Matrix modal = GL_Matrix.translateMatrix(position.x, position.y, position.z);
+        GL_Matrix step1 = GL_Matrix.multiply(projection, view);
+        GL_Matrix step2 = GL_Matrix.multiply(step1, modal);
+        Point4f final4f = GL_Matrix.multiply(step2,
+
+                new javax.vecmath.Point4f(position.x, position.y, position.z, 0f)
+        );
+
+        return new Vector2f(final4f.x, final4f.y);
+    }
+
+    public static void humanPosChangeListener() {
 
 
         GamingState.instance.lightPos.x= GamingState.instance.player.position.x;
@@ -237,21 +449,49 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
 
     public static void lightPosChangeListener() {
 
+
+        float near_plane = 1.0f, far_plane = 107.5f;
+        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+        GL_Matrix lightViewMatrix = GL_Matrix.multiply(ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(0, -0.3f, -1f)));
+
+
+        // if(!Constants.SHADOW_ENABLE) {
+        //影响所有的地形里的灯光位置
         glUseProgram(terrainShaderConfig.getProgramId());
+        glUniform3f(terrainShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
 
-        glUniform3f(terrainShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, lightViewMatrix.toFloatBuffer());
+
+
         OpenglUtils.checkGLError();
-
+        // }
+        //影响实际的白色灯光方块的位置
         glUseProgram(lightShaderConfig.getProgramId());
 
-        GL_Matrix model = GL_Matrix.translateMatrix( GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        GL_Matrix model = GL_Matrix.translateMatrix(GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
         glUniformMatrix4(lightShaderConfig.getModelLoc(), false, model.toFloatBuffer());
         OpenglUtils.checkGLError();
 
+        //影响阴影渲染里的灯光位置
+        glUseProgram(shadowShaderConfig.getProgramId());
+        //int lightSpaceMatrixLoc = glGetUniformLocation(shadowShaderConfig.getProgramId(), "lightSpaceMatrix");
+        //config.setProjLoc(projectionLoc);
+        OpenglUtils.checkGLError();
+        //光源的视角
+        glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, lightViewMatrix.toFloatBuffer());
 
-       // glUseProgram(livingThingShaderConfig.getProgramId());
+        OpenglUtils.checkGLError();
 
-       // glUniform3f(livingThingShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        //hdr
+//        glUseProgram(hdrShaderConfig.getProgramId());
+//
+//        GL_Matrix model = GL_Matrix.translateMatrix(GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
+//        glUniformMatrix4(hdrShaderConfig.getModelLoc(), false, model.toFloatBuffer());
+//        OpenglUtils.checkGLError();
+
+        // glUseProgram(livingThingShaderConfig.getProgramId());
+
+        // glUniform3f(livingThingShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
         //OpenglUtils.checkGLError();
         /*
         glUseProgram(livingThingShaderConfig.getProgramId());
@@ -264,8 +504,8 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
     }
 
 
-
-    public void initUniform(ShaderConfig config ) {
+    public void initUniform(ShaderConfig config) {
+        LogUtil.println("begin initUniform" + config.getName());
         /*
         uniform mat4 projection;
         uniform mat4 view;
@@ -280,49 +520,69 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
 
 
         //glUseProgram(ProgramId);
-        int programId =config.getProgramId();
+        int programId = config.getProgramId();
 
         glUseProgram(config.getProgramId());
         //unifrom赋值===========================================================
         //投影矩阵
         int projectionLoc = glGetUniformLocation(config.getProgramId(), "projection");
-        config.setProjLoc(projectionLoc);
-        OpenglUtils.checkGLError();
+        if (projectionLoc >= 0) {
+            config.setProjLoc(projectionLoc);
+            OpenglUtils.checkGLError();
 
-        glUniformMatrix4(projectionLoc, false, projection.toFloatBuffer());
+            glUniformMatrix4(projectionLoc, false, projection.toFloatBuffer());
+            OpenglUtils.checkGLError();
+        }
+        //阴影灯光投影矩阵
+        int lightSpaceMatrixLoc = glGetUniformLocation(config.getProgramId(), "lightSpaceMatrix");
+        //config.setProjLoc(projectionLoc);
         OpenglUtils.checkGLError();
+        if (lightSpaceMatrixLoc >= 0) {
+            // GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+            // FloatBuffer lightViewBuffer = BufferUtils.createFloatBuffer(16);
+            // OpenglUtils.checkGLError();
+            // //光源的视角
+            config.setShadowLightViewLoc(lightSpaceMatrixLoc);
+            glUniformMatrix4(lightSpaceMatrixLoc, false, lightViewMatrix.toFloatBuffer());
+            //config.setViewLoc(viewLoc);
+            OpenglUtils.checkGLError();
+        }
+
 
         //相机位置
-        GL_Matrix view ;
-       if(GamingState.instance!=null)
-         view =
-                GL_Matrix.LookAt( GamingState.instance.camera.Position,  GamingState.instance.camera.ViewDir);
-        else{
-            view =GL_Matrix.LookAt( new GL_Vector( 0,0,4),  new GL_Vector( 0,0,-1));
-       }
+        GL_Matrix view;
+        if (GamingState.instance != null)
+            view =
+                    GL_Matrix.LookAt(GamingState.instance.camera.Position, GamingState.instance.camera.ViewDir);
+        else {
+            view = GL_Matrix.LookAt(new GL_Vector(0, 0, 4), new GL_Vector(0, 0, -1));
+        }
         view.fillFloatBuffer(cameraViewBuffer);
         int viewLoc = glGetUniformLocation(programId, "view");
-        config.setViewLoc(viewLoc);
-        OpenglUtils.checkGLError();
-        glUniformMatrix4(viewLoc, false, view.toFloatBuffer());
-        OpenglUtils.checkGLError();
+        if (viewLoc >= 0) {
+            config.setViewLoc(viewLoc);
+            OpenglUtils.checkGLError();
+            glUniformMatrix4(viewLoc, false, view.toFloatBuffer());
+            OpenglUtils.checkGLError();
+        }
 
 
-        GL_Matrix model = GL_Matrix.rotateMatrix((float) (0 * 3.14 / 180.0), 0, 0);
         int modelLoc = glGetUniformLocation(programId, "model");
-        config.setModelLoc(modelLoc);
-        OpenglUtils.checkGLError();
-        glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
-        OpenglUtils.checkGLError();
+        if (modelLoc >= 0) {
+            GL_Matrix model = GL_Matrix.rotateMatrix((float) (0 * 3.14 / 180.0), 0, 0);
+            config.setModelLoc(modelLoc);
+            OpenglUtils.checkGLError();
+            glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
+            OpenglUtils.checkGLError();
 
-
+        }
         /*viewLoc = glGetUniformLocation(terrainProgramId, "view");
         OpenglUtils.checkGLError();
         terrainShaderConfig.setViewLoc(viewLoc);*/
 
         //物体颜色
         int objectColorLoc = glGetUniformLocation(programId, "objectColor");
-        if(objectColorLoc>0){
+        if (objectColorLoc >= 0) {
             config.setObejctColorLoc(objectColorLoc);
             glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
             OpenglUtils.checkGLError();
@@ -336,76 +596,74 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         OpenglUtils.checkGLError();*/
         int lightPosInTerrainLoc = glGetUniformLocation(programId, "light.position");
         GL_Vector lightPos = new GL_Vector();
-        if(GamingState.instance==null){
+        if (GamingState.instance == null) {
 
-        }else{
-            lightPos= GamingState.instance.lightPos;
+        } else {
+            lightPos = GamingState.instance.lightPos;
         }
-        if (lightPosInTerrainLoc >0) {
+        if (lightPosInTerrainLoc >= 0) {
             config.setLightPosLoc(lightPosInTerrainLoc);
-           // LogUtil.println("light.position not found ");
+            // LogUtil.println("light.position not found ");
             //System.exit(1);
-            glUniform3f(lightPosInTerrainLoc,  lightPos.x,  lightPos.y,  lightPos.z);
+            glUniform3f(lightPosInTerrainLoc, lightPos.x, lightPos.y, lightPos.z);
             OpenglUtils.checkGLError();
         }
 
 
         int viewPosLoc = glGetUniformLocation(programId, "viewPos");//camerapos
 
-        if (viewPosLoc > 0) {
+        if (viewPosLoc >= 0) {
             config.setViewPosLoc(viewPosLoc);
-            glUniform3f(viewPosLoc,  lightPos.x,  lightPos.y,  lightPos.z);
+            glUniform3f(viewPosLoc, lightPos.x, lightPos.y, lightPos.z);
             OpenglUtils.checkGLError();
         }
-
 
 
         //int matAmbientLoc = glGetUniformLocation(ProgramId, "material.ambient");
         //int matDiffuseLoc = glGetUniformLocation(ProgramId, "material.diffuse");
         int matSpecularLoc = glGetUniformLocation(programId, "material.specular");
-        if(matSpecularLoc>0){
+        if (matSpecularLoc >= 0) {
             glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
         }
 
         int matShineLoc = glGetUniformLocation(programId, "material.shininess");
-        if(matShineLoc>0){
+        if (matShineLoc >= 0) {
             glUniform1f(matShineLoc, 32.0f);//光斑大小
         }
         //glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
         //glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
 
 
-
         int lightMatAmbientLoc = glGetUniformLocation(programId, "light.ambient");
-        if(lightMatAmbientLoc>0){
+        if (lightMatAmbientLoc >= 0) {
             glUniform3f(lightMatAmbientLoc, 0.5f, 0.5f, 0.5f);
         }
         int lightMatDiffuseLoc = glGetUniformLocation(programId, "light.diffuse");
-        if(lightMatDiffuseLoc>0) {
+        if (lightMatDiffuseLoc >= 0) {
             glUniform3f(lightMatDiffuseLoc, 0.5f, 0.5f, 0.5f);
         }
         int lightMatSpecularLoc = glGetUniformLocation(programId, "light.specular");
-        if(lightMatSpecularLoc>0) {
+        if (lightMatSpecularLoc >= 0) {
             glUniform3f(lightMatSpecularLoc, 0.5f, 0.5f, 0.5f);
         }
         int lightMatShineLoc = glGetUniformLocation(programId, "light.shininess");
-        if(lightMatSpecularLoc>0) {
+        if (lightMatSpecularLoc >= 0) {
             glUniform1f(lightMatShineLoc, 32.0f);
         }
 
 
         int lightConstantLoc = glGetUniformLocation(programId, "light.constant");
-        if(lightConstantLoc>0) {
+        if (lightConstantLoc >= 0) {
             glUniform1f(lightConstantLoc, 1f);
         }
 
         int lightLinearLoc = glGetUniformLocation(programId, "light.linear");
-        if(lightLinearLoc>0) {
+        if (lightLinearLoc >= 0) {
             glUniform1f(lightLinearLoc, 0.01f);
         }
 
         int lightQuadraticLoc = glGetUniformLocation(programId, "light.quadratic");
-        if(lightQuadraticLoc>0) {
+        if (lightQuadraticLoc >= 0) {
             glUniform1f(lightQuadraticLoc, 0.007f);
         }
 
@@ -415,55 +673,82 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
                 config.setTexture0Loc(ourTexture0Loc);
             }
         }*/
+        if (Constants.SHADOW_ENABLE) {
+
+            int depthMapLoc = glGetUniformLocation(config.getProgramId(), "shadowMap");
+            if (depthMapLoc >= 0) {
+                config.setDepthMapLoc(depthMapLoc);
+                //但是不能用这个方法 这个方法的前半段是正确的 将纹理id映射到全局的texture顺序上
+                //但是后半段 她会根据config的
+                int loc = ShaderUtils.bindDepth(config, this.depthMap);
+
+               /* GL13.glActiveTexture(GL13.GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE9);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE8);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE7);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);*/
+
+            }
+
+
+        }
+
         int ourTexture0Loc = glGetUniformLocation(config.getProgramId(), "ourTexture0");
-        if(ourTexture0Loc>0) {
+        if (ourTexture0Loc >= 0) {
             config.setTexture0Loc(ourTexture0Loc);
         }
 
         int ourTexture1Loc = glGetUniformLocation(config.getProgramId(), "ourTexture1");
-        if(ourTexture1Loc>0) {
+        if (ourTexture1Loc >= 0) {
             config.setTexture1Loc(ourTexture1Loc);
         }
         int ourTexture2Loc = glGetUniformLocation(config.getProgramId(), "ourTexture2");
-        if(ourTexture2Loc>0) {
+        if (ourTexture2Loc >= 0) {
             config.setTexture2Loc(ourTexture2Loc);
         }
         int ourTexture3Loc = glGetUniformLocation(config.getProgramId(), "ourTexture3");
-        if(ourTexture3Loc>0) {
+        if (ourTexture3Loc >= 0) {
             config.setTexture3Loc(ourTexture3Loc);
         }
         int ourTexture4Loc = glGetUniformLocation(config.getProgramId(), "ourTexture4");
-        if(ourTexture4Loc>0) {
+        if (ourTexture4Loc >= 0) {
             config.setTexture4Loc(ourTexture4Loc);
         }
         int ourTexture5Loc = glGetUniformLocation(config.getProgramId(), "ourTexture5");
-        if(ourTexture5Loc>0) {
+        if (ourTexture5Loc >= 0) {
             config.setTexture5Loc(ourTexture5Loc);
         }
         int ourTexture6Loc = glGetUniformLocation(config.getProgramId(), "ourTexture6");
-        if(ourTexture6Loc>0) {
+        if (ourTexture6Loc >= 0) {
             config.setTexture6Loc(ourTexture6Loc);
         }
         int ourTexture7Loc = glGetUniformLocation(config.getProgramId(), "ourTexture7");
-        if(ourTexture7Loc>0) {
+        if (ourTexture7Loc >= 0) {
             config.setTexture7Loc(ourTexture7Loc);
         }
         int ourTexture8Loc = glGetUniformLocation(config.getProgramId(), "ourTexture8");
-        if(ourTexture8Loc>0) {
+        if (ourTexture8Loc >= 0) {
             config.setTexture8Loc(ourTexture8Loc);
         }
-        glUseProgram(0);
+
+        // glUseProgram(0);
         //glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
-       // glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);
+        // glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);
         //glUniform1f(glGetUniformLocation(terrainProgramId, "light.quadratic"), 0.017f);
 
     }
 
 
-
-    public void createProgram(ShaderConfig  config) {
+    public void createProgram(ShaderConfig config) {
+        LogUtil.println("begin create program" + config.getName());
         try {
-            int programId = ShaderUtils.CreateProgram(config.getVertPath(),config.getFragPath());
+            int programId = ShaderUtils.CreateProgram(config.getVertPath(), config.getFragPath());
             config.setProgramId(programId);
             //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
         } catch (Exception e) {
@@ -471,12 +756,13 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
             System.exit(0);
         }
     }
-    public static void addTestTerrainVao(){
+
+    public static void addTestTerrainVao() {
         terrainShaderConfig.addVao(new Vao("test"));
-        Vao vao =new Vao("test");
-        int x =0,y=0,z=-10 ;
+        Vao vao = new Vao("test");
+        int x = 0, y = 0, z = -10;
         TextureInfo ti = TextureManager.getTextureInfo("soil");
-        FloatBuffer veticesBuffer= vao.getVertices();
+        FloatBuffer veticesBuffer = vao.getVertices();
 
         // x += this.chunkPos.x * getChunkSizeX();
         // z += this.chunkPos.z * getChunkSizeZ();
@@ -539,12 +825,13 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         veticesBuffer.put(ti.maxX);
         veticesBuffer.put(ti.maxY);
     }
-    public static void CreateTerrainVAO(ShaderConfig  config,Vao vao) {
+
+    public static void CreateTerrainVAO(ShaderConfig config, Vao vao) {
         //config.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
         //glUseProgram(config.getProgramId());
         //生成vaoid
         //create vao
-       // Vao vao =config.getVao();
+        // Vao vao =config.getVao();
 
         /*VaoId = glGenVertexArrays();
         Util.checkGLError();
@@ -556,17 +843,17 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         glBindVertexArray(0);
         Util.checkGLError();
         */
-        int length =10;
-        if(vao.getVaoId()>0){
+        int length = 10;
+        if (vao.getVaoId() > 0) {
 
 
             //glBindVertexArray(vao.getVaoId());
             // LogUtil.err("vao have been initialized");
-        }else {
+        } else {
             vao.setVaoId(glGenVertexArrays());
             OpenglUtils.checkGLError();
-          //  glBindVertexArray(vao.getVaoId());
-            int VboId=glGenBuffers();//create vbo
+            //  glBindVertexArray(vao.getVaoId());
+            int VboId = glGenBuffers();//create vbo
             vao.setVboId(VboId);
            /* int eboId = glGenBuffers();
             vao.setEboId(eboId);*/
@@ -582,11 +869,11 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
       /*  if(vao.getVertices().position()==0){
 
         }*/
-        assert vao.getVertices().position()>0;
-        vao.setPoints(vao.getVertices().position()/length);
-        assert vao.getVaoId()>0;
-        assert vao.getVaoId()>0;
-        assert vao.getPoints()>0;
+        assert vao.getVertices().position() > 0;
+        vao.setPoints(vao.getVertices().position() / length);
+        assert vao.getVaoId() > 0;
+        assert vao.getVaoId() > 0;
+        assert vao.getPoints() > 0;
         //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
         vao.getVertices().rewind();
         // vao.setVertices(twoDImgBuffer);
@@ -598,8 +885,6 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         OpenglUtils.checkGLError();
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
         //图片位置 //0代表再glsl里的变量的location位置值.
-
-
 
 
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
@@ -625,116 +910,113 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         Util.checkGLError();
 
 
-
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
     }
 
-    public static void CreateLivingVAO(ShaderConfig config,Vao vao ) {
+//    public static void CreateLivingVAO(ShaderConfig config, Vao vao) {
+//
+//        int length = 10;
+//        if (vao.getVaoId() > 0) {
+//
+//
+//            //glBindVertexArray(vao.getVaoId());
+//            // LogUtil.err("vao have been initialized");
+//        } else {
+//            vao.setVaoId(glGenVertexArrays());
+//            OpenglUtils.checkGLError();
+//            //  glBindVertexArray(vao.getVaoId());
+//            int VboId = glGenBuffers();//create vbo
+//            vao.setVboId(VboId);
+//           /* int eboId = glGenBuffers();
+//            vao.setEboId(eboId);*/
+//        }
+//        //绑定vao
+//        glBindVertexArray(vao.getVaoId());
+//        OpenglUtils.checkGLError();
+//        //create vbo
+//        //顶点 vbo
+//        //create vbo 创建vbo  vertex buffer objects
+//        //创建顶点数组
+//        int position = vao.getVertices().position();
+//      /*  if(vao.getVertices().position()==0){
+//
+//        }*/
+//        assert vao.getVertices().position() > 0;
+//        vao.setPoints(vao.getVertices().position() / length);
+//        assert vao.getVaoId() > 0;
+//        assert vao.getVaoId() > 0;
+//        assert vao.getPoints() > 0;
+//        //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+//        vao.getVertices().rewind();
+//        // vao.setVertices(twoDImgBuffer);
+//        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+//
+//        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+//        //create ebo
+//        // float width = 1;
+//        OpenglUtils.checkGLError();
+//        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+//        //图片位置 //0代表再glsl里的变量的location位置值.
+//
+//
+//        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+//        glVertexAttribPointer(0, 3, GL_FLOAT, false, length * 4, 0);
+//        Util.checkGLError();
+//        glEnableVertexAttribArray(0);
+//        Util.checkGLError();
+//
+//        glVertexAttribPointer(1, 3, GL_FLOAT, false, length * 4, 3 * 4);
+//        Util.checkGLError();
+//        glEnableVertexAttribArray(1);
+//        Util.checkGLError();
+//
+//        glVertexAttribPointer(2, 3, GL_FLOAT, false, length * 4, 6 * 4);
+//        Util.checkGLError();
+//        glEnableVertexAttribArray(2);
+//        Util.checkGLError();
+//
+//        glVertexAttribPointer(3, 1, GL_FLOAT, false, length * 4, 9 * 4);
+//        Util.checkGLError();
+//        glEnableVertexAttribArray(3);
+//        Util.checkGLError();
+//
+//
+//        glBindVertexArray(0);
+//        OpenglUtils.checkGLError();
+//    }
 
-    int length =10;
-        if(vao.getVaoId()>0){
-
-
-            //glBindVertexArray(vao.getVaoId());
-            // LogUtil.err("vao have been initialized");
-        }else {
-            vao.setVaoId(glGenVertexArrays());
-            OpenglUtils.checkGLError();
-            //  glBindVertexArray(vao.getVaoId());
-            int VboId=glGenBuffers();//create vbo
-            vao.setVboId(VboId);
-           /* int eboId = glGenBuffers();
-            vao.setEboId(eboId);*/
-        }
-        //绑定vao
-        glBindVertexArray(vao.getVaoId());
-        OpenglUtils.checkGLError();
-        //create vbo
-        //顶点 vbo
-        //create vbo 创建vbo  vertex buffer objects
-        //创建顶点数组
-        int position = vao.getVertices().position();
-      /*  if(vao.getVertices().position()==0){
-
-        }*/
-        assert vao.getVertices().position()>0;
-        vao.setPoints(vao.getVertices().position()/length);
-        assert vao.getVaoId()>0;
-        assert vao.getVaoId()>0;
-        assert vao.getPoints()>0;
-        //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
-        vao.getVertices().rewind();
-        // vao.setVertices(twoDImgBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
-
-        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
-        //create ebo
-        // float width = 1;
-        OpenglUtils.checkGLError();
-        // System.out.println("float.size:" + FlFLOAToat.SIZE);
-        //图片位置 //0代表再glsl里的变量的location位置值.
-
-
-
-
-        // System.out.println("float.size:" + FlFLOAToat.SIZE);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, length * 4, 0);
-        Util.checkGLError();
-        glEnableVertexAttribArray(0);
-        Util.checkGLError();
-
-        glVertexAttribPointer(1, 3, GL_FLOAT, false,length * 4, 3 * 4);
-        Util.checkGLError();
-        glEnableVertexAttribArray(1);
-        Util.checkGLError();
-
-        glVertexAttribPointer(2, 3, GL_FLOAT, false, length * 4, 6 * 4);
-        Util.checkGLError();
-        glEnableVertexAttribArray(2);
-        Util.checkGLError();
-
-        glVertexAttribPointer(3, 1, GL_FLOAT, false, length * 4, 9 * 4);
-        Util.checkGLError();
-        glEnableVertexAttribArray(3);
-        Util.checkGLError();
-
-
-        glBindVertexArray(0);
-        OpenglUtils.checkGLError();
-    }
-
-    public void CreateTerrainProgram(ShaderConfig  config) {
-        try {
-            int terrainProgramId = ShaderUtils.CreateProgram(config.getVertPath(),config.getFragPath());
-            config.setProgramId(terrainProgramId);
-            //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-    }
-
-    public void CreateLightProgram(ShaderConfig config) {
-        try {
-            int LightProgramId = ShaderUtils.CreateProgram(config.getVertPath(),config.getFragPath());
-            config.setProgramId(LightProgramId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-    }
+//    public void CreateTerrainProgram(ShaderConfig config) {
+//        try {
+//            int terrainProgramId = ShaderUtils.CreateProgram(config.getVertPath(), config.getFragPath());
+//            config.setProgramId(terrainProgramId);
+//            //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.exit(0);
+//        }
+//    }
+//
+//    public void CreateLightProgram(ShaderConfig config) {
+//        try {
+//            int LightProgramId = ShaderUtils.CreateProgram(config.getVertPath(), config.getFragPath());
+//            config.setProgramId(LightProgramId);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.exit(0);
+//        }
+//    }
 
     public void CreateLightVAO(ShaderConfig config) {
         glUseProgram(config.getProgramId());
-        int lightVaoId = glGenVertexArrays();
+        //int lightVaoId = glGenVertexArrays();
         //config.getVao().setVaoId(lightVaoId);
         //config.getVao().setVaoId(lightVaoId);
         OpenglUtils.checkGLError();
 
-        glBindVertexArray(lightVaoId);
-        config.getVao().setVaoId(lightVaoId);
-        OpenglUtils.checkGLError();
+       // glBindVertexArray(lightVaoId);
+       // config.getVao().setVaoId(lightVaoId);
+       // OpenglUtils.checkGLError();
 
         this.CreateLightVBO(config);
         glBindVertexArray(0);
@@ -748,14 +1030,14 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
 
         //生成vaoid
         //create vao
-        Vao vao =config.getVao();
-        if(vao.getVaoId()>0){
+        Vao vao = config.getVao();
+        if (vao.getVaoId() > 0) {
             //glBindVertexArray(vao.getVaoId());
             // LogUtil.err("vao have been initialized");
-        }else {
+        } else {
             vao.setVaoId(glGenVertexArrays());
             OpenglUtils.checkGLError();
-            int VboId=glGenBuffers();//create vbo
+            int VboId = glGenBuffers();//create vbo
             vao.setVboId(VboId);
            /* int eboId = glGenBuffers();
             vao.setEboId(eboId);*/
@@ -768,11 +1050,11 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         //create vbo 创建vbo  vertex buffer objects
         //创建顶点数组
         int position = vao.getVertices().position();
-        if(vao.getVertices().position()==0){
+        if (vao.getVertices().position() == 0) {
             //ShaderUtils.printText("it's test ",50,50,0,24);
         }
-        vao.setPoints(vao.getVertices().position()/10);
-        LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+        vao.setPoints(vao.getVertices().position() / 10);
+        LogUtil.println("twoDImgBuffer:" + vao.getVertices().position());
         vao.getVertices().rewind();
         // vao.setVertices(twoDImgBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
@@ -807,7 +1089,11 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
 
     }
 
-    public void CreateLightVBO(ShaderConfig config ) {
+    /**
+     * 灯的白色的六面绘制
+     * @param config
+     */
+    public void CreateLightVBO(ShaderConfig config) {
 
         //创建vao2=========================================================
         //顶点 vbo
@@ -815,15 +1101,15 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
 
         // model = GL_Matrix.multiply(view2,model);
         // model = GL_Matrix.multiply(view2,model);
-        int  VboId=glGenBuffers();//create vbo
-        config.getVao().setVboId(VboId);
+       // int VboId = glGenBuffers();//create vbo
+        //config.getVao().setVboId(VboId);
         int minX = -1;
         int minY = -1;
         int minZ = -1;
         int maxX = 1;
         int maxY = 1;
         int maxZ = 1;
-        GL_Vector color = new GL_Vector(1.0f,1f, 1f);
+        GL_Vector color = new GL_Vector(1.0f, 1f, 1f);
         GL_Vector P1 = new GL_Vector(minX, minY, maxZ);
         GL_Vector P2 = new GL_Vector(maxX, minY, maxZ);
         GL_Vector P3 = new GL_Vector(maxX, minY, minZ);
@@ -850,18 +1136,18 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         ShaderUtils.draw3dColorSimple(P2, P3, P7, P6, new GL_Vector(1, 0, 0f), color, floatBuffer, config);
 
         ShaderUtils.draw3dColorSimple(P4, P1, P5, P8, new GL_Vector(-1, 0, 0), color, floatBuffer, config);
-        ShaderUtils.createVao(config,config.getVao(),new int[]{3,3});
+        ShaderUtils.createVao(config, config.getVao(), new int[]{3, 3});
     }
 
 
-    public void CreateSkyVBO(ShaderConfig config ) {
+    public void CreateSkyVBO(ShaderConfig config) {
 
         //创建vao2=========================================================
         //顶点 vbo
         //create vbo 创建vbo  vertex buffer objects
 
         // model = GL_Matrix.multiply(view2,model);
-        int  VboId=glGenBuffers();//create vbo
+        int VboId = glGenBuffers();//create vbo
         config.getVao().setVboId(VboId);
         GL_Vector p1 = new GL_Vector(-0.5f, -0.5f, -0.5f);
         float VerticesArray[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
@@ -909,7 +1195,7 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
 
 
         Vertices.put(VerticesArray);
-        config.getVao().setPoints(Vertices.position()/6);
+        config.getVao().setPoints(Vertices.position() / 6);
         Vertices.rewind(); //
 
 
@@ -923,10 +1209,10 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         OpenglUtils.checkGLError();
     }
 
-   // int lightModelLoc;
+    // int lightModelLoc;
 
     public void uniformLight() {
-        GL_Matrix model = GL_Matrix.translateMatrix( GamingState.instance.lightPos.x,  GamingState.instance.lightPos.y,  GamingState.instance.lightPos.z);
+        GL_Matrix model = GL_Matrix.translateMatrix(GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
         GL_Matrix view = GL_Matrix.translateMatrix(0, 0, 0);
         glUseProgram(lightShaderConfig.getProgramId());
         int lightProjectionLoc = glGetUniformLocation(lightShaderConfig.getProgramId(), "projection");
@@ -937,15 +1223,15 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
         glUniformMatrix4(lightModelLoc, false, model.toFloatBuffer());
         OpenglUtils.checkGLError();
 
-      //  int lightViewLoc = ;
+        //  int lightViewLoc = ;
         lightShaderConfig.setViewLoc(glGetUniformLocation(lightShaderConfig.getProgramId(), "view"));
         glUniformMatrix4(lightShaderConfig.getViewLoc(), false, view.toFloatBuffer());
         OpenglUtils.checkGLError();
 
     }
 
-    public void initViewModelProjectionLoc(ShaderConfig config,GL_Matrix model ,GL_Matrix view){
-        assert config.getProgramId()>0;
+    public void initViewModelProjectionLoc(ShaderConfig config, GL_Matrix model, GL_Matrix view) {
+        assert config.getProgramId() > 0;
         glUseProgram(config.getProgramId());
         int lightProjectionLoc = glGetUniformLocation(config.getProgramId(), "projection");
         glUniformMatrix4(lightProjectionLoc, false, projection.toFloatBuffer());
@@ -1012,10 +1298,11 @@ GL_Matrix step1 = GL_Matrix.multiply(projection,view);
 
     }*/
 
-    public void update(){
+    public void update() {
 
     }
-    public void render(){
+
+    public void render() {
 
     }
 }
