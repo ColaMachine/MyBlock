@@ -565,7 +565,15 @@ if(!Switcher.SHADER_ENABLE)
 //            ShaderUtils.draw2dImg(shaderManager.hdrShaderConfig,shaderManager.hdrShaderConfig.getVao(),TextureManager.getTextureInfo("items").textureHandle/*shaderManager.hdrTextureHandler*/);
 //            ShaderUtils.createVao(shaderManager.hdrShaderConfig,shaderManager.hdrShaderConfig.getVao(),new int[]{2,2});
 //            ShaderUtils.finalDraw(shaderManager.hdrShaderConfig,shaderManager.hdrShaderConfig.getVao());
-            //用制定的hdr进行重新绘制
+
+            shaderManager.bloomShaderConfig.getVao().getVertices().rewind();
+            ShaderUtils.draw2dImg(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),shaderManager.hdrTextureHandler);
+            ShaderUtils.createVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),new int[]{2,2});
+            ShaderUtils.finalDraw(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao());
+
+
+            
+        //用制定的hdr进行重新绘制
         //}
         if (Switcher.SHADER_ENABLE) {
 

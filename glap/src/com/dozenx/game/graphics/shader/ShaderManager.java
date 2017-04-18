@@ -1,6 +1,7 @@
 package com.dozenx.game.graphics.shader;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.Bloom;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.math.Vector2i;
 import com.sun.prism.ps.Shader;
@@ -92,6 +93,10 @@ public class ShaderManager {
     public static ShaderConfig shadowShaderConfig = new ShaderConfig("shadow", "chapt16/shadow.frag", "chapt16/shadow.vert");
     //hdr
     public static ShaderConfig hdrShaderConfig = new ShaderConfig("hdr", "chapt16/hdr.frag", "chapt16/hdr.vert");
+    //bloom
+    public static ShaderConfig bloomShaderConfig = new ShaderConfig("bloom", "chapt16/bloom.frag", "chapt16/bloom.vert");
+    //gaosi
+    public static ShaderConfig gaosiShaderConfig = new ShaderConfig("gaosi", "chapt16/gaosi.frag", "chapt16/gaosi.vert");
 
 
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
@@ -106,6 +111,7 @@ public class ShaderManager {
     //相机
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 
+    public Bloom bloom ;
 
     public void registerConfig(ShaderConfig config) throws Exception {
         if (StringUtil.isBlank(config.getName())) {
@@ -116,7 +122,8 @@ public class ShaderManager {
     }
 
     public void init() {
-
+        bloom=new Bloom();
+bloom.init();
         //公用的阴影
         if (Constants.SHADOW_ENABLE) {
             shadowInit();
@@ -139,6 +146,11 @@ public class ShaderManager {
         this.createProgram(dropItemShaderConfig);
         this.createProgram(uifloatShaderConfig);
         this.createProgram(hdrShaderConfig);
+
+        this.createProgram(gaosiShaderConfig);
+        this.createProgram(bloomShaderConfig);
+        this.initUniform(gaosiShaderConfig);
+        this.initUniform(bloomShaderConfig);
 
         // this.CreateTerrainVAO();
         // ShaderUtils.initProModelView(terrainShaderConfig);
@@ -271,7 +283,7 @@ public class ShaderManager {
         IntBuffer intBuffer = BufferUtils.createIntBuffer(2);
         intBuffer.put(attachments);
         intBuffer.rewind();
-        glDrawBuffers( intBuffer);
+        glDrawBuffers(intBuffer);
 
     }
 
@@ -426,9 +438,9 @@ public class ShaderManager {
     public static void humanPosChangeListener() {
 
 
-        GamingState.instance.lightPos.x= GamingState.instance.player.position.x;
+       /* GamingState.instance.lightPos.x= GamingState.instance.player.position.x;
         GamingState.instance.lightPos.y= GamingState.instance.player.position.y+30;
-        GamingState.instance.lightPos.z= GamingState.instance.player.position.z;
+        GamingState.instance.lightPos.z= GamingState.instance.player.position.z;*/
 
         /*glUseProgram(lightShaderConfig.getProgramId());
 

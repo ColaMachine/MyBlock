@@ -1,10 +1,15 @@
 #version 330 core
 layout (location = 0) out vec4 FragColor;
 layout (location = 1) out vec4 BrightColor;
-[...]
+in vec2 TexCoords;
+
+uniform sampler2D ourTexture0;
+
 void main()
-{             
-    [...] // 先计算常规光照, 输出
+{
+Vec3 lighting = texture(ourTexture0, TexCoords);
+    // 先计算常规光照, 输出
+
         FragColor = vec4(lighting, 1.0f);
         // 检查fragment是否大于一定阈限, 如果大于就当作亮色输出
         float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));

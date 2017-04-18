@@ -1,10 +1,13 @@
 package com.dozenx.game.opengl.util;
 
 import glmodel.GL_Matrix;
+import org.lwjgl.opengl.GL20;
 
 import javax.vecmath.Vector3f;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
+
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 /**
  * Created by luying on 16/11/26.
@@ -441,5 +444,9 @@ private int viewPosLoc;
 
     //glTexLoc === > uniform smaple loc
     public  HashMap<Integer,Integer> sampleLocMap=new HashMap();
+
+    public void use(){
+        GL20.glUseProgram(getProgramId());
+    }
 
 }
