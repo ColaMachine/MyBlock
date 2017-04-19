@@ -179,7 +179,7 @@ bloom.init();
 
         //;
 
-
+        bloom.initVaoAndBindTexture(this);
     }
 
     public  int hdrFBO;
@@ -210,7 +210,7 @@ bloom.init();
         //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, hdrFBO);
         ShaderUtils.checkGLError();
         glFramebufferTexture2D(
-                GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 , GL_TEXTURE_2D, hdrTextureHandler, 0
+                GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1 , GL_TEXTURE_2D, hdrTextureHandler, 0
         );
 
        // GL11.glDrawBuffer(GL11.GL_NONE);
@@ -274,18 +274,21 @@ bloom.init();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
             // 帧缓冲连接上纹理
             glFramebufferTexture2D(
-                    GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorTextureAry[i], 0
+                    GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2 + i, GL_TEXTURE_2D, colorTextureAry[i], 0
             );
 
         }
 
-        int attachments[]={GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-        IntBuffer intBuffer = BufferUtils.createIntBuffer(2);
-        intBuffer.put(attachments);
-        intBuffer.rewind();
-        glDrawBuffers(intBuffer);
+        int attachments[]={GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
+         bloomAttachments = BufferUtils.createIntBuffer(2);
+        bloomAttachments.put(attachments);
+        bloomAttachments.rewind();
+        //glDrawBuffers(intBuffer);
 
     }
+    //存放2 3 附件
+    public IntBuffer bloomAttachments;
+
 
     /**
      * 阴影缓冲帧的初始化

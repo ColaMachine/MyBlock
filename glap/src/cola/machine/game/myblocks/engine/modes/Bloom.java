@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
@@ -80,7 +81,26 @@ public class Bloom {
         }
         OpenglUtils.checkGLError();
     }
+    //初次就绑定创建vao 和 绑定纹理
+    public void initVaoAndBindTexture(ShaderManager shaderManager){
+        //创建 亮纹理 和绑定提取两纹理的shader vao
 
+        ShaderUtils.draw2dImg(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),shaderManager.hdrTextureHandler);
+        ShaderUtils.createVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),new int[]{2,2});
+        OpenglUtils.checkGLError();
+        //高斯vao 和 绑定高亮纹理
+        ShaderUtils.draw2dImg(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao(),colorBuffers[1]);
+        ShaderUtils.createVao(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao(),new int[]{2,2});
+        OpenglUtils.checkGLError();
+    }
+    public void getBrightTexture(ShaderManager shaderManager){
+        GL20.glDrawBuffers( shaderManager.bloomAttachments);
+        shaderManager.bloomShaderConfig.getVao().getVertices().rewind();
+        //ShaderUtils.draw2dImg(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),shaderManager.hdrTextureHandler);
+        //ShaderUtils.createVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),new int[]{2,2});
+        ShaderUtils.finalDraw(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao());
+        OpenglUtils.checkGLError();
+    }
     /**
      * 高斯模糊 10次
      * @param shaderManager
@@ -97,11 +117,14 @@ public class Bloom {
             glBindTexture(
                     GL_TEXTURE_2D, first_iteration ? colorBuffers[1] : pingpongBuffer[horizontal?0:1]
             );
-            //RenderQuad();
+            shaderManager.gaosiShaderConfig.getVao().getVertices().rewind();
+            //这里需要注意 需要提前绑定纹理 并且创建vao 需要在shader 创建结束后干这件事
+            ShaderUtils.finalDraw(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao());
             horizontal = !horizontal;
             if (first_iteration)
                 first_iteration = false;
         }
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         OpenglUtils.checkGLError();
     }

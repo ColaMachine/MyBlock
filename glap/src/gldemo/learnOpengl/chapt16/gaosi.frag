@@ -1,6 +1,5 @@
 #version 330 core
 out vec4 FragColor;
-//传出的高斯模糊后的图片
 in vec2 TexCoords;
  //传入的亮光图片
 uniform sampler2D ourTexture0;
@@ -8,7 +7,7 @@ uniform sampler2D ourTexture0;
 uniform bool horizontal;
  //从中心往四边的权重比
 uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
- 
+
 void main()
 {             
     vec2 tex_offset = 1.0 / textureSize(ourTexture0, 0); // 获取一个纹理像素的大小
