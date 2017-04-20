@@ -28,6 +28,8 @@ public class Bloom {
     public void init(){
         this.createLightFBO();
         this.createGaosiFBO();
+
+
     }
     /**
      * 用来存储原始图 和 高亮区域的图

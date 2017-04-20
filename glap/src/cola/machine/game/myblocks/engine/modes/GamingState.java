@@ -513,7 +513,7 @@ if(!Switcher.SHADER_ENABLE)
         }
 
 
-
+        OpenglUtils.checkGLError();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_BLEND);
@@ -526,7 +526,7 @@ if(!Switcher.SHADER_ENABLE)
             GL11.glLoadIdentity();
             OpenglUtils.checkGLError();
         }
-
+        OpenglUtils.checkGLError();
 //        Util.checkGLError();
 
         //glTranslatef( 0.0f, 0.0f, -5.0f );
@@ -552,10 +552,14 @@ if(!Switcher.SHADER_ENABLE)
        // if(Constants.HDR_ENABLE &&  Math.random()>0.1) {
 
             //绑定使用帧缓冲 fbo
+        GL20.glUseProgram(shaderManager.hdrShaderConfig.getProgramId());
             GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.hdrFBO);
+        OpenglUtils.checkGLError();
             // ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.lightShaderConfig.getVao());
-            glClear(GL_DEPTH_BUFFER_BIT);
-        ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
+          //  glClear(GL_DEPTH_BUFFER_BIT);
+        //取一个帧缓冲
+        worldRenderer.render(shaderManager.hdrShaderConfig);
+        //ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
         OpenglUtils.checkGLError();
        // worldRenderer.render();
            // livingThingManager.render();
@@ -600,7 +604,7 @@ if(!Switcher.SHADER_ENABLE)
             Util.checkGLError();
             glBindVertexArray(0);*/
 
-//            ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
+           ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
 
 //
             OpenglUtils.checkGLError();
