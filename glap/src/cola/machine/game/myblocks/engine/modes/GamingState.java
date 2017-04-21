@@ -284,7 +284,7 @@ if(!Switcher.SHADER_ENABLE)
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
                     TextureInfo info =new TextureInfo();
-                    info.textureHandle=shaderManager.bloom.pingpongBuffer[1];
+                    info.textureHandle=shaderManager.hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
                     info.minX=0;
                     info.minY=0;
                     info.maxX=1;
@@ -493,7 +493,7 @@ if(!Switcher.SHADER_ENABLE)
      * 主要绘制流程
      */
     public void render() {
-
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //不应该每次都绘制 二应该放入
         if(Constants.SHADOW_ENABLE &&  Math.random()>0.1) {
 
@@ -503,7 +503,7 @@ if(!Switcher.SHADER_ENABLE)
             glViewport(0, 0, 1024, 1024);
             //绑定使用帧缓冲 fbo
             GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.depthMapFBO);
-            glClear(GL_DEPTH_BUFFER_BIT);
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
             //GL30.RenderScene(simpleDepthShader);
             worldRenderer.render(shaderManager.shadowShaderConfig);
             //去掉fbo
@@ -515,7 +515,7 @@ if(!Switcher.SHADER_ENABLE)
 
         OpenglUtils.checkGLError();
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         glEnable(GL_BLEND);
         //亮度按照人眼做调整 2.2次方
        // glEnable(GL30.GL_FRAMEBUFFER_SRGB);
@@ -552,13 +552,14 @@ if(!Switcher.SHADER_ENABLE)
        // if(Constants.HDR_ENABLE &&  Math.random()>0.1) {
 
             //绑定使用帧缓冲 fbo
-        GL20.glUseProgram(shaderManager.hdrShaderConfig.getProgramId());
+        //GL20.glUseProgram(shaderManager.hdrShaderConfig.getProgramId());
             GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.hdrFBO);
         OpenglUtils.checkGLError();
-            // ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.lightShaderConfig.getVao());
-          //  glClear(GL_DEPTH_BUFFER_BIT);
+             //ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.lightShaderConfig.getVao());
+            glClear(GL_DEPTH_BUFFER_BIT);
         //取一个帧缓冲
-        worldRenderer.render(shaderManager.hdrShaderConfig);
+        worldRenderer.render();
+       // worldRenderer.render(shaderManager.hdrShaderConfig);
         //ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
         OpenglUtils.checkGLError();
        // worldRenderer.render();
@@ -585,9 +586,9 @@ if(!Switcher.SHADER_ENABLE)
         //乒乓渲染 高斯模糊
 
         //这里需要注意的是 需要把亮纹理传入到shader程序中
-        shaderManager.bloom.getBrightTexture(shaderManager);
+        //shaderManager.bloom.getBrightTexture(shaderManager);
         OpenglUtils.checkGLError();
-       shaderManager.bloom.render(shaderManager);
+       //shaderManager.bloom.render(shaderManager);
         OpenglUtils.checkGLError();
 
             //将当前帧缓存入一个 缓冲帧

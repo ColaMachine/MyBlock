@@ -568,7 +568,7 @@ try {
         OpenglUtils.checkGLError();
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
-        glUseProgram(0);
+        //glUseProgram(0);
     }
     /*
     public static void finalDraw2DImage(){

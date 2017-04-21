@@ -122,9 +122,9 @@ public class ShaderManager {
     }
 
     public void init() {
-        bloom=new Bloom();
-bloom.init();
-        initBloom();
+//        bloom=new Bloom();
+//bloom.init();
+
         //公用的阴影
         if (Constants.SHADOW_ENABLE) {
             shadowInit();
@@ -135,7 +135,8 @@ bloom.init();
         if (Constants.HDR_ENABLE) {
             initHdr();
         }
-
+        //这里需要initHdr产生的hdrFBO
+        //initBloom();
         //Vao terrainVao = new Vao();
         this.createProgram(terrainShaderConfig);
         //terrainShaderConfig.getVao().setVertices(BufferUtils.createFloatBuffer(902400));
@@ -180,7 +181,7 @@ bloom.init();
 
         //;
 
-        bloom.initVaoAndBindTexture(this);
+        //bloom.initVaoAndBindTexture(this);
     }
 
     public  int hdrFBO;
@@ -258,6 +259,8 @@ bloom.init();
     public void initBloom(){
         //创建hdrFBo帧缓冲
        // int hdrFBO = glGenFramebuffers();
+
+        //hdrFBO还是空的
         glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO); OpenglUtils.checkGLError();
 //        int colorTexture0= glGenTextures();
 //        int colorTexture1= glGenTextures();
@@ -281,9 +284,10 @@ bloom.init();
         }
 
         int attachments[]={GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-         bloomAttachments = BufferUtils.createIntBuffer(2);
-        bloomAttachments.put(attachments);
+         bloomAttachments = BufferUtils.createIntBuffer(2);//
+        bloomAttachments.put(GL_COLOR_ATTACHMENT0).put(GL_COLOR_ATTACHMENT1);
         bloomAttachments.rewind();
+        GL20.glDrawBuffers( bloomAttachments);OpenglUtils.checkGLError();
         //glDrawBuffers(intBuffer);
         glBindFramebuffer(GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
     }

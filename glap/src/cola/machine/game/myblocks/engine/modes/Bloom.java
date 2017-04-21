@@ -5,6 +5,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
@@ -20,7 +21,7 @@ import static org.lwjgl.opengl.GL30.*;
  * Created by luying on 17/4/17.
  */
 public class Bloom {
-    ShaderConfig config ;
+   // ShaderConfig config ;
     int horizontalLoc;
     int pingpongFBO[]=new int[2];
     int pingpongBuffer[]=new int[2];
@@ -33,12 +34,15 @@ public class Bloom {
     }
     /**
      * 用来存储原始图 和 高亮区域的图
+     * 这里只用到了1个buffer 但是 会输出两张texture
      */
+    public int lightFBO;
     public void createLightFBO(){
-        int hdrFBO
-        = glGenFramebuffers();
-        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
-
+//        int hdrFBO
+//        = glGenFramebuffers();
+//        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+         lightFBO = glGenFramebuffers();
+        glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
         colorBuffers[0]= glGenTextures();
         colorBuffers[1]= glGenTextures();
         for (int i = 0; i < 2; i++)
@@ -61,6 +65,7 @@ public class Bloom {
 
     /**
      * 用来暂存高斯模糊的临时
+     * 这里用到了两张帧缓存 互相渲染
      */
     public void createGaosiFBO(){
 
@@ -95,8 +100,9 @@ public class Bloom {
         ShaderUtils.createVao(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao(),new int[]{2,2});
         OpenglUtils.checkGLError();
     }
+    Vao horizontalVao = new Vao();
     public void getBrightTexture(ShaderManager shaderManager){
-        GL20.glDrawBuffers( shaderManager.bloomAttachments);
+
         shaderManager.bloomShaderConfig.getVao().getVertices().rewind();
         //ShaderUtils.draw2dImg(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),shaderManager.hdrTextureHandler);
         //ShaderUtils.createVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),new int[]{2,2});
@@ -110,18 +116,33 @@ public class Bloom {
     public void render(ShaderManager shaderManager){
         boolean horizontal = true, first_iteration = true;
         int amount = 10;
-
-        config.use();
+        //使用高斯模糊shader 进行兵乓球式的渲染
+       glUseProgram( shaderManager.gaosiShaderConfig.getProgramId());
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        glUniform1i(glGetUniformLocation(shaderManager.gaosiShaderConfig.getProgramId(), "ourTexture0"), 0);
+        OpenglUtils.checkGLError();
+        //获得是否水平参数位置
+        int hirizonTalLoc = glGetUniformLocation(shaderManager.gaosiShaderConfig.getProgramId(), "horizontal");
+        //10次乒乓球式横竖模糊
         for (int i = 0; i < amount; i++)
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal?1:0]);
-            glUniform1i(glGetUniformLocation(config.getProgramId(), "horizontal"), horizontal?1:0);
+            glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal?1:0]);OpenglUtils.checkGLError();
+            //1 为true 0 为false
+
+            glUniform1i(hirizonTalLoc, horizontal?1:0);OpenglUtils.checkGLError();//为什么这里第二次赋值就会报错 1282错误
+            //glUniform1i(hirizonTalLoc, 1);OpenglUtils.checkGLError();
+
+
+
+
+
             glBindTexture(
                     GL_TEXTURE_2D, first_iteration ? colorBuffers[1] : pingpongBuffer[horizontal?0:1]
-            );
-            shaderManager.gaosiShaderConfig.getVao().getVertices().rewind();
+            );OpenglUtils.checkGLError();
+
+            shaderManager.gaosiShaderConfig.getVao().getVertices().rewind();OpenglUtils.checkGLError();
             //这里需要注意 需要提前绑定纹理 并且创建vao 需要在shader 创建结束后干这件事
-            ShaderUtils.finalDraw(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao());
+            ShaderUtils.finalDraw(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao());OpenglUtils.checkGLError();
             horizontal = !horizontal;
             if (first_iteration)
                 first_iteration = false;

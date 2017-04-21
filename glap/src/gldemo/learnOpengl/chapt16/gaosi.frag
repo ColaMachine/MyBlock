@@ -2,13 +2,13 @@
 out vec4 FragColor;
 in vec2 TexCoords;
 uniform sampler2D ourTexture0;
-uniform bool horizontal;
+uniform int horizontal;
 uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
 void main()
 {             
     vec2 tex_offset = 1.0 / textureSize(ourTexture0, 0);
     vec3 result = texture(ourTexture0, TexCoords).rgb * weight[0];
-    if(horizontal)
+    if(horizontal==1)
     {
         for(int i = 1; i < 5; ++i)
         {
