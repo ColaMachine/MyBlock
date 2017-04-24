@@ -4,7 +4,7 @@ package com.dozenx.game.engine.command;
  * Created by luying on 17/2/13.
  */
 public enum ItemBlockType {
-    NULL,SAND_STONE,SOIL,STONE,WOOD;
+    NULL,SAND,SOIL,STONE,WOOD,MANTLE,WATER;
 
     public int getType(){
         return this.ordinal();

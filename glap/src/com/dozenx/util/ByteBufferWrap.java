@@ -5,6 +5,7 @@ package com.dozenx.util;
  */
 
 import cola.machine.game.myblocks.engine.Constants;
+import core.log.LogUtil;
 import org.lwjgl.BufferUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -49,6 +50,7 @@ public class ByteBufferWrap
         return this;
     }
     public ByteBufferWrap put(byte[] ary){
+        preCheck(ary.length);
         for(int i=0;i<ary.length;i++){
            // if(buffer.remaining()<10){
                 if(buffer.position()>buffer.limit()-10){
@@ -64,22 +66,35 @@ public class ByteBufferWrap
         return this;
     }
     public ByteBufferWrap put(int val){
+        preCheck(4);
         buffer.put(ByteUtil.getBytes(val));
         return this;
     }
+    public void preCheck(int size){
+        if(buffer.position()>buffer.limit()-size){
+            LogUtil.err("长度快到限了");
+
+       ByteBuffer newbyteBuffer =  BufferUtils.createByteBuffer(buffer.limit()*2);
+        buffer.flip();
+        newbyteBuffer.put(buffer);
+        buffer = newbyteBuffer;
+        }
+    }
     public ByteBufferWrap put(short val){
+        preCheck(4);
         buffer.put(ByteUtil.getBytes(val));
         return this;
     }
     public ByteBufferWrap put(boolean val){
+        preCheck(4);
         buffer.put(val?(byte)1:(byte)0);
         return this;
     }
-    public ByteBufferWrap put(float val){
+    public ByteBufferWrap put(float val){ preCheck(4);
         buffer.put(ByteUtil.getBytes(val));
         return this;
     }
-    public ByteBufferWrap putLenStr(String str){
+    public ByteBufferWrap putLenStr(String str){ preCheck(str.length()*4);
         byte[] bytes=str.getBytes(Constants.CHARSET);
         buffer.put(ByteUtil.getBytes(bytes.length));
         buffer.put(bytes);

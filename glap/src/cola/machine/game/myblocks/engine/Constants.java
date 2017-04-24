@@ -96,4 +96,5 @@ public class Constants {
     public static boolean SHADOW_ENABLE=true;
 
     public static boolean HDR_ENABLE=true;
+    public static boolean GAOSI_ENABLE=false;
 }

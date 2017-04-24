@@ -1,10 +1,8 @@
 package com.dozenx.game.graphics.shader;
 
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.engine.modes.Bloom;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.math.Vector2i;
-import com.sun.prism.ps.Shader;
+import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -22,7 +20,6 @@ import javax.vecmath.Point4f;
 import javax.vecmath.Vector2f;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
@@ -98,21 +95,20 @@ public class ShaderManager {
     //gaosi
     public static ShaderConfig gaosiShaderConfig = new ShaderConfig("gaosi", "chapt16/gaosi.frag", "chapt16/gaosi.vert");
 
+    //gaosihebing
+    public static ShaderConfig gaosihebingShaderConfig = new ShaderConfig("gaosihebing", "chapt16/gaosihebing.frag", "chapt16/gaosihebing.vert");
+
 
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
-    //阴影纹理
-    public int depthMap;
-    //阴影缓冲帧
-    public int depthMapFBO;
-    //阴影生成的时候用到的光线视角矩阵
-    GL_Matrix lightViewMatrix;
+
+
     //透视矩阵
     GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     //相机
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
-
+    public Hdr hdr;
     public Bloom bloom ;
-
+    public Shadow shadow;//阴影
     public void registerConfig(ShaderConfig config) throws Exception {
         if (StringUtil.isBlank(config.getName())) {
             throw new Exception("not allow shader config has no name!");
@@ -122,19 +118,18 @@ public class ShaderManager {
     }
 
     public void init() {
-//        bloom=new Bloom();
-//bloom.init();
+
+      //  bloom.init();
 
         //公用的阴影
         if (Constants.SHADOW_ENABLE) {
-            shadowInit();
+            shadow =new Shadow();
+            //shadowInit();
             this.createProgram(shadowShaderConfig);
             this.initUniform(shadowShaderConfig);
 
         }
-        if (Constants.HDR_ENABLE) {
-            initHdr();
-        }
+
         //这里需要initHdr产生的hdrFBO
         //initBloom();
         //Vao terrainVao = new Vao();
@@ -147,12 +142,9 @@ public class ShaderManager {
         this.createProgram(anotherShaderConfig);
         this.createProgram(dropItemShaderConfig);
         this.createProgram(uifloatShaderConfig);
-        this.createProgram(hdrShaderConfig);
 
-        this.createProgram(gaosiShaderConfig);
-        this.createProgram(bloomShaderConfig);
-        this.initUniform(gaosiShaderConfig);
-        this.initUniform(bloomShaderConfig);
+
+
 
         // this.CreateTerrainVAO();
         // ShaderUtils.initProModelView(terrainShaderConfig);
@@ -169,7 +161,7 @@ public class ShaderManager {
         this.initUniform(anotherShaderConfig);
         this.initUniform(dropItemShaderConfig);
         this.initUniform(uifloatShaderConfig);
-        this.initUniform(hdrShaderConfig);
+
         // this.initUniform(shadowShaderConfig);
 
         //this.createProgram(lightShaderConfig);
@@ -180,165 +172,67 @@ public class ShaderManager {
         //this.uniformLight();
 
         //;
+        if (Constants.HDR_ENABLE) {
+            hdr =new Hdr();
+            this.createProgram(hdrShaderConfig);
+            this.initUniform(hdrShaderConfig);
+        }
+        if(Constants.GAOSI_ENABLE) {
+            this.createProgram(gaosiShaderConfig);
+            this.createProgram(bloomShaderConfig);
+            this.createProgram(gaosihebingShaderConfig);
+            this.initUniform(gaosiShaderConfig);
+            this.initUniform(bloomShaderConfig);
+            this.initUniform(gaosihebingShaderConfig);
+            bloom = new Bloom();
+            bloom.initVaoAndBindTexture(this);
 
-        //bloom.initVaoAndBindTexture(this);
-    }
-
-    public  int hdrFBO;
-    public int hdrTextureHandler;
-    public void initHdr(){
-        //创建hdrFBo帧缓冲
-         hdrFBO = glGenFramebuffers();
-        //绑定告诉系统当前使用的帧缓冲是这个
-        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
-//        int colorTexture0= glGenTextures();
-//        int colorTexture1= glGenTextures();
-        //创建一个帧缓冲的纹理和创建普通纹理差不多：
-         hdrTextureHandler =glGenTextures();
-
-        glBindTexture(GL_TEXTURE_2D, hdrTextureHandler);
-
-        glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_RGB16F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer)null
-        );
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-       // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-      //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-
-       // glBindTexture(GL_TEXTURE_2D, 0);
-        // 帧缓冲连接上纹理
-
-        //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, hdrFBO);
-        ShaderUtils.checkGLError();
-        glFramebufferTexture2D(
-                GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 , GL_TEXTURE_2D, hdrTextureHandler, 0
-        );
-
-       // GL11.glDrawBuffer(GL11.GL_NONE);
-       // GL11.glReadBuffer(GL11.GL_NONE);
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        ShaderUtils.checkGLError();
-//        ///=====================
-//        depthMapFBO = glGenFramebuffers();
-//
-//        //然后，创建一个2D纹理，提供给帧缓冲的深度缓冲使用：
-//        int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-//        depthMap = GL11.glGenTextures();
-//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthMap);
-//
-//        GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
-//                0,                        // level of detail
-//                GL11.GL_DEPTH_COMPONENT,            // internal format for texture is RGB with Alpha
-//                SHADOW_WIDTH, SHADOW_HEIGHT,                    // size of texture image
-//                0,                        // no border
-//                GL11.GL_DEPTH_COMPONENT,            // incoming pixel format: 4 bytes in RGBA order
-//                GL11.GL_UNSIGNED_BYTE,    // incoming pixel data type: unsigned bytes
-//                (ByteBuffer) null);                // incoming pixels
-//
-//
-//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-//
-//        //把我们把生成的深度纹理作为帧缓冲的深度缓冲：
-//        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, depthMapFBO);
-//        //将texture 和fbo结合 这个fbo最后用于存储我们绘制的一帧 这个帧画面存储到纹理中 这里的GL_DEPTH_ATTACHMENT 是
-//        //当把一个纹理链接到帧缓冲的颜色缓冲上时，我们可以指定一个颜色附件
-//        //一直使用着GL_COLOR_ATTACHMENT0，  也可指定GL_COLOR_ATTACHMENT1
-//        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthMap, 0);
-//        GL11.glDrawBuffer(GL11.GL_NONE);
-//        GL11.glReadBuffer(GL11.GL_NONE);
-//        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-//        ShaderUtils.checkGLError();
-        //int attachments[]={GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-        //glDrawBuffers(2, attachments);
-
-    }
-    public void initBloom(){
-        //创建hdrFBo帧缓冲
-       // int hdrFBO = glGenFramebuffers();
-
-        //hdrFBO还是空的
-        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO); OpenglUtils.checkGLError();
-//        int colorTexture0= glGenTextures();
-//        int colorTexture1= glGenTextures();
-        int colorTextureAry[] = {glGenTextures(),glGenTextures()}; OpenglUtils.checkGLError();
-
-        for(int i=0;i<2;i++){
-            glBindTexture(GL_TEXTURE_2D, colorTextureAry[i]); OpenglUtils.checkGLError();
-
-            glTexImage2D(
-                    GL_TEXTURE_2D, 0, GL_RGB16F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer)null
-            ); OpenglUtils.checkGLError();
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);OpenglUtils.checkGLError();
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);OpenglUtils.checkGLError();
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);OpenglUtils.checkGLError();
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);OpenglUtils.checkGLError();
-            // 帧缓冲连接上纹理
-            glFramebufferTexture2D(
-                    GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorTextureAry[i], 0
-            ); OpenglUtils.checkGLError();
 
         }
 
-        int attachments[]={GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-         bloomAttachments = BufferUtils.createIntBuffer(2);//
-        bloomAttachments.put(GL_COLOR_ATTACHMENT0).put(GL_COLOR_ATTACHMENT1);
-        bloomAttachments.rewind();
-        GL20.glDrawBuffers( bloomAttachments);OpenglUtils.checkGLError();
-        //glDrawBuffers(intBuffer);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
     }
+
+
+//    public void initBloom1(){
+//        //创建hdrFBo帧缓冲
+//       // int hdrFBO = glGenFramebuffers();
+//
+//        //hdrFBO还是空的
+//        glBindFramebuffer(GL_FRAMEBUFFER, bloom.lightFBO); OpenglUtils.checkGLError();
+////        int colorTexture0= glGenTextures();
+////        int colorTexture1= glGenTextures();
+//        int colorTextureAry[] = {glGenTextures(),glGenTextures()}; OpenglUtils.checkGLError();
+//
+//        for(int i=0;i<2;i++){
+//            glBindTexture(GL_TEXTURE_2D, colorTextureAry[i]); OpenglUtils.checkGLError();
+//
+//            glTexImage2D(
+//                    GL_TEXTURE_2D, 0, GL_RGB16F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer)null
+//            ); OpenglUtils.checkGLError();
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);OpenglUtils.checkGLError();
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);OpenglUtils.checkGLError();
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);OpenglUtils.checkGLError();
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);OpenglUtils.checkGLError();
+//            // 帧缓冲连接上纹理
+//            glFramebufferTexture2D(
+//                    GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorTextureAry[i], 0
+//            ); OpenglUtils.checkGLError();
+//
+//        }
+//
+//        int attachments[]={GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+//         bloomAttachments = BufferUtils.createIntBuffer(2);//
+//        bloomAttachments.put(GL_COLOR_ATTACHMENT0).put(GL_COLOR_ATTACHMENT1);
+//        bloomAttachments.rewind();
+//        GL20.glDrawBuffers( bloomAttachments);OpenglUtils.checkGLError();
+//        //glDrawBuffers(intBuffer);
+//        glBindFramebuffer(GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
+//    }
     //存放2 3 附件
-    public IntBuffer bloomAttachments;
+    //public IntBuffer bloomAttachments;
 
 
-    /**
-     * 阴影缓冲帧的初始化
-     */
-    public void shadowInit() {
-        //初始化正交矩阵 阴影灯的视角用
-        float near_plane = 1.0f, far_plane = 107.5f;
-        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-        lightViewMatrix = GL_Matrix.multiply(ortho, GL_Matrix.LookAt(new GL_Vector(0, 15, 5), new GL_Vector(0, -0.3f, -1f)));
 
-        //首先，我们要为渲染的深度贴图创建一个帧缓冲对象：
-        depthMapFBO = glGenFramebuffers(); OpenglUtils.checkGLError();
-
-        //然后，创建一个2D纹理，提供给帧缓冲的深度缓冲使用：
-        int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-        depthMap = GL11.glGenTextures(); OpenglUtils.checkGLError();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthMap);
-        OpenglUtils.checkGLError();
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
-                0,                        // level of detail
-                GL11.GL_DEPTH_COMPONENT,            // internal format for texture is RGB with Alpha
-                SHADOW_WIDTH, SHADOW_HEIGHT,                    // size of texture image
-                0,                        // no border
-                GL11.GL_DEPTH_COMPONENT,            // incoming pixel format: 4 bytes in RGBA order
-                GL11.GL_UNSIGNED_BYTE,    // incoming pixel data type: unsigned bytes
-                (ByteBuffer) null);                // incoming pixels
-
-        OpenglUtils.checkGLError();
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT); OpenglUtils.checkGLError();
-
-        //把我们把生成的深度纹理作为帧缓冲的深度缓冲：
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, depthMapFBO); OpenglUtils.checkGLError();
-        //将texture 和fbo结合 这个fbo最后用于存储我们绘制的一帧 这个帧画面存储到纹理中 这里的GL_DEPTH_ATTACHMENT 是
-        //当把一个纹理链接到帧缓冲的颜色缓冲上时，我们可以指定一个颜色附件
-        //一直使用着GL_COLOR_ATTACHMENT0，  也可指定GL_COLOR_ATTACHMENT1
-        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthMap, 0);
-        GL11.glDrawBuffer(GL11.GL_NONE); OpenglUtils.checkGLError();
-        GL11.glReadBuffer(GL11.GL_NONE); OpenglUtils.checkGLError();
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        ShaderUtils.checkGLError();
-        //阴影矩阵unfiorm 已经移入initUniform里了 shadowLightVeiwMatrix model矩阵其实可以弃用了
-    }
 
     //应该删除了
 //    public void CreateTerrainVAO1() {
@@ -467,20 +361,21 @@ public class ShaderManager {
     }
 
 
-    public static void lightPosChangeListener() {
+    public  void lightPosChangeListener() {
 
 
-        float near_plane = 1.0f, far_plane = 107.5f;
-        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-        GL_Matrix lightViewMatrix = GL_Matrix.multiply(ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(0, -0.3f, -1f)));
+//        float near_plane = 1.0f, far_plane = 107.5f;
+//        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
 
+        shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(0, -0.3f, -1f))));
+       // GL_Matrix lightViewMatrix =  ShaderManager.getInstance().shadow.lightViewMatrix ;
 
         // if(!Constants.SHADOW_ENABLE) {
         //影响所有的地形里的灯光位置
         glUseProgram(terrainShaderConfig.getProgramId());
         glUniform3f(terrainShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
 
-        glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, lightViewMatrix.toFloatBuffer());
+        glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
 
 
         OpenglUtils.checkGLError();
@@ -498,7 +393,7 @@ public class ShaderManager {
         //config.setProjLoc(projectionLoc);
         OpenglUtils.checkGLError();
         //光源的视角
-        glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, lightViewMatrix.toFloatBuffer());
+        glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
 
         OpenglUtils.checkGLError();
 
@@ -563,7 +458,7 @@ public class ShaderManager {
             // OpenglUtils.checkGLError();
             // //光源的视角
             config.setShadowLightViewLoc(lightSpaceMatrixLoc);
-            glUniformMatrix4(lightSpaceMatrixLoc, false, lightViewMatrix.toFloatBuffer());
+            glUniformMatrix4(lightSpaceMatrixLoc, false, shadow.getLightViewMatrix().toFloatBuffer());
             //config.setViewLoc(viewLoc);
             OpenglUtils.checkGLError();
         }
@@ -700,7 +595,8 @@ public class ShaderManager {
                 config.setDepthMapLoc(depthMapLoc);
                 //但是不能用这个方法 这个方法的前半段是正确的 将纹理id映射到全局的texture顺序上
                 //但是后半段 她会根据config的
-                int loc = ShaderUtils.bindDepth(config, this.depthMap);
+                //这里要确保再shadow的depthMap初始化后
+                int loc = ShaderUtils.bindDepth(config, shadow.getDepthMap());
 
                /* GL13.glActiveTexture(GL13.GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);

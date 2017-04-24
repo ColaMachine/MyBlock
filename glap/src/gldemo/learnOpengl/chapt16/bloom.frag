@@ -5,9 +5,13 @@ in vec2 TexCoords;
 uniform sampler2D ourTexture0;
 void main()
 {
-    vec3 lighting = texture(ourTexture0, TexCoords).rgb;
+FragColor= texture(ourTexture0, TexCoords);
+    vec3 lighting = FragColor.rgb;
     float brightness = dot(lighting, vec3(0.2126, 0.7152, 0.0722));
-    if(brightness > 0){
-        BrightColor = vec4(lighting, 1.0);
+    //FragColor= lighting;
+    if(brightness > 1){
+        BrightColor = vec4(200,200,200, 1.0);
+    }else{
+     BrightColor = vec4(0,0,0, 1.0);
     }
 }

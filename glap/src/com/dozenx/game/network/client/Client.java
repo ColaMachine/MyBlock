@@ -219,7 +219,27 @@ public class Client extends Thread{
                     LogUtil.err("err");
 
                 }
-                n= inputSteram.read(bytes,0,length);
+
+                byte[] newBytes;
+                //int n=0;
+                if(length<4096){
+
+                    n = inputSteram.read(bytes, 0, length);
+
+                    newBytes = ByteUtil.slice(bytes, 0, length);
+
+                }else{
+                    newBytes = new byte[length];
+                    n=inputSteram.read(newBytes, 0, length);
+                }
+                int end = inputSteram.read();
+                if (n != length || end != Constants.end) {
+                    LogUtil.err(" read error ");
+                    beginRepair(inputSteram);
+                }
+                ByteUtil.clear(bytes);
+                //////////////////////////
+               /* n= inputSteram.read(bytes,0,length);
                 int end = inputSteram.read();
                 if(  n!=length || end!=Constants.end){
                     LogUtil.err(" read error ");
@@ -227,7 +247,7 @@ public class Client extends Thread{
                    // continue;
                 }
                 byte[] newBytes =  ByteUtil.slice(bytes,0,length);
-                ByteUtil.clear(bytes);
+                ByteUtil.clear(bytes);*/
                /* if(str==null){
                     LogUtil.println("失去连接 正在重新连接");
                     //Thread.sleep(1000);
@@ -280,7 +300,7 @@ public class Client extends Thread{
                                 task.run();
                                // task.notifyAll();
                             }else{
-                                LogUtil.err("不能为null");
+                                LogUtil.err(result.getThreadId()+"task 不能为null");
                             }
 
                         }

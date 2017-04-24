@@ -210,7 +210,7 @@ public class BagController {
         BagChangeCmd bagCmd =new BagChangeCmd(player.getId(), ItemUtil.toItemServerBean(itemBean),fromPosition,destPosition);
       ResultCmd resultCmd =  CoreRegistry.get(Client.class).syncSend( bagCmd);
         if(resultCmd!=null &&resultCmd.getResult()==0 ){
-            LogUtil.err("执行成功了");
+            LogUtil.println("执行成功了");
         }else{
             LogUtil.err(resultCmd.toString());
         }

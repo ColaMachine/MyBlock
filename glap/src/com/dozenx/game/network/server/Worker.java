@@ -139,14 +139,24 @@ public class Worker extends Thread {
                     if (length > 4096) {
                         LogUtil.err("err");
                     }
-                    int n = inputSteram.read(bytes, 0, length);
+                    //block 的数据过大了
+                    byte[] newBytes;
+                    int n=0;
+                    if(length<100){
+
+                         n = inputSteram.read(bytes, 0, length);
+
+                            newBytes = ByteUtil.slice(bytes, 0, length);
+
+                        }else{
+                            newBytes = new byte[length];
+                            n=inputSteram.read(newBytes, 0, length);
+                        }
                     int end = inputSteram.read();
                     if (n != length || end != Constants.end) {
                         LogUtil.err(" read error ");
                         beginRepair(inputSteram);
                     }
-
-                    byte[] newBytes = ByteUtil.slice(bytes, 0, length);
                     ByteUtil.clear(bytes);
 
 

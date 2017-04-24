@@ -238,7 +238,7 @@ boolean handled;
                 // pass key event to handler
                 //LogUtil.println("Character"+Keyboard.getEventCharacter());
 
-if(!Switcher.SHADER_ENABLE)
+            if(!Switcher.SHADER_ENABLE)
                 gui.handleKey(
                         Keyboard.getEventKey(),
                         Keyboard.getEventCharacter(),
@@ -284,7 +284,10 @@ if(!Switcher.SHADER_ENABLE)
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
                     TextureInfo info =new TextureInfo();
-                    info.textureHandle=shaderManager.hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
+                   info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
+                   // info.textureHandle=shaderManager.bloom.colorBuffers[1];//shaderManager.bloom.pingpongBuffer[1];//.colorBuffers[1];//shaderManager.bloom.colorBuffers[1];//////hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
+                   // info.textureHandle=shaderManager.hdr.getTextureId();
+                    //info.textureHandle=shaderManager.shadow.getDepthMap();
                     info.minX=0;
                     info.minY=0;
                     info.maxX=1;
@@ -496,20 +499,7 @@ if(!Switcher.SHADER_ENABLE)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //不应该每次都绘制 二应该放入
         if(Constants.SHADOW_ENABLE &&  Math.random()>0.1) {
-
-            GL20.glUseProgram(shaderManager.shadowShaderConfig.getProgramId());
-           // glEnable(GL_DEPTH_TEST);
-            //glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-            glViewport(0, 0, 1024, 1024);
-            //绑定使用帧缓冲 fbo
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.depthMapFBO);
-            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-            //GL30.RenderScene(simpleDepthShader);
-            worldRenderer.render(shaderManager.shadowShaderConfig);
-            //去掉fbo
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-            glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-           // glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+            shaderManager.shadow.render(shaderManager,worldRenderer);
         }
 
 
@@ -549,24 +539,31 @@ if(!Switcher.SHADER_ENABLE)
         glBindVertexArray(0);
         Util.checkGLError();*/
 
-       // if(Constants.HDR_ENABLE &&  Math.random()>0.1) {
+       if(Constants.HDR_ENABLE /*&&  Math.random()>0.1*/) {
+           shaderManager.hdr.render(worldRenderer);
+       }
+//        ShaderManager.hdrShaderConfig.getVao().getVertices().rewind();
 
-            //绑定使用帧缓冲 fbo
+//ShaderUtils.draw2dImg(ShaderManager.hdrShaderConfig,ShaderManager.hdrShaderConfig.getVao(),TextureManager.getTextureInfo("items").textureHandle);
+//        ShaderUtils.createVao(ShaderManager.hdrShaderConfig,ShaderManager.hdrShaderConfig.getVao(),new int[]{2,2});
+//        ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.hdrShaderConfig.getVao());
+
+        if(Constants.GAOSI_ENABLE){
+
+            shaderManager.bloom.getBrightTexture(shaderManager);
+            OpenglUtils.checkGLError();
+            shaderManager.bloom.renderGaosi(shaderManager);
+            OpenglUtils.checkGLError();
+
+            ShaderUtils.finalDraw(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao());
+            return;
+
+        }
+
+
+        //绑定使用帧缓冲 fbo
         //GL20.glUseProgram(shaderManager.hdrShaderConfig.getProgramId());
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.hdrFBO);
-        OpenglUtils.checkGLError();
-             //ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.lightShaderConfig.getVao());
-            glClear(GL_DEPTH_BUFFER_BIT);
-        //取一个帧缓冲
-        worldRenderer.render();
-       // worldRenderer.render(shaderManager.hdrShaderConfig);
-        //ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
-        OpenglUtils.checkGLError();
-       // worldRenderer.render();
-           // livingThingManager.render();
-            //去掉fbo
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        OpenglUtils.checkGLError();
+
             //把上一帧的画面留给缓冲帧对应的纹理 保存下来
 //            GL20.glUseProgram(shaderManager.hdrShaderConfig.getProgramId());
 //
@@ -586,12 +583,7 @@ if(!Switcher.SHADER_ENABLE)
         //乒乓渲染 高斯模糊
 
         //这里需要注意的是 需要把亮纹理传入到shader程序中
-        //shaderManager.bloom.getBrightTexture(shaderManager);
-        OpenglUtils.checkGLError();
-       //shaderManager.bloom.render(shaderManager);
-        OpenglUtils.checkGLError();
-
-            //将当前帧缓存入一个 缓冲帧
+  //将当前帧缓存入一个 缓冲帧
 
         //用制定的hdr进行重新绘制
         //}

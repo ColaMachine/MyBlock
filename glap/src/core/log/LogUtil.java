@@ -19,7 +19,7 @@ public class LogUtil {
     public static void err(String s){
         Throwable e =new Throwable();
         StackTraceElement[] eles = e.getStackTrace();
-        System.out.println(System.currentTimeMillis()+""+eles[1]+":"+s);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!"+System.currentTimeMillis()+""+eles[1]+":"+s);
        // System.exit(0);
     }
     public static void err(String s,Object[] objectes){

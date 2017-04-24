@@ -79,3 +79,28 @@ item 初步修正 究竟是itembean 包含 component 还是component 包含itemB
 解决光块不现实问题 发现一个重大bug 取shaderuniform的位置的时候 如果取不到的时候是-1 当初使用>0来判断的 导致位置是0的时候就不赋值了
  不应该每次都绘制阴影贴图 而应该再方块有变动后生成1次纹理贴图
 
+ 2017-04-22 16:22:43
+ 出现了万花筒的样子不知道是为何引起的,可能是draw2dimg
+ 2017-04-22 19:55:02依然没有查出是什么原因引起的万花筒
+ 包结构重新整理后 colorbuffer[0]又不正确了, pingpongbuffer 渲染然也不正确 看来要重新校对hdrTexuture了
+ 2017-04-22 22:17:28 发现hdrTexuterid 也不正确
+ 发现是hdr 的问题 没有执行init方法 是不是所有的texutureid调用的时候都要判断下 不能为0 (已经加上)
+ 阴影又不对了 天呐
+ 渲染出来的阴影texture 居然是非红图
+ 发现把hdr 关闭了就正常了
+问题应该处在hdr的init 加上前后的代码 因为我只要把init方法注释掉后就正常了, 如果加上去 感觉里面的纹理就变成另一个了
+depthMapBuffer 感觉被污染了
+
+问题好像找到了 是glBindText引起 尝试用GL13.glActiveTexture(GL13.GL_TEXTURE0);帮他们格力开来
+
+pingpong的texture 依然存在之前的问题 渲染的结果莫名其妙 一团黑的 边上有几点粉红色.这是因为我没有开启bloom的渲染缓存,但是直接地在屏幕上渲染只有右上角一点稍微对
+现在试着去渲染colorbuffer看看有没有之前的万花筒效应 colorbuffer还是万花筒 真是绝望了
+接下来我要检查shader 和我的shaderUtils.draw2dimg是否有问题
+
+感觉没有落入pingpongBuffer 把10次缩减为1次查看pingpongbuffer[1] 是有的
+感觉每次都缩减1/2引起的 修改和我的shaderUtils.draw2dimg
+为什么对一张items进行高斯模糊 有概率会呈现出从上到下 变黑的缓慢效果 还有以colorbuffer[1]为原图 高斯 会全黑
+如果把gaosi.frag改成原图输出就会有结果 ,但是如果改成 正常的高斯程序就会全黑
+再提取亮色的地方bloom.frag把亮度提高为200
+奇怪了把代码还原为上上步 又出不来了
+原来是我重启了之后没有百块导致的

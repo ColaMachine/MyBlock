@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import com.dozenx.game.engine.command.ItemBlockType;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.ByteUtil;
@@ -121,6 +122,17 @@ public class ChunkImpl implements Chunk {
 			 */
         }
         return blockManager.getBlock((short) oldValue);
+    }
+
+    @Override//返回原来的block 类型id  设置当前的block进入数据数组
+    public void setBlock(int x, int y, int z, ItemBlockType block) {
+        int oldValue = blockData.set(x, y, z, block.ordinal());
+       /* if (oldValue != block.ordinal()) {
+            *//*
+			 * if (!block.isLiquid()) { setLiquid(x, y, z, new LiquidData()); }
+			 *//*
+        }
+        return blockManager.getBlock((short) oldValue);*/
     }
 
     @Override

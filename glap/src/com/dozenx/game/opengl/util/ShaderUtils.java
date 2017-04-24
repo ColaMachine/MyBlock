@@ -1298,12 +1298,21 @@ try {
 
     public static void draw2dImg(ShaderConfig config ,Vao vao, int textureHandler) {
         int index = ShaderUtils.bindAndGetTextureIndex(config,textureHandler);
-        vao.getVertices().put(-0.5f).put(-0.5f).put(-0.5f).put(-0.5f);
-        vao.getVertices().put(0.5f).put(-0.5f).put(0.5f).put(-0.5f);
-        vao.getVertices().put(0.5f).put(0.5f).put(0.5f).put(0.5f);
-        vao.getVertices().put(-0.5f).put(0.5f).put(-0.5f).put(0.5f);
-        vao.getVertices().put(-0.5f).put(-0.5f).put(-0.5f).put(-0.5f);
-        vao.getVertices().put(0.5f).put(0.5f).put(0.5f).put(0.5f);
+     /*   float left =-0.5f;
+        float width=1;
+        float top=0.5f;
+        float height=1;
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);*/
+
+        vao.getVertices().put(-1f).put(-1f).put(0f).put(0f);
+        vao.getVertices().put(1f).put(-1f).put(1f).put(0f);
+        vao.getVertices().put(1f).put(1f).put(1f).put(1f);
+        vao.getVertices().put(-1f).put(1f).put(0f).put(1f);
+        vao.getVertices().put(-1f).put(-1f).put(0f).put(0f);
+        vao.getVertices().put(1f).put(1f).put(1f).put(1f);
     }
 
     /**
@@ -1657,6 +1666,10 @@ try {
      * @return
      */
     public  static Integer getActiveTextureLoc(int textureHandle){
+
+        if(textureHandle==0){
+            LogUtil.err("texutureid is 0");
+        }
         Integer activeTextureLoc = texHandle2glTexLocMap.get(textureHandle);
         if(activeTextureLoc==null){
 
@@ -1694,6 +1707,25 @@ try {
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
 
             }
+            else if(activeTextureLoc==7){
+                GL13.glActiveTexture(GL13.GL_TEXTURE7);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }
+            else if(activeTextureLoc==8){
+                GL13.glActiveTexture(GL13.GL_TEXTURE8);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }else if(activeTextureLoc==9){
+                GL13.glActiveTexture(GL13.GL_TEXTURE9);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }
+            else if(activeTextureLoc==10){
+                GL13.glActiveTexture(GL13.GL_TEXTURE10);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            }
 
 
         }
@@ -1709,6 +1741,9 @@ try {
     public static Integer bindAndGetTextureIndex(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
+        }
+        if(textureHandle==0){
+            LogUtil.err("textureId is  0 ");
         }
         //先根据纹理id 得到 绑定的纹理顺序值  如果已经绑定了 就返回这个顺序, 如果没绑定就自增并返回
         Integer glTexLoc = getActiveTextureLoc(textureHandle);//从
@@ -1771,6 +1806,9 @@ try {
     public static Integer bindDepth(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
+        }
+        if(textureHandle==0){
+            LogUtil.err("textureId is  0 ");
         }
         //先根据纹理id 得到 绑定的纹理顺序值  如果已经绑定了 就返回这个顺序, 如果没绑定就自增并返回
         Integer glTexLoc = getActiveTextureLoc(textureHandle);//从
@@ -2067,6 +2105,9 @@ try {
 
 
     }
+
+   static  float near_plane = 1.0f, far_plane = 107.5f;
+    public static GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
 }
 
 

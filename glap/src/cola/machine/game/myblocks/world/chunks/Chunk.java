@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.protobuf.ChunksProtobuf;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
+import com.dozenx.game.engine.command.ItemBlockType;
 
 
 public interface Chunk {
@@ -19,6 +20,7 @@ public interface Chunk {
     Block getBlock(int x, int y, int z);
 
     public void setBlock(int x, int y, int z, int block) ;
+    public void setBlock(int x, int y, int z, ItemBlockType block) ;
     Block setBlock(int x, int y, int z, Block block);
 
     Block setBlock(Vector3i pos, Block block);
