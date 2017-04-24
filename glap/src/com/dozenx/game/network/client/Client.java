@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
+import com.dozenx.util.SocketUtil;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -202,16 +203,16 @@ public class Client extends Thread{
                     Thread.sleep( 1000);
                     continue;
                 }
-                inputSteram.read(bytes,0,4);
+              /*  inputSteram.read(bytes,0,4);
                 int length = ByteUtil.getInt(bytes);ByteUtil.clear(bytes);
               //  LogUtil.println("client received data length: "+length);
                 if(length<=0){
-                  /* n=  inputSteram.read(bytes);
-                    if(n==-1){*/
+                  *//* n=  inputSteram.read(bytes);
+                    if(n==-1){*//*
                         LogUtil.err("socket 读取数据有问题 +"+length+"+ 已经自动断开");
                         beginRepair(inputSteram);
-                    /*    break;
-                    }*/
+                    *//*    break;
+                    }*//*
 
 
                 }
@@ -231,13 +232,16 @@ public class Client extends Thread{
                 }else{
                     newBytes = new byte[length];
                     n=inputSteram.read(newBytes, 0, length);
+                    if(n<length){
+
+                    }
                 }
                 int end = inputSteram.read();
                 if (n != length || end != Constants.end) {
                     LogUtil.err(" read error ");
                     beginRepair(inputSteram);
                 }
-                ByteUtil.clear(bytes);
+                ByteUtil.clear(bytes);*/
                 //////////////////////////
                /* n= inputSteram.read(bytes,0,length);
                 int end = inputSteram.read();
@@ -254,9 +258,10 @@ public class Client extends Thread{
                     continue;
                 }*/
 
-                if(newBytes .length <4 /*||ByteUtil.getInt(newBytes)>10*/ ){
+            /*    if(newBytes .length <4 *//*||ByteUtil.getInt(newBytes)>10*//* ){
                     LogUtil.err("错误");
-                }
+                }*/
+                byte[] newBytes = SocketUtil.read(inputSteram);
                 CmdType.printReceive(newBytes);
                // LogUtil.println("client 准备接收数据类型:"+ CmdType.values()[ByteUtil.getInt(newBytes)]+"长度:"+(length));
                 try {
@@ -266,7 +271,7 @@ public class Client extends Thread{
                         //continue;
                     }
                     GameCmd cmd = CmdUtil.getCmd(newBytes);
-                    //LogUtil.println("the cmd was : "+cmd.getCmdType());
+                    LogUtil.println("the received cmd was : "+cmd.getCmdType());
                     if (cmd.getCmdType()== CmdType.EQUIP) {//equip
                         equips.push((EquipCmd) cmd);
 

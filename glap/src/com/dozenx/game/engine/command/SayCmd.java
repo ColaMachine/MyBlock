@@ -33,7 +33,7 @@ public class SayCmd extends   BaseGameCmd{
 
         return ByteUtil.createBuffer().put(cmdType.getType())
                 .put(userId)
-                .putLenStr(this.userName)
+                .putLenStr(this.userName==null ? " ":this.userName)
                 .putLenStr(this.getMsg()).array();
 
     }

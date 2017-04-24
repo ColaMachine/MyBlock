@@ -30,6 +30,7 @@ import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.generator.FirstPassGenerator;
 import com.dozenx.game.engine.command.ItemBlockType;
+import com.dozenx.game.engine.command.ItemType;
 
 /**
  * Terasology's legacy map generator. Still rocks!
@@ -57,7 +58,7 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
     private Block snow;
     private Block dirt;*/
 
-    private ItemBlockType mantle = ItemBlockType.MANTLE;
+ /*   private ItemBlockType mantle = ItemBlockType.MANTLE;
     private ItemBlockType water =ItemBlockType.WATER;
     //private ItemBlockType ice = ;
     private ItemBlockType stone = ItemBlockType.STONE;
@@ -65,6 +66,19 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
     private ItemBlockType grass= ItemBlockType.SAND;
     private ItemBlockType snow= ItemBlockType.SAND;
     private ItemBlockType dirt= ItemBlockType.SAND;
+    */
+
+    private ItemType mantle = ItemType.mantle_block;
+    private ItemType water =ItemType.water_block;
+    //private ItemBlockType ice = ;
+    private ItemType stone = ItemType.stone_block;
+    private ItemType sand = ItemType.stone_block;
+    private ItemType grass= ItemType.stone_block;
+    private ItemType snow= ItemType.stone_block;
+    private ItemType dirt= ItemType.stone_block;
+
+
+
 
     public PerlinTerrainGenerator() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);

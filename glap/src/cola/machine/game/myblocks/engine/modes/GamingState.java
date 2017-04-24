@@ -283,16 +283,16 @@ boolean handled;
 
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
-                    TextureInfo info =new TextureInfo();
-                   info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
+                  //  TextureInfo info =new TextureInfo();
+                  // info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
                    // info.textureHandle=shaderManager.bloom.colorBuffers[1];//shaderManager.bloom.pingpongBuffer[1];//.colorBuffers[1];//shaderManager.bloom.colorBuffers[1];//////hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
                    // info.textureHandle=shaderManager.hdr.getTextureId();
                     //info.textureHandle=shaderManager.shadow.getDepthMap();
-                    info.minX=0;
+                 /*   info.minX=0;
                     info.minY=0;
                     info.maxX=1;
                     info.maxY=1;
-                    shadowDiv.setBackgroundImage(new Image(info));
+                    shadowDiv.setBackgroundImage(new Image(info));*/
                 }
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
                     mouseControlCenter.mouseLeftUp(cursorX, cursorY);

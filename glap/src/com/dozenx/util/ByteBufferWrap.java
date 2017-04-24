@@ -73,11 +73,18 @@ public class ByteBufferWrap
     public void preCheck(int size){
         if(buffer.position()>buffer.limit()-size){
             LogUtil.err("长度快到限了");
-
-       ByteBuffer newbyteBuffer =  BufferUtils.createByteBuffer(buffer.limit()*2);
-        buffer.flip();
-        newbyteBuffer.put(buffer);
-        buffer = newbyteBuffer;
+            /*if(buffer.limit()>size) {
+                ByteBuffer newbyteBuffer = BufferUtils.createByteBuffer(buffer.limit() * 2);
+                buffer.flip();
+                newbyteBuffer.put(buffer);
+                buffer = newbyteBuffer;
+            }else{*/
+                int num = ( buffer.limit()+size)/1256;
+                ByteBuffer newbyteBuffer = BufferUtils.createByteBuffer(1256*(num+1) );
+            buffer.flip();
+            newbyteBuffer.put(buffer);
+            buffer = newbyteBuffer;
+            //}
         }
     }
     public ByteBufferWrap put(short val){
@@ -103,7 +110,13 @@ public class ByteBufferWrap
     public String getLenStr(){
         int length = this.getInt();;
         byte[] msg = new byte[length];
-        buffer.get(msg,0,length);
+        try {
+            LogUtil.println(buffer.remaining()+"");
+            buffer.get(msg, 0, length);
+        }catch(java.nio.BufferUnderflowException e){
+            LogUtil.err(e);
+            throw e;
+        }
 
         return  new String(msg,Constants.CHARSET);
 

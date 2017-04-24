@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.util.ByteUtil;
+import com.dozenx.util.SocketUtil;
 import core.log.LogUtil;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
@@ -88,9 +89,13 @@ public class Worker extends Thread {
                     LogUtil.err("错误");
                 }*/
                 //
-               // CmdType.printSend(ByteUtil.slice(bytes,4,4));
+                // CmdType.printSend(ByteUtil.slice(bytes,4,4));
 //                LogUtil.println("server 准备发送数据类型:");
-                //LogUtil.println("server 准备发送数据类型:"+ CmdType.values()[(ByteUtil.getInt(ByteUtil.slice(bytes,4,4)))]+"长度:"+(bytes.length-4));
+                try{
+                    LogUtil.println("server 准备发送数据类型:" + CmdUtil.getCmd(bytes).toString() + "长度:" + (bytes.length - 4));
+                }catch (ArrayIndexOutOfBoundsException e) {
+                    LogUtil.err(e);
+                }
                 synchronized (this) {
                     outputStream.write(ByteUtil.getBytes(bytes.length));
                     outputStream.write(bytes);
@@ -120,18 +125,18 @@ public class Worker extends Thread {
                 // int n = br.read(bytes);
 
 
-                    inputSteram.read(bytes, 0, 4);
+                  /*  inputSteram.read(bytes, 0, 4);
                     int length = ByteUtil.getInt(bytes);
                     ByteUtil.clear(bytes);
                     if (length <= 0) {
-                  /* n=  inputSteram.read(bytes);
-                    if(n==-1){*/
+                  *//* n=  inputSteram.read(bytes);
+                    if(n==-1){*//*
                         LogUtil.err("socket 读取数据有问题 +" + length + "+ 已经自动断开");
                         this.end = true;
                         // this.close();
                         beginRepair(inputSteram);
-                    /*    break;
-                    }*/
+                    *//*    break;
+                    }*//*
 
 
                     }
@@ -157,23 +162,21 @@ public class Worker extends Thread {
                         LogUtil.err(" read error ");
                         beginRepair(inputSteram);
                     }
-                    ByteUtil.clear(bytes);
+                    ByteUtil.clear(bytes);*/
 
-
+                byte[] newBytes= SocketUtil.read(inputSteram);
                /* if(bytes[n-1]!='\n'){
                     LogUtil.err("socket read end is not \n:"+n);
                 }*/
-                    if (n == 0) {
-                        LogUtil.println("isOutputShutdown" + socket.isOutputShutdown());
-                        LogUtil.println("isClosed" + socket.isClosed());
-                        LogUtil.println("isConnected" + socket.isConnected());
-                        LogUtil.println("isInputShutdown" + socket.isInputShutdown());
-                        System.out.println("socket null so end");
-                        this.end = true;
-                        break;
-
-
-                    }
+                if (newBytes.length == 0) {
+                    LogUtil.println("isOutputShutdown" + socket.isOutputShutdown());
+                    LogUtil.println("isClosed" + socket.isClosed());
+                    LogUtil.println("isConnected" + socket.isConnected());
+                    LogUtil.println("isInputShutdown" + socket.isInputShutdown());
+                    System.out.println("socket null so end");
+                    this.end = true;
+                    break;
+                }
                /* if("END".equals(str)){
                     break;
                 }*/

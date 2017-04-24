@@ -125,7 +125,7 @@ public class ChunkImpl implements Chunk {
     }
 
     @Override//返回原来的block 类型id  设置当前的block进入数据数组
-    public void setBlock(int x, int y, int z, ItemBlockType block) {
+    public void setBlock(int x, int y, int z, ItemType block) {
         int oldValue = blockData.set(x, y, z, block.ordinal());
        /* if (oldValue != block.ordinal()) {
             *//*
