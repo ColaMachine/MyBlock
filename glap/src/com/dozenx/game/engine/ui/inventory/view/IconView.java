@@ -34,6 +34,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Image;
+import core.log.LogUtil;
 
 import javax.vecmath.Vector4f;
 
@@ -93,6 +94,9 @@ public class IconView extends HtmlObject {
       // label.setText(""+itemBean.getNum());
        // add(label);
         //label.setPosition(30,30);
+        if(itemBean==null || itemBean.getItemDefinition() == null || itemBean.getItemDefinition().getItemModel()==null){
+            LogUtil.err(" null ");
+        }
         this.setBackgroundImage(new Image(itemBean.getItemDefinition().getItemModel().getIcon()));
    /*     icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
         if(icon2==  null){

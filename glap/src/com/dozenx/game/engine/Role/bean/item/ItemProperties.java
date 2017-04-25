@@ -46,7 +46,8 @@ public class ItemProperties extends SkillProperties {
 
     }
     public void setItem(int position, ItemBean itemBean){
-        itemBeans[position] = itemBean;itemBean.setPosition(position);
+
+        itemBeans[position] = itemBean;if(itemBean!=null ){itemBean.setPosition(position);}
     }
     public void  setItems(List<ItemServerBean > list){
        // itemBeans.clear();

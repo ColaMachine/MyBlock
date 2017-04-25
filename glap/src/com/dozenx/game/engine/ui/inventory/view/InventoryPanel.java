@@ -55,7 +55,7 @@ public class InventoryPanel extends SlotPanel {
             slot[itemBean.getPosition()].setIconView(null);
         }*/
         for(int i=0;i<20;i++){
-            if(itemBeanList[i]!=null) {
+            if(itemBeanList[i]!=null &&itemBeanList[i].getItemDefinition()!=null ) {
                 slot[i].setIconView(new IconView(itemBeanList[i]));
             }else{
                 slot[i].setIconView(null);

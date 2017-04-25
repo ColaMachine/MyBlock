@@ -146,6 +146,9 @@ Client client;
             ChunkRequestCmd cmd = (ChunkRequestCmd) client.chunks.poll();
             Chunk chunk = chunkProvider.getChunk(new Vector3i(cmd.x,0,cmd.z));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
             chunk.setBlock(cmd.cx,cmd.cy,cmd.cz,cmd.blockType);
+            if(cmd.cy>20){
+                LogUtil.println(""+cmd.cy);
+            }
             chunk.build();
 
         }

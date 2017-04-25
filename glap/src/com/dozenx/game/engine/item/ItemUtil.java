@@ -18,12 +18,15 @@ public class ItemUtil {
     }
 
     public static ItemBean toItemBean(ItemServerBean itemServerBean){
-        ItemBean  itemBean=new ItemBean();
-        itemBean.setId(itemServerBean.getId());
-        itemBean.setItemDefinition(ItemManager.getItemDefinition(ItemType.values()[itemServerBean.getItemType()]));
-        itemBean.setNum(itemServerBean.getNum());
-        itemBean.setPosition(itemServerBean.getPosition());
-        return itemBean;
+        if(itemServerBean.getItemType()>0) {
+            ItemBean itemBean = new ItemBean();
+            itemBean.setId(itemServerBean.getId());
+            itemBean.setItemDefinition(ItemManager.getItemDefinition(ItemType.values()[itemServerBean.getItemType()]));
+            itemBean.setNum(itemServerBean.getNum());
+            itemBean.setPosition(itemServerBean.getPosition());
+            return itemBean;
+        }
+        return null;
     }
     public static ItemServerBean toItemServerBean(ItemBean itemBean){
         if(itemBean==null)return null;

@@ -72,8 +72,8 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
     private ItemType water =ItemType.water_block;
     //private ItemBlockType ice = ;
     private ItemType stone = ItemType.stone_block;
-    private ItemType sand = ItemType.stone_block;
-    private ItemType grass= ItemType.stone_block;
+    private ItemType sand = ItemType.sand_block;
+    private ItemType grass= ItemType.soil_block;
     private ItemType snow= ItemType.stone_block;
     private ItemType dirt= ItemType.stone_block;
 
