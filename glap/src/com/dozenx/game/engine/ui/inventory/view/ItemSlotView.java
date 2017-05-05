@@ -57,7 +57,7 @@ public class ItemSlotView extends HtmlObject {
     private DragListener listener;
     private boolean dragActive;
     private ParameterMap icons;
-    private int itemType ;
+    private int itemType ;//Constants.SLOT_TYPE_HAND  对应任务身上的位置
     public int index;
     private IconView iconView;
     public ItemSlotView(int type,int index ) {
@@ -98,17 +98,17 @@ public class ItemSlotView extends HtmlObject {
             this.allChildrenRemoved();
         }*/
         if(this.iconView==iconView)return;
-        BagController inventoryController = CoreRegistry.get(BagController.class);
+        BagController bagController = CoreRegistry.get(BagController.class);
         if(iconView!=null){
 
-            inventoryController.changePosition(iconView.getItemBean(),this.index);
+            bagController.changePosition(iconView.getItemBean(),this.index);
         }
 
         this.iconView = iconView;
         this.removeChild();
         this.appendChild(iconView);
         if(this.getItemType()>0){
-            inventoryController.loadEquip(this.getItemType(),iconView==null?null:iconView.getItemBean());
+            bagController.loadEquip(this.getItemType(),iconView==null?null:iconView.getItemBean());
         }
 
        /* if(iconView !=null ) {//穿上装备

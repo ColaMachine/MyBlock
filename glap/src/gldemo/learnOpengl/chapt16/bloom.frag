@@ -10,8 +10,8 @@ FragColor= texture(ourTexture0, TexCoords);
     float brightness = dot(lighting, vec3(0.2126, 0.7152, 0.0722));
     //FragColor= lighting;
     if(brightness > 1){
-        BrightColor = vec4(200,200,200, 1.0);
+        BrightColor = vec4(lighting.rgb, 1.0);
     }else{
-     BrightColor = vec4(0,0,0, 1.0);
+        BrightColor = vec4(0,0,0, 0);
     }
 }

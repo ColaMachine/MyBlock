@@ -4,6 +4,8 @@ import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import com.dozenx.game.engine.command.ItemBlockType;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
@@ -610,8 +612,13 @@ public class ChunkImpl implements Chunk {
 
         boolean flat = true;
         //blockDefManager.getBlockById()
+        ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[this.currentBlockType]);
+        if(ti==null|| itemDefinition.getShape()==null || itemDefinition.getShape().getTop()==null){
+            LogUtil.err(ti.name +"'shape  is null ");
+        }
+        ti= itemDefinition.getShape().getTop();
 
-        if(this.currentBlockType== ItemType.stone_block.ordinal()){
+        /*if(this.currentBlockType== ItemType.stone_block.ordinal()){
             ti = TextureManager.getTextureInfo("stone");
         }else if(this.currentBlockType== ItemType.soil_block.ordinal()){
             ti = TextureManager.getTextureInfo("soil");
@@ -621,7 +628,7 @@ public class ChunkImpl implements Chunk {
             ti = TextureManager.getTextureInfo("wood");
         }else {
             ti = TextureManager.getTextureInfo("wood");
-        }/*
+        }*//*
         switch (this.currentBlockType) {
             case ItemType.stone_block.ordinal():
                 ti = TextureManager.getTextureInfo("stone");
@@ -764,6 +771,9 @@ public class ChunkImpl implements Chunk {
 
     }
     public void addToVao( GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Vector normal){
+        if(ti==null){
+            LogUtil.err("in chunkimpl ti shoud not be null !");
+        }
         if(currentBlockType!=3&& currentBlockType!=6){
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
         }else{
@@ -1376,32 +1386,39 @@ public class ChunkImpl implements Chunk {
         List<Integer> arr = new ArrayList<>();
         for(int x =0;x<16;x++){
 
-            for(int y =0;y<16;y++){
+            for(int y =0;y<128;y++){
 
                 for(int z =0;z<16;z++){
                     int value = blockData.get(x,y,z);
                     //x<<12 && y<<8&& z <<4 && value
                     if(value>0){
-                        int unionValue = ByteUtil.unionBinary4_4_4_24(x, y, z, value);
+                        int unionValue = ByteUtil.unionBinary4_4_8_16(x, z,y, value);
+                        if(y>8){
+                            LogUtil.println("hello");
+                        }
                         arr.add(unionValue);
-
+                            //自检 看
                          int newArr[]= ByteUtil.getValueSplit8Slot(unionValue);
-                        if(newArr[0]!=x || newArr[1]!=y || newArr[2]!=z){
+                        if(newArr[0]!=x || newArr[2]!=y || newArr[1]!=z || newArr[3]!=value){
                             LogUtil.err("some err xyz is not negative");
                         }
+                       /* if(y>17){
+                            LogUtil.println("hello");
+                        }*/
                     }
 
                 }
             }
         }
+   // arr.clear();arr.add(ByteUtil.unionBinary4_4_8_16(0, 0,24, 103));
     Integer newArr[] = new Integer[arr.size()];
          arr.toArray(newArr);
         return newArr;
     }
 
     public static void main(String args[]){
-        int x =8,y=0,z=0,value=102;
-        int unionValue = ByteUtil.unionBinary4_4_4_24(x,y,z,value);
+        int x =8,y=18,z=0,value=102;
+        int unionValue = ByteUtil.unionBinary4_4_8_16(x,z,y,value);
         int[] terr = ByteUtil.getValueSplit8Slot(unionValue);
 
         System.out.println( ByteUtil.toBinaryStr( ByteUtil.get32_28Value(unionValue)));

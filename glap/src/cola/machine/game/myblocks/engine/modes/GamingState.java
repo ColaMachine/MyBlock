@@ -2,8 +2,11 @@ package cola.machine.game.myblocks.engine.modes;
 
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Image;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
+import cola.machine.game.myblocks.world.generator.ChunkGenerators.GrayTerrainGenerator;
+import cola.machine.game.myblocks.world.generator.WorldGenerators.GrayWorldGenerator;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
@@ -65,6 +68,7 @@ import java.nio.IntBuffer;
 import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class GamingState implements GameState {
@@ -96,7 +100,18 @@ public class GamingState implements GameState {
     Document document ;
 
 
+    int cursorX;
+    int cursorY;
+    boolean handled;
 
+
+    DropControlCenter dcc = new DropControlCenter();
+    int frameCount=0;
+    long lastTime=0;
+    boolean shadow =false;
+
+    long nowTime=0;
+    int fps=0;
     public void init(GameEngine engine) {
 
         document= Document.getInstance();
@@ -139,7 +154,18 @@ public class GamingState implements GameState {
             document.body.appendChild(new ToolBarView(10,1));
 
             document.body.appendChild(new ChatPanel());
+            Div crossDiv = new Div();
+            crossDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("cross")));
+            crossDiv.setWidth(70);
+            crossDiv.setHeight(70);
 
+            crossDiv.setPosition(HtmlObject.POSITION_ABSOLUTE);
+
+            crossDiv.setLeft(Constants.WINDOW_WIDTH/2-35);
+            crossDiv.setTop(Constants.WINDOW_HEIGHT / 2 - 35);
+           // crossDiv.setBorderColor(new Vector4f(1,1,1,1));
+           // crossDiv.setBorderWidth(2);
+            document.body.appendChild(crossDiv);
 
             HeadPanel playerHeadPanel =new HeadPanel();
             document.body.appendChild(playerHeadPanel);
@@ -197,9 +223,6 @@ public ShaderManager shaderManager;
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
     }
 
-    int cursorX;
-    int cursorY;
-boolean handled;
     public void handleInput(float delta) {
         cursorX = Mouse.getEventX();
         cursorY = Mouse.getEventY();
@@ -213,7 +236,7 @@ boolean handled;
 
        // handled=false;
 
-        if (Keyboard.isCreated()) {
+        if (Keyboard.isCreated()) {// 按着不放不会进来
             while (Keyboard.next()) {
 
                if(document.handleKey(
@@ -224,7 +247,7 @@ boolean handled;
                    continue;
                }
 
-                keyDown(Keyboard.getEventKey());
+                mouseControlCenter.keyDown(Keyboard.getEventKey());
 
 
                 // check for exit key
@@ -260,7 +283,7 @@ boolean handled;
         if (Mouse.isCreated()) {
             mouseControlCenter.mouseMove(cursorX, cursorY);
             while (Mouse.next()) {
-
+                //ui系统接收鼠标事件
                 if(document.handleMouse(
                         Mouse.getEventX(), Constants.WINDOW_HEIGHT - Mouse.getEventY() - 1,
                         Mouse.getEventButton(), Mouse.getEventButtonState())){
@@ -273,6 +296,7 @@ boolean handled;
                 }
                 int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {
+                    //非ui接收鼠标滚动
                     mouseControlCenter.handleMouseWheel(-wheelDelta / 40);
                 }
 
@@ -282,6 +306,7 @@ boolean handled;
 
 
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
+                    //非ui接收鼠标左键
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
                   //  TextureInfo info =new TextureInfo();
                   // info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
@@ -313,6 +338,12 @@ boolean handled;
         }
 
 
+        /*if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
+            //非ui接收鼠标左键
+           LogUtil.println("mouseClick");
+            mouseControlCenter.mouseLeftDown(cursorX, cursorY);
+           // mouseControlCenter.mouseLeftUp(cursorX, cursorY);
+        }*/
         /*if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             camera.Position=GL_Vector.add(camera.Position, GL_Vector.multiplyWithoutY(camera.ViewDir,
                     -0.1f));
@@ -420,8 +451,6 @@ boolean handled;
 
     }
 
-    long nowTime=0;
-    int fps=0;
     public void update(float delta) {
         TimeUtil.update();
         nowTime= TimeUtil.getNowMills();
@@ -478,19 +507,15 @@ boolean handled;
 
 
 
-
-    DropControlCenter dcc = new DropControlCenter();
-    int frameCount=0;
-    long lastTime=0;
     public void preUpdate(){
 
     }
 
-    public void  keyDown(int key){
-        mouseControlCenter.keyDown(key);
-    }
+    //public void  keyDown(int key){
+       // mouseControlCenter.keyDown(key);
+   // }
 
-    boolean shadow =false;
+
 
     /**
      * 主要绘制流程
@@ -498,7 +523,8 @@ boolean handled;
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //不应该每次都绘制 二应该放入
-        if(Constants.SHADOW_ENABLE &&  Math.random()>0.1) {
+        if(Constants.SHADOW_ENABLE &&  Math.random()>0.8) {
+            //以灯光的角度进行观察 保存一个深度缓冲帧
             shaderManager.shadow.render(shaderManager,worldRenderer);
         }
 
@@ -507,6 +533,8 @@ boolean handled;
 
 
         glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+       // glEnable(GL_DEPTH);
         //亮度按照人眼做调整 2.2次方
        // glEnable(GL30.GL_FRAMEBUFFER_SRGB);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -548,17 +576,7 @@ boolean handled;
 //        ShaderUtils.createVao(ShaderManager.hdrShaderConfig,ShaderManager.hdrShaderConfig.getVao(),new int[]{2,2});
 //        ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.hdrShaderConfig.getVao());
 
-        if(Constants.GAOSI_ENABLE){
 
-            shaderManager.bloom.getBrightTexture(shaderManager);
-            OpenglUtils.checkGLError();
-            shaderManager.bloom.renderGaosi(shaderManager);
-            OpenglUtils.checkGLError();
-
-            ShaderUtils.finalDraw(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao());
-            return;
-
-        }
 
 
         //绑定使用帧缓冲 fbo
@@ -597,15 +615,29 @@ boolean handled;
             Util.checkGLError();
             glBindVertexArray(0);*/
 
-           ShaderUtils.finalDraw(ShaderManager.lightShaderConfig,ShaderManager.lightShaderConfig.getVao());
+
+            if(Constants.GAOSI_ENABLE){
+
+                shaderManager.bloom.getBrightTexture(shaderManager);
+                OpenglUtils.checkGLError();
+                shaderManager.bloom.renderGaosi(shaderManager);
+                OpenglUtils.checkGLError();
+
+                ShaderUtils.finalDraw(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao());
+                // return;
+
+            }
+            else {
+                ShaderUtils.finalDraw(ShaderManager.lightShaderConfig, ShaderManager.lightShaderConfig.getVao());
 
 //
-            OpenglUtils.checkGLError();
-            worldRenderer.render();
-            OpenglUtils.checkGLError();
+                OpenglUtils.checkGLError();
+                worldRenderer.render();
+                OpenglUtils.checkGLError();
+
+            }
             livingThingManager.render();
             OpenglUtils.checkGLError();
-
 
         } else {
             camera.Render();
@@ -783,6 +815,7 @@ boolean handled;
 
             StorageManager storageManager = new StorageManagerInternal();
             PerlinWorldGenerator worldGenerator = new PerlinWorldGenerator();
+            //GrayWorldGenerator worldGenerator = new GrayWorldGenerator();
             worldGenerator.initialize();
             worldGenerator.setWorldSeed("123123123");
             GeneratingChunkProvider chunkProvider = new LocalChunkProvider(storageManager, worldGenerator);

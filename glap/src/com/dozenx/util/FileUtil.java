@@ -45,23 +45,7 @@ public class FileUtil {
     }
     public static String readFile2Str(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
-        if(!file.exists()){
-            LogUtil.println("not exsits "+path);
-            System.exit(0);
-        }
-        InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
-        BufferedReader br = new BufferedReader(isr);
-        String s;
-        StringBuffer templateStr = new StringBuffer();
-        while ((s = br.readLine()) != null) {
-            templateStr.append(s + "\r\n");
-        }
-        if(templateStr==null || templateStr.toString().length()==0){
-            LogUtil.println("file is empty: "+path);
-            System.exit(0);
-        }
-//        LogUtil.println(templateStr.toString());
-        return templateStr.toString();
+       return  readFile2Str(file);
     }
     public static String readFile2Str(File file) throws IOException {
 
@@ -74,6 +58,10 @@ public class FileUtil {
         String s;
         StringBuffer templateStr = new StringBuffer();
         while ((s = br.readLine()) != null) {
+            s=s.trim();
+            if(s.startsWith("//")){
+                continue;
+            }
             templateStr.append(s + "\r\n");
         }
         if(templateStr==null || templateStr.toString().length()==0){
@@ -105,39 +93,12 @@ public class FileUtil {
         }
     }
     public static void main(String args[]){
-try {
-    FileReader fr = new FileReader("G://V2.2.7.txt");
-    BufferedReader br = new BufferedReader(fr);
-    String s;
-    String name="";
-    StringBuffer result =new StringBuffer();
-    while ((s = br.readLine()) != null) {
-       // System.out.println(s);
-        //System.out.println(s.split("\\s+").length);
-        String arr[] = s.split("\\s+");
-        System.out.println(arr[0]);
-        if(name.equals("")){
-             name=arr[arr.length-1];
-        }else if(arr[arr.length-1].trim().equals(name.trim())){
 
-            result.append("'").append(arr[0]).append("',");
-
-        }else{
-
-           // System.out.println(name+"select distinct  IPAddress from wii_device_ssid where deviceid in(select id from wii_device where DevId in ("+result.toString()+"))");
-            result=new StringBuffer();
-            name=arr[arr.length-1];
-        }
-        if(arr.length==3){
-
-        }
-
+    String s ="//123123";
+    if(s.startsWith("//")){
+        LogUtil.println("hello");
     }
-   // System.out.println(name+"select distinct  IPAddress from wii_device_ssid where id in(select id from wii_device where DevId in ("+result.toString()+")");
-    fr.close();
-}catch(Exception e){
-    e.printStackTrace();
-}
+
     }
 
     public static List<String > readFile2List(String path) throws IOException {

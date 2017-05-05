@@ -38,8 +38,11 @@ public class SelectTextureEditPanel extends HtmlObject{
         image.setBorderWidth(1);
         image.setBorderColor(new Vector4f(1, 1, 1, 1));
         //image.setPosition(HtmlObject.POSITION_ABSOLUTE);
-        image.setBackgroundImage(new Image(TextureManager.getTextureInfo("iron_texture")));
-
+        image.setBackgroundImage(new Image(TextureManager.getTextureInfo("cross")));
+        /*this.texture.minX=0;
+        this.texture.minY=0;
+        this.texture.maxX=1;
+        this.texture.maxY=1;*/
         selectBox.setWidth(10);
         selectBox.setHeight(10);
         selectBox.setBorderWidth(1);

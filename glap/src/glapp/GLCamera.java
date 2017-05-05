@@ -200,7 +200,13 @@ public class GLCamera {
 		ViewDir = vd;
 		RotatedY += Angle;
 	}
-	
+
+    public void setPosition(GL_Vector gl_vector){
+        this.Position=gl_vector;
+    }
+	public void setViewDir(GL_Vector gl_vector){
+        this.ViewDir=gl_vector;
+    }
 	public void MoveForward(float Distance) {
 		Position = GL_Vector.add(Position, GL_Vector.multiply(ViewDir, -Distance));
 	}

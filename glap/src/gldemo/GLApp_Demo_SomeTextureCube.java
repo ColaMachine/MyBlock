@@ -288,14 +288,14 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 	 * Add last mouse motion to the line, only if left mouse button is down.
 	 */
 	public void mouseUp(int x, int y) {
-		mouseControlCenter.mouseUp(x, y);
+		//mouseControlCenter.mouseUp(x, y);
 	}
 
 	/**
 	 * Add last mouse motion to the line, only if left mouse button is down.
 	 */
 	public void mouseDown(int x, int y) {
-		mouseControlCenter.mouseDown(x, y);
+		//mouseControlCenter.mouseDown(x, y);
 
 	}
 

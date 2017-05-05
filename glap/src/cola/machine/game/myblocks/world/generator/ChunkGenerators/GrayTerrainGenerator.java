@@ -46,15 +46,15 @@ public class GrayTerrainGenerator implements FirstPassGenerator{
 			return;
 		}
 		logger.info("Reading height map..");
-		GLImage image = TextureManager.getImage("heightmap");
+		//GLImage image = TextureManager.getImage("heightmap");
 		
-		ByteBuffer bb =image.getPixelBytes();
-	    IntBuffer intBuf = bb.asIntBuffer();
-	    int width =image.w;
-	    int height=image.h;
-	      heightmap =new float[width][height];
+		/*ByteBuffer bb =image.getPixelBytes();
+	    IntBuffer intBuf = bb.asIntBuffer();*/
+	    //int width =image.w;
+	   // int height=image.h;
+	    //  heightmap =new float[width][height];
 	      try {
-	    	  heightmap = ImageUtil.getGrayPicturef("assets/images/gray.png");
+	    	  heightmap = ImageUtil.getGrayPicturef("assets/images/gray2.jpg");
 			} catch (Exception e) {
 				// VIP Auto-generated catch block
 				e.printStackTrace();

@@ -305,9 +305,9 @@ public class LivingThingManager {
 
             EquipCmd cmd = (EquipCmd)client.equips.pop();
             int id = cmd.getUserId();
-            if(player.getId() == id){
+            /*if(player.getId() == id){
                 continue;
-            }
+            }*/
             //appendRow("color"+curColor, msg);
             LivingThing livingThing = this.getLivingThingById(id);
             //y原来是直接绑定到itemDefinition 现在要对应到有id的items里的物品

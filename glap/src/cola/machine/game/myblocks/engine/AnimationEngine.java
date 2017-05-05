@@ -698,7 +698,7 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 	 * Add last mouse motion to the line, only if left mouse button is down.
 	 */
 	public void mouseUp(int x, int y) {
-		mouseControlCenter.mouseUp(x, y);
+		//mouseControlCenter.mouseUp(x, y);
 	}
 
 	/**
@@ -707,10 +707,10 @@ GL11.glBindTexture(GL11.GL_TEXTURE_2D,1);
 	public void mouseDown(int x, int y) {
         msg("DX=" + x + " DY=" + y);
 		if (this.mouseButtonDown(0)) {
-			mouseControlCenter.mouseLClick(x, y);
+			//mouseControlCenter.mouseLClick(x, y);
 		}
 		if (this.mouseButtonDown(1)) {
-			mouseControlCenter.mouseRClick(x, y);
+			//mouseControlCenter.mouseRClick(x, y);
 		}
 
 	}

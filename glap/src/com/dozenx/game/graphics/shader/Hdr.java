@@ -112,7 +112,9 @@ public class Hdr {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // 我们现在不用模板缓冲
         OpenglUtils.checkGLError();
         //  ShaderUtils.finalDraw(ShaderManager.hdrShaderConfig,ShaderManager.lightShaderConfig.getVao());
-
+        //glEnable(GL_BLEND);
+      // glEnable(GL_DEPTH_TEST);
+       // glEnable(GL_DEPTH);
         //取一个帧缓冲
 
         //worldRenderer.render();

@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.ByteUtil;
+import core.log.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,9 @@ public class ChunkResponseCmd extends   BaseGameCmd{
         }*/
         wrap.put(data.length);
         for(int i=0;i<data.length;i++){
+            /*if(ByteUtil.get24_16Value(data[i])>16){
+                LogUtil.println("hello");
+            }*/
             wrap.put(data[i]);
         }
 
@@ -78,8 +82,11 @@ public class ChunkResponseCmd extends   BaseGameCmd{
         data = new Integer[length];
         for(int i=0;i<length;i++){
             data[i]=byteBufferWrap.getInt();
-            tt= ByteUtil.getValueSplit8Slot(data[i]);
-            chunk.setBlock(tt[0],tt[1],tt[2],data[i]<<16 >>16);
+           // tt= ByteUtil.getValueSplit8Slot(data[i]);
+            if(ByteUtil.get24_16Value(data[i])>16){
+                LogUtil.println("hello");
+            }
+            chunk.setBlock(ByteUtil.get32_28Value(data[i]),ByteUtil.get24_16Value(data[i]),ByteUtil.get28_24Value(data[i]),ByteUtil.get16_0Value(data[i]));
         }
 
 

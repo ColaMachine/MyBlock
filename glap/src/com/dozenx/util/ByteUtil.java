@@ -302,10 +302,18 @@ public class ByteUtil
      * @return
      */
     public  static int unionBinary4_4_4_24(int a,int b,int c,int d){
-        return (((a&HEX_0_0_0_1 ) <<28 )|
-                ((b&HEX_0_0_0_1 ) <<24 )|
+        return (((a&HEX_0_0_0_1 ) <<28 )| //4
+                ((b&HEX_0_0_0_1 ) <<24 )|   //
                 ((c&HEX_0_0_0_1 ) << 20)|
                 ((d<<12 >>12 )  ));
+
+    }
+
+    public  static int unionBinary4_4_8_16(int a,int b,int c,int d){
+        return (((a&HEX_0_0_0_1 ) <<28 )| //4
+                ((b&HEX_0_0_0_1 ) <<24 )|   //
+                ((c&HEX_0_0_1_1 ) << 16)|
+                ((d<<16 >>16 )  ));
 
     }
 
@@ -316,7 +324,7 @@ public class ByteUtil
     }
     public static int [] getValueSplit8Slot(int value ){
 
-        return new int[]{get32_28Value(value),get28_24Value(value),get24_20Value(value),get20_16Value(value),get16_12Value(value),get12_8Value(value),get8_4Value(value),get4_0Value(value)};
+        return new int[]{get32_28Value(value),get28_24Value(value),get24_16Value(value),get16_0Value(value)};
 
     }
     public static int get32_28Value(int value ){
@@ -328,12 +336,18 @@ public class ByteUtil
     public static int get24_20Value(int value ){
         return (value>>16 & HEX_0_0_1_0 )>>4&HEX_0_0_0_1;
     }
+    public static int get24_16Value(int value ){
+        return (value>>16 & HEX_0_0_1_1 );
+    }
     public static int get20_16Value(int value ){
         return (value>>16 & HEX_0_0_0_1)>>0&HEX_0_0_0_1;
     }
 
     public static int get16_12Value(int value ){
         return (value & HEX_1_0_0_0 )>>12&HEX_0_0_0_1;
+    }
+    public static int get16_0Value(int value ){
+        return (value <<16 )>>16;
     }
     public static int get12_8Value(int value ){
         return (value & HEX_0_1_0_0 )>>8&HEX_0_0_0_1;
@@ -519,4 +533,5 @@ public class ByteUtil
     public final static short HEX_0_1_0_0 = 15<<8;
     public final static short HEX_0_0_1_0 = 15<<4;
     public final static short HEX_0_0_0_1 = 15<<0;
+    public final static short HEX_0_0_1_1 = 255;
 }

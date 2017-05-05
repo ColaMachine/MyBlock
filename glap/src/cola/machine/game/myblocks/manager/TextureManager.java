@@ -432,6 +432,9 @@ public class TextureManager {
                     HashMap map = list.get(i);
                     Shape shape = new Shape();
                     String name = (String) map.get("name");
+                    if(name.equals("mantle")){
+                        LogUtil.println("mantle");
+                    }
                     shape.setName(name);
 
                     int shapeType =
@@ -445,6 +448,16 @@ public class TextureManager {
                     String right = (String) map.get("right");
                     String top = (String) map.get("top");
                     String bottom = (String) map.get("bottom");
+                    String allSide =  MapUtil.getStringValue(map,"allSide");
+                    if(StringUtil.isNotEmpty(allSide)){
+                         front = allSide;
+                         back = allSide;
+                         left = allSide;
+                         right = allSide;
+                         top = allSide;
+                         bottom = allSide;
+                    }
+
 
 
                     float width = MapUtil.getFloatValue(map, "width");
@@ -455,7 +468,7 @@ public class TextureManager {
                     shape.setShapeType(shapeType);
                     shape.setThick(thick);
                     String parent = MapUtil.getStringValue(map, "parent");
-                    if (!parent.equals("root")) {
+                    if (!"root".equals(parent)) {
                         String p_posi_xStr = MapUtil.getStringValue(map, "p_posi_x");
                         String p_posi_yStr = MapUtil.getStringValue(map, "p_posi_y");
                         String p_posi_zStr = MapUtil.getStringValue(map, "p_posi_z");

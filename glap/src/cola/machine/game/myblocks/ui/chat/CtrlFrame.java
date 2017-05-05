@@ -31,7 +31,7 @@ public class CtrlFrame extends Widget {
                     dragActive = false;
 
                 }else{
-                    mouseControlCenter.mouseRightDrag(evt.getMouseX(),evt.getMouseY());
+                   // mouseControlCenter.mouseRightDrag(evt.getMouseX(),evt.getMouseY());
                 }
 
             } else if(evt.isMouseDragEvent()) {

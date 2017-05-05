@@ -14,6 +14,7 @@ public class Image {
     }
     public Image(TextureInfo texture){
         this.texture=texture;
+
     }
     public void setName(String name) {
         this.name = name;

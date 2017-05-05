@@ -49,7 +49,7 @@ public class PlayerModel implements   Model{
     protected  float HEAD_THICK=1f*bili;
 
     public PlayerModel(Role role ){
-        rootComponent=new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_HEIGHT);
+        rootComponent=new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
         this.role =role;
         int id =role.getId();
         rootComponent.id=id*10+EquipPartType.BODY.ordinal();

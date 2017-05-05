@@ -37,23 +37,28 @@ import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.util.MathUtil;
 
 public class MouseControlCenter {
-    public Player player;
-    public GLCamera camera;
+    public Player player;//当前玩家对象
+    public GLCamera camera;//当前相机
     //public MyBlockEngine engine;
     public double preKeyTime = 0;
-    public Robot robot;
-    public float centerX = 0;
-    public float centerY = 0;
-    public LivingThingManager livingThingManager;
+    public Robot robot;//用于自动镜头移动 鼠标剧终
+    public float centerX = 0;//屏幕中心
+    public float centerY = 0;//屏幕中心
+    public LivingThingManager livingThingManager;//生物管理器
 
-    public float prevMouseX = 0;
-    public float prevMouseY = 0;
+    public float prevMouseX = 0;//之前鼠标点击的位置 或者启动的位置
+    public float prevMouseY = 0;//之前鼠标点击的位置
     public boolean canDetectMove = true;
-    public BulletPhysics bulletPhysics;
+    public BulletPhysics bulletPhysics; //物理引擎
+    int DRAG_DIST=3;
+    public GameState gameState;
+
+    boolean mouseRightPressed=false;//用来判断是否按着
+    boolean mouseLeftPressed=false;
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
-    Point mousepoint;
+    Point mousepoint;//用于镜头对准
     public MouseControlCenter(Player player, GLCamera camera,GameState gameState) {
         this(player,  camera) ;
         this.gameState=gameState;
@@ -81,7 +86,7 @@ public class MouseControlCenter {
         //dosn't need cooling
         // w a s d space
         //i think it's something  could be repeat something only receive down up as a signal;
-
+        //这个方法里处理需要重复按键的实情
         //let put the key in a group that need cooling
         //LogUtil.println(seconds+"");
         if( Switcher.isChat){
@@ -90,14 +95,14 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
            // human.headRotate(0, -human.camSpeedXZ * seconds*100);
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_G)) {
+       /* if (Keyboard.isKeyDown(Keyboard.KEY_G)) {
 
-        }
+        }*/
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
            // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            livingThingManager.chooseObject(null);
+            //livingThingManager.chooseObject(null);
             // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
@@ -134,6 +139,8 @@ public class MouseControlCenter {
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_G)) { // tilt down
             //human.MoveForward(-human.camSpeedXZ * seconds);
+
+
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
@@ -249,16 +256,17 @@ public class MouseControlCenter {
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
-    public void mouseUp(int x, int y) {
-        // add mouse motion to line if left button is down, and mouse has moved
-        // more than 10 pixels
-        // System.out.println("1");
-        prevMouseX = 0;
-        prevMouseY = 0;
+    //基本上不用了
+//    public void mouseUp(int x, int y) {
+//        // add mouse motion to line if left button is down, and mouse has moved
+//        // more than 10 pixels
+//        // System.out.println("1");
+//        prevMouseX = 0;
+//        prevMouseY = 0;
+//
+//    }
 
-    }
-
-    public void mouseLClick(int x, int y) {
+    private void mouseLClick(int x, int y) {
         Switcher.MOUSE_CANCELBUBLE = false;
     /*    AnimationManager manager = CoreRegistry.get(AnimationManager.class);
         manager.apply(human.bodyComponent,"walkerFoward");*/
@@ -324,79 +332,79 @@ public class MouseControlCenter {
         // CoreRegistry.get(PauseMenu.class).click(x, y);
     }
 
-    public void mouseRClick(int x, int y) {
-
-        LogUtil.println("x:" + x + "y:" + y);
-                                    /* GL_Vector from =camera.Position; */
-        LogUtil.println("mouse clikc at  %d %d \r\n ", x, y);
-       // System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
-        GL_Vector viewDir = OpenglUtils.getLookAtDirection(x, y);
-        // this.human.viewDir;//OpenglUtil.getLookAtDirection(x, y);
-
-        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
-        // viewDir.x,viewDir.y,viewDir.z);
-
-        GL_Vector to = GL_Vector.add(camera.Position,
-                GL_Vector.multiply(viewDir, 10));
-       // this.engine.lineStart = camera.Position;
-       // this.engine.mouseEnd = to;
-        ChunkProvider localChunkProvider = CoreRegistry
-                .get(ChunkProvider.class);
-        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewDir,
-                20, StartMenuState.catchThing, true);
-        if (hitPoint != null) {
-            // Block block=new
-            // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
-                                        /*
-                                         * if("wood".equals(engine.currentObject)){ block =new
-                                         * Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-                                         * if("glass".equals(engine.currentObject)){ block =new
-                                         * Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-                                         * if("soil".equals(engine.currentObject)){ block =new
-                                         * Soil((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
-                                         * if("water".equals(engine.currentObject)){ block =new
-                                         * Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }
-                                         */
-                                        /*
-                                         * if(block!=null){ bulletPhysics.blockRepository.put(block);
-                                         * this.engine.blockRepository.reBuild(engine.currentObject); }
-                                         */
-
-        }
-//        CoreRegistry.get(Bag.class).click(x, y);
-
-
-    }
+//    public void mouseRClick(int x, int y) {
+//
+//        LogUtil.println("x:" + x + "y:" + y);
+//                                    /* GL_Vector from =camera.Position; */
+//        LogUtil.println("mouse clikc at  %d %d \r\n ", x, y);
+//       // System.out.printf("mouse clikc at  %d %d \r\n ", x, y);
+//        GL_Vector viewDir = OpenglUtils.getLookAtDirection(x, y);
+//        // this.human.viewDir;//OpenglUtil.getLookAtDirection(x, y);
+//
+//        // System.out.printf("OpenglUtil getLookAtDirection %f %f %f \r\n ",
+//        // viewDir.x,viewDir.y,viewDir.z);
+//
+//        GL_Vector to = GL_Vector.add(camera.Position,
+//                GL_Vector.multiply(viewDir, 10));
+//       // this.engine.lineStart = camera.Position;
+//       // this.engine.mouseEnd = to;
+//        ChunkProvider localChunkProvider = CoreRegistry
+//                .get(ChunkProvider.class);
+//        GL_Vector hitPoint = bulletPhysics.rayTrace(camera.Position, viewDir,
+//                20, StartMenuState.catchThing, true);
+//        if (hitPoint != null) {
+//            // Block block=new
+//            // BaseBlock(engine.currentObject,(int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z);
+//                                        /*
+//                                         * if("wood".equals(engine.currentObject)){ block =new
+//                                         * Wood((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+//                                         * if("glass".equals(engine.currentObject)){ block =new
+//                                         * Glass((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+//                                         * if("soil".equals(engine.currentObject)){ block =new
+//                                         * Soil((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }else
+//                                         * if("water".equals(engine.currentObject)){ block =new
+//                                         * Water((int)hitPoint.x,(int)hitPoint.y,(int)hitPoint.z); }
+//                                         */
+//                                        /*
+//                                         * if(block!=null){ bulletPhysics.blockRepository.put(block);
+//                                         * this.engine.blockRepository.reBuild(engine.currentObject); }
+//                                         */
+//
+//        }
+////        CoreRegistry.get(Bag.class).click(x, y);
+//
+//
+//    }
 
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
 
-    public void mouseDown(int x, int y) {/*
-                                                                     * // add mouse motion to line if left
-                                                                     * button is down, and mouse has moved
-                                                                     * // more than 10 pixels //
-                                                                     * System.out.println("1"); lineStart.x
-                                                                     * = cam.camera.Position.x; lineStart.y
-                                                                     * = cam.camera.Position.y; lineStart.z
-                                                                     * = cam.camera.Position.z; // //
-                                                                     * lineStart.x =human.viewDir.x; //
-                                                                     * lineStart.y =human.viewDir.y; //
-                                                                     * lineStart.z = human.viewDir.z;
-                                                                     *
-                                                                     * prevMouseX = x; prevMouseY = y;
-                                                                     *
-                                                                     * mouseEnd = GL_Vector.add(lineStart,
-                                                                     * GL_Vector
-                                                                     * .multiply(getLookAtDirection(x, y),
-                                                                     * 35));
-                                                                     *
-                                                                     * // System.out.printf("%f %f %f \r\n"
-                                                                     * + "", mouseDir.x, mouseDir.y, //
-                                                                     * mouseDir.z);
-                                                                     */
-        mouseLeftPressed=true;
-    }
+//    public void mouseDown(int x, int y) {/*
+//                                                                     * // add mouse motion to line if left
+//                                                                     * button is down, and mouse has moved
+//                                                                     * // more than 10 pixels //
+//                                                                     * System.out.println("1"); lineStart.x
+//                                                                     * = cam.camera.Position.x; lineStart.y
+//                                                                     * = cam.camera.Position.y; lineStart.z
+//                                                                     * = cam.camera.Position.z; // //
+//                                                                     * lineStart.x =human.viewDir.x; //
+//                                                                     * lineStart.y =human.viewDir.y; //
+//                                                                     * lineStart.z = human.viewDir.z;
+//                                                                     *
+//                                                                     * prevMouseX = x; prevMouseY = y;
+//                                                                     *
+//                                                                     * mouseEnd = GL_Vector.add(lineStart,
+//                                                                     * GL_Vector
+//                                                                     * .multiply(getLookAtDirection(x, y),
+//                                                                     * 35));
+//                                                                     *
+//                                                                     * // System.out.printf("%f %f %f \r\n"
+//                                                                     * + "", mouseDir.x, mouseDir.y, //
+//                                                                     * mouseDir.z);
+//                                                                     */
+//        mouseLeftPressed=true;
+//    }
     public void handleMouseWheel(int times){
         Switcher.CAMERA_2_PLAYER+=times;
         if (Switcher.CAMERA_2_PLAYER < 0) {
@@ -408,26 +416,52 @@ public class MouseControlCenter {
         GamingState.cameraChanged=true;
 
     }
+
+    /**
+     * gaming state 调用
+     * @param x
+     * @param y
+     */
     public void mouseLeftDown(int x, int y) {
         prevMouseX=x;
         prevMouseY=y;
         mouseLClick(x, y);
         mouseLeftPressed=true;
+        LogUtil.println("mouseLeftDown");
     }
+
+    /**
+     * gaming state 调用
+     * @param x
+     * @param y
+     */
     public void mouseLeftUp(int x, int y) {
         mouseLeftPressed=false;
     }
+    /**
+     * gaming state 调用
+     * @param x
+     * @param y
+     */
     public void mouseRightDown(int x, int y) {
         mouseRightPressed=true;
         prevMouseX=x;
         prevMouseY=y;
     }
+    /**
+     * gaming state 调用
+     * @param x
+     * @param y
+     */
     public void mouseRightUp(int x, int y) {
         mouseRightPressed=false;
     }
-    boolean mouseRightPressed=false;
-    boolean mouseLeftPressed=false;
 
+    /**
+     * gaming state 先调用 每次都更新
+     * @param x
+     * @param y
+     */
     public void mouseMove(int x, int y) {
         if(mouseRightPressed){
             this.mouseRightDrag(x,y);
@@ -476,60 +510,60 @@ public class MouseControlCenter {
 
     }
 
-    public void mouseMove(int x, int y,StartMenuState state) {
-        if(mouseRightPressed){
-            this.mouseRightDrag(x,y);
-
-        }
-        if(mouseLeftPressed){
-            this.mouseLeftDrag(x,y);
-
-
-        }
-
-        // add mouse motion to line if left button is down, and mouse has moved
-        // more than 10 pixels
-        // add a segment to the line
-        // /System.out.println("����ת��");
-        // System.out.println(x-prevMouseX);
-        // if(!canDetectMove){
-        // if (MathUtil. distance(400, 300, x, y)< 10f){
-        // canDetectMove=true;
-        // }
-        // }else
-       /* mousepoint = MouseInfo.getPointerInfo().getLocation();
-        if (MathUtil.distance(centerX, centerY, mousepoint.x, mousepoint.y) > 10f) {
-            // System.out.println("now mouse position x:"+x+" y :"+y);
-
-
-            if (Switcher.MOUSE_AUTO_CENTER) {
-                human.headRotate((float) (-(mousepoint.x - centerX)
-                        * 4 * GLApp.getSecondsPerFrame()), (float) (-(mousepoint.y - centerY)
-                        * 4 * GLApp.getSecondsPerFrame()));
-                // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
-                // human.RotateX();
-
-                //robot.mouseMove(mousepoint.x-(x-400), mousepoint.y-(y-300));
-                // robot.mouseMove(Display.getX()+400, Display.getY()+300);
-                robot.mouseMove((int) centerX, (int) centerY);
-                // System.out.println("move to position x :"+(mousepoint.x-(x-400))+" y :"+(mousepoint.y-(y-300)));
-
-            }
-
-            canDetectMove = false;
-            // System.out.println("move x distance:"+(-x +
-            // centerX)+" y distance:"+(y - centerY));
-        }
-        CoreRegistry.get(Bag.class).move(x, y);*/
-
-    }
+//    public void mouseMove(int x, int y,StartMenuState state) {
+//        if(mouseRightPressed){
+//            this.mouseRightDrag(x,y);
+//
+//        }
+//        if(mouseLeftPressed){
+//            this.mouseLeftDrag(x,y);
+//
+//
+//        }
+//
+//        // add mouse motion to line if left button is down, and mouse has moved
+//        // more than 10 pixels
+//        // add a segment to the line
+//        // /System.out.println("����ת��");
+//        // System.out.println(x-prevMouseX);
+//        // if(!canDetectMove){
+//        // if (MathUtil. distance(400, 300, x, y)< 10f){
+//        // canDetectMove=true;
+//        // }
+//        // }else
+//       /* mousepoint = MouseInfo.getPointerInfo().getLocation();
+//        if (MathUtil.distance(centerX, centerY, mousepoint.x, mousepoint.y) > 10f) {
+//            // System.out.println("now mouse position x:"+x+" y :"+y);
+//
+//
+//            if (Switcher.MOUSE_AUTO_CENTER) {
+//                human.headRotate((float) (-(mousepoint.x - centerX)
+//                        * 4 * GLApp.getSecondsPerFrame()), (float) (-(mousepoint.y - centerY)
+//                        * 4 * GLApp.getSecondsPerFrame()));
+//                // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
+//                // human.RotateX();
+//
+//                //robot.mouseMove(mousepoint.x-(x-400), mousepoint.y-(y-300));
+//                // robot.mouseMove(Display.getX()+400, Display.getY()+300);
+//                robot.mouseMove((int) centerX, (int) centerY);
+//                // System.out.println("move to position x :"+(mousepoint.x-(x-400))+" y :"+(mousepoint.y-(y-300)));
+//
+//            }
+//
+//            canDetectMove = false;
+//            // System.out.println("move x distance:"+(-x +
+//            // centerX)+" y distance:"+(y - centerY));
+//        }
+//        CoreRegistry.get(Bag.class).move(x, y);*/
+//
+//    }
 
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
-    public void mouseRightDrag(int x, int y) {
+    private void mouseRightDrag(int x, int y) {
 
-
+        //视角移动
         // add mouse motion to line if left button is down, and mouse has moved
         // more than 10 pixels
         if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 1f
@@ -553,9 +587,8 @@ public class MouseControlCenter {
             // �ƶ���ͷ
         }
     }
-    int DRAG_DIST=3;
-    public GameState gameState;
-    public void mouseLeftDrag(int x, int y) {
+
+    private void mouseLeftDrag(int x, int y) {
 
         if ( Math.abs(x - prevMouseX) > DRAG_DIST ||
                 Math.abs(y - prevMouseY) > DRAG_DIST) {
@@ -583,7 +616,10 @@ public class MouseControlCenter {
             // �ƶ���ͷ
         }
     }
-
+    /*
+     不响应连续按键
+     gaming state
+     */
     public void keyDown(int keycode) {
         long now =TimeUtil.getNowMills();
         if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
@@ -604,9 +640,18 @@ public class MouseControlCenter {
                 }
                }
 
+
+
            // Client.messages.push(new AttackCmd(AttackType.ARROW));
             //player.receive(new AttackCmd(AttackType.ARROW));
         }
+        if(Keyboard.isKeyDown( Keyboard.KEY_H)){
+//            camera.setPosition(player.getPosition());
+//            camera.setViewDir(player.getViewDir());
+            Switcher.CAMERA_2_PLAYER=0;
+            GamingState.cameraChanged=true;
+        }
+
         if (Keyboard.isKeyDown( Keyboard.KEY_V)) {
             GL_Vector to = GL_Vector.add(camera.Position,
                     GL_Vector.multiply(camera.getViewDir(), 100));
@@ -711,6 +756,7 @@ public class MouseControlCenter {
             System.out.println("god mode:" + Switcher.IS_GOD);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             // CoreRegistry.get(PauseMenu.class).show();
+            livingThingManager.chooseObject(null);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_F5)) {
             Switcher.CAMERA_MODEL++;
             if (Switcher.CAMERA_MODEL > 2) {

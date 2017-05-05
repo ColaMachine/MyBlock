@@ -21,8 +21,12 @@ public class MapUtil {
 		return value;
 	}
 	public static String getStringValue(Map map , String name){
-		String value =map.get(name)+"";
-		return value;
+        Object obj = map.get(name);
+        if(obj==null){
+            return null;
+        }
+
+		return obj.toString();
 	}
 	public static Integer getIntValue(Map map , String name){
 		Object object =map.get(name);
