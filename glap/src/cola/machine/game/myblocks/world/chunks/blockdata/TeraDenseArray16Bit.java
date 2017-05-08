@@ -94,7 +94,7 @@ public class TeraDenseArray16Bit extends TeraDenseArray {
     @Override
     public int set(int x, int y, int z, int value) {
         int pos = pos(x, y, z);
-        if(pos<0){
+        if(pos<0 || pos>=data.length){
             LogUtil.err("不能为负数");
         }
         int old = data[pos];

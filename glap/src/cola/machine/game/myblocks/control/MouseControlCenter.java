@@ -13,6 +13,7 @@ import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.world.block.BlockManager;
+import cola.machine.game.myblocks.world.block.TreeBlock;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.*;
@@ -681,6 +682,9 @@ public class MouseControlCenter {
                 //得出当前人手上拿的是不是方块
                 int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
                 int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
+               TreeBlock treeBlock =new TreeBlock(hitPoint);
+                //treeBlock.startPosition=hitPoint;
+                        treeBlock.generator();
                 int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
                 int blockY = MathUtil.floor(hitPoint.y);
                 int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;

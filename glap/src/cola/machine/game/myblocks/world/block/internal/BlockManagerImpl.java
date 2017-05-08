@@ -21,6 +21,9 @@ public class BlockManagerImpl extends BlockManager {
 		Block mantle=new BaseBlock("mantle",ItemType.mantle_block.ordinal(),false);
 		Block water=new BaseBlock("water",ItemType.water_block.ordinal(),true);
 		Block wood=new BaseBlock("wood",ItemType.wood_block.ordinal(),false);
+        Block treeWood=new BaseBlock("tree_wood",ItemType.tree_wood_block.ordinal(),false);
+        Block treeLeaf=new BaseBlock("tree_wood",ItemType.tree_leaf_block.ordinal(),false);
+
         blockInfoNameMap.put("air", air);
         blockInfoNameMap.put("water", water);
         blockInfoNameMap.put("stone", stone);
@@ -29,7 +32,8 @@ public class BlockManagerImpl extends BlockManager {
         blockInfoNameMap.put("sand", sand);
         blockInfoNameMap.put("mantle", mantle);
         blockInfoNameMap.put("wood", wood);
-
+        blockInfoNameMap.put("tree_wood", treeWood);
+        blockInfoNameMap.put("tree_leaf", treeLeaf);
         Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry<String, Block> entry =it.next();

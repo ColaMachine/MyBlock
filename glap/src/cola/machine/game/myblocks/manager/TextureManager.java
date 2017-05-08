@@ -457,8 +457,20 @@ public class TextureManager {
                          top = allSide;
                          bottom = allSide;
                     }
+                    String side =  MapUtil.getStringValue(map,"side");
+                    if(StringUtil.isNotEmpty(side)){
+                        front = side;
+                        back = side;
+                        left = side;
+                        right = side;
 
+                    }
+                    String topBottom =  MapUtil.getStringValue(map,"topBottom");
+                    if(StringUtil.isNotEmpty(topBottom)){
+                        top = topBottom;
+                        bottom = topBottom;
 
+                    }
 
                     float width = MapUtil.getFloatValue(map, "width");
                     float height = MapUtil.getFloatValue(map, "height");

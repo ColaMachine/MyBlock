@@ -426,4 +426,8 @@ Client client;
 public void setPlayer(Player player){
 	this.player= player;
 }
+
+    public void setBlock(int x,int y,int z){
+
+    }
 }
