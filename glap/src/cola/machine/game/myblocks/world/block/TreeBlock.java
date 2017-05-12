@@ -54,7 +54,7 @@ LogUtil.println("tree block :"+cmd.cx+"y:"+cmd.cy+"z:"+cmd.cz);
         //先来一颗棒棒糖树 树干是笔直的 树叶是正方体
         for(int i=1;i<rodMaxHeight;i++){
            // GL_Vector newPosition = new GL_Vector(startPosition.x,startPosition.y+i,startPosition.z);
-            createBlock(startPosition.x,startPosition.y+i,startPosition.z,ItemType.tree_wood_block);
+            createBlock(startPosition.x,startPosition.y+i,startPosition.z,ItemType.tree_wood);
 
         }
         int width =5;
@@ -63,7 +63,7 @@ LogUtil.println("tree block :"+cmd.cx+"y:"+cmd.cy+"z:"+cmd.cz);
                 for(int k=-width/2;k<=width/2;k++){
                     //GL_Vector newPosition = new GL_Vector(startBlock.getPosition().x+i,startBlock.getPosition().y+5+j,startBlock.getPosition().z+k);
                    // world.setBlock(newPosition,ItemType.tree_leaf_block);
-                    createBlock(startPosition.x+i,startPosition.y+5+j,startPosition.z+k,ItemType.tree_leaf_block);
+                    createBlock(startPosition.x+i,startPosition.y+5+j,startPosition.z+k,ItemType.tree_leaf);
                 }
             }
         }

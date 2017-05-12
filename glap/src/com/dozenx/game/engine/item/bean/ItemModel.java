@@ -38,6 +38,9 @@ public class ItemModel extends ModelTemplate {
         if(blocks!=null){
             return;
         }
+        if(this.icon ==null){
+            LogUtil.err("this.icon isnull");
+        }
         this.blocks =  map.get(this.icon.name);
         if(blocks!=null){
             return;

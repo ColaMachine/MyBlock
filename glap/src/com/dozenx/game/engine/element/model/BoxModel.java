@@ -10,7 +10,9 @@ import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ImageUtil;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -87,6 +89,9 @@ public class BoxModel implements Model {
     }
 
     public  BoxModel(Shape shape){//这个逻辑是错误的 shape 是不应该有itemDefinition属性的
+        if(shape == null){
+            LogUtil.err(" shape can't be null");
+        }
         float thick =shape.getThick();
         float width = shape.getWidth();
         float height= shape.getHeight();
@@ -106,5 +111,7 @@ public class BoxModel implements Model {
         this.P6= new GL_Vector(width,height,thick);
         this.P7= new GL_Vector(width,height,0);
         this.P8= new GL_Vector(0,height,0);
+    }  public void build(ShaderConfig config, Vao vao , int x, int y, int z){
+
     }
 }

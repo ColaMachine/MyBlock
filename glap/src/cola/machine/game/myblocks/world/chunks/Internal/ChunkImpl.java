@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import com.dozenx.game.engine.command.ItemBlockType;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.opengl.util.ShaderConfig;
@@ -144,7 +145,7 @@ public class ChunkImpl implements Chunk {
 
     }
 
-    TextureInfo ti = TextureManager.getTextureInfo("mantle");
+    TextureInfo ti = null;//TextureManager.getTextureInfo("mantle");
 
     /**
      * 判断对方和自己 如果一个是alpha 一个是非透明的 就需要
@@ -481,7 +482,14 @@ public class ChunkImpl implements Chunk {
                     currentBlockType = i;
 
                     if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
-                        getTexutreInfo();
+                        //如果不是box 类型的
+                        ItemDefinition itemDefinition  = ItemManager.getItemDefinition(ItemType.values()[currentBlockType]);
+
+                        if(!(itemDefinition.getItemModel().placeModel instanceof BoxModel)){
+
+                            itemDefinition.getItemModel().placeModel.build(ShaderManager.terrainShaderConfig,vao,this.chunkPos.x * getChunkSizeX()+x,y, this.chunkPos.z * getChunkSizeZ()+z);//.renderShader(ShaderManager.terrainShaderConfig);
+                            continue;
+                        }
                         // 判断上面
                         if (y < this.getChunkSizeY() - 1) {
                             if (needToPaint(i, blockData.get(x, y + 1, z))) {
@@ -614,7 +622,7 @@ public class ChunkImpl implements Chunk {
         boolean flat = true;
         //blockDefManager.getBlockById()
         ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[this.currentBlockType]);
-        if(ti==null|| itemDefinition.getShape()==null || itemDefinition.getShape().getTop()==null){
+        if(/*ti==null||*/ itemDefinition.getShape()==null || itemDefinition.getShape().getTop()==null){
             LogUtil.err(ti.name +"'shape  is null ");
         }
         if (faceIndex == Constants.TOP) {
@@ -796,6 +804,8 @@ public class ChunkImpl implements Chunk {
         if(ti==null){
             LogUtil.err("in chunkimpl ti shoud not be null !");
         }
+        //根据blocktype 获取对应的shape
+
         if(currentBlockType!=3&& currentBlockType!=6){
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
         }else{
@@ -806,7 +816,8 @@ public class ChunkImpl implements Chunk {
 
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.TOP;
+        this.faceIndex = Constants.TOP;  getTexutreInfo();
+        getTexutreInfo();
         //ShaderUtils.drawCube(x,y,z);
         GL_Vector normal= new GL_Vector(0,1,0);
         GL_Vector p1= new GL_Vector(x,y+1,z+1);
@@ -832,7 +843,7 @@ public class ChunkImpl implements Chunk {
     public void addThisBottom4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.BOTTOM;
+        this.faceIndex = Constants.BOTTOM;  getTexutreInfo();
        count++;
 
         GL_Vector normal= new GL_Vector(0,-1,0);
@@ -905,7 +916,7 @@ public class ChunkImpl implements Chunk {
     public void addThisFront4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.FRONT;
+        this.faceIndex = Constants.FRONT;  getTexutreInfo();
         count++;
         GL_Vector normal= new GL_Vector(0,0,1);
         GL_Vector p1= new GL_Vector(x,y,z+1);
@@ -956,7 +967,7 @@ public class ChunkImpl implements Chunk {
     public void addThisBack4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.BACK;
+        this.faceIndex = Constants.BACK;  getTexutreInfo();
         count++;
 
         GL_Vector normal= new GL_Vector(0,0,-1);
@@ -1001,7 +1012,7 @@ public class ChunkImpl implements Chunk {
     public void addThisLeft4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.LEFT;
+        this.faceIndex = Constants.LEFT;  getTexutreInfo();
         count++;
 
         GL_Vector normal= new GL_Vector(-1,0,0);
@@ -1053,7 +1064,7 @@ public class ChunkImpl implements Chunk {
     public void addThisRight4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.RIGHT;
+        this.faceIndex = Constants.RIGHT;  getTexutreInfo();
         count++;
 
 

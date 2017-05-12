@@ -68,14 +68,14 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
     private ItemBlockType dirt= ItemBlockType.SAND;
     */
 
-    private ItemType mantle = ItemType.mantle_block;
-    private ItemType water =ItemType.water_block;
-    //private ItemBlockType ice = ;
-    private ItemType stone = ItemType.stone_block;
-    private ItemType sand = ItemType.sand_block;
-    private ItemType grass= ItemType.soil_block;
-    private ItemType snow= ItemType.stone_block;
-    private ItemType dirt= ItemType.stone_block;
+//    private ItemType mantle = ItemType.mantle;
+//    private ItemType water =ItemType.water;
+//    //private ItemBlockType ice = ;
+//    private ItemType stone = ItemType.stone;
+//    private ItemType sand = ItemType.sand;
+//    private ItemType grass= ItemType.soil;
+//    private ItemType snow= ItemType.stone;
+//    private ItemType dirt= ItemType.stone;
 
 
 
@@ -147,13 +147,13 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                 for (int y = chunk.getChunkSizeY() - 1; y >= 0; y--) {//
 
                     if (y == 0) { // The very deepest layer of the world is an indestructible mantle
-                        chunk.setBlock(x, y, z, mantle);
+                        chunk.setBlock(x, y, z, ItemType.mantle);
                         break;
                     }
                     //if(1==1)
                    // continue;
                     if (y <= 32 && y > 0) { // Ocean
-                        chunk.setBlock(x, y, z, water);
+                        chunk.setBlock(x, y, z, ItemType. water);
                        // chunk.setLiquid(x, y, z, new LiquidData(LiquidType.WATER, LiquidData.MAX_LIQUID_DEPTH));
 
                         if (y == 32) {
@@ -205,7 +205,7 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
 
     private void generateInnerLayer(int x, int y, int z, Chunk c, WorldBiomeProvider.Biome type) {
         // TODO: GENERATE MINERALS HERE - config waiting at org\terasology\logic\manager\DefaultConfig.groovy 2012/01/22
-        c.setBlock(x, y, z, stone);
+        c.setBlock(x, y, z, ItemType. stone);
     }
 
     private void generateOuterLayer(int x, int y, int z, int firstBlockHeight, Chunk c, WorldBiomeProvider.Biome type) {
@@ -218,32 +218,32 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
             case MOUNTAINS:
                 // Beach
                 if (y >= 28 && y <= 34) {
-                    c.setBlock(x, y, z, sand);
+                    c.setBlock(x, y, z,  ItemType.sand);
                 } else if (depth == 0 && y > 32 && y < 128) {
                     // Grass on top
-                    c.setBlock(x, y, z, grass);
+                    c.setBlock(x, y, z, ItemType.soil);
                 } else if (depth == 0 && y >= 128) {
                     // Grass on top
-                    c.setBlock(x, y, z, snow);
+                    c.setBlock(x, y, z,  ItemType.soil);
                 } else if (depth > 32) {
                     // Stone
-                    c.setBlock(x, y, z, stone);
+                    c.setBlock(x, y, z,  ItemType.stone);
                 } else {
                     // Dirt
-                    c.setBlock(x, y, z, dirt);
+                    c.setBlock(x, y, z,  ItemType.soil);
                 }
 
                 break;
             case SNOW:
                 if (depth == 0.0 && y > 32) {
                     // Snow on top
-                    c.setBlock(x, y, z, snow);
+                    c.setBlock(x, y, z,  ItemType.soil);
                 } else if (depth > 32) {
                     // Stone
-                    c.setBlock(x, y, z, stone);
+                    c.setBlock(x, y, z,  ItemType.stone);
                 } else {
                     // Dirt
-                    c.setBlock(x, y, z, dirt);
+                    c.setBlock(x, y, z,  ItemType.soil);
                 }
 
                 break;
@@ -251,9 +251,9 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
             case DESERT:
                 if (depth > 8) {
                     // Stone
-                    c.setBlock(x, y, z, stone);
+                    c.setBlock(x, y, z,  ItemType.stone);
                 } else {
-                    c.setBlock(x, y, z, sand);
+                    c.setBlock(x, y, z,  ItemType.sand);
                 }
 
                 break;

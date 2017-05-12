@@ -12,6 +12,7 @@ import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
@@ -84,6 +85,6 @@ public interface  Model {
 
     public void build(ShaderConfig config ,GL_Matrix rotateMatrix);
 
-
+    public void build(ShaderConfig config, Vao vao , int x, int y, int z);
 
 }

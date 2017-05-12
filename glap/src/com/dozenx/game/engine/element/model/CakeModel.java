@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ImageUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
@@ -133,5 +134,7 @@ public class CakeModel implements Model {
             block.renderShader(config,rotateMatrix);
         }
     }
+    public void build(ShaderConfig config, Vao vao , int x, int y, int z){
 
+    }
 }

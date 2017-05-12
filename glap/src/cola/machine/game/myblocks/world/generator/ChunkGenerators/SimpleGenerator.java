@@ -25,6 +25,7 @@ import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.generator.FirstPassGenerator;
+import com.dozenx.game.engine.command.ItemType;
 
 import javax.vecmath.Vector2f;
 import java.util.Map;
@@ -47,25 +48,25 @@ public class SimpleGenerator implements FirstPassGenerator {
     private WorldBiomeProvider biomeProvider;
 
     private Block mantle;
-    private Block water;
-    private Block ice;
-    private Block stone;
-    private Block sand;
-    private Block grass;
-    private Block snow;
-    private Block dirt;
+//    private Block water;
+//    private Block ice;
+//    private Block stone;
+//    private Block sand;
+//    private Block grass;
+//    private Block snow;
+//    private Block dirt;
 
     public SimpleGenerator() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         if(blockManager!=null ) {
-            mantle = blockManager.getBlock("mantle");
-            water = blockManager.getBlock("water");
-            stone = blockManager.getBlock("stone");
-            sand = blockManager.getBlock("sand");
-            grass = blockManager.getBlock("soil");
-            snow = blockManager.getBlock("soil");
-            dirt = blockManager.getBlock("soil");
-            ice = blockManager.getBlock("soil");
+//            mantle = blockManager.getBlock("mantle");
+//            water = blockManager.getBlock("water");
+//            stone = blockManager.getBlock("stone");
+//            sand = blockManager.getBlock("sand");
+//            grass = blockManager.getBlock("soil");
+//            snow = blockManager.getBlock("soil");
+//            dirt = blockManager.getBlock("soil");
+//            ice = blockManager.getBlock("soil");
         }
 
     }
@@ -100,7 +101,7 @@ public class SimpleGenerator implements FirstPassGenerator {
 
 
                      // The very deepest layer of the world is an indestructible mantle
-                        chunk.setBlock(x, 0, z, mantle);
+                        chunk.setBlock(x, 0, z, ItemType.mantle);
 
 
 

@@ -9,6 +9,7 @@ import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ImageUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -65,6 +66,8 @@ public class IconModel implements Model {
 
 
     }
+    public void build(ShaderConfig config, Vao vao , int x, int y, int z){
 
+    }
 
 }

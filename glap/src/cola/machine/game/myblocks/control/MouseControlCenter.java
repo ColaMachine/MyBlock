@@ -670,7 +670,7 @@ public class MouseControlCenter {
             //获取当前的block item
             ItemDefinition  handItem = ItemManager.getItemDefinition(player.getHandEquip());
             //如果当前手上有拿block 就是放置的动作 如果没有 就是拆方块的节奏
-            if(handItem!=null && handItem.getType() == ItemMainType.BLOCK){
+            if(handItem!=null && handItem.getType() == ItemMainType.BLOCK  ){
                 delete=false;
             }else {
                 delete=true;
@@ -682,9 +682,9 @@ public class MouseControlCenter {
                 //得出当前人手上拿的是不是方块
                 int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
                 int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
-               TreeBlock treeBlock =new TreeBlock(hitPoint);
+            //   TreeBlock treeBlock =new TreeBlock(hitPoint);
                 //treeBlock.startPosition=hitPoint;
-                        treeBlock.generator();
+                      //  treeBlock.generator();
                 int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
                 int blockY = MathUtil.floor(hitPoint.y);
                 int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;

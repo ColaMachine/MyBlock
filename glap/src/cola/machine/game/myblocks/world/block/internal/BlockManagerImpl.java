@@ -11,19 +11,27 @@ import com.dozenx.game.engine.command.ItemType;
 
 public class BlockManagerImpl extends BlockManager {
 	private HashMap<String,Block> blockInfoNameMap=new HashMap();
-    private HashMap<Integer,Block> blockInfoIdMap=new HashMap();
+   private HashMap<Integer,Block> blockInfoIdMap=new HashMap();
+
+    /**
+     * 加载所有的block
+     */
+    public void  loadAllBlock(){
+
+    }
+
 	public BlockManagerImpl(){
         Block air=new BaseBlock("air",0,false);
-		Block stone=new BaseBlock("stone", ItemType.stone_block.ordinal(),false);
-		Block soil =new BaseBlock("soil",ItemType.soil_block.ordinal(),false);
-		Block glass=new BaseBlock("glass",ItemType.glass_block.ordinal(),true);
-		Block sand=new BaseBlock("sand",ItemType.sand_block.ordinal(),false);
-		Block mantle=new BaseBlock("mantle",ItemType.mantle_block.ordinal(),false);
-		Block water=new BaseBlock("water",ItemType.water_block.ordinal(),true);
-		Block wood=new BaseBlock("wood",ItemType.wood_block.ordinal(),false);
-        Block treeWood=new BaseBlock("tree_wood",ItemType.tree_wood_block.ordinal(),false);
-        Block treeLeaf=new BaseBlock("tree_wood",ItemType.tree_leaf_block.ordinal(),false);
-
+		Block stone=new BaseBlock("stone", ItemType.stone.ordinal(),false);
+		Block soil =new BaseBlock("soil",ItemType.soil.ordinal(),false);
+		Block glass=new BaseBlock("glass",ItemType.glass.ordinal(),true);
+		Block sand=new BaseBlock("sand",ItemType.sand.ordinal(),false);
+		Block mantle=new BaseBlock("mantle",ItemType.mantle.ordinal(),false);
+		Block water=new BaseBlock("water",ItemType.water.ordinal(),true);
+		Block wood=new BaseBlock("wood",ItemType.wood.ordinal(),false);
+        Block treeWood=new BaseBlock("tree_wood",ItemType.tree_wood.ordinal(),false);
+        Block treeLeaf=new BaseBlock("tree_seed",ItemType.tree_seed.ordinal(),true);
+        Block treeSeed=new BaseBlock("tree_leaf",ItemType.tree_leaf.ordinal(),false);
         blockInfoNameMap.put("air", air);
         blockInfoNameMap.put("water", water);
         blockInfoNameMap.put("stone", stone);
@@ -32,9 +40,10 @@ public class BlockManagerImpl extends BlockManager {
         blockInfoNameMap.put("sand", sand);
         blockInfoNameMap.put("mantle", mantle);
         blockInfoNameMap.put("wood", wood);
-        blockInfoNameMap.put("tree_wood", treeWood);
+       blockInfoNameMap.put("tree_wood", treeWood);
         blockInfoNameMap.put("tree_leaf", treeLeaf);
-        Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
+        blockInfoNameMap.put("tree_seed", treeSeed);
+       Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry<String, Block> entry =it.next();
 
@@ -43,11 +52,11 @@ public class BlockManagerImpl extends BlockManager {
 
 
 	}
-	
+
 	public Block getBlock(String  name){
 		return blockInfoNameMap.get(name);
 	}
-    public Block getBlock(int  id){
+    public Block getBlock(int  id) {
         return blockInfoIdMap.get(id);
     }
 	/*@Override

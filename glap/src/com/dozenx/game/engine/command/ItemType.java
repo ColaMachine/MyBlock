@@ -20,7 +20,8 @@ public enum ItemType {
     gold_pick,arch1,raw_beef,cooked_beef,iron_stick,wood_axe,stone_axe,
     iron_axe,diamond_axe,gold_axe,arch2,wood_hoe,stone_hoe,iron_hoe,
     diamond_hoe,gold_hoe,arch3,
-    grit_block,soil_block,stone_block,wood_block,glass_block,sand_block,mantle_block,water_block,tree_wood_block,tree_leaf_block;
+    grit,soil,stone,wood,glass,sand,mantle,water,tree_wood,tree_leaf,
+    tree_seed;
     public int getType(){
         return this.ordinal();
     }

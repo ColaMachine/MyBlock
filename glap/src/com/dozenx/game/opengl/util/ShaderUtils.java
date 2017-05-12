@@ -1922,7 +1922,9 @@ try {
  public static void draw3dImage(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
         //ti=TextureManager.getTextureInfo("mantle");
 
-
+        if(ti==null){
+            LogUtil.err("ti should not be null");
+        }
         int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
             FloatBuffer veticesBuffer = vao.getVertices();
@@ -1947,6 +1949,38 @@ try {
                 veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
                 veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
             }
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * this function is for terrain draw
+     * @param config
+     * @param p1
+     * @param p2
+     * @param p3
+     * @param p4
+     * @param normal
+     */
+    public static void draw3dColor(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,GL_Vector color){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        try {
+            FloatBuffer veticesBuffer = vao.getVertices();
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }
+            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p1
+            veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p2
+            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p3
+            veticesBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p4
+            veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p1
+            veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p3
+
         }catch(Exception e){
             e.printStackTrace();
             throw e;
