@@ -36,8 +36,10 @@ uniform Light light;
 in vec3 Normal;
 in vec3 FragPos;
 in vec3 TexCoord;
-uniform vec3 viewPos;
+//in vec4 FragPosLightSpace;
 
+uniform vec3 viewPos;
+//uniform sampler2D ourTexture;
 
 
 void main()
@@ -76,29 +78,29 @@ void main()
     if(oricolor.a<0.1)
     discard;
    // color.w=1;
-  //  vec3 textureColor = oricolor.rgb;
+    vec3 textureColor = oricolor.rgb;
 vec3 norm = normalize(Normal);//faxian guiyi
 vec3 lightDir = normalize(light.position - FragPos);//guang de xian lu
 
-//float diff = max(dot(norm, lightDir), 0.0);// jisuan jiaodu dai lai de guangzhao
+float diff = max(dot(norm, lightDir), 0.0);// jisuan jiaodu dai lai de guangzhao
 
 //float shadow = ShadowCalculation(FragPosLightSpace);
 
 vec3 viewDir = normalize(viewPos - FragPos);
-//vec3 reflectDir = reflect(-lightDir, norm);
-//float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+vec3 reflectDir = reflect(-lightDir, norm);
+float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-//vec3 ambient = light.ambient * textureColor;
-//vec3 diffuse = light.diffuse *  textureColor;
-//vec3 specular = light.specular * textureColor ;//* vec3(texture(material.specular, TexCoord));
+vec3 ambient = light.ambient * textureColor;
+vec3 diffuse = light.diffuse * diff * textureColor;
+vec3 specular = light.specular * spec ;//* vec3(texture(material.specular, TexCoord));
 
-//float distance = length(light.position - FragPos);
-//float attenuation = 5.0f / (light.constant + light.linear*distance +light.quadratic*(distance*distance));
-// ambient *= attenuation;
-// diffuse *= attenuation;
-// specular *= attenuation;
+float distance = length(light.position - FragPos);
+float attenuation = 5.0f / (light.constant + light.linear*distance +light.quadratic*(distance*distance));
+ambient *= attenuation;
+diffuse *= attenuation;
+specular *= attenuation;
 
- //color=vec4(light.ambient*vec3(texture(material.diffuse,TexCoords)), 1.0f);
+ FragColor=vec4(light.ambient*vec3(texture(material.diffuse,TexCoords)), 1.0f);
 //vec3 result = (ambient + diffuse + specular) * textureColor;//
 //vec3 color =result  ;
 //color =oricolor;//vec4(result,oricolor.w)  ;    // oricolor;//vec4(textureColor, 0.5f);
@@ -110,7 +112,7 @@ vec3 viewDir = normalize(viewPos - FragPos);
 //if(shadow>0){
 //lighting=vec3(0.1,0.1,0.1);
 //}
-    FragColor = oricolor;
+   // FragColor = vec4(lighting, 1.0f);
 // 直接显示原来的颜色
 //color =oricolor;
 

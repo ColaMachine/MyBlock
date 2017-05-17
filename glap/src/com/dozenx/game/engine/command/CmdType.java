@@ -27,6 +27,8 @@ public enum CmdType {
     GROUP,//13
     CHUNKREQUEST,//14
     CHUNKRESPONSE,//15
+    CHUNKS,//16
+    CHUNKSS,//17
     BACK,
     LIVI,
     DIED,

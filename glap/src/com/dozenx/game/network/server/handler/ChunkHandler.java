@@ -7,13 +7,17 @@ import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.item.bean.ItemSeed;
+import com.dozenx.game.network.server.GrowTask;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.service.impl.BagService;
 import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
+import glmodel.GL_Vector;
 
 /**
  * Created by luying on 17/2/18.
@@ -47,6 +51,12 @@ public class ChunkHandler extends GameServerHandler {
         }else if(cmd.type==1||cmd.type==2){// 增加方块 或者 删除方块
             LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z+"");
             chunk.setBlock(cmd.cx,cmd.cy,cmd.cz,cmd.blockType);
+            if(cmd.blockType == ItemType.tree_seed.ordinal() ){
+                ItemSeed itemSeed = new ItemSeed();
+                itemSeed.setPosition(new GL_Vector(cmd.x*16+cmd.cx,cmd.cy,cmd.z*16+cmd.cz));
+                itemSeed.setPlantedTime(TimeUtil.getNowMills());
+                GrowTask.seeds.add(itemSeed);
+            }
             broadCast(cmd);
         }
 

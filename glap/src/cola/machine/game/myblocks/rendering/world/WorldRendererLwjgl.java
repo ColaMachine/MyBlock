@@ -1,21 +1,26 @@
 package cola.machine.game.myblocks.rendering.world;
 
 import check.CrashCheck;
+import cola.machine.game.myblocks.math.Vector2i;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.command.ChunkResponseCmd;
+import com.dozenx.game.engine.command.ChunksCmd;
+import com.dozenx.game.engine.command.ChunkssCmd;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import cola.machine.game.myblocks.switcher.Switcher;
 
 import java.nio.*;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
+import javax.vecmath.Point4f;
+import javax.vecmath.Point4i;
 import javax.vecmath.Vector3f;
 
 import com.dozenx.util.math.Rect2i;
@@ -151,7 +156,38 @@ Client client;
             }
             chunk.build();
 
-        }
+        } while(client.chunkAlls.size()>0 && client.chunkAlls.peek()!=null ) {
+			ChunkssCmd cmd = (ChunkssCmd) client.chunkAlls.poll();
+			List<Integer> list = cmd.list;
+			Chunk chunk;
+			Map<Vector2i ,Chunk> map =new HashMap<>();
+			for(int i=0;i<list.size()/4;i++){
+
+				int x =list.get(i*4);
+				int y =list.get(i*4+1);
+				int z = list.get(i*4+2);
+				int blockValue= list.get(i*4+3);
+
+				int chunkX = MathUtil.getBelongChunkInt(x);
+				int chunkZ = MathUtil.getBelongChunkInt(z);
+				int blockX = MathUtil.floor(x) - chunkX * 16;
+				int blockY = MathUtil.floor(y);
+				int blockZ = MathUtil.floor(z) - chunkZ * 16;
+				chunk= map.get(new Vector2i(chunkX,chunkZ));
+				if(chunk==null) {
+					chunk = chunkProvider.getChunk(new Vector3i(chunkX, 0, chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
+					map.put(new Vector2i(chunkX,chunkZ),chunk);
+				}
+				chunk.setBlock(blockX,blockY,blockZ,blockValue);
+			}
+			for (Vector2i vector2i : map.keySet()) {
+				Chunk chunNow =map.get(vector2i);
+				chunNow.build();
+			}
+
+
+
+		}
 		//skysphere.update();
       /*  try{
             Util.checkGLError();}catch (Exception e ){

@@ -11,7 +11,7 @@ out vec4 FragPosLightSpace;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
-//uniform mat4 lightSpaceMatrix;
+uniform mat4 lightSpaceMatrix;
 out float ourTextureIndex;
 void main()
 {
@@ -20,7 +20,7 @@ gl_Position =projection*view*model*vec4(position, 1.0f);
 FragPos=vec3(model*vec4(position,1.0f));//真实的物体位置
 
 //转换成灯光视角中的位置
-//FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
+FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
 
 
 Normal=normal;

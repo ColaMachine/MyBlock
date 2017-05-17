@@ -366,18 +366,20 @@ public class ShaderManager {
 
 //        float near_plane = 1.0f, far_plane = 107.5f;
 //        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+        if(Constants.SHADOW_ENABLE){
+            shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(0, -0.3f, -1f))));
+        }
 
-        shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(0, -0.3f, -1f))));
        // GL_Matrix lightViewMatrix =  ShaderManager.getInstance().shadow.lightViewMatrix ;
 
         // if(!Constants.SHADOW_ENABLE) {
         //影响所有的地形里的灯光位置
         glUseProgram(terrainShaderConfig.getProgramId());
         glUniform3f(terrainShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
+        if(Constants.SHADOW_ENABLE) {
+            glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
 
-        glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
-
-
+        }
         OpenglUtils.checkGLError();
         // }
         //影响实际的白色灯光方块的位置
@@ -393,8 +395,9 @@ public class ShaderManager {
         //config.setProjLoc(projectionLoc);
         OpenglUtils.checkGLError();
         //光源的视角
-        glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
-
+        if(Constants.SHADOW_ENABLE) {
+            glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
+        }
         OpenglUtils.checkGLError();
 
         //hdr
@@ -506,9 +509,14 @@ public class ShaderManager {
 
         //环境光颜色
 
-       /*  lightColorLoc= glGetUniformLocation(ProgramId, "lightColor");
-        glUniform3f(lightColorLoc,1.0f,1f,1f);
-        OpenglUtils.checkGLError();*/
+    /* int  lightColorLoc= glGetUniformLocation(programId, "light");
+        if(lightColorLoc>0){
+                config.setLightColorLoc(lightColorLoc);
+            glUniform3f(lightPosInTerrainLoc, lightPos.x, lightPos.y, lightPos.z);
+            OpenglUtils.checkGLError();
+        }
+        glUniform3f(lightColorLoc,1.0f,1f,1f);*/
+        OpenglUtils.checkGLError();
         int lightPosInTerrainLoc = glGetUniformLocation(programId, "light.position");
         GL_Vector lightPos = new GL_Vector();
         if (GamingState.instance == null) {
@@ -551,15 +559,15 @@ public class ShaderManager {
 
         int lightMatAmbientLoc = glGetUniformLocation(programId, "light.ambient");
         if (lightMatAmbientLoc >= 0) {
-            glUniform3f(lightMatAmbientLoc, 0.5f, 0.5f, 0.5f);
+            glUniform3f(lightMatAmbientLoc, 1f, 1f, 1f);
         }
         int lightMatDiffuseLoc = glGetUniformLocation(programId, "light.diffuse");
         if (lightMatDiffuseLoc >= 0) {
-            glUniform3f(lightMatDiffuseLoc, 0.5f, 0.5f, 0.5f);
+            glUniform3f(lightMatDiffuseLoc, 1f, 1f, 1f);
         }
         int lightMatSpecularLoc = glGetUniformLocation(programId, "light.specular");
         if (lightMatSpecularLoc >= 0) {
-            glUniform3f(lightMatSpecularLoc, 0.5f, 0.5f, 0.5f);
+            glUniform3f(lightMatSpecularLoc,1f, 1f, 1f);
         }
         int lightMatShineLoc = glGetUniformLocation(programId, "light.shininess");
         if (lightMatSpecularLoc >= 0) {

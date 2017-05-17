@@ -215,4 +215,7 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 	}
     
 
+	public void setBlock(){
+
+	}
 }

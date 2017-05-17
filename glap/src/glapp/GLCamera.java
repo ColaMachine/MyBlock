@@ -260,12 +260,12 @@ public class GLCamera {
 		glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());
 
 
-
+		//赋值查看的角度
 		glUniformMatrix4(GamingState.instance.shaderManager.terrainShaderConfig.getViewLoc(),  false,cameraViewBuffer);
 		org.lwjgl.opengl.Util.checkGLError();
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
-
+		//赋值查看的位置
 		glUniform3f(GamingState.instance.shaderManager.terrainShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
 		org.lwjgl.opengl.Util.checkGLError();
 

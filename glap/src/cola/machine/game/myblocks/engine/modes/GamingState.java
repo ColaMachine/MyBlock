@@ -177,13 +177,13 @@ public class GamingState implements GameState {
             document.body.appendChild(enemyHeadPanel);
 
             document.needUpdate=true;
-             shadowDiv =new Div();
+             /*shadowDiv =new Div();
             shadowDiv.setBorderWidth(2);
             shadowDiv.setBorderColor(new Vector4f(1f, 1f, 1f, 1f));
             shadowDiv.setWidth(200);
             shadowDiv.setHeight(200);
             shadowDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("items")));
-            document.body.appendChild(shadowDiv);
+            document.body.appendChild(shadowDiv);*/
 
             SynchronTask task = new SynchronTask();
             task.start();
@@ -522,6 +522,7 @@ public ShaderManager shaderManager;
      */
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor( 0.4648f, 0.734375f,0.96484375f,1);
         //不应该每次都绘制 二应该放入
         if(Constants.SHADOW_ENABLE &&  Math.random()>0.8) {
             //以灯光的角度进行观察 保存一个深度缓冲帧

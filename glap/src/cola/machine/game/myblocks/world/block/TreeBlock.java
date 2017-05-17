@@ -4,12 +4,18 @@ import cola.machine.game.myblocks.block.Block;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
+import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
+
+import javax.vecmath.Point4i;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by luying on 17/5/6.
@@ -21,9 +27,11 @@ public class TreeBlock {
     int rodMaxHeight = 5;
     //WorldRendererLwjgl world;
 Client client ;
-    public  TreeBlock(GL_Vector startPosition){
+    ChunkProvider chunkProvider;
+    public  TreeBlock(ChunkProvider chunkProvider,GL_Vector startPosition){
         this.startPosition = startPosition;
         this.client =CoreRegistry.get(Client.class);
+        this.chunkProvider=chunkProvider;
 
     }
     public void createBlock(float x,float y,float z,ItemType itemType){
@@ -36,26 +44,30 @@ Client client ;
         cmd.cx = blockX;
         cmd.cz = blockZ;
         cmd.cy = blockY;
-LogUtil.println("tree block :"+cmd.cx+"y:"+cmd.cy+"z:"+cmd.cz);
+        LogUtil.println("tree block :"+cmd.cx+"y:"+cmd.cy+"z:"+cmd.cz);
         if(cmd.cy<0){
             LogUtil.err("y can't be <0 ");
         }
         cmd.type = 1;
         //blockType 应该和IteType类型联系起来
         cmd.blockType = itemType.ordinal();
-
-        client.send(cmd);
+        Chunk chunk = chunkProvider.getChunk(chunkX,0,chunkZ);
+        chunk.setBlock(blockX,blockY,blockZ,itemType);
+        //client.send(cmd);
     }
     //public void
-    public void generator(){
+    public  List<Integer> generator(){
 
-
+        List<Integer> list =new ArrayList();
         //row growth
         //先来一颗棒棒糖树 树干是笔直的 树叶是正方体
-        for(int i=1;i<rodMaxHeight;i++){
+        for(int i=0;i<rodMaxHeight;i++){
            // GL_Vector newPosition = new GL_Vector(startPosition.x,startPosition.y+i,startPosition.z);
             createBlock(startPosition.x,startPosition.y+i,startPosition.z,ItemType.tree_wood);
-
+            list.add((int)startPosition.x);
+            list.add((int)startPosition.y+i);
+            list.add((int)startPosition.z);
+            list.add(ItemType.tree_wood.ordinal());
         }
         int width =5;
         for(int i=-width/2;i<=width/2;i++){
@@ -64,6 +76,11 @@ LogUtil.println("tree block :"+cmd.cx+"y:"+cmd.cy+"z:"+cmd.cz);
                     //GL_Vector newPosition = new GL_Vector(startBlock.getPosition().x+i,startBlock.getPosition().y+5+j,startBlock.getPosition().z+k);
                    // world.setBlock(newPosition,ItemType.tree_leaf_block);
                     createBlock(startPosition.x+i,startPosition.y+5+j,startPosition.z+k,ItemType.tree_leaf);
+
+                    list.add((int)startPosition.x+i);
+                    list.add((int)startPosition.y+5+j);
+                    list.add((int)startPosition.z+k);
+                    list.add(ItemType.tree_leaf.ordinal());
                 }
             }
         }
@@ -88,5 +105,6 @@ LogUtil.println("tree block :"+cmd.cx+"y:"+cmd.cy+"z:"+cmd.cz);
             //then branch has it's direction and has max length  and main rod grow arrive the max hegith then stop grow
             //then grow leaf
         //}
+        return list;
     }
 }

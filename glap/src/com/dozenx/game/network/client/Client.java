@@ -32,6 +32,7 @@ public class Client extends Thread{
     public static Stack<BagCmd> bags=new Stack<>();
     public static Stack<DropCmd> drops=new Stack<>();
     public static Queue<ChunkRequestCmd> chunks=new LinkedList<>();
+    public static Queue<ChunkssCmd> chunkAlls=new LinkedList<>();
     public static Stack<PickCmd> picks=new Stack<>();
     public static Stack<GameCmd> humanStates=new Stack<>();
    // public static Stack<GameCmd> newborns=new Stack<>();
@@ -290,6 +291,8 @@ public class Client extends Thread{
                        drops.push((DropCmd)cmd);
                     }else if (cmd.getCmdType()== CmdType.CHUNKREQUEST) {
                         chunks.offer((ChunkRequestCmd)cmd);
+                    }else if (cmd.getCmdType()== CmdType.CHUNKSS) {
+                        chunkAlls.offer((ChunkssCmd)cmd);
                     }else if (cmd instanceof  UserBaseCmd ||cmd.getCmdType()== CmdType.PICK || cmd.getCmdType()== CmdType.WALK || cmd.getCmdType()== CmdType.DIED|| cmd.getCmdType()== CmdType.REBORN
                             || cmd.getCmdType()== CmdType.JUMP) {
                         humanStates.push(cmd);
