@@ -3,6 +3,9 @@ package cola.machine.game.myblocks.manager;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
@@ -441,6 +444,29 @@ public class TextureManager {
                     MapUtil.getIntValue(map,"shapeType");
                     if(shapeType!=2 && shapeType!=3){
                         LogUtil.err("shaperType is error ");
+                    }
+                    Object frontObj = map.get("front");
+                    if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
+                        JSONObject jsonObj = (JSONObject)frontObj;
+                     //  HashMap keyValue = (HashMap)jsonObj.get(0);
+                        JSONArray vertices =  jsonObj.getJSONArray("vertices");
+                        float[][] verticesAry = new float[vertices.size()][3];
+                        for(int j=0;j<vertices.size();j++){
+                            for(int k=0;k<3;k++){
+                                verticesAry[j][k]= vertices.getJSONArray(k).getFloat(k);
+                            }
+                        }
+                        JSONArray tecoordsJAry =  jsonObj.getJSONArray("vertices");
+                        float[][] tecoords = new float[tecoordsJAry.size()][2];
+                        for(int j=0;j<tecoordsJAry.size();j++){
+                            for(int k=0;k<2;k++){
+                                tecoords[j][k]= tecoordsJAry.getJSONArray(k).getFloat(k);
+                            }
+                        }
+
+                        ShapeFace shapeFace = JSON.toJavaObject((JSONObject)frontObj ,ShapeFace.class);
+                        LogUtil.println("it 's a shapeFace");
+
                     }
                     String front = (String) map.get("front");
                     String back = (String) map.get("back");
