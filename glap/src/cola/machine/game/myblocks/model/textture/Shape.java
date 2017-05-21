@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.model.textture;
 
+import com.dozenx.game.engine.element.model.ShapeFace;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +16,61 @@ public class Shape {
     public void setShapeType(int shapeType) {
         this.shapeType = shapeType;
     }
+    ShapeFace frontFace;
+    ShapeFace backFace;
+    ShapeFace topFace;
 
+    public ShapeFace getFrontFace() {
+        return frontFace;
+    }
+
+    public void setFrontFace(ShapeFace frontFace) {
+        this.frontFace = frontFace;
+    }
+
+    public ShapeFace getBackFace() {
+        return backFace;
+    }
+
+    public void setBackFace(ShapeFace backFace) {
+        this.backFace = backFace;
+    }
+
+    public ShapeFace getTopFace() {
+        return topFace;
+    }
+
+    public void setTopFace(ShapeFace topFace) {
+        this.topFace = topFace;
+    }
+
+    public ShapeFace getBottomFace() {
+        return bottomFace;
+    }
+
+    public void setBottomFace(ShapeFace bottomFace) {
+        this.bottomFace = bottomFace;
+    }
+
+    public ShapeFace getLeftFace() {
+        return leftFace;
+    }
+
+    public void setLeftFace(ShapeFace leftFace) {
+        this.leftFace = leftFace;
+    }
+
+    public ShapeFace getRightFace() {
+        return rightFace;
+    }
+
+    public void setRightFace(ShapeFace rightFace) {
+        this.rightFace = rightFace;
+    }
+
+    ShapeFace bottomFace;
+    ShapeFace leftFace;
+    ShapeFace rightFace;
     String name ;
     int shapeType;
     TextureInfo front;

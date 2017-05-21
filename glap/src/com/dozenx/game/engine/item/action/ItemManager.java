@@ -213,6 +213,9 @@ public class ItemManager {
                         }
                         item.getItemModel().setIcon(ti);
                     }
+                    if("door".equals(category)){
+                        ItemDoorParser.parse(item,map);
+                    }else
                     if("seed".equals(category)){
                          ItemSeedParser.parse(item,map);
                     }else

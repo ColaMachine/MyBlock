@@ -20,6 +20,7 @@ import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import com.dozenx.game.opengl.util.OpenglUtils;
@@ -679,6 +680,16 @@ public class MouseControlCenter {
             GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
                     20, "soil", delete);
             if(hitPoint!=null){
+                //打印点
+                //获得朝向
+
+                //获得靠近还是靠远
+                LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
+
+
+                //获得上一层还是下一层
+
+                //其实我就是想知道点击的是哪一个面上 点击的面上
                 //得出当前人手上拿的是不是方块
                 int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
                 int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
@@ -699,7 +710,83 @@ public class MouseControlCenter {
                 cmd.type = delete?2:1;
                 //blockType 应该和IteType类型联系起来
                 cmd.blockType = delete?0:(handItem.getItemType().ordinal());
+                if(cmd.blockType==ItemType.wood_door.ordinal()){
+                    float pianyiX = hitPoint.x%1;
+                    float pianyiY = hitPoint.y%1;
+                    float pianyiZ= hitPoint.z%1;
+                    //计算朝向
 
+                    //对于门来说 我需要知道他的朝向 这个可以通过 xz的值来算出 4个朝向值
+                    //然后我需要知道他是靠近还是靠远
+                    int block=0;
+                    if(pianyiX<0.5){
+                        if(pianyiY<0.5){
+                            if(pianyiZ<0.5){
+                                block=4;
+                            }else{
+                                block=1;
+                            }
+                        }else{
+                            if(pianyiZ<0.5){
+                                block=5;
+                            }else{
+                                block=8;
+                            }
+                        }
+                    }else{
+                        if(pianyiY<0.5){
+                            if(pianyiZ<0.5){
+                                block=3;
+                            }else{
+                                block=2;
+                            }
+                        }else{
+                            if(pianyiZ<0.5){
+                                block=7;
+                            }else{
+                                block=6;
+                            }
+                        }
+                    }
+                    int condition=0;
+                    if(Math.abs(camera.getViewDir().x)>Math.abs(camera.getViewDir().z)){
+                        if(block==1 ||  block==4||block==5 ||  block==8){
+                            condition=Constants.LEFT;
+                        }else{
+                            condition=Constants.RIGHT;
+                        }
+                    }else{
+                        if(block==1 ||  block==2||block==5 ||  block==6){
+                            condition=Constants.FRONT;
+                        }else{
+                            condition=Constants.BACK;
+                        }
+                    }
+                    cmd.blockType  = condition<<8|cmd.blockType;
+                    /*if(pianyiX<0.1 ){//把一个方块分为 12345678 8个格子 算出它再哪个格子
+                        //说明是向左的方向
+                        if(block==1 ||  block==4||block==5 ||  block==8){
+                            condition=Constants.LEFT;
+                        }else{
+                            condition=Constants.RIGHT;
+                        }
+                    }else if(pianyiX>0.9){
+                        if(block==1 ||  block==4||block==5 ||  block==8){
+                            condition=Constants.LEFT;
+                        }else{
+                            condition=Constants.RIGHT;
+                        }
+                        //说明是向右的方向
+                    }else if(pianyiY<0.1 ){
+                        //说明是向上的方向
+                    }else if(pianyiY>0.9){
+                        //说明是向下的方向
+                    }else if(pianyiZ<0.1 ){
+                        //说明是向前的方向
+                    }else if(pianyiZ>0.9){
+                        //说明是向后的方向
+                    }*/
+                }
                 CoreRegistry.get(Client.class).send(cmd);
             }
         }

@@ -1955,6 +1955,129 @@ try {
         }
     }
 
+
+
+    public static void draw3dImage(ShaderConfig config,Vao vao ,float[][] vertices,float[][] texoords,float[][] normal,int[] faces,TextureInfo ti,int x,int y,int z){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        if(ti==null){
+            LogUtil.err("ti should not be null");
+        }
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        try {
+            FloatBuffer veticesBuffer = vao.getVertices();
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }
+
+            for(int i=0;i<faces.length;i++){
+
+                veticesBuffer.put(vertices[faces[i]][0]+x).
+                        put(vertices[faces[i]][1]+y).
+                        put(vertices[faces[i]][2]+z).
+                        put(normal[faces[i]][0]).
+                        put(normal[faces[i]][1]).
+                        put(normal[faces[i]][2]).
+                        put(texoords[faces[i]][0]).
+                        put(texoords[faces[i]][1]).
+                        put(0).
+                        put(index);//p1
+
+            }
+            veticesBuffer.put(vertices[faces[0]][0]+x).
+                    put(vertices[faces[0]][1]+y).
+                    put(vertices[faces[0]][2]+z).
+                    put(normal[faces[0]][0]).
+                    put(normal[faces[0]][1]).
+                    put(normal[faces[0]][2]).
+                    put(texoords[faces[0]][0]).
+                    put(texoords[faces[0]][1]).
+                    put(0).
+                    put(index);//p1
+            if(faces.length<2){
+                LogUtil.err("lenght too short");
+            }
+            veticesBuffer.put(vertices[faces[2]][0]+x).
+                    put(vertices[faces[2]][1]+y).
+                    put(vertices[faces[2]][2]+z).
+                    put(normal[faces[2]][0]).
+                    put(normal[faces[2]][1]).
+                    put(normal[faces[2]][2]).
+                    put(texoords[faces[2]][0]).
+                    put(texoords[faces[2]][1]).
+                    put(0).
+                    put(index);//p1
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public static void draw3dImage(ShaderConfig config,Vao vao ,float[][] vertices,float[][] texoords,float[][] normal,int[] faces,TextureInfo ti,int x,int y,int z,GL_Matrix transMatrix){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        if(ti==null){
+            LogUtil.err("ti should not be null");
+        }
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        try {
+            FloatBuffer veticesBuffer = vao.getVertices();
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }
+
+            for(int i=0;i<faces.length;i++){
+                GL_Vector vector =new GL_Vector(vertices[faces[i]][0],vertices[faces[i]][1],vertices[faces[i]][2]);
+                vector = GL_Matrix.multiply(transMatrix, vector);
+                veticesBuffer.put(vector.x+x).
+                        put(vector.y+y).
+                        put(vector.z+z).
+                        put(normal[faces[i]][0]).
+                        put(normal[faces[i]][1]).
+                        put(normal[faces[i]][2]).
+                        put(texoords[faces[i]][0]).
+                        put(texoords[faces[i]][1]).
+                        put(0).
+                        put(index);//p1
+
+            }
+            GL_Vector vector =new GL_Vector(vertices[faces[0]][0],vertices[faces[0]][1],vertices[faces[0]][2]);
+            vector = GL_Matrix.multiply(transMatrix, vector);
+            veticesBuffer.put(vector.x+x).
+                    put(vector.y+y).
+                    put(vector.z+z).
+                    put(normal[faces[0]][0]).
+                    put(normal[faces[0]][1]).
+                    put(normal[faces[0]][2]).
+                    put(texoords[faces[0]][0]).
+                    put(texoords[faces[0]][1]).
+                    put(0).
+                    put(index);//p1
+            if(faces.length<2){
+                LogUtil.err("lenght too short");
+            }
+            vector =new GL_Vector(vertices[faces[2]][0],vertices[faces[2]][1],vertices[faces[2]][2]);
+            vector = GL_Matrix.multiply(transMatrix, vector);
+            veticesBuffer.put(vector.x+x).
+                    put(vector.y+y).
+                    put(vector.z+z).
+                    put(normal[faces[2]][0]).
+                    put(normal[faces[2]][1]).
+                    put(normal[faces[2]][2]).
+                    put(texoords[faces[2]][0]).
+                    put(texoords[faces[2]][1]).
+                    put(0).
+                    put(index);//p1
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     /**
      * this function is for terrain draw
      * @param config

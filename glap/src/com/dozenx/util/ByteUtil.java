@@ -4,6 +4,7 @@ package com.dozenx.util;
  * Created by dozen.zhang on 2016/10/10.
  */
 
+import com.dozenx.game.engine.command.ItemType;
 import core.log.LogUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -232,7 +233,9 @@ public class ByteUtil
 
     public static void main(String[] args)
     {
-
+        System.out.println(ByteUtil.toBinaryStr(ByteUtil.HEX_1_1_0_0));
+        System.out.println(ItemType.wood_door.ordinal());
+System.out.println(ByteUtil.get8_0Value(555));
 
         System.out.println((byte)254);
        short s = 122;
@@ -358,6 +361,13 @@ public class ByteUtil
     public static int get4_0Value(int value ){
         return (value & HEX_0_0_0_1)>>0;
     }
+    public static int get8_0Value(int value ){
+        return (value & HEX_0_0_1_1);
+    }
+    public static int get16_8Value(int value ){
+        return (value & HEX_1_1_0_0)>>8;
+    }
+
     public static String toBinaryStr(int num) {
         char[] chs = new char[Integer.SIZE];
         for(int i = 0; i < Integer.SIZE; i++) {
@@ -534,4 +544,5 @@ public class ByteUtil
     public final static short HEX_0_0_1_0 = 15<<4;
     public final static short HEX_0_0_0_1 = 15<<0;
     public final static short HEX_0_0_1_1 = 255;
+    public final static short HEX_1_1_0_0 = (short)(255<<8);
 }

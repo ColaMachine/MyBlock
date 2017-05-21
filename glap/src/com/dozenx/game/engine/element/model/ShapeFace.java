@@ -10,15 +10,56 @@ import java.util.List;
  */
 public class ShapeFace {
 
-    List<Vector3f> vertices;
-    List<Vector3f> normals;
-    List<Vector3f> texcoords;
-    List<Integer> faces;
+    /*public List<Vector3f> vertices;
+    public List<Vector3f> normals;
+    public List<Vector3f> texcoords;
+    public List<Integer> faces;*/
 
-   /* Float[][] vertices;
-    int[][] normals;
-   float[][] texcoords;
-    int[] faces;
-    boolean fullSide;*/
+    public float[][] vertices;
+
+    public float[][] getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(float[][] vertices) {
+        this.vertices = vertices;
+    }
+
+    public float[][] getNormals() {
+        return normals;
+    }
+
+    public void setNormals(float[][] normals) {
+        this.normals = normals;
+    }
+
+    public float[][] getTexcoords() {
+        return texcoords;
+    }
+
+    public void setTexcoords(float[][] texcoords) {
+        this.texcoords = texcoords;
+    }
+
+    public int[][] getFaces() {
+        return faces;
+    }
+
+    public void setFaces(int[][] faces) {
+        this.faces = faces;
+    }
+
+    public boolean isFullSide() {
+        return fullSide;
+    }
+
+    public void setFullSide(boolean fullSide) {
+        this.fullSide = fullSide;
+    }
+
+    public float[][] normals;
+    public float[][] texcoords;
+    public  int[][] faces;
+    public  boolean fullSide;
    // List<Integer> faces;
 }

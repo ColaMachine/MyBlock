@@ -32,6 +32,7 @@ public class BlockManagerImpl extends BlockManager {
         Block treeWood=new BaseBlock("tree_wood",ItemType.tree_wood.ordinal(),false);
         Block treeLeaf=new BaseBlock("tree_seed",ItemType.tree_seed.ordinal(),true);
         Block treeSeed=new BaseBlock("tree_leaf",ItemType.tree_leaf.ordinal(),false);
+        Block wood_door=new BaseBlock("wood_door",ItemType.wood_door.ordinal(),true);
         blockInfoNameMap.put("air", air);
         blockInfoNameMap.put("water", water);
         blockInfoNameMap.put("stone", stone);
@@ -43,6 +44,7 @@ public class BlockManagerImpl extends BlockManager {
        blockInfoNameMap.put("tree_wood", treeWood);
         blockInfoNameMap.put("tree_leaf", treeLeaf);
         blockInfoNameMap.put("tree_seed", treeSeed);
+        blockInfoNameMap.put("wood_door", wood_door);
        Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry<String, Block> entry =it.next();

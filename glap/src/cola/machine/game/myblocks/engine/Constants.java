@@ -34,12 +34,12 @@ public class Constants {
     public static final String DELTAS_SUBDIRECTORY="overrides";
     public static final Path MODULE_INFO_FILENAME= Paths.get("module.txt");
     //public static final String CHARSET ="UTF-8";
-    public static final int TOP =1;
-    public static final int BOTTOM=2;
-    public static final int FRONT =3;
-    public static final int BACK=4;
-    public static final int LEFT =5;
-    public static final int RIGHT=6;
+    public static final int TOP =0;
+    public static final int BOTTOM=1;
+    public static final int FRONT =2;
+    public static final int BACK=3;
+    public static final int LEFT =4;
+    public static final int RIGHT=5;
 
     private Constants(){
 

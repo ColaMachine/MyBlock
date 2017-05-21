@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import core.log.LogUtil;
@@ -445,34 +446,47 @@ public class TextureManager {
                     if(shapeType!=2 && shapeType!=3){
                         LogUtil.err("shaperType is error ");
                     }
-                    Object frontObj = map.get("front");
+                    Object frontObj = map.get("frontFace");
                     if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
-                        JSONObject jsonObj = (JSONObject)frontObj;
-                     //  HashMap keyValue = (HashMap)jsonObj.get(0);
-                        JSONArray vertices =  jsonObj.getJSONArray("vertices");
-                        float[][] verticesAry = new float[vertices.size()][3];
-                        for(int j=0;j<vertices.size();j++){
-                            for(int k=0;k<3;k++){
-                                verticesAry[j][k]= vertices.getJSONArray(k).getFloat(k);
-                            }
-                        }
-                        JSONArray tecoordsJAry =  jsonObj.getJSONArray("vertices");
-                        float[][] tecoords = new float[tecoordsJAry.size()][2];
-                        for(int j=0;j<tecoordsJAry.size();j++){
-                            for(int k=0;k<2;k++){
-                                tecoords[j][k]= tecoordsJAry.getJSONArray(k).getFloat(k);
-                            }
-                        }
-
-                        ShapeFace shapeFace = JSON.toJavaObject((JSONObject)frontObj ,ShapeFace.class);
-                        LogUtil.println("it 's a shapeFace");
-
+                        ShapeFace shapeFace = getShapeFace(frontObj);
+                        shape.setFrontFace(shapeFace);
                     }
+                    Object bottomObj = map.get("bottomFace");
+                    if(bottomObj instanceof  com.alibaba.fastjson.JSONObject){
+                        ShapeFace shapeFace = getShapeFace(bottomObj);
+                        shape.setBottomFace(shapeFace);
+                    }
+                    Object topObj = map.get("topFace");
+                    if(topObj instanceof  com.alibaba.fastjson.JSONObject){
+                        ShapeFace shapeFace = getShapeFace(topObj);
+                        shape.setTopFace(shapeFace);
+                    }
+                    Object backObj = map.get("backFace");
+                    if(backObj instanceof  com.alibaba.fastjson.JSONObject){
+                        ShapeFace shapeFace = getShapeFace(backObj);
+                        shape.setBackFace(shapeFace);
+                    }
+                    Object leftObj = map.get("leftFace");
+                    if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
+                        ShapeFace shapeFace = getShapeFace(leftObj);
+                        shape.setLeftFace(shapeFace);
+                    }
+                    Object rightObj = map.get("rightFace");
+                    if(rightObj instanceof  com.alibaba.fastjson.JSONObject){
+                        ShapeFace shapeFace = getShapeFace(rightObj);
+                        shape.setRightFace(shapeFace);
+                    }
+                   /* if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
+                        continue;
+                    }*/
+
+
                     String front = (String) map.get("front");
                     String back = (String) map.get("back");
                     String left = (String) map.get("left");
                     String right = (String) map.get("right");
                     String top = (String) map.get("top");
+
                     String bottom = (String) map.get("bottom");
                     String allSide =  MapUtil.getStringValue(map,"allSide");
                     if(StringUtil.isNotEmpty(allSide)){
@@ -588,7 +602,45 @@ public class TextureManager {
         }
         return textureInfo;
     }
+    public ShapeFace getShapeFace(Object frontObj ){
+        ShapeFace shapeFace =new ShapeFace();
+        JSONObject jsonObj = (JSONObject)frontObj;
+        //  HashMap keyValue = (HashMap)jsonObj.get(0);
+        JSONArray vertices =  jsonObj.getJSONArray("vertices");
+        float[][] verticesAry = new float[vertices.size()][3];
+        for(int j=0;j<vertices.size();j++){
+            for(int k=0;k<3;k++){
+                verticesAry[j][k]= vertices.getJSONArray(j).getFloat(k);
+            }
+        }
 
+        shapeFace.setVertices(verticesAry);
+        JSONArray tecoordsJAry =  jsonObj.getJSONArray("texcoords");
+        float[][] tecoords = new float[tecoordsJAry.size()][2];
+        for(int j=0;j<tecoordsJAry.size();j++){
+            for(int k=0;k<2;k++){
+                tecoords[j][k]= tecoordsJAry.getJSONArray(j).getFloat(k);
+            }
+        }
+        shapeFace.setTexcoords(tecoords);
+
+        JSONArray normalJAry =  jsonObj.getJSONArray("normals");
+        float[][] normals = new float[normalJAry.size()][3];
+        for(int j=0;j<normalJAry.size();j++){
+            for(int k=0;k<2;k++){
+                normals[j][k]= normalJAry.getJSONArray(j).getFloat(k);
+            }
+        }
+        shapeFace.setNormals(normals);
+
+        JSONArray facesAry =  jsonObj.getJSONArray("faces");
+        int[][] faces = new int[1][facesAry.getJSONArray(0).size()];
+        for(int j=0;j<facesAry.getJSONArray(0).size();j++){
+            faces[0][j]= facesAry.getJSONArray(0).getInteger(j);
+        }
+        shapeFace.setFaces(faces);
+        return shapeFace;
+    }
     public static GLImage getImage(String name) {
         return imageMap.get(name);
     }
@@ -599,5 +651,140 @@ public class TextureManager {
 
     public static Shape getShape(String name) {
         return shapeMap.get(name);
+    }
+
+    public static Shape createDoorShape(){
+        float minX=0;
+        float minY=0;
+        float minZ=0;
+        int width=1;
+        int height=2;
+        float thick =0.125f;
+        int tex_minx = 16;
+        //16,160,16,16
+        float tex_miny=144;
+        float tex_width=16;
+        float tex_height=32;
+        float imageHeight=256;
+        float imageWidth=256;
+        TextureInfo frontTi =new TextureInfo();
+        frontTi.minX=tex_minx/imageWidth;
+        frontTi.minY = tex_miny / imageHeight;
+
+        frontTi.maxX=(tex_minx+tex_width)/imageWidth;
+        frontTi.maxY = (tex_miny+tex_height) / imageHeight;
+        TextureInfo woodTi =new TextureInfo();
+        woodTi.minX=tex_minx/imageWidth;
+        woodTi.minY = tex_miny / imageHeight;
+
+        woodTi.maxX=(tex_minx+5)/imageWidth;
+        woodTi.maxY = (tex_miny+5) / imageHeight;
+
+        //StringBuffer sb =new StringBuffer();
+        /*sb.append("\"frontFace\": {\n")
+                .append("\"vertices\": [[0, 0, "+thick+"], ["+width+", 0, "+thick+"], ["+width+", "+height+", "+thick+"], [0, "+height+", "+thick+"]],")
+                .append("\"normals\": [["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"]],")
+                .append(" \"texcoords\": [["+tex_minx/imageWidth+","+tex_miny/imageHeight+"], ["+(tex_minx+tex_width)/imageWidth+", "+tex_miny/imageHeight+"], ["+(tex_minx+tex_width)/imageWidth+", "+(tex_miny+tex_height)/imageHeight+"], ["+tex_minx/imageWidth+", "+(tex_miny+tex_height)/imageHeight+"]],")
+                .append("\"faces\": [[0, 1, 2, 3] ],")
+                .append("  \"fullSide\": false")
+                .append("},");*/
+        Shape shape =new Shape();
+
+        ShapeFace frontFace =new ShapeFace();
+
+
+
+        //float[][] vertices = BoxModel.frontVertices;
+        frontFace.setVertices(BoxModel.getFrontVertices(minX, minY, minZ, width, height, thick));
+        frontFace.setFaces(new int[][]{{0, 1, 2, 3}});
+        //TextureInfo ti =TextureManager.getTextureInfo("wood_door_part1");
+        TextureInfo ti =frontTi;
+        frontFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+
+        GL_Vector nowDir = BoxModel.FRONT_DIR;
+        frontFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+
+        shape.setFrontFace(frontFace);
+
+        ///////////
+        ShapeFace backFace =new ShapeFace();
+
+        backFace.setVertices(BoxModel.getBackVertices(minX, minY, minZ, width, height, thick));
+        backFace.setFaces(new int[][]{{0, 1, 2, 3}});
+        // ti =TextureManager.getTextureInfo("wood_door_part1");
+        backFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+
+        nowDir = BoxModel.BACK_DIR;
+        backFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+
+        shape.setBackFace(backFace);
+
+
+
+        ////////////
+        ti =woodTi;
+        ShapeFace topFace =new ShapeFace();
+
+        topFace.setVertices(BoxModel.getTopVertices(minX, minY, minZ, width, height, thick));
+        topFace.setFaces(new int[][]{{0, 1, 2, 3}});
+        // ti =TextureManager.getTextureInfo("wood_door_part1");
+        topFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+
+        nowDir = BoxModel.TOP_DIR;
+        topFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+
+        shape.setTopFace(topFace);
+
+
+        ShapeFace bottomFace =new ShapeFace();
+
+        bottomFace.setVertices(BoxModel.getBottomVertices(minX, minY, minZ, width, height, thick));
+        bottomFace.setFaces(new int[][]{{0, 1, 2, 3}});
+        // ti =TextureManager.getTextureInfo("wood_door_part1");
+        bottomFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+
+        nowDir = BoxModel.DOWN_DIR;
+        bottomFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+
+        shape.setBottomFace(bottomFace);
+
+
+        ShapeFace leftFace =new ShapeFace();
+
+        leftFace.setVertices(BoxModel.getLeftVertices(minX, minY, minZ, width, height, thick));
+        leftFace.setFaces(new int[][]{{0, 1, 2, 3}});
+        // ti =TextureManager.getTextureInfo("wood_door_part1");
+        leftFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+
+        nowDir = BoxModel.LEFT_DIR;
+        leftFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+
+        shape.setLeftFace(leftFace);
+
+
+        ShapeFace rightFace =new ShapeFace();
+
+        rightFace.setVertices(BoxModel.getRightVertices(minX, minY, minZ, width, height, thick));
+        rightFace.setFaces(new int[][]{{0, 1, 2, 3}});
+        // ti =TextureManager.getTextureInfo("wood_door_part1");
+        rightFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+
+        nowDir = BoxModel.RIGHT_DIR;
+        rightFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+
+        shape.setRightFace(rightFace);
+
+
+        System.out.println("frontFace:"+JSON.toJSONString(shape.getFrontFace())+",");
+        System.out.println("backFace:"+JSON.toJSONString(shape.getBackFace())+",");
+        System.out.println("topFace:"+JSON.toJSONString(shape.getTopFace())+",");
+        System.out.println("bottomFace:"+JSON.toJSONString(shape.getBottomFace())+",");
+        System.out.println("leftFace:"+JSON.toJSONString(shape.getLeftFace())+",");
+        System.out.println("rightFace:"+JSON.toJSONString(shape.getRightFace())+",");
+        return shape;
+    }
+    public static void main(String args[]){
+
+        TextureManager.createDoorShape();
     }
 }

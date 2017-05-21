@@ -53,7 +53,7 @@ public class BulletPhysics  {
     		 chunkZ=MathUtil.getBelongChunkInt(from.z+x*to.z);//换算出新的chunkZ
 
             int  nowChunkIndex =  chunkX*10000+chunkZ;
-            if(nowChunkIndex!=preBlockIndex){
+            if(nowChunkIndex!=preBlockIndex){//如果进入到新的方格子空间
                 bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
 
             }
@@ -105,9 +105,11 @@ public class BulletPhysics  {
                 if(from.y+x*to.y<0){
                     LogUtil.err("y can't be <0 ");
                 }
-    			return new GL_Vector(MathUtil.floor(from.x+x*to.x),
-    					MathUtil.floor(from.y+x*to.y),
-    					MathUtil.floor(from.z+x*to.z));//����ײ��ǰ�ķ���λ��
+
+                LogUtil.println("x:"+(from.x+x*to.x)%1 + "y:"+(from.y+x*to.y)%1+"z:"+(from.z+x*to.z)%1);
+    			return new GL_Vector(from.x+x*to.x,
+    					from.y+x*to.y,
+    					from.z+x*to.z);//����ײ��ǰ�ķ���λ��
         		
     		}
                 preBlockIndex=blockIndex;
