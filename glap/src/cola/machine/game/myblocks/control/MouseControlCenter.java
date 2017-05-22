@@ -52,7 +52,7 @@ public class MouseControlCenter {
     public float prevMouseY = 0;//之前鼠标点击的位置
     public boolean canDetectMove = true;
     public BulletPhysics bulletPhysics; //物理引擎
-    int DRAG_DIST=3;
+    int DRAG_DIST=0;
     public GameState gameState;
 
     boolean mouseRightPressed=false;//用来判断是否按着
@@ -568,7 +568,7 @@ public class MouseControlCenter {
         //视角移动
         // add mouse motion to line if left button is down, and mouse has moved
         // more than 10 pixels
-        if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 1f
+        if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > DRAG_DIST
                 && MathUtil.distance(prevMouseX, prevMouseY, x, y) < 200000f) {
             // add a segment to the line
             // /System.out.println("����ת��");
@@ -642,7 +642,57 @@ public class MouseControlCenter {
                 }
                }
 
+            GL_Vector to = GL_Vector.add(camera.Position,
+                    GL_Vector.multiply(camera.getViewDir(), 100));
 
+       /* GamingState.instance.lightPos.x= to.x;
+        GamingState.instance.lightPos.y= to.y;
+        GamingState.instance.lightPos.z= to.z;
+        GamingState.lightPosChanged=true;*/
+            //this.engine.lineStart = camera.Position;
+            //this.engine.mouseEnd = to;
+            //获取客户端的方块管理器
+            ChunkProvider localChunkProvider = CoreRegistry
+                    .get(ChunkProvider.class);
+            boolean delete = true;
+            //获取当前的block item
+
+            GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+                    20, "soil", delete);
+            if(hitPoint!=null){
+                //打印点
+                //获得朝向
+
+                //获得靠近还是靠远
+                LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
+
+
+                //获得上一层还是下一层
+
+                //其实我就是想知道点击的是哪一个面上 点击的面上
+                //得出当前人手上拿的是不是方块
+                int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
+                int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
+                //   TreeBlock treeBlock =new TreeBlock(hitPoint);
+                //treeBlock.startPosition=hitPoint;
+                //  treeBlock.generator();
+                int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
+                int blockY = MathUtil.floor(hitPoint.y);
+                int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+                ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+                cmd.cx = blockX;
+                cmd.cz = blockZ;
+                cmd.cy = blockY;
+
+                if(cmd.cy<0){
+                    LogUtil.err("y can't be <0 ");
+                }
+                cmd.type = delete?2:1;
+                //blockType 应该和IteType类型联系起来
+                cmd.blockType = 0;
+
+                CoreRegistry.get(Client.class).send(cmd);
+            }
 
            // Client.messages.push(new AttackCmd(AttackType.ARROW));
             //player.receive(new AttackCmd(AttackType.ARROW));
@@ -679,6 +729,8 @@ public class MouseControlCenter {
             }
             GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
                     20, "soil", delete);
+            //得到选中的方块是什么方块
+            
             if(hitPoint!=null){
                 //打印点
                 //获得朝向
