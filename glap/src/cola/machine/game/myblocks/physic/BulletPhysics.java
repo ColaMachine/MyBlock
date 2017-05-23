@@ -23,7 +23,7 @@ public class BulletPhysics  {
 
    
 
-    public GL_Vector rayTrace(GL_Vector from, GL_Vector direction, float distance,String blockname,boolean delete) {
+    public GL_Vector[] rayTrace(GL_Vector from, GL_Vector direction, float distance,String blockname,boolean delete) {
     	ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
     	GL_Vector to = new GL_Vector(direction);
         
@@ -68,8 +68,10 @@ public class BulletPhysics  {
 			
 			//detect if there is block
     		if(bianliChunk !=null){
-    		if(bianliChunk.getBlockData(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z))>0){
-    			if(delete){//如果是删除 就删除对应的方块
+                int blockType = bianliChunk.getBlockData(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z));
+    		if(blockType>0){
+                GL_Vector[] arr = new GL_Vector[3];
+                if(delete){//如果是删除 就删除对应的方块
     				//Block block=new BaseBlock("water",0,false);
                    // bianliChunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z),block);
                     //((ChunkImpl)bianliChunk).build();
@@ -79,10 +81,14 @@ public class BulletPhysics  {
                     if(from.y+x*to.y<0){
                         LogUtil.err("y can't be <0 ");
                     }
-                    return new GL_Vector(MathUtil.floor(from.x+x*to.x),
+                   /* arr[0] = new GL_Vector(MathUtil.floor(from.x+x*to.x),
                             MathUtil.floor(from.y+x*to.y),
-                            MathUtil.floor(from.z+x*to.z));
+                            MathUtil.floor(from.z+x*to.z));*/
+                    //return ;
     			}
+                arr[0] = new GL_Vector(MathUtil.floor(from.x+x*to.x),
+                        MathUtil.floor(from.y+x*to.y),
+                        MathUtil.floor(from.z+x*to.z));
     			x-=0.1;//退回来 如果是增加放置一个block的话
     			 _x = MathUtil.floor(from.x+x*to.x);
         		 _y = MathUtil.floor(from.y+x*to.y);
@@ -107,9 +113,12 @@ public class BulletPhysics  {
                 }
 
                 LogUtil.println("x:"+(from.x+x*to.x)%1 + "y:"+(from.y+x*to.y)%1+"z:"+(from.z+x*to.z)%1);
-    			return new GL_Vector(from.x+x*to.x,
-    					from.y+x*to.y,
-    					from.z+x*to.z);//����ײ��ǰ�ķ���λ��
+
+                arr[1] =  new GL_Vector(from.x+x*to.x,
+                        from.y+x*to.y,
+                        from.z+x*to.z);//����ײ��ǰ�ķ���λ��
+                arr[2] =new GL_Vector(blockType,0,0);
+                return arr;
         		
     		}
                 preBlockIndex=blockIndex;

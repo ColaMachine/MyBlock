@@ -544,5 +544,6 @@ System.out.println(ByteUtil.get8_0Value(555));
     public final static short HEX_0_0_1_0 = 15<<4;
     public final static short HEX_0_0_0_1 = 15<<0;
     public final static short HEX_0_0_1_1 = 255;
+    public final static short HEX_0_1_1_1 = HEX_0_0_1_1 | HEX_0_1_0_0;
     public final static short HEX_1_1_0_0 = (short)(255<<8);
 }

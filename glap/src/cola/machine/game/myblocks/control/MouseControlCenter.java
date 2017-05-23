@@ -14,6 +14,7 @@ import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.TreeBlock;
+import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.*;
@@ -677,43 +678,85 @@ public class MouseControlCenter {
                 delete=true;
 
             }
-            GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+            GL_Vector[] arr
+             = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
                     20, "soil", delete);
-            if(hitPoint!=null){
+
+
+            if(arr!=null){
+                GL_Vector hitPoint = arr[0];
+                GL_Vector beforePoint = arr[1];
                 //打印点
                 //获得朝向
+                //判断选择的方块是不是门之类的
+               int blockType = (int)arr[2].x;
 
                 //获得靠近还是靠远
                 LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
 
+                if(blockType>256 ){
+                    int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
+                    int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
+                    //   TreeBlock treeBlock =new TreeBlock(hitPoint);
+                    //treeBlock.startPosition=hitPoint;
+                    //  treeBlock.generator();
+                    int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
+                    int blockY = MathUtil.floor(hitPoint.y);
+                    int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+                    ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+                    cmd.cx = blockX;
+                    cmd.cz = blockZ;
+                    cmd.cy = blockY;
+                    cmd.type = 1;
 
+
+                    int realBlockType = ByteUtil.get8_0Value(blockType);
+
+                    if(realBlockType==ItemType.wood_door.ordinal()){
+                        //判断当前是开还是关
+                        int state = ByteUtil.get16_12Value(blockType);
+                        if(state == 0 ){
+                            //是关
+                            blockType = 1<<12| blockType;
+                        }else{
+                            blockType = ByteUtil.HEX_0_1_1_1 & blockType;
+                        }
+                        cmd.blockType= blockType;
+                        CoreRegistry.get(Client.class).send(cmd);
+                        return;
+                    }
+                }
                 //获得上一层还是下一层
 
                 //其实我就是想知道点击的是哪一个面上 点击的面上
                 //得出当前人手上拿的是不是方块
-                int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
-                int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
+                int chunkX = MathUtil.getBelongChunkInt(beforePoint.x);
+                int chunkZ = MathUtil.getBelongChunkInt(beforePoint.z);
             //   TreeBlock treeBlock =new TreeBlock(hitPoint);
                 //treeBlock.startPosition=hitPoint;
                       //  treeBlock.generator();
-                int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
-                int blockY = MathUtil.floor(hitPoint.y);
-                int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+                int blockX = MathUtil.floor(beforePoint.x) - chunkX * 16;
+                int blockY = MathUtil.floor(beforePoint.y);
+                int blockZ = MathUtil.floor(beforePoint.z) - chunkZ * 16;
                 ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
                 cmd.cx = blockX;
                 cmd.cz = blockZ;
                 cmd.cy = blockY;
+                cmd.type = 1;
+                cmd.blockType = handItem.getItemType().ordinal();
+
+
 
                 if(cmd.cy<0){
                     LogUtil.err("y can't be <0 ");
                 }
-                cmd.type = delete?2:1;
+
                 //blockType 应该和IteType类型联系起来
-                cmd.blockType = delete?0:(handItem.getItemType().ordinal());
+
                 if(cmd.blockType==ItemType.wood_door.ordinal()){
-                    float pianyiX = hitPoint.x%1;
-                    float pianyiY = hitPoint.y%1;
-                    float pianyiZ= hitPoint.z%1;
+                    float pianyiX = beforePoint.x%1;
+                    float pianyiY = beforePoint.y%1;
+                    float pianyiZ= beforePoint.z%1;
                     //计算朝向
 
                     //对于门来说 我需要知道他的朝向 这个可以通过 xz的值来算出 4个朝向值

@@ -1085,12 +1085,14 @@ public class ChunkImpl implements Chunk {
             if(shapeFace!=null){
                 if(currentBlockType==ItemType.wood_door.ordinal()){
                     //获取condition
-                    int condition=state;
+                    int condition=ByteUtil.get12_8Value(state);
+                    int switcher = ByteUtil.get16_12Value(state);
                     int degree = 0;
                     if(condition==Constants.BACK){
                         ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                                 shapeFace.getFaces()[0], ti, x, y, z);
                     }else {
+
                         if (condition == Constants.FRONT) {
 
                             degree = 180;
@@ -1099,6 +1101,9 @@ public class ChunkImpl implements Chunk {
                             degree = -90;
                         } else if (condition == Constants.RIGHT) {
                             degree = 90;
+                        }
+                        if(switcher>0){
+                            degree+=90;
                         }
                         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
                         translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree * 3.14f / 180, 0));
