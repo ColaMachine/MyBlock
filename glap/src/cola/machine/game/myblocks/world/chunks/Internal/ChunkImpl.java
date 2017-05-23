@@ -164,6 +164,9 @@ public class ChunkImpl implements Chunk {
         if (blockType == 0 || selfType == 0) {
             return true;
         }
+        if (blockType ==ItemType.wood_door.ordinal() || selfType == ItemType.wood_door.ordinal()) {
+            return true;
+        }
 //如果一个是透明的 另一个是不透明的 就需要绘制
         //如果两个都是不透明的就不需要绘制
         if(blockManager.getBlock(selfType)==null || blockManager.getBlock(blockType)==null){
@@ -1106,7 +1109,11 @@ public class ChunkImpl implements Chunk {
                             degree+=90;
                         }
                         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
-                        translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree * 3.14f / 180, 0));
+                        translateMatrix = GL_Matrix.multiply( translateMatrix,GL_Matrix.rotateMatrix(0, -degree * 3.14f / 180, 0));
+
+
+                        translateMatrix= GL_Matrix.multiply(translateMatrix,GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
+
                         ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                                 shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);
                     }
@@ -1625,6 +1632,20 @@ public class ChunkImpl implements Chunk {
     }
 
     public static void main(String args[]){
+      /*  GL_Matrix translateMatrix = GL_Matrix.translateMatrix(-0.5f, 0, -0.5f);
+      //  translateMatrix = GL_Matrix.multiply( translateMatrix,GL_Matrix.rotateMatrix(0, 90 * 3.14f / 180, 0));
+
+        GL_Vector vector =new GL_Vector(0,0,0);
+        vector=  GL_Matrix.multiply(translateMatrix,vector);
+
+        vector=  GL_Matrix.multiply(GL_Matrix.rotateMatrix(0, 90 * 3.14f / 180, 0),vector);
+        vector=  GL_Matrix.multiply(GL_Matrix.translateMatrix(0.5f, 0, 0.5f),vector);
+*/
+        GL_Matrix translateMatrix =GL_Matrix.multiply(GL_Matrix.translateMatrix(0.5f, 0, 0.5f),GL_Matrix.rotateMatrix(0, 90 * 3.14f / 180, 0));
+        translateMatrix= GL_Matrix.multiply(translateMatrix,GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
+        GL_Vector vector =new GL_Vector(0,0,0);
+        vector=  GL_Matrix.multiply(translateMatrix,vector);
+
         int x =8,y=18,z=0,value=102;
         int unionValue = ByteUtil.unionBinary4_4_8_16(x,z,y,value);
         int[] terr = ByteUtil.getValueSplit8Slot(unionValue);

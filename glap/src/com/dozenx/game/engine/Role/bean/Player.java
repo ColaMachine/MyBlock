@@ -10,6 +10,7 @@ import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.util.TimeUtil;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 
 import org.lwjgl.Sys;
@@ -127,18 +128,38 @@ public class Player extends LivingThing {
      */
 
     public void headRotate(float leftRightDegree, float updownDegree) {
-        //LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
 
-        headAngle += Math.toRadians(-leftRightDegree);
-        headAngle=(float)(headAngle%(2*Math.PI));
+        //LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
+        if(leftRightDegree!=0) {
+
+            if(leftRightDegree>0){
+                //leftRightDegree=1;
+            }else{
+               // leftRightDegree=-1;
+            }
+            headAngle += Math.toRadians(-leftRightDegree);
+
+            headAngle=(float)(headAngle%(2*Math.PI));
+        }
         //headAngle = headAngle;
-        headAngle2 += Math.toRadians(updownDegree);
-        headAngle2 = (float)(headAngle2%(2*Math.PI));
-        if (leftRightDegree != 0) {
+
+        if(updownDegree!=0) {
+
+            if(updownDegree>0){
+               // updownDegree=1;
+            }else{
+               // updownDegree=-1;
+            }
+           // updownDegree=1;
+            headAngle2 += Math.toRadians(updownDegree);
+            headAngle2 = (float) (headAngle2 % (2 * Math.PI));
+            LogUtil.println("updownDegree:"+updownDegree);
+        }
+        //if (leftRightDegree != 0) {
 
             viewDir.x = (float) Math.cos(headAngle);
             viewDir.z = (float) Math.sin(headAngle);
-        }
+       // }
         /*GL_Matrix M = GL_Matrix.rotateMatrix(*//*(float) Math.toRadians(updownDegree)/5,*//*0, (float) Math.toRadians(leftRightDegree),
                 0);
 
@@ -150,7 +171,9 @@ public class Player extends LivingThing {
             headAngle2 = Switcher.FUJIAO;
         if (headAngle2 >= Switcher.YANGJIAO)
             headAngle2 = Switcher.YANGJIAO;
-        viewDir.y = (float) Math.tan(headAngle2);//(float)(Math.tan(jiaojiao)*xy);
+       // if(updownDegree!=0) {
+            viewDir.y = (float) Math.tan(headAngle2);//(float)(Math.tan(jiaojiao)*xy);
+        //}
         //ViewDir.y+=updownDegree/100;
         /*GL_Vector vd = M.transform(ViewDir);
         ViewDir = vd;*/
