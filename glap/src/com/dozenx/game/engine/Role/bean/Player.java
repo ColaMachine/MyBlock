@@ -128,7 +128,8 @@ public class Player extends LivingThing {
      */
 
     public void headRotate(float leftRightDegree, float updownDegree) {
-
+        leftRightDegree=leftRightDegree/2;
+        updownDegree=updownDegree/2;
         //LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
         if(leftRightDegree!=0) {
 
@@ -186,6 +187,8 @@ public class Player extends LivingThing {
     }
 
     public void bodyRotate(float leftRightDegree, float updownDegree) {
+        leftRightDegree=leftRightDegree/2;
+        updownDegree=updownDegree/2;
         headRotate(leftRightDegree, updownDegree);
         bodyAngle = headAngle;
         //bodyAngle+=Math.toRadians(leftRightDegree);

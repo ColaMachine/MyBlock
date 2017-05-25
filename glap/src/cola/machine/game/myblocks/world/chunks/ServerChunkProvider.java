@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
@@ -213,7 +215,16 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 			System.out.println("删除失败!");
 		}
 	}
-    
+
+	@Override
+	public void save() {
+		Iterator<Map.Entry<Vector2i,ChunkImpl >> it = nearCache.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Vector2i,ChunkImpl > entry = it.next();
+			entry.getValue().save();
+		}
+	}
+
 
 	public void setBlock(){
 

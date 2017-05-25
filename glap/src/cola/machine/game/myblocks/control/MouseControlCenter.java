@@ -658,9 +658,11 @@ public class MouseControlCenter {
             boolean delete = true;
             //获取当前的block item
 
-            GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+            GL_Vector[] arr  = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
                     20, "soil", delete);
-            if(hitPoint!=null){
+            if(arr!=null){
+
+                GL_Vector  hitPoint = arr[0];
                 //打印点
                 //获得朝向
 
@@ -728,20 +730,17 @@ public class MouseControlCenter {
                 delete=true;
 
             }
+
             GL_Vector[] arr
              = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
                     20, "soil", delete);
-<<<<<<< HEAD
+
 
 
             if(arr!=null){
                 GL_Vector hitPoint = arr[0];
                 GL_Vector beforePoint = arr[1];
-=======
-            //得到选中的方块是什么方块
-            
-            if(hitPoint!=null){
->>>>>>> 3940816288305df08ffeed3f7650d76415505df8
+
                 //打印点
                 //获得朝向
                 //判断选择的方块是不是门之类的
@@ -750,7 +749,8 @@ public class MouseControlCenter {
                 //获得靠近还是靠远
                 LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
 
-                if(blockType>256 ){
+                if(blockType>256 ){//如果是有状态的block
+
                     int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
                     int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
                     //   TreeBlock treeBlock =new TreeBlock(hitPoint);
@@ -783,13 +783,16 @@ public class MouseControlCenter {
                     }
                 }
                 //获得上一层还是下一层
-
+                if(handItem==null){
+                    return;
+                }
                 //其实我就是想知道点击的是哪一个面上 点击的面上
                 //得出当前人手上拿的是不是方块
                 int chunkX = MathUtil.getBelongChunkInt(beforePoint.x);
                 int chunkZ = MathUtil.getBelongChunkInt(beforePoint.z);
             //   TreeBlock treeBlock =new TreeBlock(hitPoint);
                 //treeBlock.startPosition=hitPoint;
+
                       //  treeBlock.generator();
                 int blockX = MathUtil.floor(beforePoint.x) - chunkX * 16;
                 int blockY = MathUtil.floor(beforePoint.y);

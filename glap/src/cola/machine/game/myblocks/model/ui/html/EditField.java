@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.model.ui.html;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.sun.glass.events.KeyEvent;
+import core.log.LogUtil;
 import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.AnimationState;
 import de.matthiasmann.twl.TextWidget;
@@ -224,6 +225,7 @@ public class EditField extends TextField {
                         return false;
                     default:
                         if(evt.hasKeyCharNoModifiers()) {
+                           // LogUtil.println(""+evt.getKeyChar());
                             insertChar(evt.getKeyChar());
                             return true;
                         }

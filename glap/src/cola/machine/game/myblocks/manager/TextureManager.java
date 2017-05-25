@@ -303,15 +303,34 @@ public class TextureManager {
                 int w = Integer.valueOf(ary[2].trim());
                 int h = Integer.valueOf(ary[3].trim());
                 //int hegihtAry
-                if (StringUtil.isNotEmpty(splitx)) {
-                    //createGridImage(x,y,w,h,);
-                }
+
 
                TextureInfo ti =  new TextureInfo(textureCfgBean.getImage(), x,
                         y,
                         w,
                         h, textureCfgBean.getName()
                 );
+
+                if (StringUtil.isNotEmpty(splitx)) {
+                    //createGridImage(x,y,w,h,);
+                    String[]  splitxAry = splitx.split(",");
+                    int[] splitxIntAry = new int[splitxAry.length];
+                    for(int j=0;j<splitxAry.length;j++){
+                        splitxIntAry[j]=Integer.valueOf(splitxAry[j]);
+                    }
+                    ti.setSplitx(splitxIntAry);
+                }
+                if (StringUtil.isNotEmpty(splity)) {
+                    //createGridImage(x,y,w,h,);
+                    String[]  splityAry = splity.split(",");
+                    int[] splityIntAry = new int[splityAry.length];
+                    for(int j=0;j<splityAry.length;j++){
+                        splityIntAry[j]=Integer.valueOf(splityAry[j]);
+                    }
+                    ti.setSplity(splityIntAry);
+
+                }
+
 
                 if(StringUtil.isNotEmpty(color)){
                     String[] colorAry = color.split(",");

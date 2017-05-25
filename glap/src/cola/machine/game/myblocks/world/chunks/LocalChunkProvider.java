@@ -242,5 +242,10 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
         }
     }
 
+    @Override
+    public void save() {
+
+    }
+
 
 }

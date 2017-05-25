@@ -1,6 +1,8 @@
 package com.dozenx.game.network.server;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.math.Vector2i;
+import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;
 import com.dozenx.game.engine.command.DropCmd;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.command.PlayerSynCmd;
@@ -78,6 +80,8 @@ public class SaveTask extends TimerTask {
                 dropCmd.setItemType(ItemType.values()[itemServerBean.getItemType()]);
                 serverContext.getMessages().offer(dropCmd.toBytes());
             }
+            ;
+           serverContext.chunkProvider.save();
 
         }catch (Exception e){
             e.printStackTrace();

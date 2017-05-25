@@ -1278,7 +1278,12 @@ try {
         Vao vao = ShaderManager.uiShaderConfig.getVao();
 
         TextureInfo ti = image.getTexture();
+
         if(ti==null)return;
+      if(ti.getSplitx()!=null){
+          ti.draw2dImg(posX,posY,z,width,height);
+          return;
+      }
         float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
         float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
         float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
@@ -1329,6 +1334,10 @@ try {
         Vao vao = ShaderManager.uiShaderConfig.getVao();
 
         TextureInfo ti = image.getTexture();
+        if(ti.getSplitx()!=null){
+            ti.draw2dImg(posX,posY,z,width,height);
+            return;
+        }
 
         float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
         float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;

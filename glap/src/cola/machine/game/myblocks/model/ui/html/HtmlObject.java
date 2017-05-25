@@ -68,6 +68,8 @@ public class HtmlObject implements Cloneable  {
     public String id;
     /**name**/
     public  String name;
+
+    public String textAlign;
     /**text**/
 
     public void setLeft(int left) {

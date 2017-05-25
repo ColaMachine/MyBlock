@@ -63,29 +63,60 @@ public class StartMenuState implements GameState {
         Div div =new Div();div.setId("1");
         div.setMarginLeft((short)(Constants.WINDOW_WIDTH/2-100));
         div.setMarginTop((short)(Constants.WINDOW_HEIGHT/2-50));
-        div.appendChild(new Label("用户名:"));
+        Label userNameLable = new Label("用户名:");
+        userNameLable.setWidth(50);
+        //userNameLable.setFontSize(55);
+        userNameLable.setColor(new Vector4f(1,1,1,1));
+        div.appendChild(userNameLable);
          userName = new EditField();
          pwd = new EditField();
         div.appendChild(userName);
-        div.appendChild(new Br());
-        div.appendChild(new Label("密码:"));
+       Br br = new Br();
+        br.setTop(12);
+        div.appendChild(br);
+        Label pwdLable = new Label("密码:");
+        pwdLable.setWidth(50);
+        div.appendChild(pwdLable);
+        pwdLable.setColor(new Vector4f(1,1,1,1));
         div.appendChild(pwd);
 
+        div.setBorderWidth(2);
+        div.setBorderColor(new Vector4f(1,0,0,1));
         div.appendChild(new Br());
+
         Button button =new Button();
+        button .setColor(new Vector4f(0,0,0,1));
         button.innerText="登录";
+        button.setFontSize(34);
+        button.textAlign="center";
+        //button.setTextAlign("center");
         button.setWidth(100);
+        button.setPaddingTop((short)15);
+        button.setHeight(50);
+      //  button.setBackgroundImage(new Image(TextureManager.getTextureInfo("gridimage")));
+        button.setTop(25);
+        button.setBorderWidth(2);
+        //button.setBorderColor(new Vector4f(1,0,0,1));
+        button.setBackgroundImage(new Image(TextureManager.getTextureInfo("button")));
         button.addCallback(new Runnable() {
             @Override
             public void run() {
                 emulateLogin();
-                LogUtil.println("nihao");
+               // LogUtil.println("nihao");
             }
         });
        // button.setHeight(30);
         //button.setBackgroundColor(new Vector4f(1,1,1,0));
         div.appendChild(button);
         document.body.appendChild(div);
+       /* Div gridDiv =new Div();
+        gridDiv.setWidth(500);
+        gridDiv.setHeight(200);
+        gridDiv.setTop(20);
+        gridDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("button")));
+        document.body.appendChild(gridDiv);*/
+        //gridDiv.setBorderWidth(2);
+        //gridDiv.setBorderColor(new Vector4f(1,0,0,1));
      // document.body.appendChild(new TextureEditPanel());
        // div=new Div();
        // bag =new Bag();
@@ -289,7 +320,7 @@ if(!Switcher.SHADER_ENABLE) {
       //  ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);//2DImage
         //ShaderUtils.finalDraw2DColor();
         try{
-            Thread.sleep(200);
+           // Thread.sleep(200);
         }catch (Exception e){
             e.printStackTrace();
         }

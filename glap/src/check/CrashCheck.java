@@ -2,6 +2,7 @@ package check;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.world.chunks.Chunk;
+import com.dozenx.game.engine.item.BlockUtil;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.GLApp;
@@ -22,6 +23,12 @@ public class CrashCheck {
     int blockX= 0;
     int blockY= 0;
     int blockZ= 0;
+
+    /**
+     * 返回true 表示有碰撞
+     * @param livingThing
+     * @return
+     */
     public boolean  check(LivingThing livingThing){
 
         float plr_pos_x=livingThing.position.x;
@@ -47,7 +54,7 @@ public class CrashCheck {
                     return false;
                 }
 
-                for (int offset_y = 0; offset_y <= 2; offset_y += 2) {
+                for (int offset_y = 0; offset_y <1.5; offset_y += 2) {
 
                     //get chunk from near
 //                    int chunk_x= MathUtil.getNearOdd(x);
@@ -58,6 +65,12 @@ public class CrashCheck {
                             blockY, blockZ
                     );
                     if (k > 0&& k !=8) {
+
+                        if(BlockUtil.isDoor(k) &&BlockUtil.isDoorOpen(k)){
+
+                        }else{
+                            return true;
+                        }
                         //means it is crashed
 //                        System.out.println("warning crashed");
 //                        player.moveOld();
@@ -66,7 +79,7 @@ public class CrashCheck {
 //                                    player.Position.sub(
 //                                            new GL_Vector(blockX, blockY, blockZ)),
 //                                    0.2f))
-                        return true;
+
                         //end all loop
                         //但是不一定是碰撞检测结束了
                         //如果所有的corner都没有碰撞到物体
@@ -131,6 +144,12 @@ public class CrashCheck {
                             // System.out.println("unswim");
                         }
                         if (k > 0&& k!=8) {//不为水的话
+
+                            if(BlockUtil.isDoor(k) &&BlockUtil.isDoorOpen(k)){
+
+                            }else{
+                                return true;
+                            }
                             //means it is crashed
 //                        System.out.println("warning crashed");
 //                        player.moveOld();
@@ -139,7 +158,7 @@ public class CrashCheck {
 //                                    player.Position.sub(
 //                                            new GL_Vector(blockX, blockY, blockZ)),
 //                                    0.2f))
-                            return true;
+
                             //end all loop
                             //但是不一定是碰撞检测结束了
                             //如果所有的corner都没有碰撞到物体

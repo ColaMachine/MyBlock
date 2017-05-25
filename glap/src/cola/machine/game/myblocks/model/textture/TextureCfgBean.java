@@ -10,6 +10,7 @@ String name;
     String image;
     String splitx;
 
+
     public String getColor() {
         return color;
     }

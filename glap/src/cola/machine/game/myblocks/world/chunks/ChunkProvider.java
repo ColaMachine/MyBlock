@@ -113,4 +113,5 @@ public interface ChunkProvider {
 	 public void createOrLoadChunk(Vector3i chunkPos);
 
 	void removeChunk(Chunk c);
+    void save();
 }

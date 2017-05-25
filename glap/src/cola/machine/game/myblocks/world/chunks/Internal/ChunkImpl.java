@@ -56,10 +56,11 @@ public class ChunkImpl implements Chunk {
     public int alphaDisplayId = 0;
     public IntBuffer vetices = BufferUtils.createIntBuffer(14);
     public int count = 0;
-    public Vao vao =new Vao(102400);
-    public Vao alphaVao =new Vao(102400);
+    public Vao vao = new Vao(102400);
+    public Vao alphaVao = new Vao(102400);
     private TeraArray blockData;
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
+
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
         this(chunkPos.x, chunkPos.y, chunkPos.z);
@@ -111,11 +112,11 @@ public class ChunkImpl implements Chunk {
     }
 
 
-
     public TeraArray getBlockData() {
         return blockData;
     }
-@Override
+
+    @Override
     public void setBlockData(TeraArray blockData) {
         this.blockData = blockData;
     }
@@ -158,27 +159,27 @@ public class ChunkImpl implements Chunk {
      * @return
      */
     public boolean needToPaint(int selfType, int blockType) {
-        if(blockType>256){
-            blockType=ByteUtil.get8_0Value(blockType);
+        if (blockType > 256) {
+            blockType = ByteUtil.get8_0Value(blockType);
         }
         if (blockType == 0 || selfType == 0) {
             return true;
         }
-        if (blockType ==ItemType.wood_door.ordinal() || selfType == ItemType.wood_door.ordinal()) {
+        if (blockType == ItemType.wood_door.ordinal() || selfType == ItemType.wood_door.ordinal()) {
             return true;
         }
 //如果一个是透明的 另一个是不透明的 就需要绘制
         //如果两个都是不透明的就不需要绘制
-        if(blockManager.getBlock(selfType)==null || blockManager.getBlock(blockType)==null){
-            LogUtil.err("block is null blockType:"+selfType);
+        if (blockManager.getBlock(selfType) == null || blockManager.getBlock(blockType) == null) {
+            LogUtil.err("block is null blockType:" + selfType);
         }
         if ((!blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha())) {
             return false;
         } else if (blockManager.getBlock(selfType).getAlpha() && blockManager.getBlock(blockType).getAlpha()) {
             return false;
-        } else if(blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha()){//如果自身是Alpha 对方不是alpha 也不需要绘制
+        } else if (blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha()) {//如果自身是Alpha 对方不是alpha 也不需要绘制
             return false;
-        }else {
+        } else {
             return true;
         }
 		/*if((selfType==6||selfType==3) && blockType==0){
@@ -197,7 +198,8 @@ public class ChunkImpl implements Chunk {
         }
         return false;
     }
-    int state =0;
+
+    int state = 0;
 
     public void buildAlpha() {
 
@@ -219,10 +221,10 @@ public class ChunkImpl implements Chunk {
                     //这一步把i转变成256格式数据
 
 
-                    if(currentBlockType>256){
+                    if (currentBlockType > 256) {
 
                         state = ByteUtil.get16_8Value(i);
-                        i= currentBlockType =  ByteUtil.get8_0Value(i);
+                        i = currentBlockType = ByteUtil.get8_0Value(i);
                     }
                     //获得当前方框方向
 
@@ -295,10 +297,12 @@ public class ChunkImpl implements Chunk {
         //System.out.println(this.count);
         GLApp.endDisplayList();
     }
-@Override
+
+    @Override
     public void build() {
-        if(Switcher.SHADER_ENABLE){
-            this.buildVao();return;
+        if (Switcher.SHADER_ENABLE) {
+            this.buildVao();
+            return;
         }
 
         displayId = GLApp.beginDisplayList();
@@ -320,7 +324,7 @@ public class ChunkImpl implements Chunk {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if(i==6||i==3)
+                    if (i == 6 || i == 3)
                         continue;
                     currentBlockType = i;
                     //addThisTop(x, y, z);
@@ -455,21 +459,21 @@ public class ChunkImpl implements Chunk {
 
     }*/
 
-   /* public void CreateTerrainVAO() {
+    /* public void CreateTerrainVAO() {
 
 
-        VaoId = glGenVertexArrays();
-        Util.checkGLError();
+         VaoId = glGenVertexArrays();
+         Util.checkGLError();
 
-        glBindVertexArray(VaoId);
-        Util.checkGLError();
-        this.CreateTerrainVBO();
+         glBindVertexArray(VaoId);
+         Util.checkGLError();
+         this.CreateTerrainVBO();
 
-        glBindVertexArray(0);
-        Util.checkGLError();
-    }*/
-    public String  toString(){
-            return this.getChunkWorldPosX()+"-"+this.getChunkSizeY()+"-"+this.getChunkWorldPosZ();
+         glBindVertexArray(0);
+         Util.checkGLError();
+     }*/
+    public String toString() {
+        return this.getChunkWorldPosX() + "-" + this.getChunkSizeY() + "-" + this.getChunkWorldPosZ();
     }
 
     public void buildVao() {
@@ -499,32 +503,32 @@ public class ChunkImpl implements Chunk {
                     /*if(i==6||i==3)
                         continue;*/
                     currentBlockType = i;
-                    if(currentBlockType>256){
+                    if (currentBlockType > 256) {
 
                         state = ByteUtil.get16_8Value(i);
-                        i= currentBlockType =  ByteUtil.get8_0Value(i);
+                        i = currentBlockType = ByteUtil.get8_0Value(i);
                     }
                     if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
                         //如果不是box 类型的
 
-                        ItemDefinition itemDefinition  = ItemManager.getItemDefinition(ItemType.values()[currentBlockType]);
+                        ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[currentBlockType]);
 
-                        if(!(itemDefinition.getItemModel().placeModel instanceof BoxModel)){
+                        if (!(itemDefinition.getItemModel().placeModel instanceof BoxModel)) {
 
-                            itemDefinition.getItemModel().placeModel.build(ShaderManager.terrainShaderConfig,vao,this.chunkPos.x * getChunkSizeX()+x,y, this.chunkPos.z * getChunkSizeZ()+z);//.renderShader(ShaderManager.terrainShaderConfig);
+                            itemDefinition.getItemModel().placeModel.build(ShaderManager.terrainShaderConfig, vao, this.chunkPos.x * getChunkSizeX() + x, y, this.chunkPos.z * getChunkSizeZ() + z);//.renderShader(ShaderManager.terrainShaderConfig);
                             continue;
                         }
                         // 判断上面
                         if (y < this.getChunkSizeY() - 1) {
                             if (needToPaint(i, blockData.get(x, y + 1, z))) {
-                              //  addThisTop4shader(x, y, z);
-                                addShader(x,y,z,Constants.TOP);
+                                //  addThisTop4shader(x, y, z);
+                                addShader(x, y, z, Constants.TOP);
                                 // System.out.println("top");
                             } else {
 
                             }
                         } else {
-                            addShader(x,y,z,Constants.TOP);
+                            addShader(x, y, z, Constants.TOP);
                             //addThisTop4shader(x, y, z);//System.out.println("top");
                         }
 
@@ -532,7 +536,7 @@ public class ChunkImpl implements Chunk {
                         if (y > 0) {
                             if (needToPaint(i, blockData.get(x, y - 1, z))) {
                                 //addThisBottom4shader(x, y, z);//System.out.println("Bottom");
-                                addShader(x,y,z,Constants.BOTTOM);
+                                addShader(x, y, z, Constants.BOTTOM);
                             }
                         } else {
                             //addThisBottom(x, y, z);//System.out.println("Bottom");
@@ -541,15 +545,15 @@ public class ChunkImpl implements Chunk {
                         // 判断左面
                         if (x > 0) {
                             if (needToPaint(i, blockData.get(x - 1, y, z))) {
-                               // addThisLeft4shader(x, y, z);//System.out.println("left");
-                                addShader(x,y,z,Constants.LEFT);
+                                // addThisLeft4shader(x, y, z);//System.out.println("left");
+                                addShader(x, y, z, Constants.LEFT);
                             }
                         } else {
                             // TODO//x
                             if (leftChunk != null)
                                 if (needToPaint(i, leftChunk.blockData.get(leftChunk.getChunkSizeX() - 1, y, z))) {
                                     //addThisLeft4shader(x, y, z);//System.out.println("left");
-                                    addShader(x,y,z,Constants.LEFT);
+                                    addShader(x, y, z, Constants.LEFT);
                                 } else {
                                     //LogUtil.println("bu xu yao hui zhi");
                                 }
@@ -561,15 +565,15 @@ public class ChunkImpl implements Chunk {
 
                         if (x < this.getChunkSizeX() - 1) {
                             if (needToPaint(i, blockData.get(x + 1, y, z))) {
-                               // addThisRight4shader(x, y, z);//System.out.println("Right");
-                                addShader(x,y,z,Constants.RIGHT);
+                                // addThisRight4shader(x, y, z);//System.out.println("Right");
+                                addShader(x, y, z, Constants.RIGHT);
                             }
                         } else {// TODO
 
                             if (rightChunk != null)
                                 if (needToPaint(i, rightChunk.blockData.get(0, y, z))) {
-                                   // addThisRight4shader(x, y, z);//System.out.println("left");
-                                    addShader(x,y,z,Constants.RIGHT);
+                                    // addThisRight4shader(x, y, z);//System.out.println("left");
+                                    addShader(x, y, z, Constants.RIGHT);
                                 }
                             //addThisRight(x, y, z);//System.out.println("Right");
                         }
@@ -579,13 +583,13 @@ public class ChunkImpl implements Chunk {
                         if (z < this.getChunkSizeZ() - 1) {
                             if (needToPaint(i, blockData.get(x, y, z + 1))) {
                                 //addThisFront4shader(x, y, z);//System.out.println("Front");
-                                addShader(x,y,z,Constants.FRONT);
+                                addShader(x, y, z, Constants.FRONT);
                             }
                         } else {// TODO
                             if (frontChunk != null)
                                 if (needToPaint(i, frontChunk.blockData.get(x, y, 0))) {
-                                   // addThisFront4shader(x, y, z);//System.out.println("left");
-                                    addShader(x,y,z,Constants.FRONT);
+                                    // addThisFront4shader(x, y, z);//System.out.println("left");
+                                    addShader(x, y, z, Constants.FRONT);
                                 }
                             //addThisFront(x, y, z);//System.out.println("Front");
                         }
@@ -595,14 +599,14 @@ public class ChunkImpl implements Chunk {
                         if (z > 0) {
                             if (needToPaint(i, blockData.get(x, y, z - 1))) {
                                 //addThisBack4shader(x, y, z);//System.out.println("back");
-                                addShader(x,y,z,Constants.BACK);
+                                addShader(x, y, z, Constants.BACK);
 
                             }
                         } else {// TODO z==0
                             if (backChunk != null)
                                 if (needToPaint(i, backChunk.blockData.get(x, y, this.getChunkSizeZ() - 1))) {
                                     //addThisBack4shader(x, y, z);//System.out.println("left");
-                                    addShader(x,y,z,Constants.BACK);
+                                    addShader(x, y, z, Constants.BACK);
                                 }
                             //addThisBack(x, y, z);//System.out.println("back");
                         }
@@ -613,12 +617,11 @@ public class ChunkImpl implements Chunk {
             }
         }
         //CreateTerrainVAO();
-        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig,vao);
-        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig,alphaVao);
+        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig, vao);
+        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig, alphaVao);
         // GL11.glEnd();
         //System.out.println(this.count);
     }
-
 
 
     public void addThisTop(int x, int y, int z) {
@@ -650,7 +653,6 @@ public class ChunkImpl implements Chunk {
     }
 
 
-
     BlockDefManager blockDefManager;
 
     public void getTexutreInfo() {// up down left right front back
@@ -659,28 +661,28 @@ public class ChunkImpl implements Chunk {
         //blockDefManager.getBlockById()
         ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[this.currentBlockType]);
 
-        if(/*ti==null||*/ itemDefinition.getShape()==null || itemDefinition.getShape().getTop()==null){
-            LogUtil.err(ti.name +"'shape  is null ");
+        if (/*ti==null||*/ itemDefinition.getShape() == null || itemDefinition.getShape().getTop() == null) {
+            LogUtil.err(ti.name + "'shape  is null ");
         }
         if (faceIndex == Constants.TOP) {
-            ti= itemDefinition.getShape().getTop();
-          //  ti = TextureManager.getTextureInfo("grass_top");
+            ti = itemDefinition.getShape().getTop();
+            //  ti = TextureManager.getTextureInfo("grass_top");
 
-        } else if (faceIndex ==  Constants.BACK) {
-            ti= itemDefinition.getShape().getBack();
+        } else if (faceIndex == Constants.BACK) {
+            ti = itemDefinition.getShape().getBack();
             //ti = TextureManager.getTextureInfo("soil");
 
-        } else if (faceIndex ==  Constants.LEFT){
-            ti= itemDefinition.getShape().getLeft();
+        } else if (faceIndex == Constants.LEFT) {
+            ti = itemDefinition.getShape().getLeft();
 
-        } else if (faceIndex ==  Constants.RIGHT){
-            ti= itemDefinition.getShape().getRight();
+        } else if (faceIndex == Constants.RIGHT) {
+            ti = itemDefinition.getShape().getRight();
 
-        } else if (faceIndex ==  Constants.FRONT){
-            ti= itemDefinition.getShape().getFront();
+        } else if (faceIndex == Constants.FRONT) {
+            ti = itemDefinition.getShape().getFront();
 
-        } else if (faceIndex ==  Constants.BOTTOM){
-            ti= itemDefinition.getShape().getBottom();
+        } else if (faceIndex == Constants.BOTTOM) {
+            ti = itemDefinition.getShape().getBottom();
 
         }
 
@@ -837,31 +839,34 @@ public class ChunkImpl implements Chunk {
         // vetices.flip();
 
     }
-    public void addToVao( GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Vector normal){
-        if(ti==null){
+
+    public void addToVao(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Vector normal) {
+        if (ti == null) {
             LogUtil.err("in chunkimpl ti shoud not be null !");
         }
         //根据blocktype 获取对应的shape
 
-        if(currentBlockType!=3&& currentBlockType!=6){
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-        }else{
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,alphaVao,p1, p2, p3,p4, normal, ti);
+        if (currentBlockType != 3 && currentBlockType != 6) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, p1, p2, p3, p4, normal, ti);
+        } else {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, alphaVao, p1, p2, p3, p4, normal, ti);
         }
     }
+
     public void addThisTop4shader(int x, int y, int z) {
 
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.TOP;  getTexutreInfo();
+        this.faceIndex = Constants.TOP;
+        getTexutreInfo();
         getTexutreInfo();
         //ShaderUtils.drawCube(x,y,z);
-        GL_Vector normal= new GL_Vector(0,1,0);
-        GL_Vector p1= new GL_Vector(x,y+1,z+1);
-        GL_Vector p2= new GL_Vector(x+1,y+1,z+1);
-        GL_Vector p3= new GL_Vector(x+1,y+1,z);
-        GL_Vector p4= new GL_Vector(x,y+1,z);
-        addToVao(p1, p2, p3,p4, normal);
+        GL_Vector normal = new GL_Vector(0, 1, 0);
+        GL_Vector p1 = new GL_Vector(x, y + 1, z + 1);
+        GL_Vector p2 = new GL_Vector(x + 1, y + 1, z + 1);
+        GL_Vector p3 = new GL_Vector(x + 1, y + 1, z);
+        GL_Vector p4 = new GL_Vector(x, y + 1, z);
+        addToVao(p1, p2, p3, p4, normal);
 
 
 
@@ -874,21 +879,21 @@ public class ChunkImpl implements Chunk {
         count++;//left front top
 
 
-
     }
 
     public void addThisBottom4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.BOTTOM;  getTexutreInfo();
-       count++;
+        this.faceIndex = Constants.BOTTOM;
+        getTexutreInfo();
+        count++;
 
-        GL_Vector normal= new GL_Vector(0,-1,0);
-        GL_Vector p1= new GL_Vector(x,y,z);
-        GL_Vector p2= new GL_Vector(x+1,y,z);
-        GL_Vector p3= new GL_Vector(x+1,y,z+1);
-        GL_Vector p4= new GL_Vector(x,y,z+1);
-        addToVao(p1, p2, p3,p4, normal);
+        GL_Vector normal = new GL_Vector(0, -1, 0);
+        GL_Vector p1 = new GL_Vector(x, y, z);
+        GL_Vector p2 = new GL_Vector(x + 1, y, z);
+        GL_Vector p3 = new GL_Vector(x + 1, y, z + 1);
+        GL_Vector p4 = new GL_Vector(x, y, z + 1);
+        addToVao(p1, p2, p3, p4, normal);
 
       /*  veticesBuffer.put(x).put(y).put(z ).put(0).put(-1).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y).put(z ).put(0).put(-1).put(0).put(ti.maxX).put(ti.minY);//p2
@@ -953,14 +958,15 @@ public class ChunkImpl implements Chunk {
     public void addThisFront4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.FRONT;  getTexutreInfo();
+        this.faceIndex = Constants.FRONT;
+        getTexutreInfo();
         count++;
-        GL_Vector normal= new GL_Vector(0,0,1);
-        GL_Vector p1= new GL_Vector(x,y,z+1);
-        GL_Vector p2= new GL_Vector(x+1,y,z+1);
-        GL_Vector p3= new GL_Vector(x+1,y+1,z+1);
-        GL_Vector p4= new GL_Vector(x,y+1,z+1);
-        addToVao(p1, p2, p3,p4, normal);
+        GL_Vector normal = new GL_Vector(0, 0, 1);
+        GL_Vector p1 = new GL_Vector(x, y, z + 1);
+        GL_Vector p2 = new GL_Vector(x + 1, y, z + 1);
+        GL_Vector p3 = new GL_Vector(x + 1, y + 1, z + 1);
+        GL_Vector p4 = new GL_Vector(x, y + 1, z + 1);
+        addToVao(p1, p2, p3, p4, normal);
 
         /*veticesBuffer.put(x).put(y).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x + 1).put(y).put(z + 1).put(0).put(0).put(1).put(ti.maxX).put(ti.minY);//p2
@@ -968,8 +974,6 @@ public class ChunkImpl implements Chunk {
         veticesBuffer.put(x).put(y + 1).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x).put(y).put(z + 1).put(0).put(0).put(1).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x + 1).put(y + 1).put(z + 1).put(0).put(0).put(1).put(ti.maxX).put(ti.maxY);//p3*/
-
-
 
 
         //Draw();
@@ -1001,145 +1005,138 @@ public class ChunkImpl implements Chunk {
         Draw();
     }
 
-    public void addShader(int x, int y, int z,int dir){
-
-
+    public void addShader(int x, int y, int z, int dir) {
 
 
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        y=y;
-        GL_Vector[] vertices = BoxModel.getPoint(x,y,z);
+        y = y;
+        GL_Vector[] vertices = BoxModel.getPoint(x, y, z);
         //查询出当前是哪个面
 
 
+        int[] faces = BoxModel.facesAry[dir];
 
-            int[] faces = BoxModel.facesAry[dir];
-
-            this.faceIndex = dir;  getTexutreInfo();
-            count++;
+        this.faceIndex = dir;
+        getTexutreInfo();
+        count++;
 
            /* GL_Vector normal= new GL_Vector(-1,0,0);
             GL_Vector p1= new GL_Vector(x,y,z);
             GL_Vector p2= new GL_Vector(x,y,z+1);
             GL_Vector p3= new GL_Vector(x,y+1,z+1);
             GL_Vector p4= new GL_Vector(x,y+1,z);*/
-            //addToVao(vertices[faces[0]], vertices[faces[1]], vertices[faces[2]],vertices[faces[3]], BoxModel.FRONT_DIR);
+        //addToVao(vertices[faces[0]], vertices[faces[1]], vertices[faces[2]],vertices[faces[3]], BoxModel.FRONT_DIR);
 
 
-
-            boolean flat = true;
-            //blockDefManager.getBlockById()
-            ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[this.currentBlockType]);
-            if(/*ti==null||*/ itemDefinition.getShape()==null || itemDefinition.getShape().getTop()==null){
-                LogUtil.err(ti.name +"'shape  is null ");
-            }
-            Shape shape = itemDefinition.getShape();
-            ShapeFace shapeFace =null;
-            if (faceIndex == Constants.TOP) {
-                ti= shape.getTop();
-                //  ti = TextureManager.getTextureInfo("grass_top");
-                if(shape.getTopFace()!=null){
-                    shapeFace  = shape.getTopFace();
-                    //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-                }
-
-            } else if (faceIndex ==  Constants.BACK) {
-                ti= shape.getBack();
-
-                if(shape.getBackFace()!=null){
-                    shapeFace  = shape.getBackFace();
-                    //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-                }
-                //ti = TextureManager.getTextureInfo("soil");
-
-            } else if (faceIndex ==  Constants.LEFT){
-                ti= shape.getLeft();
-                if(shape.getLeftFace()!=null){
-                    shapeFace  = shape.getLeftFace();
-                    //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-                }
-            } else if (faceIndex ==  Constants.RIGHT){
-                ti= itemDefinition.getShape().getRight();
-
-                if(shape.getBackFace()!=null){
-                    shapeFace  = shape.getRightFace();
-                    //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-                }
-
-            } else if (faceIndex ==  Constants.FRONT){
-                ti= shape.getFront();
-
-                if(shape.getBackFace()!=null){
-                    shapeFace  = shape.getFrontFace();
-                    //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-                }
-
-            } else if (faceIndex ==  Constants.BOTTOM){
-                ti= shape.getBottom();
-                if(shape.getBackFace()!=null){
-                    shapeFace  = shape.getBottomFace();
-                    //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-                }
-
+        boolean flat = true;
+        //blockDefManager.getBlockById()
+        ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[this.currentBlockType]);
+        if (/*ti==null||*/ itemDefinition.getShape() == null || itemDefinition.getShape().getTop() == null) {
+            LogUtil.err(ti.name + "'shape  is null ");
+        }
+        Shape shape = itemDefinition.getShape();
+        ShapeFace shapeFace = null;
+        if (faceIndex == Constants.TOP) {
+            ti = shape.getTop();
+            //  ti = TextureManager.getTextureInfo("grass_top");
+            if (shape.getTopFace() != null) {
+                shapeFace = shape.getTopFace();
+                //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
             }
 
+        } else if (faceIndex == Constants.BACK) {
+            ti = shape.getBack();
 
-            if(shapeFace!=null){
-                if(currentBlockType==ItemType.wood_door.ordinal()){
-                    //获取condition
-                    int condition=ByteUtil.get12_8Value(state);
-                    int switcher = ByteUtil.get16_12Value(state);
-                    int degree = 0;
-                    if(condition==Constants.BACK){
-                        ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
-                                shapeFace.getFaces()[0], ti, x, y, z);
-                    }else {
+            if (shape.getBackFace() != null) {
+                shapeFace = shape.getBackFace();
+                //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+            }
+            //ti = TextureManager.getTextureInfo("soil");
 
-                        if (condition == Constants.FRONT) {
+        } else if (faceIndex == Constants.LEFT) {
+            ti = shape.getLeft();
+            if (shape.getLeftFace() != null) {
+                shapeFace = shape.getLeftFace();
+                //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+            }
+        } else if (faceIndex == Constants.RIGHT) {
+            ti = itemDefinition.getShape().getRight();
 
-                            degree = 180;
+            if (shape.getBackFace() != null) {
+                shapeFace = shape.getRightFace();
+                //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+            }
 
-                        } else if (condition == Constants.LEFT) {
-                            degree = -90;
-                        } else if (condition == Constants.RIGHT) {
-                            degree = 90;
-                        }
-                        if(switcher>0){
-                            degree+=90;
-                        }
-                        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
-                        translateMatrix = GL_Matrix.multiply( translateMatrix,GL_Matrix.rotateMatrix(0, -degree * 3.14f / 180, 0));
+        } else if (faceIndex == Constants.FRONT) {
+            ti = shape.getFront();
+
+            if (shape.getBackFace() != null) {
+                shapeFace = shape.getFrontFace();
+                //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+            }
+
+        } else if (faceIndex == Constants.BOTTOM) {
+            ti = shape.getBottom();
+            if (shape.getBackFace() != null) {
+                shapeFace = shape.getBottomFace();
+                //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+            }
+
+        }
 
 
-                        translateMatrix= GL_Matrix.multiply(translateMatrix,GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
-
-                        ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
-                                shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);
-                    }
-                }else {
+        if (shapeFace != null) {
+            if (currentBlockType == ItemType.wood_door.ordinal()) {
+                //获取condition
+                int condition = ByteUtil.get4_0Value(state);
+                int switcher = ByteUtil.get8_4Value(state);
+                int degree = 0;
+                if (condition == Constants.BACK) {
                     ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                             shapeFace.getFaces()[0], ti, x, y, z);
-                }
-            }else{
-                try {
-                    if (currentBlockType != ItemType.water.ordinal() && currentBlockType != ItemType.glass.ordinal()) {
-                        ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);
-                    } else {
-                        ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, alphaVao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);
+                } else {
+
+                    if (condition == Constants.FRONT) {
+
+                        degree = 180;
+
+                    } else if (condition == Constants.LEFT) {
+                        degree = -90;
+                    } else if (condition == Constants.RIGHT) {
+                        degree = 90;
                     }
-                }catch (Exception e){
-                    LogUtil.err(e);
+                    if (switcher > 0) {
+                        degree += 90;
+                    }
+                    GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
+                    translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree * 3.14f / 180, 0));
+
+
+                    translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
+
+                    ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
+                            shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);
                 }
+            } else {
+                ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
+                        shapeFace.getFaces()[0], ti, x, y, z);
             }
-
-
-
+        } else {
+            try {
+                if (currentBlockType != ItemType.water.ordinal() && currentBlockType != ItemType.glass.ordinal()) {
+                    ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);
+                } else {
+                    ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, alphaVao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);
+                }
+            } catch (Exception e) {
+                LogUtil.err(e);
+            }
+        }
 
 
         //然后去取block的面
         //如果取不到 就去取shapeface
-
 
 
     }
@@ -1147,18 +1144,19 @@ public class ChunkImpl implements Chunk {
     public void addThisBack4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.BACK;  getTexutreInfo();
+        this.faceIndex = Constants.BACK;
+        getTexutreInfo();
 
 
         count++;
 
-        GL_Vector normal= new GL_Vector(0,0,-1);
-        GL_Vector p1= new GL_Vector(x+1,y,z);
-        GL_Vector p2= new GL_Vector(x,y,z);
-        GL_Vector p3= new GL_Vector(x,y+1,z);
-        GL_Vector p4= new GL_Vector(x+1,y+1,z);
-       // ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
-        addToVao(p1, p2, p3,p4, normal);
+        GL_Vector normal = new GL_Vector(0, 0, -1);
+        GL_Vector p1 = new GL_Vector(x + 1, y, z);
+        GL_Vector p2 = new GL_Vector(x, y, z);
+        GL_Vector p3 = new GL_Vector(x, y + 1, z);
+        GL_Vector p4 = new GL_Vector(x + 1, y + 1, z);
+        // ShaderUtils.drawImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
+        addToVao(p1, p2, p3, p4, normal);
         /*veticesBuffer.put(x+1).put(y).put(z ).put(0).put(0).put(-1).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x ).put(y).put(z ).put(0).put(0).put(-1).put(ti.maxX).put(ti.minY);//p2
         veticesBuffer.put(x ).put(y + 1).put(z).put(0).put(0).put(-1).put(ti.maxX).put(ti.maxY);//p3
@@ -1194,15 +1192,16 @@ public class ChunkImpl implements Chunk {
     public void addThisLeft4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.LEFT;  getTexutreInfo();
+        this.faceIndex = Constants.LEFT;
+        getTexutreInfo();
         count++;
 
-        GL_Vector normal= new GL_Vector(-1,0,0);
-        GL_Vector p1= new GL_Vector(x,y,z);
-        GL_Vector p2= new GL_Vector(x,y,z+1);
-        GL_Vector p3= new GL_Vector(x,y+1,z+1);
-        GL_Vector p4= new GL_Vector(x,y+1,z);
-        addToVao(p1, p2, p3,p4, normal);
+        GL_Vector normal = new GL_Vector(-1, 0, 0);
+        GL_Vector p1 = new GL_Vector(x, y, z);
+        GL_Vector p2 = new GL_Vector(x, y, z + 1);
+        GL_Vector p3 = new GL_Vector(x, y + 1, z + 1);
+        GL_Vector p4 = new GL_Vector(x, y + 1, z);
+        addToVao(p1, p2, p3, p4, normal);
 
      /*   veticesBuffer.put(x).put(y).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x ).put(y).put(z +1).put(-1).put(0).put(0).put(ti.maxX).put(ti.minY);//p2
@@ -1210,7 +1209,6 @@ public class ChunkImpl implements Chunk {
         veticesBuffer.put(x).put(y + 1).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x).put(y).put(z ).put(-1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x ).put(y + 1).put(z+1).put(-1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3*/
-
 
 
     }
@@ -1246,16 +1244,17 @@ public class ChunkImpl implements Chunk {
     public void addThisRight4shader(int x, int y, int z) {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
-        this.faceIndex = Constants.RIGHT;  getTexutreInfo();
+        this.faceIndex = Constants.RIGHT;
+        getTexutreInfo();
         count++;
 
 
-        GL_Vector normal= new GL_Vector(1,0,0);
-        GL_Vector p1= new GL_Vector(x+1,y,z+1);
-        GL_Vector p2= new GL_Vector(x+1,y,z);
-        GL_Vector p3= new GL_Vector(x+1,y+1,z);
-        GL_Vector p4= new GL_Vector(x+1,y+1,z+1);
-        addToVao(p1, p2, p3,p4, normal);
+        GL_Vector normal = new GL_Vector(1, 0, 0);
+        GL_Vector p1 = new GL_Vector(x + 1, y, z + 1);
+        GL_Vector p2 = new GL_Vector(x + 1, y, z);
+        GL_Vector p3 = new GL_Vector(x + 1, y + 1, z);
+        GL_Vector p4 = new GL_Vector(x + 1, y + 1, z + 1);
+        addToVao(p1, p2, p3, p4, normal);
 
         /*veticesBuffer.put(x+1).put(y).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y).put(z ).put(1).put(0).put(0).put(ti.maxX).put(ti.minY);//p2
@@ -1263,9 +1262,6 @@ public class ChunkImpl implements Chunk {
         veticesBuffer.put(x+1).put(y + 1).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.maxY);//p4
         veticesBuffer.put(x+1).put(y).put(z+1 ).put(1).put(0).put(0).put(ti.minX).put(ti.minY);//p1
         veticesBuffer.put(x+1 ).put(y + 1).put(z).put(1).put(0).put(0).put(ti.maxX).put(ti.maxY);//p3*/
-
-
-
 
 
     }
@@ -1439,7 +1435,7 @@ public class ChunkImpl implements Chunk {
     }
 
     public int getBlockData(int x, int y, int z) {
-        if (x < 0 || y < 0 || z < 0 ) {
+        if (x < 0 || y < 0 || z < 0) {
             GLApp.msg("ChunkImpl  getBlockData error");
             return blockData.get(0, 0, 0);
             //System.exit(0);
@@ -1448,7 +1444,8 @@ public class ChunkImpl implements Chunk {
     }
 
     public boolean disposed = false;
-@Override
+
+    @Override
     public void disposeMesh() {
 
         // if(this.displayId!=0){

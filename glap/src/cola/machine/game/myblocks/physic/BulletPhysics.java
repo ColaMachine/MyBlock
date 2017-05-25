@@ -21,8 +21,17 @@ public class BulletPhysics  {
     	
     }
 
-   
 
+	/**
+	 * 点击选择探测器
+	 * @param from
+	 * @param direction
+	 * @param distance
+	 * @param blockname
+	 * @param delete
+     * @return 3个Gl_vector 第一个是触碰到的block 位置 第二个是触碰路径上的最后一个空block位置 第三个第一个x分量是block的类型
+     */
+    //名字要改一下 改成选择方块
     public GL_Vector[] rayTrace(GL_Vector from, GL_Vector direction, float distance,String blockname,boolean delete) {
     	ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
     	GL_Vector to = new GL_Vector(direction);

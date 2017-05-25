@@ -26,7 +26,7 @@ public class ChunkHandler extends GameServerHandler {
     private EnemyService enemyService;
     private UserService userService;
     private BagService bagService;
-    private ChunkProvider chunkProvider ;
+    public  ChunkProvider chunkProvider ;
 
     public ChunkHandler(ServerContext serverContext){
         super(serverContext);

@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.manager.TextureManager;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.model.ButtonModel;
 import de.matthiasmann.twl.model.SimpleButtonModel;
@@ -32,21 +33,23 @@ public class Button extends HtmlObject implements Cloneable{
     protected boolean handleEvent(Event evt) {
        //ss System.out.println("进来了");
         if(evt.getType()==Event.Type.MOUSE_ENTERED){
-            this.setPreBackgroundColor(this.getBackgroundColor());
-            this.setPreColor(this.getColor());
+            //this.setPreBackgroundColor(this.getBackgroundColor());
+            setBackgroundImage(new Image(TextureManager.getTextureInfo("button-over")));
+            /*this.setPreColor(this.getColor());
             this.setBackgroundColor(new Vector4f(1,1,1,1));
-            this.setColor(new Vector4f(0,0,0,1));
+            this.setColor(new Vector4f(0,0,0,1));*/
            // this.innerText="进入了";
             //LogUtil.println(this.id + "进入了");
             Document.needUpdate=true;
             //return true;
         }else if(evt.getType()==Event.Type.MOUSE_EXITED){
             //this.borderColor=new Vector4f(0,0,0,1);
-            this.setColor(this.getPreColor());
-            this.setBackgroundColor(this.getPreBackgroundColor());
+            //this.setColor(this.getPreColor());
+            //this.setBackgroundColor(this.getPreBackgroundColor());
             //LogUtil.println(this.id+"离开了了");
             //this.innerText="离开了了";
             document.needUpdate=true;//return true;
+            setBackgroundImage(new Image(TextureManager.getTextureInfo("button")));
         }else if(evt.getType()==Event.Type.MOUSE_MOVED){
 
         }
@@ -58,13 +61,16 @@ public class Button extends HtmlObject implements Cloneable{
         }
         switch (evt.getType()) {
             case MOUSE_BTNDOWN:
+
                 if(evt.getMouseButton() == mouseButton) {
+                    setBackgroundImage(new Image(TextureManager.getTextureInfo("button-down")));  document.needUpdate=true;//return true;
                     model.setPressed(true);
                     model.setArmed(true);
                 }
                 break;
             case MOUSE_BTNUP:
                 if(evt.getMouseButton() == mouseButton) {
+                    setBackgroundImage(new Image(TextureManager.getTextureInfo("button-over")));  document.needUpdate=true;//return true;
                     model.setPressed(false);
                     model.setArmed(false);
                 }
