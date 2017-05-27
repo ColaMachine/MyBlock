@@ -56,7 +56,7 @@ public class PerlinNoise implements Noise3D {
         // Finally replicate the noise permutations in the remaining 256 index positions
         for (int i = 0; i < 256; i++) {
             noisePermutations[i] = noiseTable[i];
-            noisePermutations[i + 256] = noiseTable[i];
+            noisePermutations[i + 256] = noiseTable[i];//噪声序列
         }
 
     }

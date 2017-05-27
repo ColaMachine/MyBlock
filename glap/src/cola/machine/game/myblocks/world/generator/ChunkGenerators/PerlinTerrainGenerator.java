@@ -133,7 +133,7 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
         /*
          * Trilinear interpolate the missing values.
          */
-        triLerpDensityMap(densityMap);
+        triLerpDensityMap(densityMap);//插值
 
         /*
          * Generate the chunk from the density map.
@@ -285,9 +285,9 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
     }
 
     public double calcDensity(int x, int y, int z) {
-        double height = calcBaseTerrain(x, z);
-        double ocean = calcOceanTerrain(x, z);
-        double river = calcRiverTerrain(x, z);
+        double height = calcBaseTerrain(x, z);//计算地形高度
+        double ocean = calcOceanTerrain(x, z);//计算水的高度
+        double river = calcRiverTerrain(x, z);//计算河流
 
         float temp =10;//biomeProvider.getTemperatureAt(x, z);
         float humidity = 10;//biomeProvider.getHumidityAt(x, z) * temp;

@@ -26,12 +26,12 @@ public abstract class BrownianNoise {
     /**
      * Default persistence value
      */
-    public static final double DEFAULT_PERSISTENCE = 0.836281;
+    public static final double DEFAULT_PERSISTENCE = 1.836281;//持续性
 
     /**
      * Default lacunarity value
      */
-    public static final double DEFAULT_LACUNARITY = 2.1379201;
+    public static final double DEFAULT_LACUNARITY = 2.1379201;//孔隙度
 
     private double lacunarity = DEFAULT_LACUNARITY;
     
@@ -66,10 +66,10 @@ public abstract class BrownianNoise {
         this.octaves = octaves;
         
         // recompute weights eagerly
-        spectralWeights = new double[octaves];
-
+        spectralWeights = new double[octaves];//长度为8的数组
+        //光谱权重 越往后的约小
         for (int i = 0; i < octaves; i++) {
-            spectralWeights[i] = Math.pow(lacunarity, -persistence * i);
+            spectralWeights[i] = Math.pow(lacunarity, -persistence * i);//
         }
    }
 

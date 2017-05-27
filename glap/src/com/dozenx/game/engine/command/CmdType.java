@@ -1,8 +1,6 @@
 package com.dozenx.game.engine.command;
 
-import com.dozenx.game.network.server.handler.GameServerHandler;
-import com.dozenx.game.network.server.handler.LoginHandler;
-import com.dozenx.game.network.server.handler.SayHandler;
+import com.dozenx.game.network.server.handler.*;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
 import sun.plugin2.main.server.ResultHandler;
@@ -11,37 +9,45 @@ import sun.plugin2.main.server.ResultHandler;
  * Created by dozen.zhang on 2017/2/13.
  */
 public enum CmdType {
-    SAY,//0
-    RESULT,//1
-    MSG,//2
-    LOGIN,//3
-    EQUIP,//4
-    POS,//5
-    PLAYERSTATUS,//6
-    BAG,//7
-    BAGCHANGE,//8
-    GET,//9
-    PICK,//10
-    ATTACK,//1
-    DROP,//12
-    GROUP,//13
-    CHUNKREQUEST,//14
-    CHUNKRESPONSE,//15
-    CHUNKS,//16
-    CHUNKSS,//17
-    BACK,
-    LIVI,
-    DIED,
-    REBORN,
-    CHASE,
-    JUMP,
+    SAY(SayCmd.class,SayHandler.class),//0
+    RESULT(ResultCmd.class),//1
+    MSG(MsgCmd.class),//2
+    LOGIN(LoginCmd.class,LoginHandler.class),//3
+    EQUIP(EquipCmd.class, EquipHandler.class),//4
+    POS(PosCmd.class, PosHandler.class),//5
+    PLAYERSTATUS(PlayerSynCmd.class),//6
+    BAG(BagCmd.class,BagHandler.class),//7
+    BAGCHANGE(BagChangeCmd.class,BagChangeHandler.class),//8
+    GET(GetCmd.class,GetHandler.class),//9
+    PICK(PickCmd.class,PickHandler.class),//10
+    ATTACK(AttackCmd.class,AttackHandler.class),//1
+    DROP(DropCmd.class,DropHandler.class),//12
+    //GROUP(),//13
+    CHUNKREQUEST(ChunkRequestCmd.class,ChunkHandler.class),//14
+    CHUNKRESPONSE(ChunkResponseCmd.class),//15
+    CHUNKS(ChunksCmd.class),//16
+    CHUNKSS(ChunkssCmd.class),//17
+    BACK(WalkBackCmd.class),
+    JUMP(JumpCmd.class,JumpHandler.class),
+    DIED(DiedCmd.class),
+    REBORN(RebornCmd.class),
+    CHASE(ChaseCmd.class),
+    /*LIVI(),
 
-    WALK;
+    */
+
+    WALK(WalkCmd.class);
 
     /*public CmdType(class<T> extends BaseGameCmd,class<T> extends GameServerHandler){
 
 
     }*/
+     CmdType(Class< ? extends BaseGameCmd> cmd,Class<? extends  GameServerHandler> handler){
+
+    }
+    CmdType(Class< ? extends BaseGameCmd> cmd){
+
+    }
     public int getType(){
         return this.ordinal();
     }
