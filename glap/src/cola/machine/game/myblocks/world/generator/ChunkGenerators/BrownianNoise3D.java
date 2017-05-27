@@ -56,10 +56,10 @@ public class BrownianNoise3D extends BrownianNoise implements Noise3D {
         double workingX = x;
         double workingY = y;
         double workingZ = z;
-        for (int i = 0; i < getOctaves(); i++) {
-            result += other.noise(workingX, workingY, workingZ) * getSpectralWeight(i);
+        for (int i = 0; i < getOctaves(); i++) {//8
+            result += other.noise(workingX, workingY, workingZ) * getSpectralWeight(i);//对算出来的
 
-            workingX *= getLacunarity();
+            workingX *= getLacunarity();//每次都乘以2.3 
             workingY *= getLacunarity();
             workingZ *= getLacunarity();
         }

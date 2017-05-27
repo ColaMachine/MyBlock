@@ -41,13 +41,13 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
     private static final int SAMPLE_RATE_3D_HOR = 4;
     private static final int SAMPLE_RATE_3D_VERT = 4;
 
-    private Noise3D pGen1;
+    private Noise3D pGen1;//这货内置8个生成器 生成噪声 用来服务不同的地形
     private Noise3D pGen2;
     private Noise3D pGen3;
     private Noise3D pGen4;
     private Noise3D pGen5;
     private Noise3D pGen8;
-    private WorldBiomeProvider biomeProvider;
+    private WorldBiomeProvider biomeProvider;//生物提供者 暂时不理会
 
     /*private Block mantle;
     private Block water;
@@ -80,7 +80,7 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
 
 
 
-    public PerlinTerrainGenerator() {
+    public PerlinTerrainGenerator() {//开始的时候创建构造函数没有什么内容
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         if(blockManager!=null) {
            /* mantle = blockManager.getBlock("mantle");
@@ -285,9 +285,9 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
     }
 
     public double calcDensity(int x, int y, int z) {
-        double height = calcBaseTerrain(x, z);
-        double ocean = calcOceanTerrain(x, z);
-        double river = calcRiverTerrain(x, z);
+        double height = calcBaseTerrain(x, z);//计算地形
+        double ocean = calcOceanTerrain(x, z);//计算海洋
+        double river = calcRiverTerrain(x, z);//计算河流
 
         float temp =10;//biomeProvider.getTemperatureAt(x, z);
         float humidity = 10;//biomeProvider.getHumidityAt(x, z) * temp;
