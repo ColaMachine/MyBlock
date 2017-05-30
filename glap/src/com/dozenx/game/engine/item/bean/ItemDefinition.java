@@ -1,10 +1,13 @@
 package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.Color;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.bean.item.ItemProperties;
 import com.dozenx.game.engine.command.ItemMainType;
+import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.model.ColorBlock;
@@ -12,6 +15,7 @@ import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.BinaryUtil;
 import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 import com.dozenx.util.ImageUtil;
 
@@ -20,17 +24,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * item 模板存放在
  */
-public class ItemDefinition {
+public class ItemDefinition implements Cloneable{
    /* Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
     private ItemType itemType;//物品的具体类型 详见ItemType
     public  ItemModel itemModel = new ItemModel();//模型描述
-
+    public String engine;
     public ItemTypeProperties itemTypeProperties ;//block food wear
     String name;//英文名称
 
@@ -45,8 +50,8 @@ public class ItemDefinition {
     int strenth;
 
     int position;//如果是装备的画就会起作用 head body leg foot hand arm
-    Shape shape;//含着一些box 绘制的属性
-    ShapeType shapeType;//描述 是饼状 盒形 icon状
+    Shape shape;//含着一些box 绘制的属性 这个东西不是应该在 itemModel里吗
+    //ShapeType shapeType;//描述 是饼状 盒形 icon状
 
 /*
     public TextureInfo getIcon() {
@@ -281,7 +286,30 @@ public class ItemDefinition {
             //GL11.glRotated(-180, 0, 1, 0);
         }*/
 
+    public void  beforePlace(){
 
+    }
+    public void place(){
+
+    }
+    public void beUsed(){
+
+    }
+    public void onChooseUse(){
+
+    }
+    public void afterPlace(){
+
+    }
+    public void afterUse(){
+
+    }
+    public void beforeUse(){
+
+    }
+    public void use(){
+
+    }
     public ItemModel getItemModel() {
         return itemModel;
     }
@@ -300,6 +328,7 @@ public class ItemDefinition {
 
 
     public Shape getShape() {
+
         return shape;
     }
 
@@ -325,7 +354,7 @@ public class ItemDefinition {
         this.type = type;
     }
 
-    public ShapeType getShapeType() {
+    /*public ShapeType getShapeType() {
         return shapeType;
     }
 
@@ -333,7 +362,7 @@ public class ItemDefinition {
         this.shapeType = shapeType;
     }
 
-
+*/
     /*public int getType() {
         return type;
     }
@@ -390,5 +419,46 @@ public class ItemDefinition {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    @Override
+    public  ItemDefinition clone() throws CloneNotSupportedException {
+        ItemDefinition itemDef =  (ItemDefinition)super.clone();
+        itemDef.setShape(new Shape());
+        itemDef.setItemModel(new ItemModel());
+        itemDef.itemTypeProperties=null;
+        return itemDef;
+    }
+
+    public void use(GL_Vector placePoint,ItemType itemType,GL_Vector viewDir){
+
+    }
+
+
+    public void receive(Map map ){
+        String type = MapUtil.getStringValue(map, "type");
+        String name = MapUtil.getStringValue(map,"name");
+        String category = MapUtil.getStringValue(map,"category");
+        String baseOn = MapUtil.getStringValue(map,"baseon");
+        String icon =MapUtil.getStringValue(map,"icon");//获取icon图片
+        String engine = MapUtil.getStringValue(map,"engine");
+        String shape = MapUtil.getStringValue(map,"shape");
+        if(StringUtil.isNotEmpty(name)){
+            this.name =name;
+
+        }
+
+        this.engine = StringUtil.isNotEmpty(engine)?engine : (StringUtil.isNotEmpty(category)?category:type);
+        //this.icon = icon;
+        if(StringUtil.isNotEmpty(icon)){
+            this.itemModel.setIcon(TextureManager.getTextureInfo(icon));
+
+        }
+        if(StringUtil.isNotEmpty(shape)){
+            this.setShape(TextureManager.getShape(shape));
+        }else{
+            this.setShape(TextureManager.getShape(name));
+        }
+
     }
 }

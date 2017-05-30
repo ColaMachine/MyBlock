@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
+import com.dozenx.game.engine.Role.bean.Wolf;
 import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
@@ -49,9 +50,9 @@ public class LivingThingManager {
     Component bendComponent;
     public LivingThingManager(){
 
-      /*  LivingThing livingThing =new LivingThing(999);
-        livingThing.position=new GL_Vector(1,65,-40);
-        add(livingThing);*/
+        Wolf wolf =new Wolf(999);
+        wolf.position=new GL_Vector(-1,3,-1);
+        add(wolf);
         /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -237,8 +238,8 @@ public class LivingThingManager {
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
             if((/*livingThing.died || */livingThing.nowHP<=0)&& nowTime - livingThing.getLastHurtTime()> 10000 ){
-               this.livingThingsMap.remove(livingThing.getId());
-                livingThings.remove(i);
+              // this.livingThingsMap.remove(livingThing.getId());
+                //livingThings.remove(i);
             }
         }
       /*  long nowTime = System.currentTimeMillis();

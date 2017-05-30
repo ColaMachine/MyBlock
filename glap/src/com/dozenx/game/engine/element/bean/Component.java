@@ -82,6 +82,21 @@ public class Component {
    public Component(){
 
    }
+    public Component(Shape shape ){
+        this(shape.getWidth(),shape.getHeight(),shape.getThick());
+        this.name = shape.getName();
+
+
+
+        this.front= shape.getFront();
+        this.back= shape.getBack();
+        this.left=shape.getLeft();
+        this.right=shape.getRight();
+        this.top= shape.getTop();
+        this.bottom= shape.getBottom();
+        this.shapeType =ShapeType.BOX;
+
+    }
     public Component(float width,float height,float thick){
         this.width=width;
         this.height=height;

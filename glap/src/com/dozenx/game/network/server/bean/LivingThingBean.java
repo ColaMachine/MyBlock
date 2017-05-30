@@ -515,7 +515,7 @@ public class LivingThingBean extends Role {
     if(GamingState.player!=null) {
         //CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
         if (animationName != null) {
-            CoreRegistry.get(AnimationManager.class).apply(getModel().rootComponent, animationName);
+            CoreRegistry.get(AnimationManager.class).apply(getModel().getRootComponent(), animationName);
         }
     }
     }

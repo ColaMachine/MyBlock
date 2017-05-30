@@ -32,7 +32,7 @@ public class BulletPhysics  {
      * @return 3个Gl_vector 第一个是触碰到的block 位置 第二个是触碰路径上的最后一个空block位置 第三个第一个x分量是block的类型
      */
     //名字要改一下 改成选择方块
-    public GL_Vector[] rayTrace(GL_Vector from, GL_Vector direction, float distance,String blockname,boolean delete) {
+    public BulletResultDTO rayTrace(GL_Vector from, GL_Vector direction, float distance,String blockname,boolean delete) {
     	ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
     	GL_Vector to = new GL_Vector(direction);
         
@@ -40,29 +40,60 @@ public class BulletPhysics  {
 
     	//ÿ���ƶ�0.1
     	int preBlockIndex=-1;
+        int chunkIndex=-1;
+        int preChunkIndex=-1;
     	int blockIndex=0;
         Chunk bianliChunk=null;
-        int chunkX;
-        int chunkY;
-        int chunkZ;
+        int chunkX,preChunkX,chunkZ,preChunkZ;
+        //int chunkY;
+        float nowX,nowY,nowZ,preX,preY,preZ;
+        nowX=nowY=nowZ=preX=preY=preZ=0;
+        int worldX,worldY,worldZ ,preWorldX,preWorldY,preWorldZ;
+        int offsetX ,offsetZ ,preOffsetX,preOffsetZ;
        // int preBlockIndex =0;
     	for(float x=0.1f;x<distance;x+=0.1){//一点一点推进 看撞到了哪个物体 every time add a little
-    		int _x = MathUtil.floor(from.x+x*to.x);//x 代表推进的举例 推进后的x
-    		int _y = MathUtil.floor(from.y+x*to.y);//推进后的y
-            if(_y<0){
+    		 nowX = from.x+x*to.x;
+             nowY = from.y+x*to.y;
+             nowZ = from.z+x*to.z;
+
+
+            worldX = MathUtil.floor(nowX);//x 代表推进的举例 推进后的x
+            worldY = MathUtil.floor(nowY);//推进后的y
+            if(worldY<0){
                 return null;//说明已经穿透地板了
             }
-    		int _z = MathUtil.floor(from.z+x*to.z);//推进后的z
-            blockIndex=_x*10000+_z*100+_y;//推进后落入的blockINdex
+            worldZ = MathUtil.floor(nowZ);//推进后的z
+
+            offsetX = MathUtil.getOffesetChunk(worldX);
+            offsetZ = MathUtil.getOffesetChunk(worldZ);
+            blockIndex=offsetX*10000+offsetZ*100+worldY;//推进后落入的blockINdex
+
+            chunkX=MathUtil.getBelongChunkInt(nowX);//换算出新的chunkX
+            chunkZ=MathUtil.getBelongChunkInt(nowZ);//换算出新的chunkZ
+            chunkIndex =  chunkX*10000+chunkZ;
+
     		if(blockIndex==preBlockIndex)//如果和之前判断的还是同一个的话 略过
-    			continue;
+            {
+                //pre
+                preBlockIndex = blockIndex;
+                preChunkIndex = chunkIndex;
+                preChunkX = chunkX;
+                preChunkZ = chunkZ;
+                preX=nowX;
+                preY=nowY;
+                preZ = nowZ;
+                preOffsetX = offsetX;
+                preOffsetZ = offsetZ;
+                //int chunkY;
+
+                continue;
+            }
     		//ȥ����Ƿ���һ������֮��
     		//ChunkImpl chunk = localChunkProvider.getChunk(new Vector3i(MathUtil.floor((float)_x/16),0,MathUtil.floor((float)_z/16)));
-    		 chunkX=MathUtil.getBelongChunkInt(from.x+x*to.x);//换算出新的chunkX
-    		 chunkZ=MathUtil.getBelongChunkInt(from.z+x*to.z);//换算出新的chunkZ
 
-            int  nowChunkIndex =  chunkX*10000+chunkZ;
-            if(nowChunkIndex!=preBlockIndex){//如果进入到新的方格子空间
+
+
+            if(chunkIndex!=preChunkIndex){//如果进入到新的chunk方格子空间
                 bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
 
             }
@@ -77,9 +108,10 @@ public class BulletPhysics  {
 			
 			//detect if there is block
     		if(bianliChunk !=null){
-                int blockType = bianliChunk.getBlockData(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z));
+                //Block targetBlock = bianliChunk.getBlock(offsetX,worldY,offsetZ);
+                int blockType = bianliChunk.getBlockData(offsetX,worldY,offsetZ);
     		if(blockType>0){
-                GL_Vector[] arr = new GL_Vector[3];
+                BulletResultDTO arr = new BulletResultDTO();
                 if(delete){//如果是删除 就删除对应的方块
     				//Block block=new BaseBlock("water",0,false);
                    // bianliChunk.setBlock(MathUtil.getOffesetChunk(_x),MathUtil.floor( _y), MathUtil.getOffesetChunk(_z),block);
@@ -87,7 +119,7 @@ public class BulletPhysics  {
                    // ((ChunkImpl)bianliChunk).buildAlpha();
                     //bianliChunk.build();
     				//return null;
-                    if(from.y+x*to.y<0){
+                    if(nowY<0){
                         LogUtil.err("y can't be <0 ");
                     }
                    /* arr[0] = new GL_Vector(MathUtil.floor(from.x+x*to.x),
@@ -95,15 +127,15 @@ public class BulletPhysics  {
                             MathUtil.floor(from.z+x*to.z));*/
                     //return ;
     			}
-                arr[0] = new GL_Vector(MathUtil.floor(from.x+x*to.x),
-                        MathUtil.floor(from.y+x*to.y),
-                        MathUtil.floor(from.z+x*to.z));
-    			x-=0.1;//退回来 如果是增加放置一个block的话
-    			 _x = MathUtil.floor(from.x+x*to.x);
-        		 _y = MathUtil.floor(from.y+x*to.y);
-        		 _z = MathUtil.floor(from.z+x*to.z);
-        		 chunkX =  MathUtil.floor(((float)_x)/16);
-                chunkZ =  MathUtil.floor(((float)_z)/16);
+                Block targetBlock = bianliChunk.getBlock(offsetX,worldY,offsetZ);
+                arr.targetChunX= chunkX;
+                arr.targetChunZ= chunkZ;
+                arr.targetPoint = new GL_Vector(offsetX,
+                        MathUtil.floor(nowY),
+                        offsetZ);
+                arr.targetBlock= targetBlock;
+    			//退回来 如果是增加放置一个block的话
+
     			BlockManager blockManager = CoreRegistry.get(BlockManager.class);//创建新的方块
     			//Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId(),false);
     			
@@ -121,17 +153,26 @@ public class BulletPhysics  {
                     LogUtil.err("y can't be <0 ");
                 }
 
-                LogUtil.println("x:"+(from.x+x*to.x)%1 + "y:"+(from.y+x*to.y)%1+"z:"+(from.z+x*to.z)%1);
+              //  LogUtil.println("x:"+(from.x+x*to.x)%1 + "y:"+(from.y+x*to.y)%1+"z:"+(from.z+x*to.z)%1);
 
-                arr[1] =  new GL_Vector(from.x+x*to.x,
-                        from.y+x*to.y,
-                        from.z+x*to.z);//����ײ��ǰ�ķ���λ��
-                arr[2] =new GL_Vector(blockType,0,0);
+                arr.placePoint =  new GL_Vector(preX,
+                        preY,
+                        preZ);//����ײ��ǰ�ķ���λ��
+              //  arr[2] =new GL_Vector(blockType,0,0);
                 return arr;
         		
     		}
-                preBlockIndex=blockIndex;
-    	}}
+                preBlockIndex = blockIndex;
+                preChunkIndex = chunkIndex;
+                preChunkX = chunkX;
+                preChunkZ = chunkZ;
+                preX=nowX;
+                preY=nowY;
+                preZ = nowZ;
+                preOffsetX = offsetX;
+                preOffsetZ = offsetZ;
+    	}
+        }
     	return null;
     	
     }

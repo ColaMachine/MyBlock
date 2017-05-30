@@ -1,6 +1,12 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.math.Vector3i;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import org.lwjgl.opengl.GL11;
 
@@ -14,7 +20,7 @@ public class BaseBlock extends AABB implements Block{
     public boolean zh=true;
     public boolean zl=true;
     public boolean yl=true;
-
+    public boolean penetration=false;
 
 	public void renderShader(ShaderConfig config , GL_Matrix matrix){
 
@@ -72,9 +78,11 @@ public class BaseBlock extends AABB implements Block{
     }
 
     public int id=0;
-	public int x=0;
-	public int y=0;
-	public int z=0;
+	public int x=0;//0~16
+	public int y=0;//0~128
+	public int z=0;//0~16
+    public int chunkX=0;
+    public int chunkY=0;
 	public int red=0;
 	public int blue=0;
 	public int green=0;
@@ -82,7 +90,13 @@ public class BaseBlock extends AABB implements Block{
 	public String getName(){
 		return name;
 	}
-	private String name;
+
+    @Override
+    public void setValue(int value) {
+
+    }
+
+    private String name;
 	public BaseBlock(String name,int x,int y,int z){
 		this.name=name;
 		this.x=x;
@@ -306,4 +320,57 @@ public class BaseBlock extends AABB implements Block{
 		// VIP Auto-generated method stub
 		return id;
 	}
+
+    public boolean use(){
+        return false;
+    }
+    @Override
+    public boolean beuse(){
+        return false;
+    }
+
+    @Override
+    public Block clone(){
+        return new BaseBlock();
+    }
+
+    ChunkImpl chunk;
+    @Override
+    public void setChunk(ChunkImpl chunk){
+        this.chunk= chunk;
+    }
+
+    @Override
+    public boolean isPenetrate() {
+        return penetration;
+    }
+
+    @Override
+    public void setPenetrate(boolean penetration) {
+        this.penetration =penetration;
+    }
+
+    @Override
+    public ChunkImpl getChunk(){
+        return chunk;
+    }
+
+    public void beAttack(){
+        int chunkX = chunk.chunkPos.x;
+        int chunkZ = chunk.chunkPos.z;
+
+        ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+        cmd.cx = x;//this.getX();
+        cmd.cy =y;//this.getX();
+        cmd.cz =z;// this.getZ();
+
+        if(cmd.cy<0){
+            LogUtil.err("y can't be <0 ");
+        }
+        cmd.type = 2;
+        //blockType 应该和IteType类型联系起来
+        cmd.blockType = 0;
+
+        CoreRegistry.get(Client.class).send(cmd);
+    }
 }

@@ -22,6 +22,7 @@ import glapp.GLImage;
 import java.io.File;
 import java.nio.FloatBuffer;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +37,7 @@ import com.dozenx.util.MapUtil;
 public class TextureManager {
     Path installPath;
     public static HashMap<String, GLImage> imageMap = new HashMap<String, GLImage>();
-
+    public static HashMap<String ,List<Shape>> shapeGroups =new HashMap<>();
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
 /*    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
@@ -465,6 +466,20 @@ public class TextureManager {
                     if(shapeType!=2 && shapeType!=3){
                         LogUtil.err("shaperType is error ");
                     }
+                    String group   = MapUtil.getStringValue(map,"group");
+                    if(group!=null ){
+                        shape.setGroup(group);
+                        List shapeGroupList = shapeGroups.get(group);
+                        if(shapeGroupList == null ){
+                            shapeGroupList =new ArrayList();
+                            shapeGroups .put(group , shapeGroupList);
+                            shapeGroupList.add(shape);
+                        }else{
+                            shapeGroupList.add(shape);
+                        }
+                    }
+
+
                     Object frontObj = map.get("frontFace");
                     if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
                         ShapeFace shapeFace = getShapeFace(frontObj);
@@ -531,15 +546,12 @@ public class TextureManager {
 
                     }
 
-                    float width = MapUtil.getFloatValue(map, "width");
-                    float height = MapUtil.getFloatValue(map, "height");
-                    float thick = MapUtil.getFloatValue(map, "thick");
-                    shape.setWidth(width);
-                    shape.setHeight(height);
+
                     shape.setShapeType(shapeType);
-                    shape.setThick(thick);
+
                     String parent = MapUtil.getStringValue(map, "parent");
-                    if (!"root".equals(parent)) {
+                    shape.setParent(parent);
+                    if (!"root".equals(parent)&& parent!=null) {
                         String p_posi_xStr = MapUtil.getStringValue(map, "p_posi_x");
                         String p_posi_yStr = MapUtil.getStringValue(map, "p_posi_y");
                         String p_posi_zStr = MapUtil.getStringValue(map, "p_posi_z");
@@ -552,7 +564,25 @@ public class TextureManager {
                         try {//有shape 不一定有parentShape
                             /*if(shape==null || parentShape ==null){
                                 LogUtil.err(" is null");
+
+
                             }*/
+
+                           // Object widthObj = map.get("width");
+
+                            float width = Shape.parsePosition(MapUtil.getStringValue(map, "width"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+
+
+                            float height = Shape.parsePosition(MapUtil.getStringValue(map, "height"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+
+
+
+                            float thick = Shape.parsePosition(MapUtil.getStringValue(map, "thick"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+
+                            shape.setWidth(width);
+                            shape.setHeight(height);
+                            shape.setThick(thick);
+
                             if(/*shape!=null &&*/ parentShape!=null && StringUtil.isNotEmpty(MapUtil.getStringValue(map, "c_posi_x"))) {
 
                                 shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
@@ -570,6 +600,19 @@ public class TextureManager {
                         }catch(Exception e){
                             LogUtil.err(e);
                         }
+                    }else{
+                        float width = MapUtil.getFloatValue(map, "width");
+
+
+                        float height = MapUtil.getFloatValue(map, "height");
+
+
+
+                        float thick = MapUtil.getFloatValue(map, "thick");
+
+                        shape.setWidth(width);
+                        shape.setHeight(height);
+                        shape.setThick(thick);
                     }
                     if (shapeType == 3) {
                         if (!isEmpty(front)) {

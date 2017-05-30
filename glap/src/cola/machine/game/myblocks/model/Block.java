@@ -1,14 +1,19 @@
 package cola.machine.game.myblocks.model;
 
 
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import glmodel.GL_Matrix;
 
 public interface  Block {
 	public String getName();
+    public void setChunk(ChunkImpl chunk);
 
+    public boolean isPenetrate();
+    public void setPenetrate(boolean penetrate);
+    public ChunkImpl getChunk();
 
-
+    public void setValue(int value);
     public boolean isZh();
 
     public void setZh(boolean zh);
@@ -48,4 +53,11 @@ public interface  Block {
     public float gf();
 	public int getId();
     public boolean getAlpha();
+
+    public boolean use();
+    public boolean beuse();
+
+    public Block clone();
+
+    public void beAttack();
 }

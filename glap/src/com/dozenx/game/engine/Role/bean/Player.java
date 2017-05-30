@@ -4,11 +4,16 @@ import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.engine.Role.model.Model;
+import com.dozenx.game.engine.Role.model.PlayerModel;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.element.bean.Component;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -20,7 +25,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 public class Player extends LivingThing {
     public Player(int id) {
         super(id);
-
+        this.getExecutor().setModel( new PlayerModel(this));
     }
 
     //判断人的当前状态 是在固体block上还是在液体block上 还是在液体中 还是在空气中
@@ -343,7 +348,9 @@ public class Player extends LivingThing {
         //Component shoe =   bodyComponent.findChild("shoe");
         getModel().addChild(parent,"shoe",itemCfg);
     }
-
+    public PlayerModel getModel(){
+        return (PlayerModel)this.getExecutor().getModel();
+    }
     public void clearShoeEquip(boolean leftFlag)  {
         Component parent ;
         if(leftFlag){
@@ -375,5 +382,31 @@ public class Player extends LivingThing {
         //Shape shape = itemCfg.getShape();
         Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
         getModel().addChild(parent, "weapon", itemCfg);
+    }
+
+
+    public void setInfo( PlayerStatus info ){
+        super.setInfo(info);
+        PlayerModel model = (PlayerModel)getModel();
+        //if(info.getBodyEquip()>0){
+        model.addBodyEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]), 1));
+        //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        //}else {
+        //getModel().addBodyEquip(null);
+
+        //}if(info.getHeadEquip()>0){
+        model.addHeadEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]), 1));
+        //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        //   }
+        //}if(info.getHandEquip()>0){
+        model.addHandEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getHandEquip()]), 1));
+        //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        //}if(info.getLegEquip()>0){
+        model.addLegEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getLegEquip()]), 1));
+        //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+        //// }if(info.getFootEquip()>0){
+        model.addShoeEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]), 1));
+        //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+
     }
 }

@@ -26,12 +26,12 @@ public abstract class BrownianNoise {
     /**
      * Default persistence value
      */
-    public static final double DEFAULT_PERSISTENCE = 1.836281;//持续性
+    public static final double DEFAULT_PERSISTENCE = 1.836281;//持续性 //这个值如果过小就会比较离散
 
     /**
      * Default lacunarity value
      */
-    public static final double DEFAULT_LACUNARITY = 2.1379201;//孔隙度
+    public static final double DEFAULT_LACUNARITY = 2.1379201;//孔隙度 //这个值太大 就没有方块了 太小也没有方块
 
     private double lacunarity = DEFAULT_LACUNARITY;
     
@@ -72,7 +72,19 @@ public abstract class BrownianNoise {
             spectralWeights[i] = Math.pow(lacunarity, -persistence * i);//
         }
    }
-
+   /* 1.0
+            0.5297054034719835
+            0.2805878144674168
+            0.14862888147178507
+            0.07872952162760152
+            0.04170345301890493
+            0.022090544407553935
+            0.011701480738319123*/
+    public static void  main(String args[]){
+        for (int i = 0; i < 8; i++) {
+        System.out.println( Math.pow(BrownianNoise.DEFAULT_LACUNARITY, BrownianNoise.DEFAULT_PERSISTENCE *- i));
+        }
+    }
     /**
      * @return the number of octaves
      */

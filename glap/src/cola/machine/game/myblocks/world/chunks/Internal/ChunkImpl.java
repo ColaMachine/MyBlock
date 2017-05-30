@@ -3,7 +3,9 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.textture.Shape;
+import com.dozenx.game.engine.command.BlockUtil;
 import com.dozenx.game.engine.command.ItemBlockType;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.element.model.BoxModel;
@@ -27,6 +29,7 @@ import java.io.ObjectOutputStream;
 import java.nio.IntBuffer;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import glmodel.GL_Matrix;
@@ -66,7 +69,7 @@ public class ChunkImpl implements Chunk {
         this(chunkPos.x, chunkPos.y, chunkPos.z);
     }
 
-    private final Vector3i chunkPos = new Vector3i();
+    public final Vector3i chunkPos = new Vector3i();
     private BlockManager blockManager;
     private Region3i region;
 
@@ -108,7 +111,13 @@ public class ChunkImpl implements Chunk {
     @Override
     public Block getBlock(int x, int y, int z) {
         // VIP Auto-generated method stub
-        return null;
+       // return null;
+        int blockValue =blockData.get(x,y,z);
+        Block block =  map.get(blockData.getIndex(x,y,z));//.getBlock((short) blockValue);
+        if(block == null )
+            block = blockManager.getBlock(blockValue);
+        return block;
+      //  return new BaseBlock();
     }
 
 
@@ -123,13 +132,15 @@ public class ChunkImpl implements Chunk {
 
     @Override//返回原来的block 类型id  设置当前的block进入数据数组
     public Block setBlock(int x, int y, int z, Block block) {
-        int oldValue = blockData.set(x, y, z, block.getId());
-        if (oldValue != block.getId()) {
+        //int oldValue = blockData.set(x, y, z, block.getId());
+
+        this.setBlock(x,y,z,block.getId());
+       // if (oldValue != block.getId()) {
             /*
 			 * if (!block.isLiquid()) { setLiquid(x, y, z, new LiquidData()); }
 			 */
-        }
-        return blockManager.getBlock((short) oldValue);
+       // }
+        return null;//blockManager.getBlock((short) oldValue);
     }
 
     @Override//返回原来的block 类型id  设置当前的block进入数据数组
@@ -142,10 +153,29 @@ public class ChunkImpl implements Chunk {
         }
         return blockManager.getBlock((short) oldValue);*/
     }
-
+    HashMap<Integer,Block> map =new HashMap<>();
     @Override
-    public void setBlock(int x, int y, int z, int block) {
-        blockData.set(x, y, z, block);
+    public void setBlock(int x, int y, int z, int blockId) {
+        try {
+            int realId = ByteUtil.get8_0Value(blockId);
+            blockData.set(x, y, z, blockId);
+            //if(blockId > 0)
+            if(blockId>ItemType.wood_door.ordinal()){
+                LogUtil.println("is ad special block");
+
+            //if (realId ==ItemType.wood_door.ordinal() ) {
+                Block block = blockManager.getBlock(realId).clone();
+                block.setValue(blockId);
+                block.setCenter(x,y,z);
+                block.setChunk(this);
+                map.put(blockData.getIndex(x, y, z), block);
+
+            //}
+            }
+        }catch (Exception e ){
+
+        }
+        //如果是特殊block的话 放入特殊map中 下次取或者修改都修改里面的值
 
     }
 
@@ -512,7 +542,9 @@ public class ChunkImpl implements Chunk {
                         //如果不是box 类型的
 
                         ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[currentBlockType]);
-
+                        if(itemDefinition == null ){
+                            continue;
+                        }
                         if (!(itemDefinition.getItemModel().placeModel instanceof BoxModel)) {
 
                             itemDefinition.getItemModel().placeModel.build(ShaderManager.terrainShaderConfig, vao, this.chunkPos.x * getChunkSizeX() + x, y, this.chunkPos.z * getChunkSizeZ() + z);//.renderShader(ShaderManager.terrainShaderConfig);
@@ -1092,11 +1124,13 @@ public class ChunkImpl implements Chunk {
                 int condition = ByteUtil.get4_0Value(state);
                 int switcher = ByteUtil.get8_4Value(state);
                 int degree = 0;
-                if (condition == Constants.BACK) {
-                    ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
-                            shapeFace.getFaces()[0], ti, x, y, z);
-                } else {
-
+               // if /*(condition == Constants.BACK) {
+                   /* ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
+                            shapeFace.getFaces()[0], ti, x, y, z);*/
+                //} else*/
+                    if (condition == Constants.BACK) {
+                        degree = 0;
+                    }
                     if (condition == Constants.FRONT) {
 
                         degree = 180;
@@ -1117,7 +1151,7 @@ public class ChunkImpl implements Chunk {
 
                     ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                             shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);
-                }
+
             } else {
                 ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                         shapeFace.getFaces()[0], ti, x, y, z);

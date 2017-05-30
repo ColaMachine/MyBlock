@@ -167,7 +167,7 @@ public class ItemManager {
 
         try {
             //先按照itemtype enum加载数据 这里是偷懒了 不想都写item.cfg
-            for (int i = 1; i < ItemType.values().length; i++) {
+            /*for (int i = 1; i < ItemType.values().length; i++) {
                 ItemDefinition item = new ItemDefinition();//
                 item.setName(ItemType.values()[i].toString());//简单设置英文名称
                 this.putItemDefinition(ItemType.values()[i].toString(), item);//入仓库
@@ -188,56 +188,24 @@ public class ItemManager {
 
 
                 }
-            }
+            }*/
             //读取item文件夹下所有的配置信息
+            ItemFactory itemFactory =new ItemFactory();
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
             for (File file : fileList) {//遍历配置文件
                 String json = FileUtil.readFile2Str(file);
+
+
                 List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
 
                 for (int i = 0; i < textureCfgBeanList.size(); i++) {
                     HashMap map = textureCfgBeanList.get(i);
-                    ItemDefinition item = new ItemDefinition();
-                    String name = (String) map.get("name");
 
-                    String icon = (String) map.get("icon");//获取icon图片
-                    item.setName(name);
-                    // item.setIcon(this.getTextureInfo(icon));
-                    String type = (String) map.get("type");
-                    //分类
-                    String category = (String) map.get("category");
-                    if (GamingState.player != null) {//区分服务器版本和客户端版本
-                        TextureInfo ti = TextureManager.getTextureInfo(icon);
-                        if(ti ==null){
-                            LogUtil.err(name+"'s icon should not be null");
-                        }
-                        item.getItemModel().setIcon(ti);
-                    }
-                    if("door".equals(category)){
-                        ItemDoorParser.parse(item,map);
-                    }else
-                    if("seed".equals(category)){
-                         ItemSeedParser.parse(item,map);
-                    }else
-                    if (type.equals("wear")) {
-                        ItemEquipParser.parse(item,map);
-
-                    } else if (type.equals("food")) {
-                        ItemFoodParser.parse(item,map);
-
-                    } else if (type.equals("block")) {
-                       ItemBlockParser.parse(item,map);
-
-                    }
-                    /*String spiritStr = map.get("spirit");
-                    if(StringUtil.isNotEmpty(spiritStr)){
-                        item.setSpirit(spirit);
-                    }*/
+                    ItemDefinition itemDef =  itemFactory.parse(map);
+                   // ItemDefinition itemDef = new ItemDefinition();
 
 
-
-
-                    this.putItemDefinition(name, item);
+                    this.putItemDefinition(itemDef.getName(), itemDef);
 
 
                 }

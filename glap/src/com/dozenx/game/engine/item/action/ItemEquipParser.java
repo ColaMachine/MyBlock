@@ -67,12 +67,12 @@ public class ItemEquipParser {
         }
         item.setType(ItemMainType.WEAR);
         if (GamingState.player != null) {//区分服务器版本和客户端版本
-            String shapeName = (String) map.get("shape");
+           // String shapeName = (String) map.get("shape");
                         /*if(icon.equals("fur_helmet")){
                             LogUtil.println("123");
                         }*/
             item.getItemModel().setIcon(item.itemModel.getIcon());
-            Shape shape = TextureManager.getShape(shapeName);
+            Shape shape = TextureManager.getShape(item.getName());
             if (shape == null) {//如果没有shape 说明还没有用到该物体 还没有定义shape
                 item.getItemModel().init();
             } else {

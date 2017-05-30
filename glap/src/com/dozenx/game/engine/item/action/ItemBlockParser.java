@@ -12,6 +12,8 @@ import com.dozenx.game.engine.item.bean.ItemBlockProperties;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ItemFoodProperties;
 import com.dozenx.game.engine.item.bean.ItemSeed;
+import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 
 import java.util.Map;
 
@@ -21,8 +23,14 @@ import java.util.Map;
 public class ItemBlockParser {
     public static void parse(ItemDefinition item,Map map){
 
-        ItemBlockProperties blockProperties = new ItemBlockProperties();
-
+        ItemBlockProperties blockProperties = (ItemBlockProperties)item.itemTypeProperties;//new ItemBlockProperties();
+        Object penetrate = map.get("penetrate");
+        if(blockProperties ==null){
+            blockProperties = new ItemBlockProperties();
+        }
+        if(penetrate!=null){
+                blockProperties.setPenetrate((Boolean)penetrate);
+        }
         if (map.get("hardness") != null) {
             blockProperties.hardness = (int) map.get("hardness");
         }

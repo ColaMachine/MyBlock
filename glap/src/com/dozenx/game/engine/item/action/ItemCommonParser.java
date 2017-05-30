@@ -5,24 +5,16 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.Shape;
 import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.engine.element.model.CakeModel;
 import com.dozenx.game.engine.element.model.IconModel;
-import com.dozenx.game.engine.element.model.XModel;
-import com.dozenx.game.engine.item.bean.ItemBlockProperties;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.util.MapUtil;
-import com.dozenx.util.StringUtil;
 
 import java.util.Map;
 
 /**
  * Created by dozen.zhang on 2017/5/9.
  */
-public class ItemDoorParser {
+public class ItemCommonParser {
     public static void parse(ItemDefinition item,Map map){
-        ItemBlockProperties blockProperties = (ItemBlockProperties)item.itemTypeProperties;
-
-
 
 
         if (GamingState.player != null) {//区分服务器版本和客户端版本

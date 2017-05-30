@@ -12,6 +12,7 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.physic.BulletResultDTO;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.TreeBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
@@ -658,34 +659,40 @@ public class MouseControlCenter {
             boolean delete = true;
             //获取当前的block item
 
-            GL_Vector[] arr  = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+            BulletResultDTO arr  = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
                     20, "soil", delete);
+
+
             if(arr!=null){
 
-                GL_Vector  hitPoint = arr[0];
+                GL_Vector  hitPoint = arr.targetPoint;
                 //打印点
                 //获得朝向
 
                 //获得靠近还是靠远
                 LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
 
-
+                if(arr.targetBlock.getId()>ItemType.wood_door.ordinal()){
+                    arr.targetBlock.beAttack();
+                    return ;
+                }
                 //获得上一层还是下一层
 
                 //其实我就是想知道点击的是哪一个面上 点击的面上
                 //得出当前人手上拿的是不是方块
-                int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
-                int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
+                int chunkX = arr.targetChunX;
+                int chunkZ = arr.targetChunZ;
                 //   TreeBlock treeBlock =new TreeBlock(hitPoint);
                 //treeBlock.startPosition=hitPoint;
                 //  treeBlock.generator();
-                int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
-                int blockY = MathUtil.floor(hitPoint.y);
-                int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+
+//                int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
+//                int blockY = MathUtil.floor(hitPoint.y);
+//                int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
                 ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-                cmd.cx = blockX;
-                cmd.cz = blockZ;
-                cmd.cy = blockY;
+                cmd.cx = (int)hitPoint.x;
+                cmd.cy = (int)hitPoint.y;
+                cmd.cz = (int)hitPoint.z;
 
                 if(cmd.cy<0){
                     LogUtil.err("y can't be <0 ");
@@ -731,34 +738,39 @@ public class MouseControlCenter {
 
             }
 
-            GL_Vector[] arr
+            BulletResultDTO arr
              = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
                     20, "soil", delete);
 
 
 
             if(arr!=null){
-                GL_Vector hitPoint = arr[0];
-                GL_Vector beforePoint = arr[1];
+                GL_Vector targetPoint =arr.targetPoint;
+                GL_Vector  placePoint= arr.placePoint;
 
                 //打印点
                 //获得朝向
                 //判断选择的方块是不是门之类的
-               int blockType = (int)arr[2].x;
+                //Integer blockType = ((Block)arr[2]).getId();
+                Block block = arr.targetBlock;
+                if(arr.targetBlock!=null ) {
+                    Integer blockType = block.getId();
+                    //获得靠近还是靠远
+                    //LogUtil.println("x:"+targetPoint.x%1 + "y:"+targetPoint.y%1+"z:"+targetPoint.z%1);
+                    //这却的途径是什么
 
-                //获得靠近还是靠远
-                LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
-
-                if(blockType>256 ){//如果是有状态的block
-
-                    int chunkX = MathUtil.getBelongChunkInt(hitPoint.x);
-                    int chunkZ = MathUtil.getBelongChunkInt(hitPoint.z);
+                    //如果物体是可以被使用的
+                    //Block targetBlock =
+                    if (block.beuse()) {//如果是有状态的block
+                   /* //通过一个通用的方式获得点击的面在哪里
+                    int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);
+                    int chunkZ = MathUtil.getBelongChunkInt(targetPoint.z);
                     //   TreeBlock treeBlock =new TreeBlock(hitPoint);
                     //treeBlock.startPosition=hitPoint;
                     //  treeBlock.generator();
-                    int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
-                    int blockY = MathUtil.floor(hitPoint.y);
-                    int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+                    int blockX = MathUtil.floor(targetPoint.x) - chunkX * 16;
+                    int blockY = MathUtil.floor(targetPoint.y);
+                    int blockZ = MathUtil.floor(targetPoint.z) - chunkZ * 16;
                     ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
                     cmd.cx = blockX;
                     cmd.cz = blockZ;
@@ -780,23 +792,29 @@ public class MouseControlCenter {
                         cmd.blockType= blockType;
                         CoreRegistry.get(Client.class).send(cmd);
                         return;
+                    }*/
+                        return;
                     }
                 }
                 //获得上一层还是下一层
                 if(handItem==null){
                     return;
                 }
+
+               // int condition = BlockUtil.getIndex(placePoint, camera.getViewDir());
+                handItem.use(placePoint,handItem.getItemType(),camera.getViewDir());
+                //开始放置物品
                 //其实我就是想知道点击的是哪一个面上 点击的面上
                 //得出当前人手上拿的是不是方块
-                int chunkX = MathUtil.getBelongChunkInt(beforePoint.x);
-                int chunkZ = MathUtil.getBelongChunkInt(beforePoint.z);
+               /* int chunkX = MathUtil.getBelongChunkInt(placePoint.x);
+                int chunkZ = MathUtil.getBelongChunkInt(placePoint.z);
             //   TreeBlock treeBlock =new TreeBlock(hitPoint);
                 //treeBlock.startPosition=hitPoint;
 
                       //  treeBlock.generator();
-                int blockX = MathUtil.floor(beforePoint.x) - chunkX * 16;
-                int blockY = MathUtil.floor(beforePoint.y);
-                int blockZ = MathUtil.floor(beforePoint.z) - chunkZ * 16;
+                int blockX = MathUtil.floor(placePoint.x) - chunkX * 16;
+                int blockY = MathUtil.floor(placePoint.y);
+                int blockZ = MathUtil.floor(placePoint.z) - chunkZ * 16;
                 ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
                 cmd.cx = blockX;
                 cmd.cz = blockZ;
@@ -813,59 +831,9 @@ public class MouseControlCenter {
                 //blockType 应该和IteType类型联系起来
 
                 if(cmd.blockType==ItemType.wood_door.ordinal()){
-                    float pianyiX = beforePoint.x%1;
-                    float pianyiY = beforePoint.y%1;
-                    float pianyiZ= beforePoint.z%1;
-                    //计算朝向
-
-                    //对于门来说 我需要知道他的朝向 这个可以通过 xz的值来算出 4个朝向值
-                    //然后我需要知道他是靠近还是靠远
-                    int block=0;
-                    if(pianyiX<0.5){
-                        if(pianyiY<0.5){
-                            if(pianyiZ<0.5){
-                                block=4;
-                            }else{
-                                block=1;
-                            }
-                        }else{
-                            if(pianyiZ<0.5){
-                                block=5;
-                            }else{
-                                block=8;
-                            }
-                        }
-                    }else{
-                        if(pianyiY<0.5){
-                            if(pianyiZ<0.5){
-                                block=3;
-                            }else{
-                                block=2;
-                            }
-                        }else{
-                            if(pianyiZ<0.5){
-                                block=7;
-                            }else{
-                                block=6;
-                            }
-                        }
-                    }
-                    int condition=0;
-                    if(Math.abs(camera.getViewDir().x)>Math.abs(camera.getViewDir().z)){
-                        if(block==1 ||  block==4||block==5 ||  block==8){
-                            condition=Constants.LEFT;
-                        }else{
-                            condition=Constants.RIGHT;
-                        }
-                    }else{
-                        if(block==1 ||  block==2||block==5 ||  block==6){
-                            condition=Constants.FRONT;
-                        }else{
-                            condition=Constants.BACK;
-                        }
-                    }
+                    int condition = BlockUtil.getIndex(placePoint,camera.getViewDir());
                     cmd.blockType  = condition<<8|cmd.blockType;
-                    /*if(pianyiX<0.1 ){//把一个方块分为 12345678 8个格子 算出它再哪个格子
+                    *//*if(pianyiX<0.1 ){//把一个方块分为 12345678 8个格子 算出它再哪个格子
                         //说明是向左的方向
                         if(block==1 ||  block==4||block==5 ||  block==8){
                             condition=Constants.LEFT;
@@ -887,9 +855,9 @@ public class MouseControlCenter {
                         //说明是向前的方向
                     }else if(pianyiZ>0.9){
                         //说明是向后的方向
-                    }*/
+                    }*//*
                 }
-                CoreRegistry.get(Client.class).send(cmd);
+                CoreRegistry.get(Client.class).send(cmd);*/
             }
         }
         if (Keyboard.isKeyDown( Keyboard.KEY_T)) {

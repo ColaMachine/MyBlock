@@ -23,7 +23,7 @@ public class LivingThing extends LivingThingBean {
     public LivingThing(int id){
         super(id);
 
-        this.getExecutor().setModel( new PlayerModel(this));
+
     }
 
    /* public long updateTime;
@@ -227,12 +227,12 @@ public class LivingThing extends LivingThingBean {
         component.id=getId()*100+99;
             component.setOffset(new Point3f(0,4,0),new Point3f(0,0,0));
             //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-        getModel().rootComponent.addChild(component);	//changeProperty()
+        getModel().getRootComponent().addChild(component);	//changeProperty()
 
     }
     public void unSelect(){
-        if("select".equals(getModel().rootComponent.children.get(getModel().rootComponent.children.size()-1).id)){
-            getModel().rootComponent.children.remove(getModel().rootComponent.children.size()-1);
+        if("select".equals(getModel().getRootComponent().children.get(getModel().getRootComponent().children.size()-1).id)){
+            getModel().getRootComponent().children.remove(getModel().getRootComponent().children.size()-1);
         }
 
 
@@ -301,7 +301,7 @@ public class LivingThing extends LivingThingBean {
     public void setInfo( PlayerStatus info ){
         super.setInfo(info);
 
-
+/*
         //if(info.getBodyEquip()>0){
             getModel().addBodyEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]),1));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
@@ -321,7 +321,7 @@ public class LivingThing extends LivingThingBean {
        //// }if(info.getFootEquip()>0){
             getModel().addShoeEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]),1));
             //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-        //}
+      */  //}
        this.changeProperty();
     }
 

@@ -27,8 +27,8 @@ import javax.vecmath.Vector4f;
 /**
  * Created by luying on 17/3/5.
  */
-public class PlayerModel implements   Model{
-    public Component rootComponent = new Component();
+public class PlayerModel extends BaseModel   {
+
 
     float bili =0.3f;
 
@@ -50,8 +50,9 @@ public class PlayerModel implements   Model{
     protected  float HEAD_THICK=1f*bili;
 
     public PlayerModel(Role role ){
+        super(role);
         rootComponent=new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
-        this.role =role;
+
         int id =role.getId();
         rootComponent.id=id*10+EquipPartType.BODY.ordinal();
         rootComponent.name = EquipPartType.BODY.getName();
@@ -227,7 +228,7 @@ public class PlayerModel implements   Model{
 //    protected  float BODY_HEIGHT=1.5f*bili;
 //    protected float BODY_WIDTH=1f*bili;
 //    protected  float BODY_THICK=0.5f*bili;
-    Role role ;
+   // Role role ;
 
 
 
@@ -293,7 +294,7 @@ public class PlayerModel implements   Model{
 
     }
 
-    public void addChild(Component parent,String name,ItemBean itemBean) {
+    /*public void addChild(Component parent,String name,ItemBean itemBean) {
         if(parent==null){
             LogUtil.err("parent node is null");
         }
@@ -341,7 +342,7 @@ public class PlayerModel implements   Model{
                 //changeProperty();
             }
         }
-    }
+    }*/
     public void addHandChild(Component parent,String name,ItemBean itemBean) {
         if(parent==null){
             LogUtil.err("parent node is null");

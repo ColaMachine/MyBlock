@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Matrix;
@@ -277,7 +278,34 @@ public class ColorBlock extends AABB implements Block {
 		return null;
 	}
 
-	@Override
+    @Override
+    public void setChunk(ChunkImpl chunk) {
+
+    }
+
+    @Override
+    public boolean isPenetrate() {
+        return false;
+    }
+
+    @Override
+    public void setPenetrate(boolean penetrate) {
+
+    }
+
+
+
+    @Override
+    public ChunkImpl getChunk() {
+        return null;
+    }
+
+    @Override
+    public void setValue(int value) {
+
+    }
+
+    @Override
 	public void renderCube() {
 		// VIP Auto-generated method stub
 		
@@ -296,5 +324,26 @@ public class ColorBlock extends AABB implements Block {
 	}
     public boolean getAlpha(){
         return false;
+    }
+
+    @Override
+    public boolean use() {
+        return false;
+    }
+
+    @Override
+    public boolean beuse() {
+        return false;
+    }
+
+
+    @Override
+    public Block clone(){
+        return new ColorBlock(x,y,z);
+    }
+
+    @Override
+    public void beAttack() {
+
     }
 }

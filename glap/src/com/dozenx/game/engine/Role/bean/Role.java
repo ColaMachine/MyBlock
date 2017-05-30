@@ -5,8 +5,12 @@ import com.dozenx.game.engine.Role.bean.item.ComplexEquipProperties;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.Role.model.PlayerModel;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.command.SayCmd;
+import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.network.server.bean.PlayerStatus;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -74,8 +78,8 @@ public class Role extends ComplexEquipProperties {
 
     Executor executor ;
 
-    public PlayerModel getModel(){
-        return (PlayerModel)executor.getModel();
+    public Model getModel(){
+        return executor.getModel();
     }
 
     public Executor getExecutor() {
@@ -156,6 +160,11 @@ public class Role extends ComplexEquipProperties {
 
 
         }
+
+    }
+
+    public void setInfo( PlayerStatus info ){
+        super.setInfo(info);
 
     }
 

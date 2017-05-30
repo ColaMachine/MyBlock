@@ -46,7 +46,9 @@ public abstract class TeraArray implements Externalizable {
 
     protected TeraArray() {
     }
-
+    public int getIndex(int sizeX, int sizeY, int sizeZ){
+        return pos(sizeX,sizeY,sizeZ);
+    }
     protected TeraArray(int sizeX, int sizeY, int sizeZ, boolean initialize) {
         checkArgument(sizeX > 0);
         checkArgument(sizeY > 0);

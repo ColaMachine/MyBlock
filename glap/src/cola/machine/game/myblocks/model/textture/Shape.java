@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * Created by luying on 16/9/12.
  */
-public class Shape {
+public class Shape  {
     public int getShapeType() {
         return shapeType;
     }
@@ -19,6 +19,24 @@ public class Shape {
     ShapeFace frontFace;
     ShapeFace backFace;
     ShapeFace topFace;
+    String group;
+    String parent;
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
 
     public ShapeFace getFrontFace() {
         return frontFace;
@@ -241,9 +259,10 @@ public class Shape {
         return Float.valueOf(str);
     }
 
+        //2 ([a-zA-Z_]+) 匹配parent 或者child  . 匹配.  3([a-zA-Z_]+)匹配width height thick 4 5 分子 6 分母
+         pattern = Pattern.compile("(([a-zA-Z_]+)\\.)?([a-zA-Z_]+)(\\*(\\d{1,3}\\.{0,1}\\d{0,3}))?/?(\\d{1,3}\\.{0,1}\\d{0,3})?");
 
-     pattern = Pattern.compile("(([a-zA-Z_]+)\\.)?([a-zA-Z_]+)(\\*(\\d+))?/?(\\d+)?");
-     matcher = pattern.matcher(str);
+        matcher = pattern.matcher(str);
 
 
     if(matcher.matches()){
@@ -287,8 +306,8 @@ public class Shape {
 
     public static void main(String args[]){
 
-        Pattern pattern = Pattern.compile("(([a-zA-Z_]+)\\.)?([a-zA-Z_]+)(\\*(\\d+))?/?(\\d+)?");
-        Matcher matcher = pattern.matcher("parent.height");
+        Pattern pattern = Pattern.compile("(([a-zA-Z_]+)\\.)?([a-zA-Z_]+)(\\*(\\d{1,3}\\.{0,1}\\d{0,3}))?/?(\\d{1,3}\\.{0,1}\\d{0,3})?");
+        Matcher matcher = pattern.matcher("parent.height*1.2");
 
         if(matcher.matches()){
             System.out.println(matcher.groupCount());

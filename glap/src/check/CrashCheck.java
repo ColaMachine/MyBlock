@@ -1,6 +1,7 @@
 package check;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.item.BlockUtil;
 import core.log.LogUtil;
@@ -64,14 +65,19 @@ public class CrashCheck {
                     int k = chunk_corner.getBlockData(blockX,
                             blockY, blockZ
                     );
-                    if (k > 0&& k !=8) {
 
-                        if(BlockUtil.isDoor(k) &&BlockUtil.isDoorOpen(k)){
+                    if (k > 0) {
+                        Block block =chunk_corner.getBlock(blockX,
+                                blockY, blockZ);
+                        if (!block.isPenetrate()){
+                            //是否碰撞是不是应该交给对应的block 去判断
+                            /*if (BlockUtil.isDoor(k) && BlockUtil.isDoorOpen(k)) {
 
-                        }else{
+                            } else {
+                                return true;
+                            }*/
                             return true;
-                        }
-                        //means it is crashed
+                            //means it is crashed
 //                        System.out.println("warning crashed");
 //                        player.moveOld();
 
@@ -80,15 +86,16 @@ public class CrashCheck {
 //                                            new GL_Vector(blockX, blockY, blockZ)),
 //                                    0.2f))
 
-                        //end all loop
-                        //但是不一定是碰撞检测结束了
-                        //如果所有的corner都没有碰撞到物体
-                        //碰撞检测结束了
-                        //it means it's over it's stable
-                        //how we be sure it's stable
-                        //when all corner is checked not crashed
-                        //fan fangxiang yundnog 1 xiaoduan juli
+                            //end all loop
+                            //但是不一定是碰撞检测结束了
+                            //如果所有的corner都没有碰撞到物体
+                            //碰撞检测结束了
+                            //it means it's over it's stable
+                            //how we be sure it's stable
+                            //when all corner is checked not crashed
+                            //fan fangxiang yundnog 1 xiaoduan juli
 
+                        }
                     }
 
                 }
@@ -136,39 +143,48 @@ public class CrashCheck {
                                 blockY, blockZ
                         );
 
-                        if (k==8 && !isswim ){
-                            // CoreRegistry.get(Human.class).swim=true;
-                            // System.out.println("swim");
-                        }else{
-                            // CoreRegistry.get(Human.class).swim=false;
-                            // System.out.println("unswim");
-                        }
-                        if (k > 0&& k!=8) {//不为水的话
+                        if(k>0){
 
-                            if(BlockUtil.isDoor(k) &&BlockUtil.isDoorOpen(k)){
-
-                            }else{
+                            Block block =chunk_corner.getBlock(blockX,
+                                    blockY, blockZ);
+                            if (!block.isPenetrate()){
                                 return true;
                             }
-                            //means it is crashed
-//                        System.out.println("warning crashed");
-//                        player.moveOld();
-
-//                            GL_Vector.add(player.Position, GL_Vector.multiply(
-//                                    player.Position.sub(
-//                                            new GL_Vector(blockX, blockY, blockZ)),
-//                                    0.2f))
-
-                            //end all loop
-                            //但是不一定是碰撞检测结束了
-                            //如果所有的corner都没有碰撞到物体
-                            //碰撞检测结束了
-                            //it means it's over it's stable
-                            //how we be sure it's stable
-                            //when all corner is checked not crashed
-                            //fan fangxiang yundnog 1 xiaoduan juli
-
                         }
+
+//                        if (k==8 && !isswim ){
+//                            // CoreRegistry.get(Human.class).swim=true;
+//                            // System.out.println("swim");
+//                        }else{
+//                            // CoreRegistry.get(Human.class).swim=false;
+//                            // System.out.println("unswim");
+//                        }
+//                        if (k > 0&& k!=8) {//不为水的话
+//
+//                            if(BlockUtil.isDoor(k) &&BlockUtil.isDoorOpen(k)){
+//
+//                            }else{
+//                                return true;
+//                            }
+//                            //means it is crashed
+////                        System.out.println("warning crashed");
+////                        player.moveOld();
+//
+////                            GL_Vector.add(player.Position, GL_Vector.multiply(
+////                                    player.Position.sub(
+////                                            new GL_Vector(blockX, blockY, blockZ)),
+////                                    0.2f))
+//
+//                            //end all loop
+//                            //但是不一定是碰撞检测结束了
+//                            //如果所有的corner都没有碰撞到物体
+//                            //碰撞检测结束了
+//                            //it means it's over it's stable
+//                            //how we be sure it's stable
+//                            //when all corner is checked not crashed
+//                            //fan fangxiang yundnog 1 xiaoduan juli
+//
+//                        }
                     }catch(Exception e){
                         LogUtil.err(e);
                     }

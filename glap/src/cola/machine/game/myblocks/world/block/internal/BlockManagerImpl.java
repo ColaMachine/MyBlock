@@ -6,8 +6,11 @@ import java.util.Map;
 
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.CopyDownBlock;
+import cola.machine.game.myblocks.model.DoorBlock;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.util.ByteUtil;
 
 public class BlockManagerImpl extends BlockManager {
 	private HashMap<String,Block> blockInfoNameMap=new HashMap();
@@ -32,7 +35,8 @@ public class BlockManagerImpl extends BlockManager {
         Block treeWood=new BaseBlock("tree_wood",ItemType.tree_wood.ordinal(),false);
         Block treeLeaf=new BaseBlock("tree_seed",ItemType.tree_seed.ordinal(),true);
         Block treeSeed=new BaseBlock("tree_leaf",ItemType.tree_leaf.ordinal(),false);
-        Block wood_door=new BaseBlock("wood_door",ItemType.wood_door.ordinal(),true);
+        Block wood_door=new DoorBlock("wood_door",ItemType.wood_door.ordinal(),true);
+        Block copy_down=new CopyDownBlock("copy_down",ItemType.copy_down.ordinal(),true);
         blockInfoNameMap.put("air", air);
         blockInfoNameMap.put("water", water);
         blockInfoNameMap.put("stone", stone);
@@ -45,6 +49,7 @@ public class BlockManagerImpl extends BlockManager {
         blockInfoNameMap.put("tree_leaf", treeLeaf);
         blockInfoNameMap.put("tree_seed", treeSeed);
         blockInfoNameMap.put("wood_door", wood_door);
+        blockInfoNameMap.put("copy_down", copy_down);
        Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry<String, Block> entry =it.next();
@@ -59,6 +64,12 @@ public class BlockManagerImpl extends BlockManager {
 		return blockInfoNameMap.get(name);
 	}
     public Block getBlock(int  id) {
+        if(id<0 || id>ItemType.wood_door.ordinal()){
+           int realId =  ByteUtil.get8_0Value(id);
+            Block block =blockInfoIdMap.get(realId);
+            block.setValue(id);
+            return block;
+        }else
         return blockInfoIdMap.get(id);
     }
 	/*@Override
