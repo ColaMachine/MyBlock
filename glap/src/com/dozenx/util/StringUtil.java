@@ -60,7 +60,7 @@ public class StringUtil {
 		}
 		int sz = str.length();
 		for (int i = 0; i < sz; i++) {
-			if (Character.isDigit(str.charAt(i)) == false) {
+			if (str.charAt(i)!='-' &&Character.isDigit(str.charAt(i)) == false) {
 				return false;
 			}
 		}

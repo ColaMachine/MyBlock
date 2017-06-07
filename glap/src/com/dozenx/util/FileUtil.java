@@ -72,6 +72,8 @@ public class FileUtil {
         return templateStr.toString();
     }
     public static void writeFile(File file ,String content) throws IOException {
+        FileWriter fileWritter=null;
+        BufferedWriter bufferWritter=null;
         try {
 
             //if file doesnt exists, then create it
@@ -80,8 +82,8 @@ public class FileUtil {
             }
 
             //true = append file
-            FileWriter fileWritter = new FileWriter(file, false);
-            BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+             fileWritter = new FileWriter(file, false);
+             bufferWritter = new BufferedWriter(fileWritter);
             bufferWritter.write(content);
             bufferWritter.close();
 
@@ -90,6 +92,9 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
+        }finally {
+            bufferWritter.close();
+            fileWritter.close();
         }
     }
     public static void main(String args[]){

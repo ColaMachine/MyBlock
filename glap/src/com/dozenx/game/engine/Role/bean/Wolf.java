@@ -18,8 +18,10 @@ import glmodel.GL_Vector;
 import org.lwjgl.Sys;
 
 public class Wolf extends LivingThing {
+
     public Wolf(int id) {
         super(id);
+        this.speed=5;
         this.getExecutor().setModel( new WolfModel(this));
         this.name="wolf";
     }

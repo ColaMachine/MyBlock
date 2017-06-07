@@ -159,7 +159,7 @@ public class Player extends LivingThing {
            // updownDegree=1;
             headAngle2 += Math.toRadians(updownDegree);
             headAngle2 = (float) (headAngle2 % (2 * Math.PI));
-            LogUtil.println("updownDegree:"+updownDegree);
+//            LogUtil.println("updownDegree:"+updownDegree);
         }
         //if (leftRightDegree != 0) {
 

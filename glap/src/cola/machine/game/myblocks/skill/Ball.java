@@ -1,6 +1,9 @@
 package cola.machine.game.myblocks.skill;
 
+import cola.machine.game.myblocks.block.Block;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.ItemType;
@@ -51,6 +54,7 @@ public class Ball  {
     Long startTime;
     Component component;
     ItemDefinition itemDefinition;
+    ChunkProvider chunkProvider  = CoreRegistry.get(ChunkProvider.class);
     public Ball(int id ,GL_Vector position , GL_Vector direction, float speed, ItemType itemType, LivingThingBean from){
         this.id=id;
         this.from = from;
@@ -72,13 +76,26 @@ public class Ball  {
         component.setItem();
     }*/
     public boolean jinzhi;
-    int type=1;
+    int type=2;
     GL_Vector p1 =new GL_Vector(0,0,0);
     GL_Vector p2 =new GL_Vector(1,0,0);
     GL_Vector p3 =new GL_Vector(1,1,0);
     GL_Vector p4 =new GL_Vector(0,1,0);
     GL_Vector normal =new GL_Vector(0,0,1);
+    float size=0.2f;
+    boolean readyDied = false;
     public void update(ShaderConfig shaderConfig ){
+
+        if(readyDied){
+            size+=0.002f;
+            ShaderUtils.draw3dColorBox(shaderConfig,shaderConfig.getVao(),this.position.x,this.position.y,this.position.z,new GL_Vector(0,0,0),size,1-size );
+            if(size>1){
+                died=true;
+            }
+            return;
+        }
+
+
         if( speed>0) {
             Long nowTime =  TimeUtil.getNowMills() - startTime;
             startTime =  TimeUtil.getNowMills();
@@ -92,7 +109,14 @@ public class Ball  {
         if(sumDistance>distance){
             this.died=true;
         }
-        if(type==1){
+        //如果撞到方块停止
+        cola.machine.game.myblocks.model.Block block = chunkProvider.getBlockAt((int)this.position.x,(int)this.position.y,(int)this.position.z);
+        if(block!=null && block.getId()!=0){
+            this.readyDied=true;
+        }if(type==2) {
+
+            ShaderUtils.draw3dColorBox(shaderConfig,shaderConfig.getVao(),this.position.x,this.position.y,this.position.z,new GL_Vector(0,0,0),0.1f,1 );
+        }else if(type==1){
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
             float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
             GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);

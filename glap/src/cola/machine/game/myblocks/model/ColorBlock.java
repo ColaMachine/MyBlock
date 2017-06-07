@@ -102,7 +102,7 @@ public class ColorBlock extends AABB implements Block {
 		this.maxY = y + 1;
 		this.maxZ = z + 1;
 	}
-
+    int beishu =40;
 	public ColorBlock(int x, int y, int z, Color color) {
 		this.x = x;
 		this.y = y;
@@ -122,25 +122,25 @@ public class ColorBlock extends AABB implements Block {
         this.gf=this.green*1f/256;
         this.bf=this.blue*1f/256;
 
-         P1 =new GL_Vector(minX/10, minY/10, maxZ/10);
-         P2 =new GL_Vector(maxX/10, minY/10, maxZ/10);
-         P3 =new GL_Vector(maxX/10, minY/10, minZ/10);
-         P4 =new GL_Vector(minX/10, minY/10, minZ/10);
+         P1 =new GL_Vector(minX/beishu, minY/beishu, maxZ/beishu);
+         P2 =new GL_Vector(maxX/beishu, minY/beishu, maxZ/beishu);
+         P3 =new GL_Vector(maxX/beishu, minY/beishu, minZ/beishu);
+         P4 =new GL_Vector(minX/beishu, minY/beishu, minZ/beishu);
 
-         P5 =new GL_Vector(minX/10, maxY/10, maxZ/10);
-         P6 =new GL_Vector(maxX/10, maxY/10, maxZ/10);
-         P7 =new GL_Vector(maxX/10, maxY/10, minZ/10);
-         P8 =new GL_Vector(minX/10, maxY/10, minZ/10);
+         P5 =new GL_Vector(minX/beishu, maxY/beishu, maxZ/beishu);
+         P6 =new GL_Vector(maxX/beishu, maxY/beishu, maxZ/beishu);
+         P7 =new GL_Vector(maxX/beishu, maxY/beishu, minZ/beishu);
+         P8 =new GL_Vector(minX/beishu, maxY/beishu, minZ/beishu);
 	}
-    GL_Vector P1 =new GL_Vector(minX/10, minY/10, maxZ/10);
-    GL_Vector P2 =new GL_Vector(maxX/10, minY/10, maxZ/10);
-    GL_Vector P3 =new GL_Vector(maxX/10, minY/10, minZ/10);
-    GL_Vector P4 =new GL_Vector(minX/10, minY/10, minZ/10);
+    GL_Vector P1 =new GL_Vector(minX/beishu, minY/beishu, maxZ/beishu);
+    GL_Vector P2 =new GL_Vector(maxX/beishu, minY/beishu, maxZ/beishu);
+    GL_Vector P3 =new GL_Vector(maxX/beishu, minY/beishu, minZ/beishu);
+    GL_Vector P4 =new GL_Vector(minX/beishu, minY/beishu, minZ/beishu);
 
-    GL_Vector P5 =new GL_Vector(minX/10, maxY/10, maxZ/10);
-    GL_Vector P6 =new GL_Vector(maxX/10, maxY/10, maxZ/10);
-    GL_Vector P7 =new GL_Vector(maxX/10, maxY/10, minZ/10);
-    GL_Vector P8 =new GL_Vector(minX/10, maxY/10, minZ/10);
+    GL_Vector P5 =new GL_Vector(minX/beishu, maxY/beishu, maxZ/beishu);
+    GL_Vector P6 =new GL_Vector(maxX/beishu, maxY/beishu, maxZ/beishu);
+    GL_Vector P7 =new GL_Vector(maxX/beishu, maxY/beishu, minZ/beishu);
+    GL_Vector P8 =new GL_Vector(minX/beishu, maxY/beishu, minZ/beishu);
 
 
     public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix) {

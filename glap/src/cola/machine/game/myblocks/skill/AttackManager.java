@@ -25,6 +25,7 @@ public class AttackManager {
     }
     private LivingThingManager livingThingManager;
     public static List<Ball> list =new ArrayList<>();
+    public static List<Ball> diedList =new ArrayList<>();
     Vector4f color =new Vector4f(1,0,0,1);
     public static Queue<TimeString> texts= new LinkedList<TimeString>();
     public static void add(Ball ball){
@@ -36,24 +37,36 @@ public class AttackManager {
     GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     public  void update(){
         ShaderManager.anotherShaderConfig.getVao().getVertices().rewind();
+
+        for(int i=diedList.size()-1;i>=0;i--) {
+            Ball ball = diedList.get(i);
+
+        }
         for(int i=list.size()-1;i>=0;i--){
             Ball ball = list.get(i);
             GL_Vector vector = ball.position;
             for(int j=livingThingManager.livingThings.size()-1;j>=0;j--){
                 LivingThing livingThing = livingThingManager.livingThings.get(j);
                 //LogUtil.println(LivingThingManager.livingThings.get(j).position.length(vector)+"");
-                if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<0.5){
-
-                    ball.died=true;
+                if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<1){
+                    livingThingManager.livingThings.get(j).beAttack(10);
+                    ball.readyDied=true;
                     //stexts.offer(new TimeString(5+""));
                     //Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
                     //texts.offer(new TimeString(5+"",xy.x*Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
                     //livingThingManager.livingThings.get(j).beAttack(5);
                 }
             }
+           /** for(int j=0;j<livingThingManager.livingThings.size();j++){
+                if(livingThingManager.livingThings.get(j).getPosition().sub(ball.getPosition()).length()<1){
+                    ball.died=true;
+                    livingThingManager.livingThings.get(j).beAttack(10);
+                }
+            }**/
             ball.update(ShaderManager.anotherShaderConfig);
-            if(ball.died){
-                list.remove(i);
+            if(ball.readyDied){
+                ;
+                diedList.add(list.remove(i));
             }
         }
         ShaderManager.uifloatShaderConfig.getVao().getVertices().rewind();

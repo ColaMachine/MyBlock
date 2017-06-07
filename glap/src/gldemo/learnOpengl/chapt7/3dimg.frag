@@ -23,9 +23,8 @@ void main()
 
     vec4 oricolor ;
     vec2 TexCoordReal=vec2(TexCoord.x,TexCoord.y);
-    if(ourTextureIndex==-1){
-         oricolor = vec4(TexCoord,1);
-
+       if(ourTextureIndex<0){
+            oricolor = vec4(TexCoord,ourTextureIndex*(-1));
     }else if(ourTextureIndex==0){
             oricolor = texture(ourTexture0, TexCoordReal);
 

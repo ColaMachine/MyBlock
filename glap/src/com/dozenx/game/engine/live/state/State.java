@@ -158,9 +158,13 @@ public class State {
                 //getExecutor().getCurrentState().dispose();
                 //livingThing.getExecutor().getModel().
             }else if(cmd.getAttackType()== AttackType.ARROW){
+                AttackManager.add(new Ball(1,new GL_Vector(livingThing.getPosition().x,livingThing.getPosition().y+1.5f,livingThing.getPosition().z),
+                        livingThing.getViewDir().getClone(), 1.1f,ItemType.arrow,livingThing
+                ));
                 this.livingThing.changeState( new ShootState(this.livingThing));
                 if(livingThing.getTarget()!=null){
                     livingThing.getTarget().beAttack(cmd.getAttackValue());
+
                     Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getTarget().getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
                     AttackManager.addText(new TimeString("箭伤"+cmd.getAttackValue(),xy.x* Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
                     Document.needUpdate=true;

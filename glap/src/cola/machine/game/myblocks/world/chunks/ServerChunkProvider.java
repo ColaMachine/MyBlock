@@ -5,6 +5,7 @@ package cola.machine.game.myblocks.world.chunks;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.math.Vector2i;
 import cola.machine.game.myblocks.math.Vector3i;
+import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -14,6 +15,7 @@ import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
+import com.dozenx.util.MathUtil;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import core.log.LogUtil;
@@ -223,6 +225,16 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 			Map.Entry<Vector2i,ChunkImpl > entry = it.next();
 			entry.getValue().save();
 		}
+	}
+
+
+	@Override
+	public cola.machine.game.myblocks.model.Block getBlockAt(int worldX, int worldY, int worldZ){
+		int chunkX = MathUtil.getBelongChunkInt(worldX);
+		int chunxZ = MathUtil.getBelongChunkInt(worldZ);
+		Chunk chunk =  nearCache.get(new Vector2i(chunkX,chunxZ));
+		//if(chunk!=null)
+		return chunk.getBlock(MathUtil.getOffesetChunk(worldX),worldY,MathUtil.getOffesetChunk(worldZ));
 	}
 
 

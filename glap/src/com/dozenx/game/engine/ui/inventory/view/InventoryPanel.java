@@ -70,6 +70,7 @@ public class InventoryPanel extends SlotPanel {
     }
     public InventoryPanel(int numSlotsX, int numSlotsY) {
         super(numSlotsX,numSlotsY);
+        this.id="bag";
         this.bagController = CoreRegistry.get(BagController.class);
         assert bagController!=null:"bagController miss in CoreRegistry";
         //Assert.checkNonNull(bagController,"bagController miss in CoreRegistry");

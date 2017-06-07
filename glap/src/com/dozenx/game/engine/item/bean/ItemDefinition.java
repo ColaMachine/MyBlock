@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.Color;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.Shape;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -450,14 +451,16 @@ public class ItemDefinition implements Cloneable{
 
         this.engine = StringUtil.isNotEmpty(engine)?engine : (StringUtil.isNotEmpty(category)?category:type);
         //this.icon = icon;
-        if(StringUtil.isNotEmpty(icon)){
-            this.itemModel.setIcon(TextureManager.getTextureInfo(icon));
+        if(GamingState.player!=null) {
+            if (StringUtil.isNotEmpty(icon)) {
+                this.itemModel.setIcon(TextureManager.getTextureInfo(icon));
 
-        }
-        if(StringUtil.isNotEmpty(shape)){
-            this.setShape(TextureManager.getShape(shape));
-        }else{
-            this.setShape(TextureManager.getShape(name));
+            }
+            if (StringUtil.isNotEmpty(shape)) {
+                this.setShape(TextureManager.getShape(shape));
+            } else {
+                this.setShape(TextureManager.getShape(name));
+            }
         }
 
     }

@@ -48,7 +48,7 @@ public class Button extends HtmlObject implements Cloneable{
             //this.setBackgroundColor(this.getPreBackgroundColor());
             //LogUtil.println(this.id+"离开了了");
             //this.innerText="离开了了";
-            document.needUpdate=true;//return true;
+            Document.needUpdate=true;//return true;
             setBackgroundImage(new Image(TextureManager.getTextureInfo("button")));
         }else if(evt.getType()==Event.Type.MOUSE_MOVED){
 
@@ -63,14 +63,14 @@ public class Button extends HtmlObject implements Cloneable{
             case MOUSE_BTNDOWN:
 
                 if(evt.getMouseButton() == mouseButton) {
-                    setBackgroundImage(new Image(TextureManager.getTextureInfo("button-down")));  document.needUpdate=true;//return true;
+                    setBackgroundImage(new Image(TextureManager.getTextureInfo("button-down")));  Document.needUpdate=true;//return true;
                     model.setPressed(true);
                     model.setArmed(true);
                 }
                 break;
             case MOUSE_BTNUP:
                 if(evt.getMouseButton() == mouseButton) {
-                    setBackgroundImage(new Image(TextureManager.getTextureInfo("button-over")));  document.needUpdate=true;//return true;
+                    setBackgroundImage(new Image(TextureManager.getTextureInfo("button-over")));  Document.needUpdate=true;//return true;
                     model.setPressed(false);
                     model.setArmed(false);
                 }

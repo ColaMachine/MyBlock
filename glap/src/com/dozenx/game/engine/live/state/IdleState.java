@@ -4,14 +4,15 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.dozenx.game.engine.command.AttackType;
-import com.dozenx.game.engine.command.DropCmd;
+import cola.machine.game.myblocks.world.generator.ChunkGenerators.Random;
+import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.ItemUtil;
 import com.dozenx.game.network.server.bean.LivingThingBean;
+import com.dozenx.util.MathUtil;
+import com.dozenx.util.RandomUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
-import com.dozenx.game.engine.command.AttackCmd;
-import com.dozenx.game.engine.command.GameCmd;
 import glmodel.GL_Vector;
 
 /**
@@ -22,8 +23,16 @@ public class IdleState extends State{
 
 
     public void update(){
-        if(!this.livingThing.isPlayer()){
+        if(!this.livingThing.isPlayer() &&!(this.livingThing instanceof Player) ){
+            int x =0;
+            int y=0;
+            int z=0;
+            x= RandomUtil.getRandom(-15,15);
+            z=  RandomUtil.getRandom(-15,15);
 
+            WalkCmd2 walkCmd = new WalkCmd2(livingThing.getPosition(),new GL_Vector(x,1,z),this.livingThing.getId());
+
+            receive(walkCmd);
         }
 
     }

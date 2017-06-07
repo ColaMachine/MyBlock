@@ -311,7 +311,11 @@ public class LivingThingBean extends Role {
                 +"血量:"+nowHP+"/"+HP+"\n"
                 +"魔法:"+nowMP+"/"+MP+"\n"
                 +"防御:"+defense+"\n"
-                +"攻击:"+pattack+"\n";
+                +"攻击:"+pattack+"\n"
+                +"位置x:"+this.getPosition().x+"y:"+this.getPosition().y+"z:"+this.getPosition().z+"\n"
+                +"方向:"+this.getViewDir().x+"y:"+this.getViewDir().y+"z:"+this.getViewDir().z+"\n";
+
+
 
     }
     public void drop() {
@@ -515,11 +519,18 @@ public class LivingThingBean extends Role {
     if(GamingState.player!=null) {
         //CoreRegistry.get(AnimationManager.class).clear(getModel().bodyComponent);
         if (animationName != null) {
-            CoreRegistry.get(AnimationManager.class).apply(getModel().getRootComponent(), animationName);
+            if(animationManager ==null){
+                animationManager = CoreRegistry.get(AnimationManager.class);
+            }
+            if(animationManager ==null){
+                return;
+            }
+            animationManager.apply(getModel().getRootComponent(), animationName);
+           // CoreRegistry.get(AnimationManager.class).apply();
         }
     }
     }
-
+    AnimationManager animationManager =null;
     public void attack(){
 
 /*

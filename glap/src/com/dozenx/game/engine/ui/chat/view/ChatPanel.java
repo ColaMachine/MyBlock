@@ -5,14 +5,20 @@ package com.dozenx.game.engine.ui.chat.view;
  */
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.EditField;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
+import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
+import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import com.dozenx.game.engine.command.ChunkResponseCmd;
 import com.dozenx.game.network.client.Client;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.SayCmd;
+import com.dozenx.util.StringUtil;
 import de.matthiasmann.twl.Event;
 
 import javax.vecmath.Vector4f;
@@ -64,6 +70,29 @@ public class ChatPanel extends HtmlObject {
 
                     //client.send("say:"+Constants.userName+":"+editField.getText());
                     //Switcher.isChat=false;
+                    String text =editField.getText();
+                    if(StringUtil.isBlank(text)){
+                        return;
+                    }
+                    text=text.trim();
+                    if(text.startsWith("/chunk")) {
+                        String[] arr = text.split(" ");
+                        if(arr.length>=4  && StringUtil.isNumeric(arr[3])) {
+                            if(arr[1].equals("reload")){
+                                if(StringUtil.isNumeric(arr[2])){
+                                    int x=Integer.valueOf(arr[2]);
+
+                                    if(StringUtil.isNumeric(arr[3])){
+                                        int z=Integer.valueOf(arr[3]);
+
+                                            //重新加载对应的方块区域
+                                        CoreRegistry.get(WorldRendererLwjgl.class).updateChunksInProximity(true);
+                                   //   CoreRegistry.get(ChunkProvider.class).createOrLoadChunk(new Vector3i(x,0,z));
+                                    }
+                                }
+                            }
+                        }
+                    }
                     client.send(new SayCmd(0,Constants.userName,editField.getText()));
                     //appendRow("color"+curColor, editField.getText());
                     editField.setText("");

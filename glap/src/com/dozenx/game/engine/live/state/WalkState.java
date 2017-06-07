@@ -110,13 +110,18 @@ public class WalkState extends State {
            return;
        }
         long nowTime = TimeUtil.getNowMills();
-        if (nowTime - lastMoveTime >200) {
+        if (nowTime - lastMoveTime >50) {
             //Player player= CoreRegistry.get(Player.class);
             //AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             //manager.apply(getModel().bodyComponent, "walkerFoward");
-            livingThing.setPosition(GL_Vector.add(from, GL_Vector.multiplyWithoutY(walkDir,
-                    0.2f* (nowTime-startTime)/200)));
+           GL_Vector newPosition =  GL_Vector.add(from, GL_Vector.multiplyWithoutY(walkDir,
+                    livingThing.speed/10* (nowTime-startTime)/1000));
+            livingThing.getPosition().x=newPosition.x;
+            livingThing.getPosition().z=newPosition.z;
+
+            //如果newposition 的位置
             if(GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),from))>distance){
+                this.livingThing.setPosition(this.to);
                 this.livingThing.changeState( new IdleState(this.livingThing));
             }
 //        LogUtil.println(position+"");

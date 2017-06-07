@@ -643,7 +643,7 @@ public class MouseControlCenter {
 
                 }
                }
-
+            //TODO 如果使用了武器 比如射箭 就不用再消除方块了
             GL_Vector to = GL_Vector.add(camera.Position,
                     GL_Vector.multiply(camera.getViewDir(), 100));
 
@@ -654,13 +654,14 @@ public class MouseControlCenter {
             //this.engine.lineStart = camera.Position;
             //this.engine.mouseEnd = to;
             //获取客户端的方块管理器
+            //TODO 消除方块 的距离太远了 改成了4
             ChunkProvider localChunkProvider = CoreRegistry
                     .get(ChunkProvider.class);
             boolean delete = true;
             //获取当前的block item
-
+            //
             BulletResultDTO arr  = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
-                    20, "soil", delete);
+                    4, "soil", delete);
 
 
             if(arr!=null){

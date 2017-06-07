@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.world.generator.ChunkGenerators.GrayTerrainGen
 import cola.machine.game.myblocks.world.generator.WorldGenerators.GrayWorldGenerator;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.ui.ButtonBar.view.ButtonBarView;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
@@ -152,17 +153,17 @@ public class GamingState implements GameState {
             document.body.appendChild(new InventoryPanel(4,5));
             document.body.appendChild(new PersonPanel(1,5));
             document.body.appendChild(new ToolBarView(10,1));
-
+            document.body.appendChild(new ButtonBarView());
             document.body.appendChild(new ChatPanel());
             Div crossDiv = new Div();
             crossDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("cross")));
-            crossDiv.setWidth(70);
-            crossDiv.setHeight(70);
+            crossDiv.setWidth(20);
+            crossDiv.setHeight(20);
 
             crossDiv.setPosition(HtmlObject.POSITION_ABSOLUTE);
 
-            crossDiv.setLeft(Constants.WINDOW_WIDTH/2-35);
-            crossDiv.setTop(Constants.WINDOW_HEIGHT / 2 - 35);
+            crossDiv.setLeft(Constants.WINDOW_WIDTH/2-10);
+            crossDiv.setTop(Constants.WINDOW_HEIGHT / 2 - 10);
            // crossDiv.setBorderColor(new Vector4f(1,1,1,1));
            // crossDiv.setBorderWidth(2);
             document.body.appendChild(crossDiv);

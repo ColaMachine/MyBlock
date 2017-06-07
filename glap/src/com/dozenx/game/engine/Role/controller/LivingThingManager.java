@@ -3,6 +3,7 @@ package com.dozenx.game.engine.Role.controller;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.Time;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
@@ -48,9 +49,10 @@ public class LivingThingManager {
     //public LivingThing target ;
     public  LivingThing player;
     Component bendComponent;
+    Wolf wolf =null;
     public LivingThingManager(){
 
-        Wolf wolf =new Wolf(999);
+         wolf =new Wolf(999);
         wolf.position=new GL_Vector(-1,3,-1);
         add(wolf);
         /*   component =new Component(2,16,2);
@@ -62,7 +64,21 @@ public class LivingThingManager {
         //behaviorManager.run();
         // livingThings.add(CoreRegistry.get(Human.class));
 
+        /*new Thread(){
+            @Override
+            public void run() {
+                while (true) {
+                    WalkCmd2 walkCmd = new WalkCmd2(new GL_Vector(0, 1, 0), new GL_Vector(0, 1, -10), wolf.getId());
 
+                    wolf.receive(walkCmd);
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();*/
     }
     public void setPlayer(LivingThing livingThing){
         this.player=livingThing;
@@ -87,6 +103,9 @@ public class LivingThingManager {
         //livingThing render
         //TODO targetId 已经设置好了 但是target还是为空的
         ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
+
+
+
         //livingthing update
         for (LivingThing livingThing : livingThings) {
            // this.getLivingThingById();

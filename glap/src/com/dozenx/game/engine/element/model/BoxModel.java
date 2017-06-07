@@ -105,6 +105,22 @@ public class BoxModel implements Model {
     public static GL_Vector[] getPoint(int x,int y,int z){
 
 
+        GL_Vector p1= new GL_Vector(x,y,z+1);//左前下
+        GL_Vector p2= new GL_Vector(x+1,y,z+1);//右前下
+        GL_Vector p3= new GL_Vector(x+1,y,z);
+        GL_Vector p4= new GL_Vector(x,y,z);
+
+        GL_Vector p5= new GL_Vector(x,y+1,z+1);
+        GL_Vector p6= new GL_Vector(x+1,y+1,z+1);
+        GL_Vector p7= new GL_Vector(x+1,y+1,z);
+        GL_Vector p8= new GL_Vector(x,y+1,z);
+
+        return new GL_Vector[]{p1,p2,p3,p4,p5,p6,p7,p8};
+    }
+
+    public static GL_Vector[] getPoint(float x,float y,float z){
+
+
         GL_Vector p1= new GL_Vector(x,y,z+1);
         GL_Vector p2= new GL_Vector(x+1,y,z+1);
         GL_Vector p3= new GL_Vector(x+1,y,z);
@@ -117,6 +133,27 @@ public class BoxModel implements Model {
 
         return new GL_Vector[]{p1,p2,p3,p4,p5,p6,p7,p8};
     }
+
+
+
+
+
+    public static GL_Vector[] getSmaillPoint(float x,float y,float z,float size){
+
+
+        GL_Vector p1= new GL_Vector(x-size,y-size,z+size);
+        GL_Vector p2= new GL_Vector(x+size,y-size,z+size);
+        GL_Vector p3= new GL_Vector(x+size,y-size,z-size);
+        GL_Vector p4= new GL_Vector(x-size,y-size,z-size);
+
+        GL_Vector p5= new GL_Vector(x-size,y+size,z+size);
+        GL_Vector p6= new GL_Vector(x+size,y+size,z+size);
+        GL_Vector p7= new GL_Vector(x+size,y+size,z-size);
+        GL_Vector p8= new GL_Vector(x-size,y+size,z-size);
+
+        return new GL_Vector[]{p1,p2,p3,p4,p5,p6,p7,p8};
+    }
+
 
     /*public void setEightFace(String name,TextureManager textureManager){
 

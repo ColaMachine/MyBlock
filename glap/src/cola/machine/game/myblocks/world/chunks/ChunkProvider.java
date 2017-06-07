@@ -109,9 +109,11 @@ public interface ChunkProvider {
      */
     void purgeChunks();
 
-	void createOrLoadChunk(int x, int i, int y);
+	void createOrLoadChunk(int x,int  y, int z);
 	 public void createOrLoadChunk(Vector3i chunkPos);
 
 	void removeChunk(Chunk c);
     void save();
+
+    public cola.machine.game.myblocks.model.Block getBlockAt(int worldX, int worldY, int worldZ);
 }

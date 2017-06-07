@@ -2,6 +2,7 @@ package com.dozenx.game.opengl.util;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import com.dozenx.game.engine.element.model.BoxModel;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -16,6 +17,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.Util;
 
+import javax.swing.*;
 import javax.vecmath.Vector4f;
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -2112,6 +2114,40 @@ try {
             veticesBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p4
             veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p1
             veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p3
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector colo,float size,float alpha){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+
+        try {
+            FloatBuffer veticesBuffer = vao.getVertices();
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }
+            GL_Vector[] dirAry = BoxModel.dirAry;
+            int[][] faceAry = BoxModel.facesAry;
+            GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,size);
+            for(int i=0;i<6;i++){
+                int[] faceAry2 = faceAry[i];
+
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(0).put(0).put(0).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(0).put(0).put(0).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(0).put(0).put(0).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(0).put(0).put(0).put(-alpha);//p1
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(0).put(0).put(0).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(0).put(0).put(0).put(-alpha);//p1
+
+            }
 
         }catch(Exception e){
             e.printStackTrace();

@@ -117,7 +117,7 @@ public class HtmlObject implements Cloneable  {
     protected  int height;
     /**disabled**/
     private boolean disabled = false;
-    volatile Document document;
+    //volatile Document document;
     private PropertyChangeSupport propertyChangeSupport;
 
     private short borderLeft;
@@ -1329,7 +1329,7 @@ public class HtmlObject implements Cloneable  {
      * @return the GUI root or null if the root is not a GUI instance.
      */
     public final Document getDocument() {
-        return document;
+        return guiInstance;
     }
 
     protected void borderChanged() {

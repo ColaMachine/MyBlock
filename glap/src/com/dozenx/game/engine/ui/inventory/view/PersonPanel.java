@@ -68,6 +68,7 @@ public class PersonPanel extends SlotPanel {
     public PersonPanel(int numSlotsX, int numSlotsY) {
 
         super( numSlotsX,  numSlotsY);
+        this.id="personalPanel";
         CoreRegistry.put(PersonPanel.class,this);
         this.setBorderColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));
         this.setBackgroundColor(new Vector4f(0.5f,0.5f,0.5f,0.5f));

@@ -2,32 +2,26 @@
 
 package cola.machine.game.myblocks.world.chunks;
 
-import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector2i;
 import cola.machine.game.myblocks.math.Vector3i;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.persistence.ChunkStore;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
-import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
-import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
 
 import com.google.common.collect.Maps;
@@ -54,6 +48,7 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
         blockManager = CoreRegistry.get(BlockManager.class);
         this.storageManager = storageManager;
         this.generator = generator;
+        CoreRegistry.put(ChunkProvider.class,this);
     }
 
     public LocalChunkProvider() {
@@ -247,5 +242,17 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
 
     }
 
+@Override
+    public cola.machine.game.myblocks.model.Block getBlockAt(int worldX, int worldY, int worldZ){
+        int chunkX = MathUtil.getBelongChunkInt(worldX);
+        int chunxZ = MathUtil.getBelongChunkInt(worldZ);
+        Chunk chunk =  nearCache.get(new Vector2i(chunkX,chunxZ));
+        if(chunk!=null) {
+            return chunk.getBlock(MathUtil.getOffesetChunk(worldX), worldY, MathUtil.getOffesetChunk(worldZ));
+        }
+    else{return null;
+
+        }
+    }
 
 }

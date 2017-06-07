@@ -180,6 +180,7 @@ Client client;
 				}
 				chunk.setBlock(blockX,blockY,blockZ,blockValue);
 			}
+
 			for (Vector2i vector2i : map.keySet()) {
 				Chunk chunNow =map.get(vector2i);
 				chunNow.build();
@@ -263,8 +264,8 @@ Client client;
 					chunkPosZ);
 			if (chunksInProximity.size() == 0 || force) {
 				chunksInProximity.clear();
-				for (int x = -(viewingDistance / 2); x < viewingDistance / 2; x++) {
-					for (int z = -(viewingDistance / 2); z < viewingDistance / 2; z++) {
+				for (int x = -(viewingDistance / 2); x <= viewingDistance / 2; x++) {
+					for (int z = -(viewingDistance / 2); z <= viewingDistance / 2; z++) {
 						Chunk c = chunkProvider.getChunk(newChunkPosX + x,
 								0, newChunkPosZ + z);
 						if (c != null) {

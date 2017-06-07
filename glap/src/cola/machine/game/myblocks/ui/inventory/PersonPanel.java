@@ -47,6 +47,7 @@ public class PersonPanel extends SlotPanel {
 
 
     public PersonPanel(int numSlotsX, int numSlotsY) {
+      
         super( numSlotsX,  numSlotsY);
 
         slot[0] = new ItemSlot(Constants.SLOT_TYPE_HEAD);

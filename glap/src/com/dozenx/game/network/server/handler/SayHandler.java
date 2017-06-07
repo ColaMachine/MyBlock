@@ -2,6 +2,7 @@ package com.dozenx.game.network.server.handler;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.Random;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
@@ -32,7 +33,24 @@ public class SayHandler extends GameServerHandler {
         LogUtil.println("server接收到说话了 "+((SayCmd)request.getCmd()).getMsg());
 
         //更新其他附近人的此人的装备属性
+       /* if(cmd.getMsg().startsWith("/chunk")) {
+            String[] arr = cmd.getMsg().split(" ");
+            if(arr.length>=4  && StringUtil.isNumeric(arr[3])) {
+                if(arr[0].equals("reload")){
+                    if(StringUtil.isNumeric(arr[1])){
+                        int x=Integer.valueOf(arr[1]);
 
+                        if(StringUtil.isNumeric(arr[2])){
+                            int z=Integer.valueOf(arr[2]);
+
+                            Chunk chunk =  serverContext.chunkProvider.getChunk(x,0,z);
+                            ChunkResponseCmd chunkCmd =new ChunkResponseCmd(chunk);
+                            broadCast(chunkCmd);
+                        }
+                    }
+                }
+            }
+        }*/
         if(cmd.getMsg().startsWith("/give")){
             String[] arr = cmd.getMsg().split(" ");
             if(arr.length>=4  && StringUtil.isNumeric(arr[3])) {
