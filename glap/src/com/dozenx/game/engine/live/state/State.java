@@ -159,7 +159,7 @@ public class State {
                 //livingThing.getExecutor().getModel().
             }else if(cmd.getAttackType()== AttackType.ARROW){
                 AttackManager.add(new Ball(1,new GL_Vector(livingThing.getPosition().x,livingThing.getPosition().y+1.5f,livingThing.getPosition().z),
-                        livingThing.getViewDir().getClone(), 1.1f,ItemType.arrow,livingThing
+                        livingThing.getViewDir().getClone(), 5.1f,ItemType.arrow,livingThing
                 ));
                 this.livingThing.changeState( new ShootState(this.livingThing));
                 if(livingThing.getTarget()!=null){

@@ -52,9 +52,9 @@ public class LivingThingManager {
     Wolf wolf =null;
     public LivingThingManager(){
 
-         wolf =new Wolf(999);
+       /*  wolf =new Wolf(999);
         wolf.position=new GL_Vector(-1,3,-1);
-        add(wolf);
+        add(wolf);*/
         /*   component =new Component(2,16,2);
         component.bend(180,50);
         component.setShape(TextureManager.getShape("human_body"));*/
@@ -373,8 +373,13 @@ public class LivingThingManager {
             LivingThing livingThing = this.getLivingThingById(id);
             boolean exsits =true;
             if(livingThing==null ) {
+                if(info.species==1){
+                    livingThing = new Wolf(info.getId());
 
-                livingThing = new LivingThing(info.getId());
+                }else{
+                    livingThing = new Player(info.getId());
+                }
+                //
                 exsits =false;
 
             }

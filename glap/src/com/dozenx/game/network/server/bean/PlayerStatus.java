@@ -9,6 +9,15 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
     protected float x;
     protected float y;
     protected float z;
+    public int species;
+
+    public int getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(int species) {
+        this.species = species;
+    }
 
     protected String name;
     protected String pwd;

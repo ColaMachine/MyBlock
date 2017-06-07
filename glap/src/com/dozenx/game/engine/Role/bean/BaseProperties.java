@@ -15,7 +15,7 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
             info.setId(getId());
 
         info.setName(getName());
-
+        info.species = this.species;
         info. setPwd(getPwd());
         info. setBodyAngle(getBodyAngle());
         info. setHeadAngle(getHeadAngle());
@@ -34,6 +34,7 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
 
     public void setInfo(PlayerStatus info ){
             this.setId(info.getId());
+        this.species = info.species;
         this.setName(info.getName());
         this.setPwd(info.getPwd());
         //setPwd(status.getPwd());
@@ -62,7 +63,7 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     public GL_Vector walkDir =new GL_Vector() ;
     public  GL_Vector viewDir =new GL_Vector() ;
 
-
+    public int species=0;
     protected String name;
     protected String pwd;
     protected float bodyAngle;

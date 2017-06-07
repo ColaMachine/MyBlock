@@ -8,6 +8,7 @@ import cola.machine.game.myblocks.world.generator.ChunkGenerators.Random;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.ItemUtil;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.util.MathUtil;
 import com.dozenx.util.RandomUtil;
@@ -32,7 +33,7 @@ public class IdleState extends State{
 
             WalkCmd2 walkCmd = new WalkCmd2(livingThing.getPosition(),new GL_Vector(x,1,z),this.livingThing.getId());
 
-            receive(walkCmd);
+            CoreRegistry.get(Client.class).send(walkCmd);
         }
 
     }

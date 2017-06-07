@@ -73,7 +73,8 @@ public class PlayerSynCmd extends   BaseGameCmd{
                 .put(playerStatus.MP)
                 .put(playerStatus.nowHP)
                 .put(playerStatus.nowMP)
-            .put(playerStatus.isPlayer()).put(playerStatus.isPlayer()).array();
+            .put(playerStatus.isPlayer())
+                .put(playerStatus.species).array();
 
 
     }
@@ -103,7 +104,7 @@ public class PlayerSynCmd extends   BaseGameCmd{
         playerStatus.nowHP= byteBufferWrap.getInt();
         playerStatus.nowMP= byteBufferWrap.getInt();
         playerStatus.setIsplayer(byteBufferWrap.getBoolean());
-
+        playerStatus.setSpecies(byteBufferWrap.getInt());
          // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
 
     }
