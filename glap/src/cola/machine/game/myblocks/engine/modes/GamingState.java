@@ -25,6 +25,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.html.Document;
 
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.SynchronTask;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.persistence.impl.StorageManagerInternal;
@@ -791,7 +792,7 @@ public ShaderManager shaderManager;
         //dcc.blockRepository = blockRepository;
         bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
-        mouseControlCenter = new MouseControlCenter(player, camera, this);
+        mouseControlCenter = new MouseControlCenter(player, camera, this,CoreRegistry.get(Client.class));
         CoreRegistry.put(MouseControlCenter.class, mouseControlCenter);
         mouseControlCenter.bulletPhysics = bulletPhysics;
     }

@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -24,6 +25,7 @@ public class IdleState extends State{
 
 
     public void update(){
+        if(GamingState.player!=null) //只能客户端使用
         if(!this.livingThing.isPlayer() &&!(this.livingThing instanceof Player) ){
             int x =0;
             int y=0;

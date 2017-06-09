@@ -13,6 +13,7 @@ import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
@@ -243,6 +244,7 @@ public class Player extends LivingThing {
             manager.apply(getModel().rootComponent, "walkerFoward");
             this.move(GL_Vector.add(position, GL_Vector.multiplyWithoutY(walkDir,
                     Distance)));
+
 //        LogUtil.println(position+"");
             lastMoveTime = Sys.getTime();
             // System.out.printf("position: %f %f %f viewdir: %f %f %f

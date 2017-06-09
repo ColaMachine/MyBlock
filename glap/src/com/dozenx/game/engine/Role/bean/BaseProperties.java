@@ -37,8 +37,16 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
         this.species = info.species;
         this.setName(info.getName());
         this.setPwd(info.getPwd());
+        //this.walkDir =
+
         //setPwd(status.getPwd());
         this. setBodyAngle(info.getBodyAngle());
+
+
+        walkDir.x = (float) Math.cos(bodyAngle);
+        walkDir.z = (float) Math.sin(bodyAngle);
+        walkDir.y=0;
+
         //this. setHeadAngle(info.getHeadAngle());
         //this. setHeadAngle2(info.getHeadAngle2());
         this.setPosition(info.getX(),info.getY(),info.getZ());

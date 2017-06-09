@@ -284,7 +284,7 @@ public class MyBlockEngine extends GLApp {
         //dcc.blockRepository = blockRepository;
         bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
-        mouseControlCenter = new MouseControlCenter(player, camera1);
+       // mouseControlCenter = new MouseControlCenter(player, camera1);
         CoreRegistry.put(MouseControlCenter.class,mouseControlCenter);
         mouseControlCenter.bulletPhysics = bulletPhysics;
     }

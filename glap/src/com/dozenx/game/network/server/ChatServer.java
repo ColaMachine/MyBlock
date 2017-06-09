@@ -43,6 +43,7 @@ public class ChatServer {
         serverContext.registerService(UserService.class,new UserService(serverContext));
         //注册所有handler
         serverContext. getAllHandlerMap().put(CmdType.LOGIN,new LoginHandler(serverContext));
+        serverContext. registerHandler(CmdType.WALK,new WalkHandler(serverContext));
         serverContext. registerHandler(CmdType.EQUIP,new EquipHandler(serverContext));
         serverContext. registerHandler(CmdType.SAY,new SayHandler(serverContext));
         serverContext. registerHandler(CmdType.GET,new GetHandler(serverContext));

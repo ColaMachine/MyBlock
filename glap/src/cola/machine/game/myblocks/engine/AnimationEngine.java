@@ -218,7 +218,7 @@ public class AnimationEngine extends MyBlockEngine {
 
 		/*human.startWalk();*/
 
-		mouseControlCenter = new MouseControlCenter(player, camera1);
+		//mouseControlCenter = new MouseControlCenter(player, camera1);
 		mouseControlCenter.bulletPhysics = bulletPhysics;
 
 

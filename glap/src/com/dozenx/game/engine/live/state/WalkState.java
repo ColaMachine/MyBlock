@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.ui.html.Document;
@@ -43,14 +44,16 @@ public class WalkState extends State {
 
         this.distance = GL_Vector.length(walkDir);
         this.walkDir.normalize();
-        livingThing.walkDir =walkDir;
-        livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
+        if(GamingState.player != livingThing ) {
+            livingThing.walkDir = walkDir;
+            livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
+        }
         livingThing.changeAnimationState("walkerFoward");
 
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的
     public void receive(GameCmd gameCmd){//11
-        if(gameCmd .getCmdType() == CmdType.WALK){
+       /* if(gameCmd .getCmdType() == CmdType.WALK){
 
             if(from== null || to == null){
                 LogUtil.err("from and to can't be null ");
@@ -63,17 +66,22 @@ public class WalkState extends State {
 
             this.distance = GL_Vector.length(walkDir);
             this.walkDir.normalize();
-            livingThing.walkDir =walkDir;
-            livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
+
+            if(GamingState.player != livingThing ){
+                livingThing.walkDir =walkDir;
+                livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
+            }
+
+
             livingThing.changeAnimationState("walkerFoward");
 
-            /*if(gameCmd.val()== WalkCmd.FORWARD ){
+            *//*if(gameCmd.val()== WalkCmd.FORWARD ){
 
-            }*/
+            }*//*
             //gameCmd.delete();
 
 
-        }else if(gameCmd .getCmdType() == CmdType.DIED) {
+        }else*/ if(gameCmd .getCmdType() == CmdType.DIED) {
             this.livingThing.changeState( new DiedState(this.livingThing));
 
         }else if(gameCmd .getCmdType() == CmdType.ATTACK) {

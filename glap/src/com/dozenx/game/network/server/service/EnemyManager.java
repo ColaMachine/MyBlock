@@ -36,7 +36,7 @@ public class EnemyManager implements  Runnable {
                 //this.moveOrAttack();
                 //this.testCmd();
                 try {
-                    Thread.sleep(500);//1秒同步一次
+                    Thread.sleep(1000);//1秒同步一次
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

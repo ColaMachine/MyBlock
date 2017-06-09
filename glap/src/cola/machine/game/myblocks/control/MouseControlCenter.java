@@ -21,6 +21,8 @@ import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.live.state.IdleState;
+import com.dozenx.game.engine.live.state.WalkState;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
@@ -56,19 +58,21 @@ public class MouseControlCenter {
     public BulletPhysics bulletPhysics; //物理引擎
     int DRAG_DIST=0;
     public GameState gameState;
-
+    final Client client ;
     boolean mouseRightPressed=false;//用来判断是否按着
     boolean mouseLeftPressed=false;
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
     Point mousepoint;//用于镜头对准
-    public MouseControlCenter(Player player, GLCamera camera,GameState gameState) {
-        this(player,  camera) ;
+    public MouseControlCenter(Player player, GLCamera camera,GameState gameState,Client client) {
+        this(player,  camera,client) ;
+
         this.gameState=gameState;
     }
 
-    public MouseControlCenter(Player player, GLCamera camera) {
+    public MouseControlCenter(Player player, GLCamera camera,Client client) {
+        this.client = client;
         //this.engine = engine;
         this.player = player;
         this.camera = camera;
@@ -131,16 +135,34 @@ public class MouseControlCenter {
 
             player.bodyRotate( -Constants.camSpeedR * seconds,0);
         }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            player.StrafeRight(-Constants.camSpeedXZ * seconds);
+           // player.StrafeRight(-Constants.camSpeedXZ * seconds);
+            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
+                player.lastMoveTime = TimeUtil.getNowMills();
+
+                player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
+                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(-0.5f)),player.getId()));
+            }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
-            player.StrafeRight(Constants.camSpeedXZ * seconds);
+           // player.StrafeRight(Constants.camSpeedXZ * seconds);
+
+            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
+                player.lastMoveTime = TimeUtil.getNowMills();
+
+                player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
+                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(0.5f)),player.getId()));
+            }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-            player.MoveForward(-Constants.camSpeedXZ * seconds);
-        }
+            //player.MoveForward(-Constants.camSpeedXZ * seconds);
+            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
+                player.lastMoveTime = TimeUtil.getNowMills();
+                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.getWalkDir().normalize().mult(-0.5f)),player.getId()));
+
+            }
+         }
         if (Keyboard.isKeyDown(Keyboard.KEY_G)) { // tilt down
             //human.MoveForward(-human.camSpeedXZ * seconds);
 
@@ -148,7 +170,15 @@ public class MouseControlCenter {
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
-            player.MoveForward(Constants.camSpeedXZ * seconds);
+            //player.MoveForward(Constants.camSpeedXZ * seconds);
+
+            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
+                player.lastMoveTime = TimeUtil.getNowMills();
+
+                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.walkDir.normalize().mult(0.5f)),player.getId()));
+            }
+
+
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             player.position.y = player.position.y - 3 * seconds;
             player.move(player.position);
