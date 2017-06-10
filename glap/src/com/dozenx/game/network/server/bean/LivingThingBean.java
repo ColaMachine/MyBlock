@@ -1,5 +1,6 @@
 package com.dozenx.game.network.server.bean;
 
+import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import com.dozenx.game.engine.element.bean.Component;
@@ -11,6 +12,7 @@ import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.engine.live.state.State;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
@@ -450,6 +452,21 @@ public class LivingThingBean extends Role {
 
     }
 
+    /**
+     * 所有生物公用的移动方式
+     * @param x
+     * @param y
+     * @param z
+     */
+    public boolean   checkDest(){
+
+       return CoreRegistry.get(CrashCheck.class).check(this.position) ;
+    }
+    public void move(float x, float y, float z) {
+        this.oldPosition.copy(this.position);
+        this.position.set(x, y, z);
+        this.updateTime =  TimeUtil.getNowMills();
+    }
     public void update(){
         this.dropControl();
        // this.getModel().build();

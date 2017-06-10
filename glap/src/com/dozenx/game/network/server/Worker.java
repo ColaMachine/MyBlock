@@ -5,6 +5,7 @@ import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.util.ByteUtil;
 import com.dozenx.util.SocketUtil;
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
@@ -184,7 +185,7 @@ public class Worker extends Thread {
 
                 }*/
                 try {
-                    lastReceiveTime = System.currentTimeMillis();
+                    lastReceiveTime = TimeUtil.getNowMills();//System.currentTimeMillis();
                     CmdType.printReceive(newBytes);
                     //LogUtil.println("server 接收到数据类型:"+CmdType.values()[(ByteUtil.getInt(newBytes))] +"长度:"+length);
                     GameCmd cmd = CmdUtil.getCmd(newBytes);

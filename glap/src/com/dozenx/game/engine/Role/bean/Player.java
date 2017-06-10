@@ -26,6 +26,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 public class Player extends LivingThing {
     public Player(int id) {
         super(id);
+        this.speed=30;
         this.getExecutor().setModel( new PlayerModel(this));
     }
 

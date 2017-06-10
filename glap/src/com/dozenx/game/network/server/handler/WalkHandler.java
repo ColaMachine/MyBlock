@@ -22,8 +22,10 @@ public class WalkHandler extends GameServerHandler {
         LogUtil.println("server接收到走路变化了");
         WalkCmd2 cmd =(WalkCmd2)request.getCmd();
         LivingThingBean livingThingBean = userService.getOnlinePlayerById(cmd.getUserId());
+        if(livingThingBean!=null){
+            livingThingBean.receive(cmd);
+        }
 
-        livingThingBean.receive(cmd);
         //更新其他附近人的此人的装备属性
         broadCast(cmd);
        return null;

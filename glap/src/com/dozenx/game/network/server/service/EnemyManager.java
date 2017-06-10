@@ -67,6 +67,27 @@ public class EnemyManager implements  Runnable {
 
             }
         }
+        for(LivingThingBean enemy : userService.getAllOnlinePlayer()) {
+            if (!enemy.isDied() ) {//如果自身是有效单位
+
+                if(enemy.getTargetId() > 0){//并且是有目标
+                    if(checkEnemyTarget(enemy))//释放无用target 补全缺少target
+                    {
+                        moveOrAttack(enemy);
+                    }
+                    //追击或者攻击
+
+                }else{//暂时没有目标
+                    if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
+                        //找寻目标
+
+                        //findTarget(enemy);
+                    }
+                }
+                enemy.getExecutor().getCurrentState().update();
+
+            }
+        }
     }
 
     public boolean checkEnemyTarget(LivingThingBean livingThingBean){

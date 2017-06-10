@@ -32,10 +32,10 @@ public class IdleState extends State{
             int z=0;
             x= RandomUtil.getRandom(-15,15);
             z=  RandomUtil.getRandom(-15,15);
+            //这里不加时间间隔会导致多次重复发送
+          /*  WalkCmd2 walkCmd = new WalkCmd2(livingThing.getPosition(),new GL_Vector(x,1,z),this.livingThing.getId());
 
-            WalkCmd2 walkCmd = new WalkCmd2(livingThing.getPosition(),new GL_Vector(x,1,z),this.livingThing.getId());
-
-            CoreRegistry.get(Client.class).send(walkCmd);
+            CoreRegistry.get(Client.class).send(walkCmd);*/
         }
 
     }

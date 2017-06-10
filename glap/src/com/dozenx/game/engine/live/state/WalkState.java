@@ -124,12 +124,15 @@ public class WalkState extends State {
             //manager.apply(getModel().bodyComponent, "walkerFoward");
            GL_Vector newPosition =  GL_Vector.add(from, GL_Vector.multiplyWithoutY(walkDir,
                     livingThing.speed/10* (nowTime-startTime)/1000));
-            livingThing.getPosition().x=newPosition.x;
-            livingThing.getPosition().z=newPosition.z;
-
+//            livingThing.getPosition().x=newPosition.x;
+//            livingThing.getPosition().z=newPosition.z;
+            this.livingThing.move(newPosition.x,livingThing.getPosition().y,newPosition.z);
             //如果newposition 的位置
             if(GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),from))>distance){
-                this.livingThing.setPosition(this.to);
+               // this.livingThing.setPosition(this.to);
+
+                this.livingThing.move(this.to.x,livingThing.getPosition().y,this.to.z);
+
                 this.livingThing.changeState( new IdleState(this.livingThing));
             }
 //        LogUtil.println(position+"");

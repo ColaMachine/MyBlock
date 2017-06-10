@@ -169,7 +169,7 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
         this.position.z = z;
     }
 
-    public void setPosition(GL_Vector position) {
+    private void setPosition(GL_Vector position) {
 
         setPosition(position.x,position.y,position.z);
         //
