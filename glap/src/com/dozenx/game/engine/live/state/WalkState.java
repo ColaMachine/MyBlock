@@ -9,14 +9,41 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.util.TimeUtil;
+import com.google.common.collect.LinkedListMultimap;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 import org.lwjgl.Sys;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Created by luying on 17/2/7.
  */
 public class WalkState extends State {
+
+
+    public WalkState(LivingThingBean livingThing, int dir ){
+
+        super(livingThing);
+        if(from== null || to == null){
+            LogUtil.err("from and to can't be null ");
+        }
+        computeDest(dir);
+
+
+    }
+
+    public WalkState(LivingThingBean livingThing, GL_Vector from ,GL_Vector to ){
+
+        super(livingThing);
+        if(from== null || to == null){
+            LogUtil.err("from and to can't be null ");
+        }
+
+        computeFromTo(from,to);
+
+    }
     //private LivingThing livingThing;
     float speedForward;
     float speedLeft;
@@ -30,15 +57,9 @@ public class WalkState extends State {
     long startTime;
     GL_Vector walkDir;
     float distance ;
-    public WalkState(LivingThingBean livingThing, GL_Vector from ,GL_Vector to ){
-
-        super(livingThing);
-        if(from== null || to == null){
-            LogUtil.err("from and to can't be null ");
-        }
+    public void computeFromTo(GL_Vector from,GL_Vector to){
         this.from = from.getClone();
         this.to =to.getClone();
-
         this.startTime = TimeUtil.getNowMills();
         walkDir = GL_Vector.sub(to,from);
 
@@ -49,39 +70,37 @@ public class WalkState extends State {
             livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
         }
         livingThing.changeAnimationState("walkerFoward");
+    }
+
+    public void computeDest(int dir){
+       walkDir =  livingThing.getWalkDir().normalize().getClone();
+        livingThing.RightVector = GL_Vector.crossProduct(livingThing.walkDir, livingThing.upVector);
+        GL_Vector add= null;
+        if(dir == WalkCmd.FORWARD){
+            add=livingThing.getWalkDir().normalize().getClone().mult(livingThing.speed);
+        }else if(dir == WalkCmd.RIGHT){
+            add=livingThing.RightVector.normalize().getClone().mult(livingThing.speed);
+        }else if(dir == WalkCmd.LEFT){
+            add=livingThing.RightVector.normalize().getClone().mult(-livingThing.speed);
+        }else if(dir == WalkCmd.BACK){
+            add=livingThing.getWalkDir().normalize().getClone().mult(-livingThing.speed);
+        }
+
+        this.to =livingThing.getPosition().getClone().add(add);
+
+        computeFromTo(livingThing.getPosition(),to);
+
 
     }
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的
+    Queue<GameCmd> queue = new LinkedList<>();
+
     public void receive(GameCmd gameCmd){//11
-       /* if(gameCmd .getCmdType() == CmdType.WALK){
+       if(gameCmd .getCmdType() == CmdType.WALK){
+           queue.clear();
+            this.queue.offer(gameCmd);
 
-            if(from== null || to == null){
-                LogUtil.err("from and to can't be null ");
-            }
-            this.from = from.getClone();
-            this.to =to.getClone();
-
-            this.startTime = TimeUtil.getNowMills();
-            walkDir = GL_Vector.sub(to,from);
-
-            this.distance = GL_Vector.length(walkDir);
-            this.walkDir.normalize();
-
-            if(GamingState.player != livingThing ){
-                livingThing.walkDir =walkDir;
-                livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
-            }
-
-
-            livingThing.changeAnimationState("walkerFoward");
-
-            *//*if(gameCmd.val()== WalkCmd.FORWARD ){
-
-            }*//*
-            //gameCmd.delete();
-
-
-        }else*/ if(gameCmd .getCmdType() == CmdType.DIED) {
+        }else if(gameCmd .getCmdType() == CmdType.DIED) {
             this.livingThing.changeState( new DiedState(this.livingThing));
 
         }else if(gameCmd .getCmdType() == CmdType.ATTACK) {
@@ -132,8 +151,17 @@ public class WalkState extends State {
                // this.livingThing.setPosition(this.to);
 
                 this.livingThing.move(this.to.x,livingThing.getPosition().y,this.to.z);
-
-                this.livingThing.changeState( new IdleState(this.livingThing));
+                if(queue.peek()!=null){
+                    //从新开始
+                    GameCmd gameCmd =queue.poll();
+                    if(gameCmd.getCmdType()==CmdType.WALK){
+                        computeDest(((WalkCmd)gameCmd).dir);
+                    }else{
+                        computeFromTo(((WalkCmd2)gameCmd).from,((WalkCmd2)gameCmd).to);
+                    }
+                }else {
+                    this.livingThing.changeState(new IdleState(this.livingThing));
+                }
             }
 //        LogUtil.println(position+"");
             lastMoveTime = TimeUtil.getNowMills();

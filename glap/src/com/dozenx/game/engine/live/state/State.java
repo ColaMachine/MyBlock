@@ -60,13 +60,21 @@ public class State {
           /* CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");*/
             this.livingThing.changeState( new ChaseState(this.livingThing,chaseCmd));
         }else
-        if(gameCmd.getCmdType()==CmdType.WALK){
+        if(gameCmd.getCmdType()==CmdType.WALK2){
             WalkCmd2 walkCmd2 = (WalkCmd2)gameCmd;
             /*this.from = walkCmd2.from;
             this.to=walkCmd2.to;*/
           /* CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");*/
             this.livingThing.changeState(new WalkState(this.livingThing, walkCmd2.from, walkCmd2.to));
-        }else
+        }
+        if(gameCmd.getCmdType()==CmdType.WALK){
+            WalkCmd walkCmd = (WalkCmd)gameCmd;
+            /*this.from = walkCmd2.from;
+            this.to=walkCmd2.to;*/
+          /* CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");*/
+            this.livingThing.changeState(new WalkState(this.livingThing, walkCmd.dir));
+        }
+        else
         if(gameCmd.getCmdType()==CmdType.DROP ){
             DropCmd cmd = (DropCmd ) gameCmd;
             if(cmd.getUserId()==0){

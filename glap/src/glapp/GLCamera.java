@@ -2,6 +2,7 @@ package glapp;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.switcher.Switcher;
+import core.log.LogUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.glu.*;
 
@@ -250,7 +251,7 @@ public class GLCamera {
 	}
 	FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 	public void changeCallBack(){
-
+		LogUtil.println(" gl camera chage");
         if(!Switcher.SHADER_ENABLE)
             return;
 		GL_Matrix view=

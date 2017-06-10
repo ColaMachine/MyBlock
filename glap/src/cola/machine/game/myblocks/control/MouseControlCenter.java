@@ -61,6 +61,8 @@ public class MouseControlCenter {
     final Client client ;
     boolean mouseRightPressed=false;//用来判断是否按着
     boolean mouseLeftPressed=false;
+
+    private long lastkeyPressTime =0;
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
@@ -136,31 +138,41 @@ public class MouseControlCenter {
             player.bodyRotate( -Constants.camSpeedR * seconds,0);
         }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
            // player.StrafeRight(-Constants.camSpeedXZ * seconds);
-            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
-                player.lastMoveTime = TimeUtil.getNowMills();
-
-                player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
-                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(-0.5f)),player.getId()));
-            }
+           // if(TimeUtil.getNowMills() - lastkeyPressTime >200){
+                lastkeyPressTime= TimeUtil.getNowMills();
+                WalkCmd walkCmd =new WalkCmd();
+                walkCmd.setUserId(player.getId());
+                walkCmd.dir = WalkCmd.LEFT;
+                client.send(walkCmd);
+               // player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
+               // client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(-0.5f)),player.getId()));
+            //}
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
            // player.StrafeRight(Constants.camSpeedXZ * seconds);
 
-            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
-                player.lastMoveTime = TimeUtil.getNowMills();
-
-                player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
-                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(0.5f)),player.getId()));
+            if(TimeUtil.getNowMills() - lastkeyPressTime >200){
+                lastkeyPressTime= TimeUtil.getNowMills();
+                WalkCmd walkCmd =new WalkCmd();
+                walkCmd.setUserId(player.getId());
+                walkCmd.dir = WalkCmd.RIGHT;
+                client.send(walkCmd);
+               // player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
+               // client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(0.5f)),player.getId()));
             }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
             //player.MoveForward(-Constants.camSpeedXZ * seconds);
-            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
-                player.lastMoveTime = TimeUtil.getNowMills();
-                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.getWalkDir().normalize().mult(-0.5f)),player.getId()));
-
+            if(TimeUtil.getNowMills() - lastkeyPressTime >200){
+                lastkeyPressTime= TimeUtil.getNowMills();
+                WalkCmd walkCmd =new WalkCmd();
+                walkCmd.setUserId(player.getId());
+                walkCmd.dir = WalkCmd.BACK;
+               //WalkCmd2 walkCmd2 =new WalkCmd2(player.position,player.getPosition().getClone().add(player.getWalkDir().normalize().getClone().mult(-1f)),player.getId());
+                client.send(walkCmd);
+                //this.player.receive(walkCmd2);
             }
          }
         if (Keyboard.isKeyDown(Keyboard.KEY_G)) { // tilt down
@@ -172,10 +184,13 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
             //player.MoveForward(Constants.camSpeedXZ * seconds);
 
-            if(TimeUtil.getNowMills() - player.lastMoveTime >1000){
-                player.lastMoveTime = TimeUtil.getNowMills();
-
-                client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.walkDir.normalize().mult(0.5f)),player.getId()));
+            if(TimeUtil.getNowMills() - lastkeyPressTime >200){
+                lastkeyPressTime= TimeUtil.getNowMills();
+                WalkCmd walkCmd =new WalkCmd();
+                walkCmd.setUserId(player.getId());
+                walkCmd.dir = WalkCmd.FORWARD;
+                client.send(walkCmd);
+               // client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.walkDir.normalize().mult(0.5f)),player.getId()));
             }
 
 

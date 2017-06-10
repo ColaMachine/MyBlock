@@ -68,7 +68,7 @@ public class ChaseAttackState extends State {
             //AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             //manager.apply(getModel().bodyComponent, "walkerFoward");
             walkDir = GL_Vector.sub(livingThing.getTarget().getPosition(),livingThing.getPosition()).normalize();
-            livingThing.setPosition(GL_Vector.add(livingThing.position, GL_Vector.multiplyWithoutY(walkDir,
+            livingThing.move(GL_Vector.add(livingThing.position, GL_Vector.multiplyWithoutY(walkDir,
                     0.2f* (nowTime-lastMoveTime)/200)));
            /* if(GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),from))>distance){
                 this.livingThing.changeState( new IdleState(this.livingThing));

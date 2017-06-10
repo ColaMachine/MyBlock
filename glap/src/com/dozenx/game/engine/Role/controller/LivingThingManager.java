@@ -732,9 +732,9 @@ public class LivingThingManager {
                     1f* (interval)/1000);
             livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
             if(GL_Vector.length(walkDistance)<distance){
-                livingThing.setPosition(GL_Vector.add(livingThing.position, walkDistance));
+                livingThing.move(GL_Vector.add(livingThing.position, walkDistance));
             }else{
-                livingThing.setPosition(livingThing.getTarget().getPosition().getClone());
+                livingThing.move(livingThing.getTarget().getPosition().getClone());
             }
         }
         return distance;

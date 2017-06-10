@@ -77,7 +77,21 @@ public class GamingState implements GameState {
     public static GamingState instance;
     public static  Player player;//= new Human();
     public static String catchThing;
-    public static boolean cameraChanged=false;
+
+    public static boolean isCameraChanged() {
+        return cameraChanged;
+    }
+
+    public static void setCameraChanged(boolean cameraChanged) { //body rotate dropControl move
+        GamingState.cameraChanged = cameraChanged;
+    }
+
+    private static boolean cameraChanged=false;
+
+    public static GamingState getInstance() {
+        return instance;
+    }
+
     public static boolean livingThingChanged=true;
     public AttackManager attackManager;
 
@@ -454,6 +468,7 @@ public ShaderManager shaderManager;
     }
 
     public void update(float delta) {
+      //  LogUtil.println(" gaming state update");
         TimeUtil.update();
         nowTime= TimeUtil.getNowMills();
         if((nowTime-lastTime)>60000){

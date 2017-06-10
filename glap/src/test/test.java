@@ -13,6 +13,9 @@ import java.awt.image.ColorConvertOp;
 
 public class test {
 	public static void main(String args[]){
+
+
+        System.out.println(new java.util.Date().getTime());
 		System.out.println((int)0.999);;
 	}
 	

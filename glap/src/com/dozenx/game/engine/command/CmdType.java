@@ -36,7 +36,8 @@ public enum CmdType {
 
     */
 
-    WALK(WalkCmd.class);
+    WALK(WalkCmd.class),
+    WALK2(WalkCmd.class);
 
     /*public CmdType(class<T> extends BaseGameCmd,class<T> extends GameServerHandler){
 

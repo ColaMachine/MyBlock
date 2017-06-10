@@ -36,7 +36,11 @@ public class CmdUtil {
         }else  if (cmdTypeVal ==  CmdType.DROP.ordinal()){
             return new DropCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.WALK.ordinal()){
+            return new WalkCmd(bytes);
+
+        }else  if (cmdTypeVal ==  CmdType.WALK2.ordinal()){
             return new WalkCmd2(bytes);
+
         }else  if (cmdTypeVal ==  CmdType.DIED.ordinal()){
             return new DiedCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.REBORN.ordinal()){

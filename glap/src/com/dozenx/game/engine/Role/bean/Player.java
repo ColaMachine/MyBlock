@@ -26,7 +26,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 public class Player extends LivingThing {
     public Player(int id) {
         super(id);
-        this.speed=30;
+        this.speed=1;
         this.getExecutor().setModel( new PlayerModel(this));
     }
 
@@ -90,7 +90,11 @@ public class Player extends LivingThing {
 
         this.oldPosition.copy(this.position);
         GamingState.livingThingChanged = true;
-        GamingState.cameraChanged = true;
+      // if(TimeUtil.getNowMills()-lastMoveTime>200) {
+          // GamingState.cameraChanged = true;
+        GamingState.setCameraChanged(true);
+           this.lastMoveTime =TimeUtil.getNowMills();
+       //}
         ShaderManager.humanPosChangeListener();
 
 

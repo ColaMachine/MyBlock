@@ -20,14 +20,25 @@ public class WalkHandler extends GameServerHandler {
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
         LogUtil.println("server接收到走路变化了");
-        WalkCmd2 cmd =(WalkCmd2)request.getCmd();
-        LivingThingBean livingThingBean = userService.getOnlinePlayerById(cmd.getUserId());
+        int userId =0;
+        if(request.getCmd().getCmdType() == CmdType.WALK){
+            WalkCmd cmd = (WalkCmd) request.getCmd();
+             userId = cmd.getUserId();
+        }
+        if(request.getCmd().getCmdType() == CmdType.WALK2){
+            WalkCmd2 cmd = (WalkCmd2) request.getCmd();
+             userId = cmd.getUserId();
+        }
+
+
+        //WalkCmd2 cmd =(WalkCmd2)request.getCmd();
+        LivingThingBean livingThingBean = userService.getOnlinePlayerById(userId);
         if(livingThingBean!=null){
-            livingThingBean.receive(cmd);
+            livingThingBean.receive(request.getCmd());
         }
 
         //更新其他附近人的此人的装备属性
-        broadCast(cmd);
+        broadCast(request.getCmd());
        return null;
     }
     public void broadCast(GameCmd cmd){

@@ -36,7 +36,7 @@ public class SynchronTask extends Thread{
                     /*String message = "move:" + LivingThingManager.player.id + "," + LivingThingManager.player.position.x
                             + "," + LivingThingManager.player.position.y
                             + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;*/
-                    client.send(new PosCmd(livingThingManager.player));
+                   // client.send(new PosCmd(livingThingManager.player));
                 }
                 Thread.sleep(1000);
             } catch (Exception e) {

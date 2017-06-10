@@ -38,7 +38,8 @@ public class Wolf extends LivingThing {
 
         this.oldPosition.copy(this.position);
         GamingState.livingThingChanged = true;
-        GamingState.cameraChanged = true;
+
+        GamingState.setCameraChanged(true);
         ShaderManager.humanPosChangeListener();
 
 
@@ -157,7 +158,8 @@ public class Wolf extends LivingThing {
 		WalkDir.x= ViewDir.x;
 		WalkDir.y= 0;
 		WalkDir.z= ViewDir.z;*/
-        GamingState.cameraChanged = true;
+       // GamingState.cameraChanged = true;
+        GamingState.setCameraChanged(true);
       /*  WalkDir = vd;
         ViewDir.x= vd.x;
         ViewDir.z = vd.z;*/
@@ -221,7 +223,8 @@ public class Wolf extends LivingThing {
         // ��¼��ǰ��ʱ��
         if (Switcher.IS_GOD) {
             this.position.y += 2;
-            GamingState.cameraChanged = true;
+         //   GamingState.cameraChanged = true;
+            GamingState.setCameraChanged(true);
         } else if (this.stable) {
             this.v = 10.2f;
             preY = (int) this.position.y;

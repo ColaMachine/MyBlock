@@ -66,7 +66,7 @@ public class WalkCmd2 extends UserBaseCmd{
         this.to = new GL_Vector( this.toX,this.toY,this.toZ);
 
     }
-    private CmdType cmdType =CmdType.WALK;
+    private CmdType cmdType =CmdType.WALK2;
     @Override
     public CmdType getCmdType() {
         return cmdType;

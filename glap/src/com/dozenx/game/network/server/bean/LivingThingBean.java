@@ -375,7 +375,7 @@ public class LivingThingBean extends Role {
                 long t = TimeUtil.getNowMills() - this.lastTime;//�˶���ʱ��
                 if(t<=0)return;
                 GamingState.livingThingChanged=true;
-                GamingState.cameraChanged=true;
+                GamingState.setCameraChanged(true);
                 s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
                 // this.position.y+=s;
                 // System.out.println("time:"+t+" weiyi:"+s);
@@ -461,6 +461,11 @@ public class LivingThingBean extends Role {
     public boolean   checkDest(){
 
        return CoreRegistry.get(CrashCheck.class).check(this.position) ;
+    }
+    public void move(GL_Vector newPosition) {
+        this.oldPosition.copy(this.position);
+        this.position.set(newPosition.x, newPosition.y, newPosition.z);
+        this.updateTime =  TimeUtil.getNowMills();
     }
     public void move(float x, float y, float z) {
         this.oldPosition.copy(this.position);

@@ -68,7 +68,7 @@ public class SaveTask extends TimerTask {
                 }
                 livingThing.setNowHP(nowHP);
                 userService.save(livingThing.getInfo());
-                serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
+                //serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
                 bagService.save(livingThing.getId(), bagService.getItemByUserId(livingThing.getId()));
 
             }
