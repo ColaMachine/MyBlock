@@ -28,6 +28,9 @@ public class Role extends ComplexEquipProperties {
     }
 
     public void setPlayer(boolean isPlayer) {
+        if(!isPlayer){
+            LogUtil.println(" not a player");
+        }
         this.isPlayer = isPlayer;
     }
 
@@ -51,7 +54,16 @@ public class Role extends ComplexEquipProperties {
 
    // Role target;
     int targetId;
-    public GL_Vector RightVector=new GL_Vector(1,0,0); ;
+    private GL_Vector RightVector=new GL_Vector(1,0,0); ;
+
+    public GL_Vector getRightVector() {
+        return RightVector;
+    }
+
+    public void setRightVector(GL_Vector rightVector) {
+        RightVector = rightVector;
+    }
+
     public GL_Vector upVector =new GL_Vector(0,1,0);
 
 //    public GL_Vector viewDir = new GL_Vector(0,0,-1);  //  观察方向
@@ -162,10 +174,16 @@ public class Role extends ComplexEquipProperties {
         }
 
     }
+    @Override
+    public void getInfo(PlayerStatus info) {
+        super.getInfo(info);
+        info.setIsplayer(this.isPlayer);
+        //this.setPlayer(info.isPlayer());
+    }
 
     public void setInfo( PlayerStatus info ){
         super.setInfo(info);
-
+        this.setPlayer(info.isPlayer());
     }
 
 

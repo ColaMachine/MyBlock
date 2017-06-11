@@ -70,7 +70,7 @@ public class EnemyManager implements  Runnable {
         for(LivingThingBean enemy : userService.getAllOnlinePlayer()) {
             if (!enemy.isDied() ) {//如果自身是有效单位
 
-                if(enemy.getTargetId() > 0){//并且是有目标
+                /*if(enemy.getTargetId() > 0){//并且是有目标
                     if(checkEnemyTarget(enemy))//释放无用target 补全缺少target
                     {
                         moveOrAttack(enemy);
@@ -83,7 +83,7 @@ public class EnemyManager implements  Runnable {
 
                         //findTarget(enemy);
                     }
-                }
+                }*/
                 enemy.getExecutor().getCurrentState().update();
 
             }

@@ -22,6 +22,13 @@ public class WalkCmd extends UserBaseCmd{
     public static int LEFT=2;
     public static int RIGHT=3;
     public static int BACK=4;
+
+    public static int FORWARD_LEFT=5;
+    public static int FORWARD_RIGHT=6;
+    public static int BACK_LEFT=7;
+    public static int BACK_RIGHT=8;
+
+    public static int STOP=0;
     public WalkCmd(){
 
     }

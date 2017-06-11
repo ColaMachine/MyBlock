@@ -32,6 +32,7 @@ public enum CmdType {
     DIED(DiedCmd.class),
     REBORN(RebornCmd.class),
     CHASE(ChaseCmd.class),
+    ROTATE(RotateCmd.class),
     /*LIVI(),
 
     */

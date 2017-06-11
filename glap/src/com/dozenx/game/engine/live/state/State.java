@@ -62,11 +62,16 @@ public class State {
         }else
         if(gameCmd.getCmdType()==CmdType.WALK2){
             WalkCmd2 walkCmd2 = (WalkCmd2)gameCmd;
+            if(walkCmd2.stop ==true){
+                this.livingThing.changeState(new IdleState(this.livingThing));
+                return;
+            }
             /*this.from = walkCmd2.from;
             this.to=walkCmd2.to;*/
           /* CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");*/
             this.livingThing.changeState(new WalkState(this.livingThing, walkCmd2.from, walkCmd2.to));
-        }
+            livingThing.setBodyAngle(walkCmd2.bodyAngle);
+        }else
         if(gameCmd.getCmdType()==CmdType.WALK){
             WalkCmd walkCmd = (WalkCmd)gameCmd;
             /*this.from = walkCmd2.from;

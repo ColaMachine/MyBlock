@@ -133,6 +133,11 @@ public class UserService extends GameServerService {
 
 
         LivingThingBean playerBean=new LivingThingBean(info.getId());
+
+        if(!playerBean.isPlayer()){
+            LogUtil.err("player should be true");
+            playerBean.setPlayer(true);
+        }
         serverContext.allPlayer.add(playerBean);
         serverContext.onLinePlayer.add(playerBean);
         playerBean.setInfo(info);
@@ -152,6 +157,10 @@ public class UserService extends GameServerService {
                         });
                 LivingThingBean livingThingBean =new LivingThingBean(info.getId());
                 livingThingBean.setInfo(info);
+                if(!livingThingBean.isPlayer()){//shoud be true other wise walkstate will adjust the bodyAngle we dont want
+                    LogUtil.err("player should be true");
+                    livingThingBean.setPlayer(true);
+                }
                 serverContext.allPlayer.add(livingThingBean);
 
 
@@ -176,7 +185,10 @@ public class UserService extends GameServerService {
     }*/
 
     public void save(PlayerStatus info){
-
+        if(!info.isPlayer()){
+            LogUtil.err("player should be true");
+            info.setIsplayer(true);
+        }
         File file = PathManager.getInstance().getHomePath().resolve("saves").resolve("player").resolve(info.getId()+".txt").toFile();
         try {
             FileUtil.writeFile(file, JSON.toJSONString(info));

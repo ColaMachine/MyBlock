@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;
 import com.dozenx.game.engine.command.DropCmd;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.command.PlayerSynCmd;
+import com.dozenx.game.engine.command.RebornCmd;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.network.server.bean.LivingThingBean;
@@ -66,9 +67,14 @@ public class SaveTask extends TimerTask {
                 if (nowHP > livingThing.HP) {
                     nowHP = livingThing.HP;
                 }
+
+                if (livingThing.isDied() && now - livingThing.getLastHurtTime() > 10 * 1000) {//复活的时间
+                    serverContext.getMessages().offer(new RebornCmd(livingThing.getId()).toBytes());
+                }
                 livingThing.setNowHP(nowHP);
+
                 userService.save(livingThing.getInfo());
-                //serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
+                serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
                 bagService.save(livingThing.getId(), bagService.getItemByUserId(livingThing.getId()));
 
             }

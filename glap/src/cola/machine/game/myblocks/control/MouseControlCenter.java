@@ -91,6 +91,7 @@ public class MouseControlCenter {
 
         }
     }
+    public int lastKey = 0;
 
     public void handleNavKeys(float seconds) {
         //dosn't need cooling
@@ -136,65 +137,89 @@ public class MouseControlCenter {
             // Turn right
 
             player.bodyRotate( -Constants.camSpeedR * seconds,0);
-        }  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-           // player.StrafeRight(-Constants.camSpeedXZ * seconds);
-           // if(TimeUtil.getNowMills() - lastkeyPressTime >200){
-                lastkeyPressTime= TimeUtil.getNowMills();
-                WalkCmd walkCmd =new WalkCmd();
-                walkCmd.setUserId(player.getId());
-                walkCmd.dir = WalkCmd.LEFT;
-                client.send(walkCmd);
-               // player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
-               // client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(-0.5f)),player.getId()));
-            //}
         }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
-           // player.StrafeRight(Constants.camSpeedXZ * seconds);
 
-            if(TimeUtil.getNowMills() - lastkeyPressTime >200){
-                lastkeyPressTime= TimeUtil.getNowMills();
-                WalkCmd walkCmd =new WalkCmd();
-                walkCmd.setUserId(player.getId());
-                walkCmd.dir = WalkCmd.RIGHT;
-                client.send(walkCmd);
-               // player.RightVector = GL_Vector.crossProduct(player.walkDir, player.upVector);
-               // client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.RightVector.normalize().mult(0.5f)),player.getId()));
+
+        if(TimeUtil.getNowMills() - lastkeyPressTime >200){
+            int key = -1;
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                key= WalkCmd.FORWARD_LEFT;
+            }else
+            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                key= WalkCmd.FORWARD_RIGHT;
+            }else{
+                key= WalkCmd.FORWARD;
             }
+        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                key= WalkCmd.BACK_LEFT;
+            }else
+            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                key= WalkCmd.BACK_RIGHT;
+            }else{
+                key= WalkCmd.BACK;
+            }
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+            key= WalkCmd.LEFT;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+            key= WalkCmd.RIGHT;
+        }else{
+            key= WalkCmd.STOP;
         }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-            //player.MoveForward(-Constants.camSpeedXZ * seconds);
-            if(TimeUtil.getNowMills() - lastkeyPressTime >200){
-                lastkeyPressTime= TimeUtil.getNowMills();
-                WalkCmd walkCmd =new WalkCmd();
-                walkCmd.setUserId(player.getId());
-                walkCmd.dir = WalkCmd.BACK;
-               //WalkCmd2 walkCmd2 =new WalkCmd2(player.position,player.getPosition().getClone().add(player.getWalkDir().normalize().getClone().mult(-1f)),player.getId());
-                client.send(walkCmd);
-                //this.player.receive(walkCmd2);
-            }
-         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_G)) { // tilt down
-            //human.MoveForward(-human.camSpeedXZ * seconds);
+        if(key!=lastKey){
+            lastKey= key;
 
+            //walkCmd.dir = key;
+            //player.receive(walkCmd);
+
+            GL_Vector from = player.position;
+            GL_Vector walkDir = player.walkDir.normalize().getClone();
+            GL_Vector right = player.getRightVector().getClone();
+            GL_Vector to = null;
+            if(key==WalkCmd.FORWARD){
+
+                to=from.getClone().add(walkDir.mult(15f));
+            }else if(key==WalkCmd.BACK){
+                to=from.getClone().add(walkDir.mult(-15f));
+            }else if(key==WalkCmd.LEFT){
+                to=from.getClone().add(right.mult(-15f));
+            }else if(key==WalkCmd.RIGHT){
+                to=from.getClone().add(right.mult(15f));
+            }else if(key==WalkCmd.FORWARD_LEFT){
+                to=from.getClone().add(walkDir.mult(7.5f).add(right.mult(-7.5f)));
+            }else if(key==WalkCmd.FORWARD_RIGHT){
+                to=from.getClone().add(walkDir.mult(7.5f).add(right.mult(7.5f)));
+            }else if(key==WalkCmd.BACK_LEFT){
+                to=from.getClone().add(walkDir.mult(-7.5f).add(right.mult(-7.5f)));
+            }else if(key==WalkCmd.BACK_RIGHT){
+                to=from.getClone().add(walkDir.mult(-7.5f).add(right.mult(7.5f)));
+            }else if(key == WalkCmd.STOP){
+                to=from;
+            }
+            LogUtil.println("from:"+from);
+            LogUtil.println("to:"+to);
+            WalkCmd2 walkCmd =new WalkCmd2(from,to,player.getId());
+            walkCmd.bodyAngle = player.getBodyAngle();
+            if(key == WalkCmd.STOP){
+                //return ;
+                walkCmd.stop =true;
+            }
+            client.send(walkCmd);
+
+            lastkeyPressTime=TimeUtil.getNowMills();
 
         }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {   // tilt up
-            //player.MoveForward(Constants.camSpeedXZ * seconds);
-
-            if(TimeUtil.getNowMills() - lastkeyPressTime >200){
-                lastkeyPressTime= TimeUtil.getNowMills();
-                WalkCmd walkCmd =new WalkCmd();
-                walkCmd.setUserId(player.getId());
-                walkCmd.dir = WalkCmd.FORWARD;
-                client.send(walkCmd);
-               // client.send(new WalkCmd2(player.position,player.getPosition().getClone().add(player.walkDir.normalize().mult(0.5f)),player.getId()));
-            }
+        }
 
 
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+
+
+
+      else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             player.position.y = player.position.y - 3 * seconds;
             player.move(player.position);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
@@ -462,7 +487,7 @@ public class MouseControlCenter {
         if (Switcher.CAMERA_2_PLAYER > 100) {
             Switcher.CAMERA_2_PLAYER = 100;
         }
-        GamingState.cameraChanged=true;
+        GamingState.setCameraChanged(true);
 
     }
 
@@ -631,7 +656,7 @@ public class MouseControlCenter {
             camera.ViewDir.x= player.viewDir.x;
             camera.ViewDir.y= player.viewDir.y;
             camera.ViewDir.z= player.viewDir.z;
-            GamingState.cameraChanged=true;
+            GamingState.setCameraChanged(true);
            // camera.changeCallBack();
             // �ƶ���ͷ
         }
@@ -660,7 +685,7 @@ public class MouseControlCenter {
             camera.ViewDir.x= player.viewDir.x;
             camera.ViewDir.y= player.viewDir.y;
             camera.ViewDir.z= player.viewDir.z;
-            GamingState.cameraChanged=true;
+            GamingState.setCameraChanged(true);
             //camera.changeCallBack();
             // �ƶ���ͷ
         }
@@ -757,7 +782,7 @@ public class MouseControlCenter {
 //            camera.setPosition(player.getPosition());
 //            camera.setViewDir(player.getViewDir());
             Switcher.CAMERA_2_PLAYER=0;
-            GamingState.cameraChanged=true;
+            GamingState.setCameraChanged(true);
         }
 
         if (Keyboard.isKeyDown( Keyboard.KEY_V)) {

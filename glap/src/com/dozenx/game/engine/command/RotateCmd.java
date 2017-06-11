@@ -7,13 +7,19 @@ import glmodel.GL_Vector;
 /**
  * Created by luying on 17/2/7.
  */
-public class RebornCmd extends UserBaseCmd{
+public class RotateCmd extends UserBaseCmd{
+    float from;
 
-    public RebornCmd(byte[] bytes){
+    float to;
+
+    public boolean stop = false;
+    public RotateCmd(byte[] bytes){
         parse(bytes);
     }
-    public RebornCmd( int userId){
+    public RotateCmd(float from ,float to ,int userId){
 
+        this.from = from ;
+        this.to =to;
         this.userId =userId;
 
     }
@@ -22,7 +28,10 @@ public class RebornCmd extends UserBaseCmd{
     public byte[] toBytes(){
         return ByteUtil.createBuffer().put(cmdType.getType())
                 .put(userId)
+                .put(this.from)
+                .put(this.to)
 
+                .put(this.stop)
                 .array();
 
     }
@@ -33,8 +42,11 @@ public class RebornCmd extends UserBaseCmd{
 
 
 
+        this.from = byteBufferWrap.getFloat();
+        this.to = byteBufferWrap.getFloat();
+        this.stop = byteBufferWrap.getBoolean();
     }
-    private CmdType cmdType =CmdType.REBORN;
+    private CmdType cmdType =CmdType.ROTATE;
     @Override
     public CmdType getCmdType() {
         return cmdType;

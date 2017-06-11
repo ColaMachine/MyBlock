@@ -375,7 +375,7 @@ public class LivingThingBean extends Role {
                 long t = TimeUtil.getNowMills() - this.lastTime;//�˶���ʱ��
                 if(t<=0)return;
                 GamingState.livingThingChanged=true;
-                GamingState.setCameraChanged(true);
+                //GamingState.setCameraChanged(true);
                 s = this.v * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
                 // this.position.y+=s;
                 // System.out.println("time:"+t+" weiyi:"+s);

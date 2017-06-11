@@ -131,9 +131,9 @@ public class Firework {
 
 
                 // GLApp.drawCursor().renderCube(x,y,z);
-                GL_Vector right = GL_Vector.add(new GL_Vector(particle[loop].x,particle[loop].y,particle[loop].z), GL_Vector.multiply(player.RightVector,
+                GL_Vector right = GL_Vector.add(new GL_Vector(particle[loop].x,particle[loop].y,particle[loop].z), GL_Vector.multiply(player.getRightVector(),
                         0.5f));
-                GL_Vector left = GL_Vector.add(right, GL_Vector.multiply(player.RightVector,
+                GL_Vector left = GL_Vector.add(right, GL_Vector.multiply(player.getRightVector(),
                         -1f));
                 GL_Vector lefttop = GL_Vector.add(left, GL_Vector.multiply(player.upVector,
                         0.5f));

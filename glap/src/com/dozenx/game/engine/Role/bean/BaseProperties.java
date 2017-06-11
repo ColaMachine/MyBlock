@@ -74,9 +74,9 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     public int species=0;
     protected String name;
     protected String pwd;
-    protected float bodyAngle;
-    protected float headAngle;
-    protected float headAngle2;
+    private float bodyAngle;
+    private float headAngle;
+    private float headAngle2;
 
 
     public GL_Vector getPosition() {
@@ -108,6 +108,10 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     }
 
     public void setBodyAngle(float bodyAngle) {
+        if(((Float)bodyAngle).isNaN()){
+            LogUtil.err("it's wrong nan");
+            bodyAngle=0;
+        }
         this.bodyAngle = bodyAngle;
     }
 

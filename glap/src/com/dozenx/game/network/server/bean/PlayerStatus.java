@@ -34,6 +34,11 @@ public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
     protected long logoffTime;//登录时间
     protected int targetId;//目标
     protected boolean isplayer;//是否是玩家
+
+    public boolean isIsplayer() {
+        return isplayer;
+    }
+
     protected byte type;//生物种类
 
 

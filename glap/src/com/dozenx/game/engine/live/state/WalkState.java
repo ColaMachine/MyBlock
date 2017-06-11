@@ -24,13 +24,13 @@ public class WalkState extends State {
 
 
     public WalkState(LivingThingBean livingThing, int dir ){
-
+        //if the lvingthing is player than syn the data to server  form the data to walkcmd2
         super(livingThing);
         if(from== null || to == null){
             LogUtil.err("from and to can't be null ");
         }
         computeDest(dir);
-
+        //
 
     }
 
@@ -65,7 +65,7 @@ public class WalkState extends State {
 
         this.distance = GL_Vector.length(walkDir);
         this.walkDir.normalize();
-        if(GamingState.player != livingThing ) {
+        if( !livingThing .isPlayer()) {
             livingThing.walkDir = walkDir;
             livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
         }
@@ -74,16 +74,16 @@ public class WalkState extends State {
 
     public void computeDest(int dir){
        walkDir =  livingThing.getWalkDir().normalize().getClone();
-        livingThing.RightVector = GL_Vector.crossProduct(livingThing.walkDir, livingThing.upVector);
+        livingThing.setRightVector(GL_Vector.crossProduct(livingThing.walkDir, livingThing.upVector));
         GL_Vector add= null;
         if(dir == WalkCmd.FORWARD){
             add=livingThing.getWalkDir().normalize().getClone().mult(livingThing.speed);
         }else if(dir == WalkCmd.RIGHT){
-            add=livingThing.RightVector.normalize().getClone().mult(livingThing.speed);
+            add=livingThing.getRightVector().getClone().mult(livingThing.speed);
         }else if(dir == WalkCmd.LEFT){
-            add=livingThing.RightVector.normalize().getClone().mult(-livingThing.speed);
+            add=livingThing.getRightVector().getClone().mult(-livingThing.speed);
         }else if(dir == WalkCmd.BACK){
-            add=livingThing.getWalkDir().normalize().getClone().mult(-livingThing.speed);
+            add=livingThing.getWalkDir().getClone().mult(-livingThing.speed);
         }
 
         this.to =livingThing.getPosition().getClone().add(add);
@@ -96,6 +96,19 @@ public class WalkState extends State {
     Queue<GameCmd> queue = new LinkedList<>();
 
     public void receive(GameCmd gameCmd){//11
+        if(gameCmd .getCmdType() == CmdType.WALK2){
+            queue.clear();
+            this.queue.offer(gameCmd);
+
+            WalkCmd2 walkCmd2 =(WalkCmd2)gameCmd;
+            this.livingThing.setBodyAngle(walkCmd2.bodyAngle);
+
+            if(walkCmd2.stop==true){
+                this.livingThing.changeState(new IdleState(this.livingThing));
+                return;
+            }
+            computeFromTo(walkCmd2.from,walkCmd2.to);
+        }else
        if(gameCmd .getCmdType() == CmdType.WALK){
            queue.clear();
             this.queue.offer(gameCmd);
@@ -119,8 +132,13 @@ public class WalkState extends State {
             AttackCmd cmd =(AttackCmd) gameCmd;
             if(cmd.getAttackType()== AttackType.KAN){
                 livingThing.changeAnimationState("kan");
-                livingThing.getTarget().beAttack(cmd.getAttackValue());
-                Document.needUpdate=true;
+                //这里要判断target 是否为null
+
+                if(livingThing.getTarget()!=null){
+                    livingThing.getTarget().beAttack(cmd.getAttackValue());
+                    Document.needUpdate=true;
+                }
+
                 //getExecutor().getCurrentState().dispose();
                 //livingThing.getExecutor().getModel().
             }else if(cmd.getAttackType()== AttackType.ARROW){
@@ -145,7 +163,7 @@ public class WalkState extends State {
                     livingThing.speed/10* (nowTime-startTime)/1000));
 //            livingThing.getPosition().x=newPosition.x;
 //            livingThing.getPosition().z=newPosition.z;
-            this.livingThing.move(newPosition.x,livingThing.getPosition().y,newPosition.z);
+
             //如果newposition 的位置
             if(GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),from))>distance){
                // this.livingThing.setPosition(this.to);
@@ -163,6 +181,11 @@ public class WalkState extends State {
                     this.livingThing.changeState(new IdleState(this.livingThing));
                 }
             }
+
+            this.livingThing.move(newPosition.x,livingThing.getPosition().y,newPosition.z);
+            /*else{
+                this.livingThing.changeState(new IdleState(this.livingThing));
+            }*/
 //        LogUtil.println(position+"");
             lastMoveTime = TimeUtil.getNowMills();
             // System.out.printf("position: %f %f %f viewdir: %f %f %f

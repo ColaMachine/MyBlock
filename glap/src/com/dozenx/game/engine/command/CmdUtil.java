@@ -57,6 +57,8 @@ public class CmdUtil {
             return new ChunksCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.CHUNKSS.ordinal()){
             return new ChunkssCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.ROTATE.ordinal()){
+            return new ChunkssCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

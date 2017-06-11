@@ -251,7 +251,7 @@ public class GLCamera {
 	}
 	FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
 	public void changeCallBack(){
-		LogUtil.println(" gl camera chage");
+		//LogUtil.println(" gl camera chage");
         if(!Switcher.SHADER_ENABLE)
             return;
 		GL_Matrix view=

@@ -31,7 +31,7 @@ public class JumpState extends State {
 
         if (GamingState.player.getId() == this.livingThing.getId()&&Switcher.IS_GOD) {
             this.livingThing.position.y += 2;
-            GamingState.cameraChanged = true;
+            GamingState.setCameraChanged(true);
         } else if (this.livingThing.stable) {
             this.livingThing.v = 10.2f;
          //   this.livingThing.position.y+=12;

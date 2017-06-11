@@ -10,22 +10,23 @@ import glmodel.GL_Vector;
 public class WalkCmd2 extends UserBaseCmd{
     public GL_Vector from  ;
     public GL_Vector to;
-
+    public GL_Vector walkDir;
     float fromX;
     float fromY;
     float fromZ;
     float toX;
     float toY;
     float toZ;
-
+    public float bodyAngle;
     public static int FORWARD=1;
     public static int LEFT=2;
     public static int RIGHT=3;
     public static int BACK=4;
+    public boolean stop = false;
     public WalkCmd2(byte[] bytes){
         parse(bytes);
     }
-    public WalkCmd2(GL_Vector from ,GL_Vector to ,int userId){
+    public WalkCmd2(GL_Vector from, GL_Vector to, int userId){
         this.fromX = from.x;
         this.fromY =from .y;
         this.fromZ = from .z;
@@ -48,6 +49,8 @@ public class WalkCmd2 extends UserBaseCmd{
                 .put(this.toX)
                 .put(this.toY)
                 .put(this.toZ)
+                .put(this.stop)
+                .put(this.bodyAngle)
                 .array();
 
     }
@@ -62,6 +65,8 @@ public class WalkCmd2 extends UserBaseCmd{
         this.toX = byteBufferWrap.getFloat();
         this.toY = byteBufferWrap.getFloat();
         this.toZ = byteBufferWrap.getFloat();
+        this.stop = byteBufferWrap.getBoolean();
+        this.bodyAngle = byteBufferWrap.getFloat();
         this.from = new GL_Vector( this.fromX,this.fromY,this.fromZ);
         this.to = new GL_Vector( this.toX,this.toY,this.toZ);
 
@@ -71,4 +76,5 @@ public class WalkCmd2 extends UserBaseCmd{
     public CmdType getCmdType() {
         return cmdType;
     }
+
 }

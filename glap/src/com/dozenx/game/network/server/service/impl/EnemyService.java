@@ -45,6 +45,9 @@ public class EnemyService extends GameServerService {
         List<File> files =  FileUtil.listFile(player);
         for(File file :files){
             try {
+                if(file.getName().indexOf(".")>-1 &&!file.getName() .endsWith("txt")){//filter the rubish file
+                    continue;
+                }
                 String s = FileUtil.readFile2Str(file);
 
                 PlayerStatus playerStatus = JSON.parseObject(s,
