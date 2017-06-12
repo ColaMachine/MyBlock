@@ -413,7 +413,7 @@ public class LivingThing extends LivingThingBean {
         //  System.out.println(vd);
     }
 
-    public void bodyRotate(float leftRightDegree, float updownDegree) {
+    public void bodyRotate(float leftRightDegree, float updownDegree) {setDirChanged(true);
         leftRightDegree=leftRightDegree/2;
         updownDegree=updownDegree/2;
         headRotate(leftRightDegree, updownDegree);

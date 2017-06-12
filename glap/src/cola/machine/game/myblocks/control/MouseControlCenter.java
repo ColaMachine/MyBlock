@@ -169,9 +169,9 @@ public class MouseControlCenter {
             key= WalkCmd.STOP;
         }
 
-        if(key!=lastKey){
+        if(key!=lastKey  || player.isDirChanged()){
             lastKey= key;
-
+            player.setDirChanged(false);
             //walkCmd.dir = key;
             //player.receive(walkCmd);
 

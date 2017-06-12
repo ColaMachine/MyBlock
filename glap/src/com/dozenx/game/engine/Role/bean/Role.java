@@ -22,6 +22,15 @@ import java.lang.ref.WeakReference;
 public class Role extends ComplexEquipProperties {
     private WeakReference<Role> target;
     private boolean isPlayer;
+    private boolean dirChanged;
+
+    public boolean isDirChanged() {
+        return dirChanged;
+    }
+
+    public void setDirChanged(boolean dirChanged) {
+        this.dirChanged = dirChanged;
+    }
 
     public boolean isPlayer() {
         return isPlayer;
