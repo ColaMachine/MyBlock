@@ -113,7 +113,7 @@ public class LivingThingManager {
                 livingThing.setTarget(this.getLivingThingById(livingThing.getTargetId()));
 
             }*/
-            livingThing.update();//先更新
+            livingThing.render();//先更新
 
 
             //livingThing.renderBloodBar();
@@ -122,7 +122,7 @@ public class LivingThingManager {
         }
 
         //player update
-        this.player.update();//心更新
+        this.player.render();//心更新
         if (Switcher.SHADER_ENABLE) {
             ShaderUtils.createVao(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao(),new int[]{3,3,3,1});
             //ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
@@ -539,6 +539,7 @@ public class LivingThingManager {
         //if(GamingState.livingThingChanged ) {
 
         //}
+        this.player.update();
 
     }
    /* public void attack(){

@@ -230,14 +230,14 @@ public ShaderManager shaderManager;
 
     }
 
-    public static void setPerspective() {
+   /* public static void setPerspective() {
         // select projection matrix (controls perspective)
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GLU.gluPerspective(40f, 800 / 600, 1f, 1000f);
         // return to modelview matrix
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    }
+    }*/
 
     public void handleInput(float delta) {
         cursorX = Mouse.getEventX();
@@ -487,24 +487,29 @@ public ShaderManager shaderManager;
             e.printStackTrace();
         }OpenglUtils.checkGLError();
        // livingThingManager.netWorkUpdate();;
+
+           // if (Math.random() > 0.5) {
         livingThingManager.update();
-            if (Math.random() > 0.5) {
+
             if (!Switcher.IS_GOD) {
                 //dcc.check(human);
                 livingThingManager.CrashCheck(dcc);
-                GL_Vector camera_pos = GL_Vector.add(player.position,
-                        GL_Vector.multiply(player.viewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
-                camera.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
 
-                if (Switcher.CAMERA_MODEL == 2) {
-                    // camera1.ViewDir.reverse();
-                    camera.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);
-                } else {
 
-                    camera.viewDir(player.viewDir);
-                }
-            }
+
+           // }
                 if(GamingState.cameraChanged){
+                    GL_Vector camera_pos = GL_Vector.add(player.position,
+                            GL_Vector.multiply(player.viewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
+                    camera.MoveTo(camera_pos.x, camera_pos.y + 2, camera_pos.z);
+                    if (Switcher.CAMERA_MODEL == 2) {
+                        // camera1.ViewDir.reverse();
+                        camera.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);
+                    } else {
+
+                        camera.viewDir(player.viewDir);
+                    }
+
                     camera.changeCallBack();
                     GamingState.cameraChanged=false;
                 }
@@ -517,8 +522,15 @@ public ShaderManager shaderManager;
 
 
             }
+
         document.update();OpenglUtils.checkGLError();
         itemManager.update();
+       /* try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
     }
 
 

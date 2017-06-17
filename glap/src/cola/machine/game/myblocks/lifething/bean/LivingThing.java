@@ -249,8 +249,12 @@ public class LivingThing extends LivingThingBean {
     public void update(){
         super.update();
 
-        this.getModel().build(ShaderManager.livingThingShaderConfig,new GL_Matrix());
+
        // this.currentState.update();
+    }
+    public void render(){
+        this.getModel().build(ShaderManager.livingThingShaderConfig,new GL_Matrix());
+
     }
 
 
