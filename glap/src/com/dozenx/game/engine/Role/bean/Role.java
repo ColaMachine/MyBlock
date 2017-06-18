@@ -49,6 +49,7 @@ public class Role extends ComplexEquipProperties {
         return target.get()!=null ? target.get() :null;
     }
     public void   finalize(){
+
         LogUtil.println("回收了");
     }
     public void setTarget(Role target){
@@ -119,7 +120,7 @@ public class Role extends ComplexEquipProperties {
     }
 
 
-    public float speed=1;
+    public float speed=10;
 
 
 

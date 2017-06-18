@@ -23,7 +23,7 @@ public class EnemyService extends GameServerService {
        loadAllEnemy();
     }
 
-       public List<LivingThingBean> getAllEnemies(){
+   public List<LivingThingBean> getAllEnemies(){
         return serverContext.enemyList;
     }
     public LivingThingBean getEnemyById(int id ){
@@ -36,7 +36,9 @@ public class EnemyService extends GameServerService {
         return null;
 
     }
-
+    public void addNewMonster(LivingThingBean livingThingBean){
+        serverContext.enemyList.add(livingThingBean);
+    }
     public void loadAllEnemy(){
         File player = PathManager.getInstance().getHomePath().resolve("saves").resolve("enemy").toFile();
         if(!player.exists()){

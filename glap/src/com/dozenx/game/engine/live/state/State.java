@@ -164,9 +164,12 @@ public class State {
                     {
                         livingThing.getTarget().beAttack(cmd.getAttackValue());
 //                AttackManager.add(new TimeString(cmd.getAttackValue(),));
-                        Vector2f xy = OpenglUtils.wordPositionToXY(projection, livingThing.getTarget().getPosition(), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
-                        AttackManager.addText(new TimeString("砍伤" + cmd.getAttackValue(), xy.x * Constants.WINDOW_WIDTH, xy.y * Constants.WINDOW_HEIGHT));
-                        Document.needUpdate = true;
+                        //如果是客户端可以加服务器就免了
+                        if(GamingState.player!=null) {
+                            Vector2f xy = OpenglUtils.wordPositionToXY(projection, livingThing.getTarget().getPosition(), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
+                            AttackManager.addText(new TimeString("砍伤" + cmd.getAttackValue(), xy.x * Constants.WINDOW_WIDTH, xy.y * Constants.WINDOW_HEIGHT));
+                            Document.needUpdate = true;
+                        }
                     }
                 //getExecutor().getCurrentState().dispose();
                 //livingThing.getExecutor().getModel().

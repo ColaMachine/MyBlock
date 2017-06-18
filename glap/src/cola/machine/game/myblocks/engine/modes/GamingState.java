@@ -523,7 +523,7 @@ public ShaderManager shaderManager;
 
             }
 
-        document.update();OpenglUtils.checkGLError();
+         document.update();OpenglUtils.checkGLError();
         itemManager.update();
        /* try {
             Thread.sleep(200);

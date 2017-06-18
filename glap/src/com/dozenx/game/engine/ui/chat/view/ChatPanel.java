@@ -22,6 +22,9 @@ import com.dozenx.util.StringUtil;
 import de.matthiasmann.twl.Event;
 
 import javax.vecmath.Vector4f;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class ChatPanel extends HtmlObject {
     public  final StringBuilder sb;
@@ -159,6 +162,8 @@ public class ChatPanel extends HtmlObject {
 
         }
     }*/
+
+    public LinkedList<String> contents = new LinkedList<>();
     public void setFocus(){
         this.editField.requestKeyboardFocus();
     }
@@ -166,7 +171,31 @@ public class ChatPanel extends HtmlObject {
         this.editField.setVisible(true);
     }
     public  void appendRow(String font, String text) {
-        this.div.innerText = this.div.innerText+"\n"+text;
+        //this.div.innerText = this.div.innerText+"\n"+text;
+        contents.add(text);
+
+        //如果超过制定条数 删除之前的数据
+        if(contents.size()>30){
+            int size = contents.size();
+            for(int i=0;i<size-100;i++ ){
+                contents.poll();
+            }
+           // contents.remove(0)
+        }
+        //清空
+        this.div.innerText="";
+        //默认显示倒数10条
+
+        int  startIndex = 0;
+        if(contents.size()>10){
+            startIndex = contents.size()-10;
+
+        }
+        int endIndex = contents.size();
+        for(int i=startIndex;i<endIndex;i++){
+            this.div.innerText += "\n"+contents.get(i);
+        }
+        //this.div.innerText = this.div.innerText+"\n"+text;
          Document.needUpdate=true;
     }
 

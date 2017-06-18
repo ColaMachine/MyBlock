@@ -29,6 +29,7 @@ import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.TimeUtil;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -540,6 +541,11 @@ public class LivingThingManager {
 
         //}
         this.player.update();
+        for(int i=livingThings.size()-1;i>=0;i--){
+            LivingThing  livingThing = livingThings.get(i);
+            livingThing.update();
+        }
+
 
     }
    /* public void attack(){
@@ -725,6 +731,9 @@ public class LivingThingManager {
     }
 
     public static float chaseCanAttack(LivingThingBean livingThing,long interval){
+        if(livingThing.getTarget().getPosition() == livingThing.getPosition()){
+            LogUtil.err("this cant't be same target's position and his position");
+        }
         GL_Vector distanceVector = GL_Vector.sub(livingThing.getTarget().getPosition(), livingThing.getPosition());
         float distance = GL_Vector.length(distanceVector);
         if(distance>2){

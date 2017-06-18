@@ -59,6 +59,7 @@ public class WalkState extends State {
     float distance ;
     public void computeFromTo(GL_Vector from,GL_Vector to){
         this.from = from.getClone();
+        this.livingThing.position=from.getClone();//发现人物的位置经常不能同步
         this.to =to.getClone();
         this.startTime = TimeUtil.getNowMills();
         walkDir = GL_Vector.sub(to,from);
@@ -66,7 +67,7 @@ public class WalkState extends State {
         this.distance = GL_Vector.length(walkDir);
         this.walkDir.normalize();
         if( !livingThing .isPlayer()) {
-            livingThing.walkDir = walkDir;
+            livingThing.walkDir = walkDir.getClone();
             livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
         }
         livingThing.changeAnimationState("walkerFoward");
@@ -104,6 +105,7 @@ public class WalkState extends State {
             this.livingThing.setBodyAngle(walkCmd2.bodyAngle);
 
             if(walkCmd2.stop==true){
+                this.livingThing.setPosition(walkCmd2.from.x,walkCmd2.from.y,walkCmd2.from.z);
                 this.livingThing.changeState(new IdleState(this.livingThing));
                 return;
             }

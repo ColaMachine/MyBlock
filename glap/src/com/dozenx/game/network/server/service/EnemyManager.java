@@ -183,6 +183,11 @@ public class EnemyManager implements  Runnable {
 
         }
     }*/
+
+    /**
+     * move or attack
+     * @param enemy
+     */
     public void moveOrAttack(LivingThingBean enemy) {
 
 
@@ -207,12 +212,14 @@ public class EnemyManager implements  Runnable {
                        if(enemy.getExecutor().getCurrentState() instanceof IdleState ){//就是说还没开始追击
                            LivingThingBean player= userService.getOnlinePlayerById(enemy.getTargetId());
                            if(player!= null) {
-                               /*WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
+                               WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
                                serverContext.broadCast(walkCmd2.toBytes());
-                               enemy.getExecutor().receive(walkCmd2);*/
-                               ChaseCmd chaseCmd = new ChaseCmd(enemy.getId(), enemy.getTargetId());
+                               enemy.getExecutor().receive(walkCmd2);
+
+
+                               /*ChaseCmd chaseCmd = new ChaseCmd(enemy.getId(), enemy.getTargetId());
                                serverContext.broadCast(chaseCmd.toBytes());
-                               enemy.getExecutor().receive(chaseCmd);
+                               enemy.getExecutor().receive(chaseCmd);*/
                            }
                        }
 

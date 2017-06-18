@@ -181,13 +181,13 @@ public class MouseControlCenter {
             GL_Vector to = null;
             if(key==WalkCmd.FORWARD){
 
-                to=from.getClone().add(walkDir.mult(15f));
+                to=from.getClone().add(walkDir.mult(player.speed));
             }else if(key==WalkCmd.BACK){
-                to=from.getClone().add(walkDir.mult(-15f));
+                to=from.getClone().add(walkDir.mult(-player.speed));
             }else if(key==WalkCmd.LEFT){
-                to=from.getClone().add(right.mult(-15f));
+                to=from.getClone().add(right.mult(-player.speed));
             }else if(key==WalkCmd.RIGHT){
-                to=from.getClone().add(right.mult(15f));
+                to=from.getClone().add(right.mult(player.speed));
             }else if(key==WalkCmd.FORWARD_LEFT){
                 to=from.getClone().add(walkDir.mult(7.5f).add(right.mult(-7.5f)));
             }else if(key==WalkCmd.FORWARD_RIGHT){

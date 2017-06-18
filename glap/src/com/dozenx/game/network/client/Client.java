@@ -297,7 +297,7 @@ public class Client extends Thread{
                     }else if (cmd.getCmdType()== CmdType.CHUNKSS) {
                         chunkAlls.offer((ChunkssCmd)cmd);
                     }else if (cmd instanceof  UserBaseCmd ||cmd.getCmdType()== CmdType.PICK || cmd.getCmdType()== CmdType.WALK ||cmd.getCmdType()== CmdType.WALK2 || cmd.getCmdType()== CmdType.DIED|| cmd.getCmdType()== CmdType.REBORN
-                            || cmd.getCmdType()== CmdType.JUMP) {
+                            || cmd.getCmdType()== CmdType.JUMP|| cmd.getCmdType()== CmdType.CHASE) {
                         humanStates.push(cmd);
                     }
                     else if (cmd.getCmdType()== CmdType.RESULT) {

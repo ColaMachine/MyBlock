@@ -58,7 +58,7 @@ public class GLMaterialLib {
      * 		Ns 300                // shininess 0-1000
      *      d 0.5                 // alpha 0-1
      *      map_Kd texture.jpg    // texture file
-     *                            // blank line ends material definition
+     *                            // blank line ends material def
      * </PRE>
      */
     public GLMaterial[] loadMaterials(BufferedReader br) {

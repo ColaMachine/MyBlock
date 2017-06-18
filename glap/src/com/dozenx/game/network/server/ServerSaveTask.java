@@ -23,26 +23,37 @@ import java.util.Queue;
 import java.util.TimerTask;
 
 /**
+ * 该类的主要作用是将内存中的重要信息同步到磁盘里
  * Created by luying on 16/10/7.
  */
-public class SaveTask extends TimerTask {
+public class ServerSaveTask extends TimerTask {
   ServerContext serverContext;
 
     UserService userService;
     BagService bagService;
     EnemyService enemyService;
-    public SaveTask(ServerContext serverContext){
+    public ServerSaveTask(ServerContext serverContext){
         this.serverContext = serverContext;
         userService = (UserService)serverContext.getService(UserService.class);
         enemyService = (EnemyService)serverContext.getService(EnemyService.class);
         bagService = (BagService)serverContext.getService(BagService.class);
     }
+
+
+    //mainLoop=====>
+    //             1 负责怪物的重生 应该把这个实情交给enemyservice 去处理 然后创建一个enemyDefinition
+    //             2 同步怪物的所有信息
+    //             3 负责玩家的重生信息
+    //             4 负责玩家的所有信息
+    //             5 保存玩家的数据
+    //             6 保存玩家的背包信息
+    //             7 保存玩家的
     //如何把小怪物的动作行动同步到各个客户端呢 一个办法是告诉客户端 怪物的一个5秒动作 即是 要到哪个点 要执行哪个动作 这样能减少客户端的数据交互 所以最终还是得看指令
     public void run(){
         try {
             Long now = TimeUtil.getNowMills();
             for (LivingThingBean livingThing : enemyService.getAllEnemies()) {
-                if (livingThing.isDied() && now - livingThing.getLastHurtTime() > 10 * 1000) {
+
                     livingThing.setNowHP(livingThing.getHP());
                     livingThing.setY(livingThing.getY());
                     //livingThing.setDied(false);
@@ -50,10 +61,14 @@ public class SaveTask extends TimerTask {
                     if (nowHP > livingThing.HP) {
                         nowHP = livingThing.HP;
                     }
+                if (livingThing.isDied() && now - livingThing.getLastHurtTime() > 10 * 1000) {
                     livingThing.setTarget(null);
                     livingThing.setTargetId(0);
                     livingThing.getExecutor().setCurrentState(new IdleState(livingThing));
                     livingThing.setNowHP(nowHP);
+                    RebornCmd rebornCmd = new RebornCmd(livingThing.getId());
+                    serverContext.getMessages().offer(rebornCmd.toBytes());
+                    livingThing.receive(new RebornCmd(livingThing.getId()));
 
                 }
 
@@ -69,7 +84,9 @@ public class SaveTask extends TimerTask {
                 }
 
                 if (livingThing.isDied() && now - livingThing.getLastHurtTime() > 10 * 1000) {//复活的时间
-                    serverContext.getMessages().offer(new RebornCmd(livingThing.getId()).toBytes());
+                    RebornCmd rebornCmd =new RebornCmd(livingThing.getId());
+                    serverContext.getMessages().offer(rebornCmd.toBytes());
+                    livingThing.receive(rebornCmd);
                 }
                 livingThing.setNowHP(nowHP);
 

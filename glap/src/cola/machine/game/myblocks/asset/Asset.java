@@ -19,7 +19,7 @@ package cola.machine.game.myblocks.asset;
 /**
  * Interface common to all assets.
  * <p/>
- * An asset is a resource that is used by the game - a texture, sound, block definition and the like. These are typically
+ * An asset is a resource that is used by the game - a texture, sound, block def and the like. These are typically
  * loaded from a module, although they can also be created at runtime. Each asset is identified by a URI that uniquely
  * identifies it and can be used to obtain it. This uri provides a lightweight way to serialize a reference to an Asset.
  * <p/>

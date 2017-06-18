@@ -1,7 +1,6 @@
 package com.dozenx.game.network.server;
 
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.lifething.manager.BehaviorManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
@@ -86,7 +85,7 @@ public class ChatServer {
 
         timer = new Timer();
         timer.schedule(new GrowTask(serverContext),0, 10*1000);
-        timer.schedule(new SaveTask(serverContext),0, 10*1000);
+        timer.schedule(new ServerSaveTask(serverContext),0, 10*1000);
         System.out.println("Task scheduled.");
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {

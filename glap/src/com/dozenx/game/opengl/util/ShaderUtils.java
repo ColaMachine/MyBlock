@@ -1354,7 +1354,7 @@ try {
         vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-       vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
     }
 

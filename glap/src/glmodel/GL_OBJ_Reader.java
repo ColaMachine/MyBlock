@@ -93,7 +93,7 @@ public class GL_OBJ_Reader {
      * These lines start with v, vt and vn respectively.
      * Second part of file lists faces.  These lines start with f.
      * Each face is defined as a set of verts, usually three, but may be more.
-     * The face definition line contains triplets: three numbers separated by
+     * The face def line contains triplets: three numbers separated by
      * slashes.  Each number is an index into the vert, texture coord, or normal list.
      * NOTE: these lists are indexed starting with 1, not 0.
      */
@@ -237,12 +237,12 @@ public class GL_OBJ_Reader {
     }
 
 	/**
-	 * Read a face definition from line and return a Face object.
+	 * Read a face def from line and return a Face object.
 	 * Face line looks like: f 1/3/1 13/20/13 16/29/16
      * Three or more sets of numbers, each set contains vert/txtr/norm
      * references.  A reference is an index into the vert or txtr
      * or normal list.
-	 * @param line   string from OBJ file with face definition
+	 * @param line   string from OBJ file with face def
 	 * @return       Face object
 	 */
 	private Face readFace(String line) {

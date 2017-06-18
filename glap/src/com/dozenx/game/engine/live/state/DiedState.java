@@ -32,6 +32,9 @@ public class DiedState extends State {
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的
     public void receive(GameCmd gameCmd){//11
         //可以接收复活指令
+        if(livingThing.nowHP>0){
+            this.livingThing.changeState( new IdleState(this.livingThing));
+        }
         if(gameCmd.getCmdType() == CmdType.REBORN){
             this.livingThing.changeState( new IdleState(this.livingThing));
         }else

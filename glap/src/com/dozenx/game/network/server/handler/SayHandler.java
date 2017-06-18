@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.Random;
+import com.dozenx.game.engine.Role.bean.Wolf;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.bean.GameServerRequest;
@@ -11,7 +12,9 @@ import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.service.impl.BagService;
+import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
+import com.dozenx.util.MathUtil;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 
@@ -20,12 +23,13 @@ import core.log.LogUtil;
  */
 public class SayHandler extends GameServerHandler {
     UserService userService;
+    EnemyService enemyService;
     BagService bagService;
     public SayHandler(ServerContext serverContext){
         super(serverContext);
         userService = (UserService)serverContext.getService(UserService.class);
         bagService = (BagService)serverContext.getService(BagService.class);
-
+        enemyService = (EnemyService)serverContext.getService(EnemyService.class);
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
         SayCmd cmd =(SayCmd)request.getCmd();
@@ -51,6 +55,25 @@ public class SayHandler extends GameServerHandler {
                 }
             }
         }*/
+        if(cmd.getMsg().startsWith("/create")){
+            // create wolf x y z
+            String[] arr = cmd.getMsg().split(" ");
+            if(arr.length>=5  && StringUtil.isNumeric(arr[3])) {
+                String name = arr[1];
+                int x= Integer.valueOf(arr[2]);
+                int y= Integer.valueOf(arr[3]);
+                int z= Integer.valueOf(arr[4]);
+
+                if("wolf".equals(name)){
+                    LivingThingBean  wolf  = new LivingThingBean((int)(Math.random()*1000));
+                    wolf.setName("wolf");
+                    wolf.setPosition(x,y,z);
+                    wolf.species=1;
+                    enemyService.addNewMonster(wolf);
+                }
+            }
+
+        }
         if(cmd.getMsg().startsWith("/give")){
             String[] arr = cmd.getMsg().split(" ");
             if(arr.length>=4  && StringUtil.isNumeric(arr[3])) {

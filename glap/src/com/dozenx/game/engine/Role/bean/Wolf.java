@@ -21,7 +21,7 @@ public class Wolf extends LivingThing {
 
     public Wolf(int id) {
         super(id);
-        this.speed=5;
+        this.speed=10;
         this.getExecutor().setModel( new WolfModel(this));
         this.name="wolf";
     }

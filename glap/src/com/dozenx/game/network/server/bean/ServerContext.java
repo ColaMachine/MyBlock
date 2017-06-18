@@ -28,6 +28,7 @@ import java.util.*;
  */
 public class ServerContext {
     public List<LivingThingBean> enemyList = new ArrayList<>();
+    public List<LivingThingBean> deadEnemyList = new ArrayList<>();
     public List<LivingThingBean> onLinePlayer =  new ArrayList<>();
     public List<LivingThingBean> allPlayer =  new ArrayList<>();
     //private Map<Integer,List<ItemServerBean>> itemsMap =  new HashMap<Integer,List<ItemServerBean>>();
