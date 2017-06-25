@@ -13,10 +13,10 @@ import glmodel.GL_Vector;
 /**
  * Created by luying on 17/2/26.
  */
-public class EnemyManager implements  Runnable {
+public class ServerEnemyManager implements  Runnable {
     private ServerContext serverContext  ;
 
-    public EnemyManager(ServerContext serverContext ){
+    public ServerEnemyManager(ServerContext serverContext){
         this.serverContext =serverContext;
         this.userService  =(UserService) serverContext.getService(UserService.class);
         this.enemyService =(EnemyService) serverContext.getService(EnemyService.class);
@@ -24,19 +24,24 @@ public class EnemyManager implements  Runnable {
     UserService userService;
     EnemyService enemyService;
     @Override
+    //首先要确认的是服务器端的怪物逻辑是多少时间一个轮询的
+    //200毫秒一次行不行
+    //各种生物执行update的地方
+    //各种怪物执行思考和行动的地方
     public void run() {
         while(true) {
             try {
 
 
-                enemyServerLoop4CreateCmd();
+                enemyServerLoop();
+                synEnemyPos();
                 //this.findThing();
                // this.doSomeThing();
                // this.changeDir();
                 //this.moveOrAttack();
                 //this.testCmd();
                 try {
-                    Thread.sleep(1000);//1秒同步一次
+                    Thread.sleep(200);//1秒同步一次
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -45,30 +50,40 @@ public class EnemyManager implements  Runnable {
             }
         }
     }
-    public void enemyServerLoop4CreateCmd(){
+    long lastUpdateTime = 0;
+    public void synEnemyPos(){
         for(LivingThingBean enemy : enemyService.getAllEnemies()) {
-            if (!enemy.isDied() ) {//如果自身是有效单位
+            if(!enemy.isDied() && enemy.updateTime>lastUpdateTime){
+                lastUpdateTime=TimeUtil.getNowMills();
+                serverContext.broadCast(new WalkCmd2(enemy.getPosition(),enemy.getPosition(),enemy.getId()).toBytes());
+            }
+        }
+    }
+    //怪物逻辑
+    public void enemyServerLoop(){
+        for(LivingThingBean enemy : enemyService.getAllEnemies()) {
+            if (!enemy.isDied() ) {//如果自身是有效单位 没有死
 
                 if(enemy.getTargetId() > 0){//并且是有目标
                     if(checkEnemyTarget(enemy))//释放无用target 补全缺少target
-                    {
+                    {//追击或者攻击
                         moveOrAttack(enemy);
                     }
-                    //追击或者攻击
+
 
                 }else{//暂时没有目标
-                    if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
+                    //if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
                         //找寻目标
 
                         findTarget(enemy);
-                    }
+                    //}
                 }
                 enemy.getExecutor().getCurrentState().update();
 
             }
         }
-        for(LivingThingBean enemy : userService.getAllOnlinePlayer()) {
-            if (!enemy.isDied() ) {//如果自身是有效单位
+        for(LivingThingBean player : userService.getAllOnlinePlayer()) {
+            if (!player.isDied() ) {//如果自身是有效单位
 
                 /*if(enemy.getTargetId() > 0){//并且是有目标
                     if(checkEnemyTarget(enemy))//释放无用target 补全缺少target
@@ -84,7 +99,7 @@ public class EnemyManager implements  Runnable {
                         //findTarget(enemy);
                     }
                 }*/
-                enemy.getExecutor().getCurrentState().update();
+                //player.getExecutor().getCurrentState().update();
 
             }
         }

@@ -28,7 +28,7 @@ import javax.vecmath.Vector2f;
 /**
  * Created by luying on 17/3/5.
  */
-public class State {
+public class State extends AbstractWalkState{
     boolean disposed =false;
     public void dispose(){
         this.disposed=true;

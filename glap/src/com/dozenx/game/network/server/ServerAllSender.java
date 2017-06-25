@@ -8,10 +8,10 @@ import java.util.*;
 /**
  * Created by luying on 16/10/7.
  */
-public class AllSender extends Thread{
+public class ServerAllSender extends Thread{
     Queue<byte[]> messages;
     List<Worker>  workers;
-    public AllSender(Queue<byte[]> messages,List<Worker> workers){
+    public ServerAllSender(Queue<byte[]> messages, List<Worker> workers){
         this.messages =messages;
         this.workers=workers;
     }

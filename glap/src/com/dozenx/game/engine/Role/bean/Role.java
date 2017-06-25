@@ -24,6 +24,16 @@ public class Role extends ComplexEquipProperties {
     private boolean isPlayer;
     private boolean dirChanged;
 
+    private GL_Vector dest;
+
+    public GL_Vector getDest() {
+        return dest;
+    }
+
+    public void setDest(GL_Vector dest) {
+        this.dest = dest;
+    }
+
     public boolean isDirChanged() {
         return dirChanged;
     }

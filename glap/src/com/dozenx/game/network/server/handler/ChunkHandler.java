@@ -1,14 +1,11 @@
 package com.dozenx.game.network.server.handler;
 
-import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;
-import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.bean.ItemSeed;
-import com.dozenx.game.network.server.GrowTask;
+import com.dozenx.game.network.server.ServerGrowTask;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.ServerContext;
@@ -55,7 +52,7 @@ public class ChunkHandler extends GameServerHandler {
                 ItemSeed itemSeed = new ItemSeed();
                 itemSeed.setPosition(new GL_Vector(cmd.x*16+cmd.cx,cmd.cy,cmd.z*16+cmd.cz));
                 itemSeed.setPlantedTime(TimeUtil.getNowMills());
-                GrowTask.seeds.add(itemSeed);
+                ServerGrowTask.seeds.add(itemSeed);
             }
             broadCast(cmd);
         }

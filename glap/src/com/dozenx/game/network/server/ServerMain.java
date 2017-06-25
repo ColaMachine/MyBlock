@@ -8,7 +8,7 @@ import com.dozenx.game.engine.command.CmdType;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.handler.*;
-import com.dozenx.game.network.server.service.EnemyManager;
+import com.dozenx.game.network.server.service.ServerEnemyManager;
 import com.dozenx.game.network.server.service.impl.BagService;
 import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
@@ -21,12 +21,12 @@ import java.util.*;
 /**
  * Created by luying on 16/10/7.
  */
-public class ChatServer {
+public class ServerMain {
 
     Timer timer;
     ServerContext serverContext =new ServerContext();
     public static void main(String args[]){
-        ChatServer server =new ChatServer();
+        ServerMain server =new ServerMain();
         server.start();
     }
 
@@ -74,17 +74,23 @@ public class ChatServer {
        // GameServerHandler serverHandler = serverContext. allHandlerMap.get(CmdType.LOGIN);
         ServerSocket s = null;
 
-        Thread allSender =new AllSender(serverContext.getMessages(),serverContext.getWorkers());allSender.start();
 
-        EnemyManager enemyManager =new EnemyManager(serverContext);
+        //将message 及时发送
+        Thread allSender =new ServerAllSender(serverContext.getMessages(),serverContext.getWorkers());
+        allSender.start();
+
+        ServerEnemyManager enemyManager =new ServerEnemyManager(serverContext);
        // enemyManager.run();
         new Thread(enemyManager).start();
 
 
 
 
+        //ServerSynTask serverSynTask =new ServerSynTask();
+        //timer.schedule(serverSynTask,0,200);
+
         timer = new Timer();
-        timer.schedule(new GrowTask(serverContext),0, 10*1000);
+        timer.schedule(new ServerGrowTask(serverContext),0, 10*1000);
         timer.schedule(new ServerSaveTask(serverContext),0, 10*1000);
         System.out.println("Task scheduled.");
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();

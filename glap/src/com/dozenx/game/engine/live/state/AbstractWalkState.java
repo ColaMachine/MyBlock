@@ -1,18 +1,11 @@
 package com.dozenx.game.engine.live.state;
 
-import cola.machine.game.myblocks.animation.AnimationManager;
-import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.ui.html.Document;
-import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.util.TimeUtil;
-import com.google.common.collect.LinkedListMultimap;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
-import org.lwjgl.Sys;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -20,10 +13,10 @@ import java.util.Queue;
 /**
  * Created by luying on 17/2/7.
  */
-public class WalkState extends State {
+public class AbstractWalkState  {
 
 
-    public WalkState(LivingThingBean livingThing, int dir ){
+    public AbstractWalkState(LivingThingBean livingThing, int dir){
         //if the lvingthing is player than syn the data to server  form the data to walkcmd2
         super(livingThing);
         if(from== null || to == null){
@@ -34,7 +27,7 @@ public class WalkState extends State {
 
     }
 
-    public WalkState(LivingThingBean livingThing, GL_Vector from ,GL_Vector to ){
+    public AbstractWalkState(LivingThingBean livingThing, GL_Vector from, GL_Vector to){
 
         super(livingThing);
         if(from== null || to == null){

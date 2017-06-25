@@ -25,11 +25,11 @@ import java.util.TimerTask;
 /**
  * Created by luying on 16/10/7.
  */
-public class GrowTask extends TimerTask {
+public class ServerGrowTask extends TimerTask {
   ServerContext serverContext;
 
   public static List<ItemSeed> seeds =new ArrayList<>();
-    public GrowTask(ServerContext serverContext){
+    public ServerGrowTask(ServerContext serverContext){
         this.serverContext = serverContext;
 
     }
