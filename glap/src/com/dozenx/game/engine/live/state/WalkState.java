@@ -115,7 +115,7 @@ public class WalkState extends State {
 
     public void receive(GameCmd gameCmd){//11
         if(gameCmd .getCmdType() == CmdType.WALK2){
-            queue.clear();
+            queue.clear();//queue 存在的好处在于未来可以给运行轨迹插上小旗子
             this.queue.offer(gameCmd);
 
             WalkCmd2 walkCmd2 =(WalkCmd2)gameCmd;
@@ -168,7 +168,11 @@ public class WalkState extends State {
         }
     }
     long lastMoveTime ;
+
     public void update(){
+        this.updatePosition();
+    }
+    public void updatePosition(){
        if(this.disposed){
            LogUtil.err("该state 应该已经结束了 错误了");
            return;

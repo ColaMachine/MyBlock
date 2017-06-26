@@ -21,7 +21,7 @@ public class Wolf extends LivingThing {
 
     public Wolf(int id) {
         super(id);
-        this.speed=10;
+       // this.speed=10;//由于服务器的所有生物都是livingthing 所以速度都是15
         this.getExecutor().setModel( new WolfModel(this));
         this.name="wolf";
     }

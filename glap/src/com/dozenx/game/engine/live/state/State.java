@@ -28,16 +28,74 @@ import javax.vecmath.Vector2f;
 /**
  * Created by luying on 17/3/5.
  */
-public class State extends AbstractWalkState{
+public class State {
     boolean disposed =false;
     public void dispose(){
         this.disposed=true;
     }
-    public void update(){
 
+    long lastTime = 0;
+   // long beginTime = 0;
+    //GL_Vector walkDir = null;
+    float distance =0;
+    long  nowTime = 0 ;
+    public void update(){
+        if(this.livingThing.getDest()!=null){
+            //计算当前和目的地的距离
+            distance= GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
+            if(distance>1){
+                nowTime = TimeUtil.getNowMills();
+                if(nowTime-lastTime>3000){       //如果开始时间是0说明刚开始
+                    lastTime = nowTime;  //修正第一帧 让lastTime一开始等于开始时间 防止移动超过最大距离
+                   // beginTime= TimeUtil.getNowMills();
+                   // walkDir = GL_Vector.sub(livingThing.getDest(),livingThing.getPosition()).normalize();
+                    return;
+                }else{
+
+                    if (nowTime - lastTime >50) {//如果大于50ms才执行
+                        //调整计算新的位置
+                        GL_Vector newPosition = nowPosition(nowTime, lastTime, livingThing.speed, livingThing.getPosition(), livingThing.getDest());
+                        float length = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
+                        if(length<1){
+                            livingThing.setDest(null);
+                            //退出移动
+                            return;
+                        }else if(length>distance){//如果移动举例超过了最大距离 结束移动
+                            livingThing.move(livingThing.getDest().x,livingThing.getDest().y,livingThing.getDest().z);
+                            livingThing.setDest(null);
+                            return;
+                        }else {
+                            livingThing.move(newPosition.x, newPosition.y, newPosition.z);
+                            lastTime = TimeUtil.getNowMills();
+                        }
+                        //LogUtil.println(newPosition.toString());
+
+                    }
+
+                }
+               // GL_Vector dir = GL_Vector.sub(livingThing.getDest(),livingThing.getPosition());
+                //根据时间和速度 起开始位置 目的地 计算当前位置
+
+
+            }else{
+
+                livingThing.setDest(null);
+                //放弃移动了
+                return;
+            }
+            //livingThing.moveTo(livingThing.getDest());
+        }
+    }
+    public GL_Vector nowPosition(long nowTime,long lastTime,float speed,GL_Vector from,GL_Vector to){
+        GL_Vector walkDir = GL_Vector.sub(to,from).normalize();
+        GL_Vector newPosition =  GL_Vector.add(from, GL_Vector.multiplyWithoutY(walkDir,
+                speed/10* (nowTime-lastTime)/1000));
+        return newPosition;
     }
 
     public State(){
+
+
 
     }
     protected LivingThingBean livingThing;
@@ -63,14 +121,17 @@ public class State extends AbstractWalkState{
         if(gameCmd.getCmdType()==CmdType.WALK2){
             WalkCmd2 walkCmd2 = (WalkCmd2)gameCmd;
             if(walkCmd2.stop ==true){
-                this.livingThing.changeState(new IdleState(this.livingThing));
+                //this.livingThing.changeState(new IdleState(this.livingThing));
+                livingThing.setDest(walkCmd2.to);//本来想设置成null的 但是为了服务器和人物的同步还是传了
                 return;
             }
             /*this.from = walkCmd2.from;
             this.to=walkCmd2.to;*/
           /* CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().bodyComponent, "walkerFoward");*/
-            this.livingThing.changeState(new WalkState(this.livingThing, walkCmd2.from, walkCmd2.to));
+           // this.livingThing.changeState(new WalkState(this.livingThing, walkCmd2.from, walkCmd2.to));
             livingThing.setBodyAngle(walkCmd2.bodyAngle);
+
+            this.livingThing.setDest(walkCmd2.to);
         }else
         if(gameCmd.getCmdType()==CmdType.WALK){
             WalkCmd walkCmd = (WalkCmd)gameCmd;

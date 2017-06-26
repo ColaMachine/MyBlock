@@ -41,7 +41,7 @@ public class ServerEnemyManager implements  Runnable {
                 //this.moveOrAttack();
                 //this.testCmd();
                 try {
-                    Thread.sleep(200);//1秒同步一次
+                    Thread.sleep(1000);//1秒同步一次
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -55,7 +55,9 @@ public class ServerEnemyManager implements  Runnable {
         for(LivingThingBean enemy : enemyService.getAllEnemies()) {
             if(!enemy.isDied() && enemy.updateTime>lastUpdateTime){
                 lastUpdateTime=TimeUtil.getNowMills();
-                serverContext.broadCast(new WalkCmd2(enemy.getPosition(),enemy.getPosition(),enemy.getId()).toBytes());
+
+                serverContext.broadCast(new PosCmd(enemy.getInfo()).toBytes());
+                //serverContext.broadCast(new WalkCmd2(enemy.getPosition(),enemy.getPosition(),enemy.getId()).toBytes());
             }
         }
     }
@@ -224,19 +226,25 @@ public class ServerEnemyManager implements  Runnable {
 
 */                      //这段代码会导致一个问题 怪物到了目的地后才会再计算下一个目的地
                        //每隔一段时间就修正怪物的walkstate
-                       if(enemy.getExecutor().getCurrentState() instanceof IdleState ){//就是说还没开始追击
-                           LivingThingBean player= userService.getOnlinePlayerById(enemy.getTargetId());
-                           if(player!= null) {
-                               WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
-                               serverContext.broadCast(walkCmd2.toBytes());
-                               enemy.getExecutor().receive(walkCmd2);
-
-
-                               /*ChaseCmd chaseCmd = new ChaseCmd(enemy.getId(), enemy.getTargetId());
-                               serverContext.broadCast(chaseCmd.toBytes());
-                               enemy.getExecutor().receive(chaseCmd);*/
-                           }
+                       LivingThingBean player= userService.getOnlinePlayerById(enemy.getTargetId());
+                       if(player!= null){
+                           enemy.setDest(player.getPosition());
                        }
+
+//                       if(enemy.getExecutor().getCurrentState() instanceof IdleState ){//就是说还没开始追击
+//
+//                           if(player!= null) {
+//
+//                               //WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
+//                               //serverContext.broadCast(walkCmd2.toBytes()); 这里不再用walkcmd2去同步怪物的移动了
+//                               //enemy.getExecutor().receive(walkCmd2);
+//
+//
+//                               /*ChaseCmd chaseCmd = new ChaseCmd(enemy.getId(), enemy.getTargetId());
+//                               serverContext.broadCast(chaseCmd.toBytes());
+//                               enemy.getExecutor().receive(chaseCmd);*/
+//                           }
+//                       }
 
 
 

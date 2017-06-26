@@ -30,13 +30,13 @@ public class SynchronTask extends Thread{
            // livingThingManager.netWorkUpdate();
 
                //Thread.sleep(100);
-
+                //同步玩家的数据给服务器 服务器再下发给客户端
                 if(livingThingManager.player.updateTime>=lastUpdateTime-400) {
                     lastUpdateTime= TimeUtil.getNowMills();
                     /*String message = "move:" + LivingThingManager.player.id + "," + LivingThingManager.player.position.x
                             + "," + LivingThingManager.player.position.y
                             + "," + LivingThingManager.player.position.z + "," + LivingThingManager.player.WalkDir.x + "," + LivingThingManager.player.WalkDir.y + "," + LivingThingManager.player.WalkDir.z;*/
-                   // client.send(new PosCmd(livingThingManager.player));
+                    client.send(new PosCmd(livingThingManager.player));
                 }
                 Thread.sleep(200);//200 ms
             } catch (Exception e) {

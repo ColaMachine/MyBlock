@@ -25,18 +25,19 @@ public class IdleState extends State{
 
 
     public void update(){
-        if(GamingState.player!=null) //只能客户端使用
-        if(!this.livingThing.isPlayer() &&!(this.livingThing instanceof Player) ){
-            int x =0;
-            int y=0;
-            int z=0;
-            x= RandomUtil.getRandom(-15,15);
-            z=  RandomUtil.getRandom(-15,15);
-            //这里不加时间间隔会导致多次重复发送
-          /*  WalkCmd2 walkCmd = new WalkCmd2(livingThing.getPosition(),new GL_Vector(x,1,z),this.livingThing.getId());
-
-            CoreRegistry.get(Client.class).send(walkCmd);*/
-        }
+        super.update();
+//        if(GamingState.player!=null) //只能客户端使用
+//        if(!this.livingThing.isPlayer() &&!(this.livingThing instanceof Player) ){
+//            int x =0;
+//            int y=0;
+//            int z=0;
+//            x= RandomUtil.getRandom(-15,15);
+//            z=  RandomUtil.getRandom(-15,15);
+//            //这里不加时间间隔会导致多次重复发送
+//          /*  WalkCmd2 walkCmd = new WalkCmd2(livingThing.getPosition(),new GL_Vector(x,1,z),this.livingThing.getId());
+//
+//            CoreRegistry.get(Client.class).send(walkCmd);*/
+//        }
 
     }
 

@@ -207,8 +207,8 @@ public class MouseControlCenter {
                 //return ;
                 walkCmd.stop =true;
             }
-            client.send(walkCmd);
-
+            //client.send(walkCmd);
+            player.receive(walkCmd);
             lastkeyPressTime=TimeUtil.getNowMills();
 
         }

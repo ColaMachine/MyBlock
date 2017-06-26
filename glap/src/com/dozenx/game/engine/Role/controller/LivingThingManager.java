@@ -285,7 +285,7 @@ public class LivingThingManager {
         while(client.movements.size()>0 && client.movements.peek()!=null){
             PosCmd cmd = (PosCmd)client.movements.pop();
             int id = cmd.userId;
-            if(player.getId() == id){
+            if(player.getId() == id){ //不要同步本大爷的数据给本大爷
                /* player.setPosition(x,y,z);
                 player.WalkDir.x= x1;
                 player.WalkDir.y= y1;
@@ -315,7 +315,8 @@ public class LivingThingManager {
                 this.add(livingThing);*/
             }
             //同步用户的位置 面向
-            livingThing.setPosition(x,y,z);
+            livingThing.setDest(new GL_Vector(x,y,z));
+            //livingThing.setPosition(x,y,z);
             livingThing.setBodyAngle(bodyAngle);
             livingThing.setHeadAngle( headAngle);
             livingThing.setHeadAngle2( headAngle2);

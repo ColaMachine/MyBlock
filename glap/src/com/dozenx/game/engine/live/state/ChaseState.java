@@ -70,7 +70,7 @@ public class ChaseState extends State {
         diedProcessor();
         noTargetProcessor();
         long nowTime = TimeUtil.getNowMills();
-        if (nowTime - lastMoveTime >200) {
+        if (nowTime - lastMoveTime >1000) {
             //Player player= CoreRegistry.get(Player.class);
             //AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             //manager.apply(getModel().bodyComponent, "walkerFoward");
