@@ -114,7 +114,7 @@ public class ServerEnemyManager implements  Runnable {
             livingThingBean.setTarget(null);
             return false;
         }else
-        if (GL_Vector.length(GL_Vector.sub(livingThingBean.getPosition(), player.getPosition())) >100 ) {
+        if (GL_Vector.length(GL_Vector.sub(livingThingBean.getPosition(), player.getPosition())) >100 ) {//如果距离太远了 就失去目标
             if(TimeUtil.getNowMills()-livingThingBean.getLastHurtTime()>10*1000) {//如果上次伤害还没超过多少时间
 
                 livingThingBean.setTargetId(0);
@@ -210,7 +210,7 @@ public class ServerEnemyManager implements  Runnable {
 
                 GL_Vector direction = GL_Vector.sub(enemy.getTarget().getPosition(),enemy.getPosition());
                 //enemy.setWalkDir(direction);
-                   if(GL_Vector.length(direction)<5){
+                   if(GL_Vector.length(direction)<2){
                        AttackCmd attackCmd = new AttackCmd( enemy.getId(),AttackType.KAN,enemy.getTargetId());
                        serverContext.broadCast(attackCmd.toBytes());
                        enemy.getExecutor().receive(attackCmd);
@@ -229,6 +229,8 @@ public class ServerEnemyManager implements  Runnable {
                        LivingThingBean player= userService.getOnlinePlayerById(enemy.getTargetId());
                        if(player!= null){
                            enemy.setDest(player.getPosition());
+
+                           enemy.setBodyAngle( GL_Vector.getAnagleFromXZVectory(direction));
                        }
 
 //                       if(enemy.getExecutor().getCurrentState() instanceof IdleState ){//就是说还没开始追击

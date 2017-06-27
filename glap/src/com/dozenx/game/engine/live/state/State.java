@@ -45,7 +45,7 @@ public class State {
             distance= GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
             if(distance>1){
                 nowTime = TimeUtil.getNowMills();
-                if(nowTime-lastTime>3000){       //如果开始时间是0说明刚开始
+                if(lastTime==0){       //如果开始时间是0说明刚开始
                     lastTime = nowTime;  //修正第一帧 让lastTime一开始等于开始时间 防止移动超过最大距离
                    // beginTime= TimeUtil.getNowMills();
                    // walkDir = GL_Vector.sub(livingThing.getDest(),livingThing.getPosition()).normalize();
@@ -84,6 +84,8 @@ public class State {
                 return;
             }
             //livingThing.moveTo(livingThing.getDest());
+        }else{
+            lastTime=0;//归零
         }
     }
     public GL_Vector nowPosition(long nowTime,long lastTime,float speed,GL_Vector from,GL_Vector to){
