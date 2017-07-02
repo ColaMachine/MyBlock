@@ -21,7 +21,11 @@ public class SocketUtil {
         }
         int length = ByteUtil.getInt(bytes);
         //ByteUtil.clear(bytes);
-
+        if (length == 0) {
+           LogUtil.err("读取的数据为0");
+        //Thread.sleep(1000);
+       // continue;
+        }
 
         //int n=0;
 

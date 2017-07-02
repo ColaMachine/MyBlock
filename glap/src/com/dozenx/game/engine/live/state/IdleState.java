@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.live.state;
 
+import cola.machine.game.myblocks.animation.Animation;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
@@ -22,10 +23,23 @@ import glmodel.GL_Vector;
  */
 public class IdleState extends State{
 
-
+    long lastTime =0;
 
     public void update(){
         super.update();
+        if(GamingState.player!=null) {
+            if (TimeUtil.getNowMills() - lastTime > 10000) {
+                if (Math.random() * 10 > 5)
+
+                    CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(), "run");
+                    //CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(),"wag_head");
+                else
+                    CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(), "wag_tail");
+
+                lastTime = TimeUtil.getNowMills();
+            }
+        }
+
 //        if(GamingState.player!=null) //只能客户端使用
 //        if(!this.livingThing.isPlayer() &&!(this.livingThing instanceof Player) ){
 //            int x =0;

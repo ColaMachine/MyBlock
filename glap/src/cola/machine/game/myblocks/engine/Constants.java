@@ -17,8 +17,8 @@ public class Constants {
     public final static byte end=(byte)112;
     public static  int USER_ID=30;
     public static final int FPS=30;
-    public static final int WINDOW_WIDTH=1152;
-    public static final int WINDOW_HEIGHT=720;
+    public static final int WINDOW_WIDTH=600;
+    public static final int WINDOW_HEIGHT=600;
     public static final String ENTITY_DATA_FILE="entity.dat";
     public static final int DEFAULT_PORT=25777;//server port
     public static final String WORLD_DATA_FILE="world.dat";

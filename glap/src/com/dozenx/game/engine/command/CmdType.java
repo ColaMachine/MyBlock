@@ -78,7 +78,7 @@ public enum CmdType {
 
     public static void printReceive(byte[] bytes){
         if(ByteUtil.getInt(bytes) != CmdType.POS.ordinal()){
-            LogUtil.println("receive "+CmdType.values()[ByteUtil.getInt(bytes)]+" content"+bytes.length);
+           // LogUtil.println("receive "+CmdType.values()[ByteUtil.getInt(bytes)]+" content"+bytes.length);
         }
 
     }

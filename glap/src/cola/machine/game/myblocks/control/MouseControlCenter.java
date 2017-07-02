@@ -23,6 +23,7 @@ import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.engine.live.state.WalkState;
+import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
@@ -199,8 +200,8 @@ public class MouseControlCenter {
             }else if(key == WalkCmd.STOP){
                 to=from;
             }
-            LogUtil.println("from:"+from);
-            LogUtil.println("to:"+to);
+           // LogUtil.println("from:"+from);
+            //LogUtil.println("to:"+to);
             WalkCmd2 walkCmd =new WalkCmd2(from,to,player.getId());
             walkCmd.bodyAngle = player.getBodyAngle();
             if(key == WalkCmd.STOP){
@@ -1033,13 +1034,29 @@ public class MouseControlCenter {
             LogUtil.println(player.position.toString());
         }
         else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
-           // CoreRegistry.get(ToolBar.class).keyDown(1);
-        }
+            CoreRegistry.get(ToolBarView.class).keyDown(1);
+        }   else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(2);
+    }
+    else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(3);
+    } else if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(4);
+    } else if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(5);
+    } else if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(6);
+    } else if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(7);
+    } else if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(8);
+    }
+    if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+        CoreRegistry.get(ToolBarView.class).keyDown(9);
+    }
         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
             CoreRegistry.get(ToolBar.class).keyDown(1);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
-            CoreRegistry.get(ToolBar.class).keyDown(2);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+      else if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
             double timenow = GLApp.getTimeInSeconds();
 
             if ((timenow - preKeyTime) < 500) {
@@ -1068,22 +1085,7 @@ public class MouseControlCenter {
             }
             preKeyTime = timenow;
             CoreRegistry.get(Bag.class).changeShow();
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
-            CoreRegistry.get(ToolBar.class).keyDown(3);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
-            CoreRegistry.get(ToolBar.class).keyDown(4);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
-            CoreRegistry.get(ToolBar.class).keyDown(5);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
-            CoreRegistry.get(ToolBar.class).keyDown(6);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
-            CoreRegistry.get(ToolBar.class).keyDown(7);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
-            CoreRegistry.get(ToolBar.class).keyDown(8);
-        }
-if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
-CoreRegistry.get(ToolBar.class).keyDown(9);
-} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+       else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
 double timenow = GLApp.getTimeInSeconds();
 if ((timenow - preKeyTime) < 1) {
 return;

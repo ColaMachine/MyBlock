@@ -29,7 +29,8 @@ public class ItemUtil {
         return null;
     }
     public static ItemServerBean toItemServerBean(ItemBean itemBean){
-        if(itemBean==null)return null;
+        if(itemBean==null || itemBean.getItemDefinition() ==null)return null;
+
         ItemServerBean  itemServerBean=new ItemServerBean();
         itemServerBean.setId(itemBean.getId());
         itemServerBean.setItemType(itemBean.getItemDefinition().getItemType().ordinal());

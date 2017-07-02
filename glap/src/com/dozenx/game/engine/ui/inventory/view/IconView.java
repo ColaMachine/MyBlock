@@ -39,7 +39,7 @@ import core.log.LogUtil;
 import javax.vecmath.Vector4f;
 
 /**
- *
+ * iconview 就是 itembean 的展现层
  * @author Matthias Mann
  */
 public class IconView extends HtmlObject {
@@ -97,7 +97,7 @@ public class IconView extends HtmlObject {
         if(itemBean==null || itemBean.getItemDefinition() == null || itemBean.getItemDefinition().getItemModel()==null){
             LogUtil.err(" null ");
         }
-        this.setBackgroundImage(new Image(itemBean.getItemDefinition().getItemModel().getIcon()));
+         this.setBackgroundImage(new Image(itemBean.getItemDefinition().getItemModel().getIcon()));
    /*     icon2= TextureManager.getItemCfg(itemBean.getName()).getIcon();
         if(icon2==  null){
             assert icon2!=null;

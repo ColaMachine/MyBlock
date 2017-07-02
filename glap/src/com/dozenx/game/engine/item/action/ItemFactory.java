@@ -24,7 +24,7 @@ public class ItemFactory {
     public ItemDefinition parse(Map map ) throws CloneNotSupportedException {
 //        String type = MapUtil.getStringValue(map, "type");
       String name = MapUtil.getStringValue(map,"name");
-        if(name.equals("arrow")){
+        if(name.equals("tree_seed")){
             LogUtil.println("is arrow");
         }
 //        String category = MapUtil.getStringValue(map,"category");
@@ -66,7 +66,7 @@ public class ItemFactory {
                 itemDef = new WeaponDefinition();
             }else
             if(engine .equals("seed")){
-                itemDef = new WeaponDefinition();
+                itemDef = new SeedDefinition();
             }else{
                 LogUtil.err("not here");
             }

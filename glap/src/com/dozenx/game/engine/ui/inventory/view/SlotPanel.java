@@ -141,12 +141,21 @@ public class SlotPanel extends HtmlObject {
             }
         }*/
     }
+
+    /**
+     * 响应鼠标放开事件 mouse_btnup
+     * @param slot 拖动开始的slot
+     * @param evt
+     */
     void drop(ItemSlotView slot, Event evt) {
-        if(dragSlot != null) {
+        if(dragSlot != null) {//重新获取一个当前的 this slotPanel parent body
             HtmlObject w = this.getParent().getParent().getWidgetAt(evt.getMouseX(), evt.getMouseY());
            // if(w.getParent() instanceof PersonPanel) {
                 //LogUtil.println("拖到了person上");
            // }
+            if(w instanceof IconView) {
+                setDropSlot((ItemSlotView)(w.parentNode));
+            }else
             if(w instanceof ItemSlotView) {
                 //System.out.println(1);
                 setDropSlot((ItemSlotView)w);
@@ -156,6 +165,11 @@ public class SlotPanel extends HtmlObject {
         }
     }
 
+    /**
+     *
+     * @param slot 拖动开始的slot
+     * @param evt
+     */
     void dragStopped(ItemSlotView slot, Event evt) {
         if(dragSlot != null) {
             drop(slot, evt);

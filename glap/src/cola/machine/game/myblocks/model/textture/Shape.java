@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model.textture;
 
 import com.dozenx.game.engine.element.model.ShapeFace;
+import com.dozenx.util.StringUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -252,7 +253,9 @@ public class Shape  {
      * @throws Exception
      */
     public static Float parsePosition(String str,Float width,Float height,Float thick,Float pwidth,Float pheight,Float pthick) throws Exception {
-
+    if(StringUtil.isBlank(str)){
+        return 0f;
+    }
     Pattern pattern = Pattern.compile("\\d+\\.?\\d*");
     Matcher matcher = pattern.matcher(str);
     if(matcher.matches()){

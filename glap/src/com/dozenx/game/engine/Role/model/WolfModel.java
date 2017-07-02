@@ -30,7 +30,17 @@ import java.util.List;
  * Created by luying on 17/3/5.
  */
 public class WolfModel extends BaseModel{
+    //狼有好几种动作 摇尾巴
 
+    //伸懒腰
+
+    //嗅探
+
+    //奔跑
+
+    //撕咬
+
+    //拖拽
 
     public WolfModel(Role role){
         super(role);

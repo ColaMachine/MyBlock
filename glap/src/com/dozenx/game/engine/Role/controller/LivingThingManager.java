@@ -198,7 +198,7 @@ public class LivingThingManager {
         return null;
     }*/
     public void chooseObject(LivingThing livingThing){
-       if(livingThing==null && player.getTarget()!=null){
+       if(livingThing==null || player.getTarget()!=null){//取消选择物体
            CoreRegistry.get(HeadPanel.class).setVisible(false);
           // player.getTarget().getModel().unSelect();
            player.setTarget(null);
@@ -216,7 +216,8 @@ public class LivingThingManager {
 
            // LogUtil.println(fromV.toString() );
            // LogUtil.println(directionV.toString() );
-           if( /*aabb.intersectRectangle(fromV,directionV)*/GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
+           if( aabb.intersectRectangle(fromV,directionV)){
+            //GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
             //   LogUtil.println("选中了");
                //this.target=livingThing;
                livingThing.select();

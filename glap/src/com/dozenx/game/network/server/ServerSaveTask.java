@@ -54,7 +54,7 @@ public class ServerSaveTask extends TimerTask {
             Long now = TimeUtil.getNowMills();
             for (LivingThingBean livingThing : enemyService.getAllEnemies()) {
 
-                    livingThing.setNowHP(livingThing.getHP());
+                    //livingThing.setNowHP(livingThing.getHP());
                     livingThing.setY(livingThing.getY());
                     //livingThing.setDied(false);
                     int nowHP = livingThing.nowHP + 10;

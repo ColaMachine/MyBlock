@@ -39,7 +39,7 @@ public class ChatPanel extends HtmlObject {
         this.setBorderColor(new Vector4f(1,1,1,1));
         this.setBorderWidth(1);
         this.position=HtmlObject.POSITION_ABSOLUTE;
-        this.setTop(400);
+        this.setTop(Constants.WINDOW_HEIGHT-180-40);
         this.setLeft(0);
         //setTitle("Chat");
         CoreRegistry.put(ChatPanel.class,this);

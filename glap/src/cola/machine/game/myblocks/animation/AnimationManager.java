@@ -26,7 +26,7 @@ public class AnimationManager {
 
     public AnimationManager(){
         this.init();
-        CoreRegistry.put(AnimationManager.class,this);
+            CoreRegistry.put(AnimationManager.class,this);
 
     }
     public void clear(Component component){
@@ -107,13 +107,18 @@ public class AnimationManager {
         StringBuffer content = new StringBuffer();
         File file =new File(path);
         try {
+
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             String line;
             try {
                  line= br.readLine();
+
                 while(line!=null){
-                    content.append(line);
+                    if(!line.trim().startsWith("//")){
+                        content.append(line);
+                    }
+
                     line=br.readLine();
                 }
             } catch (IOException e) {
@@ -355,7 +360,13 @@ public class AnimationManager {
         return 0;
     }
     public  void init(){
-
+         domAnimationsMap.clear();
+        //framesName ==> keyframes 是animation对应的关键帧
+        keyFramesMap.clear();
+        //animator 是动画的执行过程
+       animators.clear();
+        //id:action==>animator
+        id2animatorMap.clear();
         /*Pattern p=Pattern.compile("rotate([XYZ])\\((\\d+)deg\\)");
         Matcher m=p.matcher("rotateX(12deg)rotateY(12deg)");
         while(m.find()){

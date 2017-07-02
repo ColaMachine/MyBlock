@@ -40,13 +40,13 @@ public class ChunkHandler extends GameServerHandler {
        // TeraArray ary = chunk .getBlockData();
 
         if(cmd.type==0){
-            LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z);
+            //LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z);
             ChunkResponseCmd chunkCmd =new ChunkResponseCmd(chunk);
 
             // return new ResultCmd( chunkCmd.toBytes());
             return new ResultCmd(0,chunkCmd.toBytes(),0);
         }else if(cmd.type==1||cmd.type==2){// 增加方块 或者 删除方块
-            LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z+"");
+            //LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z+"");
             chunk.setBlock(cmd.cx,cmd.cy,cmd.cz,cmd.blockType);
             if(cmd.blockType == ItemType.tree_seed.ordinal() ){
                 ItemSeed itemSeed = new ItemSeed();

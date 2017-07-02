@@ -231,7 +231,7 @@ public class Animator {
 
                 if(animation.animation_direction.equals("alternate")){
                     direction=!direction;
-                    LogUtil.println("反向运动"+direction);
+                   // LogUtil.println("反向运动"+direction);
                 }else{
 
                 }

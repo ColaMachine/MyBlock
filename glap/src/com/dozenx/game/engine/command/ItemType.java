@@ -6,7 +6,7 @@ package com.dozenx.game.engine.command;
 public enum ItemType {
     NULL,/*fur_shoulder,*/fur_helmet,/*chain_helmet,*/
     chain_helmet,iron_helmet,gold_helmet,flint,firestone,
-    coal,rope,seed,apple,gold_apple,egg,sugar,ice_ball,
+    coal,rope,/*seed,*/apple,gold_apple,egg,sugar,ice_ball,
     head_slot,fur_armor,chain_armor,iron_armor,diamond_armoriron_cloth,
     gold_armor,arch,stone_bar,iron_bar,feather,wheat,photo_frame,
     sugarcane,bone,cacke,rubber_ball,body_slot,fur_pants,chain_pants,

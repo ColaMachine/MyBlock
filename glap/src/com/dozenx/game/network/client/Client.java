@@ -198,7 +198,7 @@ public class Client extends Thread{
             }*/
             //pw.flush();
             byte[] bytes=new byte[4096];
-            int n=0;
+            int n1=0;
             while(true){//不断读取数据 然后压入到messages里 由界面端显示出stack
                 //String str = br.readLine();
                 if(BlockEngine.engine.getState() instanceof StartMenuState){
@@ -267,13 +267,13 @@ public class Client extends Thread{
                 CmdType.printReceive(newBytes);
                // LogUtil.println("client 准备接收数据类型:"+ CmdType.values()[ByteUtil.getInt(newBytes)]+"长度:"+(length));
                 try {
-                    if (n == 0) {
-                        LogUtil.err("读取的数据为0");
+                   // if (n == 0) {
+                     //   LogUtil.err("读取的数据为0");
                         //Thread.sleep(1000);
                         //continue;
-                    }
+                   // }
                     GameCmd cmd = CmdUtil.getCmd(newBytes);
-                    LogUtil.println("the received cmd was : "+cmd.getCmdType());
+                   // LogUtil.println("the received cmd was : "+cmd.getCmdType());
                     if (cmd.getCmdType()== CmdType.EQUIP) {//equip
                         equips.push((EquipCmd) cmd);
 

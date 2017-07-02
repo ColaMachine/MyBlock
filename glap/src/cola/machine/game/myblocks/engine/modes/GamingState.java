@@ -165,11 +165,30 @@ public class GamingState implements GameState {
             document= Document.getInstance();
             document .body.removeChild();
 
-            document.body.appendChild(new InventoryPanel(4,5));
-            document.body.appendChild(new PersonPanel(1,5));
-            document.body.appendChild(new ToolBarView(10,1));
-            document.body.appendChild(new ButtonBarView());
-            document.body.appendChild(new ChatPanel());
+            InventoryPanel inventory = new InventoryPanel(4,5);
+            inventory.setTop(100);
+            inventory.setLeft(0);
+            inventory.setVisible(false);
+            document.body.appendChild(inventory);
+            PersonPanel personPanel = new PersonPanel(1,5);
+            personPanel.setVisible(false);
+            document.body.appendChild(personPanel);
+            personPanel.setTop(100);
+            personPanel.setLeft(300);
+
+            ToolBarView toolBarView = new ToolBarView(10,1);
+
+            toolBarView.setTop(Constants.WINDOW_HEIGHT-40);
+            toolBarView.setLeft(0);
+            document.body.appendChild(toolBarView);
+
+            ButtonBarView buttonBarView = new ButtonBarView();
+            buttonBarView.setLeft(40*10);
+            buttonBarView.setTop(Constants.WINDOW_HEIGHT-40);
+            document.body.appendChild(buttonBarView);
+            ChatPanel chatPanel =new ChatPanel();
+            document.body.appendChild(chatPanel);
+            
             Div crossDiv = new Div();
             crossDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("cross")));
             crossDiv.setWidth(20);

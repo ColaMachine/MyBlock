@@ -1,8 +1,10 @@
 package com.dozenx.game.engine.ui.ButtonBar.view;
 
+import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.model.ui.html.Button;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 
 /**
  * Created by dozen.zhang on 2017/5/31.
@@ -42,6 +44,23 @@ public class ButtonBarView extends HtmlObject {
                 //背包隐藏或者显示
                 HtmlObject dom = getDocument().getElementById("personalPanel");
                 dom.setVisible(!dom.isVisible());
+                Document.needUpdate=true;
+            }
+        });
+
+
+
+        Button reloatAnimation =new Button();
+        reloatAnimation.innerText = "动画重置";
+        reloatAnimation.setWidth(50);
+        reloatAnimation.setHeight(80);
+        this.appendChild(reloatAnimation);
+        reloatAnimation.addCallback(new Runnable() {
+            @Override
+            public void run() {
+
+                CoreRegistry.get(AnimationManager.class).init();
+
                 Document.needUpdate=true;
             }
         });

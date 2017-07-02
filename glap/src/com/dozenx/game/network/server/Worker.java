@@ -93,7 +93,7 @@ public class Worker extends Thread {
                 // CmdType.printSend(ByteUtil.slice(bytes,4,4));
 //                LogUtil.println("server 准备发送数据类型:");
                 try{
-                    LogUtil.println("server 准备发送数据类型:" + CmdUtil.getCmd(bytes).toString() + "长度:" + (bytes.length - 4));
+                   // LogUtil.println("server 准备发送数据类型:" + CmdUtil.getCmd(bytes).toString() + "长度:" + (bytes.length - 4));
                 }catch (ArrayIndexOutOfBoundsException e) {
                     LogUtil.err(e);
                 }

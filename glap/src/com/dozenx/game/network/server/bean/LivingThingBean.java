@@ -314,7 +314,7 @@ public class LivingThingBean extends Role {
                 +"魔法:"+nowMP+"/"+MP+"\n"
                 +"防御:"+defense+"\n"
                 +"攻击:"+pattack+"\n"
-                +"位置x:"+this.getPosition().x+"y:"+this.getPosition().y+"z:"+this.getPosition().z+"\n"
+                +"位置x:"+(int)this.getPosition().x+"y:"+(int)this.getPosition().y+"z:"+(int)this.getPosition().z+"\n"
                 +"方向:"+this.getViewDir().x+"y:"+this.getViewDir().y+"z:"+this.getViewDir().z+"\n";
 
 

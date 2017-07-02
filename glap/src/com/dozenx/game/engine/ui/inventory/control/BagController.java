@@ -194,7 +194,7 @@ public class BagController {
         }
         itemBeans[position]= itemBean;
         itemBean.setPosition(position);*/
-        if(destBean==null){//拖过去
+        if(destBean==null || destBean.getItemDefinition()==null){//拖过去
             itemBeans[destPosition]= itemBean;itemBean.setPosition(destPosition);
             itemBeans[fromPosition]= null;
         }else

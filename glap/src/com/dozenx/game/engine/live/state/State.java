@@ -48,7 +48,9 @@ public class State {
                 if(lastTime==0){       //如果开始时间是0说明刚开始
                     lastTime = nowTime;  //修正第一帧 让lastTime一开始等于开始时间 防止移动超过最大距离
                    // beginTime= TimeUtil.getNowMills();
-                   // walkDir = GL_Vector.sub(livingThing.getDest(),livingThing.getPosition()).normalize();
+                    if(GamingState.player!=null) {
+                        CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(), "walkerFoward");
+                    } // walkDir = GL_Vector.sub(livingThing.getDest(),livingThing.getPosition()).normalize();
                     return;
                 }else{
 
@@ -229,6 +231,10 @@ public class State {
 //                AttackManager.add(new TimeString(cmd.getAttackValue(),));
                         //如果是客户端可以加服务器就免了
                         if(GamingState.player!=null) {
+                            if(livingThing.getTarget().isDied()){
+                                CoreRegistry.get(AnimationManager.class).apply(             livingThing.getTarget().getModel().getRootComponent(), "died");
+
+                            }
                             Vector2f xy = OpenglUtils.wordPositionToXY(projection, livingThing.getTarget().getPosition(), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
                             AttackManager.addText(new TimeString("砍伤" + cmd.getAttackValue(), xy.x * Constants.WINDOW_WIDTH, xy.y * Constants.WINDOW_HEIGHT));
                             Document.needUpdate = true;

@@ -56,7 +56,7 @@ public class PersonPanel extends SlotPanel {
 
 
         for(int i=20;i<=24;i++){
-            if(itemBeanList[i]!=null) {
+            if(itemBeanList[i]!=null && itemBeanList[i].getItemDefinition()!=null) {
                 slot[i-20].setIconView(new IconView(itemBeanList[i]));
             }else{
                 slot[i-20].setIconView(null);

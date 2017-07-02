@@ -613,6 +613,19 @@ public class TextureManager {
                         shape.setWidth(width);
                         shape.setHeight(height);
                         shape.setThick(thick);
+
+
+                        shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, 0f, 0f,0f));
+
+                        //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
+                        shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, 0f, 0f,0f));
+
+                        shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick,  0f, 0f,0f));
+
+                        shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick,  0f, 0f,0f));
+                        shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick,  0f, 0f,0f));
+                        shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick,  0f, 0f,0f));
+
                     }
                     if (shapeType == 3) {
                         if (!isEmpty(front)) {

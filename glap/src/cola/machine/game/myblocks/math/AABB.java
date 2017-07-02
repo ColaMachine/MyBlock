@@ -19,6 +19,7 @@ package cola.machine.game.myblocks.math;
 //import com.bulletphysics.linearmath.AabbUtil2;
 //import com.bulletphysics.linearmath.Transform;
 import com.google.common.base.Objects;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 import gnu.trove.list.TFloatList;
 
@@ -407,45 +408,40 @@ public final class AABB {
     public int hashCode() {
         return Objects.hashCode(min, max);
     }
-
+    //from = {javax.vecmath.Vector3f@3111}"(1.973442, 3.0, -8.617493)"
+    //direction = {javax.vecmath.Vector3f@3112}"(-0.107100524, -0.36650136, 0.9242328)"
     public boolean intersectRectangle(Vector3f from, Vector3f direction) {
-        Vector3f dirfrac = new Vector3f();
+
         //(0.5, 65.0, -40.5)  //(1.5, 66.5, -39.5)  //(-0.044776313, 0.5225283, -0.8514454)
 
         GL_Vector newMin = new GL_Vector();
+        //min = {javax.vecmath.Vector3f@2756}"(0.5, 1.0, 0.5)"
         newMin.x= min.x - from.x;
         newMin.y= min.y - from.y;
         newMin.z= min.z - from.z;
-
+       // LogUtil.println("newMin:"+newMin);
+        //max = {javax.vecmath.Vector3f@3106}"(1.5, 2.5, 1.5)"
         GL_Vector newMax = new GL_Vector();
         newMax.x= max.x - from.x;
         newMax.y= max.y - from.y;
         newMax.z= max.z - from.z;
+      //  LogUtil.println("newMax:"+newMax);
 
 
-        dirfrac.x = 1.0f / direction.x;
-        dirfrac.y = 1.0f / direction.y;
-        dirfrac.z = 1.0f / direction.z;
+        //四线段交集问题
 
-        float t1 = (min.x - from.x) * dirfrac.x;
-        float t2 = (max.x - from.x) * dirfrac.x;
-        float t3 = (min.y - from.y) * dirfrac.y;
-        float t4 = (max.y - from.y) * dirfrac.y;
-        float t5 = (min.z - from.z) * dirfrac.z;
-        float t6 = (max.z - from.z) * dirfrac.z;
-
-        float tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
-        float tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
-
-        if (tmax < 0) {
-            return false;
+        //minX minY maxX maxY
+//       boolean xy = ;
+//        boolean xz = ;
+//        boolean yz = ;
+        if(jiaoji(newMin.x,newMin.y,newMax.x,newMax.y,direction.x/direction.y)
+                &&
+                jiaoji(newMin.x,newMin.z,newMax.x,newMax.z,direction.x/direction.z)
+                && jiaoji(newMin.y,newMin.z,newMax.y,newMax.z,direction.y/direction.z) ){
+            return true;
         }
 
-        if (tmin > tmax) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
 
@@ -503,5 +499,33 @@ public final class AABB {
         Vector3f vector3f=new Vector3f(-0.110462874f, 3.7768552f, -21.9966764f);
 
         System.out.print(aabb.intersectRectangle(from,vector3f));
+    }
+
+    public static boolean jiaoji(float minX,float minY,float maxX,float maxY, float ratioXY){
+
+        //minY
+        float value = ratioXY*minY;
+        if(value>=minX && value<=maxX){
+            return true;
+        }
+
+        //maxY
+        value = ratioXY*maxY;
+        if(value>=minX && value<=maxX){
+            return true;
+        }
+
+
+        //minX
+
+        value = minX / ratioXY;
+        if(value>=minY && value<=maxY){
+            return true;
+        }
+        value = maxX / ratioXY;
+        if(value>=minY && value<=maxY){
+            return true;
+        }
+        return false;
     }
 }
