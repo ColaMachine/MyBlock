@@ -50,6 +50,7 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
     	blockManager=CoreRegistry.get(BlockManager.class);
     	this.storageManager=storageManager;
     	this.generator=generator;
+        CoreRegistry.put(ChunkProvider.class,this);
     }
 
     public ServerChunkProvider(){

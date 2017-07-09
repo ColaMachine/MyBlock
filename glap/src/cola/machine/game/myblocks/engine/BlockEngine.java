@@ -20,6 +20,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.dozenx.util.TimeUtil;
 import org.lwjgl.Sys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,8 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 public class BlockEngine implements GameEngine{
     public static GameEngine engine;
    private static final Logger logger =LoggerFactory.getLogger(BlockEngine.class);
-	
+	long nowTime;
+    long lastTime;
    private GameState currentState;
    private boolean initialised;
    private boolean running;
@@ -172,12 +174,18 @@ public class BlockEngine implements GameEngine{
             LogUtil.println("updateCycles.next"+(nowTime-startTime));
             startTime = nowTime;*/
             float delta = totalDelta / 1000f;
+            TimeUtil.update();
             //FPS的控制是在LwjglGraphics里的 Display.sync里控制的
-            currentState.update(totalDelta);//statemainmenu
+             nowTime = TimeUtil.getNowMills();
+            if(nowTime-lastTime > 100){
+                lastTime = nowTime;
+                currentState.update(totalDelta);//statemainmenu
+            }
+
             for (EngineSubsystem subsystem : getSubsystems()) {
                 subsystem.preUpdate(currentState, delta);
             }
-            /*nowTime = System.currentTimeMillis();;
+             /*System.currentTimeMillis();;
             LogUtil.println("preUpdate"+(nowTime-startTime));
             startTime = nowTime;*/
            /* try{

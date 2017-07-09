@@ -88,6 +88,10 @@ public class TeraDenseArray16Bit extends TeraDenseArray {
 
     @Override
     public int get(int x, int y, int z) {
+        int index = pos(x, y, z);
+        if(index<0){
+            LogUtil.err("不能为负数");
+        }
         return data[pos(x, y, z)];
     }
 

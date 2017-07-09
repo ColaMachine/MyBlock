@@ -824,16 +824,16 @@ public class MouseControlCenter {
                 //获得朝向
                 //判断选择的方块是不是门之类的
                 //Integer blockType = ((Block)arr[2]).getId();
-                Block block = arr.targetBlock;
+                Block targetBlock = arr.targetBlock;
                 if(arr.targetBlock!=null ) {
-                    Integer blockType = block.getId();
+                    Integer blockType = targetBlock.getId();
                     //获得靠近还是靠远
                     //LogUtil.println("x:"+targetPoint.x%1 + "y:"+targetPoint.y%1+"z:"+targetPoint.z%1);
                     //这却的途径是什么
 
                     //如果物体是可以被使用的
                     //Block targetBlock =
-                    if (block.beuse()) {//如果是有状态的block
+                    if (targetBlock.beuse()) {//如果是有状态的block
                    /* //通过一个通用的方式获得点击的面在哪里
                     int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);
                     int chunkZ = MathUtil.getBelongChunkInt(targetPoint.z);

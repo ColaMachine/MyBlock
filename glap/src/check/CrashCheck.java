@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.item.BlockUtil;
+import com.dozenx.game.network.server.bean.LivingThingBean;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import glapp.GLApp;
@@ -31,7 +32,7 @@ public class CrashCheck {
      * @param livingThing
      * @return
      */
-    public boolean  check(LivingThing livingThing){
+   /* public boolean  check(LivingThingBean livingThing){
 
         float plr_pos_x=livingThing.position.x;
         float plr_pos_y=livingThing.position.y;
@@ -72,11 +73,11 @@ public class CrashCheck {
                                 blockY, blockZ);
                         if (!block.isPenetrate()){
                             //是否碰撞是不是应该交给对应的block 去判断
-                            /*if (BlockUtil.isDoor(k) && BlockUtil.isDoorOpen(k)) {
+                            *//*if (BlockUtil.isDoor(k) && BlockUtil.isDoorOpen(k)) {
 
                             } else {
                                 return true;
-                            }*/
+                            }*//*
                             return true;
                             //means it is crashed
 //                        System.out.println("warning crashed");
@@ -104,14 +105,14 @@ public class CrashCheck {
         }
         //if all block checked is air then needjdegecrash is false
     return false;
-    }
+    }*/
 
     /**
      *
      * @param position
      * @return true表示有碰撞
      */
-    public boolean  check(GL_Vector position){
+   /* public boolean  check(GL_Vector position){
 
         float plr_pos_x=position.x;
         float plr_pos_y=position.y;
@@ -152,11 +153,11 @@ public class CrashCheck {
                                 blockY, blockZ);
                         if (!block.isPenetrate()){
                             //是否碰撞是不是应该交给对应的block 去判断
-                            /*if (BlockUtil.isDoor(k) && BlockUtil.isDoorOpen(k)) {
+                            *//*if (BlockUtil.isDoor(k) && BlockUtil.isDoorOpen(k)) {
 
                             } else {
                                 return true;
-                            }*/
+                            }*//*
                             return true;
                             //means it is crashed
 //                        System.out.println("warning crashed");
@@ -184,8 +185,8 @@ public class CrashCheck {
         }
         //if all block checked is air then needjdegecrash is false
         return false;
-    }
-    public boolean haveBlock2(LivingThing livingThing){//检测当前人的宽度和厚度 还有高度带入公式用来判断是否有碰撞
+    }*/
+    /*public boolean haveBlock2(LivingThingBean livingThing){//检测当前人的宽度和厚度 还有高度带入公式用来判断是否有碰撞
         boolean isswim=false;
         float plr_pos_x=livingThing.position.x;
         float plr_pos_y=livingThing.position.y;
@@ -220,6 +221,9 @@ public class CrashCheck {
                     blockY = (int) (offset_y+plr_pos_y);
                     blockZ = MathUtil.getOffesetChunk(offset_z+plr_pos_z);
                     try {
+                        if(blockY<0){
+                            return true;
+                        }
                         int k = chunk_corner.getBlockData(blockX,
                                 blockY, blockZ
                         );
@@ -303,5 +307,5 @@ public class CrashCheck {
             }
         }
         return false;
-    }
+    }*/
 }

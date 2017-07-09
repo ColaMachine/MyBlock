@@ -85,8 +85,8 @@ public class Component {
     public Component(Shape shape ){
         this(shape.getWidth(),shape.getHeight(),shape.getThick());
         this.name = shape.getName();
-
-
+        this.parentLocation =new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z());
+        this.childLocation =new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z());
 
         this.front= shape.getFront();
         this.back= shape.getBack();

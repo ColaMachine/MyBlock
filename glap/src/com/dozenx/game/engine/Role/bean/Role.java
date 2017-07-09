@@ -151,8 +151,8 @@ public class Role extends ComplexEquipProperties {
     public long lastMoveTime = 0;
 
 
-    public int mark = 0;
-    public int preY = 0;
+//    public int mark = 0;
+//    public int preY = 0;
 
 
     public long updateTime;

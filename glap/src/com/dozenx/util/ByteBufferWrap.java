@@ -111,7 +111,7 @@ public class ByteBufferWrap
         int length = this.getInt();;
         byte[] msg = new byte[length];
         try {
-            LogUtil.println(buffer.remaining()+"");
+           // LogUtil.println(buffer.remaining()+"");
             buffer.get(msg, 0, length);
         }catch(java.nio.BufferUnderflowException e){
             LogUtil.err(e);

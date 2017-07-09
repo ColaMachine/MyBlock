@@ -59,10 +59,11 @@ public class State {
                         GL_Vector newPosition = nowPosition(nowTime, lastTime, livingThing.speed, livingThing.getPosition(), livingThing.getDest());
                         float length = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
                         if(length<1){
+                            //如果距离够近了 停止移动
                             livingThing.setDest(null);
                             //退出移动
                             return;
-                        }else if(length>distance){//如果移动举例超过了最大距离 结束移动
+                        }else if(length>distance){//如果移动举例超过了最大距离 说明到达了目的地 防止因为卡顿引起超距离移动 结束移动
                             livingThing.move(livingThing.getDest().x,livingThing.getDest().y,livingThing.getDest().z);
                             livingThing.setDest(null);
                             return;

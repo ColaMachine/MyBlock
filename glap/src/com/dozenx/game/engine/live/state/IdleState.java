@@ -28,13 +28,13 @@ public class IdleState extends State{
     public void update(){
         super.update();
         if(GamingState.player!=null) {
-            if (TimeUtil.getNowMills() - lastTime > 10000) {
-                if (Math.random() * 10 > 5)
+            if (TimeUtil.getNowMills() - lastTime > 5000) {
+                /*if (Math.random() * 10 > 5)
 
                     CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(), "run");
                     //CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(),"wag_head");
-                else
-                    CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(), "wag_tail");
+                else*/
+                    CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(), this.livingThing.idleAnimation[(int)(Math.random()*this.livingThing.idleAnimation.length-1)]);
 
                 lastTime = TimeUtil.getNowMills();
             }

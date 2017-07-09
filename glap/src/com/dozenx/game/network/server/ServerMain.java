@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.command.CmdType;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.network.server.bean.ServerContext;
@@ -37,6 +38,8 @@ public class ServerMain {
         //注册所有服务
         //注册所有service
 
+
+
         serverContext.registerService(BagService.class,new BagService(serverContext));
         serverContext.registerService(EnemyService.class,new EnemyService(serverContext));
         serverContext.registerService(UserService.class,new UserService(serverContext));
@@ -59,6 +62,7 @@ public class ServerMain {
 
         ItemManager itemManager =new ItemManager();
         CoreRegistry.put(ItemManager.class,itemManager);
+        PhysicsEngine physicsEngine =new PhysicsEngine();
         try {
             itemManager.loadItem();
         } catch (Exception e) {

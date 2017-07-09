@@ -2,7 +2,9 @@ package com.dozenx.game.network.server.bean;
 
 import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -18,10 +20,29 @@ import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
 import glmodel.GL_Vector;
 
+import javax.vecmath.Point3f;
+import javax.vecmath.Point3i;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by luying on 16/9/16.
  */
 public class LivingThingBean extends Role {
+    public String[] idleAnimation = new String[0];
+    public float jumpSpeed = 9.5f;
+    public long jumpTime; // use for gravities
+    public List<Point3i> routes =new ArrayList<>();
+    public float valleyBottom = 0 ;
+   // public int mark = 0;//意味着bottom 底部 确定了
+    public int jumpStartY = 0;
+    //public long lastTime = 0;
+    public long lastMoveTime = 0;
+    public float v = 6.2f;
+    public float g = 19.6f;
+    public float s = 0;
+    //public float nextZ = 0;
+   // public int limit = 0;
 
     public LivingThingBean(int id){
 
@@ -272,18 +293,17 @@ public class LivingThingBean extends Role {
     public GL_Vector nextPosition= new GL_Vector(0,0,0);    //  位置
     public GL_Vector oldPosition=new GL_Vector();   //  旧位置*/
 
-    public boolean stable = true;
+    private boolean stable = true;
+
+    public boolean isStable() {
+        return stable;
+    }
+
     public void setStable(boolean flag) {
         this.stable = flag;
     }
 
-    public long lastTime = 0;
-    public long lastMoveTime = 0;
-    public float v = 6.2f;
-    public float g = 19.6f;
-    public float s = 0;
-    public float nextZ = 0;
-    public int limit = 0;
+
     //public boolean exist=true;
     //private WeakReference<LivingThing> target;
     /*public LivingThing getTarget(){
@@ -299,9 +319,7 @@ public class LivingThingBean extends Role {
         }else
         this.target=new WeakReference<LivingThing>(target);
     }*/
-    public int mark = 0;
-    public
-    int preY = 0;
+
     /*public void disapper(){
         this.exist=false;
     }*/
@@ -323,9 +341,10 @@ public class LivingThingBean extends Role {
     public void drop() {
 
         // ��¼��ǰ��ʱ��
-        this.stable=false;
+        //this.stable=false;
+        this.setStable(false);
         this.v=0f;
-        preY = (int) this.position.y;
+        jumpStartY = (int) this.position.y;
         lastTime = TimeUtil.getNowMills();
 
     }
@@ -355,12 +374,12 @@ public class LivingThingBean extends Role {
         }*/
     }
     public void flip(int y) {
-        mark = y;
+        valleyBottom = y;
         limit = 0;
     }
 
     public void reset() {
-        mark = limit = 0;
+        valleyBottom = limit = 0;
     }
 
 
@@ -369,7 +388,11 @@ public class LivingThingBean extends Role {
     /*public Component bodyComponent = new Component(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 */
 
-    public void dropControl() {
+    /**
+     * this method control the y degree change when livingthing drop down
+     */
+   /* @Deprecated
+    public void dropControl() {//update 更新的时候dropcontrol 其实没有必要检查 因为livingthing manager 里 会统一检查
         if(!Switcher.IS_GOD)
             if (!this.stable) {
                 long t = TimeUtil.getNowMills() - this.lastTime;//�˶���ʱ��
@@ -380,20 +403,20 @@ public class LivingThingBean extends Role {
                 // this.position.y+=s;
                 // System.out.println("time:"+t+" weiyi:"+s);
                 // GL11.glTranslated(0, s, 0);
-                this.position.y = preY + s;//��Ӧy��䶯
+                this.position.y = this.jumpStartY + s;//��Ӧy��䶯
                 //System.out.println("��ǰ�˵�y���:"+this.position.y);
-                if (this.position.y <= mark) {
+                if (this.position.y <= this.valleyBottom) {
                     //
                     //System.out.println("��ǰ��y" + mark);
-                    this.position.y = mark;
-                    this.stable = true;
-                    mark = 0;
-                    preY = 0;
+                    this.position.y = valleyBottom;
+                    this.setStable( true);
+                    valleyBottom = 0;
+                    jumpStartY = 0;
                 }
-
+                CoreRegistry.get(DropControlCenter.class).check(this);
             }
     }
-
+*/
     // int vaoId;
     //int trianglesCount =0;
     /*private void build(){//当发生改变变的时候触发这里
@@ -458,10 +481,11 @@ public class LivingThingBean extends Role {
      * @param y
      * @param z
      */
+    /*
     public boolean   checkDest(){
 
        return CoreRegistry.get(CrashCheck.class).check(this.position) ;
-    }
+    }*/
     public void move(GL_Vector newPosition) {
         this.oldPosition.copy(this.position);
         this.position.set(newPosition.x, newPosition.y, newPosition.z);
@@ -470,10 +494,28 @@ public class LivingThingBean extends Role {
     public void move(float x, float y, float z) {
         this.oldPosition.copy(this.position);
         this.position.set(x, y, z);
+
+        //如果两次不在同一个方块空间里 判断一下是否要掉落
+
+        if((int)this.oldPosition.x != (int) x  ||
+                (int)this.oldPosition.y != (int) y ||
+                        (int)this.oldPosition.z != (int) z
+        ){
+            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
+        }
+        GamingState.livingThingChanged = true;
+        this.lastMoveTime =TimeUtil.getNowMills();
         this.updateTime =  TimeUtil.getNowMills();
+
+        //if (!Switcher.IS_GOD)
+            if (CoreRegistry.get(PhysicsEngine.class).collision(this)) {
+                this.position.copy(oldPosition);
+            }
+
     }
     public void update(){
-        this.dropControl();
+        //this.dropControl();
+        CoreRegistry.get(PhysicsEngine.class).gravitation(this);
        // this.getModel().build();
         this.getExecutor().getCurrentState().update();
     }
@@ -586,6 +628,15 @@ public class LivingThingBean extends Role {
           PlayerStatus info =new PlayerStatus();
          super.getInfo(info);
           return info;
+    }
+    public void jump(){
+        if(isDied())return;
+        this.v = 10.2f;
+        jumpStartY = (int) this.position.y;
+        this.position.y+=0.1;
+        jumpTime =
+        TimeUtil.getNowMills();//Sys.getTime();
+        this.setStable( false);
     }
 
 }

@@ -32,14 +32,14 @@ public class JumpState extends State {
         if (GamingState.player.getId() == this.livingThing.getId()&&Switcher.IS_GOD) {
             this.livingThing.position.y += 2;
             GamingState.setCameraChanged(true);
-        } else if (this.livingThing.stable) {
+        } else if (this.livingThing.isStable()) {
             this.livingThing.v = 10.2f;
          //   this.livingThing.position.y+=12;
-            this.livingThing.preY = (int) this.livingThing.position.y;
+            this.livingThing.jumpStartY = (int) this.livingThing.position.y;
             this.livingThing.lastTime = TimeUtil.getNowMills();
             //lastTime = Sys.getTime();
             this.livingThing.flip((int)this.livingThing.position.y);
-            this.livingThing.stable = false;
+            this.livingThing.setStable( false);
         }
 
         /*if(GamingState.player!=null){
@@ -58,7 +58,7 @@ public class JumpState extends State {
 
         long nowTime = TimeUtil.getNowMills();
 
-        if(this.livingThing.stable){
+        if(this.livingThing.isStable()){
             this.livingThing.changeState(new IdleState(livingThing));
         }else
         if (nowTime - lastMoveTime >200) {

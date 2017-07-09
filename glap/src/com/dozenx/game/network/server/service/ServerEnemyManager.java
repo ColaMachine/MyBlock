@@ -1,6 +1,9 @@
 package com.dozenx.game.network.server.service;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.network.server.bean.*;
@@ -10,16 +13,24 @@ import com.dozenx.util.TimeUtil;
 import com.sun.jna.platform.win32.Netapi32Util;
 import glmodel.GL_Vector;
 
+import javax.vecmath.Point3i;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by luying on 17/2/26.
  */
 public class ServerEnemyManager implements  Runnable {
     private ServerContext serverContext  ;
-
+    private ChunkProvider chunkProvider;
     public ServerEnemyManager(ServerContext serverContext){
         this.serverContext =serverContext;
         this.userService  =(UserService) serverContext.getService(UserService.class);
         this.enemyService =(EnemyService) serverContext.getService(EnemyService.class);
+
+        this.chunkProvider = serverContext.chunkProvider;
     }
     UserService userService;
     EnemyService enemyService;
@@ -34,7 +45,7 @@ public class ServerEnemyManager implements  Runnable {
 
 
                 enemyServerLoop();
-                synEnemyPos();
+                synEnemyPos();  //每隔200ms同步变化的位置给用户
                 //this.findThing();
                // this.doSomeThing();
                // this.changeDir();
@@ -228,8 +239,12 @@ public class ServerEnemyManager implements  Runnable {
                        //每隔一段时间就修正怪物的walkstate
                        LivingThingBean player= userService.getOnlinePlayerById(enemy.getTargetId());
                        if(player!= null){
-                           enemy.setDest(player.getPosition());
+                           //移动到制定位置设置目标
 
+                           //可达性分析
+
+                           enemy.setDest(player.getPosition());
+                           //
                            enemy.setBodyAngle( GL_Vector.getAnagleFromXZVectory(direction));
                        }
 
@@ -258,4 +273,150 @@ public class ServerEnemyManager implements  Runnable {
            serverContext.getAllHandlerMap().get(CmdType.ATTACK).handler(new GameServerRequest(new AttackCmd(source.getId(), AttackType.ARROW,target.getId()),null),new GameServerResponse());
 
     }*/
+
+
+    public void pathRoute(GL_Vector from,GL_Vector to,LivingThingBean livingThingBean ){
+        //首先判断from 下面有没有基础方块
+
+        //first we found if from was on a block
+        Block block = chunkProvider.getBlockAt((int)from.x,(int)from.y,(int)from.z);
+        if(block!=null && block.getId()>0){
+            //x
+
+            int xDistance = (int)(to.x - from.x);//caculate the x distance
+            int zDistance =(int ) (to.z - from.z);//caculate the z distance
+            int xDir =1;
+            if(xDistance<0){
+                xDir=-1;
+            }
+            int zDir = 1;
+            if(zDistance<0){
+                zDir= -1;
+            }
+            int xAbsDistance =Math.abs(xDistance);
+            int zAbsDistance = Math.abs(zDistance);
+
+            int fromX = (int)from.x;
+            int fromY = (int) from.y;
+            int fromZ = (int) from.z;
+
+            int toX = (int)to.x;
+            int toY = (int) to.y;
+            int toZ = (int) to.z;
+
+            int nowX=fromX;
+            int nowY=fromY;
+            int nowZ=fromZ;
+          //  for(int x =0 ;x<xAbsDistance;x++){
+             //   for(int z =0 ;z<zAbsDistance;z++){
+
+                    GL_Vector now = new GL_Vector(xAbsDistance,from.y,zAbsDistance);
+                    if(diguiTest(fromX,fromY,fromZ,nowX,nowY,nowZ,toX,toY,toZ,xDir,zDir)){
+
+
+                        livingThingBean.routes.clear();
+                        livingThingBean.routes.addAll(routeList);
+                        //先判断左
+
+                    }else{
+                        //can't find way;
+                    }
+               // }
+            //}
+            //z
+        }
+    }
+    public Map<Integer,Integer> alreadyMap =new HashMap<>();
+
+    //return ture means find the way
+    public boolean diguiTest(int fromX,int fromY,int fromZ,int nowX,int nowY,int nowZ,int toX,int toY,int toZ,int xDir,int zDir){
+        //先左 前 右边
+        if(alreadyMap.get(fromX*1000*1000+nowZ*1000+nowZ)!=null){
+            return false;
+        }
+        alreadyMap.put(fromX*1000*1000+nowZ*1000+nowZ,1);
+
+        //判断当前点是否已经判断过了
+        //x max dir
+        //x++
+        //当前y的层高
+        //check xMax
+        if(nowX!=toX){
+
+
+            // x++
+            int x = nowX +xDir;
+            int luocha = luocha(x,nowY,nowZ);
+            if(luocha ==-1 || luocha==0 || luocha == 1){
+                if(diguiTest(fromX, fromY, fromZ, nowX+xDir, nowY+luocha, nowZ, toX, toY, toZ, xDir, zDir)){
+                    routeList.add(new Point3i(nowX,nowY,nowZ));
+                    return true;
+                }
+            }else{
+
+            }
+
+        }
+        if(nowZ!=toZ){
+            //z++
+
+            int luocha = luocha(nowX,nowY,nowZ+zDir);
+
+            if(luocha ==-1 || luocha==0 || luocha == 1){
+                if(diguiTest(fromX, fromY, fromZ, nowX, nowY+luocha, nowZ+zDir, toX, toY, toZ, xDir, zDir)){
+                    routeList.add(new Point3i(nowX,nowY,nowZ));
+                    return true;
+                }
+            }else{
+
+            }
+        }
+
+        return false;
+    }
+
+
+    public  int luocha(int x,int y,int z){
+       // Block block = chunkProvider.getBlockAt(thereX,thereY,thereZ);
+
+        Chunk chunk = chunkProvider.getChunk(x,y,z);
+        Block block = chunk.getBlock(x,y,z);
+
+
+
+
+
+        if(block==null || block.getId()==0){ //说明这边的block也是空的 it's empty
+            Block blockYLow = chunk.getBlock(x, y - 1, z);
+            if(blockYLow ==null || blockYLow.getId()==0){//如果平移过去 下面的基石是空的
+                //test y-1 again
+                Block blockYLowLow = chunk.getBlock(x, y - 2, z);
+                if(blockYLowLow ==null || blockYLowLow.getId()==0){//说明过去的话下面是空的 过去会发生跌落 means the ydistance >1
+                    return -2;
+
+                }else{//说明y-1 是有石头的 means y-1 there is block livingthing will change y=y-1
+                   return -1;
+                }
+            }else
+            if(blockYLow!=null && blockYLow.getId()>0){//如果平移过去 下面的基石是有的
+                //可以过去
+               return 0;//means ok just go there livingthing will not change y
+            }
+        }else
+        if( block.getId()>0){//说明旁边是有块的means y there is block livingthing will change y=y+1
+            Block blockYHigh = chunk.getBlock(x,y+1,z);
+            if(blockYHigh==null ||blockYHigh.getId()==0 ){//means y+1 there is no block livingthing can go there  and will lift the livingthing
+                return 1;
+            }else{
+                return 2;
+            }
+
+        }
+
+        return -100;
+
+
+    }
+
+    List routeList =new ArrayList();
 }

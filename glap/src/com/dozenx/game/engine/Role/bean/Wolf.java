@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.Role.model.WolfModel;
 import com.dozenx.game.engine.element.bean.Component;
@@ -21,6 +22,7 @@ public class Wolf extends LivingThing {
 
     public Wolf(int id) {
         super(id);
+        this.idleAnimation=new String[]{"wag_tail","sniffer"};
        // this.speed=10;//由于服务器的所有生物都是livingthing 所以速度都是15
         this.getExecutor().setModel( new WolfModel(this));
         this.name="wolf";
@@ -33,42 +35,18 @@ public class Wolf extends LivingThing {
 
 
     public void move(float x, float y, float z) {
-		/*float distance = GL_Vector.length(GL_Vector.sub(oldPosition,position));
-        if(distance>0.02){*/
 
-        this.oldPosition.copy(this.position);
-        GamingState.livingThingChanged = true;
+        super.move(x,y,z);
 
-        GamingState.setCameraChanged(true);
-        ShaderManager.humanPosChangeListener();
-
-
-        this.position.set(x, y, z);
-        this.updateTime =  TimeUtil.getNowMills();
-        if (!Switcher.IS_GOD)
-            if (CoreRegistry.get(CrashCheck.class).check(this)) {
-                this.position.copy(oldPosition);
-            }
-        //client.send("move:");
-        //this.stable=false;
-        //client.send("move:"+this.id+","+this.position.x+","+this.position.y+","+this.position.z+"");
-
-        // }
-
-
-	/*	String message = "move:"+ id+","+position.x
-				+","+position.y
-				+","+position.z+","+WalkDir.x+","+WalkDir.y+","+WalkDir.z;
-		client.send(message);*/
 
     }
 
     //public boolean needJudgeCrash=false;
     public void move(GL_Vector vector) {
-        float x = vector.x;
-        float y = vector.y;
-        float z = vector.z;
-        this.move(x, y, z);
+//        float x = vector.x;
+//        float y = vector.y;
+//        float z = vector.z;
+        this.move(vector.x, vector.y, vector.z);
 
 
     }
@@ -115,30 +93,20 @@ public class Wolf extends LivingThing {
 
 
     public void jumpHigh() {
-        if(isDied())return;
-        // ��¼��ǰ��ʱ��
-        if (this.stable) {
-            this.v = 12.6f;
-            preY = (int) this.position.y;
-            lastTime =  TimeUtil.getNowMills();//Sys.getTime();
-            this.stable = false;
-        }
+        super.jump();
     }
 
-    public void jump() { if(isDied())return;
-        //this.position.y+=1;
-        // ��¼��ǰ��ʱ��
-        if (Switcher.IS_GOD) {
-            this.position.y += 2;
-         //   GamingState.cameraChanged = true;
-            GamingState.setCameraChanged(true);
-        } else if (this.stable) {
-            this.v = 10.2f;
-            preY = (int) this.position.y;
-            lastTime = TimeUtil.getNowMills();//Sys.getTime();
-            this.stable = false;
-        }
+    public void jump() {
+
+        super.jump();
+
+
     }
 
+
+
+    public void idleProcess(){
+        //找到下一个节点
+    }
 
 }

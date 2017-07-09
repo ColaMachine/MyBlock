@@ -294,7 +294,7 @@ public class MyBlockEngine extends GLApp {
         if (!Switcher.IS_GOD)
             if (Math.random() > 0.5) {
                 //dcc.check(human);
-                livingThingManager.CrashCheck(dcc);
+               // livingThingManager.checkAllLivingThingCollising(dcc);
 
             }
 

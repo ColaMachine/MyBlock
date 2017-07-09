@@ -130,8 +130,8 @@ public class BaseModel implements Model   {
 
                 rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 
-                GL_Matrix newtranslateMatrix=GL_Matrix.translateMatrix(-rootComponent.getWidth()/2, 0, -rootComponent.getThick()/2);
-                rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
+               // GL_Matrix newtranslateMatrix=GL_Matrix.translateMatrix(-rootComponent.getWidth()/2, rootComponent.getHeight()/2, -rootComponent.getThick()/2);
+                //rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
                 //.getVao().getVertices()
                 //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
                 rootComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);

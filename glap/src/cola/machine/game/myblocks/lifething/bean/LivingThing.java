@@ -22,6 +22,7 @@ import javax.vecmath.Point3f;
  * Created by luying on 16/9/16.
  */
 public class LivingThing extends LivingThingBean {
+
    /*public  float bodyAngle =0  ;
     public float headAngle =0  ;
     public float headAngle2 =0  ;*/

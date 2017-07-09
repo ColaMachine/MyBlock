@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.engine.Time;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.bean.Wolf;
 import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.element.bean.Component;
@@ -165,22 +166,27 @@ public class LivingThingManager {
 
     }
 
-    public void CrashCheck(  DropControlCenter dcc){
+    /**
+     *
+     * @param physicsEngine
+     */
+    @Deprecated
+    public void checkAllLivingThingCollising(  PhysicsEngine physicsEngine){
 
         for(LivingThing livingThing:livingThings){
             if(livingThing.isPlayer() )continue;//不对玩家进行校验 怕玩家离开自己太远的时候还进行校验
             if(livingThing.position.y<0){
                 livingThing.position.y=0;
-                livingThing.stable=true;
+                livingThing.setStable(true);
             }
-            dcc.check(livingThing);
+            physicsEngine.collision(livingThing);
 
         }
         if(player.position.y<0){
             player.position.y=0;
-            player.stable=true;
+            player.setStable(true);
         }
-        dcc.check(player);
+        physicsEngine.collision(player);
     }
 
     /*public LivingThing findTarget(Point3f position){

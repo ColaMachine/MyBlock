@@ -182,7 +182,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 
 	public void draw() {
 		
-		dcc.check(player);
+		//dcc.check(player);
 		
 		//mouseControlCenter.handleNavKeys((float) GLApp.getSecondsPerFrame());
 

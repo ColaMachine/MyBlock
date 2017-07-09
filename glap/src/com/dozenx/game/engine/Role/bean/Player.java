@@ -4,14 +4,17 @@ import check.CrashCheck;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.command.JumpCmd;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.live.state.JumpState;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.server.bean.PlayerStatus;
@@ -24,8 +27,10 @@ import org.lwjgl.Sys;
 import cola.machine.game.myblocks.switcher.Switcher;
 
 public class Player extends LivingThing {
+
     public Player(int id) {
         super(id);
+        this.idleAnimation=new String[]{"wag_tail","sniffer"};
        // this.speed=50;
         this.getExecutor().setModel( new PlayerModel(this));
     }
@@ -87,23 +92,20 @@ public class Player extends LivingThing {
     public void move(float x, float y, float z) {
 		/*float distance = GL_Vector.length(GL_Vector.sub(oldPosition,position));
         if(distance>0.02){*/
+        super.move(x,y,z);
+        //this.oldPosition.copy(this.position);
 
-        this.oldPosition.copy(this.position);
-        GamingState.livingThingChanged = true;
       // if(TimeUtil.getNowMills()-lastMoveTime>200) {
           // GamingState.cameraChanged = true;
         GamingState.setCameraChanged(true);
-           this.lastMoveTime =TimeUtil.getNowMills();
+
        //}
         ShaderManager.humanPosChangeListener();
 
 
-        this.position.set(x, y, z);
-        this.updateTime =  TimeUtil.getNowMills();
-        if (!Switcher.IS_GOD)
-            if (CoreRegistry.get(CrashCheck.class).check(this)) {
-                this.position.copy(oldPosition);
-            }
+       // this.position.set(x, y, z);
+        //this.updateTime =  TimeUtil.getNowMills();
+
         //client.send("move:");
         //this.stable=false;
         //client.send("move:"+this.id+","+this.position.x+","+this.position.y+","+this.position.z+"");
@@ -171,27 +173,28 @@ public class Player extends LivingThing {
 
 
     public void jumpHigh() {
-        if(isDied())return;
-        // ��¼��ǰ��ʱ��
-        if (this.stable) {
-            this.v = 12.6f;
-            preY = (int) this.position.y;
-            lastTime =  TimeUtil.getNowMills();//Sys.getTime();
-            this.stable = false;
-        }
+       super.jump();
     }
 
     public void jump() { if(isDied())return;
         //this.position.y+=1;
         // ��¼��ǰ��ʱ��
+        //水平方向
+        //水平方向速度
+        //起点位置
+
+        //垂直起跳后的速度
+
+
+
+
         if (Switcher.IS_GOD) {
             this.position.y += 2;
             GamingState.setCameraChanged(true);
-        } else if (this.stable) {
-            this.v = 10.2f;
-            preY = (int) this.position.y;
-            lastTime = TimeUtil.getNowMills();//Sys.getTime();
-            this.stable = false;
+         } else if (this.isStable()) {
+           super.jump();
+            //GL_Vector from, GL_Vector dir, int userId,float speed
+            //this.changeState(new JumpState(this,new JumpCmd(this.getPosition(),this.getWalkDir(),this.getId(),1)));
         }
     }
 

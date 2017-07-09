@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.model.ui.html.Image;
 import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.GrayTerrainGenerator;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.GrayWorldGenerator;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.ui.ButtonBar.view.ButtonBarView;
@@ -121,7 +122,8 @@ public class GamingState implements GameState {
     boolean handled;
 
 
-    DropControlCenter dcc = new DropControlCenter();
+   // DropControlCenter dcc = new DropControlCenter();
+
     int frameCount=0;
     long lastTime=0;
     boolean shadow =false;
@@ -508,11 +510,11 @@ public ShaderManager shaderManager;
        // livingThingManager.netWorkUpdate();;
 
            // if (Math.random() > 0.5) {
-        livingThingManager.update();
+        livingThingManager.update();// 我觉得不需要每一帧都更新 200 ms 更新一次是不是更好
 
             if (!Switcher.IS_GOD) {
                 //dcc.check(human);
-                livingThingManager.CrashCheck(dcc);
+                //livingThingManager.CrashCheck(dcc);
 
 
 
@@ -868,6 +870,7 @@ public ShaderManager shaderManager;
             worldGenerator.initialize();
             worldGenerator.setWorldSeed("123123123");
             GeneratingChunkProvider chunkProvider = new LocalChunkProvider(storageManager, worldGenerator);
+            PhysicsEngine physicsEngine =new PhysicsEngine();
             //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
             CoreRegistry.put(ChunkProvider.class, chunkProvider);
             WorldProvider WorldProvider = new WorldProviderWrapper();
