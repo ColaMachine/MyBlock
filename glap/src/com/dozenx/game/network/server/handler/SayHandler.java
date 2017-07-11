@@ -17,6 +17,7 @@ import com.dozenx.game.network.server.service.impl.UserService;
 import com.dozenx.util.MathUtil;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
+import glmodel.GL_Vector;
 
 /**
  * Created by luying on 17/2/18.
@@ -55,6 +56,25 @@ public class SayHandler extends GameServerHandler {
                 }
             }
         }*/
+        if(cmd.getMsg().startsWith("/move")){
+            // create wolf x y z
+            String[] arr = cmd.getMsg().split(" ");
+            if(arr.length>=5  && StringUtil.isNumeric(arr[3])) {
+                String name = arr[1];
+                int x= Integer.valueOf(arr[2]);
+                int y= Integer.valueOf(arr[3]);
+                int z= Integer.valueOf(arr[4]);
+
+
+                LivingThingBean  wolf  =enemyService.getEnemyById(Integer.valueOf(name));
+                if(wolf!=null){
+                    wolf.setFinalDest(new GL_Vector(x,y,z));
+                }
+
+
+            }
+
+        }else
         if(cmd.getMsg().startsWith("/create")){
             // create wolf x y z
             String[] arr = cmd.getMsg().split(" ");
@@ -69,11 +89,12 @@ public class SayHandler extends GameServerHandler {
                     wolf.setName("wolf");
                     wolf.setPosition(x,y,z);
                     wolf.species=1;
+                    LogUtil.println("create wolf:"+wolf.getId());
                     enemyService.addNewMonster(wolf);
                 }
             }
 
-        }
+        }else
         if(cmd.getMsg().startsWith("/give")){
             String[] arr = cmd.getMsg().split(" ");
             if(arr.length>=4  && StringUtil.isNumeric(arr[3])) {

@@ -40,6 +40,17 @@ public class State {
     float distance =0;
     long  nowTime = 0 ;
     public void update(){
+       if(this.livingThing.routes!=null && livingThing.routes.size()>0){
+            if(livingThing.getDest() == null ){
+                GL_Vector dest =livingThing.routes.remove(0);
+                livingThing.setDest(dest);
+
+            }else{
+                //livingThing.setDest(livingThing.routes.get(0));
+            }
+
+        }
+
         if(this.livingThing.getDest()!=null){
             //计算当前和目的地的距离
             distance= GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
@@ -56,18 +67,24 @@ public class State {
 
                     if (nowTime - lastTime >50) {//如果大于50ms才执行
                         //调整计算新的位置
-                        GL_Vector newPosition = nowPosition(nowTime, lastTime, livingThing.speed, livingThing.getPosition(), livingThing.getDest());
+                        float moveDistance =  livingThing.speed/10* (nowTime-lastTime)/1000;
+                        GL_Vector walkDir = GL_Vector.sub( livingThing.getDest(),livingThing.getPosition()).normalize();
+
+                       //GL_Vector newPosition = nowPosition(nowTime, lastTime, livingThing.speed, livingThing.getPosition(), livingThing.getDest());
                         float length = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
-                        if(length<1){
-                            //如果距离够近了 停止移动
+                        //float moveDistance = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),newPosition));
+                       /* if(length<1){ //如果距离够近了 停止移动
+
                             livingThing.setDest(null);
-                            //退出移动
-                            return;
-                        }else if(length>distance){//如果移动举例超过了最大距离 说明到达了目的地 防止因为卡顿引起超距离移动 结束移动
+
+                            return;  //退出移动
+                        }else*/ if(moveDistance>distance -0.1f  ){//如果移动举例超过了最大距离 说明到达了目的地 防止因为卡顿引起超距离移动 结束移动
                             livingThing.move(livingThing.getDest().x,livingThing.getDest().y,livingThing.getDest().z);
                             livingThing.setDest(null);
                             return;
                         }else {
+
+                            GL_Vector newPosition =  GL_Vector.add(livingThing.getPosition(), GL_Vector.multiply(walkDir,moveDistance ));
                             livingThing.move(newPosition.x, newPosition.y, newPosition.z);
                             lastTime = TimeUtil.getNowMills();
                         }

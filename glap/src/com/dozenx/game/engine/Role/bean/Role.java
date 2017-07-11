@@ -25,10 +25,20 @@ public class Role extends ComplexEquipProperties {
     private boolean dirChanged;
 
     private GL_Vector dest;
-
+    private GL_Vector finalDest;
     public GL_Vector getDest() {
         return dest;
     }
+
+    public GL_Vector getFinalDest(){
+        return finalDest;
+    }
+
+    public void setFinalDest(GL_Vector finalDest){
+        this.finalDest = finalDest;
+    }
+
+
 
     public void setDest(GL_Vector dest) {
         this.dest = dest;
@@ -47,9 +57,9 @@ public class Role extends ComplexEquipProperties {
     }
 
     public void setPlayer(boolean isPlayer) {
-        if(!isPlayer){
+       /* if(!isPlayer){
             LogUtil.println(" not a player");
-        }
+        }*/
         this.isPlayer = isPlayer;
     }
 
@@ -130,7 +140,7 @@ public class Role extends ComplexEquipProperties {
     }
 
 
-    public float speed=10;
+    public float speed=10f;
 
 
 

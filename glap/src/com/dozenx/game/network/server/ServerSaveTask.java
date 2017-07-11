@@ -71,7 +71,7 @@ public class ServerSaveTask extends TimerTask {
                     livingThing.receive(new RebornCmd(livingThing.getId()));
 
                 }
-
+                //enemyService.save(livingThing.getInfo());
                 serverContext.getMessages().offer(new PlayerSynCmd(livingThing.getInfo()).toBytes());
 
             }

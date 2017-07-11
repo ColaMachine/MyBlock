@@ -164,17 +164,19 @@ public class PhysicsEngine {
         return false;
     }
     public boolean collision(LivingThingBean livingThing){//位置发生改变之后 当要发生位移的时候可以事先调用此方法 用来判断是否可以移动
-        float plr_world_pos_x=livingThing.position.x;
+        float plr_world_pos_x=livingThing.position.x+0.5f;
         float plr_world_pos_y=livingThing.position.y;
-        float plr_world_pos_z=livingThing.position.z;
+        float plr_world_pos_z=livingThing.position.z+0.5f;
 
-
+        if(plr_world_pos_y<0){
+            return true;
+        }
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//这个人的碰撞体积厚度
                 Chunk chunk_corner = null;
                 int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_world_pos_x);
-                int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_world_pos_y);
+                int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_world_pos_z);
 
 
                 chunk_corner = chunkProvider.getChunk(temp_chunk_pos_x_16,0,temp_chunk_pos_z_16);

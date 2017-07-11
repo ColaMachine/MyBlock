@@ -32,7 +32,7 @@ public class LivingThingBean extends Role {
     public String[] idleAnimation = new String[0];
     public float jumpSpeed = 9.5f;
     public long jumpTime; // use for gravities
-    public List<Point3i> routes =new ArrayList<>();
+    public List<GL_Vector> routes =new ArrayList<>();
     public float valleyBottom = 0 ;
    // public int mark = 0;//意味着bottom 底部 确定了
     public int jumpStartY = 0;
@@ -332,8 +332,8 @@ public class LivingThingBean extends Role {
                 +"魔法:"+nowMP+"/"+MP+"\n"
                 +"防御:"+defense+"\n"
                 +"攻击:"+pattack+"\n"
-                +"位置x:"+(int)this.getPosition().x+"y:"+(int)this.getPosition().y+"z:"+(int)this.getPosition().z+"\n"
-                +"方向:"+this.getViewDir().x+"y:"+this.getViewDir().y+"z:"+this.getViewDir().z+"\n";
+                +"位置x:"+Math.floor(this.getPosition().x)+"y:"+Math.floor(this.getPosition().y)+"z:"+Math.floor(this.getPosition().z)+"\n"
+                +"方向:"+(int)(this.getViewDir().x*100)+"y:"+(int)(this.getViewDir().y*100)+"z:"+(int)(this.getViewDir().z*100)+"\n";
 
 
 

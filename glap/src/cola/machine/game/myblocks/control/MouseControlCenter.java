@@ -1010,7 +1010,7 @@ public class MouseControlCenter {
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
            // human.bodyRotate(0, human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_E)) {// Turn right
-            System.out.println("key_e");
+          //  System.out.println("key_e");
          //   human.bodyRotate(0, -human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             //human.StrafeRight(-human.camSpeedXZ * seconds);

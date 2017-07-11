@@ -38,19 +38,19 @@ public class BulletPhysics  {
         
         //������յ�λ��
 
-    	//ÿ���ƶ�0.1
+    	//ÿ���ƶ�0.1 init  variable
     	int preBlockIndex=-1;
         int chunkIndex=-1;
-        int preChunkIndex=-1;
+        Integer preChunkIndex=null;  //if preChunkIndex != chunkIndex bianlichunk will to find it's new chunk and also use to find the place block
     	int blockIndex=0;
-        Chunk bianliChunk=null;
+        Chunk bianliChunk=null;//need to be initialize
         int chunkX,preChunkX,chunkZ,preChunkZ;
         //int chunkY;
         float nowX,nowY,nowZ,preX,preY,preZ;
         nowX=nowY=nowZ=preX=preY=preZ=0;
         int worldX,worldY,worldZ ,preWorldX,preWorldY,preWorldZ;
         int offsetX ,offsetZ ,preOffsetX,preOffsetZ;
-       // int preBlockIndex =0;
+       // int preBlockIndex =0; every time push a little
     	for(float x=0.1f;x<distance;x+=0.1){//一点一点推进 看撞到了哪个物体 every time add a little
     		 nowX = from.x+x*to.x;
              nowY = from.y+x*to.y;
@@ -67,15 +67,19 @@ public class BulletPhysics  {
             offsetX = MathUtil.getOffesetChunk(worldX);
             offsetZ = MathUtil.getOffesetChunk(worldZ);
             blockIndex=offsetX*10000+offsetZ*100+worldY;//推进后落入的blockINdex
-
+            if(preBlockIndex==-1){
+                preBlockIndex = blockIndex;
+            }
             chunkX=MathUtil.getBelongChunkInt(nowX);//换算出新的chunkX
             chunkZ=MathUtil.getBelongChunkInt(nowZ);//换算出新的chunkZ
             chunkIndex =  chunkX*10000+chunkZ;
-
-    		if(blockIndex==preBlockIndex)//如果和之前判断的还是同一个的话 略过
+            if(blockIndex == preBlockIndex){
+                continue;
+            }
+    		if(blockIndex!=preBlockIndex)//如果和之前判断的还是同一个的话 略过
             {
                 //pre
-                preBlockIndex = blockIndex;
+             /*   preBlockIndex = blockIndex;
                 preChunkIndex = chunkIndex;
                 preChunkX = chunkX;
                 preChunkZ = chunkZ;
@@ -83,17 +87,20 @@ public class BulletPhysics  {
                 preY=nowY;
                 preZ = nowZ;
                 preOffsetX = offsetX;
-                preOffsetZ = offsetZ;
+                preOffsetZ = offsetZ;*/
                 //int chunkY;
 
-                continue;
+
             }
     		//ȥ����Ƿ���һ������֮��
     		//ChunkImpl chunk = localChunkProvider.getChunk(new Vector3i(MathUtil.floor((float)_x/16),0,MathUtil.floor((float)_z/16)));
+            if(preChunkIndex==null){
+                bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
+                preChunkIndex = chunkIndex;
+            }
 
-
-
-            if(chunkIndex!=preChunkIndex){//如果进入到新的chunk方格子空间
+            //once enther a new chunk block then make sure if crash a realblock
+            if( chunkIndex!=preChunkIndex){//如果进入到新的chunk方格子空间
                 bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
 
             }
@@ -136,7 +143,7 @@ public class BulletPhysics  {
                 arr.targetBlock= targetBlock;
     			//退回来 如果是增加放置一个block的话
 
-    			BlockManager blockManager = CoreRegistry.get(BlockManager.class);//创建新的方块
+    			//BlockManager blockManager = CoreRegistry.get(BlockManager.class);//创建新的方块
     			//Block block=new BaseBlock("water",blockManager.getBlock(blockname).getId(),false);
     			
     			//Chunk _chunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));
@@ -161,7 +168,7 @@ public class BulletPhysics  {
               //  arr[2] =new GL_Vector(blockType,0,0);
                 return arr;
         		
-    		}
+    		}// if has no crash a real block then prex prey prez use to fallback
                 preBlockIndex = blockIndex;
                 preChunkIndex = chunkIndex;
                 preChunkX = chunkX;

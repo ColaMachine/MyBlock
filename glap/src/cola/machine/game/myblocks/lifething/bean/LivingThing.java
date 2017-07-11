@@ -358,16 +358,16 @@ public class LivingThing extends LivingThingBean {
      */
 
     public void headRotate(float leftRightDegree, float updownDegree) {
-        leftRightDegree=leftRightDegree/2;
-        updownDegree=updownDegree/2;
+        //leftRightDegree=leftRightDegree/2;
+        //updownDegree=updownDegree/2;
         //LogUtil.println("左右看"+( (float) Math.toRadians(leftRightDegree)) +"上下看"+updownDegree/100);
         if(leftRightDegree!=0) {
 
-            if(leftRightDegree>0){
+           // if(leftRightDegree>0){
                 //leftRightDegree=1;
-            }else{
+           // }else{
                 // leftRightDegree=-1;
-            }
+           // }
             float tempAngle = getHeadAngle() +(float)Math.toRadians(-leftRightDegree);
             //setHeadAngle((float)(getHeadAngle() +Math.toRadians(-leftRightDegree)));
 
@@ -419,8 +419,8 @@ public class LivingThing extends LivingThingBean {
     }
 
     public void bodyRotate(float leftRightDegree, float updownDegree) {setDirChanged(true);
-        leftRightDegree=leftRightDegree/2;
-        updownDegree=updownDegree/2;
+       // leftRightDegree=leftRightDegree/2;
+      //  updownDegree=updownDegree/2;
         headRotate(leftRightDegree, updownDegree);
         //bodyAngle = headAngle;
         setBodyAngle(getHeadAngle());
