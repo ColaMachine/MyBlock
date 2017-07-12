@@ -95,7 +95,7 @@ public class State {
 
                             GL_Vector newPosition =  GL_Vector.add(livingThing.getPosition(), GL_Vector.multiply(walkDir,moveDistance ));
                             livingThing.move(newPosition.x, newPosition.y, newPosition.z);
-                            LogUtil.println(""+livingThing.getPosition());
+                           // LogUtil.println(""+livingThing.getPosition());
                             lastTime = TimeUtil.getNowMills();
                         }
                         //LogUtil.println(newPosition.toString());

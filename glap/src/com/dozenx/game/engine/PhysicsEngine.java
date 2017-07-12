@@ -38,13 +38,17 @@ public class PhysicsEngine {
                 //System.out.println("��ǰ��y" + mark);
                 livingThingBean.position.y = livingThingBean.valleyBottom;
                 //livingThingBean.setStable( true);// return to the normal state
-
-
+                if(this.hasSomeThingUnderFoot(livingThingBean)){
+                    standFirm(livingThingBean);
+                }else{
+                    livingThingBean.valleyBottom-=1;
+                }
+                /*
                 this.checkIsDrop(livingThingBean);
                 if(livingThingBean.isStable()){
                     livingThingBean.valleyBottom = 0 ;
                     livingThingBean.jumpStartY = 0;
-                }
+                }*/
 
 
             }
@@ -56,7 +60,7 @@ public class PhysicsEngine {
     //when stable check wether is drop
     public void checkIsDrop(LivingThingBean livingThing){//当从一个格子移动到另外一个格子的时候触发
 
-
+        //=======first we check is it's wrong to -1 ===========
 
         // ȡ���������� ż�����
 
@@ -66,13 +70,13 @@ public class PhysicsEngine {
             livingThing.position.y=0f;
             livingThing.setStable(true);
         }
-
+        //========== when he is dropping we cauculate  where he will stand on======
         if(!livingThing.isStable()){//如果再掉落状态的话 更新valleyBottom
             //System.out.println("��ǰ�����y:"+human.Position.y);
 //			int x = MathUtil.getNearOdd(human.Position.x );
 //			int y = MathUtil.getNearOdd(human.Position.y);
 //			int z = MathUtil.getNearOdd(human.Position.z );
-
+            //========= in  this y he will be stand firm
             if(this.hasSomeThingUnderFoot(livingThing)){
                 //System.out.println("�ǵ�����"+y);
                 //System.out.println("��ǰ�����y:"+human.Position.y+"��⵽����:"+y);
@@ -84,17 +88,23 @@ public class PhysicsEngine {
             }else{
                 livingThing.valleyBottom=(int)livingThing.position.y-1;
             }
-
+        //======== when he is stable we want to know whether   he will drop or not ========
         }else if(livingThing.isStable()){
 
-            if(this.collision(livingThing)){
+            /*if(this.collision(livingThing)){
                 livingThing.position.y+=2;//找到最近的地方让他安顿;
                 return;
-            }
+            }*/
 //			int x = MathUtil.getNearOdd(human.Position.x );
 //			int y = MathUtil.getNearOdd(human.Position.y);
 //			int z = MathUtil.getNearOdd(human.Position.z );
+            //=============if the y is not a integer  like 1.7 he will drop to 1.0~1.1 =========
+            if(livingThing.position.y%1>0.1){
+                livingThing.drop();
+                livingThing.valleyBottom=(int)Math.floor(livingThing.position.y);
+            }else
             if(!hasSomeThingUnderFoot(livingThing)){
+                //=========== in the left chance it may be have no block under foot then he drop =========
                 //System.out.println("check the human hasn't under block  begin to drop");
                 //System.out.println("��ǰ�����y:"+human.Position.y+"��⵽����:"+y);
                 livingThing.drop();
@@ -104,11 +114,12 @@ public class PhysicsEngine {
         }
 
 
-        if(hasSomeThingUnderFoot(livingThing)){
+       /* if(hasSomeThingUnderFoot(livingThing)){
+
             livingThing.setStable(true);
         }else{
             livingThing.setStable(false);
-        }
+        }*/
     }
     //
 
@@ -226,4 +237,11 @@ public class PhysicsEngine {
 
     }
 
+
+    public void standFirm(LivingThingBean livingThingBean){
+        livingThingBean.setStable(true);
+        livingThingBean.valleyBottom=0;
+        livingThingBean.jumpStartY=0;
+        livingThingBean.jumpTime=0;
+    }
 }

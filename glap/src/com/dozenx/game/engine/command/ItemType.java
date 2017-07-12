@@ -21,7 +21,7 @@ public enum ItemType {
     iron_axe,diamond_axe,gold_axe,arch2,wood_hoe,stone_hoe,iron_hoe,
     diamond_hoe,gold_hoe,arch3,
     grit,soil,stone,wood,glass,sand,mantle,water,tree_wood,tree_leaf,
-    tree_seed,wood_door,copy_down;
+    tree_seed,wood_door,copy_down,box;
     public int getType(){
         return this.ordinal();
     }

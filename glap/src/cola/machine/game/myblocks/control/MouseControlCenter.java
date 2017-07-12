@@ -1112,7 +1112,9 @@ preKeyTime = timenow;
 
 } */
         // tilt up
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+
+        //this code will cause when input word in chat panel then the human will jump
+       /* if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             double timenow = GLApp.getTimeInSeconds();
 
             if ((timenow - preKeyTime) < 1) {
@@ -1124,7 +1126,7 @@ preKeyTime = timenow;
             // System.out.println("ͬʱ������w��");
             player.jump();
             // System.out.println("jump");
-        }
+        }*/
 
                                         /*
                                          * if (Keyboard.KEY_SPACE == keycode) { cam.setCamera((cam.camera ==

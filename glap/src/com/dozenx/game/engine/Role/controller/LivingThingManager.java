@@ -53,9 +53,20 @@ public class LivingThingManager {
     Component bendComponent;
     Wolf wolf =null;
 
-    public void update500ms(){
+    public void checkPlayerDrop(){
         if(player.isStable()) {
             CoreRegistry.get(PhysicsEngine.class).checkIsDrop(player);
+        }
+        //remove the died one
+
+    }
+    public void removeAllDiedOne(){
+        for(int i=livingThings.size()-1;i>=0;i--){
+            LivingThing  livingThing = livingThings.get(i);
+            if((/*livingThing.died || */livingThing.nowHP<=0) ){
+                this.livingThingsMap.remove(livingThing.getId());
+                livingThings.remove(i);
+            }
         }
     }
     public LivingThingManager(){
