@@ -1,7 +1,33 @@
 package com.dozenx.util;
 
 
+import glmodel.GL_Vector;
+
 public class MathUtil {
+
+    public static  boolean testCubeXiangjiao(float x1,float y1,float z1,float width1 ,float height1,float thick1 ,float x2,float y2,float z2,float width2,float height2,float thick2){
+
+        if(testJuxinXiangjiao(x1,y1,width1,height1,x2,y2,width2,height2) && testJuxinXiangjiao(x1,z1,width1,thick1,x2,z2,width2,thick2)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public static boolean  testJuxinXiangjiao(float x1,float y1,float width1,float height1,float x2,float y2,float width2,float height2){
+        float minX =Math.max(x1,x2);
+        float minY =Math.max(y1,y2);
+
+        float maxX = Math.min(x1+width1,x2+width2);
+        float maxY = Math.min(y1+height1,y2+height2);
+
+        if(minX>maxX || minY>maxY){
+            return false;
+        }else{
+            return true;
+        }
+    }
     public static int getNearOdd(float num) {//����
         int x = (int) Math.rint((double) num);
         //�ж�x��ż��������

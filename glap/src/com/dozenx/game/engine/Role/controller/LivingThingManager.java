@@ -52,6 +52,12 @@ public class LivingThingManager {
     public  LivingThing player;
     Component bendComponent;
     Wolf wolf =null;
+
+    public void update500ms(){
+        if(player.isStable()) {
+            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(player);
+        }
+    }
     public LivingThingManager(){
 
        /*  wolf =new Wolf(999);

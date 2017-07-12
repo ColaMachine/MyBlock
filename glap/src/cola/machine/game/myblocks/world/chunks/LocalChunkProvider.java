@@ -65,7 +65,7 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
             }
             Path chunkPath =
                     PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
-            if (!Switcher.test && Files.isRegularFile(chunkPath)) {//从本地读取 或者生成
+            if (Files.isRegularFile(chunkPath)) {//从本地读取 或者生成
 
                 //ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
                     /*ObjectInputStream in=null;

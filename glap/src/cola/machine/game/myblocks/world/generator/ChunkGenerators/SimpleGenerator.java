@@ -101,7 +101,7 @@ public class SimpleGenerator implements FirstPassGenerator {
 
 
                      // The very deepest layer of the world is an indestructible mantle
-                        chunk.setBlock(x, 0, z, ItemType.mantle);
+                        chunk.setBlock(x, 0, z, ItemType.soil);
 
 
 

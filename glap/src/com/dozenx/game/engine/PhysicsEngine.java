@@ -32,14 +32,21 @@ public class PhysicsEngine {
             float yDistance = livingThingBean.jumpSpeed * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
 
             livingThingBean.position.y = livingThingBean.jumpStartY + yDistance;//now position ��Ӧy��䶯
-
+            GamingState.setCameraChanged(true);
             if (livingThingBean.position.y <= livingThingBean.valleyBottom) {
                 //
                 //System.out.println("��ǰ��y" + mark);
                 livingThingBean.position.y = livingThingBean.valleyBottom;
-                livingThingBean.setStable( true);// return to the normal state
-                livingThingBean.valleyBottom = 0 ;
-                livingThingBean.jumpStartY = 0;
+                //livingThingBean.setStable( true);// return to the normal state
+
+
+                this.checkIsDrop(livingThingBean);
+                if(livingThingBean.isStable()){
+                    livingThingBean.valleyBottom = 0 ;
+                    livingThingBean.jumpStartY = 0;
+                }
+
+
             }
 
             this.hasSomeThingUnderFoot(livingThingBean);
@@ -164,13 +171,15 @@ public class PhysicsEngine {
         return false;
     }
     public boolean collision(LivingThingBean livingThing){//位置发生改变之后 当要发生位移的时候可以事先调用此方法 用来判断是否可以移动
-        float plr_world_pos_x=livingThing.position.x+0.5f;
+        float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
-        float plr_world_pos_z=livingThing.position.z+0.5f;
+        float plr_world_pos_z=livingThing.position.z;
 
         if(plr_world_pos_y<0){
             return true;
         }
+
+
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
 
             for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//这个人的碰撞体积厚度

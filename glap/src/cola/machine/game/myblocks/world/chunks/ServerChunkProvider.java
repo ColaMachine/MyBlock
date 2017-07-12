@@ -66,7 +66,7 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 			}
 			Path chunkPath =
                         PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
-				if(!Switcher.test&&Files.isRegularFile(chunkPath)){
+				if(Files.isRegularFile(chunkPath)){
 					
 					ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
 						try {

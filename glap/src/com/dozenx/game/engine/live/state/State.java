@@ -40,6 +40,7 @@ public class State {
     float distance =0;
     long  nowTime = 0 ;
     public void update(){
+
        if(this.livingThing.routes!=null && livingThing.routes.size()>0){
             if(livingThing.getDest() == null ){
                 GL_Vector dest =livingThing.routes.remove(0);
@@ -56,7 +57,7 @@ public class State {
             distance= GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
             if(distance>1){
                 nowTime = TimeUtil.getNowMills();
-                if(lastTime==0){       //如果开始时间是0说明刚开始
+                if(lastTime==0 || nowTime-lastTime >3000){       //如果开始时间是0说明刚开始
                     lastTime = nowTime;  //修正第一帧 让lastTime一开始等于开始时间 防止移动超过最大距离
                    // beginTime= TimeUtil.getNowMills();
                     if(GamingState.player!=null) {
@@ -69,7 +70,9 @@ public class State {
                         //调整计算新的位置
                         float moveDistance =  livingThing.speed/10* (nowTime-lastTime)/1000;
                         GL_Vector walkDir = GL_Vector.sub( livingThing.getDest(),livingThing.getPosition()).normalize();
-
+                        if(!livingThing.isPlayer()) {
+                            livingThing.setWalkDir(walkDir);
+                        }
                        //GL_Vector newPosition = nowPosition(nowTime, lastTime, livingThing.speed, livingThing.getPosition(), livingThing.getDest());
                         float length = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
                         //float moveDistance = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),newPosition));
@@ -78,14 +81,21 @@ public class State {
                             livingThing.setDest(null);
 
                             return;  //退出移动
-                        }else*/ if(moveDistance>distance -0.1f  ){//如果移动举例超过了最大距离 说明到达了目的地 防止因为卡顿引起超距离移动 结束移动
+                        }else*/
+
+                        if(GamingState.player==null){
+                            livingThing.setDest(livingThing.getDest());
+                        }
+                        if(moveDistance>distance -0.1f  ){//如果移动举例超过了最大距离 说明到达了目的地 防止因为卡顿引起超距离移动 结束移动
                             livingThing.move(livingThing.getDest().x,livingThing.getDest().y,livingThing.getDest().z);
                             livingThing.setDest(null);
+                            lastTime = TimeUtil.getNowMills();
                             return;
                         }else {
 
                             GL_Vector newPosition =  GL_Vector.add(livingThing.getPosition(), GL_Vector.multiply(walkDir,moveDistance ));
                             livingThing.move(newPosition.x, newPosition.y, newPosition.z);
+                            LogUtil.println(""+livingThing.getPosition());
                             lastTime = TimeUtil.getNowMills();
                         }
                         //LogUtil.println(newPosition.toString());

@@ -49,6 +49,7 @@ import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
 import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.client.Tick500msTask;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.TimeUtil;
@@ -221,7 +222,8 @@ public class GamingState implements GameState {
             shadowDiv.setHeight(200);
             shadowDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("items")));
             document.body.appendChild(shadowDiv);*/
-
+            Tick500msTask tick500msTask =new Tick500msTask();
+            tick500msTask.start();
             SynchronTask task = new SynchronTask();
             task.start();
         } catch (Exception e) {

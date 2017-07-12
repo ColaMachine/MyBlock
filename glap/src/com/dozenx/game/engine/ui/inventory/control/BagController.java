@@ -15,6 +15,7 @@ import com.dozenx.game.engine.ui.inventory.bean.InventoryBean;
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
 import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
 import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
+import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
@@ -87,6 +88,7 @@ public class BagController {
     }
     InventoryPanel inventoryPanel ;
     PersonPanel personPanel ;
+    ToolBarView toolBarView;
     public void refreshBag(){
         if( inventoryPanel ==null) {
             inventoryPanel = CoreRegistry.get(InventoryPanel.class);
@@ -96,12 +98,17 @@ public class BagController {
             personPanel = CoreRegistry.get(PersonPanel.class);
 
         }
+        if( toolBarView ==null) {
+            toolBarView = CoreRegistry.get(ToolBarView.class);
+
+        }
        // if( inventoryPanel!=null) {
             inventoryPanel.reload();
        // }
         //if( personPanel!=null) {
             personPanel.reload();
        // }
+        toolBarView.reload(this);
         Document.needUpdate=true;
     }
     public ItemBean[] getItemBeanList(){

@@ -26,7 +26,7 @@ public abstract class BrownianNoise {
     /**
      * Default persistence value
      */
-    public static final double DEFAULT_PERSISTENCE = 1.836281;//持续性 //这个值如果过小就会比较离散
+    public static final double DEFAULT_PERSISTENCE = 0.836281;//持续性 //这个值如果过小就会比较离散
 
     /**
      * Default lacunarity value

@@ -114,8 +114,13 @@ public class ChunkImpl implements Chunk {
        // return null;
         int blockValue =blockData.get(x,y,z);
         Block block =  map.get(blockData.getIndex(x,y,z));//.getBlock((short) blockValue);
-        if(block == null )
+        if(block == null ) {
             block = blockManager.getBlock(blockValue);
+
+        }
+        if(block.getId() == ItemType.copy_down.ordinal()){
+            block=  map.get(blockData.getIndex(x,y-1,z));
+        }
         return block;
       //  return new BaseBlock();
     }

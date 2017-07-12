@@ -497,21 +497,49 @@ public class LivingThingBean extends Role {
 
         //如果两次不在同一个方块空间里 判断一下是否要掉落
 
-        if((int)this.oldPosition.x != (int) x  ||
+      /* if((int)this.oldPosition.x != (int) x  ||
                 (int)this.oldPosition.y != (int) y ||
                         (int)this.oldPosition.z != (int) z
         ){
-            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
-        }
+            //boolean now hasBottom?
+           if(CoreRegistry.get(PhysicsEngine.class).collision(this)){
+                this.setDest(null);
+           }
+            //CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
+        }else{
+            //500秒结算一次
+        }*/
         GamingState.livingThingChanged = true;
         this.lastMoveTime =TimeUtil.getNowMills();
         this.updateTime =  TimeUtil.getNowMills();
 
         //if (!Switcher.IS_GOD)
-            if (CoreRegistry.get(PhysicsEngine.class).collision(this)) {
-                this.position.copy(oldPosition);
-            }
+        if(GamingState.player!=null  &&  this.getId() != GamingState.player.getId()){
+            //在客户端不对他们做碰撞校验
 
+        }else{
+            if (CoreRegistry.get(PhysicsEngine.class).collision(this)) {
+                //尝试高度太高1
+                this.position.y=(int)Math.floor(this.position.y+1);
+                if(CoreRegistry.get(PhysicsEngine.class).collision(this)){
+                    this.position.copy(oldPosition);
+                    this.setBlock(true);
+                    this.setDest(null);
+                }
+
+            }else{
+                this.setBlock(false);
+            }
+        }
+
+
+    }
+    boolean block =false;
+    public void setBlock(boolean flag){
+        this.block=flag;
+    }
+    public boolean isBlock(){
+        return this.block;
     }
     public void update(){
         //this.dropControl();

@@ -502,7 +502,7 @@ public class MouseControlCenter {
         prevMouseY=y;
         mouseLClick(x, y);
         mouseLeftPressed=true;
-        LogUtil.println("mouseLeftDown");
+//        LogUtil.println("mouseLeftDown");
     }
 
     /**
@@ -646,7 +646,7 @@ public class MouseControlCenter {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
-            player.bodyRotate( -(x - prevMouseX),(y - prevMouseY));
+            player.bodyRotate( -(x - prevMouseX)/2,(y - prevMouseY)/2);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli = false;

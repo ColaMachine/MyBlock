@@ -98,14 +98,25 @@ public class ServerEnemyManager implements Runnable {
                     //findTarget(enemy);
 
                     if(enemy.getTarget() == null && enemy.getDest()==null && enemy.getFinalDest()!=null){
+                        if(enemy.isBlock()){
+                            if (enemy.routes == null || enemy.routes.size() == 0) {
+                                this.pathRoute(enemy.getPosition(), enemy.getFinalDest(), enemy);
+                                enemy.setFinalDest(null);
+                            }else{
 
-                        if (enemy.routes == null || enemy.routes.size() == 0) {
+
+                            }
+                        }else {
+                            enemy.setDest(enemy.getFinalDest());
+                        }
+                        //如果长时间由于卡住过不去 就动用path寻路
+                      /*  if (enemy.routes == null || enemy.routes.size() == 0) {
                             this.pathRoute(enemy.getPosition(), enemy.getFinalDest(), enemy);
                             enemy.setFinalDest(null);
                         }else{
 
 
-                        }
+                        }*/
                     }
                     //}
                 }

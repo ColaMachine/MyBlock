@@ -56,6 +56,30 @@ public class SayHandler extends GameServerHandler {
                 }
             }
         }*/
+        if(cmd.getMsg().startsWith("/fly")){
+            // create wolf x y z
+            String[] arr = cmd.getMsg().split(" ");
+            if(arr.length>=5  && StringUtil.isNumeric(arr[3])) {
+                String name = arr[1];
+                int x= Integer.valueOf(arr[2]);
+                int y= Integer.valueOf(arr[3]);
+                int z= Integer.valueOf(arr[4]);
+
+
+                LivingThingBean  wolf  =enemyService.getEnemyById(Integer.valueOf(name));
+                if(wolf!=null){
+                    wolf.setPosition(x,y,z);
+                }else{
+                      wolf  =userService.getOnlinePlayerById(Integer.valueOf(name));
+                    if(wolf!=null){
+                        wolf.setPosition(x,y,z);
+                    }
+                }
+
+
+            }
+
+        }else
         if(cmd.getMsg().startsWith("/move")){
             // create wolf x y z
             String[] arr = cmd.getMsg().split(" ");
