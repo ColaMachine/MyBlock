@@ -24,7 +24,7 @@ public class Client10sTask extends Thread{
 
         while (true) {
             try {
-                livingThingManager.update500ms();
+                //livingThingManager.update500ms();
                 Thread.sleep(500);//200 ms
             } catch (Exception e) {
                 e.printStackTrace();

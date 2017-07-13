@@ -217,6 +217,9 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
             case PLAINS:
             case MOUNTAINS:
                 // Beach
+                if(y>30){
+                    return;
+                }
                 if (y >= 28 && y <= 34) {
                     c.setBlock(x, y, z,  ItemType.sand);
                 } else if (depth == 0 && y > 32 && y < 128) {
@@ -235,6 +238,9 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
 
                 break;
             case SNOW:
+                if(y>30){
+                    return;
+                }
                 if (depth == 0.0 && y > 32) {
                     // Snow on top
                     c.setBlock(x, y, z,  ItemType.soil);
@@ -249,6 +255,9 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                 break;
 
             case DESERT:
+                if(y>30){
+                    return;
+                }
                 if (depth > 8) {
                     // Stone
                     c.setBlock(x, y, z,  ItemType.stone);

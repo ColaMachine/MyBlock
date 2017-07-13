@@ -102,7 +102,7 @@ public class ColorBlock extends AABB implements Block {
 		this.maxY = y + 1;
 		this.maxZ = z + 1;
 	}
-    int beishu =40;
+    int beishu =5;
 	public ColorBlock(int x, int y, int z, Color color) {
 		this.x = x;
 		this.y = y;

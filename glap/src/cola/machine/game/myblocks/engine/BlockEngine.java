@@ -177,10 +177,10 @@ public class BlockEngine implements GameEngine{
             TimeUtil.update();
             //FPS的控制是在LwjglGraphics里的 Display.sync里控制的
              nowTime = TimeUtil.getNowMills();
-            if(nowTime-lastTime > 100){
-                lastTime = nowTime;
+           // if(nowTime-lastTime > 100){
+                //lastTime = nowTime;
                 currentState.update(totalDelta);//statemainmenu
-            }
+          //  }
 
             for (EngineSubsystem subsystem : getSubsystems()) {
                 subsystem.preUpdate(currentState, delta);

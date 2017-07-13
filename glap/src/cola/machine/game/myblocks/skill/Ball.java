@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.block.Block;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.ItemType;
@@ -52,6 +53,7 @@ public class Ball  {
     float speed;
     int height;
     Long startTime;
+    long lastTime;
     Component component;
     ItemDefinition itemDefinition;
     ChunkProvider chunkProvider  = CoreRegistry.get(ChunkProvider.class);
@@ -100,9 +102,13 @@ public class Ball  {
             Long nowTime =  TimeUtil.getNowMills() - startTime;
             startTime =  TimeUtil.getNowMills();
             float _distance = speed * nowTime / 1000;
+
+            float downSpeed=0.5f * 19.6f * nowTime * nowTime / 1000000;//�˶��ľ���
+
             sumDistance += _distance;
             this.position.x += this.direction.x * _distance;
-            this.position.y += this.direction.y * _distance;
+            this.position.y += this.direction.y * _distance-downSpeed;
+
             this.position.z += this.direction.z * _distance;
 
         }

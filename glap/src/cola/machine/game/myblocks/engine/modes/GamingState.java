@@ -571,7 +571,7 @@ public ShaderManager shaderManager;
             shaderManager.shadow.render(shaderManager,worldRenderer);
         }
 
-
+        //LogUtil.println(TimeUtil.getNowMills()+"'");
         OpenglUtils.checkGLError();
 
 
