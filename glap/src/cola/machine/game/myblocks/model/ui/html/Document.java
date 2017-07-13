@@ -325,7 +325,7 @@ public class Document extends HtmlObject {
     public HtmlObject getFocusKeyWidget(){
         return focusKeyWidget;
     }
-    void setFocusKeyWidget(HtmlObject widget) {
+    public void setFocusKeyWidget(HtmlObject widget) {
         if(focusKeyWidget == null && isFocusKey()) {
             focusKeyWidget = widget;
         }

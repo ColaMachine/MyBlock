@@ -14,9 +14,11 @@ public class BagChangeCmd extends   BaseGameCmd{
     final CmdType cmdType = CmdType.BAGCHANGE;
 
     private int userId;
+    private int toId;
     private ItemServerBean itemBean ;
     private int fromPosition;
     private int destPosition;
+
 
     public BagChangeCmd(byte[] bytes){
         parse(bytes);
@@ -26,6 +28,15 @@ public class BagChangeCmd extends   BaseGameCmd{
         this.userId =userId;
         this.destPosition =destPosition;
         this.fromPosition =fromPosition;
+
+    }
+    public BagChangeCmd(int userId , ItemServerBean itemServerBean,int fromPosition,int destPosition,int toId){
+        this.itemBean =itemServerBean;
+        this.userId =userId;
+        this.destPosition =destPosition;
+        this.fromPosition =fromPosition;
+        this.toId = toId;
+
     }
 
     //equip 4 |userId|part 2|item |itemId|
@@ -37,7 +48,13 @@ public class BagChangeCmd extends   BaseGameCmd{
 
 
 
-            wrap.put(itemBean.getId()).put(itemBean.getNum()).put(itemBean.getItemType()).put(itemBean.getPosition()).put(destPosition).put(fromPosition);
+            wrap.put(itemBean.getId())
+                    .put(itemBean.getNum())
+                    .put(itemBean.getItemType())
+                    .put(itemBean.getPosition())
+                    .put(destPosition)
+                    .put(fromPosition)
+                    .put(toId);
 
             return wrap.array();
 
@@ -55,10 +72,11 @@ public class BagChangeCmd extends   BaseGameCmd{
             itemBean.setNum(byteBufferWrap.getInt());
             itemBean.setItemType(byteBufferWrap.getInt());
             itemBean.setPosition(byteBufferWrap.getInt());
+
         setDestPosition(byteBufferWrap.getInt());
 
         setFromPosition(byteBufferWrap.getInt());
-
+        this.toId= byteBufferWrap.getInt();
          // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
 
     }

@@ -20,6 +20,7 @@ import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.html.Document;
 
+import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.Client500msTask;
@@ -163,6 +164,13 @@ public class GamingState implements GameState {
             inventory.setLeft(0);
             inventory.setVisible(false);
             document.body.appendChild(inventory);
+
+            BoxPanel boxPanel = new BoxPanel(4,5);
+            boxPanel.setTop(10);
+            boxPanel.setLeft(100);
+            boxPanel.setVisible(false);
+            document.body.appendChild(boxPanel);
+
             PersonPanel personPanel = new PersonPanel(1,5);
             personPanel.setVisible(false);
             document.body.appendChild(personPanel);

@@ -3,10 +3,13 @@ package cola.machine.game.myblocks.model;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -76,49 +79,12 @@ public class BoxBlock extends BaseBlock{
         return false;
     }
     public boolean beuse(){
-
-        //通过一个通用的方式获得点击的面在哪里
-      //  int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);
-       // int chunkZ = MathUtil.getBelongChunkInt(targetPoint.z);
-        //   TreeBlock treeBlock =new TreeBlock(hitPoint);
-        //treeBlock.startPosition=hitPoint;
-        //  treeBlock.generator();
-      //  int blockX = MathUtil.floor(targetPoint.x) - chunkX * 16;
-      //  int blockY = MathUtil.floor(targetPoint.y);
-      //  int blockZ = MathUtil.floor(targetPoint.z) - chunkZ * 16;
-
-        int chunkX =chunk.chunkPos.x;
-        int chunkZ=chunk.chunkPos.z;
-        ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-        cmd.cx = this.getX();
-        cmd.cz = this.getZ();
-        cmd.cy = this.getY();
-        cmd.type = 1;
-        this.penetration =! penetration;
-        chunk.getBlock(x,y+1,z).setPenetrate(this.penetration);
-        /*if(open==0){
-            open=1;
-        }else{
-            open=0;
-        }*/
-
-       int newId=  ((penetration?1:0)<<12| this.dir<<8 )| this.id;
-        cmd.blockType= newId;
-       /* int realBlockType = ByteUtil.get8_0Value(blockType);
-
-        if(realBlockType==ItemType.wood_door.ordinal()){
-            //判断当前是开还是关
-            int state = ByteUtil.get16_12Value(blockType);
-            if(state == 0 ){
-                //是关
-                blockType = 1<<12| blockType;
-            }else{
-                blockType = ByteUtil.HEX_0_1_1_1 & blockType;
-            }*/
-           // cmd.blockType= blockType;
-            CoreRegistry.get(Client.class).send(cmd);
-            return true;
-       // }
+        CoreRegistry.get(BoxPanel.class).setVisible(true);
+        CoreRegistry.get(BoxPanel.class).requestKeyboardFocus();
+        Document.needUpdate=true;
+        Switcher.isChat=true;
+      //  Document.getInstance().setFocusKeyWidget(CoreRegistry.get(BoxPanel.class));
+        return true;
     }
     @Override
     public Block clone(){

@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.CopyDownBlock;
-import cola.machine.game.myblocks.model.DoorBlock;
+import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.ByteUtil;
@@ -49,7 +46,7 @@ public class BlockManagerImpl extends BlockManager {
         blockInfoNameMap.put("tree_leaf", treeLeaf);
         blockInfoNameMap.put("tree_seed", treeSeed);
         blockInfoNameMap.put("wood_door", wood_door);
-        Block box=new DoorBlock("box",ItemType.box.ordinal(),true);
+        Block box=new BoxBlock("box",ItemType.box.ordinal(),true);
         blockInfoNameMap.put("box", box);
         blockInfoNameMap.put("copy_down", copy_down);
        Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
