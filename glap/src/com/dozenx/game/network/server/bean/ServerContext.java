@@ -32,6 +32,7 @@ public class ServerContext {
     public List<LivingThingBean> onLinePlayer =  new ArrayList<>();
     public List<LivingThingBean> allPlayer =  new ArrayList<>();
     //private Map<Integer,List<ItemServerBean>> itemsMap =  new HashMap<Integer,List<ItemServerBean>>();
+    //the userId or the box id to itemserverbean array
     public Map<Integer,ItemServerBean[]> itemArrayMap =  new HashMap<Integer,ItemServerBean[]>();
     public List<ItemServerBean> worldItem = new ArrayList<>();
     public List<Worker> getWorkers() {

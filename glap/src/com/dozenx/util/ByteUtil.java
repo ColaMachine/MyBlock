@@ -322,6 +322,13 @@ System.out.println(ByteUtil.get8_0Value(555));
                 ((d<<16 >>16 )  ));
 
     }
+    public  static int unionBinary4_8_4_16(int a,int b,int c,int d){
+        return (((a&HEX_0_0_0_1 ) <<28 )| //4
+                ((b&HEX_0_0_0_1 ) <<20 )|   //
+                ((c&HEX_0_0_1_1 ) << 16)|
+                ((d<<16 >>16 )  ));
+
+    }
 
     public static int [] getValueSplit4Slot(int value ){
 

@@ -3,7 +3,6 @@ package com.dozenx.game.engine.command;
 import com.dozenx.game.network.server.handler.*;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
-import sun.plugin2.main.server.ResultHandler;
 
 /**
  * Created by dozen.zhang on 2017/2/13.
@@ -18,6 +17,7 @@ public enum CmdType {
     PLAYERSTATUS(PlayerSynCmd.class),//6
     BAG(BagCmd.class,BagHandler.class),//7
     BAGCHANGE(BagChangeCmd.class,BagChangeHandler.class),//8
+    BOX(BoxOpenCmd.class,BoxChangeHandler.class),//8
     GET(GetCmd.class,GetHandler.class),//9
     PICK(PickCmd.class,PickHandler.class),//10
     ATTACK(AttackCmd.class,AttackHandler.class),//1

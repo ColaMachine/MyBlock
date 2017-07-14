@@ -41,7 +41,7 @@ public class ChunksCmd extends   BaseGameCmd{
         wrap.put(list.size()*4);
         for(int i=0;i<list.size();i++){
             Point4i value = list.get(i);
-            int unionValue = ByteUtil.unionBinary4_4_8_16(value.x,value.y,value.z,value.w);
+            int unionValue = ByteUtil.unionBinary4_8_4_16(value.x,value.y,value.z,value.w);
             wrap.put(unionValue);
         }
 

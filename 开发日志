@@ -188,4 +188,11 @@ SaveTask
 
 2017-07-12 23:58:08 增加木箱子
 2017-07-13 22:17:35希望木箱子按使用键能打开包裹
+2017年7月14日10:03:47 木箱需要一个id 或者通过xyz计算出id
+block vlaue
+box
+创建BoxBean在内存中
 
+create  生成id id 为 x_y_z_itemtype 默认生成的时候itembeanlist是空的
+update  更新发生在内部物品发生变化的时候 1移出物品 2调换位置 3放入武平 4交换物品
+delete  发生在被砸的时候 物品全部掉落到周围

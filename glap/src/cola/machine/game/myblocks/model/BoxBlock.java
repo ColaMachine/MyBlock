@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.ui.inventory.control.BoxController;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
@@ -20,13 +21,13 @@ import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 public class BoxBlock extends BaseBlock{
-    int dir=0;
+   public int dir=0;
     //int open=0;
     ItemDefinition itemDefinition;
     public BoxBlock(String name , int id, boolean isAlpha){
         super(name,id,isAlpha);
     }
-
+    public int open=0;
     @Override
     public void setValue(int value) {
         int state = ByteUtil.get16_8Value(value);
@@ -83,6 +84,9 @@ public class BoxBlock extends BaseBlock{
         CoreRegistry.get(BoxPanel.class).requestKeyboardFocus();
         Document.needUpdate=true;
         Switcher.isChat=true;
+
+        CoreRegistry.get(BoxController.class).openBox(this);
+
       //  Document.getInstance().setFocusKeyWidget(CoreRegistry.get(BoxPanel.class));
         return true;
     }

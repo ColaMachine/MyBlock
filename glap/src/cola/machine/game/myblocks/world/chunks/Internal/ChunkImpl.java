@@ -64,6 +64,7 @@ public class ChunkImpl implements Chunk {
     private TeraArray blockData;
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
 
+    HashMap<Integer,Block> map =new HashMap<>();//this map store the box has state
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
         this(chunkPos.x, chunkPos.y, chunkPos.z);
@@ -158,7 +159,7 @@ public class ChunkImpl implements Chunk {
         }
         return blockManager.getBlock((short) oldValue);*/
     }
-    HashMap<Integer,Block> map =new HashMap<>();
+
     @Override
     public void setBlock(int x, int y, int z, int blockId) {
         try {

@@ -76,7 +76,7 @@ public class DoorDefinition extends  BlockDefinition{
                     }*/
           CoreRegistry.get(Client.class).send(cmd);
           cmd.cy+=1;
-cmd.blockType = ItemType.copy_down.ordinal();
+          cmd.blockType = ItemType.copy_down.ordinal();
           CoreRegistry.get(Client.class).send(cmd);
 
 

@@ -334,7 +334,7 @@ public class BaseBlock extends AABB implements Block{
         return new BaseBlock();
     }
 
-    ChunkImpl chunk;
+    public ChunkImpl chunk;
     @Override
     public void setChunk(ChunkImpl chunk){
         this.chunk= chunk;

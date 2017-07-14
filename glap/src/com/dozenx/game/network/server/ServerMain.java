@@ -58,6 +58,7 @@ public class ServerMain {
         serverContext. registerHandler(CmdType.DROP,new DropHandler(serverContext));
         serverContext. registerHandler(CmdType.PICK,new PickHandler(serverContext));
         serverContext. registerHandler(CmdType.JUMP,new JumpHandler(serverContext));
+        serverContext. registerHandler(CmdType.BOX,new BoxChangeHandler(serverContext));
         serverContext. registerHandler(CmdType.CHUNKREQUEST,new ChunkHandler(serverContext));
 
         ItemManager itemManager =new ItemManager();
