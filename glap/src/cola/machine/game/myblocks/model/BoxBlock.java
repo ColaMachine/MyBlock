@@ -8,7 +8,9 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.element.model.ShapeFace;
+import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.engine.ui.inventory.control.BoxController;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -19,6 +21,8 @@ import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+
+import java.util.List;
 
 public class BoxBlock extends BaseBlock{
    public int dir=0;
@@ -85,8 +89,12 @@ public class BoxBlock extends BaseBlock{
         Document.needUpdate=true;
         Switcher.isChat=true;
 
-        CoreRegistry.get(BoxController.class).openBox(this);
+        //修改方块的状态为开并拿会物品列表
+        ItemBean[] list = CoreRegistry.get(BoxController.class).openBox(this);
 
+        CoreRegistry.get(BoxPanel.class).reload(list);
+        Document.needUpdate =true;
+        //更新到boxpanel
       //  Document.getInstance().setFocusKeyWidget(CoreRegistry.get(BoxPanel.class));
         return true;
     }

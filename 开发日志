@@ -196,3 +196,8 @@ box
 create  生成id id 为 x_y_z_itemtype 默认生成的时候itembeanlist是空的
 update  更新发生在内部物品发生变化的时候 1移出物品 2调换位置 3放入武平 4交换物品
 delete  发生在被砸的时候 物品全部掉落到周围
+cmd: boxopencmd箱子状态命令 boxItemcmd 箱子物品请求命令
+
+调用除湿的地方  创建controller  客户端 service cmd CmdUtil  handler cmdtype servermain  服务端service client 接受 manager 接收处理
+
+

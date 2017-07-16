@@ -5,6 +5,7 @@ package com.dozenx.game.engine.ui.chat.view;
  */
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
@@ -78,6 +79,9 @@ public class ChatPanel extends HtmlObject {
                         return;
                     }
                     text=text.trim();
+                    if(text.startsWith("/createbox")){
+                        TextureManager.createBoxShape();
+                    }
                     if(text.startsWith("/chunk")) {
                         String[] arr = text.split(" ");
                         if(arr.length>=4  && StringUtil.isNumeric(arr[3])) {

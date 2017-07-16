@@ -29,6 +29,9 @@ public class BagChangeHandler extends GameServerHandler {
         int userId = cmd.getUserId();
         int fromPos= cmd.getFromPosition();
         int destPos=cmd.getDestPosition();
+
+        int fromIndex= fromPos>35?fromPos-35:fromPos;
+        int destIndex =destPos>35?destPos-35:destPos;
         int boxId = cmd.getBoxId();
       //  List<ItemServerBean>  itemList =serverContext.getItemByUserId(userId);
 
@@ -96,8 +99,8 @@ public class BagChangeHandler extends GameServerHandler {
                 ItemDestBeans =  itemBeans;
             }
 
-            ItemServerBean fromBean  = ItemFromBeans[fromPos];
-            ItemServerBean destBean = ItemDestBeans[destPos];
+            ItemServerBean fromBean  = ItemFromBeans[fromIndex];
+            ItemServerBean destBean = ItemDestBeans[destIndex];
             if (fromBean == null)
                 return new ResultCmd(1, "无效操作", 0);
             ;
@@ -113,16 +116,16 @@ public class BagChangeHandler extends GameServerHandler {
 
 
             if (destBean == null) {//拖过去
-                ItemDestBeans[destPos] = fromBean;
+                ItemDestBeans[destIndex] = fromBean;
                 fromBean.setPosition(destPos);
-                ItemFromBeans[fromPos] = null;
+                ItemFromBeans[fromIndex] = null;
             } else if (destBean.getItemType() == fromBean.getItemType()) {//堆叠
                 destBean.setNum(destBean.getNum() + fromBean.getNum());
-                ItemFromBeans[fromPos] = null;
+                ItemFromBeans[fromIndex] = null;
             } else {//交换
-                ItemFromBeans[fromPos] = destBean;
+                ItemFromBeans[fromIndex] = destBean;
                 destBean.setPosition(fromPos);
-                ItemDestBeans[destPos] = fromBean;
+                ItemDestBeans[destIndex] = fromBean;
                 fromBean.setPosition(destPos);
 
             }

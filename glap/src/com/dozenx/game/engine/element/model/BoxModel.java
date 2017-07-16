@@ -45,6 +45,7 @@ public class BoxModel implements Model {
     public GL_Vector P7;
     public GL_Vector P8;
 
+
     public static float[][] getFrontVertices(float minX,float minY,float minZ,float width,float height,float thick){
         return new float[][]{{minX,minY,minZ+thick},{minX+width,minY,minZ+thick},{minX+width,minY+height,minZ+thick},{minX,minY+height,minZ+thick}};
     }

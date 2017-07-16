@@ -20,6 +20,7 @@ import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.html.Document;
 
+import com.dozenx.game.engine.ui.inventory.control.BoxController;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
 import com.dozenx.game.network.client.Client;
@@ -749,6 +750,7 @@ public ShaderManager shaderManager;
     private void initManagers() {
 
         BagController bagController = new BagController(player);
+        BoxController boxController = new BoxController(player);
         CoreRegistry.put(BagController.class, bagController);
         //CoreRegistry.put(InventoryController.class, new InventoryController());
         // ResourceManager assetManager=CoreRegistry.putPermanently(ResourceManager.class,new ResourceManager());

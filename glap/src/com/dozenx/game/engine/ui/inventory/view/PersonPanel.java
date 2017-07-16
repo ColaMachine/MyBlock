@@ -52,7 +52,7 @@ public class PersonPanel extends SlotPanel {
 
 
     public void reload(){
-        ItemBean[] itemBeanList=bagController.getItemBeanList();
+        ItemBean[] itemBeanList=bagController.getItemBeanList(1);
 
 
         for(int i=20;i<=24;i++){

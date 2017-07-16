@@ -15,6 +15,7 @@ import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
 import core.log.LogUtil;
 
+import java.lang.reflect.Constructor;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -40,11 +41,11 @@ public class ServerMain {
 
 
 
-        serverContext.registerService(BagService.class,new BagService(serverContext));
+       serverContext.registerService(BagService.class,new BagService(serverContext));
         serverContext.registerService(EnemyService.class,new EnemyService(serverContext));
         serverContext.registerService(UserService.class,new UserService(serverContext));
         //注册所有handler
-        serverContext. getAllHandlerMap().put(CmdType.LOGIN,new LoginHandler(serverContext));
+       /*  serverContext. getAllHandlerMap().put(CmdType.LOGIN,new LoginHandler(serverContext));
         serverContext. registerHandler(CmdType.WALK2,new WalkHandler(serverContext));
         serverContext. registerHandler(CmdType.WALK,new WalkHandler(serverContext));
         serverContext. registerHandler(CmdType.EQUIP,new EquipHandler(serverContext));
@@ -59,8 +60,18 @@ public class ServerMain {
         serverContext. registerHandler(CmdType.PICK,new PickHandler(serverContext));
         serverContext. registerHandler(CmdType.JUMP,new JumpHandler(serverContext));
         serverContext. registerHandler(CmdType.BOX,new BoxChangeHandler(serverContext));
-        serverContext. registerHandler(CmdType.CHUNKREQUEST,new ChunkHandler(serverContext));
+        serverContext. registerHandler(CmdType.CHUNKREQUEST,new ChunkHandler(serverContext));*/
+        for(CmdType cmd :CmdType.values()){
+            try {
+               if(cmd.gameHandlerClass!=null) {
+                   Constructor c = cmd.gameHandlerClass.getConstructor(ServerContext.class);
+                   serverContext.registerHandler(cmd, (GameServerHandler) c.newInstance(serverContext));
+               }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+        }
         ItemManager itemManager =new ItemManager();
         CoreRegistry.put(ItemManager.class,itemManager);
         PhysicsEngine physicsEngine =new PhysicsEngine();

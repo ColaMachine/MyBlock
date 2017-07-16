@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.element.bean;
 
 import cola.machine.game.myblocks.engine.Constants;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ShapeType;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -10,6 +11,7 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -82,6 +84,29 @@ public class Component {
    public Component(){
 
    }
+
+
+    public void addChild(Shape shape) {
+        String parentName = shape.getParent();
+
+        Component parentNode = this.findChild(parentName);
+        if (parentNode == null) {
+            return;
+        } else {
+
+
+            Component component = new Component(shape);
+            // component.setShape(itemCfg.getShape());
+            // component.setItem(itemBean);
+            component.rotateX=-30;
+
+            component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+            //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+            parentNode.addChild(component);
+            //changeProperty();
+        }
+
+    }
     public Component(Shape shape ){
         this(shape.getWidth(),shape.getHeight(),shape.getThick());
         this.name = shape.getName();
@@ -110,6 +135,103 @@ public class Component {
         this.P7= new GL_Vector(width,height,0);
         this.P8= new GL_Vector(0,height,0);
 
+
+    }
+    public void addFacesToList(List<int[]> faces, int[] arr){
+        int[] face = new int[]{arr[0],arr[1],arr[2],arr[3],arr[0],arr[2]};
+        faces.add(face);
+
+    }
+    public void addVerticesToList(List<float[]> list ,float[][] vertices,GL_Matrix matrix){
+
+        for(int i=0;i<4;i++){
+            GL_Vector vector =new GL_Vector(vertices[i][0],vertices[i][1],vertices[i][2]);
+            vector = GL_Matrix.multiply(matrix, vector);
+            list.add(new float[]{vector.x,vector.y,vector.z});
+        }
+
+    }
+    public void addNormalsToList(List<float[]> nromals, GL_Vector gl_vector,GL_Matrix matrix){
+        gl_vector = GL_Matrix.multiply(matrix, gl_vector);
+        float[] normal = new float[]{gl_vector.x,gl_vector.y,gl_vector.z};
+
+        nromals.add(normal);
+        nromals.add(normal);
+        nromals.add(normal);
+        nromals.add(normal);
+
+    }
+    public void addTexcoordsToList(List<float[]> list,TextureInfo ti ){
+        list.add(new float[]{ti.minX,ti.minY});
+        list.add(new float[]{ti.maxX,ti.minY});
+        list.add(new float[]{ti.maxX,ti.maxY});
+        list.add(new float[]{ti.minX, ti.maxY});
+
+    }
+
+    public void getVertices(int index,GL_Matrix matrix,List<float[]> vertices,List<float[] > texcoords,List<int[]> faces,List<float[]> normals){
+
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentLocation.x, parentLocation.y, parentLocation.z);
+
+        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,0,0);
+        rotateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
+
+        if(rotateZ!=0){
+            //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -rotateZ*3.14f/180));
+        }
+        if(rotateY!=0){
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, -rotateY*3.14f/180, 0));
+        }
+        if(rotateX!=0){
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -rotateX*3.14f/180, 0, 0));
+
+        } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
+        translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
+        rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+
+
+
+        if(front !=null) {
+            this.addVerticesToList(vertices, BoxModel.getFrontVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+            this.addNormalsToList(normals, BoxModel.FRONT_DIR, rotateMatrix);
+            this.addTexcoordsToList(texcoords, front);
+        }
+        if(back !=null) {
+            this.addVerticesToList(vertices, BoxModel.getBackVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+            this.addNormalsToList(normals, BoxModel.BACK_DIR, rotateMatrix);
+            this.addTexcoordsToList(texcoords, back);
+        }
+        if(left !=null) {
+            this.addVerticesToList(vertices, BoxModel.getLeftVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+            this.addNormalsToList(normals, BoxModel.LEFT_DIR, rotateMatrix);
+            this.addTexcoordsToList(texcoords, left);
+        }
+        if(right !=null) {
+            this.addVerticesToList(vertices, BoxModel.getRightVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+            this.addNormalsToList(normals, BoxModel.RIGHT_DIR, rotateMatrix);
+            this.addTexcoordsToList(texcoords, right);
+        }
+        if(top !=null) {
+            this.addVerticesToList(vertices, BoxModel.getTopVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+            this.addNormalsToList(normals, BoxModel.TOP_DIR, rotateMatrix);
+            this.addTexcoordsToList(texcoords, top);
+        }
+        if(bottom !=null) {
+            this.addVerticesToList(vertices, BoxModel.getBottomVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+            this.addNormalsToList(normals, BoxModel.DOWN_DIR, rotateMatrix);
+            this.addTexcoordsToList(texcoords, bottom);
+        }
+
+        for(int i=0;i<children.size();i++){
+            children.get(i).getVertices( index,matrix,vertices, texcoords, faces,normals);
+        }
 
     }
 

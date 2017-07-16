@@ -60,7 +60,13 @@ public class BulletPhysics  {
             worldX = MathUtil.floor(nowX);//x 代表推进的举例 推进后的x
             worldY = MathUtil.floor(nowY);//推进后的y
             if(worldY<0){
-                return null;//说明已经穿透地板了
+                BulletResultDTO arr = new BulletResultDTO();
+               // arr.targetBlock= targetBlock;
+
+                arr.placePoint =  new GL_Vector(preX,
+                        preY,
+                        preZ);//����ײ��ǰ�ķ���λ��
+                return arr;//说明已经穿透地板了
             }
             worldZ = MathUtil.floor(nowZ);//推进后的z
 

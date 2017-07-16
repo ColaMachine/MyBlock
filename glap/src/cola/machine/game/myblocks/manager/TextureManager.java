@@ -5,9 +5,11 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
 import com.alibaba.fastjson.JSON;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.Util;
 import com.dozenx.util.MapUtil;
@@ -501,7 +504,7 @@ public class TextureManager {
                         shape.setBackFace(shapeFace);
                     }
                     Object leftObj = map.get("leftFace");
-                    if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
+                    if(leftObj instanceof  com.alibaba.fastjson.JSONObject){
                         ShapeFace shapeFace = getShapeFace(leftObj);
                         shape.setLeftFace(shapeFace);
                     }
@@ -709,10 +712,12 @@ public class TextureManager {
         shapeFace.setNormals(normals);
 
         JSONArray facesAry =  jsonObj.getJSONArray("faces");
-        int[][] faces = new int[1][facesAry.getJSONArray(0).size()];
-        for(int j=0;j<facesAry.getJSONArray(0).size();j++){
-            faces[0][j]= facesAry.getJSONArray(0).getInteger(j);
-        }
+        int[][] faces = new int[facesAry.size()][facesAry.getJSONArray(0).size()];
+       for(int i=0;i<faces.length;i++) {
+           for (int j = 0; j < facesAry.getJSONArray(i).size(); j++) {
+               faces[i][j] = facesAry.getJSONArray(i).getInteger(j);
+           }
+       }
         shapeFace.setFaces(faces);
         return shapeFace;
     }
@@ -858,8 +863,64 @@ public class TextureManager {
         System.out.println("rightFace:"+JSON.toJSONString(shape.getRightFace())+",");
         return shape;
     }
+
+
+    public void print(Component component,Shape shape){
+
+
+
+
+
+
+
+        /////////// back
+
+
+
+
+
+
+
+    }
+
+    public static Shape createBoxShape(){
+
+
+        Component rootComponent =new Component();
+
+        Shape bodyShape = TextureManager.getShape("box_open_body");
+        rootComponent =
+                new Component(bodyShape);
+
+        rootComponent.addChild(TextureManager.getShape("box_open_head"));
+
+
+        List<float[]> vertices = new ArrayList<>();
+
+        float[][] verticesAry= new float[vertices.size()][3];
+        List<float[] > texcoords = new ArrayList<>();
+
+        List<int[]> faces =new ArrayList<>();
+        List<float[]> normals= new ArrayList<>();
+        HashMap map =new HashMap();
+        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);
+        bodyShape.setFrontFace(new ShapeFace());
+        bodyShape.getFrontFace().setVertices(vertices.toArray(verticesAry));
+        bodyShape.getFrontFace().setNormals(normals.toArray(new float[normals.size()][3]));
+
+        bodyShape.getFrontFace().setTexcoords(texcoords.toArray(new float[texcoords.size()][3]));
+
+        bodyShape.getFrontFace().setFaces(faces.toArray(new int[faces.size()][6]));
+
+        System.out.println("frontFace:" + JSON.toJSONString(bodyShape.getFrontFace()) + ",");
+
+
+        return bodyShape;
+    }
     public static void main(String args[]){
 
         TextureManager.createDoorShape();
     }
+
+
 }

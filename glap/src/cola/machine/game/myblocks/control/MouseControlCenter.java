@@ -931,7 +931,7 @@ public class MouseControlCenter {
                 }
                 CoreRegistry.get(Client.class).send(cmd);*/
             }
-        }
+        }else
         if (Keyboard.isKeyDown( Keyboard.KEY_T)) {
             if(player.getItemBeans()[24]!=null){
                 CoreRegistry.get(Client.class).send(new DropCmd(player.getId(),player.getItemBeans()[24].getId()));

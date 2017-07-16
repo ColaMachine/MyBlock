@@ -10,7 +10,7 @@ import com.dozenx.game.network.server.bean.ServerContext;
  * Created by luying on 17/2/18.
  */
 public class GameServerHandler {
-    ServerContext serverContext;
+    public ServerContext serverContext;
     public GameServerHandler(ServerContext serverContext){
         this.serverContext =serverContext;
     }

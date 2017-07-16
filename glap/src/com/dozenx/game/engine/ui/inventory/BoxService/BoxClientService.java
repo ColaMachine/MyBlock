@@ -3,35 +3,34 @@ package com.dozenx.game.engine.ui.inventory.BoxService;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BoxBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.command.BoxItemsReqCmd;
 import com.dozenx.game.engine.command.BoxOpenCmd;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ResultCmd;
+import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.client.Client;
+
+import java.util.List;
 
 /**
  * Created by dozen.zhang on 2017/7/14.
  */
-public class BoxService {
+public class BoxClientService {
 
-    public void openAndGetItemBeanList(BoxBlock boxBlock){
+    public List<ItemServerBean> openAndGetItemBeanList(BoxBlock boxBlock){
 
-
+        //========创建 create bloxOpenCmd ======
         int chunkX =boxBlock.chunk.chunkPos.x;
         int chunkZ=boxBlock.chunk.chunkPos.z;
-        ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-        cmd.cx = boxBlock.getX();
-        cmd.cz = boxBlock.getZ();
-        cmd.cy = boxBlock.getY();
-        cmd.type = 1;
-        boxBlock.open =1;
+        BoxOpenCmd cmd = new BoxOpenCmd(chunkX, chunkZ,boxBlock.getX(),boxBlock.getY(),boxBlock.getZ(),1);
 
 
-        int newId=  (boxBlock.open<<12| boxBlock.dir<<8 )| boxBlock.id;
-        cmd.blockType= newId;
+       // int newId=  (boxBlock.open<<12| boxBlock.dir<<8 )| boxBlock.id;
 
-       ResultCmd result =  CoreRegistry.get(Client.class).syncSend(cmd);
-        BoxOpenCmd boxCmd = new BoxOpenCmd(result.getMsg());
-        boxCmd.getItemBean();//并且拿到数据
+
+        ResultCmd result =  CoreRegistry.get(Client.class).syncSend(cmd);
+        BoxItemsReqCmd boxCmd = new BoxItemsReqCmd(result.getMsg());
+        return boxCmd.getItemBeanList();//并且拿到数据
 
     }
 

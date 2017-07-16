@@ -700,7 +700,7 @@ public class ChunkImpl implements Chunk {
         ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[this.currentBlockType]);
 
         if (/*ti==null||*/ itemDefinition.getShape() == null || itemDefinition.getShape().getTop() == null) {
-            LogUtil.err(ti.name + "'shape  is null ");
+            LogUtil.err( "'shape  is null ");
         }
         if (faceIndex == Constants.TOP) {
             ti = itemDefinition.getShape().getTop();
@@ -897,7 +897,9 @@ public class ChunkImpl implements Chunk {
         z += this.chunkPos.z * getChunkSizeZ();
         this.faceIndex = Constants.TOP;
         getTexutreInfo();
-        getTexutreInfo();
+        if(ti==null)return;
+        count++;
+        //getTexutreInfo();
         //ShaderUtils.drawCube(x,y,z);
         GL_Vector normal = new GL_Vector(0, 1, 0);
         GL_Vector p1 = new GL_Vector(x, y + 1, z + 1);
@@ -923,7 +925,7 @@ public class ChunkImpl implements Chunk {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
         this.faceIndex = Constants.BOTTOM;
-        getTexutreInfo();
+        getTexutreInfo(); if(ti==null)return;
         count++;
 
         GL_Vector normal = new GL_Vector(0, -1, 0);
@@ -997,7 +999,7 @@ public class ChunkImpl implements Chunk {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
         this.faceIndex = Constants.FRONT;
-        getTexutreInfo();
+        getTexutreInfo(); if(ti==null)return;
         count++;
         GL_Vector normal = new GL_Vector(0, 0, 1);
         GL_Vector p1 = new GL_Vector(x, y, z + 1);
@@ -1056,7 +1058,7 @@ public class ChunkImpl implements Chunk {
         int[] faces = BoxModel.facesAry[dir];
 
         this.faceIndex = dir;
-        getTexutreInfo();
+        getTexutreInfo(); if(ti==null)return;
         count++;
 
            /* GL_Vector normal= new GL_Vector(-1,0,0);
@@ -1101,7 +1103,7 @@ public class ChunkImpl implements Chunk {
         } else if (faceIndex == Constants.RIGHT) {
             ti = itemDefinition.getShape().getRight();
 
-            if (shape.getBackFace() != null) {
+            if (shape.getRightFace() != null) {
                 shapeFace = shape.getRightFace();
                 //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
             }
@@ -1109,14 +1111,14 @@ public class ChunkImpl implements Chunk {
         } else if (faceIndex == Constants.FRONT) {
             ti = shape.getFront();
 
-            if (shape.getBackFace() != null) {
+            if (shape.getFrontFace() != null) {
                 shapeFace = shape.getFrontFace();
                 //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
             }
 
         } else if (faceIndex == Constants.BOTTOM) {
             ti = shape.getBottom();
-            if (shape.getBackFace() != null) {
+            if (shape.getBottomFace() != null) {
                 shapeFace = shape.getBottomFace();
                 //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,p1, p2, p3,p4, normal, ti);
             }
@@ -1158,7 +1160,13 @@ public class ChunkImpl implements Chunk {
                     ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                             shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);
 
-            } else {
+            }else
+            if (currentBlockType == ItemType.box.ordinal()) {
+
+                ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace, ti, x, y, z);
+            }else {
+
+
                 ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                         shapeFace.getFaces()[0], ti, x, y, z);
             }
@@ -1185,7 +1193,7 @@ public class ChunkImpl implements Chunk {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
         this.faceIndex = Constants.BACK;
-        getTexutreInfo();
+        getTexutreInfo(); if(ti==null)return;
 
 
         count++;
@@ -1233,7 +1241,7 @@ public class ChunkImpl implements Chunk {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
         this.faceIndex = Constants.LEFT;
-        getTexutreInfo();
+        getTexutreInfo(); if(ti==null)return;
         count++;
 
         GL_Vector normal = new GL_Vector(-1, 0, 0);
@@ -1285,7 +1293,7 @@ public class ChunkImpl implements Chunk {
         x += this.chunkPos.x * getChunkSizeX();
         z += this.chunkPos.z * getChunkSizeZ();
         this.faceIndex = Constants.RIGHT;
-        getTexutreInfo();
+        getTexutreInfo(); if(ti==null)return;
         count++;
 
 
@@ -1645,9 +1653,9 @@ public class ChunkImpl implements Chunk {
                     //x<<12 && y<<8&& z <<4 && value
                     if(value>0){
                         int unionValue = ByteUtil.unionBinary4_4_8_16(x, z,y, value);
-                        if(y>8){
+                       /* if(y>8){
                             LogUtil.println("hello");
-                        }
+                        }*/
                         arr.add(unionValue);
                             //自检 看
                          int newArr[]= ByteUtil.getValueSplit8Slot(unionValue);

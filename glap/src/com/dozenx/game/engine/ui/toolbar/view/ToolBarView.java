@@ -61,7 +61,7 @@ public class ToolBarView extends SlotPanel {
     }*/
 
     public void reload(BagController bagController){
-        ItemBean[] itemBeanList=bagController.getItemBeanList();
+        ItemBean[] itemBeanList=bagController.getItemBeanList(1);
 
 
         for(int i=25;i<=34;i++){

@@ -59,6 +59,10 @@ public class CmdUtil {
             return new ChunkssCmd(bytes);
         }else  if (cmdTypeVal ==  CmdType.ROTATE.ordinal()){
             return new ChunkssCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.BOXOPEN.ordinal()){
+            return new BoxOpenCmd(bytes);
+        }else  if (cmdTypeVal ==  CmdType.BOXITEM.ordinal()){
+            return new BoxItemsReqCmd(bytes);
         }else{
             LogUtil.err("can't recgnize the cmd");
             return null;

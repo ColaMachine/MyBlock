@@ -1,5 +1,6 @@
 package com.dozenx.game.network.server.handler;
 
+import com.dozenx.game.engine.command.BoxItemsReqCmd;
 import com.dozenx.game.engine.command.BoxOpenCmd;
 import com.dozenx.game.engine.command.ResultCmd;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
@@ -7,6 +8,9 @@ import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.service.impl.BagService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by luying on 17/2/18.
@@ -18,58 +22,37 @@ public class BoxChangeHandler extends GameServerHandler {
         bagService = (BagService)serverContext.getService(BagService.class);
     }
     public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
-
+        //===========根据block的位置获取boxid according to block position to get boxId
         BoxOpenCmd cmd = (BoxOpenCmd)request.getCmd();
-        int userId = cmd.getUserId();
-        int fromPos= cmd.getFromPosition();
-        int destPos=cmd.getDestPosition();
-      //  List<ItemServerBean>  itemList =serverContext.getItemByUserId(userId);
 
-        ItemServerBean[] itemBeans = bagService.getItemAryUserId(userId);
-        if(itemBeans ==null){
+        int chunkX = cmd.getChunkX();
+        int chunkZ= cmd.getChunkZ();
+        int x = cmd.getX();
+        int y = cmd.getY();
+        int z = cmd.getZ();
+        int boxId = (chunkX*16 +x)*100000+(chunkZ*16+z)*1000+y;
+        //=========根据id获取物品列表 没有就创建  get itemList by boxid============
+        ItemServerBean[] itemBeans = bagService.getItemAryUserId(boxId);
+        List<ItemServerBean> list =new ArrayList();
+       if(itemBeans!= null) {
+           for (int i = 0; i < itemBeans.length; i++) {
+               if (itemBeans[i] != null) {
+                   itemBeans[i].setPosition(35 + i);
+                   list.add(itemBeans[i]);
+
+               }
+           }
+       }else
+        //=====if not found create it in serverContext.itemArrayMap
+
+       {
             itemBeans =new ItemServerBean[20];
-                    serverContext.itemArrayMap.put(userId, itemBeans);
-        }
-       // ItemServerBean clientItemBean  = cmd.getItemBean();
-        ItemServerBean fromBean  = itemBeans[fromPos];
-
-        //拿到这个人的所有物品信息 和bagController中的逻辑一样
-
-
-
-       // ItemBean[] itemBeans = this.getItemBeanList();
-
-        ItemServerBean destBean = itemBeans[destPos];
-        if(fromBean==null)
-            return new ResultCmd(1, "无效操作",0);;
-        if(fromBean.getId()<=0)
-            return new ResultCmd(1, "无效操作",0);;
-        if(destBean==null && fromBean==null)
-            return new ResultCmd(1, "无效操作",0);;
-        //ItemBean oldBean = itemBeans[position];
-        if(destBean!=null && fromBean!=null &&  destBean.getId()== fromBean.getId())
-              return new ResultCmd(1, "无效操作",0);;
-       /* if(oldBean!=null){
-            itemBeans[itemBean.getPosition()]= oldBean;
-            oldBean.setPosition(itemBean.getPosition());
-        }
-        itemBeans[position]= itemBean;
-        itemBean.setPosition(position);*/
-        if(destBean==null){//拖过去
-            itemBeans[destPos]= fromBean;fromBean.setPosition(destPos);
-            itemBeans[fromPos]= null;
-        }else
-        if(destBean.getItemType()== fromBean .getItemType()){//堆叠
-            destBean.setNum(destBean.getNum()+fromBean.getNum());
-            itemBeans[fromPos]= null;
-        }else{//交换
-            itemBeans[fromPos]= destBean;destBean.setPosition(fromPos);
-            itemBeans[destPos]= fromBean;fromBean.setPosition(destPos);
-
+                    serverContext.itemArrayMap.put(boxId, itemBeans);
         }
 
+        //=========return the list data;
 
-        return new ResultCmd(0, "成功",0);
+        return new ResultCmd(0, new BoxItemsReqCmd(list).toBytes(),0);
 
         //更新其他附近人的此人的装备属性
 

@@ -49,7 +49,7 @@ public class InventoryPanel extends SlotPanel {
     private BagController bagController;
 
     public void reload(){
-        ItemBean[] itemBeanList=bagController.getItemBeanList();
+        ItemBean[] itemBeanList=bagController.getItemBeanList(1);
 
      /*   for(ItemBean itemBean :itemBeanList){
             slot[itemBean.getPosition()].setIconView(null);

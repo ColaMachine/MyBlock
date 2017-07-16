@@ -1,29 +1,16 @@
 package com.dozenx.game.engine.ui.inventory.control;
 
-import cola.machine.game.myblocks.bean.BagEntity;
-import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.model.BoxBlock;
-import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.service.BagService;
 import com.dozenx.game.engine.Role.bean.Player;
-import com.dozenx.game.engine.Role.controller.LivingThingManager;
-import com.dozenx.game.engine.command.BagChangeCmd;
-import com.dozenx.game.engine.command.ResultCmd;
-import com.dozenx.game.engine.item.ItemUtil;
+import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
-import com.dozenx.game.engine.ui.inventory.BoxService.BoxService;
-import com.dozenx.game.engine.ui.inventory.bean.InventoryBean;
-import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
-import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
-import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
-import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
-import com.dozenx.game.network.client.Client;
-import core.log.LogUtil;
+import com.dozenx.game.engine.ui.inventory.BoxService.BoxClientService;
+import com.dozenx.game.engine.ui.inventory.view.IconView;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 容器
@@ -33,7 +20,8 @@ import java.util.Map;
 public class BoxController {
      /*  private BagEntity bag;*/
 
-    private BoxService boxService =new BoxService();
+    private BoxClientService boxClientService =new BoxClientService();
+    private ItemBean[] itemBeans = new ItemBean[20];
     Player player;
     public BoxController(Player player){
         this.player =player;
@@ -58,12 +46,39 @@ public class BoxController {
      * @param slotIndex
      * @param itemBean
      */
-    public void putin(int worldx,int worldy,int worldz,int slotIndex,ItemBean itemBean){
-        boxService.putIn(currentBox,slotIndex,itemBean);
-    }
+    /*public void putin(int worldx,int worldy,int worldz,int slotIndex,ItemBean itemBean){
+        boxClientService.putIn(currentBox,slotIndex,itemBean);
+    }*/
     private Integer nowBoxX,nowBoxY,nowBoxZ;
     BoxBlock currentBox;
-    public void openBox( BoxBlock boxBlock){
+
+    /**
+     * 返回人物现在选定的箱子的物体列表
+     * @return
+     */
+    public ItemBean[] getNowItemBeans(){
+        return itemBeans;
+    }
+    public int getNowBoxId(){
+            if(currentBox==null){
+                return 0;
+            }
+          int chunkX = currentBox.getChunk().chunkPos.x;
+
+
+        int chunkZ= currentBox.getChunk().chunkPos.z;
+        int x = currentBox.getX();
+        int y = currentBox.getY();
+        int z = currentBox.getZ();
+        int boxId = (chunkX*16 +x)*100000+(chunkZ*16+z)*1000+y;
+        return boxId;
+    }
+    /**
+     * 打开制定箱子并获取物品列表数据
+     * @param boxBlock
+     * @return
+     */
+    public ItemBean[] openBox( BoxBlock boxBlock){
         //=========记录当前box==========
         nowBoxX=boxBlock.getX();
         nowBoxY=boxBlock.getY();
@@ -71,7 +86,27 @@ public class BoxController {
         currentBox = boxBlock;
         //========修改当前box属性=========
         boxBlock.open=1;
-        List<ItemServerBean> list = boxService.openAndGetItemBeanList(boxBlock);
+        List<ItemServerBean> itemBeanList = boxClientService.openAndGetItemBeanList(boxBlock);
+
+        for(int i=0,length=itemBeans.length;i<length;i++){
+            itemBeans[i]=null;
+        }
+        for(int i=0;i<itemBeanList.size();i++){
+            ItemServerBean itemServerBean = itemBeanList.get(i);
+
+            ItemBean itemBean =new ItemBean();
+            itemBean.setPosition(itemServerBean.getPosition());
+            itemBean.setNum(itemServerBean.getNum());
+            itemBean.setItemDefinition(ItemManager.getItemDefinition(ItemType.values()[itemServerBean.getItemType()]));
+            itemBean.setId(0);
+
+            itemBeans[itemBean.getPosition()-35] = itemBean;
+            //slot[itemServerBean.getPosition()-35].setIconView(new IconView(itemBean));
+
+        }
+
+
+        return  itemBeans;
     }
     /**
      * 取出物体

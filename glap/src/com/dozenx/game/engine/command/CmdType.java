@@ -17,7 +17,8 @@ public enum CmdType {
     PLAYERSTATUS(PlayerSynCmd.class),//6
     BAG(BagCmd.class,BagHandler.class),//7
     BAGCHANGE(BagChangeCmd.class,BagChangeHandler.class),//8
-    BOX(BoxOpenCmd.class,BoxChangeHandler.class),//8
+    BOXITEM(BoxItemsReqCmd.class,BoxChangeHandler.class),//8
+    BOXOPEN(BoxOpenCmd.class,BoxChangeHandler.class),//8
     GET(GetCmd.class,GetHandler.class),//9
     PICK(PickCmd.class,PickHandler.class),//10
     ATTACK(AttackCmd.class,AttackHandler.class),//1
@@ -45,8 +46,11 @@ public enum CmdType {
 
     }*/
      CmdType(Class< ? extends BaseGameCmd> cmd,Class<? extends  GameServerHandler> handler){
-
+        this.cmdClass = cmd;
+         this.gameHandlerClass = handler;
     }
+    public Class cmdClass;
+    public Class gameHandlerClass;
     CmdType(Class< ? extends BaseGameCmd> cmd){
 
     }

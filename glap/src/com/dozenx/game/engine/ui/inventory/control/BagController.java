@@ -12,6 +12,7 @@ import com.dozenx.game.engine.item.ItemUtil;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import cola.machine.game.myblocks.service.BagService;
 import com.dozenx.game.engine.ui.inventory.bean.InventoryBean;
+
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
 import com.dozenx.game.engine.ui.inventory.view.PersonPanel;
 import com.dozenx.game.engine.ui.toolbar.bean.ToolBarBean;
@@ -111,8 +112,13 @@ public class BagController {
         toolBarView.reload(this);
         Document.needUpdate=true;
     }
-    public ItemBean[] getItemBeanList(){
-        return bagService.getItemBeanList();
+    public ItemBean[] getItemBeanList(int index){
+        if(index<35) {
+            return bagService.getItemBeanList();
+        }else{
+            return CoreRegistry.get(BoxController.class).getNowItemBeans();
+
+        }
     }
 
 
@@ -186,10 +192,14 @@ public class BagController {
 
         int destPosition = position;
         int fromPosition = itemBean.getPosition();
+        int fromIndex = fromPosition>35?fromPosition-35:fromPosition;
+        int destIndex = destPosition>35?destPosition-35:destPosition;
+        ItemBean[] itemFromBeans = this.getItemBeanList(fromPosition);
+        ItemBean[] itemDestBeans = this.getItemBeanList(destPosition);
+        if(destPosition>35){//it 's in a box
 
-        ItemBean[] itemBeans = this.getItemBeanList();
-
-        ItemBean destBean = itemBeans[destPosition];
+        }
+        ItemBean destBean = itemDestBeans[destIndex];
 
 
         //ItemBean oldBean = itemBeans[position];
@@ -202,19 +212,20 @@ public class BagController {
         itemBeans[position]= itemBean;
         itemBean.setPosition(position);*/
         if(destBean==null || destBean.getItemDefinition()==null){//拖过去
-            itemBeans[destPosition]= itemBean;itemBean.setPosition(destPosition);
-            itemBeans[fromPosition]= null;
+            itemDestBeans[destIndex]= itemBean;itemBean.setPosition(destPosition);
+            itemFromBeans[fromIndex]= null;
         }else
         if(destBean.getItemDefinition().getItemType()== itemBean .getItemDefinition().getItemType()){//堆叠
             destBean.setNum(destBean.getNum()+itemBean.getNum());
-            itemBeans[fromPosition]= null;
+            itemFromBeans[fromIndex]= null;
         }else{//交换
-            itemBeans[fromPosition]= destBean;destBean.setPosition(fromPosition);
-            itemBeans[destPosition]= itemBean;itemBean.setPosition(destPosition);
+            itemFromBeans[fromIndex]= destBean;destBean.setPosition(fromPosition);
+            itemDestBeans[destIndex]= itemBean;itemBean.setPosition(destPosition);
 
         }
 
         BagChangeCmd bagCmd =new BagChangeCmd(player.getId(), ItemUtil.toItemServerBean(itemBean),fromPosition,destPosition);
+        bagCmd.setBoxId(CoreRegistry.get(BoxController.class).getNowBoxId());
       ResultCmd resultCmd =  CoreRegistry.get(Client.class).syncSend( bagCmd);
         if(resultCmd!=null &&resultCmd.getResult()==0 ){
             LogUtil.println("执行成功了");

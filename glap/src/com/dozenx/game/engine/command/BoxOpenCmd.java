@@ -14,33 +14,30 @@ import java.util.List;
  */
 public class BoxOpenCmd extends   BaseGameCmd{
 
-    final CmdType cmdType = CmdType.BOX;
+    final CmdType cmdType = CmdType.BOXOPEN;
 
     private int userId;
-    private int toId;
-    private ItemServerBean itemBean ;
-    private int fromPosition;
-    private int destPosition;
-    private List<ItemServerBean> itemBeanList =new ArrayList<ItemServerBean>();
+    private int chunkX;
+    private  int chunkZ;
+    private int x;
+    private int y;
+    private int z;
+    private int open;//0 关闭 1 打开
+
 
     public BoxOpenCmd(byte[] bytes){
         parse(bytes);
     }
-    public BoxOpenCmd(int userId , ItemServerBean itemServerBean, int fromPosition, int destPosition){
-        this.itemBean =itemServerBean;
-        this.userId =userId;
-        this.destPosition =destPosition;
-        this.fromPosition =fromPosition;
+    public BoxOpenCmd(int chunkX,int chunkZ,int x,int y,int z,int open){
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
+        this.x=x;
+        this.y=y;
+        this.z=z;
+        this.open=open;
 
     }
-    public BoxOpenCmd(int userId , ItemServerBean itemServerBean, int fromPosition, int destPosition, int toId){
-        this.itemBean =itemServerBean;
-        this.userId =userId;
-        this.destPosition =destPosition;
-        this.fromPosition =fromPosition;
-        this.toId = toId;
 
-    }
 
     //equip 4 |userId|part 2|item |itemId|
     public byte[] toBytes(){
@@ -51,18 +48,13 @@ public class BoxOpenCmd extends   BaseGameCmd{
 
 
 
-        wrap.put(itemBean.getId())
-                .put(itemBean.getNum())
-                .put(itemBean.getItemType())
-                .put(itemBean.getPosition())
-                .put(destPosition)
-                .put(fromPosition)
-                .put(toId).put( itemBeanList.size());
+        wrap.put(chunkX)
+                .put(chunkZ)
+                .put(x)
+                .put(y)
+                .put(z).put(open);
 
-        for(int i=0;i<itemBeanList.size();i++){
-            ItemServerBean itemBean  =  itemBeanList .get(i);
-            wrap.put(itemBean.getId()).put(itemBean.getNum()).put(itemBean.getItemType()).put(itemBean.getPosition());
-        }
+
 
         return wrap.array();
 
@@ -74,32 +66,14 @@ public class BoxOpenCmd extends   BaseGameCmd{
         ByteBufferWrap  byteBufferWrap = ByteUtil.createBuffer(bytes);
         byteBufferWrap.getInt();
         this.userId =  byteBufferWrap.getInt();
+        this.chunkX =byteBufferWrap.getInt();
 
+        this.chunkZ = byteBufferWrap.getInt();
+        this.x = byteBufferWrap.getInt();
+        this.y=byteBufferWrap.getInt();
+        this.z=byteBufferWrap.getInt();
+        this.open =byteBufferWrap.getInt();
 
-
-        itemBean =new ItemServerBean();
-        itemBean.setId(byteBufferWrap.getInt());
-        itemBean.setNum(byteBufferWrap.getInt());
-        itemBean.setItemType(byteBufferWrap.getInt());
-        itemBean.setPosition(byteBufferWrap.getInt());
-
-        setDestPosition(byteBufferWrap.getInt());
-
-        setFromPosition(byteBufferWrap.getInt());
-        this.toId= byteBufferWrap.getInt();
-        int size =  byteBufferWrap.getInt();
-        this.itemBeanList =new ArrayList<>();
-
-        for(int i=0;i<size;i++){
-            ItemServerBean itemBean =new ItemServerBean();
-            itemBean.setId(byteBufferWrap.getInt());
-            itemBean.setNum(byteBufferWrap.getInt());
-            itemBean.setItemType(byteBufferWrap.getInt());
-            itemBean.setPosition(byteBufferWrap.getInt());
-            itemBeanList.add(itemBean);
-        }
-
-        // byte[] bytes = ByteUtil.getBytes(byteArray,1,1);
 
     }
 
@@ -117,28 +91,51 @@ public class BoxOpenCmd extends   BaseGameCmd{
         this.userId = userId;
     }
 
-    public ItemServerBean getItemBean() {
-        return itemBean;
+    public int getChunkX() {
+        return chunkX;
     }
 
-    public void setItemBean(ItemServerBean itemBean) {
-        this.itemBean = itemBean;
+    public void setChunkX(int chunkX) {
+        this.chunkX = chunkX;
     }
 
-    public int getFromPosition() {
-        return fromPosition;
+    public int getChunkZ() {
+        return chunkZ;
     }
 
-    public void setFromPosition(int fromPosition) {
-        this.fromPosition = fromPosition;
+    public void setChunkZ(int chunkZ) {
+        this.chunkZ = chunkZ;
     }
 
-    public int getDestPosition() {
-        return destPosition;
+    public int getX() {
+        return x;
     }
 
-    public void setDestPosition(int destPosition) {
-        this.destPosition = destPosition;
+    public void setX(int x) {
+        this.x = x;
     }
 
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
+    }
+
+    public int getOpen() {
+        return open;
+    }
+
+    public void setOpen(int open) {
+        this.open = open;
+    }
 }

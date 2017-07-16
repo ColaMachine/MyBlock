@@ -93,9 +93,9 @@ public class SimpleGenerator implements FirstPassGenerator {
 
     @Override
     public void generateChunk(Chunk chunk) {
+        return;
 
-
-        for (int x = 0; x < chunk.getChunkSizeX(); x++) {
+        /*for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
 
                 for(int y=0;y<30;y++){
@@ -108,7 +108,7 @@ public class SimpleGenerator implements FirstPassGenerator {
 
 
             }
-        }
+        }*/
     }
 
 

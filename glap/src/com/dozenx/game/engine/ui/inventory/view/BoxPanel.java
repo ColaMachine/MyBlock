@@ -34,9 +34,14 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import de.matthiasmann.twl.Event;
+
+import java.util.List;
 
 /**
  *
@@ -46,15 +51,17 @@ public class BoxPanel extends SlotPanel {
     private BagEntity bagEntity;
     private BagController bagController;
 
-    public void reload(){
-        ItemBean[] itemBeanList=bagController.getItemBeanList();
+    public void reload(ItemBean[] itemBeanList){
 
 
-        for(int i=0;i<20;i++){
-            if(itemBeanList[i]!=null &&itemBeanList[i].getItemDefinition()!=null ) {
-                slot[i].setIconView(new IconView(itemBeanList[i]));
-            }else{
+
+        for(int i=0;i<itemBeanList.length;i++){
+            ItemBean itemBean = itemBeanList[i];
+
+            if(itemBean==null){
                 slot[i].setIconView(null);
+            }else {
+                slot[i].setIconView(new IconView(itemBean));
             }
         }
 
@@ -65,7 +72,13 @@ public class BoxPanel extends SlotPanel {
         this.bagController = CoreRegistry.get(BagController.class);
         assert bagController!=null:"bagController miss in CoreRegistry";
 
-        reload();
+
+        for(int i=35;i<55;i++){
+
+                slot[i-35].index = i;
+
+        }
+
 
         this.setPosition(HtmlObject.POSITION_ABSOLUTE);
 
@@ -74,7 +87,7 @@ public class BoxPanel extends SlotPanel {
 
         CoreRegistry.put(BoxPanel.class,this);
 
-        reload();
+
     }
 
 

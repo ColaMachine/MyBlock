@@ -3,6 +3,7 @@ package com.dozenx.game.opengl.util;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import com.dozenx.game.engine.element.model.BoxModel;
+import com.dozenx.game.engine.element.model.ShapeFace;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -2020,6 +2021,55 @@ try {
                     put(texoords[faces[2]][1]).
                     put(0).
                     put(index);//p1
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+
+    public static void draw3dImage(ShaderConfig config,Vao vao ,ShapeFace shapeFace ,TextureInfo ti,int x,int y,int z){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        if(ti==null){
+            LogUtil.err("ti should not be null");
+        }
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        try {
+            FloatBuffer veticesBuffer = vao.getVertices();
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }
+            int[][] faces = shapeFace.faces;
+            float[][] vertices = shapeFace.vertices;
+            float[][] normals = shapeFace.normals;
+            float[][] texoords = shapeFace.getTexcoords();
+            for(int i=0;i<faces.length;i++){
+                for(int j=0;j<6;j++){
+
+                    LogUtil.println("x:"+(vertices[faces[i][j]][0]+x)+"y:"+(vertices[faces[i][j]][1]+y)
+                            +"z:"+(vertices[faces[i][j]][2]+z));
+                    veticesBuffer.put(vertices[faces[i][j]][0]+x).
+                            put(vertices[faces[i][j]][1]+y).
+                            put(vertices[faces[i][j]][2]+z).
+                            put(normals[faces[i][j]][0]).
+                            put(normals[faces[i][j]][1]).
+                            put(normals[faces[i][j]][2]).
+                            put(texoords[faces[i][j]][0]).
+                            put(texoords[faces[i][j]][1]).
+                            put(0).
+                            put(index);//p1
+                }
+
+
+            }
+
+            if(faces.length<2){
+                LogUtil.err("lenght too short");
+            }
         }catch(Exception e){
             e.printStackTrace();
             throw e;

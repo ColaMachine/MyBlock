@@ -8,24 +8,23 @@ import cola.machine.game.myblocks.engine.Constants;
 import core.log.LogUtil;
 import org.lwjgl.BufferUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.*;
-import java.nio.charset.Charset;
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ByteBufferWrap
+public class ByteBufferWrap2
 {
     int nowIndex =0;
 
     private ByteBuffer buffer;
 
     private List<ByteBuffer> buffers= new ArrayList<ByteBuffer>();
-    public ByteBufferWrap(){
+    public ByteBufferWrap2(){
         this.buffer= ByteBuffer.allocate(1256);
         buffers.add(buffer);
     }
-    public ByteBufferWrap(byte[] bytes){
+    public ByteBufferWrap2(byte[] bytes){
         this.buffer= ByteBuffer.wrap(bytes);
         buffers.add(buffer);
        // this.buffer.flip();
@@ -33,25 +32,49 @@ public class ByteBufferWrap
     }
 
     public byte get(){
+        if(buffer.position()==buffer.capacity()){
+            nowIndex+=1;
+            buffer = buffers.get(nowIndex);
+            buffer.flip();
+        }
+
         return buffer.get();
     }
     public boolean  getBoolean(){
-        return buffer.get()==0?false:true;
+        return this.get()==0?false:true;
     }
     public int getInt(){
-        return buffer.getInt();
+
+        return ByteUtil.getInt(this.getBytes(4));
+
     }
+
+    public byte[] getBytes(int num){
+
+        byte[] bytes = new byte[num];
+
+        for(int i=0;i<num;i++){
+            if(buffer.position()==buffer.capacity()){
+                nowIndex+=1;
+                buffer = buffers.get(nowIndex);
+                buffer.flip();
+            }
+            bytes[i]=buffer.get();
+        }
+        return bytes;
+    }
+
     public short getShort(){
-        return buffer.getShort();
+        return ByteUtil.getShort(this.getBytes(2));
     }
     public char getChar(){
-        return buffer.getChar();
+        return ByteUtil.getChar(this.getBytes(2));
     }
 
     public Float getFloat(){
-        return buffer.getFloat();
+        return  ByteUtil.getFloat(this.getBytes(4));
     }
-    public ByteBufferWrap put(byte val){
+    public ByteBufferWrap2 put(byte val){
 
         if(buffer.position()==buffer.limit()){
 
@@ -62,7 +85,7 @@ public class ByteBufferWrap
         buffer.put(val);
         return this;
     }
-    public ByteBufferWrap put(byte[] ary){
+    public ByteBufferWrap2 put(byte[] ary){
         preCheck(ary.length);
         for(int i=0;i<ary.length;i++){
            // if(buffer.remaining()<10){
@@ -81,7 +104,7 @@ public class ByteBufferWrap
 
         return this;
     }
-    public ByteBufferWrap put(int val){
+    public ByteBufferWrap2 put(int val){
 
         this.put(ByteUtil.getBytes(val));
         return this;
@@ -103,24 +126,24 @@ public class ByteBufferWrap
             //}
         }
     }
-    public ByteBufferWrap put(short val){
+    public ByteBufferWrap2 put(short val){
        // preCheck(4);
         this.put(ByteUtil.getBytes(val));
         //buffer.put(ByteUtil.getBytes(val));
         return this;
     }
-    public ByteBufferWrap put(boolean val){
+    public ByteBufferWrap2 put(boolean val){
         //preCheck(4);
        // buffer.put(val?(byte)1:(byte)0);
         this.put(val?(byte)1:(byte)0);
         return this;
     }
-    public ByteBufferWrap put(float val){ //preCheck(4);
+    public ByteBufferWrap2 put(float val){ //preCheck(4);
        // buffer.put(ByteUtil.getBytes(val));
         this.put(ByteUtil.getBytes(val));
         return this;
     }
-    public ByteBufferWrap putLenStr(String str){// preCheck(str.length()*4);
+    public ByteBufferWrap2 putLenStr(String str){// preCheck(str.length()*4);
         byte[] bytes=str.getBytes(Constants.CHARSET);
         //buffer.put(ByteUtil.getBytes(bytes.length));
         //buffer.put(bytes);
@@ -132,55 +155,33 @@ public class ByteBufferWrap
 
 
     public String getLenStr(){
-        int length = this.getInt();;
-        byte[] msg = new byte[length];
-        try {
-           // LogUtil.println(buffer.remaining()+"");
-            buffer.get(msg, 0, length);
-        }catch(java.nio.BufferUnderflowException e){
-            LogUtil.err(e);
-            throw e;
-        }
+        int length = this.getInt();
+        byte[] msg =this.getBytes(length) ;//new byte[];
+
 
         return  new String(msg,Constants.CHARSET);
 
 
     }
-    public byte[] getByteAry(int length){
-        byte[] bytes = new byte[length];
-        for(int i = 0;i<length;i++){
-            bytes[i]= this.get();
-        }
-        return bytes;
+    public byte[] get(int length){
+
+        return this.getBytes(length);
 
     }
     public byte[] getLenByteAry(){
         int length = this.getInt();;
-        byte[] msg = this.getByteAry(length);
+        byte[] msg = this.getBytes(length);
        return msg;
 
 
     }
 
     public byte[] array(){
-       /* int length = buffer.position();
-        byte[] bytes = new byte[length+4];
-        byte[] lenAry = ByteUtil.getBytes(length);
-        bytes[0]= lenAry[0];
-        bytes[1]= lenAry[1];
-        bytes[2]= lenAry[2];
-        bytes[3]= lenAry[3];
-        buffer.flip();
 
-        buffer.get(bytes,4,length);*/
 
         int length = buffer.position();
         byte[] bytes = new byte[length];
-        //byte[] lenAry = ByteUtil.getBytes(length);
-       /* bytes[0]= lenAry[0];
-        bytes[1]= lenAry[1];
-        bytes[2]= lenAry[2];
-        bytes[3]= lenAry[3];*/
+
         buffer.flip();
 
         buffer.get(bytes,0,length);
@@ -189,23 +190,25 @@ public class ByteBufferWrap
         return bytes;
     }
 
-    public byte[] array(int index){
+    /*public byte[] array(int index){
 
+        nowIndex=0;
+        buffer = buffers.get(0);
 
         int dataLen = buffer.position();
         byte[] bytes = new byte[dataLen-index];
         //byte[] lenAry = ByteUtil.getBytes(length);
-       /* bytes[0]= lenAry[0];
+       *//* bytes[0]= lenAry[0];
         bytes[1]= lenAry[1];
         bytes[2]= lenAry[2];
-        bytes[3]= lenAry[3];*/
+        bytes[3]= lenAry[3];*//*
         buffer.flip();
 
         buffer.get(bytes,index,dataLen-index);
 
 
         return bytes;
-    }
+    }*/
 
     public static void main(String[] args){
         ByteBuffer buffer =ByteBuffer.allocate(256);
