@@ -1,44 +1,34 @@
 package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemBean;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.engine.ui.inventory.control.BoxController;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
-import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.ByteUtil;
-import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-import java.util.List;
+public class BoxBlock extends DirectionBlock {
 
-public class BoxBlock extends BaseBlock{
-   public int dir=0;
-    //int open=0;
-    ItemDefinition itemDefinition;
     public BoxBlock(String name , int id, boolean isAlpha){
         super(name,id,isAlpha);
     }
     public int open=0;
     @Override
     public void setValue(int value) {
-        int state = ByteUtil.get16_8Value(value);
-        //获取condition
-        dir = ByteUtil.get4_0Value(state);
 
-       int open= ByteUtil.get8_4Value(state);
+        super.setValue(value);
+
+
+
+        int open= value16_12;
 
         if(open == 1){
             penetration =true;
@@ -98,12 +88,7 @@ public class BoxBlock extends BaseBlock{
       //  Document.getInstance().setFocusKeyWidget(CoreRegistry.get(BoxPanel.class));
         return true;
     }
-    @Override
-    public Block clone(){
-        BoxBlock block =  new BoxBlock(this.getName(),this.getId(),this.getAlpha());
-        block.itemDefinition =itemDefinition;
-        return block;
-    }
+/*
 
     public void beAttack(){
         int chunkX = chunk.chunkPos.x;
@@ -125,5 +110,5 @@ public class BoxBlock extends BaseBlock{
         cmd.cy+=1;
         CoreRegistry.get(Client.class).send(cmd);
 
-    }
+    }*/
 }

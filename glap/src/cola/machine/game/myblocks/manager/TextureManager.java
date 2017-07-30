@@ -10,6 +10,9 @@ import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
 import com.alibaba.fastjson.JSON;
@@ -552,6 +555,24 @@ public class TextureManager {
 
                     shape.setShapeType(shapeType);
 
+                    Object model =  map.get("model");
+
+                    if(model!=null && model instanceof  com.alibaba.fastjson.JSONObject){
+                        //转成数组 shapeface的数组
+                        //com.alibaba.fastjson.JSONArray
+                        com.alibaba.fastjson.JSONArray arr = (com.alibaba.fastjson.JSONArray)model;
+
+                        for(int j=0;j<arr.size();j++){
+
+                            JSONObject modelShapeFaceObj=(JSONObject)arr.get(j);
+                            ShapeFace modelShapeFace= this.getShapeFace(modelShapeFaceObj);
+
+                            shape.shapeFaceMap.put(modelShapeFace.getName(),modelShapeFace);
+                        }
+                        ShapeFace shapeFace = getShapeFace(frontObj);
+                        shape.setFrontFace(shapeFace);
+                    }
+
                     String parent = MapUtil.getStringValue(map, "parent");
                     shape.setParent(parent);
                     if (!"root".equals(parent)&& parent!=null) {
@@ -682,8 +703,12 @@ public class TextureManager {
     }
     public ShapeFace getShapeFace(Object frontObj ){
         ShapeFace shapeFace =new ShapeFace();
+
+
         JSONObject jsonObj = (JSONObject)frontObj;
         //  HashMap keyValue = (HashMap)jsonObj.get(0);
+        String name = jsonObj.getString("name");
+        shapeFace.setName(name);
         JSONArray vertices =  jsonObj.getJSONArray("vertices");
         float[][] verticesAry = new float[vertices.size()][3];
         for(int j=0;j<vertices.size();j++){

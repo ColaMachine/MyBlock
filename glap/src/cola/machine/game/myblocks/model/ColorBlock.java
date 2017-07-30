@@ -13,11 +13,11 @@ import cola.machine.game.myblocks.model.AABB.AABB;
 
 import java.nio.FloatBuffer;
 
-public class ColorBlock extends AABB implements Block {
+public class ColorBlock extends BaseBlock{
 	public int x = 0;
 	public int y = 0;
 	public int z = 0;
-
+    int beishu =5;//缩小的尺寸
 	public int red = 0;
 	public int blue = 0;
 	public int green = 0;
@@ -102,7 +102,7 @@ public class ColorBlock extends AABB implements Block {
 		this.maxY = y + 1;
 		this.maxZ = z + 1;
 	}
-    int beishu =5;
+
 	public ColorBlock(int x, int y, int z, Color color) {
 		this.x = x;
 		this.y = y;
@@ -262,17 +262,17 @@ public class ColorBlock extends AABB implements Block {
 		return red;
 	}
 
-	@Override
+	//@Override
 	public int b() {
 		return blue;
 	}
 
-	@Override
+	//@Override
 	public int g() {
 		return green;
 	}
 
-	@Override
+	//@Override
 	public String getName() {
 		// VIP Auto-generated method stub
 		return null;

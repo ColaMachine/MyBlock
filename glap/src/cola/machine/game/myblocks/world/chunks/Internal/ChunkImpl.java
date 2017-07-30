@@ -64,7 +64,7 @@ public class ChunkImpl implements Chunk {
     private TeraArray blockData;
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
 
-    HashMap<Integer,Block> map =new HashMap<>();//this map store the box has state
+    HashMap<Integer,Block> blockMap =new HashMap<>();//this map store the block has state
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
         this(chunkPos.x, chunkPos.y, chunkPos.z);
@@ -114,13 +114,13 @@ public class ChunkImpl implements Chunk {
         // VIP Auto-generated method stub
        // return null;
         int blockValue =blockData.get(x,y,z);
-        Block block =  map.get(blockData.getIndex(x,y,z));//.getBlock((short) blockValue);
+        Block block =  blockMap.get(blockData.getIndex(x,y,z));//.getBlock((short) blockValue);
         if(block == null ) {
             block = blockManager.getBlock(blockValue);
 
         }
         if(block.getId() == ItemType.copy_down.ordinal()){
-            block=  map.get(blockData.getIndex(x,y-1,z));
+            block=  blockMap.get(blockData.getIndex(x,y-1,z));
         }
         return block;
       //  return new BaseBlock();
@@ -174,7 +174,7 @@ public class ChunkImpl implements Chunk {
                 block.setValue(blockId);
                 block.setCenter(x,y,z);
                 block.setChunk(this);
-                map.put(blockData.getIndex(x, y, z), block);
+                blockMap.put(blockData.getIndex(x, y, z), block);
 
             //}
             }

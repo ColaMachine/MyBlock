@@ -14,6 +14,39 @@ public interface  Block {
     public ChunkImpl getChunk();
 
     public void setValue(int value);
+
+
+
+    public void renderShader(ShaderConfig config , GL_Matrix matrix);
+    public void render();
+	public void renderCube();
+	public void renderColor();
+	public void setCenter(int x,int y,int z);
+	public int getX();
+	public int getY();
+	public int getZ();
+
+    //如果是颜色方块会用到
+	/*public int r();
+    public float rf();
+	public int b();
+    public float bf();
+	public int g();
+    public float gf();*/
+
+
+	public int getId();
+    public boolean getAlpha();
+
+    public boolean use();
+    public boolean beuse();
+
+    public Block clone();
+
+    public void beAttack();
+
+    //应该是判断 隔壁的是否有方块
+
     public boolean isZh();
 
     public void setZh(boolean zh);
@@ -35,29 +68,4 @@ public interface  Block {
     public boolean isXh() ;
 
     public void setXh(boolean xh);
-
-
-    public void renderShader(ShaderConfig config , GL_Matrix matrix);
-    public void render();
-	public void renderCube();
-	public void renderColor();
-	public void setCenter(int x,int y,int z);
-	public int getX();
-	public int getY();
-	public int getZ();
-	public int r();
-    public float rf();
-	public int b();
-    public float bf();
-	public int g();
-    public float gf();
-	public int getId();
-    public boolean getAlpha();
-
-    public boolean use();
-    public boolean beuse();
-
-    public Block clone();
-
-    public void beAttack();
 }

@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.model.textture;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.util.StringUtil;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +14,7 @@ public class Shape  {
     public int getShapeType() {
         return shapeType;
     }
-
+    public HashMap<String ,ShapeFace> shapeFaceMap =new HashMap<>();
     public void setShapeType(int shapeType) {
         this.shapeType = shapeType;
     }

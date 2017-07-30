@@ -85,7 +85,8 @@ public class Sword {
 		GL11.glScalef(0.2f, 0.2f, 0.2f);
 		GL11.glTranslatef(-3.5f,-0.5f, -11f);
 		for (Block block : swords) {
-			GL11.glColor3f(block.r() / 256f, block.b() / 256f, block.g() / 256f);
+            ColorBlock colorBlock = (ColorBlock)block;
+			GL11.glColor3f(colorBlock.r() / 256f, colorBlock.b() / 256f, colorBlock.g() / 256f);
 			block.render();
 		}
 		GL11.glTranslatef(3.5f,0.5f,11f);
