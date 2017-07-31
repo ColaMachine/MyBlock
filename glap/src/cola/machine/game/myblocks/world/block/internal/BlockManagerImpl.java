@@ -20,6 +20,9 @@ public class BlockManagerImpl extends BlockManager {
 
     }
 
+    /**
+     * 这里需要改进 不同的block 应该对应不同的类 colorblock  textureblock  DirStateTextureBLock
+     */
 	public BlockManagerImpl(){
         Block air=new BaseBlock("air",0,false);
 		Block stone=new BaseBlock("stone", ItemType.stone.ordinal(),false);

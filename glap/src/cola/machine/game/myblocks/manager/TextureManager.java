@@ -888,11 +888,11 @@ public class TextureManager {
 
         Component rootComponent =new Component();
 
-        Shape bodyShape = TextureManager.getShape("box_open_body");
+        Shape bodyShape = TextureManager.getShape("box_open_body");//加载箱体shape
         rootComponent =
                 new Component(bodyShape);
 
-        rootComponent.addChild(TextureManager.getShape("box_open_head"));
+        rootComponent.addChild(TextureManager.getShape("box_open_head"));//加载箱子的盖子
 
 
         List<float[]> vertices = new ArrayList<>();
@@ -903,7 +903,7 @@ public class TextureManager {
         List<int[]> faces =new ArrayList<>();
         List<float[]> normals= new ArrayList<>();
         HashMap map =new HashMap();
-        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);
+        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);//将绘制的结果放在vertices里
         bodyShape.setFrontFace(new ShapeFace());
         bodyShape.getFrontFace().setVertices(vertices.toArray(verticesAry));
         bodyShape.getFrontFace().setNormals(normals.toArray(new float[normals.size()][3]));

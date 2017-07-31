@@ -199,5 +199,7 @@ delete  发生在被砸的时候 物品全部掉落到周围
 cmd: boxopencmd箱子状态命令 boxItemcmd 箱子物品请求命令
 
 调用除湿的地方  创建controller  客户端 service cmd CmdUtil  handler cmdtype servermain  服务端service client 接受 manager 接收处理
-
+2017年7月27日23:18:02
+希望能够统一建模型的地方 并提供灵活的手段 让模型能够随着状态 变化
+目前的模行
 
