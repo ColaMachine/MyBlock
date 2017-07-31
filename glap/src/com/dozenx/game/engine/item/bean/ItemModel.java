@@ -142,7 +142,9 @@ public class ItemModel extends ModelTemplate {
         GL11.glScalef(0.1f, 0.1f, 0.1f);
         //GL11.glTranslatef(-3.5f,-0.5f, -11f);
         for (Block block : blocks) {
-            GL11.glColor3f(block.rf(), block.bf(), block.gf());
+
+            ColorBlock colorBlock = (ColorBlock)block;
+            GL11.glColor3f(colorBlock.rf(), colorBlock.bf(), colorBlock.gf());
             block.render();
         }
         // GL11.glTranslatef(3.5f,0.5f,11f);

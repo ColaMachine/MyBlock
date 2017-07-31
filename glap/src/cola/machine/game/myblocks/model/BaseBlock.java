@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import core.log.LogUtil;
@@ -15,78 +16,42 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 
+/**
+ * 方块实体 如果你想找的是方块说明 那么应该找 blockDefinition
+ */
 public class BaseBlock extends AABB implements Block{
-
-    public boolean zh=true;
-    public boolean zl=true;
-    public boolean yl=true;
+    //是否是透明
+    boolean alpha =false;
+    //是否可以通过
     public boolean penetration=false;
+    //
+    public int id=0;
+
+    ItemDefinition itemDefinition;
 
 	public void renderShader(ShaderConfig config , GL_Matrix matrix){
 
 	}
-    public boolean yh=true;
-    public boolean xl=true;
-    public boolean xh=true;
 
-    public boolean isZh() {
-        return zh;
-    }
 
-    public void setZh(boolean zh) {
-        this.zh = zh;
-    }
 
-    public boolean isZl() {
-        return zl;
-    }
 
-    public void setZl(boolean zl) {
-        this.zl = zl;
-    }
 
-    public boolean isYl() {
-        return yl;
-    }
-
-    public void setYl(boolean yl) {
-        this.yl = yl;
-    }
-
-    public boolean isYh() {
-        return yh;
-    }
-
-    public void setYh(boolean yh) {
-        this.yh = yh;
-    }
-
-    public boolean isXl() {
-        return xl;
-    }
-
-    public void setXl(boolean xl) {
-        this.xl = xl;
-    }
-
-    public boolean isXh() {
-        return xh;
-    }
-
-    public void setXh(boolean xh) {
-        this.xh = xh;
-    }
-
-    public int id=0;
 	public int x=0;//0~16
 	public int y=0;//0~128
 	public int z=0;//0~16
+
     public int chunkX=0;
     public int chunkY=0;
-	public int red=0;
+
+	/*public int red=0;
 	public int blue=0;
-	public int green=0;
-    boolean alpha =false;
+	public int green=0;*/
+
+
+
+
+
 	public String getName(){
 		return name;
 	}
@@ -110,7 +75,7 @@ public class BaseBlock extends AABB implements Block{
 		this.maxY=y+1;
 		this.maxZ=z+1;
 	}
-	public BaseBlock(String name,int x,int y,int z,Color color){
+	/*public BaseBlock(String name,int x,int y,int z,Color color){
 		this.name=name;
 		this.x=x;
 		this.y=y;
@@ -125,7 +90,7 @@ public class BaseBlock extends AABB implements Block{
 		this.red=color.r();
 		this.blue=color.b();
 		this.green=color.g();
-	}
+	}*/
 	public BaseBlock(String name,int id,boolean alpha){
 		this.name=name;
 		this.id=id;
@@ -270,6 +235,7 @@ public class BaseBlock extends AABB implements Block{
 	         GL11.glVertex3f(-1.0f+x,  1.0f+y, -1.0f+z);	// Top Left
 	        GL11.glEnd();
 	}
+    //设置中心点
 	public void setCenter(int x,int y,int z){
 		this.x=x;
 		this.y=y;
@@ -295,18 +261,8 @@ public class BaseBlock extends AABB implements Block{
 		// VIP Auto-generated method stub
 		return z;
 	}
-	public int r() {
-		return red;
-	}
-    public float rf(){
-        return this.r()*1f;
-    }
-    public float bf(){
-        return this.r()*1f;
-    }
-    public float gf(){
-        return this.r()*1f;
-    }
+
+/*
 	@Override
 	public int b() {
 		return blue;
@@ -316,6 +272,23 @@ public class BaseBlock extends AABB implements Block{
 		return green;
 	}
 	@Override
+
+
+
+    public int r() {
+        return red;
+    }
+    public float rf(){
+        return this.r()*1f;
+    }
+    public float bf(){
+        return this.r()*1f;
+    }
+    public float gf(){
+        return this.r()*1f;
+    }
+*/
+
 	public int getId() {
 		// VIP Auto-generated method stub
 		return id;
@@ -373,4 +346,65 @@ public class BaseBlock extends AABB implements Block{
 
         CoreRegistry.get(Client.class).send(cmd);
     }
+
+
+
+
+    public boolean zh=true;
+    public boolean zl=true;
+    public boolean yl=true;
+    public boolean yh=true;
+    public boolean xl=true;
+    public boolean xh=true;
+
+    public boolean isZh() {
+        return zh;
+    }
+
+    public void setZh(boolean zh) {
+        this.zh = zh;
+    }
+
+    public boolean isZl() {
+        return zl;
+    }
+
+    public void setZl(boolean zl) {
+        this.zl = zl;
+    }
+
+    public boolean isYl() {
+        return yl;
+    }
+
+    public void setYl(boolean yl) {
+        this.yl = yl;
+    }
+
+    public boolean isYh() {
+        return yh;
+    }
+
+    public void setYh(boolean yh) {
+        this.yh = yh;
+    }
+
+    public boolean isXl() {
+        return xl;
+    }
+
+    public void setXl(boolean xl) {
+        this.xl = xl;
+    }
+
+    public boolean isXh() {
+        return xh;
+    }
+
+    public void setXh(boolean xh) {
+        this.xh = xh;
+    }
+
+
+
 }

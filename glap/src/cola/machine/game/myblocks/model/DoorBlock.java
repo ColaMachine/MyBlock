@@ -1,45 +1,31 @@
 package cola.machine.game.myblocks.model;
 
-import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
-import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.element.model.ShapeFace;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
-import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.ByteUtil;
-import com.dozenx.util.MathUtil;
-import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Vector2f;
+public class DoorBlock extends DirectionBlock {
 
-public class DoorBlock extends BaseBlock{
-    int dir=0;
-    //int open=0;
-    ItemDefinition itemDefinition;
     public DoorBlock(String name ,int id,boolean isAlpha){
         super(name,id,isAlpha);
     }
 
     @Override
     public void setValue(int value) {
-        int state = ByteUtil.get16_8Value(value);
-        //获取condition
-        dir = ByteUtil.get4_0Value(state);
+        super.setValue(value);
 
-       int open= ByteUtil.get8_4Value(state);
+
+
+       int open= value16_12;
 
         if(open == 1){
             penetration =true;
@@ -129,32 +115,5 @@ public class DoorBlock extends BaseBlock{
             return true;
        // }
     }
-    @Override
-    public Block clone(){
-        DoorBlock block =  new DoorBlock(this.getName(),this.getId(),this.getAlpha());
-        block.itemDefinition =itemDefinition;
-        return block;
-    }
 
-    public void beAttack(){
-        int chunkX = chunk.chunkPos.x;
-        int chunkZ = chunk.chunkPos.z;
-
-        ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-        cmd.cx = x;//this.getX();
-        cmd.cy =y;//this.getX();
-        cmd.cz =z;// this.getZ();
-
-        if(cmd.cy<0){
-            LogUtil.err("y can't be <0 ");
-        }
-        cmd.type = 2;
-        //blockType 应该和IteType类型联系起来
-        cmd.blockType = 0;
-
-        CoreRegistry.get(Client.class).send(cmd);
-        cmd.cy+=1;
-        CoreRegistry.get(Client.class).send(cmd);
-
-    }
 }

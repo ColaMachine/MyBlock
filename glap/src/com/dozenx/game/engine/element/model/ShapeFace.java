@@ -14,6 +14,15 @@ public class ShapeFace {
     public List<Vector3f> normals;
     public List<Vector3f> texcoords;
     public List<Integer> faces;*/
+    String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public float[][] vertices;
 
