@@ -29,43 +29,41 @@ public class EditEngine {
     public List<ColorBlock> selectBlockList  =new ArrayList<>();
 
     public void update(){
+        for(int i=0;i<selectBlockList.size();i++){
+            ColorBlock colorBlock = selectBlockList.get(i);
+           // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf),colorBlock.width,colorBlock.height,colorBlock.thick,1);
+            GL_Vector[] gl_vectors = BoxModel.getSmaillPoint(colorBlock.x,colorBlock.y,colorBlock.z,colorBlock.width,colorBlock.height,colorBlock.thick);
+            for(int j =0;j<gl_vectors.length;j++){
+                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),gl_vectors[j].x,gl_vectors[j].y,gl_vectors[j].z,new GL_Vector(1,1,1),0.3f,0.3f,0.3f,1);
 
+            }
+        }
         for(int i=0;i<colorBlockList.size();i++){
             ColorBlock colorBlock = colorBlockList.get(i);
-            if(colorBlock.selected){
-                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf),colorBlock.width,colorBlock.height,colorBlock.thick,1);
-                GL_Vector[] gl_vectors = BoxModel.getSmaillPoint(colorBlock.x,colorBlock.y,colorBlock.z,colorBlock.width,colorBlock.height,colorBlock.thick);
-            /*    //渲染12条边
-                //1-2
-                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z+colorBlock.thick,new GL_Vector(0,0,0),colorBlock.width,1,1,1);
-                //2-3
-                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x+colorBlock.width,colorBlock.y,colorBlock.z+colorBlock.thick,new GL_Vector(0,0,0),1,1,colorBlock.thick,1);
-
-                //3-4
-
-                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x+colorBlock.width,colorBlock.y,colorBlock.z,new GL_Vector(0,0,0),1,1,colorBlock.thick,1);
-*/
-                for(int j =0;j<gl_vectors.length;j++){
-                    ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),gl_vectors[j].x,gl_vectors[j].y,gl_vectors[j].z,new GL_Vector(1,1,1),0.1f,0.1f,0.1f,1);
-
-                }
 
 
-            }else{
+
+
                 ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), colorBlock.x, colorBlock.y, colorBlock.z, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width, colorBlock.height, colorBlock.thick, 1f);
-            }//绘制边框
-          /*  float startX = colorBlock.x;
-            float startY = colorBlock.y;
-            float startZ = colorBlock.z;
-            float endX = colorBlock.x+colorBlock.width;
-            float endY = colorBlock.y;
-            float endZ = colorBlock.z;
-            ShaderUtils.draw3d(startX,startY,startZ,endX,endY,endZ);*/
+
         }
+        if(startPoint!=null){
+
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),startPoint.x,startPoint.y,startPoint.z,new GL_Vector(1,0,0),0.3f,0.3f,0.3f,1);
+
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),endPoint.x,endPoint.y,endPoint.z,new GL_Vector(0,0,1),0.3f,0.3f,0.3f,1);
+
+
+            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), startPoint,endPoint,new GL_Vector(endPoint.x+5,endPoint.y,endPoint.z),BoxModel.BACK_DIR,new GL_Vector(1,1,1));
+        }
+        //绘制
     }
 public GL_Vector startPoint;
     public GL_Vector endPoint;
         public void chooseObject(GL_Vector from, GL_Vector direction){
+            direction=direction.normalize();
+           startPoint =from;
+            endPoint= from.getClone().add(direction.mult(50));
             // LogUtil.println("开始选择");
             Vector3f fromV= new Vector3f(from.x,from.y,from.z);
             Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
@@ -109,9 +107,9 @@ public GL_Vector startPoint;
             xy.y>minY  && xy.y <maxY
             ){
                 selectBlockList.add(colorBlock);
-                colorBlock.setSelected(true);
+             //   colorBlock.setSelected(true);
             }else{
-                colorBlock.setSelected(false);
+              //  colorBlock.setSelected(false);
             }
         }
 
@@ -134,9 +132,9 @@ public GL_Vector startPoint;
                     xy.y>minY  && xy.y <maxY
                     ){
                 selectBlockList.add(colorBlock);
-                colorBlock.setSelected(true);
+               // colorBlock.setSelected(true);
             }else{
-                colorBlock.setSelected(false);
+              //  colorBlock.setSelected(false);
             }
         }
     }
@@ -147,18 +145,18 @@ public GL_Vector startPoint;
             colorBlockList.remove(colorBlock);
         }*/
 
-        for( int i=colorBlockList.size()-1;i>=0;i--){
-            ColorBlock colorBlock  =  colorBlockList.get(i);
-           if(colorBlock.selected==true){
-               colorBlockList.remove(i);
-           }
+        for( int i=selectBlockList.size()-1;i>=0;i--){
+            ColorBlock colorBlock  =  selectBlockList.get(i);
+
+               colorBlockList.remove(colorBlock);
+
         }
         selectBlockList.clear();
     }
 
 
-    public void adjustWidth(int num){
-        if(Switcher.size) {
+    public void adjustWidth(int num,boolean position){
+        if(Switcher.size&&position) {
         for( int i=0;i<selectBlockList.size();i++){
             ColorBlock colorBlock  =  selectBlockList.get(i);
 
@@ -174,16 +172,12 @@ public GL_Vector startPoint;
         }
     }
     public void select(ColorBlock block){
-        for( int i=colorBlockList.size()-1;i>=0;i--){
-            ColorBlock colorBlock  =  colorBlockList.get(i);
-            block.selected=false;
-        }
-        block.selected=true;
+
         selectBlockList.clear();
         selectBlockList.add(block);
     }
-    public void adjustHeight(int num){
-        if(Switcher.size) {
+    public void adjustHeight(int num,boolean position){
+        if(Switcher.size && position) {
             for (int i = 0; i < selectBlockList.size(); i++) {
                 ColorBlock colorBlock = selectBlockList.get(i);
 
@@ -200,8 +194,8 @@ public GL_Vector startPoint;
         }
     }
 
-    public void adjustThick(int num){
-        if(Switcher.size){
+    public void adjustThick(int num,boolean position){
+        if(Switcher.size&&position){
             for( int i=0;i<selectBlockList.size();i++){
                 ColorBlock colorBlock  =  selectBlockList.get(i);
 
@@ -226,10 +220,25 @@ public GL_Vector startPoint;
             copyBlock.rf = colorBlock.rf;
             colorBlock.gf =colorBlock.gf;
             colorBlock.bf = colorBlock.bf;
+            copyBlock.width = colorBlock.width;
+            copyBlock.height =colorBlock.height;
+            copyBlock.thick =colorBlock.thick;
             //colorBlock.selected=false;
-
+            colorBlockList.add(copyBlock);
             selectBlockList.set(i,copyBlock);
           //  copyBlock.selected=true;
+
+        }
+    }
+
+    public void setColor(float red,float green ,float blue) {
+        for( int i=selectBlockList.size()-1;i>=0;i--){
+            ColorBlock colorBlock  =  selectBlockList.get(i);
+
+            colorBlock.rf = red;
+            colorBlock.gf =green;
+            colorBlock.bf = blue;
+
 
         }
     }

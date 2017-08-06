@@ -178,7 +178,7 @@ public class OpenglUtils {
         double jiaojiao = Math.atan(newV.y/xy);
         jiaojiao+=yDegree;
 
-        double xzDegree =- Math.atan(newV.z/newV.x);
+        double xzDegree =Math.atan(newV.z/newV.x);
         newV.z= (float) Math.tan( xzDegree+xDegree)*newV.x;
         xy= Math.sqrt(newV.x*newV.x + newV.z*newV.z);
         newV.y =(float)(Math.tan(jiaojiao)*xy);

@@ -122,7 +122,12 @@ public class MouseControlCenter {
             // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
         }   if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
             if(Switcher.edit){
-                GamingState.editEngine.adjustWidth(-1);
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                    GamingState.editEngine.adjustWidth(-1,true);
+                }else{
+                    GamingState.editEngine.adjustWidth(-1,false);
+                }
+
             }else
             if(AttackManager.selectThing!=null){
                 AttackManager.selectThing.width-=1;
@@ -131,7 +136,12 @@ public class MouseControlCenter {
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
             if(Switcher.edit){
-                GamingState.editEngine.adjustWidth(1);
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                    GamingState.editEngine.adjustWidth(1,true);
+                }else{
+                    GamingState.editEngine.adjustWidth(1,false);
+                }
+
             }else
             if(AttackManager.selectThing!=null){
                 AttackManager.selectThing.width+=1;
@@ -141,7 +151,13 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             // human.headRotate(0, -human.camSpeedXZ * seconds*100);
             if(Switcher.edit){
-                GamingState.editEngine.adjustThick(1);
+
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                    GamingState.editEngine.adjustThick(1,true);
+                }else{
+                    GamingState.editEngine.adjustThick(1,false);
+                }
+
             }else
             if(AttackManager.selectThing!=null){
                 AttackManager.selectThing.thick+=1;
@@ -149,7 +165,12 @@ public class MouseControlCenter {
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
             if(Switcher.edit){
-                GamingState.editEngine.adjustThick(-1);
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                    GamingState.editEngine.adjustThick(-1,true);
+                }else{
+                    GamingState.editEngine.adjustThick(-1,false);
+                }
+
             }else
             if(AttackManager.selectThing!=null){
                 AttackManager.selectThing.thick-=1;
@@ -157,7 +178,12 @@ public class MouseControlCenter {
             //human.headRotate(0, human.camSpeedXZ * seconds*100);
         }  else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
             if(Switcher.edit){
-                GamingState.editEngine.adjustHeight(-1);
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                    GamingState.editEngine.adjustHeight(-1,true);
+                }else{
+                    GamingState.editEngine.adjustHeight(-1,false);
+                }
+
             }else
             if(AttackManager.selectThing!=null){
                 AttackManager.selectThing.height-=1;return;
@@ -169,7 +195,13 @@ public class MouseControlCenter {
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
             if(Switcher.edit){
-                GamingState.editEngine.adjustHeight(1);
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                    GamingState.editEngine.adjustHeight(1,true);
+                }else{
+                    GamingState.editEngine.adjustHeight(1,false);
+                }
+
+
             }else
             if(AttackManager.selectThing!=null){
                 AttackManager.selectThing.height+=1;return;
@@ -555,8 +587,8 @@ public class MouseControlCenter {
         if (Switcher.CAMERA_2_PLAYER < 0) {
             Switcher.CAMERA_2_PLAYER = 0;
         }else
-        if (Switcher.CAMERA_2_PLAYER > 100) {
-            Switcher.CAMERA_2_PLAYER = 100;
+        if (Switcher.CAMERA_2_PLAYER > 500) {
+            Switcher.CAMERA_2_PLAYER = 500;
         }
         GamingState.setCameraChanged(true);
 
@@ -730,7 +762,7 @@ public class MouseControlCenter {
             //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli = false;
             // regenerate the line
-            // save mouse position
+            // save mouse positionf
             prevMouseX = x;
             prevMouseY = y;
             camera.ViewDir.x= player.viewDir.x;
@@ -1100,15 +1132,15 @@ public class MouseControlCenter {
         } else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
             // CoreRegistry.get(Bag.class).changeShow();
         } else if (Keyboard.isKeyDown( Keyboard.KEY_P)) {
-            Switcher.CAMERA_2_PLAYER++;
+          /*  Switcher.CAMERA_2_PLAYER++;
             if (Switcher.CAMERA_2_PLAYER > 10) {
                 Switcher.CAMERA_2_PLAYER = 10;
-            }
+            }*/
         } else if (Keyboard.isKeyDown( Keyboard.KEY_O)) {
-            Switcher.CAMERA_2_PLAYER--;
+           /* Switcher.CAMERA_2_PLAYER--;
             if (Switcher.CAMERA_2_PLAYER < 0) {
                 Switcher.CAMERA_2_PLAYER = 0;
-            }
+            }*/
         } else if (Keyboard.isKeyDown(Keyboard.KEY_F4)) {
             Switcher.IS_GOD = !Switcher.IS_GOD;
             System.out.println("god mode:" + Switcher.IS_GOD);

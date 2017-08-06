@@ -40,6 +40,10 @@ public class MainFrame extends Application {
 
         root.getChildren().add(copyButton);
 
+
+   ;
+
+
         copyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -100,7 +104,16 @@ public class MainFrame extends Application {
                 GamingState.editEngine.select(colorBlock);
             }
         });
+        Button setColorBtn = new Button("设置颜色");
 
+        root.getChildren().add(setColorBtn);
+        setColorBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Color color = colorPicker.getValue();
+                GamingState.editEngine.setColor((float)color.getRed(),(float)color.getGreen(),(float)color.getBlue());
+            }
+        });
                 button2.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
