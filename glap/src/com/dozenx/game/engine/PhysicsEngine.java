@@ -221,6 +221,9 @@ public class PhysicsEngine {
                     if (k > 0) {
                         Block block =chunk_corner.getBlock(blockX,
                                 blockY, blockZ);
+                        if(block == null ){
+                            continue;
+                        }
                         if (!block.isPenetrate()){
 
                             return true;

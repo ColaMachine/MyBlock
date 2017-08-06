@@ -16,6 +16,7 @@ import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.util.TimeUtil;
@@ -135,7 +136,7 @@ public class State {
     public State(LivingThingBean livingThing){
         this.livingThing = livingThing;
     }
-    GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+
     public void receive(GameCmd gameCmd){
         if(gameCmd.getCmdType()==CmdType.DIED){
             DiedCmd diedCmd = (DiedCmd)gameCmd;
@@ -263,7 +264,7 @@ public class State {
                                 CoreRegistry.get(AnimationManager.class).apply(             livingThing.getTarget().getModel().getRootComponent(), "died");
 
                             }
-                            Vector2f xy = OpenglUtils.wordPositionToXY(projection, livingThing.getTarget().getPosition(), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
+                            Vector2f xy = OpenglUtils.wordPositionToXY(ShaderManager.projection, livingThing.getTarget().getPosition(), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
                             AttackManager.addText(new TimeString("砍伤" + cmd.getAttackValue(), xy.x * Constants.WINDOW_WIDTH, xy.y * Constants.WINDOW_HEIGHT));
                             Document.needUpdate = true;
                         }
@@ -278,7 +279,7 @@ public class State {
                 if(livingThing.getTarget()!=null){
                     livingThing.getTarget().beAttack(cmd.getAttackValue());
 
-                    Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getTarget().getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
+                    Vector2f xy = OpenglUtils.wordPositionToXY(ShaderManager.projection,livingThing.getTarget().getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
                     AttackManager.addText(new TimeString("箭伤"+cmd.getAttackValue(),xy.x* Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
                     Document.needUpdate=true;
                 }

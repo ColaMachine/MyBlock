@@ -1,8 +1,11 @@
 package cola.machine.game.myblocks.model;
 
 
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
 
 public interface  Block {
@@ -16,8 +19,10 @@ public interface  Block {
     public void setValue(int value);
 
 
-
-    public void renderShader(ShaderConfig config , GL_Matrix matrix);
+    /**color block de xuanran fangshi 的渲染方式*/
+   // public void renderShader(ShaderConfig config , GL_Matrix matrix);
+    /**其他特殊方块的渲染方式**/
+    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z);
     public void render();
 	public void renderCube();
 	public void renderColor();

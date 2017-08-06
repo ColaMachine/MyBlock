@@ -10,7 +10,9 @@ import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.ByteUtil;
 
 public class BlockManagerImpl extends BlockManager {
+    /**name to block **/
 	private HashMap<String,Block> blockInfoNameMap=new HashMap();
+    /**id to block **/
    private HashMap<Integer,Block> blockInfoIdMap=new HashMap();
 
     /**
@@ -32,11 +34,29 @@ public class BlockManagerImpl extends BlockManager {
 		Block mantle=new BaseBlock("mantle",ItemType.mantle.ordinal(),false);
 		Block water=new BaseBlock("water",ItemType.water.ordinal(),true);
 		Block wood=new BaseBlock("wood",ItemType.wood.ordinal(),false);
+
+
+        Block grass=new BaseBlock("grass",ItemType.grass.ordinal(),false);
+        blockInfoNameMap.put("grass", grass);
+        Block CrackedStoneBrick=new BaseBlock("CrackedStoneBrick",ItemType.CrackedStoneBrick.ordinal(),false);
+        blockInfoNameMap.put("CrackedStoneBrick", CrackedStoneBrick);
+
+        Block StoneBrick=new BaseBlock("StoneBrick",ItemType.StoneBrick.ordinal(),false);
+        blockInfoNameMap.put("StoneBrick", StoneBrick);
+
+        Block MossyStoneBrick=new BaseBlock("MossyStoneBrick",ItemType.MossyStoneBrick.ordinal(),false);
+        blockInfoNameMap.put("MossyStoneBrick", MossyStoneBrick);
+
+        Block OakWood=new BaseBlock("OakWood",ItemType.OakWood.ordinal(),false);
+        blockInfoNameMap.put("OakWood", OakWood);
+
+
         Block treeWood=new BaseBlock("tree_wood",ItemType.tree_wood.ordinal(),false);
         Block treeLeaf=new BaseBlock("tree_seed",ItemType.tree_seed.ordinal(),true);
         Block treeSeed=new BaseBlock("tree_leaf",ItemType.tree_leaf.ordinal(),false);
         Block wood_door=new DoorBlock("wood_door",ItemType.wood_door.ordinal(),true);
         Block copy_down=new CopyDownBlock("copy_down",ItemType.copy_down.ordinal(),true);
+        Block red=new ColorBlock("red",ItemType.red.ordinal(),false);
         blockInfoNameMap.put("air", air);
         blockInfoNameMap.put("water", water);
         blockInfoNameMap.put("stone", stone);
@@ -52,6 +72,7 @@ public class BlockManagerImpl extends BlockManager {
         Block box=new BoxBlock("box",ItemType.box.ordinal(),true);
         blockInfoNameMap.put("box", box);
         blockInfoNameMap.put("copy_down", copy_down);
+        blockInfoNameMap.put("red", red);
        Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry<String, Block> entry =it.next();
@@ -65,11 +86,12 @@ public class BlockManagerImpl extends BlockManager {
 	public Block getBlock(String  name){
 		return blockInfoNameMap.get(name);
 	}
+    @Override
     public Block getBlock(int  id) {
-        if(id<0 || id>ItemType.wood_door.ordinal()){
+        if(id<0 || id>255 || id==ItemType.wood_door.ordinal()|| id==ItemType.box.ordinal()){
            int realId =  ByteUtil.get8_0Value(id);
             Block block =blockInfoIdMap.get(realId);
-            block.setValue(id);
+           // block.setValue(id);
             return block;
         }else
         return blockInfoIdMap.get(id);

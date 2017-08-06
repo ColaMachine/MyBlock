@@ -32,6 +32,9 @@ public class ChatPanel extends HtmlObject {
    /* private final HTMLTextAreaModel textAreaModel;
     private final TextArea textArea;*/
     private final EditField editField;
+    private static int showCount=5;
+
+    private static int maxCount =30;
     //private final ScrollPane scrollPane;
     private int curColor;
     private final Client client ;
@@ -79,8 +82,11 @@ public class ChatPanel extends HtmlObject {
                         return;
                     }
                     text=text.trim();
-                    if(text.startsWith("/createbox")){
+                    if(text.startsWith("/createboxopen")){
                         TextureManager.createBoxShape();
+                    }
+                    if(text.startsWith("/createboxclose")){
+                        TextureManager.createBoxCloseShape();
                     }
                     if(text.startsWith("/chunk")) {
                         String[] arr = text.split(" ");
@@ -179,9 +185,9 @@ public class ChatPanel extends HtmlObject {
         contents.add(text);
 
         //如果超过制定条数 删除之前的数据
-        if(contents.size()>30){
+        if(contents.size()>maxCount){
             int size = contents.size();
-            for(int i=0;i<size-100;i++ ){
+            for(int i=0;i<size-maxCount;i++ ){
                 contents.poll();
             }
            // contents.remove(0)
@@ -191,8 +197,8 @@ public class ChatPanel extends HtmlObject {
         //默认显示倒数10条
 
         int  startIndex = 0;
-        if(contents.size()>10){
-            startIndex = contents.size()-10;
+        if(contents.size()>showCount){
+            startIndex = contents.size()-showCount;
 
         }
         int endIndex = contents.size();

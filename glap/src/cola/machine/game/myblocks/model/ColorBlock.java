@@ -1,9 +1,13 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import com.dozenx.game.engine.element.model.ShapeFace;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -14,7 +18,17 @@ import cola.machine.game.myblocks.model.AABB.AABB;
 import java.nio.FloatBuffer;
 
 public class ColorBlock extends BaseBlock{
-	public int x = 0;
+    /*public boolean selected =false;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }*/
+
+    public int x = 0;
 	public int y = 0;
 	public int z = 0;
     int beishu =5;//缩小的尺寸
@@ -24,7 +38,9 @@ public class ColorBlock extends BaseBlock{
     public float rf =0;
     public float bf=0;
     public float gf=0;
-
+    public float width=1;
+    public float height=1;
+    public float thick=1;
     public boolean zh=true;
     public boolean zl=true;
     public boolean yl=true;
@@ -89,6 +105,9 @@ public class ColorBlock extends BaseBlock{
     }
     public float gf(){
         return this.gf;
+    }
+    public ColorBlock(String name,int id,boolean alpha) {
+        super( name, id, alpha);
     }
 	public ColorBlock(int x, int y, int z) {
 		this.x = x;
@@ -305,6 +324,8 @@ public class ColorBlock extends BaseBlock{
 
     }
 
+
+
     @Override
 	public void renderCube() {
 		// VIP Auto-generated method stub
@@ -317,11 +338,11 @@ public class ColorBlock extends BaseBlock{
 		
 	}
 
-	@Override
+	/*@Override
 	public int getId() {
 		// VIP Auto-generated method stub
 		return 0;
-	}
+	}*/
     public boolean getAlpha(){
         return false;
     }
@@ -345,5 +366,11 @@ public class ColorBlock extends BaseBlock{
     @Override
     public void beAttack() {
 
+    }
+
+
+    @Override
+    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z) {
+        ShaderUtils.draw3dColorBox(ShaderManager.terrainShaderConfig,vao,x,y,z,ti.color,1,1);
     }
 }

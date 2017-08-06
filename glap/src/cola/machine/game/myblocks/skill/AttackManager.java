@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.model.ColorBlock;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
@@ -25,6 +26,10 @@ public class AttackManager {
     }
     private LivingThingManager livingThingManager;
     public static List<Ball> list =new ArrayList<>();
+
+    public static List<Ball> drawThings =new ArrayList<>();
+    public static ColorBlock selectThing =null;
+
     public static List<Ball> diedList =new ArrayList<>();
     Vector4f color =new Vector4f(1,0,0,1);
     public static Queue<TimeString> texts= new LinkedList<TimeString>();
@@ -37,7 +42,11 @@ public class AttackManager {
     GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     public  void update(){
         ShaderManager.anotherShaderConfig.getVao().getVertices().rewind();
+        if(selectThing!=null){
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,new GL_Vector(0,0,0),selectThing.width,selectThing.height,selectThing.thick,0.5f);
 
+        }
+        GamingState.editEngine.update();
         for(int i=diedList.size()-1;i>=0;i--) {
             Ball ball = diedList.get(i);
 
@@ -64,6 +73,8 @@ public class AttackManager {
                 }
             }**/
             ball.update(ShaderManager.anotherShaderConfig);
+
+
             if(ball.readyDied){
                 ;
                 diedList.add(list.remove(i));
@@ -124,8 +135,10 @@ public class AttackManager {
             ball.render();
         }
 
+
         ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
         ShaderUtils.finalDraw(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
+
     }
 
 }

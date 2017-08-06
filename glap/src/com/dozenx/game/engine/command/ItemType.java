@@ -4,8 +4,11 @@ package com.dozenx.game.engine.command;
  * Created by luying on 17/2/13.
  */
 public enum ItemType {
-    NULL,/*fur_shoulder,*/fur_helmet,/*chain_helmet,*/
-    chain_helmet,iron_helmet,gold_helmet,flint,firestone,
+    NULL,/*fur_shoulder,*/
+    fur_helmet,/*chain_helmet,*/
+    chain_helmet,
+    iron_helmet,
+    gold_helmet,flint,firestone,
     coal,rope,/*seed,*/apple,gold_apple,egg,sugar,ice_ball,
     head_slot,fur_armor,chain_armor,iron_armor,diamond_armoriron_cloth,
     gold_armor,arch,stone_bar,iron_bar,feather,wheat,photo_frame,
@@ -21,7 +24,12 @@ public enum ItemType {
     iron_axe,diamond_axe,gold_axe,arch2,wood_hoe,stone_hoe,iron_hoe,
     diamond_hoe,gold_hoe,arch3,
     grit,soil,stone,wood,glass,sand,mantle,water,tree_wood,tree_leaf,
-    tree_seed,wood_door,copy_down,box;
+    tree_seed,wood_door,copy_down,box,red,StoneBrick,MossyStoneBrick,CrackedStoneBrick,grass,OakWood;
+    /**测试的时候打印itemtype**/
+    public static void main(String args[]){
+        System.out.println(ItemType.red.ordinal());
+        System.out.println(ItemType.values()[95]);
+    }
     public int getType(){
         return this.ordinal();
     }

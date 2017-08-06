@@ -14,7 +14,7 @@ uniform sampler2D ourTexture8;
 out vec4 color;
 
 in vec3 TexCoord;
-
+in vec3 Normal;
 uniform vec3 viewPos;
 //uniform sampler2D ourTexture;
 void main()
@@ -25,6 +25,7 @@ void main()
     vec2 TexCoordReal=vec2(TexCoord.x,TexCoord.y);
        if(ourTextureIndex<0){
             oricolor = vec4(TexCoord,ourTextureIndex*(-1));
+            oricolor=oricolor+vec4(Normal*0.001,0)+oricolor;
     }else if(ourTextureIndex==0){
             oricolor = texture(ourTexture0, TexCoordReal);
 

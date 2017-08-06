@@ -154,7 +154,21 @@ public class BoxModel implements Model {
 
         return new GL_Vector[]{p1,p2,p3,p4,p5,p6,p7,p8};
     }
+    public static GL_Vector[] getSmaillPoint(float x,float y,float z,float width,float height,float thick){
 
+
+        GL_Vector p1= new GL_Vector(x,y,z+thick);
+        GL_Vector p2= new GL_Vector(x+width,y,z+thick);
+        GL_Vector p3= new GL_Vector(x+width,y,z);
+        GL_Vector p4= new GL_Vector(x,y,z);
+
+        GL_Vector p5= new GL_Vector(x,y+height,z+thick);
+        GL_Vector p6= new GL_Vector(x+width,y+height,z+thick);
+        GL_Vector p7= new GL_Vector(x+width,y+height,z);
+        GL_Vector p8= new GL_Vector(x,y+height,z);
+
+        return new GL_Vector[]{p1,p2,p3,p4,p5,p6,p7,p8};
+    }
 
     /*public void setEightFace(String name,TextureManager textureManager){
 

@@ -4,9 +4,11 @@ import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.Vao;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import org.lwjgl.opengl.GL11;
@@ -59,6 +61,11 @@ public class BaseBlock extends AABB implements Block{
     @Override
     public void setValue(int value) {
 
+    }
+
+    @Override
+    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z) {
+       
     }
 
     private String name;
@@ -241,8 +248,8 @@ public class BaseBlock extends AABB implements Block{
 		this.y=y;
 		this.z=z;
 		
-		this.minX=x-1;
-		this.minY=y-1;
+		this.minX=x;
+		this.minY=y;
 		this.maxX=x+1;
 		this.maxY=y+1;
 	}

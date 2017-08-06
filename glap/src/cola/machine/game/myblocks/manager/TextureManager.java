@@ -358,6 +358,7 @@ public class TextureManager {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("Failed to load config", e);
         }
 
@@ -554,10 +555,12 @@ public class TextureManager {
 
 
                     shape.setShapeType(shapeType);
-
+                    if(name.equalsIgnoreCase("box")){
+                        LogUtil.println("box");
+                    }
                     Object model =  map.get("model");
 
-                    if(model!=null && model instanceof  com.alibaba.fastjson.JSONObject){
+                    if(model!=null && model instanceof  com.alibaba.fastjson.JSONArray){
                         //转成数组 shapeface的数组
                         //com.alibaba.fastjson.JSONArray
                         com.alibaba.fastjson.JSONArray arr = (com.alibaba.fastjson.JSONArray)model;
@@ -569,8 +572,8 @@ public class TextureManager {
 
                             shape.shapeFaceMap.put(modelShapeFace.getName(),modelShapeFace);
                         }
-                        ShapeFace shapeFace = getShapeFace(frontObj);
-                        shape.setFrontFace(shapeFace);
+                   /*     ShapeFace shapeFace = getShapeFace(frontObj);
+                        shape.setFrontFace(shapeFace);*/
                     }
 
                     String parent = MapUtil.getStringValue(map, "parent");
@@ -942,9 +945,41 @@ public class TextureManager {
 
         return bodyShape;
     }
+    public static Shape createBoxCloseShape(){
+
+
+        Component rootComponent =new Component();
+
+        Shape bodyShape = TextureManager.getShape("box_close");//加载箱体shape
+        rootComponent =
+                new Component(bodyShape);
+
+
+        List<float[]> vertices = new ArrayList<>();
+
+        float[][] verticesAry= new float[vertices.size()][3];
+        List<float[] > texcoords = new ArrayList<>();
+
+        List<int[]> faces =new ArrayList<>();
+        List<float[]> normals= new ArrayList<>();
+        HashMap map =new HashMap();
+        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);//将绘制的结果放在vertices里
+        bodyShape.setFrontFace(new ShapeFace());
+        bodyShape.getFrontFace().setVertices(vertices.toArray(verticesAry));
+        bodyShape.getFrontFace().setNormals(normals.toArray(new float[normals.size()][3]));
+
+        bodyShape.getFrontFace().setTexcoords(texcoords.toArray(new float[texcoords.size()][3]));
+
+        bodyShape.getFrontFace().setFaces(faces.toArray(new int[faces.size()][6]));
+
+        System.out.println("frontFace:" + JSON.toJSONString(bodyShape.getFrontFace()) + ",");
+
+
+        return bodyShape;
+    }
     public static void main(String args[]){
 
-        TextureManager.createDoorShape();
+        TextureManager.createBoxCloseShape();
     }
 
 

@@ -151,14 +151,14 @@ public class OpenglUtils {
 
         int windowWidth =Constants.WINDOW_WIDTH;
         int windowHeight =Constants.WINDOW_HEIGHT;
-        float newX= cursorX-windowWidth/2;
+        float newX= cursorX-windowWidth/2;//换算成中心坐标为0 , 0 的新坐标
         float newY=cursorY-windowHeight/2;
         //()/x = Math.tan(45/2);
 
         //(windowWidth/2)/x = Math.tan(0y);
         //newY/x= Math.tan(?);
         //newX/x= Math.tan(?);
-        double x = (windowHeight/2)/Math.tan(3.14/4/2);
+        double x = (windowHeight/2)/Math.tan(3.14/4/2);//fov /2 时候对象的x轴的距离  也就是 视角的位置到 近端界面的距离
 
         //double x = (windowHeight/2)/Math.tan(3.14/4/2);
 
@@ -170,8 +170,8 @@ public class OpenglUtils {
         double xdu = xDegree/3.1415*180;
         LogUtil.println("角度x"+xdu+"角度y"+ydu);
 
-        GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float)- xDegree/2,
-                0);
+        //GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float)- xDegree/2,
+          //      0);
 
         //计算俯角
         double xy= Math.sqrt(newV.x*newV.x + newV.z*newV.z);
@@ -185,7 +185,7 @@ public class OpenglUtils {
         //ViewDir.y+=updownDegree/100;
         // GL_Vector vd = M.transform(newV);
 //        vd.normalize();
-        return newV;
+        return newV.normalize();
 
 
     }
@@ -417,7 +417,7 @@ public class OpenglUtils {
                 new javax.vecmath.Point4f(position.x,position.y,position.z,1f)
         );
 
-        return new Vector2f(final4f.x/final4f.w/2+0.5f,1-final4f.y/final4f.w-0.5f);
+        return new Vector2f(final4f.x/final4f.w/2+0.5f,1-final4f.y/final4f.w/2f-0.5f);
     }
 
     public static void bind(int textureHandle){

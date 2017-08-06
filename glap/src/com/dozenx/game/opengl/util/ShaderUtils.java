@@ -25,6 +25,7 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.glUseProgram;
@@ -2076,6 +2077,62 @@ try {
         }
     }
 
+
+
+    public static void draw3dImage(ShaderConfig config,Vao vao ,ShapeFace shapeFace ,TextureInfo ti,int x,int y,int z,GL_Matrix matrix){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        if(ti==null){
+            LogUtil.err("ti should not be null");
+        }
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        try {
+            FloatBuffer veticesBuffer = vao.getVertices();
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }
+            int[][] faces = shapeFace.faces;
+            float[][] vertices = shapeFace.vertices;
+            float[][] normals = shapeFace.normals;
+            float[][] texoords = shapeFace.getTexcoords();
+            float vertx=0;
+            float verty=0;
+            float vertz=0;
+            GL_Vector vector =new GL_Vector();
+            for(int i=0;i<faces.length;i++){
+                for(int j=0;j<6;j++){
+                    vertx=vertices[faces[i][j]][0];
+                    verty=vertices[faces[i][j]][0];
+                    vector.set(vertices[faces[i][j]][0],vertices[faces[i][j]][1],vertices[faces[i][j]][2]);
+                    GL_Vector newVec = GL_Matrix.multiply(matrix,vector);
+                  /*  LogUtil.println("x:"+(vertices[faces[i][j]][0]+x)+"y:"+(vertices[faces[i][j]][1]+y)
+                            +"z:"+(vertices[faces[i][j]][2]+z));*/
+                    veticesBuffer.put(newVec.x+x).
+                            put(newVec.y+y).
+                            put(newVec.z+z).
+                            put(normals[faces[i][j]][0]).
+                            put(normals[faces[i][j]][1]).
+                            put(normals[faces[i][j]][2]).
+                            put(texoords[faces[i][j]][0]).
+                            put(texoords[faces[i][j]][1]).
+                            put(0).
+                            put(index);//p1
+                }
+
+
+            }
+
+            if(faces.length<2){
+                LogUtil.err("lenght too short");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public static void draw3dImage(ShaderConfig config,Vao vao ,float[][] vertices,float[][] texoords,float[][] normal,int[] faces,TextureInfo ti,int x,int y,int z,GL_Matrix transMatrix){
         //ti=TextureManager.getTextureInfo("mantle");
 
@@ -2170,8 +2227,40 @@ try {
             throw e;
         }
     }
+    public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float width,float height,float thick,float alpha){
+        //ti=TextureManager.getTextureInfo("mantle");
 
-    public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector colo,float size,float alpha){
+
+        try {
+            FloatBuffer veticesBuffer = vao.getVertices();
+            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }
+            GL_Vector[] dirAry = BoxModel.dirAry;
+            int[][] faceAry = BoxModel.facesAry;
+            GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,width,height,thick);
+            for(int i=0;i<6;i++){
+                int[] faceAry2 = faceAry[i];
+
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float size,float alpha){
         //ti=TextureManager.getTextureInfo("mantle");
 
 
@@ -2189,13 +2278,13 @@ try {
                 int[] faceAry2 = faceAry[i];
 
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(0).put(0).put(0).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(0).put(0).put(0).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(0).put(0).put(0).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(0).put(0).put(0).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(0).put(0).put(0).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(0).put(0).put(0).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x/*+0.1f*i*/).put(color.y/*+0.1f*i*/).put(color.z/*+0.1f*i*/).put(-alpha);//p1
 
             }
 

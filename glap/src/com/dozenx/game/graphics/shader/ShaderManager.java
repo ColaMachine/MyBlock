@@ -39,6 +39,8 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
  * Created by luying on 16/11/14.
  */
 public class ShaderManager {
+
+
     //Vao terrainVao = new Vao();
 
     /*public  int terrainProgramId;
@@ -69,7 +71,18 @@ public class ShaderManager {
     }
 
     //地形
-    public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert");
+    public static ShaderConfig terrainShaderConfig =null;
+    static{
+        if(Constants.SHADOW_ENABLE){
+            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert");
+        }else{
+            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert");
+            //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxangle.frag", "chapt16/boxangle.vert");
+        }
+    }
+    //public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert");
+
+   // public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert");
     //灯光方块
     public static ShaderConfig lightShaderConfig = new ShaderConfig("light", "chapt13/light.frag", "chapt13/light.vert");
     //天空盒子
@@ -82,6 +95,9 @@ public class ShaderManager {
     public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
     //扔在地上的东关系
     public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
+
+
+
     //扔在地上的东西
     public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
     //伤害字符
@@ -103,7 +119,7 @@ public class ShaderManager {
 
 
     //透视矩阵
-    GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+   public static GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     //相机
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
     public Hdr hdr;

@@ -163,10 +163,10 @@ public class ChunkImpl implements Chunk {
     @Override
     public void setBlock(int x, int y, int z, int blockId) {
         try {
-            int realId = ByteUtil.get8_0Value(blockId);
-            blockData.set(x, y, z, blockId);
+            int realId = ByteUtil.get8_0Value(blockId);//获得真实的blockid
+            blockData.set(x, y, z, blockId);//设置或者
             //if(blockId > 0)
-            if(blockId>ItemType.wood_door.ordinal()){
+            if(realId==ItemType.wood_door.ordinal() || realId == ItemType.box.ordinal()){
                 LogUtil.println("is ad special block");
 
             //if (realId ==ItemType.wood_door.ordinal() ) {
@@ -206,14 +206,17 @@ public class ChunkImpl implements Chunk {
         }
 //如果一个是透明的 另一个是不透明的 就需要绘制
         //如果两个都是不透明的就不需要绘制
-        if (blockManager.getBlock(selfType) == null || blockManager.getBlock(blockType) == null) {
+        Block selfBlock = blockManager.getBlock(selfType);
+        Block otherBlock = blockManager.getBlock(blockType);
+        if (selfBlock == null || otherBlock== null) {
             LogUtil.err("block is null blockType:" + selfType);
+            return false;
         }
-        if ((!blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha())) {
+        if ((!selfBlock.getAlpha() && !otherBlock.getAlpha())) {
             return false;
-        } else if (blockManager.getBlock(selfType).getAlpha() && blockManager.getBlock(blockType).getAlpha()) {
+        } else if (selfBlock.getAlpha() && otherBlock.getAlpha()) {
             return false;
-        } else if (blockManager.getBlock(selfType).getAlpha() && !blockManager.getBlock(blockType).getAlpha()) {//如果自身是Alpha 对方不是alpha 也不需要绘制
+        } else if (selfBlock.getAlpha() && !otherBlock.getAlpha()) {//如果自身是Alpha 对方不是alpha 也不需要绘制
             return false;
         } else {
             return true;
@@ -541,7 +544,7 @@ public class ChunkImpl implements Chunk {
                     currentBlockType = i;
                     if (currentBlockType > 256) {
 
-                        state = ByteUtil.get16_8Value(i);
+                       // state = ByteUtil.get16_8Value(i);
                         i = currentBlockType = ByteUtil.get8_0Value(i);
                     }
                     if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
@@ -1045,13 +1048,13 @@ public class ChunkImpl implements Chunk {
         Draw();
     }
 
-    public void addShader(int x, int y, int z, int dir) {
+    public void addShader(int x,int y,int z, int dir) {
 
 
-        x += this.chunkPos.x * getChunkSizeX();
-        z += this.chunkPos.z * getChunkSizeZ();
+        int worldx =x+ this.chunkPos.x * getChunkSizeX();
+        int worldz = z+this.chunkPos.z * getChunkSizeZ();
         y = y;
-        GL_Vector[] vertices = BoxModel.getPoint(x, y, z);
+        GL_Vector[] vertices = BoxModel.getPoint(worldx, y, worldz);
         //查询出当前是哪个面
 
 
@@ -1125,56 +1128,26 @@ public class ChunkImpl implements Chunk {
 
         }
 
-
-        if (shapeFace != null) {
-            if (currentBlockType == ItemType.wood_door.ordinal()) {
-                //获取condition
-                int condition = ByteUtil.get4_0Value(state);
-                int switcher = ByteUtil.get8_4Value(state);
-                int degree = 0;
-               // if /*(condition == Constants.BACK) {
-                   /* ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
-                            shapeFace.getFaces()[0], ti, x, y, z);*/
-                //} else*/
-                    if (condition == Constants.BACK) {
-                        degree = 0;
-                    }
-                    if (condition == Constants.FRONT) {
-
-                        degree = 180;
-
-                    } else if (condition == Constants.LEFT) {
-                        degree = -90;
-                    } else if (condition == Constants.RIGHT) {
-                        degree = 90;
-                    }
-                    if (switcher > 0) {
-                        degree += 90;
-                    }
-                    GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
-                    translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree * 3.14f / 180, 0));
-
-
-                    translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
-
-                    ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
-                            shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);
-
-            }else
-            if (currentBlockType == ItemType.box.ordinal()) {
-
-                ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace, ti, x, y, z);
-            }else {
-
-
-                ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
-                        shapeFace.getFaces()[0], ti, x, y, z);
+        if(currentBlockType== ItemType.box.ordinal()) {
+            if(  faceIndex==Constants.FRONT){
+                Block block = this.getBlock(x, y, z);//this.blockManager.getBlock(currentBlockType);
+                block.renderShader(vao, shapeFace, ti,worldx,y,worldz);
             }
+
+        }else
+        if (currentBlockType== ItemType.wood_door.ordinal()) {
+            //===========判断当前方块是不是有状态的方块 如果是有状态的方块调
+            //=========判断当前方块是简单方块还是特殊方块如果是特殊方块调用他自身的渲染方法渲染
+
+
+            Block block = this.getBlock(x, y, z);//this.blockManager.getBlock(currentBlockType);
+            block.renderShader(vao, shapeFace, ti,worldx,y,worldz);
+
         } else {
             try {
-                if (currentBlockType != ItemType.water.ordinal() && currentBlockType != ItemType.glass.ordinal()) {
+                if (currentBlockType != ItemType.water.ordinal() && currentBlockType != ItemType.glass.ordinal()) {//正常的block的
                     ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);
-                } else {
+                } else {//alpha的
                     ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, alphaVao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);
                 }
             } catch (Exception e) {

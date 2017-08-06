@@ -26,8 +26,8 @@ public class DirectionBlock extends StateBlock{
         super(name,id,isAlpha);
     }
     public int dir=0;
-    //int open=0;
-    public int open=0;
+
+
     @Override
     public void setValue(int value) {
         super.setValue(value);

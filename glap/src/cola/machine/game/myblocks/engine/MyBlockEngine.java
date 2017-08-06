@@ -151,7 +151,7 @@ public class MyBlockEngine extends GLApp {
             // System.out.println(System.getProperty("java.library.path"));
             demo.VSyncEnabled = true;
             demo.fullScreen = false;
-            demo.displayWidth = 800;
+            demo.displayWidth = 600;
             demo.displayHeight = 600;
 
             demo.run(); // will call init(), render(), mouse functions

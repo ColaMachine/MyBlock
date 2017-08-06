@@ -50,7 +50,7 @@ public class ActionDemo extends Widget {
 
     public static void main(String[] args) {
         try {
-            Display.setDisplayMode(new DisplayMode(800, 600));
+            Display.setDisplayMode(new DisplayMode(600, 600));
             Display.create();
             Display.setTitle("TWL Action Demo");
             Display.setVSyncEnabled(true);

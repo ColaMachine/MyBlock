@@ -123,7 +123,8 @@ public class ItemModel extends ModelTemplate {
 
         for (Block block : blocks) {
             //  GL11.glColor3f(block.rf(), block.bf() , block.gf());
-            block.renderShader(config,rotateMatrix);
+            ColorBlock colorBlock = (ColorBlock) block;
+            colorBlock.renderShader(config,rotateMatrix);
         }
     }
     public void render(){

@@ -51,7 +51,7 @@ public class ListKeyEvents extends Container {
 
     public static void main(String[] args) {
         try {
-            Display.setDisplayMode(new DisplayMode(800, 600));
+            Display.setDisplayMode(new DisplayMode(600, 600));
             Display.create();
             Display.setTitle("TWL Keyboard Event Debugger");
             Display.setVSyncEnabled(true);

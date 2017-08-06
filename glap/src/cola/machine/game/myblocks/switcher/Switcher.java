@@ -20,4 +20,8 @@ public class Switcher {
     public static boolean isChat =false;
 
     public static boolean SHADER_ENABLE=true;
+
+    public static boolean edit =true;
+
+    public static boolean size =true;
 }

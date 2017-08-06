@@ -5,6 +5,8 @@ import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Image;
 import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.edit.EditEngine;
+import com.dozenx.game.engine.fx.MainFrame;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.ui.ButtonBar.view.ButtonBarView;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
@@ -61,6 +63,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 
+import javax.vecmath.Vector4f;
 import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -71,7 +74,7 @@ public class GamingState implements GameState {
     public static GamingState instance;
     public static  Player player;//= new Human();
     public static String catchThing;
-
+    public static EditEngine editEngine= new EditEngine();
     public static boolean isCameraChanged() {
         return cameraChanged;
     }
@@ -213,6 +216,17 @@ public class GamingState implements GameState {
             CoreRegistry.put(HeadPanel.class,enemyHeadPanel);
             document.body.appendChild(enemyHeadPanel);
 
+
+             selectDiv =new Div();
+            selectDiv.setVisible(false);
+            selectDiv.setPosition(HtmlObject.POSITION_ABSOLUTE);
+            selectDiv.setBorderWidth(3);
+            selectDiv.setBorderColor(new Vector4f(1,1,1,1));
+            selectDiv.setTop(40);
+            selectDiv.setLeft(40);
+            selectDiv.setHeight(40);
+            selectDiv.setWidth(40);
+            document.body.appendChild(selectDiv);
             document.needUpdate=true;
              /*shadowDiv =new Div();
             shadowDiv.setBorderWidth(2);
@@ -225,12 +239,21 @@ public class GamingState implements GameState {
             client500msTask.start();
             SynchronTask task = new SynchronTask();
             task.start();
+           // MainFrame.main(new String[]{});
+            Thread thread = new Thread(){
+                public void run(){
+                    MainFrame main =new MainFrame();
+                    main.main(new String []{});
+                }
+            };
+            thread.start();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }Div shadowDiv;
-
+    public static Div selectDiv;
     public void dispose() {
 
     }

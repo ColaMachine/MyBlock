@@ -104,7 +104,7 @@ public class AnimationEngine extends MyBlockEngine {
 		AnimationEngine demo = new AnimationEngine();
 		demo.VSyncEnabled = true;
 		demo.fullScreen = false;
-		demo.displayWidth = 800;
+		demo.displayWidth = 600;
 		demo.displayHeight = 600;
 
 		demo.run(); // will call init(), render(), mouse functions

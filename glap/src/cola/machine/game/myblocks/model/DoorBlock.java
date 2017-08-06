@@ -35,9 +35,10 @@ public class DoorBlock extends DirectionBlock {
 
     }
     //画出四个面
-    public void render(Vao vao,ShapeFace shapeFace,TextureInfo ti ){
+    @Override
+    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z){
         //获取condition
-        itemDefinition.getShape().getTopFace();
+        //itemDefinition.getShape().getTopFace();
 
         int degree = 0;
         if (dir == Constants.BACK) {
@@ -114,6 +115,12 @@ public class DoorBlock extends DirectionBlock {
             CoreRegistry.get(Client.class).send(cmd);
             return true;
        // }
+    }
+    @Override
+    public Block clone(){
+        DoorBlock block =  new DoorBlock(this.getName(),this.getId(),this.getAlpha());
+        block.itemDefinition =itemDefinition;
+        return block;
     }
 
 }

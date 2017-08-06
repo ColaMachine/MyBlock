@@ -55,6 +55,8 @@ public class ItemFactory {
             }else
             if(engine .equals("door")){
                 itemDef = new DoorDefinition();
+            }else if(engine .equals("box")){
+                itemDef = new BoxDefinition();
             }else
             if(engine .equals("food")){
                 itemDef = new FoodDefinition();

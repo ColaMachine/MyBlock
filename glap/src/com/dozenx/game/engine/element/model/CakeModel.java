@@ -131,7 +131,8 @@ public class CakeModel implements Model {
 
         for (Block block : blocks) {
             //  GL11.glColor3f(block.rf(), block.bf() , block.gf());
-            block.renderShader(config,rotateMatrix);
+            ColorBlock colorBlock = (ColorBlock) block;
+            colorBlock.renderShader(config,rotateMatrix);
         }
     }
     public void build(ShaderConfig config, Vao vao , int x, int y, int z){

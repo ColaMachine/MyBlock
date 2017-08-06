@@ -1,15 +1,20 @@
 package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.element.model.ShapeFace;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.ui.inventory.control.BoxController;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
@@ -28,21 +33,20 @@ public class BoxBlock extends DirectionBlock {
 
 
 
-        int open= value16_12;
+         open= value16_12;
 
-        if(open == 1){
-            penetration =true;
-        }else{
-            penetration=false;
-        }
+
 
     }
     //画出四个面
-    public void render(Vao vao,ShapeFace shapeFace,TextureInfo ti ){
+    @Override
+    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z ){
         //获取condition
-        itemDefinition.getShape().getTopFace();
+       // itemDefinition.getShape().getTopFace();
+//dir 其实实现已经算好了的
 
-        int degree = 0;
+
+       int degree = 0;
         if (dir == Constants.BACK) {
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
                     shapeFace.getFaces()[0], ti, x, y, z);
@@ -65,9 +69,13 @@ public class BoxBlock extends DirectionBlock {
 
 
             translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
+            if(open==1)
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, ItemManager.getItemDefinition(ItemType.box).getShape().shapeFaceMap.get("open"), ti, x, y, z,translateMatrix);
+            else
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace, ti, x, y, z,translateMatrix);
 
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
-                    shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);
+          /*  ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
+                    shapeFace.getFaces()[0], ti, x, y, z, translateMatrix);*/
         }
     }
     public boolean use(GL_Vector placePoint){
@@ -78,6 +86,7 @@ public class BoxBlock extends DirectionBlock {
         CoreRegistry.get(BoxPanel.class).requestKeyboardFocus();
         Document.needUpdate=true;
         Switcher.isChat=true;
+         this.open=1;
 
         //修改方块的状态为开并拿会物品列表
         ItemBean[] list = CoreRegistry.get(BoxController.class).openBox(this);
@@ -86,6 +95,27 @@ public class BoxBlock extends DirectionBlock {
         Document.needUpdate =true;
         //更新到boxpanel
       //  Document.getInstance().setFocusKeyWidget(CoreRegistry.get(BoxPanel.class));
+
+
+
+
+
+        //打开状态
+        int chunkX =chunk.chunkPos.x;
+        int chunkZ=chunk.chunkPos.z;
+        ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+        cmd.cx = this.getX();
+        cmd.cz = this.getZ();
+        cmd.cy = this.getY();
+        cmd.type = 1;
+
+
+
+
+        int newId= (open<<12| this.dir<<8 )| this.id;
+        cmd.blockType= newId;
+
+        CoreRegistry.get(Client.class).send(cmd);
         return true;
     }
 /*
@@ -111,4 +141,12 @@ public class BoxBlock extends DirectionBlock {
         CoreRegistry.get(Client.class).send(cmd);
 
     }*/
+@Override
+public Block clone(){
+   BoxBlock block =  new BoxBlock(this.getName(),this.getId(),this.getAlpha());
+    block.itemDefinition =itemDefinition;
+    return block;
+}
+
+
 }
