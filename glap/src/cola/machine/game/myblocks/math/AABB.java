@@ -507,7 +507,7 @@ public final class AABB {
             {Constants.BOTTOM,Constants.LEFT,Constants.RIGHT},//1
             {Constants.TOP,Constants.LEFT,Constants.RIGHT},//2
             {Constants.BACK,Constants.LEFT,Constants.RIGHT},//3
-            {Constants.FRONT,Constants.FRONT,Constants.BACK},//3
+            {Constants.FRONT,Constants.LEFT,Constants.RIGHT},//3 //z的最大值方向过来 且和z边框相交
     };
     public boolean chuizhijuli(Vector3f from, Vector3f direction) {
         Vector3f dirfrac = new Vector3f();
@@ -634,7 +634,7 @@ public final class AABB {
 
         value = minX / ratioXY;
         if(value>=minY && value<=maxY){//低x 左侧
-            distance = value*value + minX*minX;
+            _tempDistance = value*value + minX*minX;
             if(distance==0 || _tempDistance<distance){
                 distance=_tempDistance;
                 result = new float[]{1,minX,value,distance};
@@ -643,7 +643,7 @@ public final class AABB {
         //maxX
         value = maxX / ratioXY;
         if(value>=minY && value<=maxY){//下面
-            distance = value*value + maxX*maxX;
+            _tempDistance = value*value + maxX*maxX;
             if(distance==0 || _tempDistance<distance){
                 distance=_tempDistance;
                 result = new float[]{2,maxX,value,distance};

@@ -338,7 +338,7 @@ public GL_Vector startPoint;
         colorBlockList.remove(colorBlock);
 
     }
-
+//,float red,float green ,float blue
     public void shootBlock(float x,float y){
 
        GL_Vector from = GamingState.instance.camera.Position.getClone();
@@ -371,6 +371,10 @@ public GL_Vector startPoint;
                     theNearestBlock=colorBlock;
                     right = xiangjiao;
                 }
+
+               // addColorBlock.rf = color.red;
+              //  addColorBlock.gf=color.green;
+              //  addColorBlock.bf =color.blue;
                 //GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
                 //   LogUtil.println("选中了");
                 //this.target=livingThing;
@@ -428,6 +432,8 @@ public GL_Vector startPoint;
                     right[5] =3;
                 }
             }*/
+
+
            float[] ary =  AABB.xyFaces[  (int) right[3]-1];
             float[] ary1 =  AABB.xzFaces[  (int) right[4]-1];
             float[] ary2 =  AABB.yzFaces[  (int) right[5]-1];
@@ -440,11 +446,29 @@ public GL_Vector startPoint;
                         //在yz的集合当中也有
                             if(ary[i]==ary2[k]) {
                                 face =(int)ary[i];
+                                try {
+                                    ColorBlock addColorBlock = new ColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+                                    colorBlockList.add(addColorBlock);
+                                    if (face == Constants.BACK) {
+                                        addColorBlock.z -= 1;
+                                    } else if (face == Constants.LEFT) {
+                                        addColorBlock.x -= 1;
+                                    } else if (face == Constants.BOTTOM) {
+                                        addColorBlock.y -= 1;
+                                    }
+                                }catch ( Exception e){
+                                    e.printStackTrace();
+                                }
+
+
                             }
                         }
                     }
                 }
             }
+
+
+
             LogUtil.println("是那个面:"+face);
 
         }

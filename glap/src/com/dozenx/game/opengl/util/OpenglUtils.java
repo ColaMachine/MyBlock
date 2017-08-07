@@ -168,7 +168,7 @@ public class OpenglUtils {
         double xDegree = Math.atan(newX/x);
         double ydu = yDegree/3.1415*180;
         double xdu = xDegree/3.1415*180;
-        LogUtil.println("角度x"+xdu+"角度y"+ydu);
+       // LogUtil.println("角度x"+xdu+"角度y"+ydu);
 
         //GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float)- xDegree/2,
           //      0);
