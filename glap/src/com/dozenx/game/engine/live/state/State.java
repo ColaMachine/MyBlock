@@ -69,7 +69,7 @@ public class State {
 
                     if (nowTime - lastTime >50) {//如果大于50ms才执行
                         //调整计算新的位置
-                        float moveDistance =  livingThing.speed/10* (nowTime-lastTime)/1000;
+                        float moveDistance =  livingThing.speed* (nowTime-lastTime)/1000;
                         GL_Vector walkDir = GL_Vector.sub( livingThing.getDest(),livingThing.getPosition()).normalize();
                         if(!livingThing.isPlayer()) {
                             livingThing.setWalkDir(walkDir);

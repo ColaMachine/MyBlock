@@ -107,7 +107,7 @@ public class ServerMain {
 
         timer = new Timer();
         timer.schedule(new ServerGrowTask(serverContext),0, 10*1000);
-        timer.schedule(new ServerSaveTask(serverContext),0, 10*1000);
+        timer.schedule(new ServerSaveTask(serverContext),0, 600*1000);
         System.out.println("Task scheduled.");
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {

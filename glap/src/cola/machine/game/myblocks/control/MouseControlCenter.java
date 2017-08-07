@@ -101,7 +101,7 @@ public class MouseControlCenter {
         }
     }
     public int lastKey = 0;
-
+    int key;
     public void handleNavKeys(float seconds) {
         //dosn't need cooling
         // w a s d space
@@ -222,7 +222,7 @@ public class MouseControlCenter {
 
 
         if(TimeUtil.getNowMills() - lastkeyPressTime >200){
-            int key = -1;
+             key = -1;
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                 key= WalkCmd.FORWARD_LEFT;
@@ -616,8 +616,12 @@ public class MouseControlCenter {
         mouseLeftPressed=false;
         if(Switcher.edit){
             GamingState.selectDiv.setVisible(false);
-            GamingState.editEngine.selectObject(GamingState.selectDiv.getLeft(),GamingState.selectDiv.getTop(),
+         /*   GamingState.editEngine.selectObject(GamingState.selectDiv.getLeft(),GamingState.selectDiv.getTop(),
                     GamingState.selectDiv.getLeft()+ GamingState.selectDiv.getWidth(),GamingState.selectDiv.getTop()+GamingState.selectDiv.getHeight());
+*/
+            GamingState.editEngine.selectObject(   prevMouseX,
+                    Constants. WINDOW_HEIGHT-prevMouseY,
+                    x,Constants.WINDOW_HEIGHT-y);
             //如果都没选中 开启单选模式
             /*if(GamingState.editEngine.selectBlockList.size()==0){
                 GamingState.editEngine.chooseObject(GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());

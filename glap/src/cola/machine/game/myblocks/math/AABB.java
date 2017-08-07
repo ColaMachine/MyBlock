@@ -445,6 +445,47 @@ public final class AABB {
     }
 
 
+    public float[] intersectRectangle2(Vector3f from, Vector3f direction) {
+
+        //(0.5, 65.0, -40.5)  //(1.5, 66.5, -39.5)  //(-0.044776313, 0.5225283, -0.8514454)
+
+        GL_Vector newMin = new GL_Vector();
+        //min = {javax.vecmath.Vector3f@2756}"(0.5, 1.0, 0.5)"
+        newMin.x= min.x - from.x;
+        newMin.y= min.y - from.y;
+        newMin.z= min.z - from.z;
+        // LogUtil.println("newMin:"+newMin);
+        //max = {javax.vecmath.Vector3f@3106}"(1.5, 2.5, 1.5)"
+        GL_Vector newMax = new GL_Vector();
+        newMax.x= max.x - from.x;
+        newMax.y= max.y - from.y;
+        newMax.z= max.z - from.z;
+        //  LogUtil.println("newMax:"+newMax);
+
+
+        //四线段交集问题
+
+        //minX minY maxX maxY
+//       boolean xy = ;
+//        boolean xz = ;
+//        boolean yz = ;
+        float[] xyResult = jiaoji2(newMin.x,newMin.y,newMax.x,newMax.y,direction.x/direction.y);
+        if(xyResult==null){
+            return null;
+        }
+        float[] xzResult = jiaoji2(newMin.x,newMin.z,newMax.x,newMax.z,direction.x/direction.z) ;
+        if(xzResult==null){
+            return null;
+        }
+        float[] yzResult = jiaoji2(newMin.y,newMin.z,newMax.y,newMax.z,direction.y/direction.z) ;
+        if(yzResult==null){
+            return null;
+        }
+
+        return  new float[]{xyResult[1],yzResult[1],xzResult[2]};
+
+    }
+
     public boolean chuizhijuli(Vector3f from, Vector3f direction) {
         Vector3f dirfrac = new Vector3f();
         //(0.5, 65.0, -40.5)  //(1.5, 66.5, -39.5)  //(-0.044776313, 0.5225283, -0.8514454)
@@ -527,5 +568,64 @@ public final class AABB {
             return true;
         }
         return false;
+    }
+
+    /**
+     *
+     * @param minX
+     * @param minY
+     * @param maxX
+     * @param maxY
+     * @param ratioXY
+     * @return
+     *  1代表第1个参数最小那边 2代表第1个参数最大那边 3代表第2个参数最小那边 4代表第二个参数最大那边 最后那个参数是对应起始点的边上的点的位置
+     *  一版一个线段和立方体交际 或者 方形相交 一定会 碰上两条线段 我们要拿到是最短的那条
+     */
+    public static float[] jiaoji2(float minX,float minY,float maxX,float maxY, float ratioXY){
+
+        //minY
+        float distance=0,_tempDistance =0;
+        float value = ratioXY*minY;
+        float[] result = null ;
+        if(value>=minX && value<=maxX){//是否跟下线段交集
+            _tempDistance=value*value + minY*minY;
+            if(distance==0 || _tempDistance<distance){
+                distance=_tempDistance;
+                result = new float[]{3,value,minY,distance};
+            }
+        }
+
+        //maxY
+        value = ratioXY*maxY;
+        if(value>=minX && value<=maxX){//上面
+            _tempDistance = value*value + maxY*maxY;
+            if(distance==0 || _tempDistance<distance){
+                distance=_tempDistance;
+                result = new float[]{4,value,maxY,distance};
+            }
+
+        }
+
+
+        //minX
+
+        value = minX / ratioXY;
+        if(value>=minY && value<=maxY){//低x 左侧
+            distance = value*value + minX*minX;
+            if(distance==0 || _tempDistance<distance){
+                distance=_tempDistance;
+                result = new float[]{1,minX,value,distance};
+            }
+        }
+        //maxX
+        value = maxX / ratioXY;
+        if(value>=minY && value<=maxY){//下面
+            distance = value*value + maxX*maxY;
+            if(distance==0 || _tempDistance<distance){
+                distance=_tempDistance;
+                result = new float[]{2,maxX,value,distance};
+            }
+        }
+        return result;
     }
 }

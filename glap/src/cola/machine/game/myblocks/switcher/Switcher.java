@@ -24,4 +24,10 @@ public class Switcher {
     public static boolean edit =true;
 
     public static boolean size =true;
+
+    public static int shootMode =3;
+    public static int boxSelectMode =1;
+    public static int singleSelectMode =2;
+
+    public static int mouseState = boxSelectMode;
 }

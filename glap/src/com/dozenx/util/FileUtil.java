@@ -77,6 +77,9 @@ public class FileUtil {
         try {
 
             //if file doesnt exists, then create it
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
             if (!file.exists()) {
                 file.createNewFile();
             }
