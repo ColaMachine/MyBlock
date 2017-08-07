@@ -160,7 +160,7 @@ public class ItemManager {
         if (deleteIndex >= 0) {
             list.remove(deleteIndex);
         }
-        ShaderUtils.createVao(ShaderManager.dropItemShaderConfig, ShaderManager.dropItemShaderConfig.getVao(), new int[]{3, 3, 3, 1});
+        ShaderUtils.freshVao(ShaderManager.dropItemShaderConfig, ShaderManager.dropItemShaderConfig.getVao());
     }
 
     public void loadItem() throws Exception {

@@ -377,9 +377,9 @@ public class Document extends HtmlObject {
     @Override
     public  void update(){
         super.check();
-        if( Document.needUpdate){
+      if( Document.needUpdate){
 
-
+        ShaderManager.uiShaderConfig.getVao().getVertices().clear();//每次重新刷新都要把之前的数据清空
 
             document.setWidth(Constants.WINDOW_WIDTH);
             document.setHeight(Constants.WINDOW_HEIGHT);
@@ -393,7 +393,7 @@ public class Document extends HtmlObject {
                 ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
                 super.buildVao();
                // ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
-                ShaderUtils.createVao(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao(),new int[]{3,2,1,4});
+                ShaderUtils.freshVao(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao());
                 OpenglUtils.checkGLError();
             }
 
@@ -410,7 +410,7 @@ public class Document extends HtmlObject {
             //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
 
             Document.needUpdate=false;
-        }
+      }
 
     }
     public boolean hasFocusChild(){

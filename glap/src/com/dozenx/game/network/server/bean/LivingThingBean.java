@@ -543,7 +543,9 @@ public class LivingThingBean extends Role {
     }
     public void update(){
         //this.dropControl();
-        CoreRegistry.get(PhysicsEngine.class).gravitation(this);
+        if(!Switcher.edit) {
+            CoreRegistry.get(PhysicsEngine.class).gravitation(this);
+        }
        // this.getModel().build();
         this.getExecutor().getCurrentState().update();
     }

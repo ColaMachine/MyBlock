@@ -300,23 +300,31 @@ public class MouseControlCenter {
 
 
       else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-            player.position.y = player.position.y - 3 * seconds;
-            player.move(player.position);
+            if(Switcher.edit){
+                player.position.y-=1;
+            }else {
+                player.position.y = player.position.y - 3 * seconds;
+                player.move(player.position);
+            }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
             player.position.y = player.position.y + 3 * seconds;
             player.move(player.position);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            double timenow = GLApp.getTimeInSeconds();
+            if(Switcher.edit){
+                player.position.y+=1;
+            }else {
+                double timenow = GLApp.getTimeInSeconds();
 
-            if ((timenow - preKeyTime) < 1) {
-                return;
+                if ((timenow - preKeyTime) < 1) {
+                    return;
+                }
+                preKeyTime = timenow;
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                    player.jumpHigh();
+                // System.out.println("ͬʱ������w��");
+                player.jump();
             }
-            preKeyTime = timenow;
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-                player.jumpHigh();
-            // System.out.println("ͬʱ������w��");
-            player.jump();
             // System.out.println("jump");
         }
                                                         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
@@ -619,9 +627,15 @@ public class MouseControlCenter {
          /*   GamingState.editEngine.selectObject(GamingState.selectDiv.getLeft(),GamingState.selectDiv.getTop(),
                     GamingState.selectDiv.getLeft()+ GamingState.selectDiv.getWidth(),GamingState.selectDiv.getTop()+GamingState.selectDiv.getHeight());
 */
-            GamingState.editEngine.selectObject(   prevMouseX,
-                    Constants. WINDOW_HEIGHT-prevMouseY,
-                    x,Constants.WINDOW_HEIGHT-y);
+            if(Switcher.mouseState == Switcher.boxSelectMode){
+                GamingState.editEngine.selectMany(   prevMouseX,
+                        Constants. WINDOW_HEIGHT-prevMouseY,
+                        x,Constants.WINDOW_HEIGHT-y);
+            }else if(Switcher.mouseState  == Switcher.shootMode){
+                GamingState.editEngine.shootBlock(prevMouseX,
+                        Constants. WINDOW_HEIGHT-prevMouseY);
+            }
+
             //如果都没选中 开启单选模式
             /*if(GamingState.editEngine.selectBlockList.size()==0){
                 GamingState.editEngine.chooseObject(GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
@@ -761,7 +775,7 @@ public class MouseControlCenter {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
-            player.bodyRotate( -(x - prevMouseX)/2,(y - prevMouseY)/2);
+            player.bodyRotate( -(x - prevMouseX)/12,(y - prevMouseY)/12);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli = false;
@@ -1186,8 +1200,8 @@ public class MouseControlCenter {
 
             //human.MoveForward(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-            player.position.y = player.position.y - 3 * seconds;
-            player.move(player.position);
+         /*   player.position.y = player.position.y - 3 * seconds;
+            player.move(player.position);*/
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
             player.position.y = player.position.y + 3 * seconds;
             player.move(player.position);

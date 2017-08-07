@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.textture.Shape;
@@ -59,8 +60,8 @@ public class ChunkImpl implements Chunk {
     public int alphaDisplayId = 0;
     public IntBuffer vetices = BufferUtils.createIntBuffer(14);
     public int count = 0;
-    public Vao vao = new Vao(102400);
-    public Vao alphaVao = new Vao(102400);
+    public Vao vao =null;
+    public Vao alphaVao = null;
     private TeraArray blockData;
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
 
@@ -85,10 +86,19 @@ public class ChunkImpl implements Chunk {
         // extraData = c.getExtraDataEntry().factory.create(getChunkSizeX(),
         // getChunkSizeY(), getChunkSizeZ());
         blockManager = CoreRegistry.get(BlockManager.class);
+        if(GamingState.player!=null){
+             vao = new Vao(102400,ShaderManager.terrainShaderConfig);
+             alphaVao = new Vao(102400,ShaderManager.terrainShaderConfig);
+        }else{
+             vao = new Vao(102400,null);
+             alphaVao = new Vao(102400,null);
+        }
     }
 
     public ChunkImpl(int x, int y, int z) {
         this();
+
+
         chunkPos.x = x;
         chunkPos.y = y;
         chunkPos.z = z;
@@ -516,7 +526,7 @@ public class ChunkImpl implements Chunk {
     }
 
     public void buildVao() {
-        vao.getVertices().clear();
+        vao.getVertices().rewind();
 
         //glUseProgram(ShaderManager.terrainShaderConfig.getProgramId());
         ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);

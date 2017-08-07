@@ -101,8 +101,8 @@ public class AttackManager {
                 //GLApp.print((int)minX,(int)minY,this.innerText);
         }
 
-        ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),anotherShaderConfig);
-        ShaderUtils.createVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao(),uiFloatShaderConfig);
+        //ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),anotherShaderConfig);
+        ShaderUtils.freshVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
 
     }
     int anotherShaderConfig[] = new int[]{3,3,3,1};
@@ -136,7 +136,7 @@ public class AttackManager {
         }
 
 
-        ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
         ShaderUtils.finalDraw(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
 
     }

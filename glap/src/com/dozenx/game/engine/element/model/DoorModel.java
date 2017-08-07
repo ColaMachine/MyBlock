@@ -7,6 +7,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.FloatBufferWrap;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -52,7 +53,7 @@ public class DoorModel implements Model {
     }
 
     public void build(ShaderConfig config ,GL_Matrix translateMatrix){
-        FloatBuffer floatBuffer = config.getVao().getVertices();
+        FloatBufferWrap floatBuffer = config.getVao().getVertices();
         if(front!=null) {
             // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
             ShaderUtils.draw3dImage(P1, P2, P6, P5, translateMatrix, new GL_Vector(0, 0, 1f), front, floatBuffer, config);
@@ -67,7 +68,7 @@ public class DoorModel implements Model {
 
     @Override
     public void build(ShaderConfig config, Vao vao, int x, int y, int z) {
-        FloatBuffer floatBuffer = config.getVao().getVertices();
+        FloatBufferWrap floatBuffer = config.getVao().getVertices();
         if(front!=null) {
 
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig,vao,P1, P2, P6, P5, BoxModel.FRONT_DIR, icon);

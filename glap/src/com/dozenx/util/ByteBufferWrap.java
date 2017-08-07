@@ -7,6 +7,8 @@ package com.dozenx.util;
 import cola.machine.game.myblocks.engine.Constants;
 import core.log.LogUtil;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.*;
@@ -16,13 +18,15 @@ import java.util.List;
 
 public class ByteBufferWrap
 {
-    int nowIndex =0;
-
+    int listLimit =0;
+    int listPosition;
+    int limit =0;
+    int position;
     private ByteBuffer buffer;
 
     private List<ByteBuffer> buffers= new ArrayList<ByteBuffer>();
     public ByteBufferWrap(){
-        this.buffer= ByteBuffer.allocate(1256);
+        this.buffer= ByteBuffer.allocateDirect(1256).order(ByteOrder.nativeOrder());
         buffers.add(buffer);
     }
     public ByteBufferWrap(byte[] bytes){
@@ -55,15 +59,64 @@ public class ByteBufferWrap
 
         if(buffer.position()==buffer.limit()){
 
-            nowIndex++;
-            buffer = ByteBuffer.allocate(1256);
-            buffers.add(buffer);
+            listPosition++;
+            if(buffers.size()<listPosition+1){
+                buffer = ByteBuffer.allocateDirect(1256).order(ByteOrder.nativeOrder());
+                buffers.add(buffer);
+            }else{
+                buffer = buffers.get(listPosition);
+                buffer.rewind();
+            }
+
+
         }
+       position++;
+
         buffer.put(val);
         return this;
     }
+
+    public void glBufferData(int type1,int type2){
+        for(int i=0;i<listLimit;i++){
+            GL15.glBufferData(type1, buffers.get(i), type2);//put data
+        }
+
+    }
+    public void rewind(){
+        this.limit = position;
+        this.position =0;
+        this.listLimit = listPosition;
+        this.listPosition = 0;
+        for(int i=0;i<=listLimit;i++){
+            ByteBuffer buffer = buffers.get(i);
+            buffer.rewind();
+        }
+        buffer = buffers.get(0);
+    }
+    public void flip(){
+        this.limit = position;
+        this.position =0;
+        this.listLimit = listPosition;
+        this.listPosition = 0;
+        for(int i=0;i<=listLimit;i++){
+            ByteBuffer buffer = buffers.get(i);
+            buffer.flip();
+        }
+        buffer = buffers.get(0);
+    }
+    public void clear(){
+        this.limit = position;
+        this.position =0;
+        this.listLimit = listPosition;
+        this.listPosition = 0;
+        for(int i=0;i<=listLimit;i++){
+            ByteBuffer buffer = buffers.get(i);
+            buffer.clear();
+        }
+        buffer = buffers.get(0);
+    }
     public ByteBufferWrap put(byte[] ary){
-        preCheck(ary.length);
+        //preCheck(ary.length);
         for(int i=0;i<ary.length;i++){
            // if(buffer.remaining()<10){
                /* if(buffer.position()>buffer.limit()-10){
@@ -80,6 +133,10 @@ public class ByteBufferWrap
         }
 
         return this;
+    }
+
+    public int position(){
+        return position;
     }
     public ByteBufferWrap put(int val){
 

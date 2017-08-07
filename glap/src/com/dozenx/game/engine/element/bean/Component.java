@@ -11,6 +11,7 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.FloatBufferWrap;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -236,7 +237,7 @@ public class Component {
     }
 
     public void build(ShaderConfig config ,  GL_Matrix matrix){
-        FloatBuffer floatBuffer = config.getVao().getVertices();
+        FloatBufferWrap floatBuffer = config.getVao().getVertices();
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentLocation.x, parentLocation.y, parentLocation.z);
 
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,0,0);

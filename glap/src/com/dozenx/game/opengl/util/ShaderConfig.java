@@ -46,7 +46,7 @@ public class ShaderConfig {
 
     private int[] paramLenAry;
 
-    private int paramTotalLen;
+
 
     public int getParamTotalLen() {
         return paramTotalLen;
@@ -135,11 +135,27 @@ public class ShaderConfig {
     public ShaderConfig(){
 
     }
-    public ShaderConfig(String name,String fragPath,String vertPath){
+    public ShaderConfig(String name,String fragPath,String vertPath,int[] attris){
         this.name =name;
         this.fragPath=fragPath;
         this.vertPath = vertPath;
+
+        int length =0;
+        for(int i=0;i<attris.length;i++){
+            length += attris[i];
+        }
+        //设置参数总长度
+        setParamTotalLen(length);
+        //设置参数长度数组
+        setParamLenAry(attris);
+        vao=new Vao(this);
     }
+    int paramTotalLen;
+
+
+
+
+
     String name;
 
     public String getName() {
@@ -165,7 +181,7 @@ public class ShaderConfig {
         this.vao = vao;
     }
 
-    private Vao vao=new Vao();
+    private Vao vao;
 private int viewPosLoc;
 
     public int getViewPosLoc() {

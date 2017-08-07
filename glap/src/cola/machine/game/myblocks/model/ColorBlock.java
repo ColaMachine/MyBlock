@@ -8,6 +8,8 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.ByteBufferWrap;
+import com.dozenx.util.FloatBufferWrap;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -164,7 +166,7 @@ public class ColorBlock extends BaseBlock{
 
     public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix) {
         // Front Face
-        FloatBuffer floatBuffer = config.getVao().getVertices();
+        FloatBufferWrap floatBuffer = config.getVao().getVertices();
         GL_Vector color = new GL_Vector(this.rf(),this.gf(),this.bf());
 
             if(zh) {

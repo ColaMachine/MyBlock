@@ -18,6 +18,7 @@ package cola.machine.game.myblocks.math;
 
 //import com.bulletphysics.linearmath.AabbUtil2;
 //import com.bulletphysics.linearmath.Transform;
+import cola.machine.game.myblocks.engine.Constants;
 import com.google.common.base.Objects;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -469,10 +470,13 @@ public final class AABB {
 //       boolean xy = ;
 //        boolean xz = ;
 //        boolean yz = ;
+
+
         float[] xyResult = jiaoji2(newMin.x,newMin.y,newMax.x,newMax.y,direction.x/direction.y);
         if(xyResult==null){
             return null;
         }
+
         float[] xzResult = jiaoji2(newMin.x,newMin.z,newMax.x,newMax.z,direction.x/direction.z) ;
         if(xzResult==null){
             return null;
@@ -482,10 +486,29 @@ public final class AABB {
             return null;
         }
 
-        return  new float[]{xyResult[1],yzResult[1],xzResult[2]};
+        return  new float[]{xyResult[1],yzResult[1],xzResult[2],xyResult[0],xzResult[0],yzResult[0]};
 
     }
+    public static float[][] xyFaces ={
+            {Constants.LEFT,Constants.FRONT,Constants.BACK},//1
+            {Constants.RIGHT,Constants.FRONT,Constants.BACK},//2
+            {Constants.BOTTOM,Constants.FRONT,Constants.BACK},//3
+            {Constants.TOP,Constants.FRONT,Constants.BACK},//3
+    };
 
+    public static float[][] xzFaces ={
+            {Constants.LEFT,Constants.BOTTOM,Constants.TOP},//1
+            {Constants.RIGHT,Constants.BOTTOM,Constants.TOP},//2
+            {Constants.BACK,Constants.BOTTOM,Constants.TOP},//3
+            {Constants.FRONT,Constants.BOTTOM,Constants.TOP},//3
+    };
+
+    public static float[][] yzFaces ={
+            {Constants.BOTTOM,Constants.LEFT,Constants.RIGHT},//1
+            {Constants.TOP,Constants.LEFT,Constants.RIGHT},//2
+            {Constants.BACK,Constants.LEFT,Constants.RIGHT},//3
+            {Constants.FRONT,Constants.FRONT,Constants.BACK},//3
+    };
     public boolean chuizhijuli(Vector3f from, Vector3f direction) {
         Vector3f dirfrac = new Vector3f();
         //(0.5, 65.0, -40.5)  //(1.5, 66.5, -39.5)  //(-0.044776313, 0.5225283, -0.8514454)
@@ -620,7 +643,7 @@ public final class AABB {
         //maxX
         value = maxX / ratioXY;
         if(value>=minY && value<=maxY){//下面
-            distance = value*value + maxX*maxY;
+            distance = value*value + maxX*maxX;
             if(distance==0 || _tempDistance<distance){
                 distance=_tempDistance;
                 result = new float[]{2,maxX,value,distance};

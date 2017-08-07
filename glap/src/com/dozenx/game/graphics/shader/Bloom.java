@@ -147,7 +147,7 @@ public class Bloom {
         //glUseProgram(0);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         ShaderUtils.draw2dImg(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),shaderManager.hdr.getTextureId());
-        ShaderUtils.createVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),new int[]{2,2});
+        //ShaderUtils.createVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao());
         OpenglUtils.checkGLError();
         //高斯vao 和 绑定高亮纹理
         ShaderUtils.draw2dImg(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao(),colorBuffers[0]);
@@ -156,19 +156,19 @@ public class Bloom {
 
 
 
-        ShaderUtils.createVao(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao(),new int[]{2,2});
+        ShaderUtils.initVao(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao());
         OpenglUtils.checkGLError();
         glUseProgram(shaderManager.gaosihebingShaderConfig.getProgramId());
         glUniform1i(shaderManager.gaosihebingShaderConfig.getTexture0Loc(),ShaderUtils.getActiveTextureLoc(colorBuffers[0]));
         glUniform1i(shaderManager.gaosihebingShaderConfig.getTexture1Loc(),ShaderUtils.getActiveTextureLoc(pingpongBuffer[1]));
 
         ShaderUtils.draw2dImg(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao(),shaderManager.hdr.getTextureId());
-        ShaderUtils.createVao(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao(),new int[]{2,2});
+        //ShaderUtils.freshVao(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao());
 
 
 
     }
-    Vao horizontalVao = new Vao();
+    Vao horizontalVao = new Vao(ShaderManager.bloomShaderConfig);
     public void getBrightTexture(ShaderManager shaderManager){
         //现在出现了这么一个问题
         //shaderManager.bloomShaderConfig.getVao().getVertices().rewind();

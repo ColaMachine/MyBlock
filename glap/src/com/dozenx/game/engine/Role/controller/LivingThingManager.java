@@ -143,7 +143,7 @@ public class LivingThingManager {
         //player update
         this.player.render();//心更新
         if (Switcher.SHADER_ENABLE) {
-            ShaderUtils.createVao(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao(),new int[]{3,3,3,1});
+            ShaderUtils.freshVao(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
             //ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
         }
         //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);

@@ -9,6 +9,7 @@ import com.dozenx.game.engine.command.PlayerSynCmd;
 import com.dozenx.game.engine.edit.view.SelectTextureEditPanel;
 import com.dozenx.game.engine.edit.view.TextureEditPanel;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ui.NuiManager;
@@ -24,6 +25,7 @@ import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
 
+import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -271,7 +273,9 @@ if(!Switcher.SHADER_ENABLE) {
 
 
     public void update(float delta) {
-        if( Document.needUpdate){
+        //TODO recover
+        ShaderManager.uiShaderConfig.getVao().getVertices().clear();
+       if( Document.needUpdate){
 
             document.update();
 
@@ -289,7 +293,7 @@ if(!Switcher.SHADER_ENABLE) {
           //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
 
             Document.needUpdate=false;
-        }
+       }
     }
 
     public float rotation = 0f;
@@ -314,10 +318,17 @@ if(!Switcher.SHADER_ENABLE) {
        /* count++;
         if(count<1000)*/
         //ShaderUtils.finalDraw(ShaderManager.uiShaderConfig);//2DImage
+    /*  ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
+        ShaderUtils.draw2dColor(new Vector4f(1,1,1,1),0,0,0.004f,1,1);   OpenglUtils.checkGLError();
+        ShaderUtils.createVao(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao(),new int[]{3,2,1,4});*/
         document.render();
        // ShaderUtils.finalDraw(ShaderManager.livingThingShaderConfig);//2DImage
       //  ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig);//2DImage
       //  ShaderUtils.finalDraw(ShaderManager.lightShaderConfig);//2DImage
+
+
+
+
         //ShaderUtils.finalDraw2DColor();
         try{
            // Thread.sleep(200);

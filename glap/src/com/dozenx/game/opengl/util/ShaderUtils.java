@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
+import com.dozenx.util.FloatBufferWrap;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -21,6 +22,7 @@ import org.lwjgl.opengl.Util;
 import javax.swing.*;
 import javax.vecmath.Vector4f;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -550,6 +552,38 @@ try {
         OpenglUtils.checkGLError();
         glUseProgram(0);
     }*/
+
+    public static void tempfinalDraw(ShaderConfig config,Vao vao){
+        //TextureManager.getTextureInfo("soil").bind();
+        // ShaderUtils.get2dcolor
+
+        assert config.getProgramId()>0;
+        glUseProgram(config.getProgramId());
+        OpenglUtils.checkGLError();
+        // glUniform3f(shaderConfig.getObejctColorLoc(), backgroundColor.x, backgroundColor.y, backgroundColor.z);
+        // OpenglUtils.checkGLError();
+        assert vao.getVaoId()>0;
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        assert vao.getPoints()>0;
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        for(int i=0;i<=vao.getVertices().listLimit;i++){
+            int Points =vao.getVertices().buffers.get(i).position()/config.getParamTotalLen();
+            vao.setPoints(Points);
+            vao.getVertices().buffers.get(i).rewind();
+            //vao.getVertices().rewind();
+            glBufferData(GL_ARRAY_BUFFER,vao.getVertices().buffers.get(i), GL_STATIC_DRAW);
+            // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+            glDrawArrays(GL_TRIANGLES,0, vao.getPoints());
+        }
+
+        //config.getVao().getVertices().rewind();
+
+        OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+        //glUseProgram(0);
+    }
     public static void finalDraw(ShaderConfig config,Vao vao){
         //TextureManager.getTextureInfo("soil").bind();
         // ShaderUtils.get2dcolor
@@ -565,8 +599,17 @@ try {
         glBindVertexArray(vao.getVaoId());
         OpenglUtils.checkGLError();
         assert vao.getPoints()>0;
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+    /*    for(int i=0;i<vao.getVertices().listLimit;i++){
 
-        glDrawArrays(GL_TRIANGLES,0, vao.getPoints());
+            vao.setPoints(vao.getVertices().buffers.get(i).limit()/config.getParamTotalLen());
+
+            //vao.getVertices().rewind();
+            glBufferData(GL_ARRAY_BUFFER,vao.getVertices().buffers.get(i), GL_STATIC_DRAW);*/
+           // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+            glDrawArrays(GL_TRIANGLES,0, vao.getPoints());
+      //  }
+
         //config.getVao().getVertices().rewind();
 
         OpenglUtils.checkGLError();
@@ -1376,12 +1419,12 @@ try {
         if(color==null){
             LogUtil.err("color can't be null");
         }
-        if(vao.getVertices().position() >= vao.getVertices().capacity()-60 ){
+      /*  if(vao.getVertices().position() >= vao.getVertices().capacity()-60 ){
             FloatBuffer buffer = vao.getVertices();
             FloatBuffer newBuffer = BufferUtils.createFloatBuffer(vao.getVertices().capacity()+10000);
             newBuffer.put(buffer);
             vao.setVertices(BufferUtils.createFloatBuffer(vao.getVertices().capacity()+10000));
-        }
+        }*/
         vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
@@ -1940,12 +1983,12 @@ try {
         }
         int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+           /* if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
             if(ti.color!=null){
                 veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p1
                 veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p2
@@ -1978,12 +2021,12 @@ try {
         }
         int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+           /* if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
 
             for(int i=0;i<faces.length;i++){
 
@@ -2038,12 +2081,12 @@ try {
         }
         int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+           /* if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
             int[][] faces = shapeFace.faces;
             float[][] vertices = shapeFace.vertices;
             float[][] normals = shapeFace.normals;
@@ -2087,12 +2130,12 @@ try {
         }
         int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+         /*   if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
             int[][] faces = shapeFace.faces;
             float[][] vertices = shapeFace.vertices;
             float[][] normals = shapeFace.normals;
@@ -2141,12 +2184,12 @@ try {
         }
         int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+           /* if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
 
             for(int i=0;i<faces.length;i++){
                 GL_Vector vector =new GL_Vector(vertices[faces[i]][0],vertices[faces[i]][1],vertices[faces[i]][2]);
@@ -2209,12 +2252,12 @@ try {
         //ti=TextureManager.getTextureInfo("mantle");
 
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+           /* if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
             veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p1
             veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p2
             veticesBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p3
@@ -2232,7 +2275,7 @@ try {
         //ti=TextureManager.getTextureInfo("mantle");
 
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
+            FloatBufferWrap veticesBuffer = vao.getVertices();
 
             veticesBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p1
             veticesBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(color.x).put(color.y).put(color.z).put(-1);//p2
@@ -2250,12 +2293,12 @@ try {
 
 
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+         /*   if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
             GL_Vector[] dirAry = BoxModel.dirAry;
             int[][] faceAry = BoxModel.facesAry;
             GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,width,height,thick);
@@ -2263,13 +2306,13 @@ try {
                 int[] faceAry2 = faceAry[i];
 
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
 
             }
 
@@ -2283,12 +2326,12 @@ try {
 
 
         try {
-            FloatBuffer veticesBuffer = vao.getVertices();
-            if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+            /*if (veticesBuffer.position() > veticesBuffer.limit() -100) {
                 LogUtil.println("overflow");
                 vao.expand();
                 veticesBuffer=vao.getVertices();
-            }
+            }*/
             GL_Vector[] dirAry = BoxModel.dirAry;
             int[][] faceAry = BoxModel.facesAry;
             GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,size);
@@ -2296,13 +2339,13 @@ try {
                 int[] faceAry2 = faceAry[i];
 
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.05f*i).put(color.y+0.05f*i).put(color.z+0.05f*i).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
 
             }
 
@@ -2312,7 +2355,7 @@ try {
         }
     }
 
-    public static void draw3dImage(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBuffer floatBuffer,ShaderConfig config){
+    public static void draw3dImage(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBufferWrap floatBuffer, ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
         try {
             int index = ShaderUtils.bindAndGetTextureIndex(config, ti.textureHandle);
@@ -2334,15 +2377,15 @@ try {
         }
         }
 
-    public static void draw3dColor(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
+    public static void draw3dColor(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, GL_Vector color, FloatBufferWrap floatBuffer,ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
 
-        if(floatBuffer.position()>floatBuffer.limit()-100){
+      /*  if(floatBuffer.position()>floatBuffer.limit()-100){
             FloatBuffer  newfloatBuffer=BufferUtils.createFloatBuffer(floatBuffer.limit()+10000);
             newfloatBuffer.put(floatBuffer);
             config.getVao().setVertices(newfloatBuffer);
             floatBuffer = newfloatBuffer;
-        }
+        }*/
         p1 =GL_Matrix.multiply(matrix,p1);
 
         p2 =GL_Matrix.multiply(matrix,p2);
@@ -2358,7 +2401,7 @@ try {
     }
 
 
-    public static void draw3dColorSimple(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
+    public static void draw3dColorSimple(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  GL_Vector normal, GL_Vector color, FloatBufferWrap floatBuffer,ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
 
 
@@ -2371,7 +2414,7 @@ try {
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
     }
 
-  public static void draw3dColorSimpleReverse(GL_Vector p4, GL_Vector p3, GL_Vector p2, GL_Vector p1,  GL_Vector normal, GL_Vector color, FloatBuffer floatBuffer,ShaderConfig config){
+  public static void draw3dColorSimpleReverse(GL_Vector p4, GL_Vector p3, GL_Vector p2, GL_Vector p1,  GL_Vector normal, GL_Vector color, FloatBufferWrap floatBuffer,ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
 
 
@@ -2384,7 +2427,7 @@ try {
         floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(color.x).put(color.y).put(color.z);
     }
 
-    public static void createVao(ShaderConfig config ,Vao vao,int[] attris){
+    public static void createVao123(ShaderConfig config ,Vao vao,int[] attris){
         int position = vao.getVertices().position();
       /*  if(vao.getVertices().position()==0){
 
@@ -2404,8 +2447,8 @@ try {
             vao.setPoints(vao.getVertices().position()/config.getParamTotalLen());
             glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
             vao.getVertices().rewind();
-
-            glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+            vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+           //glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
 
         }else {
 
@@ -2434,14 +2477,14 @@ try {
             //创建顶点数组
 
 
-            vao.setPoints(vao.getVertices().position() / length);
+            vao.setPoints(vao.getVertices().buffers.get(0).position() / length);
 
             //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
             vao.getVertices().rewind();
             // vao.setVertices(twoDImgBuffer);
             glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
 
-            glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+            vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);//put data
             //create ebo
             // float width = 1;
             OpenglUtils.checkGLError();
@@ -2462,6 +2505,114 @@ try {
         // System.out.println("float.size:" + FlFLOAToat.SIZE);
 
 
+
+    }
+
+
+    public static void freshVao(ShaderConfig config ,Vao vao){
+        int position = vao.getVertices().position();
+
+        if(position==0)
+            return;
+
+
+
+        if(vao.getVaoId()>0){
+
+
+            //glBindVertexArray(vao.getVaoId());
+            // LogUtil.err("vao have been initialized");
+            // glBindVertexArray(vao.getVaoId());
+            //设置顶点组的数目
+            vao.setPoints(vao.getVertices().position()/config.getParamTotalLen());
+            glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+            vao.getVertices().rewind();
+            vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+            //glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+
+        }else {
+
+          LogUtil.err("dangerous");
+        }
+        // System.out.println("float.size:" + FlFLOAToat.SIZE);
+
+
+
+    }
+    public static void initVao(ShaderConfig config ,Vao vao){
+
+
+
+
+        if(vao.getVaoId()>0){
+
+            LogUtil.err("dangerous");
+
+        }else {
+
+            int length =0;
+            for(int i=0;i<config.getParamLenAry().length;i++){
+                length += config.getParamLenAry()[i];
+            }
+            //设置参数总长度
+
+            //设置参数长度数组
+
+            vao.setVaoId(glGenVertexArrays());
+            OpenglUtils.checkGLError();
+            //  glBindVertexArray(vao.getVaoId());
+            int VboId = glGenBuffers();//create vbo
+            vao.setVboId(VboId);
+           /* int eboId = glGenBuffers();
+            vao.setEboId(eboId);*/
+            //}
+            //绑定vao
+            glBindVertexArray(vao.getVaoId());
+            OpenglUtils.checkGLError();
+            //create vbo
+            //顶点 vbo
+            //create vbo 创建vbo  vertex buffer objects
+            //创建顶点数组
+
+            vao.setPoints(10);
+
+            //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
+            vao.getVertices().rewind();
+            // vao.setVertices(twoDImgBuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+
+            vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);//put data
+            //create ebo
+            // float width = 1;
+            OpenglUtils.checkGLError();
+
+
+            int sum = 0;
+
+            for (int i = 0; i <config.getParamLenAry().length; i++) {
+                glVertexAttribPointer(i, config.getParamLenAry()[i], GL_FLOAT, false, config.getParamTotalLen() * 4, sum * 4);
+
+                Util.checkGLError();
+                glEnableVertexAttribArray(i);
+                Util.checkGLError();
+                sum += config.getParamLenAry()[i];
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
 
     }
 

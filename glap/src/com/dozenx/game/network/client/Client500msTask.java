@@ -1,6 +1,7 @@
 package com.dozenx.game.network.client;
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.PosCmd;
 import com.dozenx.util.TimeUtil;
@@ -26,8 +27,12 @@ public class Client500msTask extends Thread{
 
         while (true) {
             try {
+                if(Switcher.edit){
 
-                livingThingManager.checkPlayerDrop();
+                }else {
+                    livingThingManager.checkPlayerDrop();
+                }
+
                 livingThingManager.removeAllDiedOne();
                 Thread.sleep(500);//200 ms
             } catch (Exception e) {

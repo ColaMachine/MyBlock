@@ -12,6 +12,7 @@ import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.FloatBufferWrap;
 import com.dozenx.util.ImageUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
@@ -187,7 +188,7 @@ public class BoxModel implements Model {
     }
 
     public void build(ShaderConfig config , GL_Matrix rotateMatrix){
-        FloatBuffer floatBuffer = config.getVao().getVertices();
+        FloatBufferWrap floatBuffer = config.getVao().getVertices();
         if(front!=null) {
             // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
             ShaderUtils.draw3dImage(P1, P2, P6, P5, rotateMatrix, FRONT_DIR, front, floatBuffer, config);

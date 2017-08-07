@@ -11,6 +11,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.FloatBufferWrap;
 import glapp.GLApp;
 
 import glmodel.GL_Vector;
@@ -20,6 +21,7 @@ import org.lwjgl.util.glu.Sphere;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 public class Skysphere {
@@ -246,7 +248,7 @@ public void drawSunTest() {
 			GL_Vector P8 = new GL_Vector(minX, maxY, minZ);
 			ShaderConfig config = ShaderManager.skyShaderConfig;
 			Vao vao = config.getVao();
-			FloatBuffer floatBuffer = vao.getVertices();
+			FloatBufferWrap floatBuffer = vao.getVertices();
 			floatBuffer.rewind();
 			// ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
 			ShaderUtils.draw3dColorSimpleReverse(P1, P2, P6, P5, new GL_Vector(0, 0, -1f), color, floatBuffer, config);
@@ -264,7 +266,7 @@ public void drawSunTest() {
 
 			ShaderUtils.draw3dColorSimpleReverse(P4, P1, P5, P8, new GL_Vector(-1, 0, 0), color, floatBuffer, config);
 
-			ShaderUtils.createVao(config,config.getVao(),new int[]{3,3});
+			ShaderUtils.freshVao(config,config.getVao());
 		}
 
 	}

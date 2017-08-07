@@ -38,8 +38,10 @@ public class EditEngine {
     public void update(){
         for(int i=0;i<selectBlockList.size();i++){
             ColorBlock colorBlock = selectBlockList.get(i);
-           // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf),colorBlock.width,colorBlock.height,colorBlock.thick,1);
-            GL_Vector[] gl_vectors = BoxModel.getSmaillPoint(colorBlock.x,colorBlock.y,colorBlock.z,colorBlock.width,colorBlock.height,colorBlock.thick);
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), colorBlock.x, colorBlock.y, colorBlock.z, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width, colorBlock.height, colorBlock.thick, 1);
+
+           ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf),colorBlock.width,colorBlock.height,colorBlock.thick,1);
+         GL_Vector[] gl_vectors = BoxModel.getSmaillPoint(colorBlock.x,colorBlock.y,colorBlock.z,colorBlock.width,colorBlock.height,colorBlock.thick);
             for(int j =0;j<gl_vectors.length;j++){
                 ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),gl_vectors[j].x,gl_vectors[j].y,gl_vectors[j].z,new GL_Vector(1,1,1),0.3f,0.3f,0.3f,1);
 
@@ -51,7 +53,7 @@ public class EditEngine {
 
 
 
-                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), colorBlock.x, colorBlock.y, colorBlock.z, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width, colorBlock.height, colorBlock.thick, 1f);
+                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), colorBlock.x, colorBlock.y, colorBlock.z, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width, colorBlock.height, colorBlock.thick, selectBlockList.size()>0?0.5f:1);
 
         }
         if(startPoint!=null){
@@ -69,7 +71,7 @@ public GL_Vector startPoint;
     public GL_Vector endPoint;
 
     //在没有圈框的时候 进行点射选择 在另一个selectObject中被调用
-        public void chooseObject(GL_Vector from, GL_Vector direction){
+        public void selectSingle(GL_Vector from, GL_Vector direction){
             direction=direction.normalize();
            startPoint =from;
             endPoint= from.getClone().add(direction.mult(50));
@@ -89,10 +91,11 @@ public GL_Vector startPoint;
 
                     //计算点在了那个面上
                     //有上下左右前后6个面
-
+                    LogUtil.println("选中了");
                     float _tempDistance = xiangjiao[0]* xiangjiao[0]+ xiangjiao[1]* xiangjiao[1]+ xiangjiao[2]* xiangjiao[2];
 
                     if(distance ==0||_tempDistance<distance){
+                        distance=_tempDistance;
                         theNearestBlock=colorBlock;
                     }
                     //GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
@@ -114,7 +117,7 @@ public GL_Vector startPoint;
         }
 
     //选择区域
-    public void selectObject(float minX,float minY,float maxX,float maxY){
+    public void selectMany(float minX,float minY,float maxX,float maxY){
         //遍历所有的方块查找所有的在方块里的方块
         //取出
         if(maxX<minX){
@@ -145,7 +148,7 @@ public GL_Vector startPoint;
         }
 
         if(selectBlockList.size()==0){
-           chooseObject(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirection3(GamingState.instance.camera.getViewDir().getClone(),minX,Constants.WINDOW_HEIGHT-minY));
+           selectSingle(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirection3(GamingState.instance.camera.getViewDir().getClone(),minX,Constants.WINDOW_HEIGHT-minY));
         }
     }
 
@@ -334,5 +337,116 @@ public GL_Vector startPoint;
         selectBlockList.clear();
         colorBlockList.remove(colorBlock);
 
+    }
+
+    public void shootBlock(float x,float y){
+
+       GL_Vector from = GamingState.instance.camera.Position.getClone();
+        GL_Vector direction =OpenglUtils.getLookAtDirection3(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y);
+        direction=direction.normalize();
+        startPoint =from;
+        endPoint= from.getClone().add(direction.mult(50));
+        // LogUtil.println("开始选择");
+        Vector3f fromV= new Vector3f(from.x,from.y,from.z);
+        Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
+        float distance =0;
+        ColorBlock theNearestBlock = null;
+        float[] xiangjiao=null;
+        float[] right=null;
+        for(int i=0;i<colorBlockList.size();i++){
+            ColorBlock colorBlock =  colorBlockList.get(i);
+            AABB aabb = new AABB(new Vector3f(colorBlock.x,colorBlock.y,colorBlock.z),new Vector3f(colorBlock.x+colorBlock.width,colorBlock.y+colorBlock.height,colorBlock.z+colorBlock.thick));
+
+            // LogUtil.println(fromV.toString() );
+            // LogUtil.println(directionV.toString() );
+            if( (xiangjiao=aabb.intersectRectangle2(fromV,directionV))!=null){//这里进行了按照list的顺序进行选择 其实应该按照距离的最近选择
+
+                //计算点在了那个面上
+                //有上下左右前后6个面
+                LogUtil.println("选中了");
+                float _tempDistance = xiangjiao[0]* xiangjiao[0]+ xiangjiao[1]* xiangjiao[1]+ xiangjiao[2]* xiangjiao[2];
+
+                if(distance ==0||_tempDistance<distance){
+                    distance=_tempDistance;
+                    theNearestBlock=colorBlock;
+                    right = xiangjiao;
+                }
+                //GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
+                //   LogUtil.println("选中了");
+                //this.target=livingThing;
+                //colorBlock.selected=true;
+
+
+            }
+
+
+        }
+
+        int face =-1;
+        if(theNearestBlock!=null){
+            //计算是那一面
+           /* if(right[0]<0){//x
+                if((int) right[3] == 1 ){
+                    right[3] =2;
+                }
+                if((int) right[3] == 2 ){
+                    right[3] =1;
+                }
+
+                if((int) right[4] == 1 ){
+                    right[4] =2;
+                }
+                if((int) right[4] == 2 ){
+                    right[4] =1;
+                }
+            }
+            if(right[1]<0){//y
+                if((int) right[3] == 3 ){
+                    right[3] =4;
+                }else
+                if((int) right[3] == 4 ){
+                    right[3] =3;
+                }
+                if((int) right[5] == 1 ){
+                    right[5] =2;
+                }
+                if((int) right[5] == 2 ){
+                    right[5] =1;
+                }
+            }
+            if(right[2]<0){//z
+                if((int) right[4] == 3 ){
+                    right[4] =4;
+                }else
+                if((int) right[4] == 4 ){
+                    right[4] =3;
+                }
+                if((int) right[5] == 3 ){
+                    right[5] =4;
+                }
+                if((int) right[5] == 4 ){
+                    right[5] =3;
+                }
+            }*/
+           float[] ary =  AABB.xyFaces[  (int) right[3]-1];
+            float[] ary1 =  AABB.xzFaces[  (int) right[4]-1];
+            float[] ary2 =  AABB.yzFaces[  (int) right[5]-1];
+            for(int i=0;i<ary.length;i++){
+                for(int j=0;j<ary.length;j++){
+                    if(ary[i]==ary1[j]){//在xz的集合当中也有
+
+
+                        for(int k=0;k<ary.length;k++){
+                        //在yz的集合当中也有
+                            if(ary[i]==ary2[k]) {
+                                face =(int)ary[i];
+                            }
+                        }
+                    }
+                }
+            }
+            LogUtil.println("是那个面:"+face);
+
+        }
     }
 }

@@ -256,6 +256,7 @@ public class GLCamera {
             return;
 		GL_Matrix view=
 				GL_Matrix.LookAt(Position,ViewDir);
+		
 		view.fillFloatBuffer(cameraViewBuffer);
 
 		glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());

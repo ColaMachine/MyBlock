@@ -3,6 +3,7 @@ package com.dozenx.game.graphics.shader;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
+import com.dozenx.util.FloatBufferWrap;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -74,9 +75,9 @@ public class ShaderManager {
     public static ShaderConfig terrainShaderConfig =null;
     static{
         if(Constants.SHADOW_ENABLE){
-            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert");
+            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert",new int[]{3,3,3,1});
         }else{
-            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert");
+            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert",new int[]{3,3,3,1});
             //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxangle.frag", "chapt16/boxangle.vert");
         }
     }
@@ -84,35 +85,35 @@ public class ShaderManager {
 
    // public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert");
     //灯光方块
-    public static ShaderConfig lightShaderConfig = new ShaderConfig("light", "chapt13/light.frag", "chapt13/light.vert");
+    public static ShaderConfig lightShaderConfig = new ShaderConfig("light", "chapt13/light.frag", "chapt13/light.vert",new int[]{3,3});
     //天空盒子
-    public static ShaderConfig skyShaderConfig = new ShaderConfig("sky", "chapt13/light.frag", "chapt13/light.vert");
+    public static ShaderConfig skyShaderConfig = new ShaderConfig("sky", "chapt13/light.frag", "chapt13/light.vert",new int[]{3,3});
     //ui
-    public static ShaderConfig uiShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert");
+    public static ShaderConfig uiShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert",new int[]{3,2,1,4});
     //攻击物体
-    public static ShaderConfig attackShaderConfig = new ShaderConfig("attack", "chapt7/2dimg.frag", "chapt7/2dimg.vert");
+    public static ShaderConfig attackShaderConfig = new ShaderConfig("attack", "chapt7/2dimg.frag", "chapt7/2dimg.vert",new int[]{3,3,1,4});
     //生物
-    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
+    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "chapt7/3dimg.frag", "chapt7/3dimg.vert",new int[]{3,3,3,1});
     //扔在地上的东关系
-    public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
+    public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "chapt7/3dimg.frag", "chapt7/3dimg.vert",new int[]{3,3,3,1});
 
 
 
     //扔在地上的东西
-    public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop", "chapt7/3dimg.frag", "chapt7/3dimg.vert");
+    public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop", "chapt7/3dimg.frag", "chapt7/3dimg.vert",new int[]{3,3,3,1});
     //伤害字符
-    public static ShaderConfig uifloatShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert");
+    public static ShaderConfig uifloatShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert",new int[]{3,2,1,4});
     //阴影
-    public static ShaderConfig shadowShaderConfig = new ShaderConfig("shadow", "chapt16/shadow.frag", "chapt16/shadow.vert");
+    public static ShaderConfig shadowShaderConfig = new ShaderConfig("shadow", "chapt16/shadow.frag", "chapt16/shadow.vert",new int[]{3,3,3,1});
     //hdr
-    public static ShaderConfig hdrShaderConfig = new ShaderConfig("hdr", "chapt16/hdr.frag", "chapt16/hdr.vert");
+    public static ShaderConfig hdrShaderConfig = new ShaderConfig("hdr", "chapt16/hdr.frag", "chapt16/hdr.vert",new int[]{2,2});
     //bloom
-    public static ShaderConfig bloomShaderConfig = new ShaderConfig("bloom", "chapt16/bloom.frag", "chapt16/bloom.vert");
+    public static ShaderConfig bloomShaderConfig = new ShaderConfig("bloom", "chapt16/bloom.frag", "chapt16/bloom.vert",new int[]{2,2});
     //gaosi
-    public static ShaderConfig gaosiShaderConfig = new ShaderConfig("gaosi", "chapt16/gaosi.frag", "chapt16/gaosi.vert");
+    public static ShaderConfig gaosiShaderConfig = new ShaderConfig("gaosi", "chapt16/gaosi.frag", "chapt16/gaosi.vert",new int[]{2,2});
 
     //gaosihebing
-    public static ShaderConfig gaosihebingShaderConfig = new ShaderConfig("gaosihebing", "chapt16/gaosihebing.frag", "chapt16/gaosihebing.vert");
+    public static ShaderConfig gaosihebingShaderConfig = new ShaderConfig("gaosihebing", "chapt16/gaosihebing.frag", "chapt16/gaosihebing.vert",new int[]{2,2});
 
 
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
@@ -702,7 +703,7 @@ public class ShaderManager {
         Vao vao = new Vao("test");
         int x = 0, y = 0, z = -10;
         TextureInfo ti = TextureManager.getTextureInfo("soil");
-        FloatBuffer veticesBuffer = vao.getVertices();
+        FloatBufferWrap veticesBuffer = vao.getVertices();
 
         // x += this.chunkPos.x * getChunkSizeX();
         // z += this.chunkPos.z * getChunkSizeZ();
@@ -819,7 +820,7 @@ public class ShaderManager {
         // vao.setVertices(twoDImgBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
 
-        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+        vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);//put data
         //create ebo
         // float width = 1;
         OpenglUtils.checkGLError();
@@ -998,7 +999,7 @@ public class ShaderManager {
         vao.getVertices().rewind();
         // vao.setVertices(twoDImgBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
-        glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
+       vao.getVertices(). glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);//put data
         //create ebo
         // float width = 1;
         OpenglUtils.checkGLError();
@@ -1060,7 +1061,7 @@ public class ShaderManager {
         GL_Vector P7 = new GL_Vector(maxX, maxY, minZ);
         GL_Vector P8 = new GL_Vector(minX, maxY, minZ);
         Vao vao = config.getVao();
-        FloatBuffer floatBuffer = vao.getVertices();
+        FloatBufferWrap floatBuffer = vao.getVertices();
         floatBuffer.rewind();
         ShaderUtils.draw3dColorSimple(P1, P2, P6, P5, new GL_Vector(0, 0, -1f), color, floatBuffer, config);
 
@@ -1076,7 +1077,7 @@ public class ShaderManager {
         ShaderUtils.draw3dColorSimple(P2, P3, P7, P6, new GL_Vector(1, 0, 0f), color, floatBuffer, config);
 
         ShaderUtils.draw3dColorSimple(P4, P1, P5, P8, new GL_Vector(-1, 0, 0), color, floatBuffer, config);
-        ShaderUtils.createVao(config, config.getVao(), new int[]{3, 3});
+        ShaderUtils.freshVao(config, config.getVao());
     }
 
 
