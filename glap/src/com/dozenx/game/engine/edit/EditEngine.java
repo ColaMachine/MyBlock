@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -899,5 +900,129 @@ public GL_Vector startPoint;
         }
 
     }
+    public ColorGroup chooseColorGroup = null;
+    HashMap<String,ColorGroup > colorGroupHashMap =new HashMap<>();
+    public void changeCurrentComponent(String componentName){
+        chooseColorGroup = colorGroupHashMap.get(componentName);
+    }
 
+    public void loadColorGroup(String componentName,List<String > contents) {
+        chooseColorGroup = colorGroupHashMap.get(componentName);
+    }
+    public int readColorGroupFromList(List<String> contents,int nowIndex,ColorGroup colorGroup){
+
+        String groupInfo = contents.get(0);
+        String infoAry[] = groupInfo.split(",");
+        colorGroup.width=Float.valueOf(infoAry[0]);
+        colorGroup.height=Float.valueOf(infoAry[1]);
+        colorGroup.thick=Float.valueOf(infoAry[2]);
+
+        colorGroup.xoffset=Float.valueOf(infoAry[3]);
+        colorGroup.yoffset=Float.valueOf(infoAry[4]);
+        colorGroup.zoffset=Float.valueOf(infoAry[5]);
+
+        colorGroup.xzoom=Float.valueOf(infoAry[6]);
+        colorGroup.yzoom=Float.valueOf(infoAry[7]);
+        colorGroup.zzoom=Float.valueOf(infoAry[8]);
+        int lastIndex =0;
+        for(int i=nowIndex,size= contents.size();i<size;i++){
+            String s = contents.get(i);
+            if(s.equalsIgnoreCase("animation")){
+             return i+1;
+            }
+            String[] ary = s.split(",");
+            ColorBlock colorBlock = new ColorBlock(Integer.valueOf(ary[0]), Integer.valueOf(ary[1]), Integer.valueOf(ary[2]));
+            colorBlock.width = Float.valueOf(ary[3]);
+            colorBlock.height = Float.valueOf(ary[4]);
+            colorBlock.thick = Float.valueOf(ary[5]);
+            colorBlock.rf = Float.valueOf(ary[6]);
+            colorBlock.gf = Float.valueOf(ary[7]);
+            colorBlock.bf = Float.valueOf(ary[8]);
+            colorGroup.colorBlockList.add(colorBlock);
+        }
+
+        return -1;
+
+    }
+
+    /**
+     * 从指定文件读取colorGroup并 加载到系统组件当中
+     * @param file
+     */
+    public void readAndLoadColorGroupFromFile(File file) {
+
+
+        try {
+
+            List<String> list = FileUtil.readFile2List(file);
+
+            ColorGroup colorGroup = new ColorGroup(0,0,0);
+            int index = this.readColorGroupFromList(list,0,colorGroup);
+            while(index != -1){
+                ColorGroup animationGroup = new ColorGroup(0,0,0);
+                index = this.readColorGroupFromList(list,index,animationGroup);
+                colorGroup.animations.add(animationGroup);
+            }
+
+            colorGroupHashMap.put(file.getName(),colorGroup);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 根据给定的名称保存当前选中的colorGroup 并保存到内存colorGroupHashMap中
+     * @param name
+     */
+    public void saveSelectAsColorGroup(String name ){
+        if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
+            ColorGroup colorGroup =(ColorGroup) selectBlockList.get(0);
+            StringBuffer sb =new StringBuffer();
+            sb.append(colorGroup.width).append(",").append(colorGroup.height)
+                   .append(",").append(colorGroup.thick)
+                    .append(",").append(colorGroup.xoffset)
+                    .append(",").append(colorGroup.yoffset)
+                    .append(",").append(colorGroup.zoffset)
+                    .append(",").append(colorGroup.xzoom)
+                    .append(",").append(colorGroup.yzoom)
+                    .append(",").append(colorGroup.zzoom)
+            .append("\n");
+            for(ColorBlock colorBlock : colorGroup.colorBlockList){
+                // outputStream .write();
+                sb.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
+                        .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
+                        .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
+            }
+
+            for(ColorGroup animationGroup : colorGroup.animations){
+                // outputStream .write();
+                sb.append("animation\n");
+
+                sb.append(animationGroup.width).append(",").append(animationGroup.height)
+                        .append(",").append(animationGroup.thick)
+                        .append(",").append(animationGroup.xoffset)
+                        .append(",").append(animationGroup.yoffset)
+                        .append(",").append(animationGroup.zoffset)
+                        .append(",").append(animationGroup.xzoom)
+                        .append(",").append(animationGroup.yzoom)
+                        .append(",").append(animationGroup.zzoom)
+                        .append("\n");
+                for(ColorBlock colorBlock : colorGroup.colorBlockList){
+                    // outputStream .write();
+                    sb.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
+                            .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
+                            .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
+                }
+            }
+
+
+            try {
+                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("save/component").resolve(name+".block").toFile(),sb.toString());
+                colorGroupHashMap.put(name,colorGroup);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
