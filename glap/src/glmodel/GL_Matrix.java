@@ -1,6 +1,7 @@
 package glmodel;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.util.vector.Matrix;
 
 import javax.vecmath.Point4f;
 import java.nio.FloatBuffer;
@@ -380,7 +381,64 @@ public class GL_Matrix
 		m.m30=m30;  m.m31=m31;  m.m32=m32;  m.m33=m33;
 		return m;
 	}
-	
+	public float determinant() {
+		float f = this.m00 * (this.m11 * this.m22 * this.m33 + this.m12 * this.m23 * this.m31 + this.m13 * this.m21 * this.m32 - this.m13 * this.m22 * this.m31 - this.m11 * this.m23 * this.m32 - this.m12 * this.m21 * this.m33);
+		f -= this.m01 * (this.m10 * this.m22 * this.m33 + this.m12 * this.m23 * this.m30 + this.m13 * this.m20 * this.m32 - this.m13 * this.m22 * this.m30 - this.m10 * this.m23 * this.m32 - this.m12 * this.m20 * this.m33);
+		f += this.m02 * (this.m10 * this.m21 * this.m33 + this.m11 * this.m23 * this.m30 + this.m13 * this.m20 * this.m31 - this.m13 * this.m21 * this.m30 - this.m10 * this.m23 * this.m31 - this.m11 * this.m20 * this.m33);
+		f -= this.m03 * (this.m10 * this.m21 * this.m32 + this.m11 * this.m22 * this.m30 + this.m12 * this.m20 * this.m31 - this.m12 * this.m21 * this.m30 - this.m10 * this.m22 * this.m31 - this.m11 * this.m20 * this.m32);
+		return f;
+	}
+	private static float determinant3x3(float t00, float t01, float t02, float t10, float t11, float t12, float t20, float t21, float t22) {
+		return t00 * (t11 * t22 - t12 * t21) + t01 * (t12 * t20 - t10 * t22) + t02 * (t10 * t21 - t11 * t20);
+	}
+	public static GL_Matrix invert(GL_Matrix src, GL_Matrix dest) {
+		float determinant = src.determinant();
+		if(determinant != 0.0F) {
+			if(dest == null) {
+				dest = new GL_Matrix();
+			}
+
+			float determinant_inv = 1.0F / determinant;
+			float t00 = determinant3x3(src.m11, src.m12, src.m13, src.m21, src.m22, src.m23, src.m31, src.m32, src.m33);
+			float t01 = -determinant3x3(src.m10, src.m12, src.m13, src.m20, src.m22, src.m23, src.m30, src.m32, src.m33);
+			float t02 = determinant3x3(src.m10, src.m11, src.m13, src.m20, src.m21, src.m23, src.m30, src.m31, src.m33);
+			float t03 = -determinant3x3(src.m10, src.m11, src.m12, src.m20, src.m21, src.m22, src.m30, src.m31, src.m32);
+			float t10 = -determinant3x3(src.m01, src.m02, src.m03, src.m21, src.m22, src.m23, src.m31, src.m32, src.m33);
+			float t11 = determinant3x3(src.m00, src.m02, src.m03, src.m20, src.m22, src.m23, src.m30, src.m32, src.m33);
+			float t12 = -determinant3x3(src.m00, src.m01, src.m03, src.m20, src.m21, src.m23, src.m30, src.m31, src.m33);
+			float t13 = determinant3x3(src.m00, src.m01, src.m02, src.m20, src.m21, src.m22, src.m30, src.m31, src.m32);
+			float t20 = determinant3x3(src.m01, src.m02, src.m03, src.m11, src.m12, src.m13, src.m31, src.m32, src.m33);
+			float t21 = -determinant3x3(src.m00, src.m02, src.m03, src.m10, src.m12, src.m13, src.m30, src.m32, src.m33);
+			float t22 = determinant3x3(src.m00, src.m01, src.m03, src.m10, src.m11, src.m13, src.m30, src.m31, src.m33);
+			float t23 = -determinant3x3(src.m00, src.m01, src.m02, src.m10, src.m11, src.m12, src.m30, src.m31, src.m32);
+			float t30 = -determinant3x3(src.m01, src.m02, src.m03, src.m11, src.m12, src.m13, src.m21, src.m22, src.m23);
+			float t31 = determinant3x3(src.m00, src.m02, src.m03, src.m10, src.m12, src.m13, src.m20, src.m22, src.m23);
+			float t32 = -determinant3x3(src.m00, src.m01, src.m03, src.m10, src.m11, src.m13, src.m20, src.m21, src.m23);
+			float t33 = determinant3x3(src.m00, src.m01, src.m02, src.m10, src.m11, src.m12, src.m20, src.m21, src.m22);
+			dest.m00 = t00 * determinant_inv;
+			dest.m11 = t11 * determinant_inv;
+			dest.m22 = t22 * determinant_inv;
+			dest.m33 = t33 * determinant_inv;
+			dest.m01 = t10 * determinant_inv;
+			dest.m10 = t01 * determinant_inv;
+			dest.m20 = t02 * determinant_inv;
+			dest.m02 = t20 * determinant_inv;
+			dest.m12 = t21 * determinant_inv;
+			dest.m21 = t12 * determinant_inv;
+			dest.m03 = t30 * determinant_inv;
+			dest.m30 = t03 * determinant_inv;
+			dest.m13 = t31 * determinant_inv;
+			dest.m31 = t13 * determinant_inv;
+			dest.m32 = t23 * determinant_inv;
+			dest.m23 = t32 * determinant_inv;
+			return dest;
+		} else {
+			return null;
+		}
+	}
+	public GL_Matrix invert() {
+		return invert(this, this);
+	}
 	/**
 	 * return the inverse of this matrix
 	 */
@@ -414,7 +472,70 @@ public class GL_Matrix
 		
 		return m;
 	}
-	
+	public static GL_Matrix RotationMatrix(double angle, GL_Vector axis)
+{
+
+	GL_Matrix src = new GL_Matrix();
+	GL_Matrix dest = new GL_Matrix();
+	float c = (float)Math.cos((double)angle);
+	float s = (float)Math.sin((double)angle);
+	float oneminusc = 1.0F - c;
+	float xy = axis.x * axis.y;
+	float yz = axis.y * axis.z;
+	float xz = axis.x * axis.z;
+	float xs = axis.x * s;
+	float ys = axis.y * s;
+	float zs = axis.z * s;
+	float f00 = axis.x * axis.x * oneminusc + c;
+	float f01 = xy * oneminusc + zs;
+	float f02 = xz * oneminusc - ys;
+	float f10 = xy * oneminusc - zs;
+	float f11 = axis.y * axis.y * oneminusc + c;
+	float f12 = yz * oneminusc + xs;
+	float f20 = xz * oneminusc + ys;
+	float f21 = yz * oneminusc - xs;
+	float f22 = axis.z * axis.z * oneminusc + c;
+	float t00 = src.m00 * f00 + src.m10 * f01 + src.m20 * f02;
+	float t01 = src.m01 * f00 + src.m11 * f01 + src.m21 * f02;
+	float t02 = src.m02 * f00 + src.m12 * f01 + src.m22 * f02;
+	float t03 = src.m03 * f00 + src.m13 * f01 + src.m23 * f02;
+	float t10 = src.m00 * f10 + src.m10 * f11 + src.m20 * f12;
+	float t11 = src.m01 * f10 + src.m11 * f11 + src.m21 * f12;
+	float t12 = src.m02 * f10 + src.m12 * f11 + src.m22 * f12;
+	float t13 = src.m03 * f10 + src.m13 * f11 + src.m23 * f12;
+	dest.m20 = src.m00 * f20 + src.m10 * f21 + src.m20 * f22;
+	dest.m21 = src.m01 * f20 + src.m11 * f21 + src.m21 * f22;
+	dest.m22 = src.m02 * f20 + src.m12 * f21 + src.m22 * f22;
+	dest.m23 = src.m03 * f20 + src.m13 * f21 + src.m23 * f22;
+	dest.m00 = t00;
+	dest.m01 = t01;
+	dest.m02 = t02;
+	dest.m03 = t03;
+	dest.m10 = t10;
+	dest.m11 = t11;
+	dest.m12 = t12;
+	dest.m13 = t13;
+	return dest;
+
+	/*axis.normalize();
+	GL_Matrix rotatinMatrix = new GL_Matrix();
+
+
+
+	rotatinMatrix.m00 =(float) (Math.cos(angle) + axis.x*axis.x * (1 - Math.cos(angle)));
+	rotatinMatrix.m01 =(float) (axis.x * axis.y * (1 - Math.cos(angle) - axis.z * Math.sin(angle)));
+	rotatinMatrix.m02 =(float) ( axis.y * Math.sin(angle) + axis.x * axis.z * (1 - Math.cos(angle)));
+
+	rotatinMatrix.m10 = (float) (axis.z * Math.sin(angle) + axis.x * axis.y * (1 - Math.cos(angle)));
+	rotatinMatrix.m11 = (float) (Math.cos(angle) + axis.y * axis.y * (1 - Math.cos(angle)));
+	rotatinMatrix.m12 = (float) (-axis.x * Math.sin(angle) + axis.y * axis.z * (1 - Math.cos(angle)));
+
+	rotatinMatrix.m20 = (float) (-axis.y * Math.sin(angle) + axis.x * axis.z * (1 - Math.cos(angle)));
+	rotatinMatrix.m21 = (float) (axis.x * Math.sin(angle) + axis.y * axis.z * (1 - Math.cos(angle)));
+	rotatinMatrix.m22 =(float) ( Math.cos(angle) + axis.z * axis.z * (1 - Math.cos(angle)));*/
+
+	//return rotatinMatrix;
+}
 	/**
 	 * vCreate the billboard matrix: a rotation matrix created from an arbitrary set
 	 * of axis.  Store those axis values in the first 3 columns of the matrix.  Col

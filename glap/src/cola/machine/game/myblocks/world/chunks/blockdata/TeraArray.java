@@ -84,7 +84,8 @@ public abstract class TeraArray implements Externalizable {
     }
 
     protected final int pos(int x, int y, int z) {
-        return y * getSizeXZ() + z * getSizeX() + x;
+      return y * getSizeXZ() + z * getSizeX() + x;
+
     }
 
     protected final int pos(int x, int z) {

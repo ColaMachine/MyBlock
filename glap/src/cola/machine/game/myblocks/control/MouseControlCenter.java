@@ -299,9 +299,9 @@ public class MouseControlCenter {
 
 
 
-      else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+       if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             if(Switcher.edit){
-                player.position.y-=1;
+                player.position.y-=1;  GamingState.setCameraChanged(true);
             }else {
                 player.position.y = player.position.y - 3 * seconds;
                 player.move(player.position);
@@ -313,6 +313,7 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             if(Switcher.edit){
                 player.position.y+=1;
+                GamingState.setCameraChanged(true);
             }else {
                 double timenow = GLApp.getTimeInSeconds();
 
@@ -432,9 +433,18 @@ public class MouseControlCenter {
         startX = x;
         startY =Constants.WINDOW_HEIGHT- y ;
         if(Switcher.edit){
+            GamingState.editEngine.prevX = x;
+            GamingState.editEngine.prevY = y;
+            GamingState.editEngine.mouseClick(x,y);
+
+            if(Switcher.mouseState ==Switcher.boxSelectMode){
+
+
             GamingState.selectDiv.setVisible(true);
             GamingState.selectDiv.setLeft(x);
             GamingState.selectDiv.setTop((int)startY);
+
+            }
         }
         Switcher.MOUSE_CANCELBUBLE = false;
     /*    AnimationManager manager = CoreRegistry.get(AnimationManager.class);
@@ -627,13 +637,27 @@ public class MouseControlCenter {
          /*   GamingState.editEngine.selectObject(GamingState.selectDiv.getLeft(),GamingState.selectDiv.getTop(),
                     GamingState.selectDiv.getLeft()+ GamingState.selectDiv.getWidth(),GamingState.selectDiv.getTop()+GamingState.selectDiv.getHeight());
 */
+
+
+                GamingState.editEngine.mouseUp(x,y);
+
+
             if(Switcher.mouseState == Switcher.boxSelectMode){
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+                    GamingState.editEngine.selectMany(   prevMouseX,
+                            Constants. WINDOW_HEIGHT-prevMouseY,
+                            x,Constants.WINDOW_HEIGHT-y,false);
+                }else
                 GamingState.editEngine.selectMany(   prevMouseX,
                         Constants. WINDOW_HEIGHT-prevMouseY,
-                        x,Constants.WINDOW_HEIGHT-y);
+                        x,Constants.WINDOW_HEIGHT-y,true);
+
             }else if(Switcher.mouseState  == Switcher.shootMode){
                 GamingState.editEngine.shootBlock(prevMouseX,
                         Constants. WINDOW_HEIGHT-prevMouseY);
+            }else if(Switcher.mouseState  == Switcher.brushMode){
+                    GamingState.editEngine.brushBlock(prevMouseX,
+                    Constants. WINDOW_HEIGHT-prevMouseY);
             }
 
             //如果都没选中 开启单选模式
@@ -667,6 +691,9 @@ public class MouseControlCenter {
      * @param y
      */
     public void mouseMove(int x, int y) {
+        if(Switcher.edit){
+           GamingState.editEngine.mouseMove(x,y);
+        }
         if(mouseRightPressed){
             this.mouseRightDrag(x,y);
            /* camera.viewDir.x= human.viewDir.x;
@@ -775,7 +802,7 @@ public class MouseControlCenter {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
-            player.bodyRotate( -(x - prevMouseX)/12,(y - prevMouseY)/12);
+            player.bodyRotate( -(x - prevMouseX)/2,(y - prevMouseY)/2);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli = false;
@@ -794,6 +821,7 @@ public class MouseControlCenter {
 
     private void mouseLeftDrag(int x, int y) {
         if(!Switcher.edit) {
+
             if (Math.abs(x - prevMouseX) > DRAG_DIST ||
                     Math.abs(y - prevMouseY) > DRAG_DIST) {
       /*  if (MathUtil.distance(prevMouseX, prevMouseY, x, y) > 0.1f
@@ -820,15 +848,22 @@ public class MouseControlCenter {
                 // �ƶ���ͷ
             }
         }else{
+            GamingState.editEngine.mouseDrag(x,y);
             //拖出一个矩形
-            y= Constants.WINDOW_HEIGHT-y;
-           GamingState.selectDiv.setWidth(x-(int)startX );
-            GamingState.selectDiv.setHeight(y-(int)startY );
+            if(Switcher.mouseState == Switcher.boxSelectMode) {
+                y = Constants.WINDOW_HEIGHT - y;
+                GamingState.selectDiv.setWidth(x - (int) startX);
+                GamingState.selectDiv.setHeight(y - (int) startY);
+                Document.needUpdate =true;
+            }else if(Switcher.mouseState == Switcher.faceSelectMode){
+              //  GamingState.editEngine.faceSelect(x,y);
+                GamingState.editEngine.mouseMove(x,y);
+            }
           //  LogUtil.println("nowX:"+x+"startX"+startX);
            // LogUtil.println("nowY:"+y+"starty"+startY);
 
 
-            Document.needUpdate =true;
+
         }
     }
     float startX;

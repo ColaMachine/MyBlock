@@ -115,7 +115,8 @@ public class ShaderManager {
     //gaosihebing
     public static ShaderConfig gaosihebingShaderConfig = new ShaderConfig("gaosihebing", "chapt16/gaosihebing.frag", "chapt16/gaosihebing.vert",new int[]{2,2});
 
-
+    //灯光方块
+    public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "chapt13/light.frag", "chapt13/light.vert",new int[]{3});
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
 
 
@@ -159,7 +160,7 @@ public class ShaderManager {
         this.createProgram(anotherShaderConfig);
         this.createProgram(dropItemShaderConfig);
         this.createProgram(uifloatShaderConfig);
-
+        this.createProgram(lineShaderConfig);
 
 
 
@@ -178,7 +179,7 @@ public class ShaderManager {
         this.initUniform(anotherShaderConfig);
         this.initUniform(dropItemShaderConfig);
         this.initUniform(uifloatShaderConfig);
-
+        this.initUniform(lineShaderConfig);
         // this.initUniform(shadowShaderConfig);
 
         //this.createProgram(lightShaderConfig);
@@ -206,6 +207,7 @@ public class ShaderManager {
 
 
         }
+
 
     }
 

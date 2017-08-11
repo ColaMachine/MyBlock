@@ -92,7 +92,12 @@ public class TeraDenseArray16Bit extends TeraDenseArray {
         if(index<0){
             LogUtil.err("不能为负数");
         }
-        return data[pos(x, y, z)];
+        int pos= pos(x, y, z);
+        if(pos>data.length){
+            LogUtil.err("不能为负数");
+            pos=1;
+        }
+        return data[pos];
     }
 
     @Override

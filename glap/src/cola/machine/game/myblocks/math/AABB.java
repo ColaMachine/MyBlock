@@ -472,16 +472,16 @@ public final class AABB {
 //        boolean yz = ;
 
 
-        float[] xyResult = jiaoji2(newMin.x,newMin.y,newMax.x,newMax.y,direction.x/direction.y);
+        float[] xyResult = jiaoji2(newMin.x,newMin.y,newMax.x,newMax.y,direction.x,direction.y);
         if(xyResult==null){
             return null;
         }
 
-        float[] xzResult = jiaoji2(newMin.x,newMin.z,newMax.x,newMax.z,direction.x/direction.z) ;
+        float[] xzResult = jiaoji2(newMin.x,newMin.z,newMax.x,newMax.z,direction.x,direction.z) ;
         if(xzResult==null){
             return null;
         }
-        float[] yzResult = jiaoji2(newMin.y,newMin.z,newMax.y,newMax.z,direction.y/direction.z) ;
+        float[] yzResult = jiaoji2(newMin.y,newMin.z,newMax.y,newMax.z,direction.y,direction.z) ;
         if(yzResult==null){
             return null;
         }
@@ -603,52 +603,126 @@ public final class AABB {
      * @return
      *  1代表第1个参数最小那边 2代表第1个参数最大那边 3代表第2个参数最小那边 4代表第二个参数最大那边 最后那个参数是对应起始点的边上的点的位置
      *  一版一个线段和立方体交际 或者 方形相交 一定会 碰上两条线段 我们要拿到是最短的那条
+     *   数组二代表第一个维度的位置  数组
      */
-    public static float[] jiaoji2(float minX,float minY,float maxX,float maxY, float ratioXY){
+    public static float[] jiaoji2(float minX,float minY,float maxX,float maxY, float dirX,float dirY){
 
         //minY
+        float ratioXY = dirX/dirY;
         float distance=0,_tempDistance =0;
         float value = ratioXY*minY;
         float[] result = null ;
-        if(value>=minX && value<=maxX){//是否跟下线段交集
-            _tempDistance=value*value + minY*minY;
-            if(distance==0 || _tempDistance<distance){
-                distance=_tempDistance;
-                result = new float[]{3,value,minY,distance};
+        if(minY*maxY<0)//说明原点在他们中间
+        {
+            if(dirY<0){//说明朝下的 就没maxY什么事情了
+                if (value >= minX && value <= maxX) {//是否跟下线段交集
+                    _tempDistance = value * value + minY * minY;
+                    if (distance == 0 || _tempDistance < distance) {
+                        distance = _tempDistance;
+                        result = new float[]{3, value, minY, distance};
+                    }
+                }
+            }else{//说明朝上的 就没minY什么事情了
+
+            }
+        }else {//说明都在同一边
+            if (value >= minX && value <= maxX) {//是否跟下线段交集
+                _tempDistance = value * value + minY * minY;
+                if (distance == 0 || _tempDistance < distance) {
+                    distance = _tempDistance;
+                    result = new float[]{3, value, minY, distance};
+                }
             }
         }
 
         //maxY
-        value = ratioXY*maxY;
-        if(value>=minX && value<=maxX){//上面
-            _tempDistance = value*value + maxY*maxY;
-            if(distance==0 || _tempDistance<distance){
-                distance=_tempDistance;
-                result = new float[]{4,value,maxY,distance};
-            }
+        if(minY*maxY<0)//说明原点在他们中间
+        {
+            if(dirY<0){//说明朝下的 就没maxY什么事情了
 
+            }else{//说明朝上的 就没minY什么事情了
+                value = ratioXY*maxY;
+                if(value>=minX && value<=maxX){//上面
+                    _tempDistance = value*value + maxY*maxY;
+                    if(distance==0 || _tempDistance<distance){
+                        distance=_tempDistance;
+                        result = new float[]{4,value,maxY,distance};
+                    }
+
+                }
+            }
+        }else {//说明都在同一边
+            value = ratioXY*maxY;
+            if(value>=minX && value<=maxX){//上面
+                _tempDistance = value*value + maxY*maxY;
+                if(distance==0 || _tempDistance<distance){
+                    distance=_tempDistance;
+                    result = new float[]{4,value,maxY,distance};
+                }
+
+            }
         }
+
+
 
 
         //minX
 
-        value = minX / ratioXY;
-        if(value>=minY && value<=maxY){//低x 左侧
-            _tempDistance = value*value + minX*minX;
-            if(distance==0 || _tempDistance<distance){
-                distance=_tempDistance;
-                result = new float[]{1,minX,value,distance};
+
+        if(minX*maxX<0)//说明原点在他们中间
+        {
+            if(dirX<0){//说明朝下的 就没maxX什么事情了
+                value = minX / ratioXY;
+                if(value>=minY && value<=maxY){//低x 左侧
+                    _tempDistance = value*value + minX*minX;
+                    if(distance==0 || _tempDistance<distance){
+                        distance=_tempDistance;
+                        result = new float[]{1,minX,value,distance};
+                    }
+                }
+            }else{//说明朝上的 就没minY什么事情了
+
+            }
+        }else {//说明都在同一边
+            value = minX / ratioXY;
+            if(value>=minY && value<=maxY){//低x 左侧
+                _tempDistance = value*value + minX*minX;
+                if(distance==0 || _tempDistance<distance){
+                    distance=_tempDistance;
+                    result = new float[]{1,minX,value,distance};
+                }
             }
         }
+
+
         //maxX
-        value = maxX / ratioXY;
-        if(value>=minY && value<=maxY){//下面
-            _tempDistance = value*value + maxX*maxX;
-            if(distance==0 || _tempDistance<distance){
-                distance=_tempDistance;
-                result = new float[]{2,maxX,value,distance};
+
+
+        if(minX*maxX<0)//说明原点在他们中间
+        {
+            if(dirX<0){//说明朝下的 就没maxX什么事情了
+
+            }else{//说明朝上的 就没minY什么事情了
+                value = maxX / ratioXY;
+                if(value>=minY && value<=maxY){//下面
+                    _tempDistance = value*value + maxX*maxX;
+                    if(distance==0 || _tempDistance<distance){
+                        distance=_tempDistance;
+                        result = new float[]{2,maxX,value,distance};
+                    }
+                }
+            }
+        }else {//说明都在同一边
+            value = maxX / ratioXY;
+            if(value>=minY && value<=maxY){//下面
+                _tempDistance = value*value + maxX*maxX;
+                if(distance==0 || _tempDistance<distance){
+                    distance=_tempDistance;
+                    result = new float[]{2,maxX,value,distance};
+                }
             }
         }
+
         return result;
     }
 }

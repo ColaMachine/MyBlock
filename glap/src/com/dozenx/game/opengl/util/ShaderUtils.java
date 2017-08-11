@@ -17,6 +17,7 @@ import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.Util;
 
 import javax.swing.*;
@@ -2291,7 +2292,15 @@ try {
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float width,float height,float thick,float alpha){
         //ti=TextureManager.getTextureInfo("mantle");
 
-
+        if(width<0){
+            x+=width;width=-width;
+        }
+        if(height<0){
+            y+=height;height=-height;
+        }
+        if(thick<0){
+            z+=thick;thick=-thick;
+        }
         try {
             FloatBufferWrap veticesBuffer = vao.getVertices();
          /*   if (veticesBuffer.position() > veticesBuffer.limit() -100) {
@@ -2306,15 +2315,99 @@ try {
                 int[] faceAry2 = faceAry[i];
 
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
 
             }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public static void draw3dColorBoxLine(ShaderConfig config,Vao vao ,float x,float y,float z ,float width,float height,float thick){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+
+        try {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+         /*   if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }*/
+          /*  GL_Vector[] dirAry = BoxModel.dirAry;
+            int[][] faceAry = BoxModel.facesAry;
+            GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,width,height,thick);*/
+
+            veticesBuffer.put(x).put(y).put(z);//p1
+            veticesBuffer.put(x+width).put(y).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y).put(z);//p1
+            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
+
+            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
+            veticesBuffer.put(x).put(y).put(z+thick);//p1
+
+            veticesBuffer.put(x).put(y).put(z+thick);//p1
+            veticesBuffer.put(x).put(y).put(z);//p1
+
+
+            veticesBuffer.put(x).put(y+height).put(z);//p1
+            veticesBuffer.put(x+width).put(y+height).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z);//p1
+            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
+            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
+
+            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
+            veticesBuffer.put(x).put(y+height).put(z);//p1
+
+
+
+            veticesBuffer.put(x).put(y+height).put(z);//p1
+            veticesBuffer.put(x).put(y).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z);//p1
+            veticesBuffer.put(x+width).put(y).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
+
+            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
+
+            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
+            veticesBuffer.put(x).put(y).put(z+thick);//p1
+
+
+          /*  veticesBuffer.put(x).put(y+1).put(z);//p1
+            veticesBuffer.put(x+1).put(y+1).put(z);//p1
+            veticesBuffer.put(x+1).put(y+1).put(z+1);//p1
+            veticesBuffer.put(x).put(y+1).put(z+1);//p1*/
+/*
+
+
+
+            for(int i=0;i<6;i++){
+                int[] faceAry2 = faceAry[i];
+
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z);//p1
+
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z);//p1
+
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z);//p1
+               veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z);//p1
+
+
+            }*/
 
         }catch(Exception e){
             e.printStackTrace();
@@ -2339,13 +2432,13 @@ try {
                 int[] faceAry2 = faceAry[i];
 
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.01f*(i-3)).put(color.y+0.01f*(i-3)).put(color.z+0.01f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
 
             }
 
@@ -2539,11 +2632,110 @@ try {
 
 
     }
+
+
+    /**
+     *
+     * @param attri
+     * createVbo(int[]{3});
+     * Float
+     */
+    public static void testVboCreate(){
+        testVboId =  createVbo(new int[]{3});
+        testVboDotbufferWrap=new FloatBufferWrap(150);
+        testVboDotbufferWrap.put(0).put(0).put(0).put(1).put(1).put(1).put(2).put(2).put(2);
+
+    }
+    static FloatBufferWrap testVboDotbufferWrap  ;
+    static int testVboId;
+
+    public static void drawLine(GL_Vector startPoint,GL_Vector endPoint){
+        ShaderManager.lineShaderConfig.getVao().getVertices().put(startPoint.x).put(startPoint.y).put(startPoint.z);
+        ShaderManager.lineShaderConfig.getVao().getVertices().put(endPoint.x).put(endPoint.y).put(endPoint.z);
+    }
+
+    public static void finalDrawLine(ShaderConfig config ,Vao vao){
+        glUseProgram(config.getProgramId());
+        OpenglUtils.checkGLError();
+        // glUniform3f(shaderConfig.getObejctColorLoc(), backgroundColor.x, backgroundColor.y, backgroundColor.z);
+        // OpenglUtils.checkGLError();
+        assert vao.getVaoId()>0;
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        assert vao.getPoints()>0;
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+        for(int i=0;i<=vao.getVertices().listLimit;i++){
+            int Points =vao.getVertices().buffers.get(i).position()/config.getParamTotalLen();
+            vao.setPoints(Points);
+            vao.getVertices().buffers.get(i).rewind();
+            //vao.getVertices().rewind();
+            glBufferData(GL_ARRAY_BUFFER,vao.getVertices().buffers.get(i), GL_STATIC_DRAW);
+            // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+            glDrawArrays(GL_LINES,0, vao.getPoints());
+        }
+
+        //config.getVao().getVertices().rewind();
+
+        OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+    }
+    public static void testDrawVbo(){
+
+        drawBufferWrap(testVboDotbufferWrap,3,testVboId);
+    }
+    public static int   createVbo(int[] attri){
+
+        int VboId = glGenBuffers();//create vbo
+
+        glBindBuffer(GL_ARRAY_BUFFER, VboId);//bind vbo
+
+
+        //vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+
+        GL15.glBufferData(GL_ARRAY_BUFFER,  ByteBuffer.allocateDirect(150), GL_STATIC_DRAW);//put data
+        int sum = 0;
+        int paramLen=0;
+        for(int i=0;i<attri.length;i++){
+            paramLen += attri[i];
+        }
+        for (int i = 0; i <attri.length; i++) {
+           ;
+
+            Util.checkGLError();
+            glEnableVertexAttribArray(i);
+            glVertexAttribPointer(i, attri[i], GL_FLOAT, false, paramLen * 4, sum * 4);
+            Util.checkGLError();
+            sum += attri[i];
+        }
+        OpenglUtils.checkGLError();
+
+
+
+        //in use
+
+    return VboId;
+    }
+    public static void drawBufferWrap(FloatBufferWrap floatBufferWrap,int paramLen,int vboId){
+        for(int i=0;i<floatBufferWrap.listLimit;i++){//遍历所有的floatbufferWrap
+            int position = floatBufferWrap.buffers.get(i).position();
+            int points = position/paramLen; //计算points的个数
+            finalDrawVbo(vboId,points);
+        }
+    }
+   public void drawDotInVbo(FloatBuffer floatBufferWrap){
+
+       GL15.glBufferData(GL_ARRAY_BUFFER,  floatBufferWrap, GL_STATIC_DRAW);//put data
+    }
+    public static void finalDrawVbo(int vboId,int points){
+
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        glDrawArrays(GL_POINTS, 0, points);
+        glDisableVertexAttribArray(0);
+    }
     public static void initVao(ShaderConfig config ,Vao vao){
-
-
-
-
         if(vao.getVaoId()>0){
 
             LogUtil.err("dangerous");
@@ -2597,23 +2789,7 @@ try {
                 Util.checkGLError();
                 sum += config.getParamLenAry()[i];
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
-
     }
 
    static  float near_plane = 1.0f, far_plane = 107.5f;

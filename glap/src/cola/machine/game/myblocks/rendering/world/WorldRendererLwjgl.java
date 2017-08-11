@@ -8,9 +8,11 @@ import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ChunkResponseCmd;
 import com.dozenx.game.engine.command.ChunksCmd;
 import com.dozenx.game.engine.command.ChunkssCmd;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
@@ -232,7 +234,9 @@ Client client;
 						-chunk.getChunkWorldPosZ());
 			}
 		}
-
+		//编辑器里的方块
+		ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+		ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao());
 		//skysphere.render();
 	}
 

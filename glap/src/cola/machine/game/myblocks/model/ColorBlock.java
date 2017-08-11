@@ -20,6 +20,30 @@ import cola.machine.game.myblocks.model.AABB.AABB;
 import java.nio.FloatBuffer;
 
 public class ColorBlock extends BaseBlock{
+    public ColorBlock(){
+
+    }
+
+    public ColorBlock(int x,int y,int z,float width,float height,float thick){
+        this.x =x;
+        this.y=y;
+        this.z=z;
+        this.width =width;
+        this.height =height;
+        this.thick =thick;
+
+    }
+    public ColorBlock(int x,int y,int z,float width,float height,float thick,float rf,float gf,float bf){
+        this.x =x;
+        this.y=y;
+        this.z=z;
+        this.width =width;
+        this.height =height;
+        this.thick =thick;
+        this.rf =rf;
+        this.gf =gf;
+        this.bf =bf;
+    }
     /*public boolean selected =false;
 
     public boolean isSelected() {
@@ -374,5 +398,37 @@ public class ColorBlock extends BaseBlock{
     @Override
     public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z) {
         ShaderUtils.draw3dColorBox(ShaderManager.terrainShaderConfig,vao,x,y,z,ti.color,1,1);
+    }
+
+    public void update(){
+        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/1);
+
+    }
+
+    public void addWidth(int num){
+        this.width+=num;
+    }
+    public void addX(int num){
+        this.x+=num;
+    }
+
+    public void addHeight(int num){
+        this.height+=num;
+    }
+    public void addY(int num){
+        this.y+=num;
+    }
+
+    public void addThick(int num){
+        this.thick+=num;
+    }
+    public void addZ(int num){
+        this.z+=num;
+    }
+
+    public ColorBlock copy(){
+        ColorBlock colorBlock  =new ColorBlock(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf);
+
+        return colorBlock;
     }
 }

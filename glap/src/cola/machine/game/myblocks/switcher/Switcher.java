@@ -28,6 +28,8 @@ public class Switcher {
     public static int shootMode =3;
     public static int boxSelectMode =1;
     public static int singleSelectMode =2;
-
+    public static int brushMode =4;
+    public static int faceSelectMode =5;
     public static int mouseState = boxSelectMode;
+
 }

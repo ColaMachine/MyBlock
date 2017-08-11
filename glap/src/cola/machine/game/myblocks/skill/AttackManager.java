@@ -136,7 +136,7 @@ public class AttackManager {
         }
 
 
-        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+//        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
         ShaderUtils.finalDraw(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
 
     }

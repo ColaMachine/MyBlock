@@ -29,6 +29,13 @@ public class FloatBufferWrap
         this.buffer= ByteBuffer.allocateDirect(1024*120) .order(ByteOrder.nativeOrder()).asFloatBuffer();;
         buffers.add(buffer);
     }
+    public int size;
+    public FloatBufferWrap(int size){
+        this.size=size;
+        this.buffer= ByteBuffer.allocateDirect(size) .order(ByteOrder.nativeOrder()).asFloatBuffer();;
+        // this.buffer.flip();
+
+    }
     public FloatBufferWrap(float[] ary){
         this.buffer= FloatBuffer.wrap(ary);
         buffers.add(buffer);

@@ -1,7 +1,11 @@
 package com.dozenx.game.opengl.util;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.math.MatrixUtils;
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.sun.prism.ps.Shader;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import glapp.GLApp;
@@ -17,7 +21,11 @@ import java.nio.IntBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
 import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.vector.Matrix;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
+import javax.vecmath.Matrix3d;
 import javax.vecmath.Point4f;
 import javax.vecmath.Vector2f;
 
@@ -144,8 +152,7 @@ public class OpenglUtils {
 //        -0.5476552  -0.83405346
 
 	}
-
-    public static GL_Vector getLookAtDirection3(GL_Vector viewDir ,float cursorX, float cursorY) {
+    public static GL_Vector getLookAtDirectionRotateMatrix(GL_Vector viewDir ,float cursorX, float cursorY) {
         GL_Vector newV = new GL_Vector();
         newV.copy(viewDir);
 
@@ -159,32 +166,166 @@ public class OpenglUtils {
         //newY/x= Math.tan(?);
         //newX/x= Math.tan(?);
         double x = (windowHeight/2)/Math.tan(3.14/4/2);//fov /2 时候对象的x轴的距离  也就是 视角的位置到 近端界面的距离
+        newV.x=newX*-1;
+        newV.y=newY;
+        newV.z=(float)x;
 
-        //double x = (windowHeight/2)/Math.tan(3.14/4/2);
+        newV=newV.normalize();
+        GL_Vector vectorBefore = new GL_Vector(0,0,1);
+        GL_Vector vectorAfter = viewDir.normalize().getClone();
+        GL_Vector rotationAxis =GL_Vector.crossProduct(vectorAfter,vectorBefore);
+        double rotationAngle = Math.acos(GL_Vector.dotProduct(vectorBefore, vectorAfter) / vectorBefore.length() /vectorAfter.length());
+        // GL_Matrix  rotationMatrix =GL_Matrix.RotationMatrix(rotationAngle, rotationAxis);
 
-        //float newXF= newX/(windowWidth/2);
-        // float newYF= newY/(windowHeight/2);
-        double yDegree = Math.atan(newY/x );
-        double xDegree = Math.atan(newX/x);
+        GL_Matrix  rotationMatrix =GL_Matrix.RotationMatrix(rotationAngle, rotationAxis);
+
+        newV = GL_Matrix.multiply(newV.normalize(),rotationMatrix);
+
+        return newV.normalize();
+
+
+    }
+
+
+    public static GL_Vector getLookAtDirectionInvert(GL_Vector viewDir ,float cursorX, float cursorY) {
+        GL_Vector newV = new GL_Vector();
+        newV.copy(viewDir);
+
+        int windowWidth =Constants.WINDOW_WIDTH;
+        int windowHeight =Constants.WINDOW_HEIGHT;
+        float newX= cursorX-windowWidth/2;//换算成中心坐标为0 , 0 的新坐标
+        float newY=cursorY-windowHeight/2;
+        //()/x = Math.tan(45/2);
+
+        //(windowWidth/2)/x = Math.tan(0y);
+        //newY/x= Math.tan(?);
+        //newX/x= Math.tan(?);
+        double x = (windowHeight/2)/Math.tan(3.14/4/2);//fov /2 时候对象的x轴的距离  也就是 视角的位置到 近端界面的距离
+        newV.x=newX;
+        newV.y=newY;
+        newV.z=(float)-x;
+
+        newV=newV.normalize();
+        GL_Matrix project = ShaderManager.projection;
+        GL_Matrix view=
+                GL_Matrix.LookAt(new GL_Vector(0,0,0),viewDir);
+
+        GL_Vector vector1 = GL_Matrix.multiply(project.getClone().invert(),newV);
+        GL_Vector vector2 = GL_Matrix.multiply(view.getClone().invert(),newV);
+
+       /* GL_Vector right = GL_Vector.crossProduct(viewDir,new GL_Vector(0,1,0));
+        GL_Vector up = GL_Vector.crossProduct(viewDir,right);
+        GL_Matrix rotateMatrix = */
+        return vector2.normalize();
+
+
+    }
+
+    public static GL_Vector getLookAtDirectionRotateNewMatrix(GL_Vector viewDir ,float cursorX, float cursorY) {
+
+
+
+        viewDir = viewDir.getClone();
+        GL_Vector newV = new GL_Vector();
+        newV.copy(viewDir);
+
+        int windowWidth =Constants.WINDOW_WIDTH;
+        int windowHeight =Constants.WINDOW_HEIGHT;
+        float newX= cursorX-windowWidth/2;//换算成中心坐标为0 , 0 的新坐标
+        float newY=cursorY-windowHeight/2;
+        //()/x = Math.tan(45/2);
+
+        //(windowWidth/2)/x = Math.tan(0y);
+        //newY/x= Math.tan(?);
+        //newX/x= Math.tan(?);
+        double x = (windowHeight/2)/Math.tan(3.14/4/2);//fov /2 时候对象的x轴的距离  也就是 视角的位置到 近端界面的距离
+        GL_Vector source = GamingState.instance.camera.Position.getClone();
+        GL_Vector distanceEnd = source.add(viewDir.mult((float)x));
+
+        GL_Vector right = viewDir.crossProduct(viewDir,new GL_Vector(0,1,0)).normalize();
+        GL_Vector rightPoint = distanceEnd.getClone().add(right.mult(newX));
+        GL_Vector leftPoint = distanceEnd.getClone().add(right.mult(-newX));
+
+        GL_Vector upDir = viewDir.crossProduct(viewDir,right).normalize();
+
+        GL_Vector upPoint = distanceEnd.getClone().add(upDir.mult(-newY));
+        GL_Vector downPoint = distanceEnd.getClone().add(upDir.mult(newY));
+        newV.x=newX*-1;
+        newV.y=newY;
+        newV.z=(float)x;
+
+        newV=newV.normalize();
+        GL_Vector vectorBefore = new GL_Vector(0,0,1);
+        GL_Vector vectorAfter = viewDir.normalize().getClone();
+        GL_Vector rotationAxis =GL_Vector.crossProduct(vectorAfter,vectorBefore);
+        double rotationAngle = Math.acos(GL_Vector.dotProduct(vectorBefore, vectorAfter) / vectorBefore.length() /vectorAfter.length());
+         GL_Matrix  rotationMatrix =GL_Matrix.RotationMatrix(-rotationAngle, rotationAxis);
+
+
+        newV = GL_Matrix.multiply(newV.normalize(),rotationMatrix);
+
+        return newV.normalize();
+
+
+    }
+    public static GL_Vector getLookAtDirectionJiaodu(GL_Vector viewDir ,float cursorX, float cursorY) {
+        GL_Vector newV = new GL_Vector();
+        newV.copy(viewDir);
+
+        int windowWidth =Constants.WINDOW_WIDTH;
+        int windowHeight =Constants.WINDOW_HEIGHT;
+        float newX= cursorX-windowWidth/2;//换算成中心坐标为0 , 0 的新坐标
+        float newY=cursorY-windowHeight/2;
+
+        double zDistance = (windowHeight/2)/Math.tan(3.14/4/2);//fov /2 时候对象的x轴的距离  也就是 视角的位置到 近端界面的距离
+
+
+        double yDegree = Math.atan(newY/zDistance );
+        double xDegree = Math.atan(newX/zDistance);
         double ydu = yDegree/3.1415*180;
         double xdu = xDegree/3.1415*180;
-       // LogUtil.println("角度x"+xdu+"角度y"+ydu);
-
-        //GL_Matrix M = GL_Matrix.rotateMatrix(/*(float) Math.toRadians(updownDegree)/5,*/0, (float)- xDegree/2,
-          //      0);
+        LogUtil.println("角度x"+xdu+"角度y"+ydu);
 
         //计算俯角
         double xy= Math.sqrt(newV.x*newV.x + newV.z*newV.z);
         double jiaojiao = Math.atan(newV.y/xy);
         jiaojiao+=yDegree;
-
+        // 0
         double xzDegree =Math.atan(newV.z/newV.x);
-        newV.z= (float) Math.tan( xzDegree+xDegree)*newV.x;
+
+        LogUtil.println("原始 xzDegree角度"+xzDegree/3.14*180);
+
+        float newXzDegree = (float) (Math.tan( xzDegree+xDegree)/3.14*180 %360);
+      /*  if(newXzDegree<0){
+            newXzDegree+=360;
+        }*/
+        LogUtil.println("选中后的 xzDegree角度"+newXzDegree);
+        newV.z= (float) Math.tan( newXzDegree/180*3.14)*newV.x;
         xy= Math.sqrt(newV.x*newV.x + newV.z*newV.z);
         newV.y =(float)(Math.tan(jiaojiao)*xy);
-        //ViewDir.y+=updownDegree/100;
-        // GL_Vector vd = M.transform(newV);
-//        vd.normalize();
+        return newV.normalize();
+
+    }
+
+    public static GL_Vector getLookAtDirectionWangshang(GL_Vector viewDir ,float cursorX, float cursorY) {
+        GL_Vector newV = new GL_Vector();
+        // newV.copy(viewDir);
+
+        int windowWidth =Constants.WINDOW_WIDTH;
+        int windowHeight =Constants.WINDOW_HEIGHT;
+        float newX=-1* (cursorX-windowWidth/2)/windowWidth*2;//换算成中心坐标为0 , 0 的新坐标
+        float newY=(cursorY-windowHeight/2)/windowHeight*2;
+
+        // GL_Vector newDirec = GL_Matrix.multiply(GL_Matrix.rotateMatrix((float)xDegree,0,0),viewDir);
+       GL_Matrix project = ShaderManager.projection;
+        GL_Matrix view=
+                GL_Matrix.LookAt(new GL_Vector(0,0,0),viewDir);
+
+        newV.x= newX/project.m00;
+        newV.y = newY/project.m11;
+        newV.z=1;
+       newV= GL_Matrix.multiply(newV,view.inverse());
+
         return newV.normalize();
 
 
