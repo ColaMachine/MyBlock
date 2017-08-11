@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.ColorBlock;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.TimeUtil;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector3f;
@@ -42,8 +43,22 @@ public class ColorGroup extends  ColorBlock{
     public void  addChild(ColorBlock colorBlock){
         colorBlockList.add(colorBlock);
     }
-
+    long lastAnimationTime=0;
+    int nowIndex =0;
     public void update(){
+        //每隔1秒展示下一个动画
+        if(animations.size()>0){
+            if(TimeUtil.getNowMills()-lastAnimationTime >200){
+                lastAnimationTime=TimeUtil.getNowMills();
+                nowIndex++;
+                if(nowIndex>animations.size()-1){
+                    nowIndex=0;
+                }
+
+            }
+            animations.get(nowIndex).update();
+            return ;
+        }
         for(int i=0;i<selectBlockList.size();i++){
             ColorBlock colorBlock = selectBlockList.get(i);
 
@@ -130,13 +145,20 @@ public class ColorGroup extends  ColorBlock{
     }
 
     public ColorGroup copy(){
+        //复制本身
+
 
         ColorGroup colorGroup =new ColorGroup( this.x,this.y,this.z,this.width,this.height,this.thick);
-
+        colorGroup.xoffset= this.xoffset;
+        colorGroup.yoffset =this.yoffset;
+        colorGroup.zoffset =this.zoffset;
+        //复制所有child block
         for(int i=0;i<colorBlockList.size();i++){
             ColorBlock colorBlock = colorBlockList.get(i);
             colorGroup.colorBlockList.add(colorBlock.copy());
         }
+
+
         return colorGroup;
     }
 }

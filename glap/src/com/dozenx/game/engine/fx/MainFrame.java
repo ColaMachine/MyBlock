@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,40 +24,17 @@ import java.io.File;
  * Created by dozen.zhang on 2017/8/4.
  */
 public class MainFrame extends Application {
+
     @Override
     public void start(final  Stage primaryStage) throws Exception {
-        FlowPane root = new FlowPane();
 
+        FlowPane root = new FlowPane();
         root.setHgap(10);
         root.setVgap(20);
         root.setPadding(new Insets(15,15,15,15));
+        root.getChildren().add(addSelectPanel());
+        root.getChildren().add(addCreatePanel());
 
-        // Button 1
-        Button addBlockBtn= new Button("在原点添加方块");
-
-        root.getChildren().add(addBlockBtn);
-
-
-        // Button 2
-        Button button2 = new Button("删除选中");
-
-        root.getChildren().add(button2);
-
-
-        Button copyButton = new Button("复制选中");
-
-        root.getChildren().add(copyButton);
-
-
-   ;
-
-
-        copyButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-              GamingState.editEngine.copySelect();
-            }
-        });
 
         // TextField
         final TextField textField = new TextField("Text Field");
@@ -98,15 +76,7 @@ public class MainFrame extends Application {
         primaryStage.setTitle("FlowPane Layout Demo");
         primaryStage.setScene(scene);
         primaryStage.show();
-        addBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Color color = colorPicker.getValue();
 
-
-                GamingState.editEngine.addBlock();
-            }
-        });
         Button setColorBtn = new Button("设置颜色");
 
         root.getChildren().add(setColorBtn);
@@ -117,15 +87,7 @@ public class MainFrame extends Application {
                 GamingState.editEngine.setColor((float)color.getRed(),(float)color.getGreen(),(float)color.getBlue());
             }
         });
-                button2.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
 
-                        GamingState.editEngine.deleteSelect();
-                    }
-                }
-
-        );
 
         Button saveBtn = new Button("保存");
 
@@ -159,34 +121,8 @@ public class MainFrame extends Application {
             }
         });
 
-        Button shootBtn = new Button("喷射");
 
-        root.getChildren().add(shootBtn);
-        shootBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-               Switcher.mouseState = Switcher.shootMode;
-            }
-        });
 
-        Button boxSelectBtn = new Button("框体选择");
-
-        root.getChildren().add(boxSelectBtn);
-        boxSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Switcher.mouseState = Switcher.boxSelectMode;
-            }
-        });
-        Button singleSelectBtn = new Button("单个选择");
-
-        root.getChildren().add(singleSelectBtn);
-        singleSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Switcher.mouseState = Switcher.singleSelectMode;
-            }
-        });
 
         Button seperate = new Button("打散");
 
@@ -200,18 +136,6 @@ public class MainFrame extends Application {
         });
 
 
-        Button brush = new Button("涂色");
-
-        root.getChildren().add(brush);
-        brush.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                Switcher.mouseState = Switcher.brushMode;
-
-
-            }
-        });
 
 
         Button componentSave = new Button("保存为组件");
@@ -337,16 +261,7 @@ public class MainFrame extends Application {
         });
 
 
-        final Button faceSelectBtn = new Button("面选择");
 
-        root.getChildren().add(faceSelectBtn);
-        faceSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-            Switcher.mouseState = Switcher.faceSelectMode;
-            }
-        });
 
 
         final Button animationEditBtn = new Button("动画编辑");
@@ -356,7 +271,10 @@ public class MainFrame extends Application {
 
       final   VBox box = new VBox();
         box.getChildren().addAll(sp);
-        VBox.setVgrow(sp, Priority.ALWAYS);
+        box.setVgrow(sp, Priority.ALWAYS);
+
+
+        root.getChildren().add(box);
 
         root.getChildren().add(animationEditBtn);
         animationEditBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -383,10 +301,176 @@ public class MainFrame extends Application {
 
                 Button animationEditBtn = new Button("帧"+size);
                 box.getChildren().add(animationEditBtn);
+
+
+                animationEditBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        int size =GamingState.editEngine.getCurrentColorGroupAnimationFrameCount();
+
+                        GamingState.editEngine.currentColorAddGroupAnimationFrame();
+
+                        Button animationEditBtn = new Button("帧"+size);
+                        box.getChildren().add(animationEditBtn);
+
+
+
+                    }
+                });
             }
         });
 
 
+
+    }
+    public TitledPane addSelectPanel(){
+
+        TitledPane selectGridTitlePane = new TitledPane();
+
+        selectGridTitlePane.setText("选择");
+
+
+
+        GridPane selectGrid = new GridPane();
+        selectGrid.setVgap(4);
+        selectGrid.setPadding(new Insets(5, 5, 5, 5));
+
+        final Button faceSelectBtn = new Button("面选择");
+
+
+        faceSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                Switcher.mouseState = Switcher.faceSelectMode;
+            }
+        });
+        selectGrid.add(faceSelectBtn, 0, 0);
+
+
+        Button boxSelectBtn = new Button("框体选择");
+
+
+        boxSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState = Switcher.boxSelectMode;
+            }
+        });
+        Button singleSelectBtn = new Button("单个选择");
+
+
+        singleSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState = Switcher.singleSelectMode;
+            }
+        });
+
+        selectGrid.add(boxSelectBtn, 1, 0);
+        selectGrid.add(singleSelectBtn, 0, 1);
+
+
+        selectGridTitlePane.setContent(selectGrid);
+        return selectGridTitlePane;
+    }
+
+
+
+    public TitledPane addCreatePanel(){
+
+        TitledPane titlePane = new TitledPane();
+
+        titlePane.setText("选择");
+
+
+
+        GridPane selectGrid = new GridPane();
+        selectGrid.setVgap(4);
+        selectGrid.setPadding(new Insets(5, 5, 5, 5));
+
+
+
+
+
+        // Button 1
+        Button addBlockBtn= new Button("在原点添加方块");
+
+
+
+
+        // Button 2
+        Button deleteBtn = new Button("删除选中");
+
+
+
+
+        Button copyButton = new Button("复制选中");
+
+
+
+
+        addBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+
+
+                GamingState.editEngine.addBlock();
+            }
+        });
+        deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+
+                    GamingState.editEngine.deleteSelect();
+                }
+            }
+
+        );
+
+
+
+        Button shootBtn = new Button("喷射");
+
+
+        shootBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState = Switcher.shootMode;
+            }
+        });
+
+
+        Button brushBtn = new Button("涂色");
+
+
+        brushBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                Switcher.mouseState = Switcher.brushMode;
+
+
+            }
+        });;
+
+
+        copyButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.copySelect();
+            }
+        });
+
+
+        selectGrid.add(addBlockBtn, 1, 0);
+        selectGrid.add(deleteBtn, 0, 1);
+        selectGrid.add(copyButton, 0, 2);
+        selectGrid.add(shootBtn, 0, 3);
+        selectGrid.add(copyButton, 0, 4);
+        titlePane.setContent(selectGrid);
+        return titlePane;
     }
 
 

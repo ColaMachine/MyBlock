@@ -884,6 +884,11 @@ public GL_Vector startPoint;
         return 0;
     }
 
+
+    /**
+     * colorgroup如何显示成一个动画  动画是由帧组成的 每个帧都可以是完全不同的东西 但是 所有的帧都挂靠在 一个父级的 ColorGroup里面
+     * 把当前的colorgroup 复制并新增一个动画帧
+     */
     public void currentColorAddGroupAnimationFrame(){
         if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
             ColorGroup group = (ColorGroup) selectBlockList.get(0);
