@@ -140,7 +140,7 @@ public class BoxModel implements Model {
 
 
 
-    public static GL_Vector[] getSmaillPoint(float x,float y,float z,float size){
+    public static GL_Vector[] getSmallPoint(float x,float y,float z,float size){
 
 
         GL_Vector p1= new GL_Vector(x-size,y-size,z+size);
@@ -155,7 +155,7 @@ public class BoxModel implements Model {
 
         return new GL_Vector[]{p1,p2,p3,p4,p5,p6,p7,p8};
     }
-    public static GL_Vector[] getSmaillPoint(float x,float y,float z,float width,float height,float thick){
+    public static GL_Vector[] getSmallPoint(float x,float y,float z,float width,float height,float thick){
 
 
         GL_Vector p1= new GL_Vector(x,y,z+thick);

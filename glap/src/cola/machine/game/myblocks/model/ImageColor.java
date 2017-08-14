@@ -1,30 +1,24 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.FloatBufferWrap;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
-import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.AABB.AABB;
-
-import java.nio.FloatBuffer;
-
-public class ColorBlock extends BaseBlock{
-    public ColorBlock(){
+public class ImageColor extends BaseBlock{
+    public ImageColor(){
 
     }
 
-    public ColorBlock(int x,int y,int z,float width,float height,float thick){
+    public ImageColor(int x, int y, int z, float width, float height, float thick){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -33,7 +27,7 @@ public class ColorBlock extends BaseBlock{
         this.thick =thick;
 
     }
-    public ColorBlock(int x,int y,int z,float width,float height,float thick,float rf,float gf,float bf,float opacity){
+    public ImageColor(int x, int y, int z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -134,10 +128,10 @@ public class ColorBlock extends BaseBlock{
     public float gf(){
         return this.gf;
     }
-    public ColorBlock(String name,int id,boolean alpha) {
+    public ImageColor(String name, int id, boolean alpha) {
         super( name, id, alpha);
     }
-	public ColorBlock(int x, int y, int z) {
+	public ImageColor(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -150,7 +144,7 @@ public class ColorBlock extends BaseBlock{
 		this.maxZ = z + 1;
 	}
 
-	public ColorBlock(int x, int y, int z, Color color) {
+	public ImageColor(int x, int y, int z, Color color) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -388,7 +382,7 @@ public class ColorBlock extends BaseBlock{
 
     @Override
     public Block clone(){
-        return new ColorBlock(x,y,z);
+        return new ImageColor(x,y,z);
     }
 
     @Override
@@ -428,8 +422,8 @@ public class ColorBlock extends BaseBlock{
         this.z+=num;
     }
 
-    public ColorBlock copy(){
-        ColorBlock colorBlock  =new ColorBlock(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
+    public ImageColor copy(){
+        ImageColor colorBlock  =new ImageColor(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
 
         return colorBlock;
     }

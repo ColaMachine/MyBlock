@@ -12,10 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -31,16 +28,20 @@ public class MainFrame extends Application {
 
     @Override
     public void start(final  Stage primaryStage) throws Exception {
+        primaryStage.setWidth(800);
+        primaryStage.setHeight(800);
         this.primaryStage = primaryStage;
         FlowPane root = new FlowPane();
         root.setHgap(10);
         root.setVgap(20);
+
         root.setPadding(new Insets(15,15,15,15));
         root.getChildren().add(addSelectPanel());
         root.getChildren().add(addCreatePanel());
         root.getChildren().add(addFilePanel());
         root.getChildren().add(addComponentPanel());
         root.getChildren().add(addComponentListPanel());
+        root.getChildren().add(addAnimationEditPanel());
 
 
         // CheckBox
@@ -84,7 +85,7 @@ public class MainFrame extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Color color = colorPicker.getValue();
-                GamingState.editEngine.setColor((float)color.getRed(),(float)color.getGreen(),(float)color.getBlue());
+                GamingState.editEngine.setColor((float)color.getRed(),(float)color.getGreen(),(float)color.getBlue(),(float)color.getOpacity());
             }
         });
 
@@ -109,64 +110,6 @@ public class MainFrame extends Application {
 
 
 
-
-
-
-        final Button animationEditBtn = new Button("动画编辑");
-
-
-        final ScrollPane sp = new ScrollPane();
-
-      final   VBox box = new VBox();
-        box.getChildren().addAll(sp);
-        box.setVgrow(sp, Priority.ALWAYS);
-
-
-        root.getChildren().add(box);
-
-        root.getChildren().add(animationEditBtn);
-        animationEditBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                int size =GamingState.editEngine.getCurrentColorGroupAnimationFrameCount();
-                for(int i=0;i<size;i++){
-                    Button animationEditBtn = new Button("帧"+i);
-                    box.getChildren().add(animationEditBtn);
-
-                }
-
-            }
-        });
-        final Button addAnimationFrameBtn = new Button("增加动画帧");
-
-        root.getChildren().add(addAnimationFrameBtn);
-        addAnimationFrameBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                int size =GamingState.editEngine.getCurrentColorGroupAnimationFrameCount();
-
-                GamingState.editEngine.currentColorAddGroupAnimationFrame();
-
-                Button animationEditBtn = new Button("帧"+size);
-                box.getChildren().add(animationEditBtn);
-
-
-                animationEditBtn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        int size =GamingState.editEngine.getCurrentColorGroupAnimationFrameCount();
-
-                        GamingState.editEngine.currentColorAddGroupAnimationFrame();
-
-                        Button animationEditBtn = new Button("帧"+size);
-                        box.getChildren().add(animationEditBtn);
-
-
-
-                    }
-                });
-            }
-        });
 
 
 
@@ -236,52 +179,27 @@ public class MainFrame extends Application {
         GridPane selectGrid = new GridPane();
         selectGrid.setVgap(5);
         selectGrid.setPadding(new Insets(5, 5, 5, 5));
-
-
-
-
-
         // Button 1
         Button addBlockBtn= new Button("在原点添加方块");
-
-
-
-
         // Button 2
         Button deleteBtn = new Button("删除选中");
-
-
-
-
         Button copyButton = new Button("复制选中");
-
-
-
-
         addBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-
-
                 GamingState.editEngine.addBlock();
             }
         });
         deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
-
                     GamingState.editEngine.deleteSelect();
                 }
             }
 
         );
 
-
-
         Button shootBtn = new Button("喷射");
-
-
         shootBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -289,21 +207,21 @@ public class MainFrame extends Application {
             }
         });
 
+        Button shootComponentBtn = new Button("喷射组件");
+        shootComponentBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState = Switcher.shootComponentMode;
+            }
+        });
 
         Button brushBtn = new Button("涂色");
-
-
         brushBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
                 Switcher.mouseState = Switcher.brushMode;
-
-
             }
         });;
-
-
         copyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -312,13 +230,144 @@ public class MainFrame extends Application {
         });
 
 
+
+
+
+
+
+
+
+
+      /*  final TextField xInput = new TextField("0");
+        xInput.setPrefWidth(110);
+
+        final TextField yInput = new TextField("0");
+        yInput.setPrefWidth(110);
+
+        final TextField zInput = new TextField("0");
+        zInput.setPrefWidth(110);
+
+        final TextField widthInput = new TextField("0");
+        widthInput.setPrefWidth(110);
+
+
+        final TextField heightInput = new TextField("0");
+        heightInput.setPrefWidth(110);
+
+
+        final TextField thickInput = new TextField("0");
+        thickInput.setPrefWidth(110);*/
+        Button seperate = new Button("打散");
+
         selectGrid.add(addBlockBtn, 0, 0);
         selectGrid.add(deleteBtn, 0, 1);
         selectGrid.add(copyButton, 0, 2);
-        selectGrid.add(shootBtn, 0, 3);
-        selectGrid.add(brushBtn, 0,4);
+        selectGrid.add(shootBtn, 0, 3);   selectGrid.add(shootComponentBtn, 1, 3);
+        selectGrid.add(brushBtn, 0,4);  selectGrid.add(seperate, 1, 4);
 
-        Button seperate = new Button("打散");
+
+
+
+        final Label xLabel = new Label("x");
+        Button xMi= new Button("-");
+        Button xadd= new Button("+");
+
+        final Label yLabel = new Label("y");
+        Button yMi= new Button("-");
+        Button yadd= new Button("+");
+
+        final Label zLabel = new Label("z");
+        Button zMi= new Button("-");
+        Button zadd= new Button("+");
+
+        selectGrid.add(xLabel, 0,5);selectGrid.add(xMi, 1,5); selectGrid.add(xadd, 2,5);
+        selectGrid.add(yLabel, 0,6);selectGrid.add(yMi, 1,6); selectGrid.add(yadd, 2,6);
+        selectGrid.add(zLabel, 0,7); selectGrid.add(zMi, 1,7); selectGrid.add(zadd, 2,7);
+
+
+        Label widthLabel  =new Label("宽度");
+        Label heightLabel  =new Label("高度");
+        Label thickLabel  =new Label("厚度");
+
+
+        Button widthMiBtn= new Button("-");
+        Button heightMiBtn= new Button("-");
+        Button thickMiBtn= new Button("-");
+
+        Button widthAddBtn= new Button("+");
+        Button heightAddBtn= new Button("+");
+        Button thickAddBtn= new Button("+");
+
+
+        selectGrid.add(widthLabel, 0,8);selectGrid.add(widthMiBtn, 1,8); selectGrid.add(widthAddBtn, 2,8);
+        selectGrid.add(heightLabel, 0,9);selectGrid.add(heightMiBtn, 1,9); selectGrid.add(heightAddBtn, 2,9);
+        selectGrid.add(thickLabel, 0,10); selectGrid.add(thickMiBtn, 1,10); selectGrid.add(thickAddBtn, 2,10);
+
+
+
+        final Label rotatexLabel = new Label("rotatex");
+        Button rotatexMi= new Button("-");
+        Button rotatexadd= new Button("+");
+
+        final Label rotateyLabel = new Label("rotatey");
+        Button rotateyMi= new Button("-");
+        Button rotateyadd= new Button("+");
+
+        final Label rotatezLabel = new Label("rotatez");
+        Button rotatezMi= new Button("-");
+        Button rotatezadd= new Button("+");
+
+        selectGrid.add(rotatexLabel, 0,5);selectGrid.add(rotatexMi, 1,5); selectGrid.add(rotatexadd, 2,5);
+        selectGrid.add(rotateyLabel, 0,6);selectGrid.add(rotateyMi, 1,6); selectGrid.add(rotateyadd, 2,6);
+        selectGrid.add(rotatezLabel, 0,7); selectGrid.add(rotatezMi, 1,7); selectGrid.add(rotatezadd, 2,7);
+
+        rotatexMi.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustWidth(-1,false);
+
+            }
+        });
+        rotatexadd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustWidth(1,false);
+
+            }
+        });
+
+        rotateyMi.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustHeight(-1,false);
+
+            }
+        });
+        rotateyadd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustHeight(1,false);
+
+            }
+        });
+
+
+        rotatezMi.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustThick(-1,false);
+
+            }
+        });
+        rotatezadd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustThick(1,false);
+
+            }
+        });
+
+
 
 
         seperate.setOnAction(new EventHandler<ActionEvent>() {
@@ -328,7 +377,101 @@ public class MainFrame extends Application {
 
             }
         });
-        selectGrid.add(seperate, 0, 4);
+
+        xMi.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustWidth(-1,false);
+
+            }
+        });
+        xadd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustWidth(1,false);
+
+            }
+        });
+
+        yMi.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustHeight(-1,false);
+
+            }
+        });
+        yadd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustHeight(1,false);
+
+            }
+        });
+
+
+        zMi.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustThick(-1,false);
+
+            }
+        });
+        zadd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustThick(1,false);
+
+            }
+        });
+
+        widthMiBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustWidth(-1,true);
+
+            }
+        });
+        widthAddBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustWidth(1,true);
+
+            }
+        });
+
+        heightMiBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustHeight(-1,true);
+
+            }
+        });
+        heightAddBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustHeight(1,true);
+
+            }
+        });
+
+        thickMiBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustThick(-1,true);
+
+            }
+        });
+        thickAddBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.adjustThick(1,true);
+
+            }
+        });
+
+
+
+
         titlePane.setContent(selectGrid);
         return titlePane;
     }
@@ -440,6 +583,8 @@ public class MainFrame extends Application {
         GridPane selectGrid = new GridPane();
         selectGrid.setVgap(5);
         selectGrid.setPadding(new Insets(5, 5, 5, 5));
+
+        //xoffset
         final Label xoffsetLabel = new Label("x offset");
 
         final TextField xoffsetInput = new TextField("0");
@@ -512,6 +657,25 @@ public class MainFrame extends Application {
 
             }
         });
+
+        final Button editComponentButton = new Button("组件编辑");
+
+
+        editComponentButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+               Switcher.isEditComponent=!Switcher.isEditComponent;
+                if(Switcher.isEditComponent) {
+                    //Border border = new Border();
+                    //editComponentButton.setBorder();
+                    GamingState.editEngine.enterComponentEdit();
+                }
+               //s GamingState.editEngine.buildComponent();
+
+            }
+        });
+
         selectGrid.add(xoffsetLabel, 0, 0); selectGrid.add(xoffsetInput, 1, 0);
         selectGrid.add(yoffsetLabel, 0, 1); selectGrid.add(yoffsetInput, 1, 1);
         selectGrid.add(zoffsetLabel, 0, 2); selectGrid.add(zoffsetInput, 1, 2);
@@ -521,6 +685,7 @@ public class MainFrame extends Application {
         selectGrid.add(zzoomLabel, 0, 5); selectGrid.add(zzoomInput, 1, 5);
 
         selectGrid.add(componentAdjust, 0, 6);  selectGrid.add(buildComponentButton, 1, 6);
+        selectGrid.add(editComponentButton, 0, 7);
 
         titlePane.setContent(selectGrid);
         return titlePane;
@@ -538,29 +703,66 @@ public class MainFrame extends Application {
         selectGrid.setVgap(5);
         selectGrid.setPadding(new Insets(5, 5, 5, 5));
 
+
+
+
+
+
         List<File> list = FileUtil.listFile(PathManager.getInstance().getHomePath().resolve("save/component").toFile());
         final   VBox box = new VBox();
         selectGrid.add(box,0,0);
-        for(final File file : list){
+        Button refreshBtn = new Button("刷新");
+
+        box.getChildren().add(refreshBtn);
+
+        for( File file : list){
             Button component = new Button();
             component.setText(file.getName());
             final String name = file.getName();
+            GamingState.editEngine.readAndLoadColorGroupFromFile(file);
             box.getChildren().add(component);
             component.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-
-
-                    GamingState.editEngine.readAndLoadColorGroupFromFile(file);
-
-
-
-
-
+                    GamingState.editEngine.changeCurrentComponent(name);
                 }
             });
         }
 
+        refreshBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                //获取名称
+                for(int i=box.getChildren().size()-1;i>=1;i--){
+                    box.getChildren().remove(i);
+                }
+
+                List<File> list = FileUtil.listFile(PathManager.getInstance().getHomePath().resolve("save/component").toFile());
+
+                for( File file : list){
+                    Button component = new Button();
+                    component.setText(file.getName());
+                    final String name = file.getName();
+                    GamingState.editEngine.readAndLoadColorGroupFromFile(file);
+                    box.getChildren().add(component);
+                    component.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+
+
+                            GamingState.editEngine.changeCurrentComponent(name);
+
+
+
+
+
+                        }
+                    });
+                }
+
+            }
+        });
 
 
 
@@ -568,6 +770,129 @@ public class MainFrame extends Application {
 
 
 
+
+
+
+        titlePane.setContent(selectGrid);
+        return titlePane;
+    }
+
+    public TitledPane addAnimationEditPanel(){
+
+        TitledPane titlePane = new TitledPane();
+        titlePane.setText("动画");
+        GridPane selectGrid = new GridPane();
+        selectGrid.setVgap(5);
+        selectGrid.setPadding(new Insets(5, 5, 5, 5));
+
+        final Button animationEditBtn = new Button("动画编辑");
+
+
+        final ScrollPane sp = new ScrollPane();
+
+        final   VBox box = new VBox();
+        box.getChildren().addAll(sp);
+        box.setVgrow(sp, Priority.ALWAYS);
+
+
+
+        animationEditBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                //先清除原来的帧 重新同步过
+
+                for(int i =box.getChildren().size()-1;i>=0;i--){
+                    box.getChildren().remove(i);
+                }
+                int size =GamingState.editEngine.getCurrentColorGroupAnimationFrameCount();
+                for(int i=0;i<size;i++){
+                    Button animationEditBtn = new Button("帧"+i);
+                    box.getChildren().add(animationEditBtn);
+                    final int nowIndex =i;
+                    animationEditBtn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            //让现实当前帧
+                            // Switcher.currentFrameNum = size;
+                            GamingState.editEngine.animationFrameShowNum(nowIndex);
+
+
+                        }
+                    });
+                }
+
+            }
+        });
+        final Button addAnimationFrameBtn = new Button("增加动画帧");
+
+
+        addAnimationFrameBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final   int size =GamingState.editEngine.getCurrentColorGroupAnimationFrameCount();
+
+                GamingState.editEngine.currentColorAddGroupAnimationFrame();
+
+                Button animationEditBtn = new Button("帧"+size);
+                box.getChildren().add(animationEditBtn);
+
+
+                animationEditBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        //让现实当前帧
+                        // Switcher.currentFrameNum = size;
+                        GamingState.editEngine.animationFrameShowNum(size);
+
+
+                    }
+                });
+            }
+        });
+        final Button saveToCurFrameBtn = new Button("保存到当前帧");
+
+
+        saveToCurFrameBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                final   int size =GamingState.editEngine.getCurrentColorGroupAnimationFrameCount();
+
+                GamingState.editEngine.saveToCurFrame();
+
+
+
+
+            }
+        });
+
+        final Button playBtn = new Button("播放");
+        playBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(GamingState.editEngine.playAnimation()){
+                    playBtn.setText("当前播放 按下停止");
+                }else{
+                    playBtn.setText("当前停止 按下播放");
+                }
+            }
+        });
+
+        final Button deleteBtn = new Button("delete");
+        deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.deleteCurFrame();
+
+            }
+        });
+        selectGrid.add(saveToCurFrameBtn,0,0);
+        selectGrid.add(addAnimationFrameBtn,0,1);
+        selectGrid.add(animationEditBtn,0,2);
+        selectGrid.add(playBtn,0,3);
+        selectGrid.add(box,0,4);
+        selectGrid.add(deleteBtn,0,5);
 
 
 

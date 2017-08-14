@@ -2310,7 +2310,7 @@ try {
             }*/
             GL_Vector[] dirAry = BoxModel.dirAry;
             int[][] faceAry = BoxModel.facesAry;
-            GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,width,height,thick);
+            GL_Vector[] points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
             for(int i=0;i<6;i++){
                 int[] faceAry2 = faceAry[i];
 
@@ -2331,6 +2331,39 @@ try {
         }
     }
 
+
+    public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector[] points,GL_Vector[] dirAry,float red,float green,float blue,float alpha){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+
+        try {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+
+
+            int[][] faceAry = BoxModel.facesAry;
+
+            for(int i=0;i<6;i++){
+                int[] faceAry2 = faceAry[i];
+
+
+                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[1]].x).put(y+points[faceAry2[1]].y).put(z+points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[3]].x).put(y+points[faceAry2[3]].y).put(z+points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+
+                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+
     public static void draw3dColorBoxLine(ShaderConfig config,Vao vao ,float x,float y,float z ,float width,float height,float thick){
         //ti=TextureManager.getTextureInfo("mantle");
 
@@ -2344,7 +2377,7 @@ try {
             }*/
           /*  GL_Vector[] dirAry = BoxModel.dirAry;
             int[][] faceAry = BoxModel.facesAry;
-            GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,width,height,thick);*/
+            GL_Vector[] points = BoxModel.getSmallPoint(x,y,z,width,height,thick);*/
 
             veticesBuffer.put(x).put(y).put(z);//p1
             veticesBuffer.put(x+width).put(y).put(z);//p1
@@ -2427,7 +2460,7 @@ try {
             }*/
             GL_Vector[] dirAry = BoxModel.dirAry;
             int[][] faceAry = BoxModel.facesAry;
-            GL_Vector[] points = BoxModel.getSmaillPoint(x,y,z,size);
+            GL_Vector[] points = BoxModel.getSmallPoint(x,y,z,size);
             for(int i=0;i<6;i++){
                 int[] faceAry2 = faceAry[i];
 

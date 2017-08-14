@@ -653,8 +653,8 @@ public class MouseControlCenter {
                         x,Constants.WINDOW_HEIGHT-y,true);
 
             }else if(Switcher.mouseState  == Switcher.shootMode){
-                GamingState.editEngine.shootBlock(prevMouseX,
-                        Constants. WINDOW_HEIGHT-prevMouseY);
+             /*   GamingState.editEngine.shootBlock(prevMouseX,
+                        Constants. WINDOW_HEIGHT-prevMouseY);*/
             }else if(Switcher.mouseState  == Switcher.brushMode){
                     GamingState.editEngine.brushBlock(prevMouseX,
                     Constants. WINDOW_HEIGHT-prevMouseY);
@@ -848,7 +848,7 @@ public class MouseControlCenter {
                 // �ƶ���ͷ
             }
         }else{
-            GamingState.editEngine.mouseDrag(x,y);
+            GamingState.editEngine.mouseDrag(x,Constants.WINDOW_HEIGHT-y);
             //拖出一个矩形
             if(Switcher.mouseState == Switcher.boxSelectMode) {
                 y = Constants.WINDOW_HEIGHT - y;
