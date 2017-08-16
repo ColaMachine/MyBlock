@@ -27,6 +27,13 @@ public class RotateColorBlock extends ColorBlock{
 
 
     GL_Vector[] points = BoxModel.getPoint(0,0,0);
+    public RotateColorBlock(int x, int y, int z){
+        this.x =x;
+        this.y=y;
+        this.z=z;
+
+
+    }
     public RotateColorBlock(int x, int y, int z, float width, float height, float thick){
         this.x =x;
         this.y=y;
@@ -69,19 +76,19 @@ public class RotateColorBlock extends ColorBlock{
         return colorBlock;
     }
     public void rotateX(float value){
-        this.rotateX+=value;reCompute();
+        this.rotateX+=value*0.1;reCompute();
     }
     public void rotateY(float value){
-        this.rotateY+=value;
+        this.rotateY+=value*0.1;
         reCompute();
     }
     public void rotateZ(float value){
-        this.rotateZ+=value;
+        this.rotateZ+=value*0.1;
         reCompute();
     }
 
     public void reCompute(){
-        GL_Vector[] points= BoxModel.getSmallPoint(0,0,0,width,height,thick);
+        points= BoxModel.getSmallPoint(0,0,0,width,height,thick);
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0,0,0);
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(rotateX,rotateY,rotateZ);
         for(int i=0;i<points.length;i++){

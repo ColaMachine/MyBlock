@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -85,7 +86,12 @@ public class ColorGroup extends  ColorBlock{
 
         for(int i=0;i<colorBlockList.size();i++){
             ColorBlock colorBlock = colorBlockList.get(i);
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom,  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+           // colorBlock.update();
+            float[] info  =this.getChildBlockPosition(colorBlock);
+
+
+            colorBlock.update(info[0],info[1],info[2], info[3],info[4],info[5]);
+            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
 
         }
     }
@@ -587,7 +593,107 @@ float[] info =getChildBlockPosition(colorBlock);
 
         }
     }
+    public void brushImageOnBlock(float x, float y, float red, float green, float blue) {
 
+
+        GL_Vector from = GamingState.instance.camera.Position.getClone();
+        GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y);
+        direction=direction.normalize();
+
+        // LogUtil.println("开始选择");
+        Vector3f fromV= new Vector3f(from.x,from.y,from.z);
+        Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
+        float distance =0;
+        ColorBlock theNearestBlock = null;
+        float[] xiangjiao=null;
+        float[] right=null;
+        for(int i=0;i<colorBlockList.size();i++){
+            ColorBlock colorBlock =  colorBlockList.get(i);
+
+            float[] info  =this.getChildBlockPosition(colorBlock);
+            AABB aabb = new AABB(new Vector3f(info[0],info[1],info[2]),new Vector3f(info[0]+info[3],info[1]+info[4],info[2]+info[5]));
+
+
+            if( (xiangjiao=aabb.intersectRectangle2(fromV,directionV))!=null){//这里进行了按照list的顺序进行选择 其实应该按照距离的最近选择
+
+                //计算点在了那个面上
+                //有上下左右前后6个面
+                LogUtil.println("选中了");
+                float _tempDistance = xiangjiao[0]* xiangjiao[0]+ xiangjiao[1]* xiangjiao[1]+ xiangjiao[2]* xiangjiao[2];
+
+                if(distance ==0||_tempDistance<distance){
+                    distance=_tempDistance;
+                    theNearestBlock=colorBlock;
+                    right = xiangjiao;
+                }
+
+
+
+
+            }
+
+
+        }
+
+        int face =-1;
+        if(theNearestBlock!=null && theNearestBlock instanceof ImageBlock){
+            //计算是那一面
+            ImageBlock imageBlock = (ImageBlock)theNearestBlock;
+
+
+            float[] ary =  AABB.xyFaces[  (int) right[3]-1];
+            float[] ary1 =  AABB.xzFaces[  (int) right[4]-1];
+            float[] ary2 =  AABB.yzFaces[  (int) right[5]-1];
+
+            for(int i=0;i<ary.length;i++){
+                for(int j=0;j<ary.length;j++){
+                    if(ary[i]==ary1[j]){//在xz的集合当中也有
+
+
+                        for(int k=0;k<ary.length;k++){
+                            //在yz的集合当中也有
+                            if(ary[i]==ary2[k]) {
+                                face =(int)ary[i];
+                                try {
+
+
+                                    //调整
+                                    if (face == Constants.BACK) {
+
+                                        imageBlock.back = GamingState.editEngine.nowTextureInfo;
+
+                                    } else  if (face == Constants.FRONT) {
+                                        imageBlock.front = GamingState.editEngine.nowTextureInfo;
+
+                                    } else if (face == Constants.LEFT) {
+
+                                        imageBlock.left = GamingState.editEngine.nowTextureInfo;
+
+                                    } else if (face == Constants.RIGHT) {
+
+                                        imageBlock.right = GamingState.editEngine.nowTextureInfo;
+
+                                    } else if (face == Constants.BOTTOM) {
+                                        imageBlock.bottom = GamingState.editEngine.nowTextureInfo;
+                                    }else if (face == Constants.TOP) {
+                                        imageBlock.top = GamingState.editEngine.nowTextureInfo;
+                                    }
+
+                                }catch ( Exception e){
+                                    e.printStackTrace();
+                                }
+                                break;
+
+
+                            }
+                        }
+                    }
+                }
+            }
+            LogUtil.println("是那个面:"+face);
+
+        }
+    }
     public void brushBlock(float x, float y, float red, float green, float blue) {
 
         ColorBlock block = this.getSelectBlock(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y));

@@ -2,22 +2,44 @@ package com.dozenx.game.engine.fx;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.ImageBlock;
+import cola.machine.game.myblocks.model.RotateColorBlock;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
+import glapp.GLImage;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sun.plugin.javascript.JSObject;
+
 
 import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,7 +53,32 @@ public class MainFrame extends Application {
         primaryStage.setWidth(800);
         primaryStage.setHeight(800);
         this.primaryStage = primaryStage;
-        FlowPane root = new FlowPane();
+
+       /* FlowPane root1
+                = new FlowPane();
+
+
+        root1.getChildren().add(sp);*/
+        ScrollPane sp = new ScrollPane();
+
+      /*  sp.setFitToHeight(true);
+        sp.setFitToWidth(true);
+*/
+
+        FlowPane root
+                = new FlowPane();
+
+        Scene scene = new Scene(sp, 800, 800);
+
+        primaryStage.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+                System.out.println("Window Size Change:" + t.toString() + "," + t1.toString());
+              /*  sp.setMinWidth(t.doubleValue());sp
+                sp.setMinHeight(t1.doubleValue());*/
+            }
+        });
+        sp.setContent(root);
         root.setHgap(10);
         root.setVgap(20);
 
@@ -72,7 +119,7 @@ public class MainFrame extends Application {
         final ColorPicker colorPicker = new ColorPicker();
         colorPicker.setValue(Color.CORAL);
         root.getChildren().add(colorPicker);
-        Scene scene = new Scene(root, 550, 250);
+
 
         primaryStage.setTitle("FlowPane Layout Demo");
         primaryStage.setScene(scene);
@@ -111,7 +158,123 @@ public class MainFrame extends Application {
 
 
 
+        //init(  root );
+        MyCanvas canvas = new MyCanvas(600, 600);
 
+       /* canvas.widthProperty().bind(root.widthProperty().subtract(20));
+        canvas.heightProperty().bind(root.heightProperty().subtract(20));*/
+
+
+        final FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(PathManager.getInstance().getHomePath().toFile());
+        fileChooser.setTitle("加载组件");
+        final Button openButton = new Button("加载图片");
+
+
+        final TextField xInput = new TextField("0");
+        xInput.setPrefWidth(110);
+        final Button saveTextureButton = new Button("保存选中纹理");
+
+        //遍历所有的image下的纹理
+
+       final ListView<String> list = new ListView<String>();
+        ObservableList<String> items = FXCollections.observableArrayList (
+               );
+
+        HashMap imageMap =TextureManager.imageMap;
+
+
+        Iterator it = imageMap.keySet().iterator();
+        while(it.hasNext()){
+//			java.util.Map.Entry entry = (java.util.Map.Entry)it.next();
+//			request.setAttribute((String)entry.getKey(),entry.getValue());
+
+
+            String key = (String)it.next();
+            items.add(key);
+
+
+        }
+
+
+
+
+
+        final ListView<String> textureListView = new ListView<String>();
+        ObservableList<String> textureItems = FXCollections.observableArrayList ();
+
+        HashMap<String,TextureInfo> textureMap =TextureManager.textureInfoMap;
+
+
+        Iterator texutreit = textureMap.keySet().iterator();
+        while(texutreit.hasNext()){
+
+
+            String key = (String)texutreit.next();
+            textureItems.add(key);
+
+
+        }
+        list.setItems(items);
+        list.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("clicked on " + list.getSelectionModel().getSelectedItem());
+String imageName = list.getSelectionModel().getSelectedItem();
+                GLImage image = TextureManager.getImage(imageName);
+              /*  IntBuffer byteBuffer =IntBuffer.wrap(image.pixels);*/
+
+                //加载所有的相关的textureinfo
+                textureItems.clear();
+                Iterator texutreit = textureMap.keySet().iterator();
+                while(texutreit.hasNext()){
+
+
+                    String key = (String)texutreit.next();
+                    TextureInfo ti = textureMap.get(key);
+                    if(ti.imageName.equals(imageName))
+                    textureItems.add(key);
+
+
+                }
+
+                canvas.drawImage(image.img);
+            }
+        });
+
+        textureListView.setItems(textureItems);
+        textureListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                String textureInfoName = textureListView.getSelectionModel().getSelectedItem();
+                System.out.println("clicked on " + textureInfoName);
+
+               TextureInfo ti  = TextureManager.getTextureInfo(textureInfoName);
+
+                canvas.drawSelect(ti.minX,1-ti.maxY,ti.maxX,1-ti.minY);
+                GamingState.editEngine.nowTextureInfo = ti;
+            }
+        });
+
+
+        root.getChildren().add(list);
+
+
+        root.getChildren().add(textureListView);
+
+        openButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                File file = fileChooser.showOpenDialog(primaryStage);
+                if (file != null) {
+                    canvas.drawImage(file);
+                }
+            }
+        });
+        root.getChildren().add(openButton);
+        root.getChildren().add(canvas);
 
     }
     public TitledPane addSelectPanel(){
@@ -222,6 +385,16 @@ public class MainFrame extends Application {
                 Switcher.mouseState = Switcher.brushMode;
             }
         });;
+
+
+        Button textureBtn = new Button("纹理");
+        textureBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState = Switcher.textureMode;
+            }
+        });;
+
         copyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -261,7 +434,7 @@ public class MainFrame extends Application {
 
         selectGrid.add(addBlockBtn, 0, 0);
         selectGrid.add(deleteBtn, 0, 1);
-        selectGrid.add(copyButton, 0, 2);
+        selectGrid.add(copyButton, 0, 2); selectGrid.add(textureBtn, 1, 2);
         selectGrid.add(shootBtn, 0, 3);   selectGrid.add(shootComponentBtn, 1, 3);
         selectGrid.add(brushBtn, 0,4);  selectGrid.add(seperate, 1, 4);
 
@@ -317,21 +490,53 @@ public class MainFrame extends Application {
         Button rotatezMi= new Button("-");
         Button rotatezadd= new Button("+");
 
-        selectGrid.add(rotatexLabel, 0,5);selectGrid.add(rotatexMi, 1,5); selectGrid.add(rotatexadd, 2,5);
-        selectGrid.add(rotateyLabel, 0,6);selectGrid.add(rotateyMi, 1,6); selectGrid.add(rotateyadd, 2,6);
-        selectGrid.add(rotatezLabel, 0,7); selectGrid.add(rotatezMi, 1,7); selectGrid.add(rotatezadd, 2,7);
+        selectGrid.add(rotatexLabel, 0,11);selectGrid.add(rotatexMi, 1,11); selectGrid.add(rotatexadd, 2,11);
+        selectGrid.add(rotateyLabel, 0,12);selectGrid.add(rotateyMi, 1,12); selectGrid.add(rotateyadd, 2,12);
+        selectGrid.add(rotatezLabel, 0,13); selectGrid.add(rotatezMi, 1,13); selectGrid.add(rotatezadd, 2,13);
+        Button roateBtn =new Button("rotate");
+        roateBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.readyShootBlock = new RotateColorBlock();
 
+            }
+        });
+
+        Button colorBtn =new Button("color");
+        colorBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+              //  Switcher.BLOCKTYPE=Switcher.COLORBLOCK;
+                GamingState.editEngine.readyShootBlock = new ColorBlock();
+
+            }
+        });
+
+        Button imageBlockBtn =new Button("image");
+        imageBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               // Switcher.BLOCKTYPE=Switcher.COLORBLOCK;
+                GamingState.editEngine.readyShootBlock = new ImageBlock();
+
+            }
+        });
+
+
+       selectGrid.add(colorBtn, 0,14);
+        selectGrid.add(roateBtn, 1,14);
+        selectGrid.add(imageBlockBtn, 2,14);
         rotatexMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(-1,false);
+                GamingState.editEngine.adjustRotatex(-1);
 
             }
         });
         rotatexadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(1,false);
+                GamingState.editEngine.adjustRotatex(1);
 
             }
         });
@@ -339,14 +544,14 @@ public class MainFrame extends Application {
         rotateyMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(-1,false);
+                GamingState.editEngine.adjustRotateY(-1);
 
             }
         });
         rotateyadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(1,false);
+                GamingState.editEngine.adjustRotateY(1);
 
             }
         });
@@ -355,14 +560,14 @@ public class MainFrame extends Application {
         rotatezMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(-1,false);
+                GamingState.editEngine.adjustRotateZ(-1);
 
             }
         });
         rotatezadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(1,false);
+                GamingState.editEngine.adjustRotateZ(1);
 
             }
         });
@@ -897,6 +1102,91 @@ public class MainFrame extends Application {
 
 
         titlePane.setContent(selectGrid);
+
         return titlePane;
     }
+
+
+    public static final String defaultURL="http://www.baidu.com";
+    private void init(FlowPane root){
+        final Stage stage=primaryStage;
+       // Group group=new Group();//作为根节点，也就是root
+      //  primaryStage.setScene(new Scene(group));
+
+        WebView webView=new WebView();
+        final WebEngine engine=  webView.getEngine();
+        engine.load(defaultURL);
+
+        final TextField textField=new TextField(defaultURL);
+        /**修改输入栏的地址，也就是访问那个网站，这个地址栏显示那个网站的地址
+         * locationProperty()是获得当前页面的url封装好的ReadOnlyStringProperty对象
+         */
+        engine.locationProperty().addListener(new ChangeListener<String>(){
+
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                textField.setText(newValue);
+            }
+        });
+        /**
+         * 设置标题栏为当前访问页面的标题。
+         */
+        engine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>(){
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if(newValue==Worker.State.SUCCEEDED){
+                    stage.setTitle(engine.getTitle());
+                }
+            }
+        });
+
+
+        /**
+         * 测试能否获得javascript上面的交互内容。
+         * 可以自己写一个包含window.alert("neirong")的html进行测试。
+         * 返回的是neirong
+         */
+        engine.setOnAlert(new EventHandler<WebEvent<String>>() {
+
+            @Override
+            public void handle(WebEvent<String> event) {
+                System.out.println("this is event"+event);
+            }
+        });
+
+        //加载新的地址
+        EventHandler<ActionEvent> handler= new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                engine.load(textField.getText().startsWith("http://")?textField.getText().trim():"http://"+textField.getText().trim());
+            }
+        };
+
+        textField.setOnAction(handler);
+
+        Button okButton=new Button("go");
+        okButton.setDefaultButton(true);
+        okButton.setOnAction(handler);
+
+        HBox hbox=new HBox();
+        hbox.getChildren().addAll(textField,okButton);
+        HBox.setHgrow(textField, Priority.ALWAYS);
+
+        VBox vBox=new VBox();
+        vBox.getChildren().addAll(hbox,webView);
+        VBox.setVgrow(webView, Priority.ALWAYS);
+
+
+
+
+        root.getChildren().add(vBox);
+    }
+
+  public class JavaApplication{
+        public void exit(){
+            System.out.println(123);
+        }
+    }
+
 }

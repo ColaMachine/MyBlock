@@ -659,6 +659,10 @@ public class MouseControlCenter {
                     GamingState.editEngine.brushBlock(prevMouseX,
                     Constants. WINDOW_HEIGHT-prevMouseY);
             }
+            else if(Switcher.mouseState  == Switcher.textureMode){
+                GamingState.editEngine.brushImageOnBlock(prevMouseX,
+                        Constants. WINDOW_HEIGHT-prevMouseY);
+            }
 
             //如果都没选中 开启单选模式
             /*if(GamingState.editEngine.selectBlockList.size()==0){

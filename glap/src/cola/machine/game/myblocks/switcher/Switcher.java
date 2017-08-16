@@ -32,8 +32,16 @@ public class Switcher {
     public static int faceSelectMode =5;
 
     public static int shootComponentMode = 6;
+    public static int textureMode = 7;
+
+
     public static int mouseState = boxSelectMode;
 
     public static boolean isEditComponent =false;
 
+    public static int COLORBLOCK=0;
+    public static int ROTATECOLORBLOCK=1;
+    public static int IMAGEBLOCK=2;
+    public static int COMPONENTBLOCK=3;
+    public static int BLOCKTYPE= COLORBLOCK;
 }

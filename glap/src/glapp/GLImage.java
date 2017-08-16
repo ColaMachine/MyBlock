@@ -48,10 +48,11 @@ public class GLImage {
 			GLApp.msg("GLImage(String): loaded " + imgName + ", width=" + w + " height=" + h);
 		}
     }
+    public BufferedImage img;
     public GLImage(URI uri)
     {
         this.uri=uri;
-		BufferedImage img = loadJavaImage(uri);
+		 img = loadJavaImage(uri);
         int width =   img.getWidth();
         int height = img.getHeight();
 

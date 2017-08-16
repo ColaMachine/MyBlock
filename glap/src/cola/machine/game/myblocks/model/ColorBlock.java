@@ -406,6 +406,10 @@ public class ColorBlock extends BaseBlock{
         ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
 
     }
+    public void update(float x,float y,float z,float width,float height,float thick){
+        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
+
+    }
 
     public void addWidth(int num){
         this.width+=num;

@@ -1349,6 +1349,29 @@ try {
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(0).put(0).put(0).put(0);
     }
 
+
+    public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height,Vector4f color,ShaderConfig config) {
+        Vao vao = config.getVao();
+
+        TextureInfo ti = image.getTexture();
+
+        float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
+        float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
+        float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+    }
+
     public static void draw2dImg(ShaderConfig config ,Vao vao, int textureHandler) {
         int index = ShaderUtils.bindAndGetTextureIndex(config,textureHandler);
      /*   float left =-0.5f;
@@ -1600,28 +1623,6 @@ try {
 
     }
 
-
-    public static void draw2dImg(Image image, int posX, int posY, float z,int width, int height,Vector4f color,ShaderConfig config) {
-        Vao vao = config.getVao();
-
-        TextureInfo ti = image.getTexture();
-
-        float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
-        float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
-        float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
-        float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
-        GL_Vector p1 = new GL_Vector(left,top-_height,z);
-        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
-        GL_Vector p3 = new GL_Vector(left+_width,top,z);
-        GL_Vector p4 = new GL_Vector(left,top,z);
-        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
-        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
-    }
     /*public static void drawLine(Vector4f color,int startX,int startY,int endX,int endY) {
 
         float startXF = startX/Constants.WINDOW_WIDTH*2-1f;
@@ -2012,6 +2013,42 @@ try {
         }
     }
 
+
+    public static void draw3dImage(ShaderConfig config,Vao vao ,float x,float y,float z,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        if(ti==null){
+            LogUtil.err("ti should not be null");
+        }
+        int index = ShaderUtils.bindAndGetTextureIndex(config,ti.textureHandle);
+        try {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+           /* if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }*/
+            if(ti.color!=null){
+                veticesBuffer.put(x+p1.x).put(y+p1.y).put(z+p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p1
+                veticesBuffer.put(x+p2.x).put(y+p2.y).put(z+p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p2
+                veticesBuffer.put(x+p3.x).put(y+p3.y).put(z+p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p3
+                veticesBuffer.put(x+p4.x).put(y+p4.y).put(z+p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p4
+                veticesBuffer.put(x+p1.x).put(y+p1.y).put(z+p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p1
+                veticesBuffer.put(x+p3.x).put(y+p3.y).put(z+p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.color.x).put(ti.color.y).put(ti.color.z).put(-1);//p3
+
+            }else {
+                veticesBuffer.put(x+p1.x).put(y+p1.y).put(z+p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
+                veticesBuffer.put(x+p2.x).put(y+p2.y).put(z+p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);//p2
+                veticesBuffer.put(x+p3.x).put(y+p3.y).put(z+p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
+                veticesBuffer.put(x+p4.x).put(y+p4.y).put(z+p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);//p4
+                veticesBuffer.put(x+p1.x).put(y+p1.y).put(z+p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);//p1
+                veticesBuffer.put(x+p3.x).put(y+p3.y).put(z+p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);//p3
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
 
     public static void draw3dImage(ShaderConfig config,Vao vao ,float[][] vertices,float[][] texoords,float[][] normal,int[] faces,TextureInfo ti,int x,int y,int z){

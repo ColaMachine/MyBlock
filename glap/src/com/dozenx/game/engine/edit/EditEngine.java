@@ -5,9 +5,12 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.RotateColorBlock;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.view.ColorGroup;
@@ -67,7 +70,7 @@ public class EditEngine {
     /**
      * 在组件库里选中的对象
      */
-    public ColorGroup chooseColorGroup = null;
+    //public ColorGroup chooseColorGroup = null;
     HashMap<String,ColorGroup > colorGroupHashMap =new HashMap<>();
 
     int minX,minZ;
@@ -320,8 +323,11 @@ public class EditEngine {
         int thick = Math.max(lastFaceMaxZ,prevMaxFaceZ)-minZ;
 
         ColorBlock colorBlock =null;
+        colorBlock =  readyShootBlock.copy();
 
-        if(chooseColorGroup!=null){
+        set(colorBlock,minX,0,minZ,Math.max(width,1),1,Math.max(thick,1),red,green,blue,alpha);
+
+      /*  if(chooseColorGroup!=null){
             colorBlock= chooseColorGroup.copy();
             colorBlock.x=minX;
             colorBlock.y =0;
@@ -334,7 +340,7 @@ public class EditEngine {
             colorBlock.width =Math.max(width,1);
             colorBlock.height=1;
             colorBlock.thick  =Math.max(thick,1);
-        }
+        }*/
 
         /*for(int x=minX;x<width;x++){
             for(int z=minZ;z<thick;z++){
@@ -345,7 +351,18 @@ public class EditEngine {
 
         GamingState.editEngine.select(colorBlock);
     }
-
+    public void set(ColorBlock colorBlock,int x,int y,int z,float width,float height,float thick,float red,float green ,float blue,float alpha){
+       colorBlock.x=x;
+        colorBlock.y =y;
+        colorBlock.z=z;
+        colorBlock.rf = red;
+        colorBlock.gf = green;
+        colorBlock.bf =blue;
+        colorBlock.width =Math.max(width,1);
+        colorBlock.height=1;
+        colorBlock.thick  =Math.max(thick,1);
+        colorBlock.opacity=alpha;
+    }
     public void select(ColorBlock block){
 
         selectBlockList.clear();
@@ -507,7 +524,7 @@ public class EditEngine {
     }
 
     public void brushBlock(float x,float y){
-       if(currentChoosedGroupForEdit!=null){
+       if(currentChoosedGroupForEdit!=null){//内部绘制
            currentChoosedGroupForEdit.brushBlock( x, y,red,green,blue);
            return;
        }
@@ -526,13 +543,13 @@ public class EditEngine {
 
 
         }
-       if(Switcher.shootComponentMode == Switcher.mouseState) {
+      /* if(Switcher.shootComponentMode == Switcher.mouseState) {
 
             //选择地平面
 
-         /*   ColorBlock colorBlock  =this.getSelectFirstBlock();
+         *//*   ColorBlock colorBlock  =this.getSelectFirstBlock();
             if(colorBlock!=null)
-            col*/
+            col*//*
             if(chooseColorGroup!=null){
                 ColorBlock colorBlock =  chooseColorGroup.copy();
                 colorBlock.x=curentX;
@@ -541,7 +558,7 @@ public class EditEngine {
                 this.colorBlockList.add(colorBlock);
                 return;
             }
-        }
+        }*/
        GL_Vector from = GamingState.instance.camera.Position.getClone();
         GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y);
         direction=direction.normalize();
@@ -607,7 +624,14 @@ public class EditEngine {
                             if(ary[i]==ary2[k]) {
                                 face =(int)ary[i];
                                 try {
-                                    ColorBlock addColorBlock = new ColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+                                    ColorBlock addColorBlock =null;
+
+                                        addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+                                    set(addColorBlock,(int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]),1,1,1,red,green,blue,alpha);
+                                 /*   }else{
+                                        addColorBlock = new ColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+                                    }*/
+
                                     addColorBlock.rf = red;
                                     addColorBlock.gf =green;
                                     addColorBlock.bf = blue;
@@ -744,7 +768,7 @@ public class EditEngine {
 
                                 }catch ( Exception e){
                                     e.printStackTrace();
-                                }
+                                }break;
 
 
                             }
@@ -754,13 +778,148 @@ public class EditEngine {
             }
             LogUtil.println("是那个面:"+face);
 
-        }else{
+        }else{//射在地面上
+            ColorBlock addColorBlock =null;
 
-                ColorBlock colorBlock = new ColorBlock(curentX, 0, curentZ, 1, 1, 1, red, green, blue,alpha);
-                this.colorBlockList.add(colorBlock);
+
+            addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+            set(addColorBlock,curentX, 0, curentZ,1,1,1,red,green,blue,alpha);
+
+            this.colorBlockList.add(addColorBlock);
 
         }
     }
+/*
+    public void brushBlock(float x,float y){
+        if(currentChoosedGroupForEdit!=null){//内部绘制
+            currentChoosedGroupForEdit.brushBlock( x, y,red,green,blue);
+            return;
+        }
+        ColorBlock block = this.getSelectBlock(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y));
+        if(block == null)
+            return;
+        block.rf = red;
+        block.gf = green;
+        block.bf = blue;
+    }*/
+    //,float red,float green ,float blue
+
+    public  Object[] getMouseChoosedBlock(float x,float y){
+
+        GL_Vector from = GamingState.instance.camera.Position.getClone();
+        GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y);
+        direction=direction.normalize();
+
+        // LogUtil.println("开始选择");
+        Vector3f fromV= new Vector3f(from.x,from.y,from.z);
+        Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
+        float distance =0;
+        ColorBlock theNearestBlock = null;
+        float[] xiangjiao=null;
+        float[] right=null;
+        for(int i=0;i<colorBlockList.size();i++){
+            ColorBlock colorBlock =  colorBlockList.get(i);
+            AABB aabb = new AABB(new Vector3f(colorBlock.x,colorBlock.y,colorBlock.z),new Vector3f(colorBlock.x+colorBlock.width,colorBlock.y+colorBlock.height,colorBlock.z+colorBlock.thick));
+
+            // LogUtil.println(fromV.toString() );
+            // LogUtil.println(directionV.toString() );
+            if( (xiangjiao=aabb.intersectRectangle2(fromV,directionV))!=null){//这里进行了按照list的顺序进行选择 其实应该按照距离的最近选择
+
+                //计算点在了那个面上
+                //有上下左右前后6个面
+                LogUtil.println("选中了");
+                float _tempDistance = xiangjiao[0]* xiangjiao[0]+ xiangjiao[1]* xiangjiao[1]+ xiangjiao[2]* xiangjiao[2];
+
+                if(distance ==0||_tempDistance<distance){
+                    distance=_tempDistance;
+                    theNearestBlock=colorBlock;
+                    right = xiangjiao;
+                }
+
+
+
+
+            }
+
+
+        }
+
+        int face =-1;
+        if(theNearestBlock!=null && theNearestBlock instanceof ImageBlock){
+            //计算是那一面
+            ImageBlock imageBlock = (ImageBlock)theNearestBlock;
+
+
+            float[] ary =  AABB.xyFaces[  (int) right[3]-1];
+            float[] ary1 =  AABB.xzFaces[  (int) right[4]-1];
+            float[] ary2 =  AABB.yzFaces[  (int) right[5]-1];
+
+            for(int i=0;i<ary.length;i++){
+                for(int j=0;j<ary.length;j++){
+                    if(ary[i]==ary1[j]){//在xz的集合当中也有
+
+
+                        for(int k=0;k<ary.length;k++){
+                            //在yz的集合当中也有
+                            if(ary[i]==ary2[k]) {
+                                face =(int)ary[i];
+
+                                break;
+
+
+                            }
+                        }
+                    }
+                }
+            }
+            return new Object[]{colorBlockList,face};
+    }
+    public void brushImageOnBlock(float x,float y){
+
+
+        if(currentChoosedGroupForEdit!=null){//内部绘制
+            currentChoosedGroupForEdit.brushImageOnBlock( x, y,red,green,blue);
+            return;
+        }
+
+        Object[] result = this.getMouseChoosedBlock(x,y);
+        ColorBlock colorBlock= (ColorBlock)result[0];
+        int face =(int) result[1];
+
+            if(colorBlock!=null && colorBlock instanceof  ImageBlock) {
+                ImageBlock imageBlock  =(ImageBlock) colorBlock;
+                //调整
+                if (face == Constants.BACK) {
+
+                    imageBlock.back = nowTextureInfo;
+
+                } else if (face == Constants.FRONT) {
+                    imageBlock.front = nowTextureInfo;
+
+                } else if (face == Constants.LEFT) {
+
+                    imageBlock.left = nowTextureInfo;
+
+                } else if (face == Constants.RIGHT) {
+
+                    imageBlock.right = nowTextureInfo;
+
+                } else if (face == Constants.BOTTOM) {
+                    imageBlock.bottom = nowTextureInfo;
+                } else if (face == Constants.TOP) {
+                    imageBlock.top = nowTextureInfo;
+                }
+
+            }
+            LogUtil.println("是那个面:"+face);
+
+        }
+    }
+
+    /**
+     * 当前选中的纹理
+     */
+    public TextureInfo nowTextureInfo;
 
     public void saveSelectAsComponent(String name){
         StringBuffer stringBuffer =new StringBuffer();
@@ -768,6 +927,11 @@ public class EditEngine {
             //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
             for(ColorBlock colorBlock : selectBlockList){
                 // outputStream .write();
+                if(colorBlock instanceof  ImageBlock){
+                    stringBuffer.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
+                            .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
+                            .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
+                }else
                 stringBuffer.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
                         .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
                         .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
@@ -836,6 +1000,14 @@ public class EditEngine {
                     maxz=colorBlock.z+colorBlock.thick;
                 }
             }
+        }
+
+        //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
+        for(int i=group.colorBlockList.size()-1;i>=0;i--){
+            ColorBlock colorBlock = group.colorBlockList.get(i);
+            colorBlock.x-=group.x;
+            colorBlock.y-=group.y;
+            colorBlock.z-=group.z;
         }
         group.x=minx;
         group.y=miny;
@@ -972,7 +1144,8 @@ public class EditEngine {
      * @param componentName
      */
     public void changeCurrentComponent(String componentName){
-        chooseColorGroup = colorGroupHashMap.get(componentName);
+       // chooseColorGroup = colorGroupHashMap.get(componentName);
+        readyShootBlock = colorGroupHashMap.get(componentName);
     }
 
     /*public void loadColorGroup(String componentName,List<String > contents) {
@@ -1000,14 +1173,32 @@ public class EditEngine {
              return i+1;
             }
             String[] ary = s.split(",");
-            ColorBlock colorBlock = new ColorBlock(Math.round(Float.valueOf(ary[0])), Math.round(Float.valueOf(ary[1])), Math.round(Float.valueOf(ary[2])));
-            colorBlock.width = Float.valueOf(ary[3]);
-            colorBlock.height = Float.valueOf(ary[4]);
-            colorBlock.thick = Float.valueOf(ary[5]);
-            colorBlock.rf = Float.valueOf(ary[6]);
-            colorBlock.gf = Float.valueOf(ary[7]);
-            colorBlock.bf = Float.valueOf(ary[8]);
-            colorGroup.colorBlockList.add(colorBlock);
+            if(ary.length>10){
+                ImageBlock block = new ImageBlock();
+                set(block,Math.round(Float.valueOf(ary[0])), Math.round(Float.valueOf(ary[1])), Math.round(Float.valueOf(ary[2])),Float.valueOf(ary[3]),Float.valueOf(ary[4]),Float.valueOf(ary[5]),
+                        Float.valueOf(ary[6]),Float.valueOf(ary[7]),Float.valueOf(ary[8]),Float.valueOf(ary[9]));
+                block.top = TextureManager.getTextureInfo(String.valueOf(ary[10]));
+                block.bottom = TextureManager.getTextureInfo(String.valueOf(ary[11]));
+                block.front = TextureManager.getTextureInfo(String.valueOf(ary[12]));
+                block.back = TextureManager.getTextureInfo(String.valueOf(ary[13]));
+                block.left = TextureManager.getTextureInfo(String.valueOf(ary[14]));
+                block.right = TextureManager.getTextureInfo(String.valueOf(ary[15]));
+                colorGroup.colorBlockList.add(block);
+            }else{
+                ColorBlock colorBlock = new ColorBlock(Math.round(Float.valueOf(ary[0])), Math.round(Float.valueOf(ary[1])), Math.round(Float.valueOf(ary[2])));
+                colorBlock.width = Float.valueOf(ary[3]);
+                colorBlock.height = Float.valueOf(ary[4]);
+                colorBlock.thick = Float.valueOf(ary[5]);
+                colorBlock.rf = Float.valueOf(ary[6]);
+                colorBlock.gf = Float.valueOf(ary[7]);
+                colorBlock.bf = Float.valueOf(ary[8]);
+                if(ary.length>=10){
+                    colorBlock.opacity = Float.valueOf(ary[9]);
+                }
+                colorGroup.colorBlockList.add(colorBlock);
+            }
+
+
         }
 
         return -1;
@@ -1026,7 +1217,7 @@ public class EditEngine {
             List<String> list = FileUtil.readFile2List(file);
 
             ColorGroup colorGroup = new ColorGroup(0,0,0);
-            int index = this.readColorGroupFromList(list,0,colorGroup);
+            int index = this.readColorGroupFromList(list,1,colorGroup);
             while(index != -1){
                 ColorGroup animationGroup = new ColorGroup(0,0,0);
                 index = this.readColorGroupFromList(list,index,animationGroup);
@@ -1059,9 +1250,23 @@ public class EditEngine {
             .append("\n");
             for(ColorBlock colorBlock : colorGroup.colorBlockList){
                 // outputStream .write();
+                if(colorBlock instanceof  ImageBlock){
+                    ImageBlock imageBlock =(ImageBlock) colorBlock;
+                    sb.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
+                            .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
+                            .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf)
+                            .append(",").append(colorBlock.opacity)
+                            .append(",") .append(imageBlock.top==null?" ":imageBlock.top.name)
+                            .append(",") .append(imageBlock.bottom==null?" ":imageBlock.bottom.name)
+                            .append(",") .append(imageBlock.front==null?" ":imageBlock.front.name)
+                            .append(",") .append(imageBlock.back==null?" ":imageBlock.back.name)
+                            .append(",") .append(imageBlock.left==null?" ":imageBlock.left.name)
+                            .append(",").append(imageBlock.right==null?" ":imageBlock.right.name)
+                            .append("\n");
+                }else
                 sb.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
                         .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
-                        .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
+                        .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append(",").append(colorBlock.opacity).append("\n");
             }
 
             for(ColorGroup animationGroup : colorGroup.animations){
