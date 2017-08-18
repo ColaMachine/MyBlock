@@ -16,7 +16,7 @@
 package cola.machine.game.myblocks.world.chunks;
 
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 
 
 /**
@@ -34,7 +34,7 @@ public interface ChunkBlockIterator {
     /**
      * @return the current block
      */
-    Block getBlock();
+    IBlock getBlock();
 
     /**
      * @return The world coords of the current block

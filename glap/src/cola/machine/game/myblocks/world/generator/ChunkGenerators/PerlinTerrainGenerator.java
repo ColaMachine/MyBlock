@@ -22,14 +22,12 @@ import java.util.Map;
 import javax.vecmath.Vector2f;
 
 import cola.machine.game.myblocks.math.TeraMath;
-import cola.machine.game.myblocks.model.Block;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.WorldBiomeProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.generator.FirstPassGenerator;
-import com.dozenx.game.engine.command.ItemBlockType;
 import com.dozenx.game.engine.command.ItemType;
 
 /**

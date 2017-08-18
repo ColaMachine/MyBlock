@@ -6,14 +6,16 @@ import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
-import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.AABB.AABB;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -21,7 +23,7 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 /**
  * 方块实体 如果你想找的是方块说明 那么应该找 blockDefinition
  */
-public class BaseBlock extends AABB implements Block{
+public abstract class BaseBlock extends AABB implements IBlock {
     //是否是透明
     boolean alpha =false;
     //是否可以通过
@@ -34,15 +36,24 @@ public class BaseBlock extends AABB implements Block{
 	public void renderShader(ShaderConfig config , GL_Matrix matrix){
 
 	}
+    public BaseBlock(int x,int y,int z,float width,float height,float thick){
+            this.x =x;
+        this.y=y;
+        this.z =z ;
+        this.width =width;
+        this.height = height;
+        this.thick=thick;
+    }
 
-
-
+    public ChunkImpl chunk;
 
 
 	public int x=0;//0~16
 	public int y=0;//0~128
 	public int z=0;//0~16
-
+    public float width;
+    public float height;
+    public float thick;
     public int chunkX=0;
     public int chunkY=0;
 
@@ -53,6 +64,9 @@ public class BaseBlock extends AABB implements Block{
 
 
 
+    public void setName(String name){
+        this.name = name;
+    }
 
 	public String getName(){
 		return name;
@@ -68,7 +82,7 @@ public class BaseBlock extends AABB implements Block{
        
     }
 
-    private String name;
+    public String name;
 	public BaseBlock(String name,int x,int y,int z){
 		this.name=name;
 		this.x=x;
@@ -309,12 +323,12 @@ public class BaseBlock extends AABB implements Block{
         return false;
     }
 
-    @Override
-    public Block clone(){
-        return new BaseBlock();
+ @Override
+    public IBlock clone(){
+        return null;
     }
 
-    public ChunkImpl chunk;
+
     @Override
     public void setChunk(ChunkImpl chunk){
         this.chunk= chunk;
@@ -413,5 +427,28 @@ public class BaseBlock extends AABB implements Block{
     }
 
 
+    public abstract void update(float x, float y, float z, float width, float height, float thick);
+    public abstract void update();
 
+    public abstract  BaseBlock copy();
+    public void addWidth(int num){
+        this.width+=num;
+    }
+    public void addX(int num){
+        this.x+=num;
+    }
+
+    public void addHeight(int num){
+        this.height+=num;
+    }
+    public void addY(int num){
+        this.y+=num;
+    }
+
+    public void addThick(int num){
+        this.thick+=num;
+    }
+    public void addZ(int num){
+        this.z+=num;
+    }
 }

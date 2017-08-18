@@ -1,26 +1,9 @@
 package com.dozenx.game.engine.Role.model;
 
-import cola.machine.game.myblocks.engine.modes.GamingState;
 import com.dozenx.game.engine.element.bean.Component;
-import cola.machine.game.myblocks.model.HandComponent;
-import cola.machine.game.myblocks.model.textture.Shape;
-import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.engine.Role.bean.Role;
-import com.dozenx.game.engine.command.EquipPartType;
-import com.dozenx.game.engine.item.bean.ItemBean;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
-import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.StringUtil;
-import core.log.LogUtil;
 import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL11;
-
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector4f;
 
 /**
  * Created by luying on 17/3/5.

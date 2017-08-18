@@ -1,9 +1,5 @@
 package cola.machine.game.myblocks.block;
 
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
-
 /**
  * Created by luying on 14-8-30.
  */

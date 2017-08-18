@@ -6,19 +6,17 @@ import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ShapeType;
 import cola.machine.game.myblocks.manager.TextureManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
-import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FloatBufferWrap;
-import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Point3f;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +85,7 @@ public class Component {
    }
 
 
-    public void addChild(Shape shape) {
+    public void addChild(BoneBlock shape) {
         String parentName = shape.getParent();
 
         Component parentNode = this.findChild(parentName);
@@ -108,7 +106,7 @@ public class Component {
         }
 
     }
-    public Component(Shape shape ){
+    public Component(BoneBlock shape ){
         this(shape.getWidth(),shape.getHeight(),shape.getThick());
         this.name = shape.getName();
         this.parentLocation =new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z());

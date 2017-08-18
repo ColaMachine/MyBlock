@@ -5,29 +5,29 @@ import glapp.GLApp;
 import java.util.HashMap;
 
 import cola.machine.game.myblocks.engine.MyBlockEngine;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.util.MathUtil;
 
 public class BlockRepository {
 	public MyBlockEngine engine;
-	public HashMap<Integer,Block>  map=new HashMap<Integer,Block> ();
+	public HashMap<Integer,IBlock>  map=new HashMap<Integer,IBlock> ();
 	public HashMap<String,Integer> handleMap=new HashMap();
-	public HashMap<Integer,Block> woodmap=new HashMap<Integer,Block> ();
-	public 	HashMap<String,HashMap<Integer,Block> > kindBlockMap=new HashMap<String,HashMap<Integer,Block> > ();
+	public HashMap<Integer,IBlock> woodmap=new HashMap<Integer,IBlock> ();
+	public 	HashMap<String,HashMap<Integer,IBlock> > kindBlockMap=new HashMap<String,HashMap<Integer,IBlock> > ();
 	
 	public HashMap<Integer,Chunk> chunks=new HashMap<Integer,Chunk>(); 
 	
 	public BlockRepository(MyBlockEngine engine){
 		this .engine=engine; 
 	}
-	public void put(Block block){//System.out.println("the existing block nums"+map.size());
+	public void put(IBlock block){//System.out.println("the existing block nums"+map.size());
 		
 	
 		if(!haveObject(block.getX(),block.getY(),block.getZ()))
 		map.put(block.getX()*10000+block.getZ()*100+block.getY(),block);
 		if(kindBlockMap.get(block.getName())==null){
-			kindBlockMap.put(block.getName(), new HashMap<Integer,Block>() );
+			kindBlockMap.put(block.getName(), new HashMap<Integer,IBlock>() );
 			
 		}
 		kindBlockMap.get(block.getName()).put(block.getX()*10000+block.getZ()*100+block.getY(),block);
@@ -40,7 +40,7 @@ public class BlockRepository {
 		return map.get(x*10000+z*100+y)!=null;
 	}
 	
-	public Block getObject(float x,float y,float z){
+	public IBlock getObject(float x, float y, float z){
 		int _x = MathUtil.getNearOdd(x );
 		int _y = MathUtil.getNearOdd(y);
 		int _z = MathUtil.getNearOdd(z );
@@ -54,7 +54,7 @@ public class BlockRepository {
 			return new GL_Vector(_x,_y,_z);
 		}
 	}*/
-	public Block getObject(int x,int y,int z){
+	public IBlock getObject(int x, int y, int z){
 		return map.get(x*10000+z*100+y);
 	}
 	/*public Block haveObject(float x,float y,float z){
@@ -79,7 +79,7 @@ public class BlockRepository {
 		java.util.Map.Entry entry = (java.util.Map.Entry)it.next();
 		// entry.getKey() ����������Ӧ�ļ�
 		// entry.getValue() ����������Ӧ��ֵ
-		Block block = (Block) entry.getValue();
+		IBlock block = (IBlock) entry.getValue();
 		block.render();
 		//System.out.println("the existing block nums"+map.size());
 		} 
@@ -100,7 +100,7 @@ public class BlockRepository {
 			
 		}*/
 		int i=0;
-		HashMap<Integer,Block> map =this.kindBlockMap.get(type);
+		HashMap<Integer,IBlock> map =this.kindBlockMap.get(type);
 		java.util.Iterator it = map.entrySet().iterator();
 		int handleId =engine. beginDisplayList();
 		while(it.hasNext()){
@@ -108,7 +108,7 @@ public class BlockRepository {
 		java.util.Map.Entry entry = (java.util.Map.Entry)it.next();
 		// entry.getKey() ����������Ӧ�ļ�
 		// entry.getValue() ����������Ӧ��ֵ
-		Block block = (Block) entry.getValue();
+		IBlock block = (IBlock) entry.getValue();
 		block.render();
 		//System.out.println("the existing block nums"+map.size());
 		} 

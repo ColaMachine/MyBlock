@@ -13,7 +13,7 @@ public class BlockDefRegistry {
 
     public void registry(Block block){
 
-        blockDefById.put((short)(block.getId()*10+block.getCid()),block);
+      //  blockDefById.put((short)(block.getId()*10+block.getCid()),block);
         blockDefByName.put(block.getName(),block);
     }
 

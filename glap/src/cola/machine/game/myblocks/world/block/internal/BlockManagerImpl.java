@@ -11,9 +11,9 @@ import com.dozenx.util.ByteUtil;
 
 public class BlockManagerImpl extends BlockManager {
     /**name to block **/
-	private HashMap<String,Block> blockInfoNameMap=new HashMap();
+	private HashMap<String,IBlock> blockInfoNameMap=new HashMap();
     /**id to block **/
-   private HashMap<Integer,Block> blockInfoIdMap=new HashMap();
+   private HashMap<Integer,IBlock> blockInfoIdMap=new HashMap();
 
     /**
      * 加载所有的block
@@ -26,37 +26,37 @@ public class BlockManagerImpl extends BlockManager {
      * 这里需要改进 不同的block 应该对应不同的类 colorblock  textureblock  DirStateTextureBLock
      */
 	public BlockManagerImpl(){
-        Block air=new BaseBlock("air",0,false);
-		Block stone=new BaseBlock("stone", ItemType.stone.ordinal(),false);
-		Block soil =new BaseBlock("soil",ItemType.soil.ordinal(),false);
-		Block glass=new BaseBlock("glass",ItemType.glass.ordinal(),true);
-		Block sand=new BaseBlock("sand",ItemType.sand.ordinal(),false);
-		Block mantle=new BaseBlock("mantle",ItemType.mantle.ordinal(),false);
-		Block water=new BaseBlock("water",ItemType.water.ordinal(),true);
-		Block wood=new BaseBlock("wood",ItemType.wood.ordinal(),false);
+        IBlock air=new ImageBlock("air",0,false);
+		IBlock stone=new ImageBlock("stone", ItemType.stone.ordinal(),false);
+		IBlock soil =new ImageBlock("soil",ItemType.soil.ordinal(),false);
+		IBlock glass=new ImageBlock("glass",ItemType.glass.ordinal(),true);
+		IBlock sand=new ImageBlock("sand",ItemType.sand.ordinal(),false);
+		IBlock mantle=new ImageBlock("mantle",ItemType.mantle.ordinal(),false);
+		IBlock water=new ImageBlock("water",ItemType.water.ordinal(),true);
+		IBlock wood=new ImageBlock("wood",ItemType.wood.ordinal(),false);
 
 
-        Block grass=new BaseBlock("grass",ItemType.grass.ordinal(),false);
+        IBlock grass=new ImageBlock("grass",ItemType.grass.ordinal(),false);
         blockInfoNameMap.put("grass", grass);
-        Block CrackedStoneBrick=new BaseBlock("CrackedStoneBrick",ItemType.CrackedStoneBrick.ordinal(),false);
+        IBlock CrackedStoneBrick=new ImageBlock("CrackedStoneBrick",ItemType.CrackedStoneBrick.ordinal(),false);
         blockInfoNameMap.put("CrackedStoneBrick", CrackedStoneBrick);
 
-        Block StoneBrick=new BaseBlock("StoneBrick",ItemType.StoneBrick.ordinal(),false);
+        IBlock StoneBrick=new ImageBlock("StoneBrick",ItemType.StoneBrick.ordinal(),false);
         blockInfoNameMap.put("StoneBrick", StoneBrick);
 
-        Block MossyStoneBrick=new BaseBlock("MossyStoneBrick",ItemType.MossyStoneBrick.ordinal(),false);
+        IBlock MossyStoneBrick=new ImageBlock("MossyStoneBrick",ItemType.MossyStoneBrick.ordinal(),false);
         blockInfoNameMap.put("MossyStoneBrick", MossyStoneBrick);
 
-        Block OakWood=new BaseBlock("OakWood",ItemType.OakWood.ordinal(),false);
+        IBlock OakWood=new ImageBlock("OakWood",ItemType.OakWood.ordinal(),false);
         blockInfoNameMap.put("OakWood", OakWood);
 
 
-        Block treeWood=new BaseBlock("tree_wood",ItemType.tree_wood.ordinal(),false);
-        Block treeLeaf=new BaseBlock("tree_seed",ItemType.tree_seed.ordinal(),true);
-        Block treeSeed=new BaseBlock("tree_leaf",ItemType.tree_leaf.ordinal(),false);
-        Block wood_door=new DoorBlock("wood_door",ItemType.wood_door.ordinal(),true);
-        Block copy_down=new CopyDownBlock("copy_down",ItemType.copy_down.ordinal(),true);
-        Block red=new ColorBlock("red",ItemType.red.ordinal(),false);
+        IBlock treeWood=new ImageBlock("tree_wood",ItemType.tree_wood.ordinal(),false);
+        IBlock treeLeaf=new ImageBlock("tree_seed",ItemType.tree_seed.ordinal(),true);
+        IBlock treeSeed=new ImageBlock("tree_leaf",ItemType.tree_leaf.ordinal(),false);
+        IBlock wood_door=new DoorBlock("wood_door",ItemType.wood_door.ordinal(),true);
+        IBlock copy_down=new CopyDownBlock("copy_down",ItemType.copy_down.ordinal(),true);
+        IBlock red=new ColorBlock("red",ItemType.red.ordinal(),false);
         blockInfoNameMap.put("air", air);
         blockInfoNameMap.put("water", water);
         blockInfoNameMap.put("stone", stone);
@@ -69,13 +69,13 @@ public class BlockManagerImpl extends BlockManager {
         blockInfoNameMap.put("tree_leaf", treeLeaf);
         blockInfoNameMap.put("tree_seed", treeSeed);
         blockInfoNameMap.put("wood_door", wood_door);
-        Block box=new BoxBlock("box",ItemType.box.ordinal(),true);
+        IBlock box=new BoxBlock("box",ItemType.box.ordinal(),true);
         blockInfoNameMap.put("box", box);
         blockInfoNameMap.put("copy_down", copy_down);
         blockInfoNameMap.put("red", red);
-       Iterator<Map.Entry<String, Block>> it = blockInfoNameMap.entrySet().iterator();
+       Iterator<Map.Entry<String, IBlock>> it = blockInfoNameMap.entrySet().iterator();
         while(it.hasNext()){
-            Map.Entry<String, Block> entry =it.next();
+            Map.Entry<String, IBlock> entry =it.next();
 
             blockInfoIdMap.put(entry.getValue().getId(),entry.getValue());
         }
@@ -83,14 +83,14 @@ public class BlockManagerImpl extends BlockManager {
 
 	}
 
-	public Block getBlock(String  name){
+	public IBlock getBlock(String  name){
 		return blockInfoNameMap.get(name);
 	}
     @Override
-    public Block getBlock(int  id) {
+    public IBlock getBlock(int  id) {
         if(id<0 || id>255 || id==ItemType.wood_door.ordinal()|| id==ItemType.box.ordinal()){
            int realId =  ByteUtil.get8_0Value(id);
-            Block block =blockInfoIdMap.get(realId);
+            IBlock block =blockInfoIdMap.get(realId);
            // block.setValue(id);
             return block;
         }else

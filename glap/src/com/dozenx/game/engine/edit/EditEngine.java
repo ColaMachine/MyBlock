@@ -1,21 +1,14 @@
 package com.dozenx.game.engine.edit;
 
-import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock;
+import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.view.ColorGroup;
-import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -26,8 +19,6 @@ import glmodel.GL_Vector;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +29,8 @@ import java.util.List;
  */
 public class EditEngine {
 
-    public List<ColorBlock> colorBlockList  =new ArrayList<>();
-    public List<ColorBlock> selectBlockList  =new ArrayList<>();
+    public List<BaseBlock> colorBlockList  =new ArrayList<>();
+    public List<BaseBlock> selectBlockList  =new ArrayList<>();
     public float prevX ;
     public float prevY;
     public float nowX;
@@ -65,7 +56,7 @@ public class EditEngine {
      * 当前编辑的组件库
      */
     ColorGroup currentChoosedGroupForEdit =null;
-    public float red ,green,blue,alpha;
+    public float red ,green,blue,alpha=1;
 
     /**
      * 在组件库里选中的对象
@@ -90,17 +81,17 @@ public class EditEngine {
 
         }
 
-        //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),0,0,0,new GL_Vector(0.3f,0.3f,0.3f),100,0,100,1);
+        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),0,0,0,new GL_Vector(0.3f,0.3f,0.3f),100,0,100,0.2f);
 
         for(int i=0;i<selectBlockList.size();i++){
-            ColorBlock colorBlock = selectBlockList.get(i);
+            BaseBlock colorBlock = selectBlockList.get(i);
 
             ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,colorBlock.width,colorBlock.height,colorBlock.thick);
 
         }
 
         for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock = colorBlockList.get(i);
+            BaseBlock colorBlock = colorBlockList.get(i);
               colorBlock.update();
         }
         if(startPoint!=null){
@@ -131,11 +122,11 @@ public class EditEngine {
      * @param direction
      * @return
      */
-    public ColorBlock getSelectBlock(GL_Vector from, GL_Vector direction ){
+   /* public ColorBlock getSelectBlock(GL_Vector from, GL_Vector direction ){
         direction=direction.normalize();
         //  startPoint =GamingState.instance.player.getPosition().getClone();
-        startPoint =GamingState.instance.camera.Position.getClone();
-        endPoint= startPoint.getClone().add(direction.getClone().mult(12));
+       *//* startPoint =GamingState.instance.camera.Position.getClone();
+        endPoint= startPoint.getClone().add(direction.getClone().mult(12));*//*
         // LogUtil.println("开始选择");
         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
         Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
@@ -170,7 +161,7 @@ public class EditEngine {
 
         }
         return theNearestBlock;
-    }
+    }*/
     //在没有圈框的时候 进行点射选择 在另一个selectObject中被调用
 
     /**
@@ -179,10 +170,9 @@ public class EditEngine {
      * @param direction
      * @return
      */
-        public ColorBlock  selectSingle(GL_Vector from, GL_Vector direction){
-
-            ColorBlock theNearestBlock = getSelectBlock(from,direction);
-
+        public ColorBlock  selectSingle(float x,float y){
+            Object[] results= this.getMouseChoosedBlock(x,y);
+            ColorBlock theNearestBlock = (ColorBlock)results[0];
 
             if(theNearestBlock!=null){
 
@@ -200,14 +190,13 @@ public class EditEngine {
             }
 
 
-
-            return null;
+            return theNearestBlock;
         }
 
 
 
 
-    public ColorBlock getSelectFirstBlock(){
+    public BaseBlock getSelectFirstBlock(){
         if(selectBlockList.size()>0){
             return selectBlockList.get(0);
         }
@@ -216,7 +205,7 @@ public class EditEngine {
     public void enterComponentEdit(){
 
 
-        ColorBlock colorBlock = getSelectFirstBlock();
+        BaseBlock colorBlock = getSelectFirstBlock();
 
         if(colorBlock!=null && colorBlock instanceof  ColorGroup ){
             Switcher.isEditComponent =true;
@@ -246,7 +235,7 @@ public class EditEngine {
         if(clearbefore)
         selectBlockList.clear();
         for( int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock  =  colorBlockList.get(i);
+            BaseBlock colorBlock  =  colorBlockList.get(i);
           /*  GL_Vector[] gl_vectors = BoxModel.getSmaillPoint(colorBlock.x,colorBlock.y,colorBlock.z,colorBlock.width, colorBlock.height, colorBlock.thick);
            for(){
 
@@ -266,13 +255,13 @@ public class EditEngine {
         }
 
         if(!clearbefore || selectBlockList.size()==0){
-           selectSingle(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),minX,Constants.WINDOW_HEIGHT-minY));
+           selectSingle(minX,minY);
         }
     }
 
     //选择区域
-    @Deprecated
-    public void selectObjects(float minX,float minY,float maxX,float maxY){
+ //   @Deprecated
+  /*  public void selectObjects(float minX,float minY,float maxX,float maxY){
         //遍历所有的方块查找所有的在方块里的方块
         //取出
         selectBlockList.clear();
@@ -291,7 +280,7 @@ public class EditEngine {
             }
         }
     }
-
+*/
 
     public  void deleteSelect(){
        /* for( int i=0;i<selectBlockList.size();i++){
@@ -302,7 +291,7 @@ public class EditEngine {
             currentChoosedGroupForEdit.deleteSelect();
         }else {
             for (int i = selectBlockList.size() - 1; i >= 0; i--) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlockList.remove(colorBlock);
 
@@ -322,7 +311,7 @@ public class EditEngine {
         int width = Math.max(lastFaceMaxX,prevMaxFaceX)-minX;
         int thick = Math.max(lastFaceMaxZ,prevMaxFaceZ)-minZ;
 
-        ColorBlock colorBlock =null;
+        BaseBlock colorBlock =null;
         colorBlock =  readyShootBlock.copy();
 
         set(colorBlock,minX,0,minZ,Math.max(width,1),1,Math.max(thick,1),red,green,blue,alpha);
@@ -351,19 +340,25 @@ public class EditEngine {
 
         GamingState.editEngine.select(colorBlock);
     }
-    public void set(ColorBlock colorBlock,int x,int y,int z,float width,float height,float thick,float red,float green ,float blue,float alpha){
-       colorBlock.x=x;
-        colorBlock.y =y;
-        colorBlock.z=z;
-        colorBlock.rf = red;
-        colorBlock.gf = green;
-        colorBlock.bf =blue;
-        colorBlock.width =Math.max(width,1);
-        colorBlock.height=1;
-        colorBlock.thick  =Math.max(thick,1);
-        colorBlock.opacity=alpha;
+    public void set(BaseBlock block, int x, int y, int z, float width, float height, float thick, float red, float green , float blue, float alpha){
+        block.x=x;
+        block.y =y;
+        block.z=z;
+
+        block.width =Math.max(width,1);
+        block.height=1;
+        block.thick  =Math.max(thick,1);
+        if(block instanceof  ColorBlock){
+            ColorBlock colorBlock = (ColorBlock) block;
+            colorBlock.rf = red;
+            colorBlock.gf = green;
+            colorBlock.bf =blue;
+
+            colorBlock.opacity=alpha;
+        }
+
     }
-    public void select(ColorBlock block){
+    public void select(BaseBlock block){
 
         selectBlockList.clear();
         selectBlockList.add(block);
@@ -372,13 +367,13 @@ public class EditEngine {
     public void adjustWidth(int num,boolean position){
         if(Switcher.size&&position) {
             for( int i=0;i<selectBlockList.size();i++){
-                ColorBlock colorBlock  =  selectBlockList.get(i);
+                BaseBlock colorBlock  =  selectBlockList.get(i);
 
                 colorBlock.addWidth(num);//(false);
 
             }}else{
             for( int i=0;i<selectBlockList.size();i++){
-                ColorBlock colorBlock  =  selectBlockList.get(i);
+                BaseBlock colorBlock  =  selectBlockList.get(i);
 
                 colorBlock.addX(num);//(false);
 
@@ -388,14 +383,14 @@ public class EditEngine {
     public void adjustHeight(int num,boolean position){
         if(Switcher.size && position) {
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addHeight(num);//(false);
 
             }
         }else{
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addY(num) ;//(false);
 
@@ -406,14 +401,14 @@ public class EditEngine {
     public void adjustThick(int num,boolean position){
         if(Switcher.size&&position){
             for( int i=0;i<selectBlockList.size();i++){
-                ColorBlock colorBlock  =  selectBlockList.get(i);
+                BaseBlock colorBlock  =  selectBlockList.get(i);
 
                 colorBlock.addThick( num);//(false);
 
             }
         }else{
             for( int i=0;i<selectBlockList.size();i++){
-                ColorBlock colorBlock  =  selectBlockList.get(i);
+                BaseBlock colorBlock  =  selectBlockList.get(i);
 
                 colorBlock.addZ( num);//(false);
 
@@ -424,17 +419,17 @@ public class EditEngine {
 
     public void copySelect(){
         for( int i=selectBlockList.size()-1;i>=0;i--){
-            ColorBlock colorBlock  =  selectBlockList.get(i);
-            ColorBlock copyBlock =new ColorBlock(colorBlock.x,colorBlock.y,colorBlock.z);
+            BaseBlock colorBlock  =  selectBlockList.get(i).copy();
+         /*   ColorBlock copyBlock =new ColorBlock(colorBlock.x,colorBlock.y,colorBlock.z);
             copyBlock.rf = colorBlock.rf;
             copyBlock.gf =colorBlock.gf;
             copyBlock.bf = colorBlock.bf;
             copyBlock.width = colorBlock.width;
             copyBlock.height =colorBlock.height;
-            copyBlock.thick =colorBlock.thick;
+            copyBlock.thick =colorBlock.thick;*/
             //colorBlock.selected=false;
-            colorBlockList.add(copyBlock);
-            selectBlockList.set(i,copyBlock);
+            colorBlockList.add(colorBlock);
+            selectBlockList.set(i,colorBlock);
           //  copyBlock.selected=true;
 
         }
@@ -451,12 +446,15 @@ public class EditEngine {
         }
 
         for( int i=selectBlockList.size()-1;i>=0;i--){
-            ColorBlock colorBlock  =  selectBlockList.get(i);
+            BaseBlock colorBlock  =  selectBlockList.get(i);
+            if(colorBlock instanceof  ColorBlock){
+                ColorBlock colorBlock1 =(ColorBlock ) colorBlock;
+                colorBlock1.rf = red;
+                colorBlock1.gf =green;
+                colorBlock1.bf = blue;
+                colorBlock1.opacity = alpha;
+            }
 
-            colorBlock.rf = red;
-            colorBlock.gf =green;
-            colorBlock.bf = blue;
-            colorBlock.opacity = alpha;
 
         }
     }
@@ -465,11 +463,9 @@ public class EditEngine {
         StringBuffer stringBuffer =new StringBuffer();
         try {
             //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
-            for(ColorBlock colorBlock : colorBlockList){
+            for(BaseBlock colorBlock : colorBlockList){
                // outputStream .write();
-                stringBuffer.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
-                .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
-                        .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
+                stringBuffer.append(colorBlock.toString()).append("\n");
             }
             FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile(),stringBuffer.toString());
         } catch (Exception e) {
@@ -502,18 +498,24 @@ public class EditEngine {
             LogUtil.println("未选中任何东西");
             return;
         }
-        ColorBlock colorBlock = selectBlockList.get(0);
+        BaseBlock colorBlock = selectBlockList.get(0);
 
         for(int x=0;x<colorBlock.width;x++){
             for(int y =0;y<colorBlock.height;y++){
                 for(int z =0;z<colorBlock.thick;z++){
-                    ColorBlock childBlock = new ColorBlock(colorBlock.x+x,colorBlock.y+y,colorBlock.z+z);
+
+                    BaseBlock  childBlock = colorBlock.copy();
+                    childBlock.x  = colorBlock.x+x;
+                    childBlock.y  = colorBlock.y+y;
+                    childBlock.z  = colorBlock.z+z;
+
                     childBlock.width=1;
                     childBlock.height=1;
                     childBlock.thick=1;
-                    childBlock.rf = colorBlock.rf();
-                    childBlock.gf = colorBlock.gf();
-                    childBlock.bf = colorBlock.bf();
+
+
+
+
                     colorBlockList.add(childBlock);
                 }
             }
@@ -528,7 +530,9 @@ public class EditEngine {
            currentChoosedGroupForEdit.brushBlock( x, y,red,green,blue);
            return;
        }
-        ColorBlock block = this.getSelectBlock(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y));
+        Object[] result =this.getMouseChoosedBlock(x,y);
+
+        ColorBlock block =(ColorBlock) result[0];
         if(block == null)
             return;
         block.rf = red;
@@ -537,249 +541,37 @@ public class EditEngine {
     }
 //,float red,float green ,float blue
     public void shootBlock(float x,float y){
+
         if(Switcher.isEditComponent){
             currentChoosedGroupForEdit.shootBlock(x,y);
             return;
 
 
         }
-      /* if(Switcher.shootComponentMode == Switcher.mouseState) {
-
-            //选择地平面
-
-         *//*   ColorBlock colorBlock  =this.getSelectFirstBlock();
-            if(colorBlock!=null)
-            col*//*
-            if(chooseColorGroup!=null){
-                ColorBlock colorBlock =  chooseColorGroup.copy();
-                colorBlock.x=curentX;
-                colorBlock.y=0;
-                colorBlock.z=curentZ;
-                this.colorBlockList.add(colorBlock);
-                return;
-            }
-        }*/
-       GL_Vector from = GamingState.instance.camera.Position.getClone();
-        GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y);
-        direction=direction.normalize();
-        startPoint =from;
-        endPoint= from.getClone().add(direction.mult(50));
-        // LogUtil.println("开始选择");
-        Vector3f fromV= new Vector3f(from.x,from.y,from.z);
-        Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
-        float distance =0;
-        ColorBlock theNearestBlock = null;
-        float[] xiangjiao=null;
-        float[] right=null;
-        for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock =  colorBlockList.get(i);
-            AABB aabb = new AABB(new Vector3f(colorBlock.x,colorBlock.y,colorBlock.z),new Vector3f(colorBlock.x+colorBlock.width,colorBlock.y+colorBlock.height,colorBlock.z+colorBlock.thick));
-
-            // LogUtil.println(fromV.toString() );
-            // LogUtil.println(directionV.toString() );
-            if( (xiangjiao=aabb.intersectRectangle2(fromV,directionV))!=null){//这里进行了按照list的顺序进行选择 其实应该按照距离的最近选择
-
-                //计算点在了那个面上
-                //有上下左右前后6个面
-                LogUtil.println("选中了");
-                float _tempDistance = xiangjiao[0]* xiangjiao[0]+ xiangjiao[1]* xiangjiao[1]+ xiangjiao[2]* xiangjiao[2];
-
-                if(distance ==0||_tempDistance<distance){
-                    distance=_tempDistance;
-                    theNearestBlock=colorBlock;
-                    right = xiangjiao;
-                }
-
-               // addColorBlock.rf = color.red;
-              //  addColorBlock.gf=color.green;
-              //  addColorBlock.bf =color.blue;
-                //GL_Vector.chuizhijuli(GL_Vector.sub(livingThing.position,from),direction)<3){
-                //   LogUtil.println("选中了");
-                //this.target=livingThing;
-                //colorBlock.selected=true;
-
-
-            }
-
-
-        }
-
-        int face =-1;
-        if(theNearestBlock!=null){
-            //计算是那一面
-
-
-
-           float[] ary =  AABB.xyFaces[  (int) right[3]-1];
-            float[] ary1 =  AABB.xzFaces[  (int) right[4]-1];
-            float[] ary2 =  AABB.yzFaces[  (int) right[5]-1];
-
-            for(int i=0;i<ary.length;i++){
-                for(int j=0;j<ary.length;j++){
-                    if(ary[i]==ary1[j]){//在xz的集合当中也有
-
-
-                        for(int k=0;k<ary.length;k++){
-                        //在yz的集合当中也有
-                            if(ary[i]==ary2[k]) {
-                                face =(int)ary[i];
-                                try {
-                                    ColorBlock addColorBlock =null;
+        Object[] results = this.getMouseChoosedBlock(x,y);
+        BaseBlock theNearestBlock = (ColorBlock)results[0];
+        GL_Vector touchPoint = (GL_Vector) results[2];
+        GL_Vector placePoint = (GL_Vector) results[3];
+        endPoint=touchPoint;
+        startPoint =placePoint;
+        int face = (int)results[1];
+    if(theNearestBlock!=null){
+                                    BaseBlock addColorBlock =null;
 
                                         addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
-                                    set(addColorBlock,(int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]),1,1,1,red,green,blue,alpha);
+                                    set(addColorBlock,(int) (placePoint.x), (int) (placePoint.y ), (int) (placePoint.z ),1,1,1,red,green,blue,alpha);
                                  /*   }else{
                                         addColorBlock = new ColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
                                     }*/
 
-                                    addColorBlock.rf = red;
-                                    addColorBlock.gf =green;
-                                    addColorBlock.bf = blue;
-                                    addColorBlock.opacity = alpha;
+
                                     colorBlockList.add(addColorBlock);
-                                    if (face == Constants.BACK ) {
-                                        addColorBlock.z -= 1;
-                                    } else if (face == Constants.LEFT) {
-                                        addColorBlock.x -= 1;
-                                    } else if (face == Constants.BOTTOM) {
-                                        addColorBlock.y -= 1;
-                                    }
-
-                                    if (face == Constants.BACK  ||  face == Constants.FRONT) {
-                                        float fangdabeishu = (addColorBlock.z-from.z)/direction.z;
-                                        addColorBlock.x= (int)(from.x+direction.x*fangdabeishu);
-                                        addColorBlock.y= (int)(from.y+direction.y*fangdabeishu);
-                                    } else if (face == Constants.LEFT || face == Constants.RIGHT) {
-                                        float fangdabeishu = (addColorBlock.x-from.x)/direction.x;
-                                        addColorBlock.y= (int)(from.y+direction.y*fangdabeishu);
-                                        addColorBlock.z= (int)(from.z+direction.z*fangdabeishu);
-                                    } else if (face == Constants.BOTTOM || face == Constants.TOP ) {
-                                        float fangdabeishu = (addColorBlock.y-from.y)/direction.y;
-                                        addColorBlock.x= (int)(from.x+direction.x*fangdabeishu);
-                                        addColorBlock.z= (int)(from.z+direction.z*fangdabeishu);
-                                    }
-                                    //调整
-                                    if (face == Constants.BACK) {
-                                        //addColorBlock.z=theNearestBlock.z-1;
-                                        if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
-                                            addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
-                                        }
-                                        if(addColorBlock.x<theNearestBlock.x){
-                                            addColorBlock.x=theNearestBlock.x ;
-                                        }
-
-                                       if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
-                                           addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
-                                       }
-                                        if(addColorBlock.y<theNearestBlock.y){
-                                            addColorBlock.y=theNearestBlock.y ;
-                                        }
 
 
-
-                                    } else  if (face == Constants.FRONT) {
-                                        //addColorBlock.z=theNearestBlock.z+(int)theNearestBlock.thick+1;
-                                        if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
-                                            addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
-                                        }
-                                        if(addColorBlock.x<theNearestBlock.x){
-                                            addColorBlock.x=theNearestBlock.x ;
-                                        }
-
-                                        if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
-                                            addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
-                                        }
-                                        if(addColorBlock.y<theNearestBlock.y){
-                                            addColorBlock.y=theNearestBlock.y ;
-                                        }
-
-
-
-                                    } else if (face == Constants.LEFT) {
-
-
-
-                                        if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
-                                            addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
-                                        }
-                                        if(addColorBlock.y<theNearestBlock.y){
-                                            addColorBlock.y=theNearestBlock.y ;
-                                        }
-
-                                     if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
-                                            addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
-                                        }
-                                        if(addColorBlock.z<theNearestBlock.z){
-                                            addColorBlock.z=theNearestBlock.z ;
-                                        }
-                                    } else if (face == Constants.RIGHT) {
-
-
-
-
-                                        if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
-                                            addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
-                                        }
-                                        if(addColorBlock.y<theNearestBlock.y){
-                                            addColorBlock.y=theNearestBlock.y ;
-                                        }
-
-                                        if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
-                                            addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
-                                        }
-                                        if(addColorBlock.z<theNearestBlock.z){
-                                            addColorBlock.z=theNearestBlock.z ;
-                                        }
-                                    } else if (face == Constants.BOTTOM) {
-                                        //addColorBlock.y=theNearestBlock.y-1;
-
-                                         if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
-                                            addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
-                                        }
-                                        if(addColorBlock.x<theNearestBlock.x){
-                                            addColorBlock.x=theNearestBlock.x ;
-                                        }
-
-
-                                        if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
-                                            addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
-                                        }
-                                        if(addColorBlock.z<theNearestBlock.z){
-                                            addColorBlock.z=theNearestBlock.z ;
-                                        }
-                                    }else if (face == Constants.TOP) {
-                                        //addColorBlock.y=theNearestBlock.y+(int)theNearestBlock.height+1;
-
-                                        if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
-                                            addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
-                                        }
-                                        if(addColorBlock.x<theNearestBlock.x){
-                                            addColorBlock.x=theNearestBlock.x ;
-                                        }
-
-
-                                        if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
-                                            addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
-                                        }
-                                        if(addColorBlock.z<theNearestBlock.z){
-                                            addColorBlock.z=theNearestBlock.z ;
-                                        }
-                                    }
-
-                                }catch ( Exception e){
-                                    e.printStackTrace();
-                                }break;
-
-
-                            }
-                        }
-                    }
-                }
-            }
             LogUtil.println("是那个面:"+face);
 
         }else{//射在地面上
-            ColorBlock addColorBlock =null;
+            BaseBlock addColorBlock =null;
 
 
             addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
@@ -807,18 +599,18 @@ public class EditEngine {
     public  Object[] getMouseChoosedBlock(float x,float y){
 
         GL_Vector from = GamingState.instance.camera.Position.getClone();
-        GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y);
+       GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y);
         direction=direction.normalize();
 
         // LogUtil.println("开始选择");
         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
         Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
         float distance =0;
-        ColorBlock theNearestBlock = null;
+        BaseBlock theNearestBlock = null;
         float[] xiangjiao=null;
         float[] right=null;
         for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock =  colorBlockList.get(i);
+            BaseBlock colorBlock =  colorBlockList.get(i);
             AABB aabb = new AABB(new Vector3f(colorBlock.x,colorBlock.y,colorBlock.z),new Vector3f(colorBlock.x+colorBlock.width,colorBlock.y+colorBlock.height,colorBlock.z+colorBlock.thick));
 
             // LogUtil.println(fromV.toString() );
@@ -845,34 +637,181 @@ public class EditEngine {
         }
 
         int face =-1;
-        if(theNearestBlock!=null && theNearestBlock instanceof ImageBlock){
+        GL_Vector touchPoint =new GL_Vector();
+        GL_Vector  placePoint =new GL_Vector();
+        if(theNearestBlock!=null ) {
             //计算是那一面
-            ImageBlock imageBlock = (ImageBlock)theNearestBlock;
 
 
-            float[] ary =  AABB.xyFaces[  (int) right[3]-1];
-            float[] ary1 =  AABB.xzFaces[  (int) right[4]-1];
-            float[] ary2 =  AABB.yzFaces[  (int) right[5]-1];
 
-            for(int i=0;i<ary.length;i++){
-                for(int j=0;j<ary.length;j++){
-                    if(ary[i]==ary1[j]){//在xz的集合当中也有
+            float[] ary = AABB.xyFaces[(int) right[3] - 1];
+            float[] ary1 = AABB.xzFaces[(int) right[4] - 1];
+            float[] ary2 = AABB.yzFaces[(int) right[5] - 1];
+
+            for (int i = 0; i < ary.length; i++) {
+                for (int j = 0; j < ary.length; j++) {
+                    if (ary[i] == ary1[j]) {//在xz的集合当中也有
 
 
-                        for(int k=0;k<ary.length;k++){
+                        for (int k = 0; k < ary.length; k++) {
                             //在yz的集合当中也有
-                            if(ary[i]==ary2[k]) {
-                                face =(int)ary[i];
+                            if (ary[i] == ary2[k]) {
+                                face = (int) ary[i];
 
-                                break;
+                                placePoint.x=touchPoint.x=(from.x + right[0]);
+                                placePoint.y=touchPoint.y= (from.y + right[1]);
 
+                                placePoint.z=touchPoint.z = (from.z + right[2]);
+
+                           /*     if (face == Constants.BACK ) {
+                                    placePoint.z -=1;
+                                } else if (face == Constants.LEFT) {
+                                    placePoint.x -= 1;
+                                } else if (face == Constants.BOTTOM) {
+                                    placePoint.y -= 1;
+                                }*/
+
+                                if (face == Constants.BACK  ||  face == Constants.FRONT) {
+                                    float fangdabeishu = (touchPoint.z-from.z)/direction.z;
+                                    touchPoint.x= (from.x+direction.x*fangdabeishu);
+                                    touchPoint.y= (from.y+direction.y*fangdabeishu);
+                                } else if (face == Constants.LEFT || face == Constants.RIGHT) {
+                                    float fangdabeishu = (touchPoint.x-from.x)/direction.x;
+                                    touchPoint.y= (from.y+direction.y*fangdabeishu);
+                                    touchPoint.z= (from.z+direction.z*fangdabeishu);
+                                } else if (face == Constants.BOTTOM || face == Constants.TOP ) {
+                                    float fangdabeishu = (touchPoint.y-from.y)/direction.y;
+                                    touchPoint.x= (from.x+direction.x*fangdabeishu);
+                                    touchPoint.z= (from.z+direction.z*fangdabeishu);
+                                }
+                                placePoint.x=touchPoint.x;
+                                placePoint.y=touchPoint.y;
+
+                                placePoint.z=touchPoint.z ;
+                                    if (face == Constants.BACK ) {
+                                    placePoint.z -=1;
+                                } else if (face == Constants.LEFT) {
+                                    placePoint.x -= 1;
+                                } else if (face == Constants.BOTTOM) {
+                                    placePoint.y -= 1;
+                                }
+                                //调整
+                                /*if (face == Constants.BACK) {
+                                    //addColorBlock.z=theNearestBlock.z-1;
+                                    if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
+                                        addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
+                                    }
+                                    if(addColorBlock.x<theNearestBlock.x){
+                                        addColorBlock.x=theNearestBlock.x ;
+                                    }
+
+                                    if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
+                                        addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
+                                    }
+                                    if(addColorBlock.y<theNearestBlock.y){
+                                        addColorBlock.y=theNearestBlock.y ;
+                                    }
+
+
+
+                                } else  if (face == Constants.FRONT) {
+                                    //addColorBlock.z=theNearestBlock.z+(int)theNearestBlock.thick+1;
+                                    if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
+                                        addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
+                                    }
+                                    if(addColorBlock.x<theNearestBlock.x){
+                                        addColorBlock.x=theNearestBlock.x ;
+                                    }
+
+                                    if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
+                                        addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
+                                    }
+                                    if(addColorBlock.y<theNearestBlock.y){
+                                        addColorBlock.y=theNearestBlock.y ;
+                                    }
+
+
+
+                                } else if (face == Constants.LEFT) {
+
+
+
+                                    if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
+                                        addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
+                                    }
+                                    if(addColorBlock.y<theNearestBlock.y){
+                                        addColorBlock.y=theNearestBlock.y ;
+                                    }
+
+                                    if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
+                                        addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
+                                    }
+                                    if(addColorBlock.z<theNearestBlock.z){
+                                        addColorBlock.z=theNearestBlock.z ;
+                                    }
+                                } else if (face == Constants.RIGHT) {
+
+
+
+
+                                    if(addColorBlock.y>theNearestBlock.y +(int)theNearestBlock.height-1){
+                                        addColorBlock.y=theNearestBlock.y +(int)theNearestBlock.height-1;
+                                    }
+                                    if(addColorBlock.y<theNearestBlock.y){
+                                        addColorBlock.y=theNearestBlock.y ;
+                                    }
+
+                                    if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
+                                        addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
+                                    }
+                                    if(addColorBlock.z<theNearestBlock.z){
+                                        addColorBlock.z=theNearestBlock.z ;
+                                    }
+                                } else if (face == Constants.BOTTOM) {
+                                    //addColorBlock.y=theNearestBlock.y-1;
+
+                                    if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
+                                        addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
+                                    }
+                                    if(addColorBlock.x<theNearestBlock.x){
+                                        addColorBlock.x=theNearestBlock.x ;
+                                    }
+
+
+                                    if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
+                                        addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
+                                    }
+                                    if(addColorBlock.z<theNearestBlock.z){
+                                        addColorBlock.z=theNearestBlock.z ;
+                                    }
+                                }else if (face == Constants.TOP) {
+                                    //addColorBlock.y=theNearestBlock.y+(int)theNearestBlock.height+1;
+
+                                    if(addColorBlock.x>theNearestBlock.x +(int)theNearestBlock.width-1){
+                                        addColorBlock.x=theNearestBlock.x +(int)theNearestBlock.width-1;
+                                    }
+                                    if(addColorBlock.x<theNearestBlock.x){
+                                        addColorBlock.x=theNearestBlock.x ;
+                                    }
+
+
+                                    if(addColorBlock.z>theNearestBlock.z +(int)theNearestBlock.thick-1){
+                                        addColorBlock.z=theNearestBlock.z +(int)theNearestBlock.thick-1;
+                                    }
+                                    if(addColorBlock.z<theNearestBlock.z){
+                                        addColorBlock.z=theNearestBlock.z ;
+                                    }
+                                }*/
+
+                                return new Object[]{theNearestBlock,face,touchPoint,placePoint};
 
                             }
                         }
                     }
                 }
             }
-            return new Object[]{colorBlockList,face};
+        }
+            return new Object[]{theNearestBlock,face,touchPoint,placePoint};
     }
     public void brushImageOnBlock(float x,float y){
 
@@ -883,11 +822,11 @@ public class EditEngine {
         }
 
         Object[] result = this.getMouseChoosedBlock(x,y);
-        ColorBlock colorBlock= (ColorBlock)result[0];
+        BaseBlock block= (BaseBlock)result[0];
         int face =(int) result[1];
 
-            if(colorBlock!=null && colorBlock instanceof  ImageBlock) {
-                ImageBlock imageBlock  =(ImageBlock) colorBlock;
+            if(block!=null && block instanceof  ImageBlock) {
+                ImageBlock imageBlock  =(ImageBlock) block;
                 //调整
                 if (face == Constants.BACK) {
 
@@ -913,7 +852,7 @@ public class EditEngine {
             }
             LogUtil.println("是那个面:"+face);
 
-        }
+
     }
 
     /**
@@ -925,16 +864,10 @@ public class EditEngine {
         StringBuffer stringBuffer =new StringBuffer();
         try {
             //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
-            for(ColorBlock colorBlock : selectBlockList){
+            for(BaseBlock block : selectBlockList) {
                 // outputStream .write();
-                if(colorBlock instanceof  ImageBlock){
-                    stringBuffer.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
-                            .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
-                            .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
-                }else
-                stringBuffer.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
-                        .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
-                        .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
+
+                stringBuffer.append(block.toString()).append("\n");
             }
             FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("save").resolve(name+".block").toFile(),stringBuffer.toString());
         } catch (Exception e) {
@@ -962,13 +895,13 @@ public class EditEngine {
 
     }
     public void buildComponent(){
-        ColorGroup group =new ColorGroup(0,0,0);
+        ColorGroup group =new ColorGroup(1,1,1,1,1,1);
         Integer  minx=null,miny=null,minz=null;
              Float   maxx=null,maxy=null,maxz=null;
 
             //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
         for(int i=selectBlockList.size()-1;i>=0;i--){
-            ColorBlock colorBlock = selectBlockList.get(i);
+            BaseBlock colorBlock = selectBlockList.get(i);
             group.addChild(selectBlockList.get(i));
             selectBlockList.remove(i);
             colorBlockList.remove(colorBlock);
@@ -1004,7 +937,7 @@ public class EditEngine {
 
         //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
         for(int i=group.colorBlockList.size()-1;i>=0;i--){
-            ColorBlock colorBlock = group.colorBlockList.get(i);
+            BaseBlock colorBlock = group.colorBlockList.get(i);
             colorBlock.x-=group.x;
             colorBlock.y-=group.y;
             colorBlock.z-=group.z;
@@ -1015,7 +948,7 @@ public class EditEngine {
         group.width = maxx-minx;
         group.height =maxy-miny;
         group.thick = maxz-minz;
-        for(ColorBlock colorBlock : group.colorBlockList){
+        for(BaseBlock colorBlock : group.colorBlockList){
             colorBlock.x-= group.x;
             colorBlock.y-=group.y;
             colorBlock.z-=group.z;
@@ -1153,7 +1086,7 @@ public class EditEngine {
     }*/
     public int readColorGroupFromList(List<String> contents,int nowIndex,ColorGroup colorGroup){
 
-        String groupInfo = contents.get(0);
+        String groupInfo = contents.get(nowIndex);
         String infoAry[] = groupInfo.split(",");
         colorGroup.width=Float.valueOf(infoAry[0]);
         colorGroup.height=Float.valueOf(infoAry[1]);
@@ -1167,7 +1100,7 @@ public class EditEngine {
         colorGroup.yzoom=Float.valueOf(infoAry[7]);
         colorGroup.zzoom=Float.valueOf(infoAry[8]);
         int lastIndex =0;
-        for(int i=nowIndex,size= contents.size();i<size;i++){
+        for(int i=nowIndex+1,size= contents.size();i<size;i++){
             String s = contents.get(i);
             if(s.equalsIgnoreCase("animation")){
              return i+1;
@@ -1215,11 +1148,13 @@ public class EditEngine {
         try {
 
             List<String> list = FileUtil.readFile2List(file);
-
-            ColorGroup colorGroup = new ColorGroup(0,0,0);
-            int index = this.readColorGroupFromList(list,1,colorGroup);
+        if(file.getName().equals("yanjiang3.block")){
+            LogUtil.println("hello");
+        }
+            ColorGroup colorGroup = new ColorGroup(0,0,0,1,1,1);
+            int index = this.readColorGroupFromList(list,0,colorGroup);
             while(index != -1){
-                ColorGroup animationGroup = new ColorGroup(0,0,0);
+                ColorGroup animationGroup = new ColorGroup(0,0,0,1,1,1);
                 index = this.readColorGroupFromList(list,index,animationGroup);
                 colorGroup.animations.add(animationGroup);
             }
@@ -1248,25 +1183,13 @@ public class EditEngine {
                     .append(",").append(colorGroup.yzoom)
                     .append(",").append(colorGroup.zzoom)
             .append("\n");
-            for(ColorBlock colorBlock : colorGroup.colorBlockList){
+            for(BaseBlock colorBlock : colorGroup.colorBlockList){
                 // outputStream .write();
-                if(colorBlock instanceof  ImageBlock){
+
                     ImageBlock imageBlock =(ImageBlock) colorBlock;
-                    sb.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
-                            .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
-                            .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf)
-                            .append(",").append(colorBlock.opacity)
-                            .append(",") .append(imageBlock.top==null?" ":imageBlock.top.name)
-                            .append(",") .append(imageBlock.bottom==null?" ":imageBlock.bottom.name)
-                            .append(",") .append(imageBlock.front==null?" ":imageBlock.front.name)
-                            .append(",") .append(imageBlock.back==null?" ":imageBlock.back.name)
-                            .append(",") .append(imageBlock.left==null?" ":imageBlock.left.name)
-                            .append(",").append(imageBlock.right==null?" ":imageBlock.right.name)
+                    sb.append(colorBlock.toString())
                             .append("\n");
-                }else
-                sb.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
-                        .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
-                        .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append(",").append(colorBlock.opacity).append("\n");
+
             }
 
             for(ColorGroup animationGroup : colorGroup.animations){
@@ -1282,11 +1205,15 @@ public class EditEngine {
                         .append(",").append(animationGroup.yzoom)
                         .append(",").append(animationGroup.zzoom)
                         .append("\n");
-                for(ColorBlock colorBlock : animationGroup.colorBlockList){
+                for(BaseBlock colorBlock : animationGroup.colorBlockList){
                     // outputStream .write();
-                    sb.append(colorBlock.x).append(",").append(colorBlock.y).append(",").append(colorBlock.z).append(",")
-                            .append(colorBlock.width).append(",").append(colorBlock.height).append(",").append(colorBlock.thick).append(",")
-                            .append(colorBlock.rf).append(",").append(colorBlock.gf).append(",").append(colorBlock.bf).append("\n");
+
+
+                        ImageBlock imageBlock =(ImageBlock) colorBlock;
+                        sb.append(colorBlock.toString())
+                                .append("\n");
+
+
                 }
             }
 
@@ -1313,29 +1240,49 @@ public class EditEngine {
 
     public void adjustRotatex(float value){
         for(int i=0;i<selectBlockList.size();i++){
-            ColorBlock colorBlock  = selectBlockList.get(i);
-            if(colorBlock instanceof RotateColorBlock){
-                ((RotateColorBlock) colorBlock) .rotateX(value);
+            BaseBlock colorBlock  = selectBlockList.get(i);
+            if(colorBlock instanceof RotateColorBlock2){
+                ((RotateColorBlock2) colorBlock) .rotateX(value);
             }
         }
     }
 
     public void adjustRotateY(float value){
         for(int i=0;i<selectBlockList.size();i++){
-            ColorBlock colorBlock  = selectBlockList.get(i);
-            if(colorBlock instanceof RotateColorBlock){
-                ((RotateColorBlock) colorBlock) .rotateY(value);
+            BaseBlock colorBlock  = selectBlockList.get(i);
+            if(colorBlock instanceof RotateColorBlock2){
+                ((RotateColorBlock2) colorBlock) .rotateY(value);
             }
         }
     }
     public void adjustRotateZ(float value){
         for(int i=0;i<selectBlockList.size();i++){
-            ColorBlock colorBlock  = selectBlockList.get(i);
-            if(colorBlock instanceof RotateColorBlock){
-                ((RotateColorBlock) colorBlock) .rotateZ(value);
+            BaseBlock colorBlock  = selectBlockList.get(i);
+            if(colorBlock instanceof RotateColorBlock2){
+                ((RotateColorBlock2) colorBlock) .rotateZ(value);
             }
         }
     }
 
-    public ColorBlock readyShootBlock = new ColorBlock();
+    public BaseBlock readyShootBlock = new ColorBlock();
+
+    public void saveToGame(){
+        for(BaseBlock  colorBlock : colorBlockList){
+            if(colorBlock instanceof  ColorGroup){
+                ColorGroup colorGroup = (ColorGroup)colorBlock;
+                //每个block都可以有单独的id
+                //block 又分为多个类型 colorblock imageblock  GroupBlock  rotateBlock 这几种 每个都有自己单独的id 和name
+
+                //
+                // colorGroup都有单独的id
+                //把这个id 写入到对应的chunkimp中 array中 如果碰到有状态的可旋转的还有单独放出来记录他的实体对象 拿出chunk的x y z
+                //然后每个 在以后的历史长河中 我希望是这样的 玩家 拥有自己的一套 骨骼系统 这套系统支持 骨骼相连接 其他的 非骨骼系统就可以直接使用模型 colorgroup
+
+                //color group 里有 各种 colorBlock imageBlock rotateBlock组成 boneBlock组成 那么 所有的block 所有的模型都可以通过colorGroup来表达
+                //每个colorgroup 都有单独的id
+
+
+            }
+        }
+    }
 }

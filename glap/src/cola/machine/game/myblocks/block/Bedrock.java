@@ -11,7 +11,7 @@ public class Bedrock extends Block{
         setDisplayName("基岩");
         setTargetable(true);
         this.setHardness(5);
-        setAllSideTexture("mantle");
+        //setAllSideTexture("mantle");
         setLiquid(false);
         setPassable(false);
         setTransparent(true);

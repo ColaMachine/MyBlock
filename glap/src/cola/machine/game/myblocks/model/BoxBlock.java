@@ -142,7 +142,7 @@ public class BoxBlock extends DirectionBlock {
 
     }*/
 @Override
-public Block clone(){
+public IBlock clone(){
    BoxBlock block =  new BoxBlock(this.getName(),this.getId(),this.getAlpha());
     block.itemDefinition =itemDefinition;
     return block;

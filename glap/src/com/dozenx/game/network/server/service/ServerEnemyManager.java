@@ -1,6 +1,6 @@
 package com.dozenx.game.network.server.service;
 
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.command.AttackCmd;
@@ -17,7 +17,6 @@ import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
-import javax.vecmath.Point3i;
 import java.util.*;
 
 /**
@@ -533,20 +532,20 @@ public class ServerEnemyManager implements Runnable {
         int offsetX =MathUtil.getOffesetChunk(x);
         int offsetZ = MathUtil.getOffesetChunk(z);
         Chunk chunk = chunkProvider.getChunk(MathUtil.getBelongChunkInt(x), 0, MathUtil.getBelongChunkInt(z));
-        Block block = chunk.getBlock(offsetX, y, offsetZ);
+        IBlock block = chunk.getBlock(offsetX, y, offsetZ);
 
 
         if (block == null || block.getId() == 0 || block.isPenetrate()) { //说明这边的block也是空的 it's empty
            if(y<1){
                return 0;
            }
-            Block blockYLow = chunk.getBlock(offsetX, y-1, offsetZ);
+            IBlock blockYLow = chunk.getBlock(offsetX, y-1, offsetZ);
             if (blockYLow == null || blockYLow.getId() == 0 || blockYLow.isPenetrate()) {//如果平移过去 下面的基石是空的
                 //test y-1 again
                 if(y<2){
                     return -1;
                 }
-                Block blockYLowLow = chunk.getBlock(offsetX, y-2, offsetZ);
+                IBlock blockYLowLow = chunk.getBlock(offsetX, y-2, offsetZ);
                 if (blockYLowLow == null || blockYLowLow.getId() == 0 ||blockYLowLow.isPenetrate()) {//说明过去的话下面是空的 过去会发生跌落 means the ydistance >1
                     return -2;
 
@@ -558,7 +557,7 @@ public class ServerEnemyManager implements Runnable {
                 return 0;//means ok just go there livingthing will not change y
             }
         } else if (block.getId() > 0) {//说明旁边是有块的means y there is block livingthing will change y=y+1
-            Block blockYHigh = chunk.getBlock(offsetX, y + 1, offsetZ);
+            IBlock blockYHigh = chunk.getBlock(offsetX, y + 1, offsetZ);
             if (blockYHigh == null || blockYHigh.getId() == 0 || blockYHigh.isPenetrate()) {//means y+1 there is no block livingthing can go there  and will lift the livingthing
                 return 1;
             } else {

@@ -1,11 +1,6 @@
 package com.dozenx.game.engine.element.model;
 
-import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.element.bean.Component;
@@ -13,18 +8,9 @@ import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.FloatBufferWrap;
-import com.dozenx.util.ImageUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL11;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 物品模型-盒子模型
@@ -213,7 +199,7 @@ public class BoxModel implements Model {
         }
     }
 
-    public  BoxModel(Shape shape){//这个逻辑是错误的 shape 是不应该有itemDefinition属性的
+    public  BoxModel(BoneBlock shape){//这个逻辑是错误的 shape 是不应该有itemDefinition属性的
         if(shape == null){
             LogUtil.err(" shape can't be null");
         }

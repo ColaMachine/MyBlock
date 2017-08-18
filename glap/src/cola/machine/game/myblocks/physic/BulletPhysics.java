@@ -4,12 +4,9 @@ import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
-import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 
 import cola.machine.game.myblocks.math.Vector3i;
 public class BulletPhysics  {
@@ -140,7 +137,7 @@ public class BulletPhysics  {
                             MathUtil.floor(from.z+x*to.z));*/
                     //return ;
     			}
-                Block targetBlock = bianliChunk.getBlock(offsetX,worldY,offsetZ);
+                IBlock targetBlock = bianliChunk.getBlock(offsetX,worldY,offsetZ);
                 arr.targetChunX= chunkX;
                 arr.targetChunZ= chunkZ;
                 arr.targetPoint = new GL_Vector(offsetX,

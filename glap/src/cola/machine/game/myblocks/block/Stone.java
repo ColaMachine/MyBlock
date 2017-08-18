@@ -11,7 +11,7 @@ public class Stone extends Block{
         setDisplayName("石头");
         setTargetable(true);
         this.setHardness(0);
-        setAllSideTexture("stone");
+       // setAllSideTexture("stone");
         setLiquid(false);
         setPassable(false);
         setTransparent(true);

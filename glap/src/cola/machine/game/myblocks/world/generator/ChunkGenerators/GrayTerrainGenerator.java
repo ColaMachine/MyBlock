@@ -1,28 +1,24 @@
 package cola.machine.game.myblocks.world.generator.ChunkGenerators;
-import glapp.GLImage;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dozenx.util.ImageUtil;
-import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.WorldBiomeProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import  cola.machine.game.myblocks.world.generator.*;
 public class GrayTerrainGenerator implements FirstPassGenerator{
-	  private Block mantle;
-	    private Block water;
-	    private Block stone;
-	    private Block sand;
-	    private Block grass;
-	    private Block snow;
+	  private IBlock mantle;
+	    private IBlock water;
+	    private IBlock stone;
+	    private IBlock sand;
+	    private IBlock grass;
+	    private IBlock snow;
 	private static final Logger logger = LoggerFactory.getLogger(GrayTerrainGenerator.class);
 	  private float[][] heightmap;
 	  public GrayTerrainGenerator() {

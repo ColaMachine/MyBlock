@@ -5,7 +5,7 @@ package cola.machine.game.myblocks.world.chunks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.TeraMath;
@@ -48,18 +48,18 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     }
 
     @Override
-    public Block getBlock(float x, float y, float z) {
+    public IBlock getBlock(float x, float y, float z) {
         return getBlock(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(y + 0.5f), TeraMath.floorToInt(z + 0.5f));
     }
 
     @Override
-    public Block getBlock(Vector3i pos) {
+    public IBlock getBlock(Vector3i pos) {
         return getBlock(pos.x, pos.y, pos.z);
     }
 
     // TODO: Review
     @Override
-    public Block getBlock(int blockX, int blockY, int blockZ) {
+    public IBlock getBlock(int blockX, int blockY, int blockZ) {
         if (!blockRegion.encompasses(blockX, blockY, blockZ)) {
             return null;//BlockManager.getAir();
         }
@@ -109,12 +109,12 @@ public class ChunkViewCoreImpl implements ChunkViewCore {
     }
 
     @Override
-    public void setBlock(Vector3i pos, Block type) {
+    public void setBlock(Vector3i pos, IBlock type) {
         setBlock(pos.x, pos.y, pos.z, type);
     }
 
     @Override
-    public void setBlock(int blockX, int blockY, int blockZ, Block type) {
+    public void setBlock(int blockX, int blockY, int blockZ, IBlock type) {
         if (!locked.get()) {
             throw new IllegalStateException("Attempted to modify block though an unlocked view");
         } else if (blockRegion.encompasses(blockX, blockY, blockZ)) {

@@ -4,7 +4,7 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.BodyComponent;
 import cola.machine.game.myblocks.model.HandComponent;
 import cola.machine.game.myblocks.model.WearComponent;
-import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.Role.bean.Role;
@@ -352,7 +352,7 @@ public class PlayerModel extends BaseModel   {
             if (itemBean == null || itemBean.itemDefinition==null) {
                 return;
             } else {
-                Shape shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" +  itemBean.itemDefinition.getName() + "failed");
 
@@ -375,7 +375,7 @@ public class PlayerModel extends BaseModel   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                Shape shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" +  itemBean.itemDefinition.getName() + "failed");
 
@@ -527,7 +527,7 @@ public class PlayerModel extends BaseModel   {
             if (itemCfg == null) {
                 return;
             } else {
-                Shape shape = itemCfg.getShape();
+                BoneBlock shape = itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
@@ -550,7 +550,7 @@ public class PlayerModel extends BaseModel   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                Shape shape = itemCfg.getShape();
+                BoneBlock shape = itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
@@ -592,7 +592,7 @@ public class PlayerModel extends BaseModel   {
             if (itemCfg == null) {
                 return;
             } else {
-                Shape shape = itemCfg.getShape();
+                BoneBlock shape = itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
@@ -615,7 +615,7 @@ public class PlayerModel extends BaseModel   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                Shape shape = itemCfg.getShape();
+                BoneBlock shape = itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 

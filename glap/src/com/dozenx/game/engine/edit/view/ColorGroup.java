@@ -4,7 +4,10 @@ import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.math.AABB;
+import cola.machine.game.myblocks.model.BaseBlock;
+//import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.EditEngine;
@@ -23,7 +26,7 @@ import java.util.List;
 /**
  * Created by dozen.zhang on 2017/8/9.
  */
-public class ColorGroup extends  ColorBlock{
+public class ColorGroup extends BaseBlock {
     public ColorGroup(int x,int y,int z,float width,float height,float thick){
         super(x,y,z,width,height,thick);
         /*this.x =x;
@@ -33,21 +36,27 @@ public class ColorGroup extends  ColorBlock{
         this.height =height;
         this.thick =thick;*/
     }
+
+    @Override
+    public void update(float x, float y, float z, float width, float height, float thick) {
+        this.update();
+    }
+
     public float xoffset=0;
     public float yoffset=0;
     public float zoffset=0;
     public float xzoom=1;
     public float yzoom=1;
     public float zzoom=1;
-   public List<ColorBlock> colorBlockList =new ArrayList<ColorBlock>();
-    public List<ColorBlock> selectBlockList =new ArrayList<ColorBlock>();
+   public List<BaseBlock> colorBlockList =new ArrayList<BaseBlock>();
+    public List<BaseBlock> selectBlockList =new ArrayList<BaseBlock>();
     public List<ColorGroup> animations =new ArrayList<ColorGroup>();
-    public ColorGroup(int x, int y, int z) {
+ /*   public ColorGroup(int x, int y, int z) {
         super(x, y, z);
-    }
+    }*/
 
 
-    public void  addChild(ColorBlock colorBlock){
+    public void  addChild(BaseBlock colorBlock){
         colorBlockList.add(colorBlock);
     }
     long lastAnimationTime=0;
@@ -66,9 +75,11 @@ public class ColorGroup extends  ColorBlock{
                 }
               //  animations.get(nowIndex).update();
 
-                for(int i=0;i<colorBlockList.size();i++){
-                    ColorBlock colorBlock = animations.get(nowIndex).colorBlockList.get(i);
-                    ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+                for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
+                    BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
+                    float[] info  = getChildBlockPosition(block);
+                    block.update(info[0],info[1],info[2],info[3],info[4],info[5]);
+                 //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
 
                 }
                 return;
@@ -79,13 +90,13 @@ public class ColorGroup extends  ColorBlock{
            /* }*/
         }
         for(int i=0;i<selectBlockList.size();i++){
-            ColorBlock colorBlock = selectBlockList.get(i);
+            BaseBlock colorBlock = selectBlockList.get(i);
             float[] info  =this.getChildBlockPosition(colorBlock);
             ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),info[0],info[1],info[2],info[3],info[4],info[5]);
         }
 
         for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock = colorBlockList.get(i);
+            BaseBlock colorBlock = colorBlockList.get(i);
            // colorBlock.update();
             float[] info  =this.getChildBlockPosition(colorBlock);
 
@@ -97,9 +108,9 @@ public class ColorGroup extends  ColorBlock{
     }
 
 
-    public ColorBlock  selectSingle(GL_Vector from, GL_Vector direction){
+    public BaseBlock  selectSingle(GL_Vector from, GL_Vector direction){
 
-        ColorBlock theNearestBlock = getSelectBlock(from,direction);
+        BaseBlock theNearestBlock = getSelectBlock(from,direction);
 
         if(theNearestBlock!=null){
 
@@ -108,7 +119,7 @@ public class ColorGroup extends  ColorBlock{
         }
         return null;
     }
-    public ColorBlock getSelectBlock(GL_Vector from, GL_Vector direction ){
+    public BaseBlock getSelectBlock(GL_Vector from, GL_Vector direction ){
         direction=direction.normalize();
         //  startPoint =GamingState.instance.player.getPosition().getClone();
 
@@ -116,10 +127,10 @@ public class ColorGroup extends  ColorBlock{
         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
         Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
         float distance =0;
-        ColorBlock theNearestBlock = null;
+        BaseBlock theNearestBlock = null;
         float[] xiangjiao=null;
         for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock =  colorBlockList.get(i);
+            BaseBlock colorBlock =  colorBlockList.get(i);
             float[] info = getChildBlockPosition(colorBlock);
             AABB aabb = new AABB(new Vector3f(info[0],info[1],info[2]),new Vector3f(info[0]+info[3],info[1]+info[4],info[2]+info[5]));
 
@@ -151,7 +162,7 @@ public class ColorGroup extends  ColorBlock{
     public void addWidth(int num){
         if(Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addWidth(num);//(false);
 
@@ -166,7 +177,7 @@ public class ColorGroup extends  ColorBlock{
 
         if(Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addX(num);//(false);
 
@@ -181,7 +192,7 @@ public class ColorGroup extends  ColorBlock{
 
         if(Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addHeight(num);//(false);
 
@@ -196,7 +207,7 @@ public class ColorGroup extends  ColorBlock{
 
         if(Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addY(num);//(false);
 
@@ -213,7 +224,7 @@ public class ColorGroup extends  ColorBlock{
 
         if(Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addThick(num);//(false);
 
@@ -227,7 +238,7 @@ public class ColorGroup extends  ColorBlock{
 
         if(Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
-                ColorBlock colorBlock = selectBlockList.get(i);
+                BaseBlock colorBlock = selectBlockList.get(i);
 
                 colorBlock.addZ(num);//(false);
 
@@ -251,7 +262,7 @@ public class ColorGroup extends  ColorBlock{
         colorGroup.zzoom= this.zzoom;
         //复制所有child block
         for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock = colorBlockList.get(i);
+            BaseBlock colorBlock = colorBlockList.get(i);
             colorGroup.colorBlockList.add(colorBlock.copy());
 
         }
@@ -277,7 +288,7 @@ public class ColorGroup extends  ColorBlock{
         if(clearbefore)
             selectBlockList.clear();
         for( int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock  =  colorBlockList.get(i);
+            BaseBlock colorBlock  =  colorBlockList.get(i);
           /*  GL_Vector[] gl_vectors = BoxModel.getSmaillPoint(colorBlock.x,colorBlock.y,colorBlock.z,colorBlock.width, colorBlock.height, colorBlock.thick);
            for(){
 
@@ -301,7 +312,7 @@ float[] info =getChildBlockPosition(colorBlock);
         }
     }
 
-    public float[] getChildBlockPosition(ColorBlock colorBlock){
+    public float[] getChildBlockPosition(BaseBlock colorBlock){
         float[] info =new float[6];
         float x = colorBlock.x/xzoom+xoffset + this.x;
         float y = colorBlock.y/yzoom+yoffset + this.y;
@@ -322,11 +333,11 @@ float[] info =getChildBlockPosition(colorBlock);
         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
         Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
         float distance =0;
-        ColorBlock theNearestBlock = null;
+        BaseBlock theNearestBlock = null;
         float[] xiangjiao=null;
         float[] right=null;
         for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock =  colorBlockList.get(i);
+            BaseBlock colorBlock =  colorBlockList.get(i);
            float[] info = this.getChildBlockPosition(colorBlock);
             AABB aabb = new AABB(new Vector3f(info[0],info[1],info[2]),new Vector3f(info[0]+info[3],info[1]+info[4],info[2]+info[5]));
 
@@ -386,11 +397,16 @@ float[] info =getChildBlockPosition(colorBlock);
                                     float thisY = (from.y + right[1]-this.yoffset-this.y )*this.yzoom;
                                     float thisZ = (from.z + right[2]-this.zoffset-this.z )*this.zzoom;
 
-                                    ColorBlock addColorBlock = new ColorBlock((int) thisX, (int) thisY, (int) thisZ);
+                                    BaseBlock addColorBlock =GamingState.editEngine.readyShootBlock.copy();
+                                    GamingState.editEngine.set(addColorBlock,(int)thisX,(int)thisY,(int)thisZ,addColorBlock.width,addColorBlock.height,addColorBlock.thick,GamingState.editEngine.red,
+                                            GamingState.editEngine.green,
+                                            GamingState.editEngine.blue,
+                                            GamingState.editEngine.alpha );
 
-                                    addColorBlock.rf =  GamingState.editEngine.red;
+
+                                 /*   addColorBlock.rf =  GamingState.editEngine.red;
                                     addColorBlock.gf = GamingState.editEngine.green;
-                                    addColorBlock.bf =  GamingState.editEngine.blue;
+                                    addColorBlock.bf =  GamingState.editEngine.blue;*/
                                     colorBlockList.add(addColorBlock);
                                     if (face == Constants.BACK ) {
                                         addColorBlock.z -= 1;
@@ -539,7 +555,7 @@ float[] info =getChildBlockPosition(colorBlock);
     }
     public void deleteSelect(){
         for (int i = selectBlockList.size() - 1; i >= 0; i--) {
-            ColorBlock colorBlock = selectBlockList.get(i);
+            BaseBlock colorBlock = selectBlockList.get(i);
 
             colorBlockList.remove(colorBlock);
 
@@ -584,12 +600,15 @@ float[] info =getChildBlockPosition(colorBlock);
     public void setColor(float red, float green, float blue,float alpha) {
 
         for( int i=selectBlockList.size()-1;i>=0;i--){
-            ColorBlock colorBlock  =  selectBlockList.get(i);
+            BaseBlock colorBlock  =  selectBlockList.get(i);
+        if(colorBlock instanceof ColorBlock){
+            ColorBlock colorBlock1 =(ColorBlock) colorBlock;
+            colorBlock1.rf = red;
+            colorBlock1.gf =green;
+            colorBlock1.bf = blue;
+            colorBlock1.opacity=alpha;
+        }
 
-            colorBlock.rf = red;
-            colorBlock.gf =green;
-            colorBlock.bf = blue;
-            colorBlock.opacity=alpha;
 
         }
     }
@@ -604,11 +623,11 @@ float[] info =getChildBlockPosition(colorBlock);
         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
         Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
         float distance =0;
-        ColorBlock theNearestBlock = null;
+        BaseBlock theNearestBlock = null;
         float[] xiangjiao=null;
         float[] right=null;
         for(int i=0;i<colorBlockList.size();i++){
-            ColorBlock colorBlock =  colorBlockList.get(i);
+            BaseBlock colorBlock =  colorBlockList.get(i);
 
             float[] info  =this.getChildBlockPosition(colorBlock);
             AABB aabb = new AABB(new Vector3f(info[0],info[1],info[2]),new Vector3f(info[0]+info[3],info[1]+info[4],info[2]+info[5]));
@@ -696,11 +715,19 @@ float[] info =getChildBlockPosition(colorBlock);
     }
     public void brushBlock(float x, float y, float red, float green, float blue) {
 
-        ColorBlock block = this.getSelectBlock(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y));
+        BaseBlock block = this.getSelectBlock(GamingState.instance.camera.Position.getClone(), OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().getClone(),x,Constants.WINDOW_HEIGHT-y));
         if(block == null)
             return;
-        block.rf = red;
-        block.gf = green;
-        block.bf = blue;
+        if(block instanceof  ColorBlock){
+            ((ColorBlock) block).rf = red;
+            ((ColorBlock) block).gf = green;
+            ((ColorBlock) block).bf = blue;
+        }
+
+    }
+
+    @Override
+    public IBlock clone() {
+        return null;
     }
 }

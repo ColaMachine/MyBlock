@@ -1,16 +1,10 @@
 package com.dozenx.game.engine.fx;
 
-import core.log.LogUtil;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,14 +15,19 @@ import java.nio.ByteBuffer;
  * Created by dozen.zhang on 2017/8/14.
  */
 public class MyCanvas extends Canvas {
+    public int mouseStartX;
+    public int mouseStartY;
+    public int mouseEndX;
+    public int mouseEndY;
+    public int imgheight;
+    public int imgwidth;
+    Image image;
     private GraphicsContext gc;
-    public MyCanvas(double width, double height){
+    public MyCanvas(double width, double height) {
         super(width, height);
 
 
         gc = getGraphicsContext2D();
-
-
 
 
         // 在用户拖动鼠标时擦除部分内容
@@ -36,12 +35,12 @@ public class MyCanvas extends Canvas {
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        gc.clearRect(0,0,600,600);
-                        gc.drawImage(image,0,0,600,600);
+                        gc.clearRect(0, 0, 600, 600);
+                        gc.drawImage(image, 0, 0, 600, 600);
                         //gc.save();
-                        mouseEndX=(int)e.getX();
-                        mouseEndY=(int)e.getY();
-                        gc.strokeRect(mouseStartX, mouseStartY, mouseEndX-mouseStartX,mouseEndY-mouseStartY);
+                        mouseEndX = (int) e.getX();
+                        mouseEndY = (int) e.getY();
+                        gc.strokeRect(mouseStartX, mouseStartY, mouseEndX - mouseStartX, mouseEndY - mouseStartY);
                         //gc.restore();
 
                     }
@@ -50,26 +49,20 @@ public class MyCanvas extends Canvas {
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        mouseStartX = (int)e.getX();
-                        mouseStartY=(int)e.getY();
+                        mouseStartX = (int) e.getX();
+                        mouseStartY = (int) e.getY();
                     }
                 });
         draw(gc);
     }
-    public int mouseStartX;
-    public int mouseStartY;
-    public int mouseEndX;
-    public int mouseEndY;
-    public int imgheight;
-    public int imgwidth;
-    Image image ;
-    public void drawImage(File file){
+
+    public void drawImage(File file) {
         try {
 
-             image = new Image(new FileInputStream(file));
-            imgheight = (int)image.getWidth();
-            imgwidth =(int) image.getHeight();
-            gc.drawImage(image,0,0,600,600);
+            image = new Image(new FileInputStream(file));
+            imgheight = (int) image.getWidth();
+            imgwidth = (int) image.getHeight();
+            gc.drawImage(image, 0, 0, 600, 600);
            /* this.setWidth(width);
 
             this.setHeight(height);
@@ -83,13 +76,13 @@ public class MyCanvas extends Canvas {
 
     }
 
-    public void drawImage(ByteBuffer buffer){
+    public void drawImage(ByteBuffer buffer) {
         try {
             InputStream inputStream = new ByteArrayInputStream(buffer.array());
             image = new Image(inputStream);
-            imgwidth = (int)image.getWidth();
-            imgheight =(int) image.getHeight();
-            gc.drawImage(image,0,0,600,600);
+            imgwidth = (int) image.getWidth();
+            imgheight = (int) image.getHeight();
+            gc.drawImage(image, 0, 0, 600, 600);
            /* this.setWidth(width);
 
             this.setHeight(height);
@@ -103,19 +96,19 @@ public class MyCanvas extends Canvas {
 
     }
 
-    public void drawImage(BufferedImage bf){
+    public void drawImage(BufferedImage bf) {
         try {
 
-            gc.clearRect(0,0,this.getWidth(),this.getHeight());
+            gc.clearRect(0, 0, this.getWidth(), this.getHeight());
 
-            ByteArrayOutputStream out =new ByteArrayOutputStream();
-            ImageIO.write(bf,"png",out);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ImageIO.write(bf, "png", out);
             InputStream inputStream = new ByteArrayInputStream(out.toByteArray());
 
             image = new Image(inputStream);
-            imgheight = (int)image.getWidth();
-            imgwidth =(int) image.getHeight();
-            gc.drawImage(image,0,0,600,600);
+            imgheight = (int) image.getWidth();
+            imgwidth = (int) image.getHeight();
+            gc.drawImage(image, 0, 0, 600, 600);
             /*this.setWidth(width);
 
             this.setHeight(height);
@@ -128,9 +121,10 @@ public class MyCanvas extends Canvas {
 
 
     }
-    public void draw(GraphicsContext gc){
 
-        gc.save();
+    public void draw(GraphicsContext gc) {
+
+       /* gc.save();
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(2);                //设置线的宽度
         gc.strokeLine(0, 0, 50, 50);       //绘制直线
@@ -174,15 +168,15 @@ public class MyCanvas extends Canvas {
         gc.setStroke(Color.CHOCOLATE);
         gc.fillPolygon(new double[]{0, 40, 50, 60, 100, 70, 85, 50, 15, 30}, new double[]{440,440,400,440,440,  460,500,470,500,460}, 10);
         gc.strokePolygon(new double[]{0, 40, 50, 60, 100, 70, 85, 50, 15, 30}, new double[]{440,440,400,440,440,  460,500,470,500,460}, 10);
-        gc.restore();
+        gc.restore();*/
     }
 
     public void drawSelect(float minX, float minY, float maxX, float maxY) {
-        gc.clearRect(0,0,this.getWidth(),this.getHeight());
+        gc.clearRect(0, 0, this.getWidth(), this.getHeight());
 
-        gc.drawImage(image,0,0,600,600);
+        gc.drawImage(image, 0, 0, 600, 600);
         double height = this.getHeight();
-        double widht =this.getWidth();
-        gc.strokeRect(minX*widht, minY*height, (maxX-minX)*widht,(maxY-minY)*height);
+        double widht = this.getWidth();
+        gc.strokeRect(minX * widht, minY * height, (maxX - minX) * widht, (maxY - minY) * height);
     }
 }

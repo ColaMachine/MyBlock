@@ -1,6 +1,5 @@
 package cola.machine.game.myblocks.manager;
 
-import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSONArray;
@@ -8,15 +7,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.game.graphics.shader.ShaderManager;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import core.log.LogUtil;
 import cola.machine.game.myblocks.model.textture.*;
 import com.alibaba.fastjson.JSON;
-import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 import de.matthiasmann.twl.renderer.Texture;
@@ -25,7 +18,6 @@ import glapp.GLApp;
 import glapp.GLImage;
 
 import java.io.File;
-import java.nio.FloatBuffer;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,12 +35,12 @@ import com.dozenx.util.MapUtil;
 public class TextureManager {
     Path installPath;
     public static HashMap<String, GLImage> imageMap = new HashMap<String, GLImage>();
-    public static HashMap<String ,List<Shape>> shapeGroups =new HashMap<>();
+    public static HashMap<String ,List<BoneBlock>> shapeGroups =new HashMap<>();
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
 /*    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
     public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();*/
-    public static HashMap<String, Shape> shapeMap = new HashMap<String, Shape>();
+    public static HashMap<String, BoneBlock> shapeMap = new HashMap<String, BoneBlock>();
 
     public HashMap<String, ImageInfo> ImageInfoMap = new HashMap<>();
 
@@ -461,7 +453,7 @@ public class TextureManager {
                 for (int i = 0; i < list.size(); i++) {
 
                     HashMap map = list.get(i);
-                    Shape shape = new Shape();
+                    BoneBlock shape = new BoneBlock();
                     String name = (String) map.get("name");
                     if(name.equals("mantle")){
                         LogUtil.println("mantle");
@@ -583,7 +575,7 @@ public class TextureManager {
                         String p_posi_yStr = MapUtil.getStringValue(map, "p_posi_y");
                         String p_posi_zStr = MapUtil.getStringValue(map, "p_posi_z");
 
-                        Shape parentShape = this.getShape(parent);
+                        BoneBlock parentShape = this.getShape(parent);
                         if (shape == null) {
                             LogUtil.err("can 't find shape" + parent);
                         }
@@ -597,14 +589,14 @@ public class TextureManager {
 
                            // Object widthObj = map.get("width");
 
-                            float width = Shape.parsePosition(MapUtil.getStringValue(map, "width"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+                            float width = BoneBlock.parsePosition(MapUtil.getStringValue(map, "width"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
 
 
-                            float height = Shape.parsePosition(MapUtil.getStringValue(map, "height"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+                            float height = BoneBlock.parsePosition(MapUtil.getStringValue(map, "height"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
 
 
 
-                            float thick = Shape.parsePosition(MapUtil.getStringValue(map, "thick"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+                            float thick = BoneBlock.parsePosition(MapUtil.getStringValue(map, "thick"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
 
                             shape.setWidth(width);
                             shape.setHeight(height);
@@ -612,16 +604,16 @@ public class TextureManager {
 
                             if(/*shape!=null &&*/ parentShape!=null && StringUtil.isNotEmpty(MapUtil.getStringValue(map, "c_posi_x"))) {
 
-                                shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setC_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
                                 //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
-                                shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setC_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                                shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setC_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                                shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                                shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                                shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setP_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setP_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                                shape.setP_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
                             }
                         }catch(Exception e){
@@ -642,16 +634,16 @@ public class TextureManager {
                         shape.setThick(thick);
 
 
-                        shape.setC_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, 0f, 0f,0f));
+                        shape.setC_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, 0f, 0f,0f));
 
                         //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
-                        shape.setC_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, 0f, 0f,0f));
+                        shape.setC_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, 0f, 0f,0f));
 
-                        shape.setC_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick,  0f, 0f,0f));
+                        shape.setC_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick,  0f, 0f,0f));
 
-                        shape.setP_posi_x(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick,  0f, 0f,0f));
-                        shape.setP_posi_y(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick,  0f, 0f,0f));
-                        shape.setP_posi_z(Shape.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick,  0f, 0f,0f));
+                        shape.setP_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick,  0f, 0f,0f));
+                        shape.setP_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick,  0f, 0f,0f));
+                        shape.setP_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick,  0f, 0f,0f));
 
                     }
                     if (shapeType == 3) {
@@ -757,11 +749,11 @@ public class TextureManager {
         return textureMap.get(name);
     }
 
-    public static Shape getShape(String name) {
+    public static BoneBlock getShape(String name) {
         return shapeMap.get(name);
     }
 
-    public static Shape createDoorShape(){
+    public static BoneBlock createDoorShape(){
         float minX=0;
         float minY=0;
         float minZ=0;
@@ -796,7 +788,7 @@ public class TextureManager {
                 .append("\"faces\": [[0, 1, 2, 3] ],")
                 .append("  \"fullSide\": false")
                 .append("},");*/
-        Shape shape =new Shape();
+        BoneBlock shape =new BoneBlock();
 
         ShapeFace frontFace =new ShapeFace();
 
@@ -893,7 +885,7 @@ public class TextureManager {
     }
 
 
-    public void print(Component component,Shape shape){
+    public void print(Component component,BoneBlock shape){
 
 
 
@@ -911,12 +903,12 @@ public class TextureManager {
 
     }
 
-    public static Shape createBoxShape(){
+    public static BoneBlock createBoxShape(){
 
 
         Component rootComponent =new Component();
 
-        Shape bodyShape = TextureManager.getShape("box_open_body");//加载箱体shape
+        BoneBlock bodyShape = TextureManager.getShape("box_open_body");//加载箱体shape
         rootComponent =
                 new Component(bodyShape);
 
@@ -945,12 +937,12 @@ public class TextureManager {
 
         return bodyShape;
     }
-    public static Shape createBoxCloseShape(){
+    public static BoneBlock createBoxCloseShape(){
 
 
         Component rootComponent =new Component();
 
-        Shape bodyShape = TextureManager.getShape("box_close");//加载箱体shape
+        BoneBlock bodyShape = TextureManager.getShape("box_close");//加载箱体shape
         rootComponent =
                 new Component(bodyShape);
 

@@ -1,16 +1,12 @@
 package com.dozenx.game.engine.Role.model;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.model.BodyComponent;
-import cola.machine.game.myblocks.model.HandComponent;
 import cola.machine.game.myblocks.model.WearComponent;
-import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Role;
-import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.bean.ItemBean;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -18,8 +14,6 @@ import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector4f;
@@ -43,7 +37,7 @@ public class BaseModel implements Model   {
             if (itemBean == null||itemBean.itemDefinition == null) {
                 return;
             } else {
-                Shape shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemBean.itemDefinition.getName() + "failed");
 
@@ -66,7 +60,7 @@ public class BaseModel implements Model   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                Shape shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemBean.itemDefinition.getName() + "failed");
 
@@ -84,7 +78,7 @@ public class BaseModel implements Model   {
         }
     }
 
-    public void addChild(Component parent,Shape shape) {
+    public void addChild(Component parent,BoneBlock shape) {
         String parentName = shape.getParent();
         if(parent==null){
             LogUtil.err("parent node is null");

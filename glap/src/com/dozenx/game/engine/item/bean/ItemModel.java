@@ -1,7 +1,7 @@
 package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.element.model.ModelTemplate;
@@ -30,8 +30,8 @@ public class ItemModel extends ModelTemplate {
         this.icon = icon;
     }
 
-    Block[] blocks;
-    public static HashMap<String,Block[]> map =new HashMap<>();
+    IBlock[] blocks;
+    public static HashMap<String,IBlock[]> map =new HashMap<>();
     TextureInfo icon;
 
     public void init() {
@@ -56,11 +56,11 @@ public class ItemModel extends ModelTemplate {
 
         int minY=height-(int)(height*this.icon.maxY);
         int maxY= height-(int)(height*this.icon.minY);
-        List<Block> list = new ArrayList<Block>();
+        List<IBlock> list = new ArrayList<IBlock>();
         /*if(this.name.equals("wood_sword")){
             LogUtil.println("hello");
         }*/
-        HashMap<Integer ,Block> blockMap =new HashMap<Integer,Block>();
+        HashMap<Integer ,IBlock> blockMap =new HashMap<Integer,IBlock>();
         try {
             Color[][] colors = ImageUtil.getGrayPicture(icon.img.tmpi, minX,
                     minY, maxX, maxY);
@@ -72,7 +72,7 @@ public class ItemModel extends ModelTemplate {
                     if (color != null)
                     {
 
-                        Block soil = new ColorBlock(0, i, _height-j, color);
+                        IBlock soil = new ColorBlock(0, i, _height-j, color);
                         list.add(soil);
 
                         blockMap.put(i * _height + _height-j, soil);
@@ -82,7 +82,7 @@ public class ItemModel extends ModelTemplate {
 
             for (int i = 0; i < _width; i++)
                 for (int j = 0; j < _height; j++) {
-                    Block block = blockMap.get(i * _height + j);
+                    IBlock block = blockMap.get(i * _height + j);
                     if(block!=null){
                         if(j!=_height && blockMap.get(i * _height + j+1)!=null){
                             block.setZh(false);
@@ -101,7 +101,7 @@ public class ItemModel extends ModelTemplate {
                     }
 
                 }
-            blocks = list.toArray(new Block[list.size()]);
+            blocks = list.toArray(new IBlock[list.size()]);
             map.put(this.icon.imageName,blocks);
         } catch (FileNotFoundException e) {
             // VIP Auto-generated catch block
@@ -121,7 +121,7 @@ public class ItemModel extends ModelTemplate {
             this.init();
         }
 
-        for (Block block : blocks) {
+        for (IBlock block : blocks) {
             //  GL11.glColor3f(block.rf(), block.bf() , block.gf());
             ColorBlock colorBlock = (ColorBlock) block;
             colorBlock.renderShader(config,rotateMatrix);
@@ -142,7 +142,7 @@ public class ItemModel extends ModelTemplate {
 
         GL11.glScalef(0.1f, 0.1f, 0.1f);
         //GL11.glTranslatef(-3.5f,-0.5f, -11f);
-        for (Block block : blocks) {
+        for (IBlock block : blocks) {
 
             ColorBlock colorBlock = (ColorBlock)block;
             GL11.glColor3f(colorBlock.rf(), colorBlock.bf(), colorBlock.gf());

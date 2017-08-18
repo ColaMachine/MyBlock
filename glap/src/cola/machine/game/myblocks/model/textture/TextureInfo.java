@@ -232,6 +232,9 @@ public class TextureInfo extends RegionArea{
         this.x2=x1+owidth;
         this.y2=y2+oheight;
         img=TextureManager.getImage(imgName);
+        if(img == null || img.tmpi ==null){
+            LogUtil.println("err");
+        }
         imgWidth=img.tmpi.getWidth();//.w;
         imgHeight=img.tmpi.getHeight();//img.h;
        // texture = TextureManager.getTexture(imgName);

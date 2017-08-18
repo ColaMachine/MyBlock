@@ -1,10 +1,9 @@
 package cola.machine.game.myblocks.skill;
 
-import cola.machine.game.myblocks.block.Block;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
-import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.element.bean.Component;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.command.ItemType;
@@ -116,7 +115,7 @@ public class Ball  {
             this.died=true;
         }
         //如果撞到方块停止
-        cola.machine.game.myblocks.model.Block block = chunkProvider.getBlockAt((int)this.position.x,(int)this.position.y,(int)this.position.z);
+        IBlock block = chunkProvider.getBlockAt((int)this.position.x,(int)this.position.y,(int)this.position.z);
         if(block!=null && block.getId()!=0){
             this.readyDied=true;
         }if(type==2) {

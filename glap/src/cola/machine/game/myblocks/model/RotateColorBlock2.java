@@ -1,21 +1,15 @@
 package cola.machine.game.myblocks.model;
 
-import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.textture.TextureInfo;
-import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+
 import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
-import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
-import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.FloatBufferWrap;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL11;
 
-public class RotateColorBlock extends ColorBlock{
-    public RotateColorBlock(){
+
+public class RotateColorBlock2 extends ColorBlock{
+    public RotateColorBlock2(){
 
     }
 
@@ -27,14 +21,14 @@ public class RotateColorBlock extends ColorBlock{
 
 
     GL_Vector[] points = BoxModel.getPoint(0,0,0);
-    public RotateColorBlock(int x, int y, int z){
+    public RotateColorBlock2(int x, int y, int z){
         this.x =x;
         this.y=y;
         this.z=z;
 
 
     }
-    public RotateColorBlock(int x, int y, int z, float width, float height, float thick){
+    public RotateColorBlock2(int x, int y, int z, float width, float height, float thick){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -43,7 +37,7 @@ public class RotateColorBlock extends ColorBlock{
         this.thick =thick;
 
     }
-    public RotateColorBlock(int x, int y, int z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
+    public RotateColorBlock2(int x, int y, int z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -70,8 +64,8 @@ public class RotateColorBlock extends ColorBlock{
 
     }
 
-    public RotateColorBlock copy(){
-        RotateColorBlock colorBlock  =new RotateColorBlock(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
+    public RotateColorBlock2 copy(){
+        RotateColorBlock2 colorBlock  =new RotateColorBlock2(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
 
         return colorBlock;
     }

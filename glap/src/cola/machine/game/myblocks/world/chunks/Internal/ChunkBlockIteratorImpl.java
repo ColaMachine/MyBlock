@@ -16,7 +16,7 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.ChunkBlockIterator;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
@@ -34,7 +34,7 @@ public class ChunkBlockIteratorImpl implements ChunkBlockIterator {
     private final TeraArray data;
 
     private final Vector3i blockPos = new Vector3i();
-    private Block block;
+    private IBlock block;
 
     private final BlockManager blockManager;
 
@@ -65,7 +65,7 @@ public class ChunkBlockIteratorImpl implements ChunkBlockIterator {
     }
 
     @Override
-    public Block getBlock() {
+    public IBlock getBlock() {
         return block;
     }
     @Override

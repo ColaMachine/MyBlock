@@ -1,5 +1,8 @@
 package cola.machine.game.myblocks.model.textture;
 
+import cola.machine.game.myblocks.block.Block;
+import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.IBlock;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.util.StringUtil;
 
@@ -10,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Created by luying on 16/9/12.
  */
-public class Shape  {
+public class BoneBlock extends BaseBlock {
     public int getShapeType() {
         return shapeType;
     }
@@ -91,7 +94,7 @@ public class Shape  {
     ShapeFace bottomFace;
     ShapeFace leftFace;
     ShapeFace rightFace;
-    String name ;
+//    String name ;
     int shapeType;
     TextureInfo front;
     TextureInfo back;
@@ -103,6 +106,11 @@ public class Shape  {
     float height;
     float thick;
     float p_posi_x;
+    float c_posi_y;
+    float c_posi_z;
+    float p_posi_y;
+    float p_posi_z;
+    float c_posi_x;
 
     public float getP_posi_x() {
         return p_posi_x;
@@ -152,9 +160,6 @@ public class Shape  {
         this.c_posi_z = c_posi_z;
     }
 
-    float p_posi_y;
-    float p_posi_z;
-    float c_posi_x;
 
     public float getWidth() {
         return width;
@@ -180,9 +185,9 @@ public class Shape  {
         this.thick = thick;
     }
 
-    float c_posi_y;
-    float c_posi_z;
 
+
+/*
 
     public String getName() {
         return name;
@@ -191,6 +196,7 @@ public class Shape  {
     public void setName(String name) {
         this.name = name;
     }
+*/
 
     public TextureInfo getFront() {
         return front;
@@ -321,5 +327,25 @@ public class Shape  {
                // System.out.println(i+":"+(matcher.group(i)==null));
             }
         }
+    }
+
+    @Override
+    public void update(float x, float y, float z, float width, float height, float thick) {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public BaseBlock copy() {
+        return null;
+    }
+
+    @Override
+    public IBlock clone() {
+        return null;
     }
 }

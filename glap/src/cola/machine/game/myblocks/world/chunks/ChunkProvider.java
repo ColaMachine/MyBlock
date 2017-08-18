@@ -3,7 +3,7 @@
 package cola.machine.game.myblocks.world.chunks;
 
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import cola.machine.game.myblocks.model.IBlock;
 
 
 public interface ChunkProvider {
@@ -115,5 +115,5 @@ public interface ChunkProvider {
 	void removeChunk(Chunk c);
     void save();
 
-    public cola.machine.game.myblocks.model.Block getBlockAt(int worldX, int worldY, int worldZ);
+    public IBlock getBlockAt(int worldX, int worldY, int worldZ);
 }

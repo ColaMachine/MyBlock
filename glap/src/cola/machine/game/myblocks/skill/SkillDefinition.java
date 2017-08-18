@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.skill;
 
-import cola.machine.game.myblocks.model.textture.Shape;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 
 /**
@@ -45,7 +45,7 @@ public class SkillDefinition {
     int castTime;
     int coolDown;
     TextureInfo icon;
-    Shape shape;
+    BoneBlock shape;
     int speed;
     int animation;
     public int getId() {
@@ -114,11 +114,11 @@ public class SkillDefinition {
 
 
 
-    public Shape getShape() {
+    public BoneBlock getShape() {
         return shape;
     }
 
-    public void setShape(Shape shape) {
+    public void setShape(BoneBlock shape) {
         this.shape = shape;
     }
 

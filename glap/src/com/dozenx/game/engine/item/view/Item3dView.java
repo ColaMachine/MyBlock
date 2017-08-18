@@ -1,6 +1,6 @@
 package com.dozenx.game.engine.item.view;
 
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import com.dozenx.game.engine.element.bean.Component;
 
 import java.util.HashMap;
@@ -10,6 +10,6 @@ import java.util.HashMap;
  */
 public class Item3dView {
     Component component;
-    public static HashMap<String,Block[]> map =new HashMap<>();
-    Block[] blocks;
+    public static HashMap<String,IBlock[]> map =new HashMap<>();
+    IBlock[] blocks;
 }

@@ -1,7 +1,7 @@
 package com.dozenx.game.engine.element.model;
 
 import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;
@@ -11,7 +11,6 @@ import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ImageUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
-import org.lwjgl.opengl.GL11;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,8 +34,8 @@ public class CakeModel implements Model {
         this.icon = ti;
         this.init();
     }
-    Block[] blocks;
-    public static HashMap<String,Block[]> map =new HashMap<>();
+    IBlock[] blocks;
+    public static HashMap<String,IBlock[]> map =new HashMap<>();
     TextureInfo icon;
 
     private void init() {
@@ -59,11 +58,11 @@ public class CakeModel implements Model {
 
         int minY=height-(int)(height*this.icon.maxY);
         int maxY= height-(int)(height*this.icon.minY);
-        List<Block> list = new ArrayList<Block>();
+        List<IBlock> list = new ArrayList<IBlock>();
         /*if(this.name.equals("wood_sword")){
             LogUtil.println("hello");
         }*/
-        HashMap<Integer ,Block> blockMap =new HashMap<Integer,Block>();
+        HashMap<Integer ,IBlock> blockMap =new HashMap<Integer,IBlock>();
         try {
             Color[][] colors = ImageUtil.getGrayPicture(icon.img.tmpi, minX,
                     minY, maxX, maxY);
@@ -75,7 +74,7 @@ public class CakeModel implements Model {
                     if (color != null)
                     {
 
-                        Block soil = new ColorBlock(0, i, _height-j, color);
+                        IBlock soil = new ColorBlock(0, i, _height-j, color);
                         list.add(soil);
 
                         blockMap.put(i * _height + _height-j, soil);
@@ -85,7 +84,7 @@ public class CakeModel implements Model {
 
             for (int i = 0; i < _width; i++)
                 for (int j = 0; j < _height; j++) {
-                    Block block = blockMap.get(i * _height + j);
+                    IBlock block = blockMap.get(i * _height + j);
                     if(block!=null){
                         if(j!=_height && blockMap.get(i * _height + j+1)!=null){
                             block.setZh(false);
@@ -104,7 +103,7 @@ public class CakeModel implements Model {
                     }
 
                 }
-            blocks = list.toArray(new Block[list.size()]);
+            blocks = list.toArray(new IBlock[list.size()]);
             map.put(this.icon.imageName,blocks);
         } catch (FileNotFoundException e) {
             // VIP Auto-generated catch block
@@ -129,7 +128,7 @@ public class CakeModel implements Model {
             this.init();
         }
 
-        for (Block block : blocks) {
+        for (IBlock block : blocks) {
             //  GL11.glColor3f(block.rf(), block.bf() , block.gf());
             ColorBlock colorBlock = (ColorBlock) block;
             colorBlock.renderShader(config,rotateMatrix);

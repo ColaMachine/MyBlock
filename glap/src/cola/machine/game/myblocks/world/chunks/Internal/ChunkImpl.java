@@ -4,10 +4,7 @@ import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.textture.Shape;
-import com.dozenx.game.engine.command.BlockUtil;
-import com.dozenx.game.engine.command.ItemBlockType;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
@@ -43,7 +40,7 @@ import org.lwjgl.util.glu.GLU;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.block.BlockManager;
@@ -65,7 +62,7 @@ public class ChunkImpl implements Chunk {
     private TeraArray blockData;
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
 
-    HashMap<Integer,Block> blockMap =new HashMap<>();//this map store the block has state
+    HashMap<Integer,IBlock> blockMap =new HashMap<>();//this map store the block has state
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
         this(chunkPos.x, chunkPos.y, chunkPos.z);
@@ -114,17 +111,17 @@ public class ChunkImpl implements Chunk {
     }
 
     @Override
-    public Block getBlock(Vector3i pos) {
+    public IBlock getBlock(Vector3i pos) {
         // VIP Auto-generated method stub
         return null;
     }
 
     @Override
-    public Block getBlock(int x, int y, int z) {
+    public IBlock getBlock(int x, int y, int z) {
         // VIP Auto-generated method stub
        // return null;
         int blockValue =blockData.get(x,y,z);
-        Block block =  blockMap.get(blockData.getIndex(x,y,z));//.getBlock((short) blockValue);
+        IBlock block =  blockMap.get(blockData.getIndex(x,y,z));//.getBlock((short) blockValue);
         if(block == null ) {
             block = blockManager.getBlock(blockValue);
 
@@ -147,7 +144,7 @@ public class ChunkImpl implements Chunk {
     }
 
     @Override//返回原来的block 类型id  设置当前的block进入数据数组
-    public Block setBlock(int x, int y, int z, Block block) {
+    public IBlock setBlock(int x, int y, int z, IBlock block) {
         //int oldValue = blockData.set(x, y, z, block.getId());
 
         this.setBlock(x,y,z,block.getId());
@@ -180,7 +177,7 @@ public class ChunkImpl implements Chunk {
                 LogUtil.println("is ad special block");
 
             //if (realId ==ItemType.wood_door.ordinal() ) {
-                Block block = blockManager.getBlock(realId).clone();
+                IBlock block = blockManager.getBlock(realId).clone();
                 block.setValue(blockId);
                 block.setCenter(x,y,z);
                 block.setChunk(this);
@@ -216,8 +213,8 @@ public class ChunkImpl implements Chunk {
         }
 //如果一个是透明的 另一个是不透明的 就需要绘制
         //如果两个都是不透明的就不需要绘制
-        Block selfBlock = blockManager.getBlock(selfType);
-        Block otherBlock = blockManager.getBlock(blockType);
+        IBlock selfBlock = blockManager.getBlock(selfType);
+        IBlock otherBlock = blockManager.getBlock(blockType);
         if (selfBlock == null || otherBlock== null) {
             LogUtil.err("block is null blockType:" + selfType);
             return false;
@@ -1088,7 +1085,7 @@ public class ChunkImpl implements Chunk {
         if (/*ti==null||*/ itemDefinition.getShape() == null || itemDefinition.getShape().getTop() == null) {
             LogUtil.err(ti.name + "'shape  is null ");
         }
-        Shape shape = itemDefinition.getShape();
+        BoneBlock shape = itemDefinition.getShape();
         ShapeFace shapeFace = null;
         if (faceIndex == Constants.TOP) {
             ti = shape.getTop();
@@ -1140,7 +1137,7 @@ public class ChunkImpl implements Chunk {
 
         if(currentBlockType== ItemType.box.ordinal()) {
             if(  faceIndex==Constants.FRONT){
-                Block block = this.getBlock(x, y, z);//this.blockManager.getBlock(currentBlockType);
+                IBlock block = this.getBlock(x, y, z);//this.blockManager.getBlock(currentBlockType);
                 block.renderShader(vao, shapeFace, ti,worldx,y,worldz);
             }
 
@@ -1150,7 +1147,7 @@ public class ChunkImpl implements Chunk {
             //=========判断当前方块是简单方块还是特殊方块如果是特殊方块调用他自身的渲染方法渲染
 
 
-            Block block = this.getBlock(x, y, z);//this.blockManager.getBlock(currentBlockType);
+            IBlock block = this.getBlock(x, y, z);//this.blockManager.getBlock(currentBlockType);
             block.renderShader(vao, shapeFace, ti,worldx,y,worldz);
 
         } else {
@@ -1405,7 +1402,7 @@ public class ChunkImpl implements Chunk {
     }
 
     @Override
-    public Block setBlock(Vector3i pos, Block block) {
+    public IBlock setBlock(Vector3i pos, IBlock block) {
         // VIP Auto-generated method stub
         return null;
     }

@@ -2,6 +2,7 @@ package gldemo;
 
 import java.nio.FloatBuffer;
 
+import cola.machine.game.myblocks.model.ImageBlock;
 import com.dozenx.game.engine.Role.bean.Player;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.*;
@@ -9,7 +10,7 @@ import org.lwjgl.util.glu.*;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import glapp.*;
 import glmodel.GL_Vector;
@@ -133,7 +134,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 		// make a sphere display list
 		earth = beginDisplayList();
 		// ѭ������
-		Block block = new BaseBlock("water",1,false);
+		IBlock block = new ImageBlock("water",1,false);
 		for (int j = 1; j < 20; j += 2)
 			for (int i = 1; i < 20; i += 2) {
 				block.setCenter(i, 1, j);

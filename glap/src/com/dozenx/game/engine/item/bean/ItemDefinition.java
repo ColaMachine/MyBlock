@@ -1,30 +1,15 @@
 package com.dozenx.game.engine.item.bean;
 
-import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.textture.Shape;
-import cola.machine.game.myblocks.model.textture.TextureInfo;
-import com.dozenx.game.engine.Role.bean.item.ItemProperties;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
-import core.log.LogUtil;
-import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.ColorBlock;
 import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.BinaryUtil;
-import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL11;
-import com.dozenx.util.ImageUtil;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,7 +36,7 @@ public class ItemDefinition implements Cloneable{
     int strenth;
 
     int position;//如果是装备的画就会起作用 head body leg foot hand arm
-    Shape shape;//含着一些box 绘制的属性 这个东西不是应该在 itemModel里吗
+    BoneBlock shape;//含着一些box 绘制的属性 这个东西不是应该在 itemModel里吗
     //ShapeType shapeType;//描述 是饼状 盒形 icon状
 
 /*
@@ -328,12 +313,12 @@ public class ItemDefinition implements Cloneable{
     }
 
 
-    public Shape getShape() {
+    public BoneBlock getShape() {
 
         return shape;
     }
 
-    public void setShape(Shape shape) {
+    public void setShape(BoneBlock shape) {
 
         this.shape = shape;
     }
@@ -425,7 +410,7 @@ public class ItemDefinition implements Cloneable{
     @Override
     public  ItemDefinition clone() throws CloneNotSupportedException {
         ItemDefinition itemDef =  (ItemDefinition)super.clone();
-        itemDef.setShape(new Shape());
+        itemDef.setShape(new BoneBlock());
         itemDef.setItemModel(new ItemModel());
         itemDef.itemTypeProperties=null;
         return itemDef;

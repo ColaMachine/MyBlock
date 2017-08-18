@@ -12,7 +12,7 @@ public class Water extends Block{
         setDisplayName("水");
         setTargetable(true);
         this.setHardness(0);
-        setAllSideTexture("water");
+        //setAllSideTexture("water");
         setLiquid(true);
         setPassable(false);
         setTransparent(true);

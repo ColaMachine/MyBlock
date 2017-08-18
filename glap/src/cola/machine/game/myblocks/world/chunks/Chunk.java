@@ -2,10 +2,8 @@ package cola.machine.game.myblocks.world.chunks;
 
 
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.protobuf.ChunksProtobuf;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
-import com.dozenx.game.engine.command.ItemBlockType;
 import com.dozenx.game.engine.command.ItemType;
 
 
@@ -16,15 +14,15 @@ public interface Chunk {
      */
     Vector3i getPos();
 
-    Block getBlock(Vector3i pos);
+    IBlock getBlock(Vector3i pos);
 
-    Block getBlock(int x, int y, int z);
+    IBlock getBlock(int x, int y, int z);
 
     public void setBlock(int x, int y, int z, int block) ;
     public void setBlock(int x, int y, int z, ItemType block) ;
-    Block setBlock(int x, int y, int z, Block block);
+    IBlock setBlock(int x, int y, int z, IBlock block);
 
-    Block setBlock(Vector3i pos, Block block);
+    IBlock setBlock(Vector3i pos, IBlock block);
 
 /*    void setLiquid(Vector3i pos, LiquidData state);
 

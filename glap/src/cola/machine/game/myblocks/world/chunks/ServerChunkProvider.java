@@ -5,10 +5,9 @@ package cola.machine.game.myblocks.world.chunks;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.math.Vector2i;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
@@ -230,7 +229,7 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 
 
 	@Override
-	public cola.machine.game.myblocks.model.Block getBlockAt(int worldX, int worldY, int worldZ){
+	public IBlock getBlockAt(int worldX, int worldY, int worldZ){
 		int chunkX = MathUtil.getBelongChunkInt(worldX);
 		int chunxZ = MathUtil.getBelongChunkInt(worldZ);
 		Chunk chunk =  nearCache.get(new Vector2i(chunkX,chunxZ));

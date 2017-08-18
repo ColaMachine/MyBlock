@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
-import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.model.IBlock;
 import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
 import org.slf4j.Logger;
@@ -243,7 +243,7 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
     }
 
 @Override
-    public cola.machine.game.myblocks.model.Block getBlockAt(int worldX, int worldY, int worldZ){
+    public IBlock getBlockAt(int worldX, int worldY, int worldZ){
         int chunkX = MathUtil.getBelongChunkInt(worldX);
         int chunxZ = MathUtil.getBelongChunkInt(worldZ);
         Chunk chunk =  nearCache.get(new Vector2i(chunkX,chunxZ));

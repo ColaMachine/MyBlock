@@ -9,18 +9,18 @@ import org.lwjgl.opengl.GL11;
 
 import com.dozenx.util.ImageUtil;
 import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
 
 public class Sword {
-	public Block[] swords;
+	public IBlock[] swords;
 	public float x = 0;
 	public float y = 0;
 	public float z = 0;
 	public String name = "sword";
 
 	public void init() {
-		List<Block> list = new ArrayList<Block>();
+		List<IBlock> list = new ArrayList<IBlock>();
 		try {
 			Color[][] colors = ImageUtil.getGrayPicture("assets/images/items.png", 64,
 					64, 80, 80);
@@ -30,11 +30,11 @@ public class Sword {
 					if (color != null)
 					{
 
-							Block soil = new ColorBlock(i, 0, j, color);
+							IBlock soil = new ColorBlock(i, 0, j, color);
 							list.add(soil);
 					}
 				}
-			swords = list.toArray(new Block[list.size()]);
+			swords = list.toArray(new IBlock[list.size()]);
 
 		} catch (FileNotFoundException e) {
 			// VIP Auto-generated catch block
@@ -46,7 +46,7 @@ public class Sword {
 	}
 
     public void init1 () {
-        List<Block> list = new ArrayList<Block>();
+        List<IBlock> list = new ArrayList<IBlock>();
         try {
             Color[][] colors = ImageUtil.getGrayPicture("assets/images/items.png", 64,
                     64, 80, 80);
@@ -56,11 +56,11 @@ public class Sword {
                     if (color != null)
                     {
 
-                        Block soil = new ColorBlock(i, 0, j, color);
+                        IBlock soil = new ColorBlock(i, 0, j, color);
                         list.add(soil);
                     }
                 }
-            swords = list.toArray(new Block[list.size()]);
+            swords = list.toArray(new IBlock[list.size()]);
 
         } catch (FileNotFoundException e) {
             // VIP Auto-generated catch block
@@ -84,7 +84,7 @@ public class Sword {
 		
 		GL11.glScalef(0.2f, 0.2f, 0.2f);
 		GL11.glTranslatef(-3.5f,-0.5f, -11f);
-		for (Block block : swords) {
+		for (IBlock block : swords) {
             ColorBlock colorBlock = (ColorBlock)block;
 			GL11.glColor3f(colorBlock.r() / 256f, colorBlock.b() / 256f, colorBlock.g() / 256f);
 			block.render();

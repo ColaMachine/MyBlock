@@ -4,11 +4,9 @@ package cola.machine.game.myblocks.model;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.element.model.ShapeFace;
-import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.Vao;
-import glmodel.GL_Matrix;
 
-public interface  Block {
+public interface IBlock {
 	public String getName();
     public void setChunk(ChunkImpl chunk);
 
@@ -46,7 +44,7 @@ public interface  Block {
     public boolean use();
     public boolean beuse();
 
-    public Block clone();
+    public IBlock clone();
 
     public void beAttack();
 

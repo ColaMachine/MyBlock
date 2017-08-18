@@ -9,34 +9,24 @@ import java.util.List;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.engine.modes.StartMenuState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.physic.BulletResultDTO;
 import cola.machine.game.myblocks.skill.AttackManager;
-import cola.machine.game.myblocks.skill.Ball;
-import cola.machine.game.myblocks.world.block.BlockManager;
-import cola.machine.game.myblocks.world.block.TreeBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.game.engine.live.state.IdleState;
-import com.dozenx.game.engine.live.state.WalkState;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.network.client.Client;
-import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
-import com.dozenx.game.opengl.util.OpenglUtils;
 import glapp.GLApp;
 import glapp.GLCamera;
 import glmodel.GL_Vector;
@@ -1038,7 +1028,7 @@ public class MouseControlCenter {
                 //获得朝向
                 //判断选择的方块是不是门之类的
                 //Integer blockType = ((Block)arr[2]).getId();
-                Block targetBlock = arr.targetBlock;
+                IBlock targetBlock = arr.targetBlock;
                 if(arr.targetBlock!=null ) {
                     Integer blockType = targetBlock.getId();
                     //获得靠近还是靠远

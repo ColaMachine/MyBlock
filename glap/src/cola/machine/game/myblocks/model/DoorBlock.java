@@ -117,7 +117,7 @@ public class DoorBlock extends DirectionBlock {
        // }
     }
     @Override
-    public Block clone(){
+    public IBlock clone(){
         DoorBlock block =  new DoorBlock(this.getName(),this.getId(),this.getAlpha());
         block.itemDefinition =itemDefinition;
         return block;

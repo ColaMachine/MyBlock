@@ -6,10 +6,10 @@ package cola.machine.game.myblocks.block;
 public class Block {
 
 
-    private short cid;//child id
+   // private short cid;//child id
    private short id;
     private String name;
-
+   // private BlockApperance blockApperance;//包括了顶点信息 对应的纹理 法线
 
     private String displayName;
     private boolean targetable;
@@ -20,6 +20,9 @@ public class Block {
     private boolean replaceable;
 
 
+/*
+
+    String backTexture="";
 
     String topTexture="";
     String bottomTexture="";
@@ -40,7 +43,7 @@ public class Block {
                 this.leftTexture=this.rightTexture=text;
     }
 
-    String backTexture="";
+
 
     public String getBottomTexture() {
         return bottomTexture;
@@ -50,14 +53,32 @@ public class Block {
         this.bottomTexture = bottomTexture;
     }
 
-    public boolean isTargetable() {
-        return targetable;
+
+
+
+
+    public void setBlockApperance(BlockApperance blockApperance) {
+        this.blockApperance = blockApperance;
+    }
+    public BlockApperance getBlockApperance() {
+        return blockApperance;
     }
 
-    public void setTargetable(boolean targetable) {
-        this.targetable = targetable;
+
+    //the collisionbox
+
+    //some block has it's own rotation
+    //难道所有的
+
+    public short getCid() {
+        return cid;
     }
-    private BlockApperance blockApperance;//包括了顶点信息 对应的纹理 法线
+
+    public void setCid(short cid) {
+        this.cid = cid;
+    }
+
+    */
 
     public String getDisplayName() {
         return displayName;
@@ -66,6 +87,15 @@ public class Block {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+    public boolean isTargetable() {
+        return targetable;
+    }
+
+    public void setTargetable(boolean targetable) {
+        this.targetable = targetable;
+    }
+
+
     public void setId(short id) {
         this.id = id;
     }
@@ -95,9 +125,6 @@ public class Block {
         this.replaceable = replaceable;
     }
 
-    public void setBlockApperance(BlockApperance blockApperance) {
-        this.blockApperance = blockApperance;
-    }
 
     public short getId() {
         return id;
@@ -126,24 +153,6 @@ public class Block {
 
     public boolean isReplaceable() {
         return replaceable;
-    }
-
-    public BlockApperance getBlockApperance() {
-        return blockApperance;
-    }
-
-
-    //the collisionbox
-
-    //some block has it's own rotation
-    //难道所有的
-
-    public short getCid() {
-        return cid;
-    }
-
-    public void setCid(short cid) {
-        this.cid = cid;
     }
 
 

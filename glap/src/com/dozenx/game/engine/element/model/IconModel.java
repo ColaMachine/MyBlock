@@ -1,25 +1,14 @@
 package com.dozenx.game.engine.element.model;
 
-import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.model.Block;
-import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.ImageUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL11;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 物品模型 单面模型

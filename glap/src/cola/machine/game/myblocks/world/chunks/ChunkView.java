@@ -17,7 +17,7 @@ package cola.machine.game.myblocks.world.chunks;
 
 import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 
 
 /**
@@ -36,13 +36,13 @@ public interface ChunkView {
      * @param z
      * @return The block at the given coordinates. If this is outside of the view then the air block is returned
      */
-    Block getBlock(float x, float y, float z);
+    IBlock getBlock(float x, float y, float z);
 
     /**
      * @param pos
      * @return The block at the given position. If this is outside of the view then the air block is returned
      */
-    Block getBlock(Vector3i pos);
+    IBlock getBlock(Vector3i pos);
 
     /**
      * @param x
@@ -50,7 +50,7 @@ public interface ChunkView {
      * @param z
      * @return The block at the given coordinates. If this is outside of the view then the air block is returned
      */
-    Block getBlock(int x, int y, int z);
+    IBlock getBlock(int x, int y, int z);
 
     /**
      * @param x
@@ -102,7 +102,7 @@ public interface ChunkView {
      * @param pos
      * @param type
      */
-    void setBlock(Vector3i pos, Block type);
+    void setBlock(Vector3i pos, IBlock type);
 
     /**
      * Sets the block at the given coordinates, if it is within the view.
@@ -112,7 +112,7 @@ public interface ChunkView {
      * @param z
      * @param type
      */
-    void setBlock(int x, int y, int z, Block type);
+    void setBlock(int x, int y, int z, IBlock type);
 
     /**
      * @param pos

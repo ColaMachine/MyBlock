@@ -1,12 +1,8 @@
 package com.dozenx.game.engine;
 
-import check.CrashCheck;
-import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.network.server.bean.LivingThingBean;
@@ -161,7 +157,7 @@ public class PhysicsEngine {
 
                         if(k>0){
 
-                            Block block =chunk_corner.getBlock(blockX,
+                            IBlock block =chunk_corner.getBlock(blockX,
                                     blockY, blockZ);
                             if (!block.isPenetrate()){
                                 livingThing.valleyBottom = blockY+1;
@@ -219,7 +215,7 @@ public class PhysicsEngine {
                     );
 
                     if (k > 0) {
-                        Block block =chunk_corner.getBlock(blockX,
+                        IBlock block =chunk_corner.getBlock(blockX,
                                 blockY, blockZ);
                         if(block == null ){
                             continue;

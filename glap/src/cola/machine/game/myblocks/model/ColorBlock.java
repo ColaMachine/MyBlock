@@ -1,23 +1,18 @@
 package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.FloatBufferWrap;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
 import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.AABB.AABB;
-
-import java.nio.FloatBuffer;
 
 public class ColorBlock extends BaseBlock{
     public ColorBlock(){
@@ -55,9 +50,9 @@ public class ColorBlock extends BaseBlock{
         this.selected = selected;
     }*/
 
-    public int x = 0;
+/*    public int x = 0;
 	public int y = 0;
-	public int z = 0;
+	public int z = 0;*/
     int beishu =5;//缩小的尺寸
 	public int red = 0;
 	public int blue = 0;
@@ -66,9 +61,9 @@ public class ColorBlock extends BaseBlock{
     public float bf=0;
     public float gf=0;
     public float opacity =1;
-    public float width=1;
+   /* public float width=1;
     public float height=1;
-    public float thick=1;
+    public float thick=1;*/
     public boolean zh=true;
     public boolean zl=true;
     public boolean yl=true;
@@ -387,7 +382,7 @@ public class ColorBlock extends BaseBlock{
 
 
     @Override
-    public Block clone(){
+    public IBlock clone(){
         return new ColorBlock(x,y,z);
     }
 
@@ -411,30 +406,31 @@ public class ColorBlock extends BaseBlock{
 
     }
 
-    public void addWidth(int num){
-        this.width+=num;
-    }
-    public void addX(int num){
-        this.x+=num;
-    }
-
-    public void addHeight(int num){
-        this.height+=num;
-    }
-    public void addY(int num){
-        this.y+=num;
-    }
-
-    public void addThick(int num){
-        this.thick+=num;
-    }
-    public void addZ(int num){
-        this.z+=num;
-    }
 
     public ColorBlock copy(){
         ColorBlock colorBlock  =new ColorBlock(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
 
         return colorBlock;
+    }
+
+    public String toString(){
+       StringBuffer buffer =new StringBuffer();
+        buffer.append("{").append("name:'").append(this.name).append("',")
+                .append("blocktype:'colorblock',")
+               .append("width:").append(this.width).append(",")
+                .append("height:").append(this.height).append(",")
+                .append("thick:").append(this.thick).append(",")
+                .append("x:").append(this.x).append(",")
+                .append("y:").append(this.y).append(",")
+                .append("z:").append(this.z).append(",")
+               .append("r:").append(this.rf).append(",")
+                .append("g:").append(this.gf).append(",")
+                .append("b:").append(this.bf).append("}");
+        StringBuffer sb = new StringBuffer();
+        sb.append(this.x).append(",").append(this.y).append(",").append(this.z).append(",")
+                .append(this.width).append(",").append(this.height).append(",").append(this.thick).append(",")
+                .append(this.rf).append(",").append(this.gf).append(",").append(this.bf);
+        return sb.toString();
+
     }
 }

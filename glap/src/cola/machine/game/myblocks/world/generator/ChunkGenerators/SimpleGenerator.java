@@ -17,17 +17,13 @@
 package cola.machine.game.myblocks.world.generator.ChunkGenerators;
 
 
-import cola.machine.game.myblocks.math.TeraMath;
-import cola.machine.game.myblocks.model.Block;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.WorldBiomeProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.chunks.Chunk;
-import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.generator.FirstPassGenerator;
-import com.dozenx.game.engine.command.ItemType;
 
-import javax.vecmath.Vector2f;
 import java.util.Map;
 
 /**
@@ -47,7 +43,7 @@ public class SimpleGenerator implements FirstPassGenerator {
     private Noise3D pGen8;
     private WorldBiomeProvider biomeProvider;
 
-    private Block mantle;
+    private IBlock mantle;
 //    private Block water;
 //    private Block ice;
 //    private Block stone;
