@@ -210,13 +210,18 @@ public class OpenglUtils {
         GL_Matrix view=
                 GL_Matrix.LookAt(new GL_Vector(0,0,0),viewDir);
 
-        GL_Vector vector1 = GL_Matrix.multiply(project.getClone().invert(),newV);
-        GL_Vector vector2 = GL_Matrix.multiply(view.getClone().invert(),newV);
-
+        //GL_Vector vector1 = GL_Matrix.multiply(project.getClone().invert(),newV);
+        try {
+            GL_Vector vector2 = GL_Matrix.multiply(view.getClone().invert(), newV);
+            return vector2.normalize();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw  e;
+        }
        /* GL_Vector right = GL_Vector.crossProduct(viewDir,new GL_Vector(0,1,0));
         GL_Vector up = GL_Vector.crossProduct(viewDir,right);
         GL_Matrix rotateMatrix = */
-        return vector2.normalize();
+
 
 
     }

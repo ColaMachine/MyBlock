@@ -1,6 +1,9 @@
 package cola.machine.game.myblocks.model;
 
+import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ByteUtil;
+
 
 public class StateBlock extends BaseBlock{
   int state;
@@ -26,6 +29,11 @@ public class StateBlock extends BaseBlock{
     @Override
     public BaseBlock copy() {
         return null;
+    }
+
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
     }
 
     public void setValue(int value) {

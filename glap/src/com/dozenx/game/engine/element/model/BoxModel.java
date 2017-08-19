@@ -1,5 +1,7 @@
 package com.dozenx.game.engine.element.model;
 
+import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;
@@ -173,6 +175,11 @@ public class BoxModel implements Model {
         return null;
     }
 
+    /**
+     * 主要是人物渲染的时候要用到
+     * @param config
+     * @param rotateMatrix
+     */
     public void build(ShaderConfig config , GL_Matrix rotateMatrix){
         FloatBufferWrap floatBuffer = config.getVao().getVertices();
         if(front!=null) {
@@ -199,21 +206,24 @@ public class BoxModel implements Model {
         }
     }
 
-    public  BoxModel(BoneBlock shape){//这个逻辑是错误的 shape 是不应该有itemDefinition属性的
+    public  BoxModel(BaseBlock shape){//这个逻辑是错误的 shape 是不应该有itemDefinition属性的
         if(shape == null){
             LogUtil.err(" shape can't be null");
         }
         float thick =shape.getThick();
         float width = shape.getWidth();
         float height= shape.getHeight();
-        this.front= shape.getFront();
-        this.back= shape.getBack();
-        this.left=shape.getLeft();
-        this.right=shape.getRight();
-        this.top= shape.getTop();
-        this.bottom= shape.getBottom();
 
+        if(shape instanceof  BoneBlock) {
+            BoneBlock boneBlock = (BoneBlock) shape;
+            this.front = boneBlock.getFront();
+            this.back = boneBlock.getBack();
+            this.left = boneBlock.getLeft();
+            this.right = boneBlock.getRight();
+            this.top = boneBlock.getTop();
+            this.bottom = boneBlock.getBottom();
 
+        }
         this.P1= new GL_Vector(0,0,thick);
         this.P2= new GL_Vector(width,0,thick);
         this.P3= new GL_Vector(width,0,0);

@@ -7,6 +7,7 @@ import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.Vao;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -79,5 +80,10 @@ public class CopyDownBlock extends BaseBlock{
     @Override
     public BaseBlock copy() {
         return null;
+    }
+
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
     }
 }

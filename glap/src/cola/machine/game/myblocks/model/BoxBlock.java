@@ -15,6 +15,7 @@ import com.dozenx.game.engine.ui.inventory.control.BoxController;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
@@ -69,9 +70,9 @@ public class BoxBlock extends DirectionBlock {
 
 
             translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
-            if(open==1)
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, ItemManager.getItemDefinition(ItemType.box).getShape().shapeFaceMap.get("open"), ti, x, y, z,translateMatrix);
-            else
+            if(open==1) {
+                //ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, ItemManager.getItemDefinition(ItemType.box).getShape().shapeFaceMap.get("open"), ti, x, y, z,translateMatrix);
+            }else
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace, ti, x, y, z,translateMatrix);
 
           /*  ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
@@ -147,6 +148,11 @@ public IBlock clone(){
     block.itemDefinition =itemDefinition;
     return block;
 }
+
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.dozenx.game.engine.item.bean;
 
-import com.dozenx.game.engine.item.action.ItemEquipParser;
-import com.dozenx.game.engine.item.action.ItemFoodParser;
+import com.dozenx.game.engine.item.parser.ItemFoodParser;
 
 import java.util.Map;
 

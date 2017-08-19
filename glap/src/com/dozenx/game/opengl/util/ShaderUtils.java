@@ -2367,6 +2367,51 @@ try {
         }
     }
 
+    public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float width,float height,float thick,float alpha,boolean top,boolean bottom,boolean left ,boolean right,boolean front ,boolean back){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        if(width<0){
+            x+=width;width=-width;
+        }
+        if(height<0){
+            y+=height;height=-height;
+        }
+        if(thick<0){
+            z+=thick;thick=-thick;
+        }
+        boolean[] faceExists = new boolean[]{top,bottom,left,right,front,back };
+        try {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+         /*   if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }*/
+            GL_Vector[] dirAry = BoxModel.dirAry;
+            int[][] faceAry = BoxModel.facesAry;
+            GL_Vector[] points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
+            for(int i=0;i<6;i++){
+
+                if(!faceExists[i]){
+                    continue;
+                }
+                int[] faceAry2 = faceAry[i];
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector[] points,GL_Vector[] dirAry,float red,float green,float blue,float alpha){
         //ti=TextureManager.getTextureInfo("mantle");

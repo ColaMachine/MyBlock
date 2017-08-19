@@ -1,12 +1,20 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+
+import java.util.HashMap;
 
 public class ImageBlock extends BaseBlock{
 
@@ -16,6 +24,55 @@ public class ImageBlock extends BaseBlock{
     public TextureInfo right;
     public TextureInfo top;
     public TextureInfo bottom;
+
+    public TextureInfo getFront() {
+        return front;
+    }
+
+    public void setFront(TextureInfo front) {
+        this.front = front;
+    }
+
+    public TextureInfo getBack() {
+        return back;
+    }
+
+    public void setBack(TextureInfo back) {
+        this.back = back;
+    }
+
+    public TextureInfo getLeft() {
+        return left;
+    }
+
+    public void setLeft(TextureInfo left) {
+        this.left = left;
+    }
+
+    public TextureInfo getRight() {
+        return right;
+    }
+
+    public void setRight(TextureInfo right) {
+        this.right = right;
+    }
+
+    public TextureInfo getTop() {
+        return top;
+    }
+
+    public void setTop(TextureInfo top) {
+        this.top = top;
+    }
+
+    public TextureInfo getBottom() {
+        return bottom;
+    }
+
+    public void setBottom(TextureInfo bottom) {
+        this.bottom = bottom;
+    }
+
     public ImageBlock(){
 
     }
@@ -105,6 +162,11 @@ public class ImageBlock extends BaseBlock{
         return colorBlock;
     }
 
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+    }
+
     public String toString(){
 
 
@@ -125,7 +187,7 @@ public class ImageBlock extends BaseBlock{
                 .append("right:'").append(this.right.name).append("',")
                 .append("}");
 
-        StringBuffer sb =new StringBuffer();
+       /* StringBuffer sb =new StringBuffer();
 
         sb.append(x).append(",").append(y).append(",").append(z).append(",")
                 .append(width).append(",").append(height).append(",").append(thick).append(",");
@@ -143,10 +205,72 @@ public class ImageBlock extends BaseBlock{
                 .append(",").append(this.right==null?" ":this.right.name);
 
         return sb.toString();
-
-
+*/
+        return buffer.toString();
     }
 
+    public static ImageBlock parse(JSONObject map){
+        ImageBlock imageBlock =new ImageBlock();
+        String front = (String) map.get("front");
+        String back = (String) map.get("back");
+        String left = (String) map.get("left");
+        String right = (String) map.get("right");
+        String top = (String) map.get("top");
+
+
+        String bottom = (String) map.get("bottom");
+        String allSide =  MapUtil.getStringValue(map, "allSide");
+        if(StringUtil.isNotEmpty(allSide)){
+            front = allSide;
+            back = allSide;
+            left = allSide;
+            right = allSide;
+            top = allSide;
+            bottom = allSide;
+        }
+        String side =  MapUtil.getStringValue(map,"side");
+        if(StringUtil.isNotEmpty(side)){
+            front = side;
+            back = side;
+            left = side;
+            right = side;
+
+        }
+        String topBottom =  MapUtil.getStringValue(map,"topBottom");
+        if(StringUtil.isNotEmpty(topBottom)){
+            top = topBottom;
+            bottom = topBottom;
+
+        }
+        if(StringUtil.isNotEmpty(front)){
+            imageBlock.front = TextureManager.getTextureInfo(front);
+        }
+        if(StringUtil.isNotEmpty(back))
+        imageBlock.back = TextureManager.getTextureInfo(back);
+        if(StringUtil.isNotEmpty(top))
+        imageBlock.top = TextureManager.getTextureInfo(top);
+        if(StringUtil.isNotEmpty(bottom))
+        imageBlock.bottom = TextureManager.getTextureInfo(bottom);
+        if(StringUtil.isNotEmpty(left))
+        imageBlock.left = TextureManager.getTextureInfo(left);
+        if(StringUtil.isNotEmpty(right))
+        imageBlock.right = TextureManager.getTextureInfo(right);
+
+        float x = MapUtil.getFloatValue(map,"x");
+        float y = MapUtil.getFloatValue(map,"y");
+        float z = MapUtil.getFloatValue(map,"z");
+
+        float width = MapUtil.getFloatValue(map,"width");
+        float height = MapUtil.getFloatValue(map,"height");
+        float thick = MapUtil.getFloatValue(map,"thick");
+        imageBlock.x=(int)x;
+        imageBlock.y=(int)y;
+        imageBlock.z=(int)z;
+        imageBlock.width=width;
+        imageBlock.thick =thick;
+        return imageBlock;
+
+    }
     @Override
     public IBlock clone() {
         return null;

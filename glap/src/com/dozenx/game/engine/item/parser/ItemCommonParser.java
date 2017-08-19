@@ -1,7 +1,9 @@
-package com.dozenx.game.engine.item.action;
+package com.dozenx.game.engine.item.parser;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.BoxModel;
@@ -23,7 +25,7 @@ public class ItemCommonParser {
                             LogUtil.println("123");
                         }*/
             item.getItemModel().setIcon(item.itemModel.getIcon());
-            BoneBlock shape = TextureManager.getShape(shapeName);
+            BaseBlock shape = TextureManager.getShape(shapeName);
             if (shape == null) {//如果没有shape 说明还没有用到该物体 还没有定义shape
                 item.getItemModel().init();
             } else {

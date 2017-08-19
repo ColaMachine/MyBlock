@@ -61,4 +61,8 @@ public class BlockUtil {
         return condition;
        // cmd.blockType  = condition<<8|cmd.blockType;
     }
+
+    public  int getBlockId(String name){
+return 0;
+    }
 }

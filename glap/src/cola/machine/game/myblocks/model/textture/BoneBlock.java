@@ -1,12 +1,25 @@
 package cola.machine.game.myblocks.model.textture;
 
 import cola.machine.game.myblocks.block.Block;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
+import core.log.LogUtil;
+import glmodel.GL_Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -345,7 +358,307 @@ public class BoneBlock extends BaseBlock {
     }
 
     @Override
+    public void render(ShaderConfig config, Vao vao, int worldX, int worldY, int worldZ, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+       GL_Vector[] points =  BoxModel.getPoint(worldX, worldY, worldZ);
+
+        if(top && this.top!=null) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, points[4], points[5], points[6], points[7], BoxModel.dirAry[0], this.top);
+        }
+
+        if(bottom&& this.bottom!=null) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao,  points[3], points[2], points[1], points[0],BoxModel. dirAry[1], this.bottom);
+        }
+
+        if(front && this.front!=null) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao,  points[0], points[1], points[5], points[4], BoxModel.dirAry[2], this.front);
+        }
+
+        if(back && this.back!=null) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao,  points[2], points[3], points[7], points[6], BoxModel.dirAry[3], this.back);
+        }
+
+        if(left && this.left!=null) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao,  points[3], points[0], points[4], points[7],BoxModel. dirAry[4], this.left);
+        }
+        if(right&& this.right!=null) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, points[1], points[2], points[6], points[5],BoxModel. dirAry[5], this.right);
+        }
+    }
+
+    public static BoneBlock parse(JSONObject map) throws Exception {
+
+        BoneBlock shape = new BoneBlock();
+        String name = (String) map.get("name");
+                    /*if(name.equals("mantle")){
+                        LogUtil.println("mantle");
+                    }*/
+        shape.setName(name);
+
+        int shapeType =
+                MapUtil.getIntValue(map, "shapeType");
+        if(shapeType!=2 && shapeType!=3){
+            LogUtil.err("shaperType is error ");
+        }
+        String group   = MapUtil.getStringValue(map,"group");
+        if(group!=null ){
+            shape.setGroup(group);
+            List shapeGroupList = TextureManager.shapeGroups.get(group);
+            if(shapeGroupList == null ){
+                shapeGroupList =new ArrayList();
+                TextureManager.shapeGroups .put(group , shapeGroupList);
+                shapeGroupList.add(shape);
+            }else{
+                shapeGroupList.add(shape);
+            }
+        }
+
+
+        Object frontObj = map.get("frontFace");
+        if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
+            ShapeFace shapeFace = getShapeFace(frontObj);
+            shape.setFrontFace(shapeFace);
+        }
+        Object bottomObj = map.get("bottomFace");
+        if(bottomObj instanceof  com.alibaba.fastjson.JSONObject){
+            ShapeFace shapeFace = getShapeFace(bottomObj);
+            shape.setBottomFace(shapeFace);
+        }
+        Object topObj = map.get("topFace");
+        if(topObj instanceof  com.alibaba.fastjson.JSONObject){
+            ShapeFace shapeFace = getShapeFace(topObj);
+            shape.setTopFace(shapeFace);
+        }
+        Object backObj = map.get("backFace");
+        if(backObj instanceof  com.alibaba.fastjson.JSONObject){
+            ShapeFace shapeFace = getShapeFace(backObj);
+            shape.setBackFace(shapeFace);
+        }
+        Object leftObj = map.get("leftFace");
+        if(leftObj instanceof  com.alibaba.fastjson.JSONObject){
+            ShapeFace shapeFace = getShapeFace(leftObj);
+            shape.setLeftFace(shapeFace);
+        }
+        Object rightObj = map.get("rightFace");
+        if(rightObj instanceof  com.alibaba.fastjson.JSONObject){
+            ShapeFace shapeFace = getShapeFace(rightObj);
+            shape.setRightFace(shapeFace);
+        }
+                   /* if(frontObj instanceof  com.alibaba.fastjson.JSONObject){
+                        continue;
+                    }*/
+
+
+        String front = (String) map.get("front");
+        String back = (String) map.get("back");
+        String left = (String) map.get("left");
+        String right = (String) map.get("right");
+        String top = (String) map.get("top");
+
+        String bottom = (String) map.get("bottom");
+        String allSide =  MapUtil.getStringValue(map,"allSide");
+        if(StringUtil.isNotEmpty(allSide)){
+            front = allSide;
+            back = allSide;
+            left = allSide;
+            right = allSide;
+            top = allSide;
+            bottom = allSide;
+        }
+        String side =  MapUtil.getStringValue(map,"side");
+        if(StringUtil.isNotEmpty(side)){
+            front = side;
+            back = side;
+            left = side;
+            right = side;
+
+        }
+        String topBottom =  MapUtil.getStringValue(map,"topBottom");
+        if(StringUtil.isNotEmpty(topBottom)){
+            top = topBottom;
+            bottom = topBottom;
+
+        }
+
+
+        shape.setShapeType(shapeType);
+        if(name.equalsIgnoreCase("box")){
+            LogUtil.println("box");
+        }
+        Object model =  map.get("model");
+
+        if(model!=null && model instanceof  com.alibaba.fastjson.JSONArray){
+            //转成数组 shapeface的数组
+            //com.alibaba.fastjson.JSONArray
+            com.alibaba.fastjson.JSONArray arr = (com.alibaba.fastjson.JSONArray)model;
+
+            for(int j=0;j<arr.size();j++){
+
+                JSONObject modelShapeFaceObj=(JSONObject)arr.get(j);
+                ShapeFace modelShapeFace= getShapeFace(modelShapeFaceObj);
+
+                shape.shapeFaceMap.put(modelShapeFace.getName(),modelShapeFace);
+            }
+                   /*     ShapeFace shapeFace = getShapeFace(frontObj);
+                        shape.setFrontFace(shapeFace);*/
+        }
+
+        String parent = MapUtil.getStringValue(map, "parent");
+        shape.setParent(parent);
+        if (!"root".equals(parent)&& parent!=null) {
+            String p_posi_xStr = MapUtil.getStringValue(map, "p_posi_x");
+            String p_posi_yStr = MapUtil.getStringValue(map, "p_posi_y");
+            String p_posi_zStr = MapUtil.getStringValue(map, "p_posi_z");
+
+            BoneBlock parentShape = (BoneBlock)TextureManager.getShape(parent);
+            if (shape == null) {
+                LogUtil.err("can 't find shape" + parent);
+            }
+            // String c_posi_xStr =  MapUtil.getStringValue(map,"c_posi_x");
+            try {//有shape 不一定有parentShape
+                            /*if(shape==null || parentShape ==null){
+                                LogUtil.err(" is null");
+
+
+                            }*/
+
+                // Object widthObj = map.get("width");
+
+                float width = BoneBlock.parsePosition(MapUtil.getStringValue(map, "width"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+
+
+                float height = BoneBlock.parsePosition(MapUtil.getStringValue(map, "height"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+
+
+
+                float thick = BoneBlock.parsePosition(MapUtil.getStringValue(map, "thick"), 0f, 0f, 0f, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick());
+
+                shape.setWidth(width);
+                shape.setHeight(height);
+                shape.setThick(thick);
+
+                if(/*shape!=null &&*/ parentShape!=null && StringUtil.isNotEmpty(MapUtil.getStringValue(map, "c_posi_x"))) {
+
+                    shape.setC_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+
+                    //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
+                    shape.setC_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+
+                    shape.setC_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+
+                    shape.setP_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    shape.setP_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    shape.setP_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+
+                }
+            }catch(Exception e){
+                LogUtil.err(e);
+            }
+        }else{
+            float width = MapUtil.getFloatValue(map, "width");
+
+
+            float height = MapUtil.getFloatValue(map, "height");
+
+
+
+            float thick = MapUtil.getFloatValue(map, "thick");
+
+            shape.setWidth(width);
+            shape.setHeight(height);
+            shape.setThick(thick);
+
+
+            shape.setC_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, 0f, 0f,0f));
+
+            //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
+            shape.setC_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, 0f, 0f,0f));
+
+            shape.setC_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick,  0f, 0f,0f));
+
+            shape.setP_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick,  0f, 0f,0f));
+            shape.setP_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick,  0f, 0f,0f));
+            shape.setP_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick,  0f, 0f,0f));
+
+        }
+        if (shapeType == 3) {
+            if (!isEmpty(front)) {
+                shape.setFront(TextureManager.getTextureInfo(front));
+            }
+            if (!isEmpty(back)) {
+                shape.setBack(TextureManager.getTextureInfo(back));
+            }
+            if (!isEmpty(left)) {
+                shape.setLeft(TextureManager.getTextureInfo(left));
+            }
+            if (!isEmpty(right)) {
+                shape.setRight(TextureManager.getTextureInfo(right));
+            }
+            if (!isEmpty(top)) {
+                shape.setTop(TextureManager.getTextureInfo(top));
+            }
+            if (!isEmpty(bottom)) {
+                shape.setBottom(TextureManager.getTextureInfo(bottom));
+            }
+        }
+        return shape;
+    }
+    public static ShapeFace getShapeFace(Object frontObj ){
+        ShapeFace shapeFace =new ShapeFace();
+
+
+        JSONObject jsonObj = (JSONObject)frontObj;
+        //  HashMap keyValue = (HashMap)jsonObj.get(0);
+        String name = jsonObj.getString("name");
+        shapeFace.setName(name);
+        JSONArray vertices =  jsonObj.getJSONArray("vertices");
+        float[][] verticesAry = new float[vertices.size()][3];
+        for(int j=0;j<vertices.size();j++){
+            for(int k=0;k<3;k++){
+                verticesAry[j][k]= vertices.getJSONArray(j).getFloat(k);
+            }
+        }
+
+        shapeFace.setVertices(verticesAry);
+        JSONArray tecoordsJAry =  jsonObj.getJSONArray("texcoords");
+        float[][] tecoords = new float[tecoordsJAry.size()][2];
+        for(int j=0;j<tecoordsJAry.size();j++){
+            for(int k=0;k<2;k++){
+                tecoords[j][k]= tecoordsJAry.getJSONArray(j).getFloat(k);
+            }
+        }
+        shapeFace.setTexcoords(tecoords);
+
+        JSONArray normalJAry =  jsonObj.getJSONArray("normals");
+        float[][] normals = new float[normalJAry.size()][3];
+        for(int j=0;j<normalJAry.size();j++){
+            for(int k=0;k<2;k++){
+                normals[j][k]= normalJAry.getJSONArray(j).getFloat(k);
+            }
+        }
+        shapeFace.setNormals(normals);
+
+        JSONArray facesAry =  jsonObj.getJSONArray("faces");
+        int[][] faces = new int[facesAry.size()][facesAry.getJSONArray(0).size()];
+        for(int i=0;i<faces.length;i++) {
+            for (int j = 0; j < facesAry.getJSONArray(i).size(); j++) {
+                faces[i][j] = facesAry.getJSONArray(i).getInteger(j);
+            }
+        }
+        shapeFace.setFaces(faces);
+        return shapeFace;
+    }
+    @Override
     public IBlock clone() {
         return null;
     }
+
+    public static boolean isEmpty(String name) {
+        if (name == null || name.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -1,13 +1,17 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.FloatBufferWrap;
+import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -413,6 +417,13 @@ public class ColorBlock extends BaseBlock{
         return colorBlock;
     }
 
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity,
+        top,bottom,left,right,front,right);
+
+    }
+
     public String toString(){
        StringBuffer buffer =new StringBuffer();
         buffer.append("{").append("name:'").append(this.name).append("',")
@@ -425,12 +436,48 @@ public class ColorBlock extends BaseBlock{
                 .append("z:").append(this.z).append(",")
                .append("r:").append(this.rf).append(",")
                 .append("g:").append(this.gf).append(",")
-                .append("b:").append(this.bf).append("}");
-        StringBuffer sb = new StringBuffer();
+                .append("b:").append(this.bf).append(",")
+                .append("a:").append(this.opacity).append("}");
+        /*StringBuffer sb = new StringBuffer();
         sb.append(this.x).append(",").append(this.y).append(",").append(this.z).append(",")
                 .append(this.width).append(",").append(this.height).append(",").append(this.thick).append(",")
                 .append(this.rf).append(",").append(this.gf).append(",").append(this.bf);
-        return sb.toString();
+        return sb.toString();*/
+        return buffer.toString();
+    }
+
+
+    public static ColorBlock parse(JSONObject map){
+        ColorBlock block =new ColorBlock();
+
+
+
+        float x = MapUtil.getFloatValue(map,"x");
+        float y = MapUtil.getFloatValue(map,"y");
+        float z = MapUtil.getFloatValue(map,"z");
+
+
+        float red = MapUtil.getFloatValue(map,"r");
+        float green = MapUtil.getFloatValue(map,"g");
+        float blue = MapUtil.getFloatValue(map,"b");
+        float alpha = MapUtil.getFloatValue(map,"a");
+
+        block.rf= red;
+        block.gf= green;
+
+        block.bf= red;
+        block.opacity = alpha;
+
+        float width = MapUtil.getFloatValue(map,"width");
+        float height = MapUtil.getFloatValue(map,"height");
+        float thick = MapUtil.getFloatValue(map,"thick");
+        block.x=(int)x;
+        block.y=(int)y;
+        block.z=(int)z;
+        block.width=width;
+        block.thick =thick;
+        return block;
+
 
     }
 }

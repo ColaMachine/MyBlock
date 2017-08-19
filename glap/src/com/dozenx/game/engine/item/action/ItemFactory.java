@@ -24,6 +24,9 @@ public class ItemFactory {
     public ItemDefinition parse(Map map ) throws CloneNotSupportedException {
 //        String type = MapUtil.getStringValue(map, "type");
       String name = MapUtil.getStringValue(map,"name");
+
+        int id = MapUtil.getIntValue(map,"id");
+
         if(name.equals("tree_seed")){
             LogUtil.println("is arrow");
         }
@@ -37,6 +40,7 @@ public class ItemFactory {
 
         engine = StringUtil.isNotEmpty(engine)?engine : (StringUtil.isNotEmpty(category)?category:type);
         ItemDefinition itemDef = null;
+
         //itemDef.setName(name);
        // itemDef.getShape().getTi
         //物品的定义是允许baseOn的 就先继承父亲的所有属性
@@ -115,7 +119,7 @@ public class ItemFactory {
                     if(StringUtil.isNotEmpty(spiritStr)){
                         item.setSpirit(spirit);
                     }*/
-
+        itemDef.id = id;
     return itemDef;
 
     }

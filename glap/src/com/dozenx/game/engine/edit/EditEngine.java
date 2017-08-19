@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.view.ColorGroup;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -62,7 +63,7 @@ public class EditEngine {
      * 在组件库里选中的对象
      */
     //public ColorGroup chooseColorGroup = null;
-    HashMap<String,ColorGroup > colorGroupHashMap =new HashMap<>();
+    HashMap<String,BaseBlock > colorGroupHashMap =new HashMap<>();
 
     int minX,minZ;
     public GL_Vector startPoint;
@@ -861,6 +862,8 @@ public class EditEngine {
     public TextureInfo nowTextureInfo;
 
     public void saveSelectAsComponent(String name){
+
+
         StringBuffer stringBuffer =new StringBuffer();
         try {
             //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
@@ -874,6 +877,38 @@ public class EditEngine {
             e.printStackTrace();
         }
     }
+
+
+    public void saveSelectAsItem(String name){
+
+//        {
+//            name:"grass",
+//                    icon:"grass_top",
+//                type:"block",
+//                remark:"草方块",
+//                shape:"grass",
+//                baseon:"mantle"
+//        },
+        StringBuffer stringBuffer =new StringBuffer();
+        try {
+            //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
+            BaseBlock block = selectBlockList.get(0);
+            stringBuffer.append("{name:'").append(name).append("',")
+                    .append("type:'").append("block").append("',")
+                    .append("remark:'").append(name).append("',")
+                    .append("remark:'").append(name).append("',")
+                    .append("shape:'").append(block.toString()).append(",")
+                    .append("baseon:'mantle'").append("'}");
+                // outputStream .write();
+
+                stringBuffer.append(block.toString()).append("\n");
+
+            FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item").resolve(name+".block").toFile(),stringBuffer.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void readComponentFromFile(File file) {
         try {
@@ -1171,59 +1206,30 @@ public class EditEngine {
      * @param name
      */
     public void saveSelectAsColorGroup(String name ){
-        if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
-            ColorGroup colorGroup =(ColorGroup) selectBlockList.get(0);
-            StringBuffer sb =new StringBuffer();
-            sb.append(colorGroup.width).append(",").append(colorGroup.height)
-                   .append(",").append(colorGroup.thick)
-                    .append(",").append(colorGroup.xoffset)
-                    .append(",").append(colorGroup.yoffset)
-                    .append(",").append(colorGroup.zoffset)
-                    .append(",").append(colorGroup.xzoom)
-                    .append(",").append(colorGroup.yzoom)
-                    .append(",").append(colorGroup.zzoom)
-            .append("\n");
-            for(BaseBlock colorBlock : colorGroup.colorBlockList){
-                // outputStream .write();
 
-                    ImageBlock imageBlock =(ImageBlock) colorBlock;
-                    sb.append(colorBlock.toString())
-                            .append("\n");
+        //这里还要增加imageblock colorblock 的支持 然后原生的支持
 
-            }
-
-            for(ColorGroup animationGroup : colorGroup.animations){
-                // outputStream .write();
-                sb.append("animation\n");
-
-                sb.append(animationGroup.width).append(",").append(animationGroup.height)
-                        .append(",").append(animationGroup.thick)
-                        .append(",").append(animationGroup.xoffset)
-                        .append(",").append(animationGroup.yoffset)
-                        .append(",").append(animationGroup.zoffset)
-                        .append(",").append(animationGroup.xzoom)
-                        .append(",").append(animationGroup.yzoom)
-                        .append(",").append(animationGroup.zzoom)
-                        .append("\n");
-                for(BaseBlock colorBlock : animationGroup.colorBlockList){
-                    // outputStream .write();
+        BaseBlock selectBlock = this.getSelectFirstBlock();
+        if(selectBlock == null){
+            return;
+        }
+        StringBuffer sb =new StringBuffer();
 
 
-                        ImageBlock imageBlock =(ImageBlock) colorBlock;
-                        sb.append(colorBlock.toString())
-                                .append("\n");
 
 
-                }
-            }
+        sb.append("{name:'").append(name).append("',")
+                .append("type:'").append("block").append("',")
+                .append("remark:'").append(name).append("',")
+                .append("remark:'").append(name).append("',")
+                .append("shape:").append(selectBlock.toString()).append(",")
+                .append("baseon:'mantle'").append("}");
 
-
-            try {
-                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("save/component").resolve(name+".block").toFile(),sb.toString());
-                colorGroupHashMap.put(name,colorGroup);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve(name+".block").toFile(),sb.toString());
+            colorGroupHashMap.put(name,selectBlock);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1281,6 +1287,8 @@ public class EditEngine {
                 //color group 里有 各种 colorBlock imageBlock rotateBlock组成 boneBlock组成 那么 所有的block 所有的模型都可以通过colorGroup来表达
                 //每个colorgroup 都有单独的id
 
+
+            }else if(colorBlock instanceof  ImageBlock){
 
             }
         }

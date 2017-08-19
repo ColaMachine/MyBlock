@@ -1,4 +1,4 @@
-package com.dozenx.game.engine.item.action;
+package com.dozenx.game.engine.item.parser;
 
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 

@@ -352,7 +352,7 @@ public class PlayerModel extends BaseModel   {
             if (itemBean == null || itemBean.itemDefinition==null) {
                 return;
             } else {
-                BoneBlock shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" +  itemBean.itemDefinition.getName() + "failed");
 
@@ -375,7 +375,7 @@ public class PlayerModel extends BaseModel   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                BoneBlock shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" +  itemBean.itemDefinition.getName() + "failed");
 
@@ -527,7 +527,7 @@ public class PlayerModel extends BaseModel   {
             if (itemCfg == null) {
                 return;
             } else {
-                BoneBlock shape = itemCfg.getShape();
+                BoneBlock shape = (BoneBlock)itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
@@ -550,7 +550,7 @@ public class PlayerModel extends BaseModel   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                BoneBlock shape = itemCfg.getShape();
+                BoneBlock shape = (BoneBlock)itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
@@ -592,7 +592,7 @@ public class PlayerModel extends BaseModel   {
             if (itemCfg == null) {
                 return;
             } else {
-                BoneBlock shape = itemCfg.getShape();
+                BoneBlock shape = (BoneBlock)itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 
@@ -615,7 +615,7 @@ public class PlayerModel extends BaseModel   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                BoneBlock shape = itemCfg.getShape();
+                BoneBlock shape = (BoneBlock)itemCfg.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemCfg.getName() + "failed");
 

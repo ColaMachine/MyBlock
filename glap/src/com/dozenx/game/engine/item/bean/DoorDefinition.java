@@ -5,7 +5,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.BlockUtil;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.engine.item.action.ItemDoorParser;
+import com.dozenx.game.engine.item.parser.ItemDoorParser;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.MathUtil;
 import core.log.LogUtil;

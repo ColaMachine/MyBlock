@@ -2,8 +2,14 @@ package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
+import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.command.ItemMainType;
+import com.dozenx.game.engine.edit.view.ColorGroup;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.game.engine.command.ItemType;
@@ -19,6 +25,7 @@ public class ItemDefinition implements Cloneable{
    /* Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
+    public int id;
     private ItemType itemType;//物品的具体类型 详见ItemType
     public  ItemModel itemModel = new ItemModel();//模型描述
     public String engine;
@@ -36,7 +43,7 @@ public class ItemDefinition implements Cloneable{
     int strenth;
 
     int position;//如果是装备的画就会起作用 head body leg foot hand arm
-    BoneBlock shape;//含着一些box 绘制的属性 这个东西不是应该在 itemModel里吗
+    BaseBlock shape;//含着一些box 绘制的属性 这个东西不是应该在 itemModel里吗
     //ShapeType shapeType;//描述 是饼状 盒形 icon状
 
 /*
@@ -313,12 +320,12 @@ public class ItemDefinition implements Cloneable{
     }
 
 
-    public BoneBlock getShape() {
+    public BaseBlock getShape() {
 
         return shape;
     }
 
-    public void setShape(BoneBlock shape) {
+    public void setShape(BaseBlock shape) {
 
         this.shape = shape;
     }
@@ -428,7 +435,7 @@ public class ItemDefinition implements Cloneable{
         String baseOn = MapUtil.getStringValue(map,"baseon");
         String icon =MapUtil.getStringValue(map,"icon");//获取icon图片
         String engine = MapUtil.getStringValue(map,"engine");
-        String shape = MapUtil.getStringValue(map,"shape");
+
         if(StringUtil.isNotEmpty(name)){
             this.name =name;
 
@@ -441,11 +448,35 @@ public class ItemDefinition implements Cloneable{
                 this.itemModel.setIcon(TextureManager.getTextureInfo(icon));
 
             }
-            if (StringUtil.isNotEmpty(shape)) {
-                this.setShape(TextureManager.getShape(shape));
-            } else {
-                this.setShape(TextureManager.getShape(name));
+
+
+            Object shapeObj = map.get("shape");
+            if(shapeObj instanceof  String){
+                String shape = MapUtil.getStringValue(map,"shape");
+
+
+                if (StringUtil.isNotEmpty(shape)) {
+                    this.setShape(TextureManager.getShape(shape));
+                } else {
+                    this.setShape(TextureManager.getShape(name));
+                }
+            }else if(shapeObj instanceof JSONObject){
+                String blockType = (String)((JSONObject) shapeObj).get("blocktype");
+                BaseBlock  block =null;
+                if("imageblock".equals(blockType)){
+                      block = ImageBlock.parse((JSONObject) shapeObj);
+
+
+                }else if("colorblock".equals(blockType)){
+                    block = ColorBlock.parse((JSONObject) shapeObj);
+                }else if("colorgroup".equals(blockType)){
+                    block = ColorGroup.parse((JSONObject) shapeObj);
+                }
+
+                this.setShape( block);
+                TextureManager.putShape(block);
             }
+
         }
 
     }

@@ -30,8 +30,8 @@ import java.util.List;
 public class ItemManager {
 
     public static List<Ball> list = new ArrayList<>();
-    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
-    public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();
+    private static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
+    private static HashMap<Integer, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<Integer, ItemDefinition>();
     static float distance = 0;
     long lastCheckTime = 0;
 
@@ -185,18 +185,27 @@ public class ItemManager {
             for (File file : fileList) {//遍历配置文件
                 String json = FileUtil.readFile2Str(file);
 
+                if(json.trim().startsWith("[")) {
+                    List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
 
-                List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
+                    for (int i = 0; i < textureCfgBeanList.size(); i++) {
+                        HashMap map = textureCfgBeanList.get(i);
 
-                for (int i = 0; i < textureCfgBeanList.size(); i++) {
-                    HashMap map = textureCfgBeanList.get(i);
+                        ItemDefinition itemDef = itemFactory.parse(map);
+                        // ItemDefinition itemDef = new ItemDefinition();
 
-                    ItemDefinition itemDef =  itemFactory.parse(map);
-                   // ItemDefinition itemDef = new ItemDefinition();
+
+                        this.putItemDefinition(itemDef.getName(), itemDef);
+
+
+                    }
+                }else{
+                    HashMap map = JSON.parseObject(json, HashMap.class);
+                    ItemDefinition itemDef = itemFactory.parse(map);
+                    // ItemDefinition itemDef = new ItemDefinition();
 
 
                     this.putItemDefinition(itemDef.getName(), itemDef);
-
 
                 }
             }
@@ -215,9 +224,11 @@ public class ItemManager {
         } catch (Exception e) {
             LogUtil.err(name);
         }
-        itemType2ItemDefinitionMap.put(ItemType.valueOf(name), item);
+        itemType2ItemDefinitionMap.put(/*ItemType.valueOf(name).ordinal()*/item.id, item);
         if (name.equals("wood_axe")) {
             LogUtil.println("fur_helmet");
         }
     }
+
+
 }

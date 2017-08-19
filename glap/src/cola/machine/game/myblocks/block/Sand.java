@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.block;
 
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
+import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.Vao;
 
 /**
  * Created by luying on 14-8-30.
@@ -28,6 +30,11 @@ public class Sand extends BaseBlock {
     @Override
     public BaseBlock copy() {
         return null;
+    }
+
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
     }
 
     @Override

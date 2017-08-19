@@ -52,6 +52,31 @@ public abstract class BaseBlock extends AABB implements IBlock {
 	public int y=0;//0~128
 	public int z=0;//0~16
     public float width;
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getThick() {
+        return thick;
+    }
+
+    public void setThick(float thick) {
+        this.thick = thick;
+    }
+
     public float height;
     public float thick;
     public int chunkX=0;
@@ -451,4 +476,8 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public void addZ(int num){
         this.z+=num;
     }
+
+
+    public abstract  void render(ShaderConfig config, Vao vao, int x,int y,int z ,boolean top,
+                                 boolean bottom,boolean left,boolean right,boolean front ,boolean back);
 }

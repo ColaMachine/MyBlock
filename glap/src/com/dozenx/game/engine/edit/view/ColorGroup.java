@@ -3,6 +3,7 @@ package com.dozenx.game.engine.edit.view;
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.BaseBlock;
 //import cola.machine.game.myblocks.model.ColorBlock;
@@ -10,11 +11,18 @@ import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
+import com.google.gson.JsonArray;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -246,6 +254,11 @@ public class ColorGroup extends BaseBlock {
         }else{  this.z+=num;
 
         }
+    }
+
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
     }
 
     public ColorGroup copy(){
@@ -730,4 +743,119 @@ float[] info =getChildBlockPosition(colorBlock);
     public IBlock clone() {
         return null;
     }
+
+    public ColorGroup(){
+
+    }
+    public String toString(){
+
+
+        StringBuffer buffer =new StringBuffer();
+        buffer.append("{").append("name:'").append(this.name).append("',")
+                .append("blocktype:'groupblock',")
+                .append("width:").append(this.width).append(",")
+                .append("height:").append(this.height).append(",")
+                .append("thick:").append(this.thick).append(",")
+                .append("x:").append(this.x).append(",")
+                .append("y:").append(this.y).append(",")
+                .append("z:").append(this.z).append(",")
+
+
+                .append("xoffset:").append(xoffset).append(",")
+                .append("yoffset:").append(yoffset).append(",")
+                .append("zoffset:,").append(zoffset).append(",")
+                .append("xzoom:").append(xzoom).append(",")
+                .append("yzoom:").append(yzoom).append(",")
+                .append("zzoom:").append(zzoom).append(",")
+
+                .append("children:[");
+
+
+           for(BaseBlock block : colorBlockList){
+               buffer.append(block.toString()).append(",");
+           }
+        buffer.append("],");
+        buffer.append("animation:[");
+        for(BaseBlock block : animations){
+            buffer.append(block.toString()).append(",");
+        }
+        buffer .append("]}");
+
+
+
+
+
+        return buffer.toString();
+
+
+    }
+    public static ColorGroup  parse(JSONObject map){
+        ColorGroup group =new ColorGroup();
+
+        float x = MapUtil.getFloatValue(map,"x");
+        float y = MapUtil.getFloatValue(map,"y");
+        float z = MapUtil.getFloatValue(map,"z");
+
+        float width = MapUtil.getFloatValue(map,"width");
+        float height = MapUtil.getFloatValue(map,"height");
+        float thick = MapUtil.getFloatValue(map,"thick");
+        group.x=(int)x;
+        group.y=(int)y;
+        group.z=(int)z;
+        group.width=width;
+        group.thick =thick;
+
+
+        group.xoffset=MapUtil.getFloatValue(map,"xoffset");
+        group.yoffset=MapUtil.getFloatValue(map,"yoffset");
+        group.zoffset=MapUtil.getFloatValue(map,"zoffset");
+
+        group.xzoom=MapUtil.getFloatValue(map,"xzoom");
+        group.yzoom=MapUtil.getFloatValue(map,"yzoom");
+        group.zzoom=MapUtil.getFloatValue(map,"zzoom");
+
+        JSONArray ary = (JSONArray)map.get("children");
+        if(ary!=null) {
+            for (int i = 0; i < ary.size(); i++) {
+                JSONObject object = (JSONObject) ary.get(i);
+
+                String blockType = (String) object.get("blocktype");
+                if ("imageblock".equals(blockType)) {
+                    ImageBlock imageBlock = ImageBlock.parse(object);
+                    group.addChild(imageBlock);
+                } else if ("colorblock".equals(blockType)) {
+                    ColorBlock colorBlock = ColorBlock.parse(object);
+                    group.addChild(colorBlock);
+                }
+
+
+            }
+        }
+
+        JSONArray animation = (JSONArray)map.get("children");
+
+        for(int i=0;i<animation.size();i++){
+            JSONObject object = (JSONObject)animation.get(i);
+
+            String blockType = (String)object.get("blocktype");
+            if("colorgroup".equals(blockType)){
+                ColorGroup colorGroup = ColorGroup.parse(object);
+                group.animations.add(colorGroup);
+            }/*else
+            if("imageblock".equals(blockType)){
+                ImageBlock imageBlock = ImageBlock.parse(object);
+                group.animations.add(imageBlock);
+            }else if("colorblock".equals(blockType)){
+                ColorBlock colorBlock = ColorBlock.parse(object);
+                group.animations.add(colorBlock);
+            }*/
+
+
+        }
+
+
+        return group;
+
+    }
+
 }

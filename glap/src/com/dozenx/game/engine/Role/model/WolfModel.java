@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.Role.model;
 
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.EquipPartType;
@@ -26,7 +27,7 @@ public class WolfModel extends BaseModel{
 
     public WolfModel(Role role){
         super(role);
-        BoneBlock bodyShape = TextureManager.getShape("wolf_body");
+        BoneBlock bodyShape = (BoneBlock)TextureManager.getShape("wolf_body");
         rootComponent =
         new Component(bodyShape);
 

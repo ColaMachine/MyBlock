@@ -37,7 +37,7 @@ public class BaseModel implements Model   {
             if (itemBean == null||itemBean.itemDefinition == null) {
                 return;
             } else {
-                BoneBlock shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemBean.itemDefinition.getName() + "failed");
 
@@ -60,7 +60,7 @@ public class BaseModel implements Model   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                BoneBlock shape = itemBean.itemDefinition.getShape();
+                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" + itemBean.itemDefinition.getName() + "failed");
 
