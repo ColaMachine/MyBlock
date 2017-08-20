@@ -1,12 +1,14 @@
 package com.dozenx.game.engine.Role.model;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.WearComponent;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -28,7 +30,9 @@ public class BaseModel implements Model   {
     public Component rootComponent = new Component();
     Role role ;
 
-    public void addChild(Component parent,String name,ItemBean itemBean) {
+
+
+    public void addChild(Component parent,int type ,String name,ItemBean itemBean) {
         if(parent==null){
             LogUtil.err("parent node is null");
         }
@@ -37,20 +41,9 @@ public class BaseModel implements Model   {
             if (itemBean == null||itemBean.itemDefinition == null) {
                 return;
             } else {
-                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
-                if (shape == null) {
-                    LogUtil.err("load shape from itemDefinition:" + itemBean.itemDefinition.getName() + "failed");
 
-                }
-
-                Component component = new WearComponent(shape.getWidth(), shape.getHeight(), shape.getThick());
-                //component.setShape(itemCfg.getShape());
-                component.setItem(itemBean);
-                component.name = name;
-
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-                parent.addChild(component);
+                parent.addChild(addItemToComponent(type ,itemBean));
                 //changeProperty();
             }
         } else {
@@ -60,23 +53,39 @@ public class BaseModel implements Model   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
-                if (shape == null) {
-                    LogUtil.err("load shape from itemDefinition:" + itemBean.itemDefinition.getName() + "failed");
 
-                }
-                Component component = new WearComponent(shape.getWidth(), shape.getHeight(), shape.getThick());
-                // component.setShape(itemCfg.getShape());
-                component.setItem(itemBean);
-                component.name = name;
-
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
-                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-                parent.addChild(component);
+                parent.addChild(addItemToComponent(type,itemBean));
                 //changeProperty();
             }
         }
     }
+    public Component addItemToComponent(int type ,ItemBean itemBean){
+
+        BaseBlock baseBlock = itemBean.getItemDefinition().getShape();
+        if (baseBlock == null) {
+            LogUtil.err("load shape from itemDefinition:" + baseBlock.getName() + "failed");
+
+        }
+        rootComponent.belongTo = type;
+
+        Component component = new WearComponent(baseBlock.getWidth(), baseBlock.getHeight(), baseBlock.getThick());
+
+        if(type==component.hand){
+            component.belongTo = component.hand;
+        }
+        //component.setShape(itemCfg.getShape());
+        component.setItem(itemBean);
+        component.name = itemBean.getItemDefinition().getName();
+        if(baseBlock instanceof  BoneBlock){
+            BoneBlock boneBlock = (BoneBlock) baseBlock;
+            component.setOffset(new Point3f(boneBlock.getP_posi_x(), boneBlock.getP_posi_y(), boneBlock.getP_posi_z()), new Point3f(boneBlock.getC_posi_x(), boneBlock.getC_posi_y(), boneBlock.getC_posi_z()));
+
+        }
+
+        return component;
+    }
+
+
 
     public void addChild(Component parent,BoneBlock shape) {
         String parentName = shape.getParent();

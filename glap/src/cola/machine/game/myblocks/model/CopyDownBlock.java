@@ -10,6 +10,7 @@ import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.Vao;
 import core.log.LogUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 public class CopyDownBlock extends BaseBlock{
@@ -18,6 +19,11 @@ public class CopyDownBlock extends BaseBlock{
     ItemDefinition itemDefinition;
     public CopyDownBlock(String name, int id, boolean isAlpha){
         super(name,id,isAlpha);
+    }
+
+    @Override
+    public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
+
     }
 
     @Override
@@ -67,12 +73,11 @@ public class CopyDownBlock extends BaseBlock{
 
     }
 
-    @Override
+
     public void update(float x, float y, float z, float width, float height, float thick) {
 
     }
 
-    @Override
     public void update() {
 
     }
@@ -84,6 +89,11 @@ public class CopyDownBlock extends BaseBlock{
 
     @Override
     public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
     }
 }

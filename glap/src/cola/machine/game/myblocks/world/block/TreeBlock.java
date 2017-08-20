@@ -34,7 +34,7 @@ Client client ;
         this.chunkProvider=chunkProvider;
 
     }
-    public void createBlock(float x,float y,float z,ItemType itemType){
+    public void createBlock(float x,float y,float z,Integer itemType){
         int chunkX = MathUtil.getBelongChunkInt(x);
         int chunkZ = MathUtil.getBelongChunkInt(z);
         int blockX = MathUtil.floor(x) - chunkX * 16;
@@ -50,7 +50,7 @@ Client client ;
         }
         cmd.type = 1;
         //blockType 应该和IteType类型联系起来
-        cmd.blockType = itemType.ordinal();
+        cmd.blockType = itemType;
         Chunk chunk = chunkProvider.getChunk(chunkX,0,chunkZ);
         chunk.setBlock(blockX,blockY,blockZ,itemType);
         //client.send(cmd);
@@ -63,11 +63,11 @@ Client client ;
         //先来一颗棒棒糖树 树干是笔直的 树叶是正方体
         for(int i=0;i<rodMaxHeight;i++){
            // GL_Vector newPosition = new GL_Vector(startPosition.x,startPosition.y+i,startPosition.z);
-            createBlock(startPosition.x,startPosition.y+i,startPosition.z,ItemType.tree_wood);
+            createBlock(startPosition.x,startPosition.y+i,startPosition.z,ItemType.tree_wood.id);
             list.add((int)startPosition.x);
             list.add((int)startPosition.y+i);
             list.add((int)startPosition.z);
-            list.add(ItemType.tree_wood.ordinal());
+            list.add(ItemType.tree_wood.id);
         }
         int width =5;
         for(int i=-width/2;i<=width/2;i++){
@@ -75,12 +75,12 @@ Client client ;
                 for(int k=-width/2;k<=width/2;k++){
                     //GL_Vector newPosition = new GL_Vector(startBlock.getPosition().x+i,startBlock.getPosition().y+5+j,startBlock.getPosition().z+k);
                    // world.setBlock(newPosition,ItemType.tree_leaf_block);
-                    createBlock(startPosition.x+i,startPosition.y+5+j,startPosition.z+k,ItemType.tree_leaf);
+                    createBlock(startPosition.x+i,startPosition.y+5+j,startPosition.z+k,ItemType.tree_leaf.id);
 
                     list.add((int)startPosition.x+i);
                     list.add((int)startPosition.y+5+j);
                     list.add((int)startPosition.z+k);
-                    list.add(ItemType.tree_leaf.ordinal());
+                    list.add(ItemType.tree_leaf.id);
                 }
             }
         }

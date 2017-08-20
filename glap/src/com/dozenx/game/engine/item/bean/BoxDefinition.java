@@ -22,7 +22,7 @@ public class BoxDefinition extends  BlockDefinition{
         super.receive(map);
         ItemBoxParser.parse(this,map);
     }
-  public void use(GL_Vector placePoint,ItemType itemType,GL_Vector viewDir){
+  public void use(GL_Vector placePoint,Integer itemType,GL_Vector viewDir){
       //检查上方是否有物体
       int chunkX = MathUtil.getBelongChunkInt(placePoint.x);
       int chunkZ = MathUtil.getBelongChunkInt(placePoint.z);
@@ -38,7 +38,7 @@ public class BoxDefinition extends  BlockDefinition{
       cmd.cz = blockZ;
       cmd.cy = blockY;
       cmd.type = 1;
-      cmd.blockType = itemType.ordinal();
+      cmd.blockType = itemType;
 
 
 

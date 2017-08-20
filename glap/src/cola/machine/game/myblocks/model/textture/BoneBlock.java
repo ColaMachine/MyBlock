@@ -15,6 +15,7 @@ import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import java.util.ArrayList;
@@ -173,6 +174,39 @@ public class BoneBlock extends BaseBlock {
         this.c_posi_z = c_posi_z;
     }
 
+
+    @Override
+    public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
+        GL_Vector[] dirAry = BoxModel.dirAry;
+GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
+        if(top!=null) {
+
+            ShaderUtils.draw3dImage(points[4], points[5], points[6], points[7],  matrix, dirAry[0], top, vao.getVertices(), config);
+        }
+
+        if(bottom!=null) {
+            ShaderUtils.draw3dImage(points[3], points[2], points[1], points[0],  matrix, dirAry[1], bottom, vao.getVertices(), config);
+        }
+
+        if(front!=null) {
+            ShaderUtils.draw3dImage(points[0], points[1], points[5], points[4],   matrix, dirAry[2], front, vao.getVertices(), config);
+
+        }
+
+        if(back!=null) {
+            ShaderUtils.draw3dImage( points[2], points[3], points[7], points[6],  matrix, dirAry[3], back, vao.getVertices(), config);
+
+        }
+
+        if(left!=null) {
+            ShaderUtils.draw3dImage(points[3], points[0], points[4], points[7],  matrix, dirAry[4], left, vao.getVertices(), config);
+
+        }
+        if(right!=null) {
+            ShaderUtils.draw3dImage( points[1], points[2], points[6], points[5],  matrix, dirAry[0], right, vao.getVertices(), config);
+
+        }
+    }
 
     public float getWidth() {
         return width;
@@ -342,12 +376,12 @@ public class BoneBlock extends BaseBlock {
         }
     }
 
-    @Override
+
     public void update(float x, float y, float z, float width, float height, float thick) {
 
     }
 
-    @Override
+
     public void update() {
 
     }
@@ -384,6 +418,11 @@ public class BoneBlock extends BaseBlock {
         if(right&& this.right!=null) {
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, points[1], points[2], points[6], points[5],BoxModel. dirAry[5], this.right);
         }
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
     }
 
     public static BoneBlock parse(JSONObject map) throws Exception {

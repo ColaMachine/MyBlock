@@ -479,7 +479,7 @@ public class MouseControlCenter {
         livingThingManager.chooseObject(camera.Position, camera.getViewDir());
 
         //选中一个colorblock 作为当前的block
-        ChunkProvider localChunkProvider = CoreRegistry
+       /* ChunkProvider localChunkProvider = CoreRegistry
                 .get(ChunkProvider.class);
         boolean delete = true;
         //获取当前的block item
@@ -492,7 +492,7 @@ public class MouseControlCenter {
                 AttackManager.selectThing = new ColorBlock(arr.targetChunX*16+(int)arr.targetPoint.x,(int)arr.targetPoint.y,arr.targetChunZ*16+(int)arr.targetPoint.z);
                 LogUtil.println(arr.targetPoint+"");
             }
-        }
+        }*/
         //livingThingManager.attack();
        /*Ball ball =new Ball(this.camera.Position,viewDir,17.3f, TextureManager.getShape("arrow"));
 
@@ -877,11 +877,11 @@ public class MouseControlCenter {
                     LivingThing livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
                    if(livingThing!=null) {
                        player.setTarget(livingThing);
-                       CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
+                       CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
                        CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
 
                    }
-                    CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, 0));
+                    CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, 0));
 
                 }
                }
@@ -913,6 +913,9 @@ public class MouseControlCenter {
                 //获得朝向
 
                 //获得靠近还是靠远
+                if(hitPoint ==null){
+                    return;
+                }
                 LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
 
            /*     if(arr.targetBlock.getId()>ItemType.wood_door.ordinal()){

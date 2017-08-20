@@ -98,6 +98,7 @@ public class MainFrame extends Application {
             @Override
             public void handle(ActionEvent event) {
                 //遍历所有的colorblocklist
+                Switcher.edit = !Switcher.edit;
                 GamingState.editEngine.saveToGame();
             }
         });
@@ -182,8 +183,11 @@ public class MainFrame extends Application {
         });
         Button readsaveBtn = new Button("读取");
         // TextField
-        final TextField textField = new TextField("Text Field");
-        textField.setPrefWidth(110);
+        Label compIdLabel = new Label("物品id");
+        final TextField compIdText = new TextField("代保存组件名称");
+        Label compNameLabel = new Label("物品名称");
+        final TextField compNameText = new TextField("代保存组件名称");
+        compNameText.setPrefWidth(110);
 
 
         readsaveBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -203,7 +207,7 @@ public class MainFrame extends Application {
             public void handle(ActionEvent event) {
 
                 //获取名称
-                String text = textField.getText();
+                String text = compNameText.getText();
                 if (StringUtil.isNotEmpty(text)) {
                     GamingState.editEngine.saveSelectAsComponent(text);
                 }
@@ -235,19 +239,21 @@ public class MainFrame extends Application {
             public void handle(ActionEvent event) {
 
                 //获取名称
-                String text = textField.getText();
+                String text = compNameText.getText();
+                String id = compIdText.getText();
                 if (StringUtil.isNotEmpty(text)) {
-                    GamingState.editEngine.saveSelectAsColorGroup(text);
+                    GamingState.editEngine.saveSelectAsColorGroup(Integer.valueOf(id),text);
                 }
             }
         });
 
         selectGrid.add(saveBtn, 0, 0);
         selectGrid.add(readsaveBtn, 0, 1);
-        selectGrid.add(textField, 0, 2);
-        selectGrid.add(componentSave, 0, 3);
-        selectGrid.add(openButton, 0, 4);
-        selectGrid.add(componentSave2, 0, 4);
+        selectGrid.add(compIdLabel, 0, 2);selectGrid.add(compIdText, 1, 2);
+        selectGrid.add(compNameLabel, 0, 3);selectGrid.add(compNameText, 1, 3);
+        selectGrid.add(componentSave, 0, 4);
+        selectGrid.add(openButton, 0, 5);
+        selectGrid.add(componentSave2, 0, 6);
         titlePane.setContent(selectGrid);
         return titlePane;
     }

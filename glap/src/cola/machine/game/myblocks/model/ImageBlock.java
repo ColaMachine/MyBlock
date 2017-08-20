@@ -9,6 +9,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.FloatBufferWrap;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
 import glmodel.GL_Matrix;
@@ -82,70 +83,105 @@ public class ImageBlock extends BaseBlock{
 
     GL_Vector[] points = BoxModel.getPoint(0,0,0);
 
+
     public ImageBlock(String name, int i, boolean b) {
         super(name,i,b);
     }
 
-    public void update(float x,float y,float z,float width,float height,float thick){
+//    public void update(float x,float y,float z,float width,float height,float thick){
+//
+//
+//        GL_Vector[] dirAry = BoxModel.dirAry;
+//
+//        if(top!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
+//        }
+//
+//        if(bottom!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+//        }
+//
+//        if(front!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
+//        }
+//
+//        if(back!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
+//        }
+//
+//        if(left!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
+//        }
+//        if(right!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
+//        }
+//
+//
+//    }
 
 
+    @Override
+    public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
         GL_Vector[] dirAry = BoxModel.dirAry;
 
         if(top!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
+
+            ShaderUtils.draw3dImage(points[4], points[5], points[6], points[7],  matrix, dirAry[0], top, vao.getVertices(), config);
         }
 
         if(bottom!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+            ShaderUtils.draw3dImage(points[3], points[2], points[1], points[0],  matrix, dirAry[1], top, vao.getVertices(), config);
         }
 
         if(front!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
+            ShaderUtils.draw3dImage(points[0], points[1], points[5], points[4],   matrix, dirAry[2], top, vao.getVertices(), config);
+
         }
 
         if(back!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
+            ShaderUtils.draw3dImage( points[2], points[3], points[7], points[6],  matrix, dirAry[3], top, vao.getVertices(), config);
+
         }
 
         if(left!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
+            ShaderUtils.draw3dImage(points[3], points[0], points[4], points[7],  matrix, dirAry[4], top, vao.getVertices(), config);
+
         }
         if(right!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
+            ShaderUtils.draw3dImage( points[1], points[2], points[6], points[5],  matrix, dirAry[0], top, vao.getVertices(), ShaderManager.terrainShaderConfig);
+
         }
-
-
     }
-    public void update(){
+
+   // public void update(){
 
 
-        GL_Vector[] dirAry = BoxModel.dirAry;
+//        GL_Vector[] dirAry = BoxModel.dirAry;
+//
+//        if(top!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
+//        }
+//
+//        if(bottom!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+//        }
+//
+//        if(front!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
+//        }
+//
+//        if(back!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
+//        }
+//
+//        if(left!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
+//        }
+//        if(right!=null) {
+//            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
+//        }
 
-        if(top!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
-        }
-
-        if(bottom!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
-        }
-
-        if(front!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
-        }
-
-        if(back!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
-        }
-
-        if(left!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
-        }
-        if(right!=null) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
-        }
-
-
-    }
+//}
 
     public ImageBlock copy(){
         ImageBlock colorBlock  =new ImageBlock();
@@ -163,7 +199,60 @@ public class ImageBlock extends BaseBlock{
     }
 
     @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean hastop, boolean hasbottom, boolean hasleft, boolean hasright, boolean hasfront, boolean hasback) {
+        GL_Vector[] dirAry = BoxModel.dirAry;
+
+        if(top!=null && hastop) {
+            ShaderUtils.draw3dImage(config, vao,x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
+        }
+
+        if(bottom!=null &&hasbottom) {
+            ShaderUtils.draw3dImage(config, vao, x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+        }
+
+        if(front!=null && hasfront) {
+            ShaderUtils.draw3dImage(config, vao,x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
+        }
+
+        if(back!=null && hasback) {
+            ShaderUtils.draw3dImage(config, vao, x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
+        }
+
+        if(left!=null && hasleft) {
+            ShaderUtils.draw3dImage(config, vao,x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
+        }
+        if(right!=null && hasright)  {
+            ShaderUtils.draw3dImage(config, vao, x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
+        }
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick,  boolean hastop, boolean hasbottom, boolean hasleft, boolean hasright, boolean hasfront, boolean hasback) {
+
+        GL_Vector[] dirAry = BoxModel.dirAry;
+
+        if(top!=null && hastop) {
+            ShaderUtils.draw3dImage(config, vao,x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
+        }
+
+        if(bottom!=null &&hasbottom) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+        }
+
+        if(front!=null && hasfront) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
+        }
+
+        if(back!=null && hasback) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
+        }
+
+        if(left!=null && hasleft) {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
+        }
+        if(right!=null && hasright)  {
+            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
+        }
 
     }
 
@@ -179,12 +268,12 @@ public class ImageBlock extends BaseBlock{
                 .append("x:").append(this.x).append(",")
                 .append("y:").append(this.y).append(",")
                 .append("z:").append(this.z).append(",")
-                .append("front:'").append(this.front.name).append("',")
-                .append("back:'").append(this.back.name).append("',")
-                .append("bottom:'").append(this.bottom.name).append("',")
-                .append("top:'").append(this.top.name).append("',")
-                .append("left:'").append(this.left.name).append("',")
-                .append("right:'").append(this.right.name).append("',")
+                .append("front:'").append(this.front==null?"":this.front.name).append("',")
+                .append("back:'").append(this.back==null?"":this.back.name).append("',")
+                .append("bottom:'").append(this.bottom==null?"":this.bottom.name).append("',")
+                .append("top:'").append(this.top==null?"":this.top.name).append("',")
+                .append("left:'").append(this.left==null?"":this.left.name).append("',")
+                .append("right:'").append(this.right==null?"":this.right.name).append("',")
                 .append("}");
 
        /* StringBuffer sb =new StringBuffer();

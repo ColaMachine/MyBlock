@@ -19,7 +19,7 @@ public class BlockUtil {
     public static boolean isDoor(int blockId){
         if(blockId>256){
             blockId = ByteUtil.get8_0Value(blockId);
-            if(blockId== ItemType.wood_door.ordinal()){
+            if(blockId== ItemType.wood_door.id){
                 return true;
             }
         }

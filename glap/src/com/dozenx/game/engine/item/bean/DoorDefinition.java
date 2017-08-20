@@ -22,7 +22,7 @@ public class DoorDefinition extends  BlockDefinition{
         super.receive(map);
         ItemDoorParser.parse(this,map);
     }
-  public void use(GL_Vector placePoint,ItemType itemType,GL_Vector viewDir){
+  public void use(GL_Vector placePoint,Integer itemType,GL_Vector viewDir){
       //检查上方是否有物体
       int chunkX = MathUtil.getBelongChunkInt(placePoint.x);
       int chunkZ = MathUtil.getBelongChunkInt(placePoint.z);
@@ -38,7 +38,7 @@ public class DoorDefinition extends  BlockDefinition{
       cmd.cz = blockZ;
       cmd.cy = blockY;
       cmd.type = 1;
-      cmd.blockType = itemType.ordinal();
+      cmd.blockType = itemType;
 
 
 
@@ -48,7 +48,7 @@ public class DoorDefinition extends  BlockDefinition{
 
       //blockType 应该和IteType类型联系起来
 
-      if(cmd.blockType== ItemType.wood_door.ordinal()){
+      if(cmd.blockType== ItemType.wood_door.id){
           int condition = BlockUtil.getIndex(placePoint, viewDir);
           cmd.blockType  = condition<<8|cmd.blockType;
                     /*if(pianyiX<0.1 ){//把一个方块分为 12345678 8个格子 算出它再哪个格子
@@ -76,7 +76,7 @@ public class DoorDefinition extends  BlockDefinition{
                     }*/
           CoreRegistry.get(Client.class).send(cmd);
           cmd.cy+=1;
-          cmd.blockType = ItemType.copy_down.ordinal();
+          cmd.blockType = ItemType.copy_down.id;
           CoreRegistry.get(Client.class).send(cmd);
 
 

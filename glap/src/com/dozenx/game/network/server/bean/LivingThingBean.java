@@ -587,7 +587,7 @@ public class LivingThingBean extends Role {
         this.getExecutor().getCurrentState().receive(cmd);
     }
 
-    public ItemType getMainWeapon(){
+    public Integer getMainWeapon(){
         /*Component component = bodyComponent.findChild("rHumanHand");
         if(component.children.size()>0){
             Component weapon = component.children.get(0);

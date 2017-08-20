@@ -8,6 +8,7 @@ import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
@@ -35,7 +36,7 @@ public class DoorBlock extends DirectionBlock {
 
     }
     //画出四个面
-    @Override
+    //@Override
     public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z){
         //获取condition
         //itemDefinition.getShape().getTopFace();
@@ -121,6 +122,11 @@ public class DoorBlock extends DirectionBlock {
         DoorBlock block =  new DoorBlock(this.getName(),this.getId(),this.getAlpha());
         block.itemDefinition =itemDefinition;
         return block;
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
     }
 
 }

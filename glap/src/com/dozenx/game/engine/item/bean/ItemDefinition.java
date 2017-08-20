@@ -26,7 +26,7 @@ public class ItemDefinition implements Cloneable{
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
     public int id;
-    private ItemType itemType;//物品的具体类型 详见ItemType
+    private Integer itemType;//物品的具体类型 详见ItemType
     public  ItemModel itemModel = new ItemModel();//模型描述
     public String engine;
     public ItemTypeProperties itemTypeProperties ;//block food wear
@@ -311,11 +311,11 @@ public class ItemDefinition implements Cloneable{
         this.itemModel = itemModel;
     }
 
-    public ItemType getItemType() {
+    public Integer getItemType() {
         return itemType;
     }
 
-    public void setItemType(ItemType itemType) {
+    public void setItemType(Integer itemType) {
         this.itemType = itemType;
     }
 
@@ -423,7 +423,7 @@ public class ItemDefinition implements Cloneable{
         return itemDef;
     }
 
-    public void use(GL_Vector placePoint,ItemType itemType,GL_Vector viewDir){
+    public void use(GL_Vector placePoint,Integer itemType,GL_Vector viewDir){
 
     }
 
@@ -460,6 +460,7 @@ public class ItemDefinition implements Cloneable{
                 } else {
                     this.setShape(TextureManager.getShape(name));
                 }
+                TextureManager.getShape(shape).id=id;
             }else if(shapeObj instanceof JSONObject){
                 String blockType = (String)((JSONObject) shapeObj).get("blocktype");
                 BaseBlock  block =null;
@@ -469,9 +470,10 @@ public class ItemDefinition implements Cloneable{
 
                 }else if("colorblock".equals(blockType)){
                     block = ColorBlock.parse((JSONObject) shapeObj);
-                }else if("colorgroup".equals(blockType)){
+                }else if("groupblock".equals(blockType)){
                     block = ColorGroup.parse((JSONObject) shapeObj);
                 }
+                block.id =id;
 
                 this.setShape( block);
                 TextureManager.putShape(block);

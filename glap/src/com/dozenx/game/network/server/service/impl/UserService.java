@@ -117,7 +117,7 @@ public class UserService extends GameServerService {
         List<ItemServerBean> items= new ArrayList<>();
         ItemServerBean item =new ItemServerBean();
         item.setId(1);
-        item.setItemType(ItemType.arrow.ordinal());
+        item.setItemType(ItemType.arrow.id);
         items.add(item);
         item.setPosition(0);
         File file2 = PathManager.getInstance().getHomePath().resolve("saves").resolve("item").resolve(info.getId()+"").toFile();

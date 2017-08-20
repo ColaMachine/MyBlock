@@ -37,7 +37,7 @@ public class EquipCmd extends   BaseGameCmd{
     public void setPart(EquipPartType part) {
         this.part = part;
     }
-    private ItemType itemType;
+    private Integer itemType;
 
     private int itemId;
    // private ItemDefinition item;
@@ -53,11 +53,11 @@ public class EquipCmd extends   BaseGameCmd{
 
     final CmdType cmdType = CmdType.EQUIP;
 
-    public ItemType getItemType() {
+    public Integer getItemType() {
         return itemType;
     }
 
-    public void setItemType(ItemType itemType) {
+    public void setItemType(Integer itemType) {
         this.itemType = itemType;
     }
 
@@ -87,7 +87,7 @@ public class EquipCmd extends   BaseGameCmd{
         return ByteUtil.createBuffer().put(cmdType.getType())
                 .put(userId)
                 .put(getPart().getType())
-                .put(itemType == null ?-1: itemType.getType()).put(itemId).array();
+                .put(itemType == null ?-1: itemType).put(itemId).array();
 
 
 
@@ -107,7 +107,7 @@ public class EquipCmd extends   BaseGameCmd{
         int itemTypeVal = byteBufferWrap.getInt();
 
         if(itemTypeVal>=0){
-            this.itemType=ItemType.values()[itemTypeVal];
+            this.itemType=itemTypeVal;
         }
         this.itemId = byteBufferWrap.getInt();;
 

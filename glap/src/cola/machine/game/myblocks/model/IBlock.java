@@ -20,7 +20,7 @@ public interface IBlock {
     /**color block de xuanran fangshi 的渲染方式*/
    // public void renderShader(ShaderConfig config , GL_Matrix matrix);
     /**其他特殊方块的渲染方式**/
-    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z);
+ //   public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z);
     public void render();
 	public void renderCube();
 	public void renderColor();

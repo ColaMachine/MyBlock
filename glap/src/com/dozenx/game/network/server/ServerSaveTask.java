@@ -100,7 +100,7 @@ public class ServerSaveTask extends TimerTask {
                 dropCmd.setX(itemServerBean.getX());
                 dropCmd.setY(itemServerBean.getY());
                 dropCmd.setZ(itemServerBean.getZ());
-                dropCmd.setItemType(ItemType.values()[itemServerBean.getItemType()]);
+                dropCmd.setItemType(itemServerBean.getItemType());
                 serverContext.getMessages().offer(dropCmd.toBytes());
             }
             ;

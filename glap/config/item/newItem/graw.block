@@ -1,0 +1,1 @@
+{id:39,name:'graw',type:'block',remark:'graw',remark:'graw',shape:{name:'graw',blocktype:'groupblock',width:1.0,height:1.0,thick:1.0,x:14,y:0,z:2,xoffset:0.0,yoffset:0.0,zoffset:0.0,xzoom:1.0,yzoom:1.0,zzoom:1.0,children:[{name:'null',blocktype:'colorblock',width:1.0,height:4.0,thick:1.0,x:1,y:0,z:0,r:0.4,g:0.4,b:0.4,a:1.0},],animation:[]},baseon:'mantle'}

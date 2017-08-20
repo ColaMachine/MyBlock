@@ -5,26 +5,31 @@ package com.dozenx.game.engine.command;
  */
 public enum ItemType {
     NULL,/*fur_shoulder,*/
-    fur_helmet,/*chain_helmet,*/
+    fur_helmet(19,"fur_helmet","皮头盔"),/*chain_helmet,*/
     chain_helmet,
-    iron_helmet,
-    gold_helmet,flint,firestone,
+    iron_helmet(26),
+    gold_helmet(22),flint,firestone,
     coal,rope,/*seed,*/apple,gold_apple,egg,sugar,ice_ball,
-    head_slot,fur_armor,chain_armor,iron_armor,diamond_armoriron_cloth,
-    gold_armor,arch,stone_bar,iron_bar,feather,wheat,photo_frame,
-    sugarcane,bone,cacke,rubber_ball,body_slot,fur_pants,chain_pants,
-    diamond_pants,iron_pants,gold_pants,arrow,dorlach,gold_bar,clay,
-    bread,billboard,iron_door,bed,pant_slot,fur_shoe,
-    diamond_shoe,stone_shoe,iron_shoe,gold_shoe,wood_stick,compass,
-    diamond,red_stone,paper,book,map,shoe_slot,wood_sword,stone_sword,
-    diamond_sword,gold_sword,fish_pole,buket,buket_water,buket_magma,
+    head_slot,fur_armor(20),chain_armor,iron_armor(27),diamond_armoriron_cloth,
+    gold_armor,arch(36,"arch","弓")
+
+    ,stone_bar,iron_bar,feather,wheat,photo_frame,
+    sugarcane,bone,cacke,rubber_ball,body_slot,fur_pants(21),chain_pants,
+    diamond_pants,iron_panmts(28),gold_pants,arrow(37),dorlach,gold_bar,clay,
+    bread,billboard,iron_door,bed,pant_slot,fur_shoe(22),
+    diamond_shoe,stone_shoe,iron_shoe(29),gold_shoe,wood_stick,compass,
+    diamond,red_stone,paper,book,map,shoe_slot,wood_sword(31),stone_sword,
+    diamond_sword,gold_sword(32),fish_pole,buket,buket_water,buket_magma,
     buket_milk,wood_shovel,stone_shovel,iron_shovel,diamond_shovel,
-    gold_shovel,scissor,wood_pick,stone_pick,iron_pick,diamond_pick,
-    gold_pick,arch1,raw_beef,cooked_beef,iron_stick,wood_axe,stone_axe,
-    iron_axe,diamond_axe,gold_axe,arch2,wood_hoe,stone_hoe,iron_hoe,
+    gold_shovel,scissor,wood_pick(33),stone_pick,iron_pick,diamond_pick,
+    gold_pick,arch1,raw_beef,cooked_beef,iron_stick,wood_axe(34),stone_axe,
+    iron_axe,diamond_axe,gold_axe,arch2,wood_hoe(35),stone_hoe,iron_hoe,
     diamond_hoe,gold_hoe,arch3,
-    grit,soil,stone,wood,glass,sand,mantle,water,tree_wood,tree_leaf,
-    tree_seed,wood_door,copy_down,box,red,StoneBrick,MossyStoneBrick,CrackedStoneBrick,grass,OakWood;
+    grit,soil(12),stone(13)
+
+
+    ,wood(3),glass(4),sand(11),mantle(1),water(10),tree_wood(14,"tree_wood","木头"),tree_leaf(15,"tree_leaf","树叶"),
+    tree_seed(16),wood_door(17),copy_down,box(18),red(2),StoneBrick(7),MossyStoneBrick(8),CrackedStoneBrick(6),grass(9),OakWood(5);
     /**测试的时候打印itemtype**/
     public static void main(String args[]){
         System.out.println(ItemType.red.ordinal());
@@ -35,7 +40,22 @@ public enum ItemType {
     }
 
 
+    public int id;
+    public String name;
+    public String remark;
 
+    ItemType(){
+
+    }
+    ItemType(int id){
+        this.id =id ;
+
+    }
+     ItemType(int id,String name,String chname){
+        this.id =id ;
+        this.name =name;
+        this.remark = chname;
+    }
     public static int getTypeVal(ItemType itemType){
         if(itemType==null || itemType==ItemType.NULL){
             return 0;

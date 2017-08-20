@@ -11,7 +11,7 @@ import com.dozenx.game.engine.item.bean.ItemServerBean;
  */
 public class ItemUtil {
     public static  boolean isFarWeapon(int  itemType){
-        if(itemType == ItemType.arch.ordinal()){
+        if(itemType == ItemType.arch.id){
             return true;
         }
         return false;
@@ -21,7 +21,7 @@ public class ItemUtil {
         if(itemServerBean.getItemType()>0) {
             ItemBean itemBean = new ItemBean();
             itemBean.setId(itemServerBean.getId());
-            itemBean.setItemDefinition(ItemManager.getItemDefinition(ItemType.values()[itemServerBean.getItemType()]));
+            itemBean.setItemDefinition(ItemManager.getItemDefinition(itemServerBean.getItemType()));
             itemBean.setNum(itemServerBean.getNum());
             itemBean.setPosition(itemServerBean.getPosition());
             return itemBean;
@@ -33,7 +33,7 @@ public class ItemUtil {
 
         ItemServerBean  itemServerBean=new ItemServerBean();
         itemServerBean.setId(itemBean.getId());
-        itemServerBean.setItemType(itemBean.getItemDefinition().getItemType().ordinal());
+        itemServerBean.setItemType(itemBean.getItemDefinition().getItemType());
         itemServerBean.setNum(itemBean.getNum());
         itemServerBean.setPosition(itemBean.getPosition());
         return itemServerBean;

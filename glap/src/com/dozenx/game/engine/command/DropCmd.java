@@ -14,7 +14,7 @@ public class DropCmd extends BaseGameCmd{
 
     private int itemId;
 
-    private ItemType  itemType;
+    private Integer  itemType;
     private float x;
     private float y;
     private float z;
@@ -36,7 +36,7 @@ public class DropCmd extends BaseGameCmd{
         return ByteUtil.createBuffer().put(cmdType.getType())
                 .put(userId)
                 .put(itemId)
-                .put(itemType==null?0:itemType.ordinal())
+                .put(itemType==null?0:itemType)
                 .put(x).put(y).put(z).put(num)
                .array();
 
@@ -50,7 +50,7 @@ public class DropCmd extends BaseGameCmd{
         itemId=byteBufferWrap.getInt();
         int itemTypeIndex= byteBufferWrap.getInt();
 
-        this.itemType =ItemType.values()[itemTypeIndex];
+        this.itemType =itemTypeIndex;
         this.x=byteBufferWrap.getFloat();
         this.y=byteBufferWrap.getFloat();
         this.z= byteBufferWrap.getFloat();;
@@ -80,11 +80,11 @@ public class DropCmd extends BaseGameCmd{
         this.itemId = itemId;
     }
 
-    public ItemType getItemType() {
+    public Integer getItemType() {
         return itemType;
     }
 
-    public void setItemType(ItemType itemType) {
+    public void setItemType(Integer itemType) {
         this.itemType = itemType;
     }
 

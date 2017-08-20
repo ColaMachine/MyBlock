@@ -145,13 +145,13 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                 for (int y = chunk.getChunkSizeY() - 1; y >= 0; y--) {//
 
                     if (y == 0) { // The very deepest layer of the world is an indestructible mantle
-                        chunk.setBlock(x, y, z, ItemType.mantle);
+                        chunk.setBlock(x, y, z, ItemType.mantle.id);
                         break;
                     }
                     //if(1==1)
                    // continue;
                     if (y <= 32 && y > 0) { // Ocean
-                        chunk.setBlock(x, y, z, ItemType. water);
+                        chunk.setBlock(x, y, z, ItemType. water.id);
                        // chunk.setLiquid(x, y, z, new LiquidData(LiquidType.WATER, LiquidData.MAX_LIQUID_DEPTH));
 
                         if (y == 32) {
@@ -203,7 +203,7 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
 
     private void generateInnerLayer(int x, int y, int z, Chunk c, WorldBiomeProvider.Biome type) {
         // TODO: GENERATE MINERALS HERE - config waiting at org\terasology\logic\manager\DefaultConfig.groovy 2012/01/22
-        c.setBlock(x, y, z, ItemType. stone);
+        c.setBlock(x, y, z, ItemType. stone.id);
     }
 
     private void generateOuterLayer(int x, int y, int z, int firstBlockHeight, Chunk c, WorldBiomeProvider.Biome type) {
@@ -219,19 +219,19 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                     return;
                 }
                 if (y >= 28 && y <= 34) {
-                    c.setBlock(x, y, z,  ItemType.sand);
+                    c.setBlock(x, y, z,  ItemType.sand.id);
                 } else if (depth == 0 && y > 32 && y < 128) {
                     // Grass on top
-                    c.setBlock(x, y, z, ItemType.soil);
+                    c.setBlock(x, y, z, ItemType.soil.id);
                 } else if (depth == 0 && y >= 128) {
                     // Grass on top
-                    c.setBlock(x, y, z,  ItemType.soil);
+                    c.setBlock(x, y, z,  ItemType.soil.id);
                 } else if (depth > 32) {
                     // Stone
-                    c.setBlock(x, y, z,  ItemType.stone);
+                    c.setBlock(x, y, z,  ItemType.stone.id);
                 } else {
                     // Dirt
-                    c.setBlock(x, y, z,  ItemType.soil);
+                    c.setBlock(x, y, z,  ItemType.soil.id);
                 }
 
                 break;
@@ -241,13 +241,13 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                 }
                 if (depth == 0.0 && y > 32) {
                     // Snow on top
-                    c.setBlock(x, y, z,  ItemType.soil);
+                    c.setBlock(x, y, z,  ItemType.soil.id);
                 } else if (depth > 32) {
                     // Stone
-                    c.setBlock(x, y, z,  ItemType.stone);
+                    c.setBlock(x, y, z,  ItemType.stone.id);
                 } else {
                     // Dirt
-                    c.setBlock(x, y, z,  ItemType.soil);
+                    c.setBlock(x, y, z,  ItemType.soil.id);
                 }
 
                 break;
@@ -258,9 +258,9 @@ public class PerlinTerrainGenerator implements FirstPassGenerator {
                 }
                 if (depth > 8) {
                     // Stone
-                    c.setBlock(x, y, z,  ItemType.stone);
+                    c.setBlock(x, y, z,  ItemType.stone.id);
                 } else {
-                    c.setBlock(x, y, z,  ItemType.sand);
+                    c.setBlock(x, y, z,  ItemType.sand.id);
                 }
 
                 break;

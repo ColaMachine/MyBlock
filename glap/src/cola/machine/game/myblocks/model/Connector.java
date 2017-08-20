@@ -31,7 +31,7 @@ public class Connector {
         }
         //GL11.glRotatef(child.rotateX, child.rotateY, 90, 0);
         GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
-        child.render();
+        //child.render();
         GL11.glTranslatef(childLocation.x, childLocation.y, childLocation.z);
        // GL11.glRotatef(-child.rotateX, -child.rotateY, -90, 0);
         if(child.rotateX!=0){

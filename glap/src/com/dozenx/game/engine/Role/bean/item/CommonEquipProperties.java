@@ -9,50 +9,50 @@ import com.dozenx.game.network.server.bean.PlayerStatus;
  */
 public class CommonEquipProperties extends ItemProperties{
 
-    ItemType headEquip;
-    ItemType bodyEquip;
-    ItemType handEquip;
-    ItemType legEquip;
+    Integer headEquip;
+    Integer bodyEquip;
+    Integer handEquip;
+    Integer legEquip;
 
-    ItemType footEquip;
+    Integer footEquip;
 
-    public ItemType getHeadEquip() {
+    public Integer getHeadEquip() {
         return headEquip;
     }
 
-    public void setHeadEquip(ItemType headEquip) {
+    public void setHeadEquip(Integer headEquip) {
         this.headEquip = headEquip;
     }
 
-    public ItemType getBodyEquip() {
+    public Integer getBodyEquip() {
         return bodyEquip;
     }
 
-    public void setBodyEquip(ItemType bodyEquip) {
+    public void setBodyEquip(Integer bodyEquip) {
         this.bodyEquip = bodyEquip;
     }
 
-    public ItemType getHandEquip() {
+    public Integer getHandEquip() {
         return handEquip;
     }
 
-    public void setHandEquip(ItemType handEquip) {
+    public void setHandEquip(Integer handEquip) {
         this.handEquip = handEquip;
     }
 
-    public ItemType getLegEquip() {
+    public Integer getLegEquip() {
         return legEquip;
     }
 
-    public void setLegEquip(ItemType legEquip) {
+    public void setLegEquip(Integer legEquip) {
         this.legEquip = legEquip;
     }
 
-    public ItemType getFootEquip() {
+    public Integer getFootEquip() {
         return footEquip;
     }
 
-    public void setFootEquip(ItemType footEquip) {
+    public void setFootEquip(Integer footEquip) {
         this.footEquip = footEquip;
     }
 

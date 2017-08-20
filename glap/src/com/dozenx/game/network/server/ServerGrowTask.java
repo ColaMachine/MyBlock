@@ -40,7 +40,7 @@ public class ServerGrowTask extends TimerTask {
             //遍历所有种子 以后可以采用priorityList 优先处理快要长成的种子
             for(int i=0,length=seeds.size();i<length;i++){
                 ItemSeed seed = seeds.get(i);
-                ItemType seedType =seed.getSeedType();
+                Integer seedType =seed.getSeedType();
                 if(now-seed.getPlantedTime()>10000){//先写死10秒
                     //开始生成树
                     seeds.remove(i);

@@ -24,6 +24,7 @@ import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
 import com.google.gson.JsonArray;
 import core.log.LogUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector2f;
@@ -35,6 +36,8 @@ import java.util.List;
  * Created by dozen.zhang on 2017/8/9.
  */
 public class ColorGroup extends BaseBlock {
+
+
     public ColorGroup(int x,int y,int z,float width,float height,float thick){
         super(x,y,z,width,height,thick);
         /*this.x =x;
@@ -44,11 +47,14 @@ public class ColorGroup extends BaseBlock {
         this.height =height;
         this.thick =thick;*/
     }
-
     @Override
+    public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
+
+    }
+  /*  @Override
     public void update(float x, float y, float z, float width, float height, float thick) {
         this.update();
-    }
+    }*/
 
     public float xoffset=0;
     public float yoffset=0;
@@ -69,51 +75,51 @@ public class ColorGroup extends BaseBlock {
     }
     long lastAnimationTime=0;
     int nowIndex =0;//动画运行到的帧数
-    public void update(){
-        //每隔1秒展示下一个动画
-        if(animations.size()>0) {
-            if (play  ) {//正常播放
-                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {
-                    lastAnimationTime = TimeUtil.getNowMills();
-                    nowIndex++;
-                    if (nowIndex > animations.size() - 1) {
-                        nowIndex = 0;
-                    }
-
-                }
-              //  animations.get(nowIndex).update();
-
-                for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
-                    BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
-                    float[] info  = getChildBlockPosition(block);
-                    block.update(info[0],info[1],info[2],info[3],info[4],info[5]);
-                 //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
-
-                }
-                return;
-            }/* else {*///现实帧
-                //如果停止了播放就显示blockList中的内容
-               /* animations.get(nowIndex).update();
-                return;*/
-           /* }*/
-        }
-        for(int i=0;i<selectBlockList.size();i++){
-            BaseBlock colorBlock = selectBlockList.get(i);
-            float[] info  =this.getChildBlockPosition(colorBlock);
-            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),info[0],info[1],info[2],info[3],info[4],info[5]);
-        }
-
-        for(int i=0;i<colorBlockList.size();i++){
-            BaseBlock colorBlock = colorBlockList.get(i);
-           // colorBlock.update();
-            float[] info  =this.getChildBlockPosition(colorBlock);
-
-
-            colorBlock.update(info[0],info[1],info[2], info[3],info[4],info[5]);
-            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
-
-        }
-    }
+//    public void update(){
+//        //每隔1秒展示下一个动画
+//        if(animations.size()>0) {
+//            if (play  ) {//正常播放
+//                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {
+//                    lastAnimationTime = TimeUtil.getNowMills();
+//                    nowIndex++;
+//                    if (nowIndex > animations.size() - 1) {
+//                        nowIndex = 0;
+//                    }
+//
+//                }
+//              //  animations.get(nowIndex).update();
+//
+//                for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
+//                    BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
+//                    float[] info  = getChildBlockPosition(block);
+//                    block.update(info[0],info[1],info[2],info[3],info[4],info[5]);
+//                 //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+//
+//                }
+//                return;
+//            }/* else {*///现实帧
+//                //如果停止了播放就显示blockList中的内容
+//               /* animations.get(nowIndex).update();
+//                return;*/
+//           /* }*/
+//        }
+//        for(int i=0;i<selectBlockList.size();i++){
+//            BaseBlock colorBlock = selectBlockList.get(i);
+//            float[] info  =this.getChildBlockPosition(colorBlock);
+//            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),info[0],info[1],info[2],info[3],info[4],info[5]);
+//        }
+//
+//        for(int i=0;i<colorBlockList.size();i++){
+//            BaseBlock colorBlock = colorBlockList.get(i);
+//           // colorBlock.update();
+//            float[] info  =this.getChildBlockPosition(colorBlock);
+//
+//
+//            colorBlock.update(info[0],info[1],info[2], info[3],info[4],info[5]);
+//            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+//
+//        }
+//    }
 
 
     public BaseBlock  selectSingle(GL_Vector from, GL_Vector direction){
@@ -139,7 +145,7 @@ public class ColorGroup extends BaseBlock {
         float[] xiangjiao=null;
         for(int i=0;i<colorBlockList.size();i++){
             BaseBlock colorBlock =  colorBlockList.get(i);
-            float[] info = getChildBlockPosition(colorBlock);
+            float[] info = getChildBlockPosition(colorBlock,this.x,this.y,this.z);
             AABB aabb = new AABB(new Vector3f(info[0],info[1],info[2]),new Vector3f(info[0]+info[3],info[1]+info[4],info[2]+info[5]));
 
             // LogUtil.println(fromV.toString() );
@@ -259,6 +265,71 @@ public class ColorGroup extends BaseBlock {
     @Override
     public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
+
+
+        //每隔1秒展示下一个动画
+        if(animations.size()>0) {
+            if (play  ) {//正常播放
+                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {
+                    lastAnimationTime = TimeUtil.getNowMills();
+                    nowIndex++;
+                    if (nowIndex > animations.size() - 1) {
+                        nowIndex = 0;
+                    }
+
+                }
+                //  animations.get(nowIndex).update();
+
+                for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
+                    BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
+                    float[] info  = getChildBlockPosition(block,x,y,z);
+                    block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+                    //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+
+                }
+                return;
+            }/* else {*///现实帧
+            //如果停止了播放就显示blockList中的内容
+               /* animations.get(nowIndex).update();
+                return;*/
+           /* }*/
+        }
+        for(int i=0;i<selectBlockList.size();i++){
+            BaseBlock colorBlock = selectBlockList.get(i);
+            float[] info  =this.getChildBlockPosition(colorBlock,x,y,z);
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),info[0],info[1],info[2],info[3],info[4],info[5]);
+        }
+
+        for(int i=0;i<colorBlockList.size();i++){
+            BaseBlock block = colorBlockList.get(i);
+            // colorBlock.update();
+            float[] info  =this.getChildBlockPosition(block,x,y,z);
+
+
+            block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+
+            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+
+        }
+
+
+        for(int i=0;i<colorBlockList.size();i++){
+            BaseBlock block = colorBlockList.get(i);
+            // colorBlock.update();
+            float[] info  =this.getChildBlockPosition(block,x,y,z);
+
+            block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+
+            //colorBlock.update(info[0],info[1],info[2], info[3],info[4],info[5]);
+
+            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+
+        }
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
     }
 
     public ColorGroup copy(){
@@ -306,7 +377,7 @@ public class ColorGroup extends BaseBlock {
            for(){
 
            }*/
-float[] info =getChildBlockPosition(colorBlock);
+float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
             Vector2f xy = OpenglUtils.wordPositionToXY(ShaderManager.projection,new GL_Vector(info[0],info[1],info[2]), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
             xy.x *= Constants.WINDOW_WIDTH;
             xy.y*=Constants.WINDOW_HEIGHT;
@@ -325,11 +396,11 @@ float[] info =getChildBlockPosition(colorBlock);
         }
     }
 
-    public float[] getChildBlockPosition(BaseBlock colorBlock){
+    public float[] getChildBlockPosition(BaseBlock colorBlock,float nowX,float nowY,float nowZ){
         float[] info =new float[6];
-        float x = colorBlock.x/xzoom+xoffset + this.x;
-        float y = colorBlock.y/yzoom+yoffset + this.y;
-        float z = colorBlock.z/zzoom+xoffset + this.z;
+        float x = colorBlock.x/xzoom+xoffset + nowX;
+        float y = colorBlock.y/yzoom+yoffset + nowY;
+        float z = colorBlock.z/zzoom+xoffset + nowZ;
         float width = colorBlock.width/xzoom;
         float height =colorBlock.height /yzoom;
         float thick =colorBlock.thick / zzoom;
@@ -351,7 +422,7 @@ float[] info =getChildBlockPosition(colorBlock);
         float[] right=null;
         for(int i=0;i<colorBlockList.size();i++){
             BaseBlock colorBlock =  colorBlockList.get(i);
-           float[] info = this.getChildBlockPosition(colorBlock);
+           float[] info = this.getChildBlockPosition(colorBlock,this.x,this.y,this.z);
             AABB aabb = new AABB(new Vector3f(info[0],info[1],info[2]),new Vector3f(info[0]+info[3],info[1]+info[4],info[2]+info[5]));
 
             // LogUtil.println(fromV.toString() );
@@ -642,7 +713,7 @@ float[] info =getChildBlockPosition(colorBlock);
         for(int i=0;i<colorBlockList.size();i++){
             BaseBlock colorBlock =  colorBlockList.get(i);
 
-            float[] info  =this.getChildBlockPosition(colorBlock);
+            float[] info  =this.getChildBlockPosition(colorBlock,x,y,z);
             AABB aabb = new AABB(new Vector3f(info[0],info[1],info[2]),new Vector3f(info[0]+info[3],info[1]+info[4],info[2]+info[5]));
 
 
@@ -763,7 +834,7 @@ float[] info =getChildBlockPosition(colorBlock);
 
                 .append("xoffset:").append(xoffset).append(",")
                 .append("yoffset:").append(yoffset).append(",")
-                .append("zoffset:,").append(zoffset).append(",")
+                .append("zoffset:").append(zoffset).append(",")
                 .append("xzoom:").append(xzoom).append(",")
                 .append("yzoom:").append(yzoom).append(",")
                 .append("zzoom:").append(zzoom).append(",")

@@ -40,7 +40,7 @@ public class BoxBlock extends DirectionBlock {
 
     }
     //画出四个面
-    @Override
+    //@Override
     public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z ){
         //获取condition
        // itemDefinition.getShape().getTopFace();
@@ -151,6 +151,11 @@ public IBlock clone(){
 
     @Override
     public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
     }
 

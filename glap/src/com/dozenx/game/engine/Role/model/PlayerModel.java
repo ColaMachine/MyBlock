@@ -1,10 +1,13 @@
 package com.dozenx.game.engine.Role.model;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.BodyComponent;
 import cola.machine.game.myblocks.model.HandComponent;
 import cola.machine.game.myblocks.model.WearComponent;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.Role.bean.Role;
@@ -56,13 +59,13 @@ public class PlayerModel extends BaseModel   {
         int id =role.getId();
         rootComponent.id=id*10+EquipPartType.BODY.ordinal();
         rootComponent.name = EquipPartType.BODY.getName();
-        rootComponent.setEightFace("human_body");
+        rootComponent.block = TextureManager.getShape("human_body");
 
         //rhand
         Component rArm= new BodyComponent(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         rArm.id=id*10+EquipPartType.RARM.ordinal();
 
-        rArm.setEightFace("human_hand");
+        rArm.block = TextureManager.getShape("human_hand");
         rArm.name=EquipPartType.RARM.getName();
         rArm.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
         rootComponent.addChild(rArm);
@@ -72,7 +75,8 @@ public class PlayerModel extends BaseModel   {
         //lhand
         Component lArm= new BodyComponent(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         lArm.id=id*10+EquipPartType.LARM.ordinal();
-        lArm.setEightFace("human_hand");
+
+        lArm.block = TextureManager.getShape("human_hand");
         lArm.name=EquipPartType.LARM.getName();
         //rHandComponent.name="rHumanHand";
         lArm.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
@@ -80,7 +84,10 @@ public class PlayerModel extends BaseModel   {
 
         //lleg
         Component lleg= new BodyComponent(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        lleg.setEightFace("human_leg");
+
+
+        lleg.block = TextureManager.getShape("human_leg");
+
         lleg.id=id*10+EquipPartType.LLEG.ordinal();
         lleg.name= EquipPartType.LLEG.getName();
         lleg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
@@ -91,7 +98,10 @@ public class PlayerModel extends BaseModel   {
 
         //rleg
         Component rleg= new BodyComponent(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
-        rleg.setEightFace("human_leg");
+        //rleg.setEightFace("human_leg");
+
+
+        rleg.block = TextureManager.getShape("human_leg");
         rleg.name= EquipPartType.RLEG.getName();
         rleg.id=id*10 +EquipPartType.RLEG.ordinal();
         rleg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
@@ -100,7 +110,8 @@ public class PlayerModel extends BaseModel   {
         //head
 
         Component head= new BodyComponent(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
-        head.setEightFace("human_head");
+        //head.setEightFace("human_head");
+        head.block = TextureManager.getShape("human_head");
         head.id=id*10+EquipPartType.HEAD.ordinal();
         head.name=EquipPartType.HEAD.getName();
         head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
@@ -179,7 +190,7 @@ public class PlayerModel extends BaseModel   {
     public void addHeadEquip(ItemBean itemCfg)  {
 
         Component parent = 	rootComponent.findChild("human_head");
-        addChild(parent, "helmet", itemCfg);
+        addChild(parent,Component.body, "helmet", itemCfg);
     }
 
 
@@ -191,7 +202,7 @@ public class PlayerModel extends BaseModel   {
             parent = rootComponent.findChild(EquipPartType.RLEG.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,EquipPartType.SHOOE.getName(),itemCfg);
+        addChild(parent,Component.body,EquipPartType.SHOOE.getName(),itemCfg);
     }
     public void addShoeEquip(ItemBean itemCfg)  {
         addLRShoeEquip(true, itemCfg);
@@ -206,7 +217,7 @@ public class PlayerModel extends BaseModel   {
             parent = rootComponent.findChild(EquipPartType.RLEG.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,EquipPartType.PANTS.getName(),itemCfg);
+        addChild(parent,Component.body,EquipPartType.PANTS.getName(),itemCfg);
     }
 
     public void addLegEquip(ItemBean itemCfg)  {
@@ -215,7 +226,7 @@ public class PlayerModel extends BaseModel   {
     }
     public void addBodyEquip(ItemBean itemCfg)  {
         Component parent = 	rootComponent.findChild(EquipPartType.BODY.getName());
-        addChild(parent, EquipPartType.ARMOR.getName(), itemCfg);
+        addChild(parent,Component.body, EquipPartType.ARMOR.getName(), itemCfg);
     }
 
     public void addHandEquip(ItemBean itemBean)  {
@@ -344,7 +355,8 @@ public class PlayerModel extends BaseModel   {
         }
     }*/
     public void addHandChild(Component parent,String name,ItemBean itemBean) {
-        if(parent==null){
+        super.addChild(parent,Component.hand,name,itemBean);
+        /*if(parent==null){
             LogUtil.err("parent node is null");
         }
         Component shoe = parent.findChild(name);
@@ -375,7 +387,7 @@ public class PlayerModel extends BaseModel   {
                 parent.removeChild(shoe);
             } else {
                 parent.removeChild(shoe);
-                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
+                BaseBlock shape = itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" +  itemBean.itemDefinition.getName() + "failed");
 
@@ -384,13 +396,16 @@ public class PlayerModel extends BaseModel   {
                 // component.setShape(itemCfg.getShape());
                 component.setItem( itemBean);
                 component.name = name;
+                if(shape instanceof  BoneBlock){
+                    BoneBlock boneBlock = (BoneBlock) shape;
+                    component.setOffset(new Point3f(boneBlock.getP_posi_x(), boneBlock.getP_posi_y(), boneBlock.getP_posi_z()), new Point3f(boneBlock.getC_posi_x(), boneBlock.getC_posi_y(), boneBlock.getC_posi_z()));
 
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
-                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+                }
+                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(component);
                 //changeProperty();
             }
-        }
+        }*/
     }
 
 
@@ -417,7 +432,7 @@ public class PlayerModel extends BaseModel   {
             throw e;
         }
 */
-        rootComponent.render();
+       // rootComponent.render();
         GL11.glScalef(2,2,2);
         GL11.glRotatef(-angle, 0, 1, 0);
         GL11.glTranslatef(-role.getX(), -role.getY() - 0.75f, -role.getZ());
@@ -457,7 +472,7 @@ public class PlayerModel extends BaseModel   {
     public void addHeadEquip(ItemDefinition itemCfg)  {
 
         Component parent = 	rootComponent.findChild("human_head");
-        addChild(parent, "helmet", itemCfg);
+        addChild(parent,Component.body, "helmet", itemCfg);
     }
 
 
@@ -469,7 +484,7 @@ public class PlayerModel extends BaseModel   {
             parent = rootComponent.findChild(EquipPartType.RLEG.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,EquipPartType.SHOOE.getName(),itemCfg);
+        addChild(parent,Component.body,EquipPartType.SHOOE.getName(),itemCfg);
     }
     public void addShoeEquip(ItemDefinition itemCfg)  {
         addLRShoeEquip(true, itemCfg);
@@ -484,7 +499,7 @@ public class PlayerModel extends BaseModel   {
             parent = rootComponent.findChild(EquipPartType.RLEG.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,EquipPartType.PANTS.getName(),itemCfg);
+        addChild(parent,Component.body,EquipPartType.PANTS.getName(),itemCfg);
     }
 
     public void addLegEquip(ItemDefinition itemCfg)  {
@@ -493,7 +508,7 @@ public class PlayerModel extends BaseModel   {
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
         Component parent = 	rootComponent.findChild(EquipPartType.BODY.getName());
-        addChild(parent, EquipPartType.ARMOR.getName(), itemCfg);
+        addChild(parent,Component.body, EquipPartType.ARMOR.getName(), itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
@@ -518,8 +533,9 @@ public class PlayerModel extends BaseModel   {
 
         }
     }
-    public void addChild(Component parent,String name,ItemDefinition itemCfg) {
-        if(parent==null){
+    public void addChild(Component parent,int type ,String name,ItemDefinition itemCfg) {
+        super.addChild(parent,type,name,new ItemBean(itemCfg,1));
+       /* if(parent==null){
             LogUtil.err("parent node is null");
         }
         Component shoe = parent.findChild(name);
@@ -565,7 +581,7 @@ public class PlayerModel extends BaseModel   {
                 parent.addChild(component);
                 //changeProperty();
             }
-        }
+        }*/
     }
 
     public void clearHandChild(Component parent,String name) {

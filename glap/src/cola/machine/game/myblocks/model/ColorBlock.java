@@ -188,8 +188,44 @@ public class ColorBlock extends BaseBlock{
     GL_Vector P7 =new GL_Vector(maxX/beishu, maxY/beishu, minZ/beishu);
     GL_Vector P8 =new GL_Vector(minX/beishu, maxY/beishu, minZ/beishu);
 
+@Override
+    public void renderShader(ShaderConfig config , Vao vao ,GL_Matrix rotateMatrix) {
+        // Front Face
+        FloatBufferWrap floatBuffer = vao.getVertices();
+        GL_Vector color = new GL_Vector(this.rf(),this.gf(),this.bf());
 
-    public void renderShader(ShaderConfig config , GL_Matrix rotateMatrix) {
+        if(zh) {
+            // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
+            ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
+        }
+        if(zl) {
+            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
+            ShaderUtils.draw3dColor(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),color,floatBuffer, config);
+        }
+        if(yh) {
+            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
+            ShaderUtils.draw3dColor(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),color,floatBuffer, config);
+        }
+
+        if(yl) {
+            ShaderUtils.draw3dColor(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),color,floatBuffer, config);
+        }
+        if(xl) {
+            ShaderUtils.draw3dColor(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),color,floatBuffer, config);
+        }
+        if(xh) {
+            ShaderUtils.draw3dColor(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),color,floatBuffer, config);
+        }
+
+    }
+
+    /**
+     * 带旋转的使用
+     * @param config
+     * @param rotateMatrix
+     */
+
+  /*  public void renderShader(ShaderConfig config ,Vao vao , GL_Matrix rotateMatrix) {
         // Front Face
         FloatBufferWrap floatBuffer = config.getVao().getVertices();
         GL_Vector color = new GL_Vector(this.rf(),this.gf(),this.bf());
@@ -218,6 +254,57 @@ public class ColorBlock extends BaseBlock{
             }
 
     }
+*/
+
+   /* @Override
+    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z) {
+        ShaderUtils.draw3dColorBox(ShaderManager.terrainShaderConfig,vao,x,y,z,ti.color,1,1);
+    }*/
+
+    /**
+     * 长长使用再在group中
+     * @param config
+     * @param vao
+     * @param x
+     * @param y
+     * @param z
+     * @param width
+     * @param height
+     * @param thick
+     * @param top
+     * @param bottom
+     * @param left
+     * @param right
+     * @param front
+     * @param back
+     */
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x,float y,float z,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
+        ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
+
+    }
+
+    /**
+     * 在chunk当中直接使用
+     * @param config
+     * @param vao
+     * @param x
+     * @param y
+     * @param z
+     * @param top
+     * @param bottom
+     * @param left
+     * @param right
+     * @param front
+     * @param back
+     */
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+        ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), 1, 1, 1, /*selectBlockList.size()>0?0.5f:*/this.opacity,
+                top,bottom,left,right,front,right);
+
+    }
+
 	public void render() {
 		// Front Face
 
@@ -396,19 +483,6 @@ public class ColorBlock extends BaseBlock{
     }
 
 
-    @Override
-    public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z) {
-        ShaderUtils.draw3dColorBox(ShaderManager.terrainShaderConfig,vao,x,y,z,ti.color,1,1);
-    }
-
-    public void update(){
-        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
-
-    }
-    public void update(float x,float y,float z,float width,float height,float thick){
-        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
-
-    }
 
 
     public ColorBlock copy(){
@@ -417,12 +491,12 @@ public class ColorBlock extends BaseBlock{
         return colorBlock;
     }
 
-    @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity,
-        top,bottom,left,right,front,right);
 
-    }
+  /*  public void update(){
+        ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, *//*selectBlockList.size()>0?0.5f:*//*this.opacity);
+
+    }*/
+
 
     public String toString(){
        StringBuffer buffer =new StringBuffer();
@@ -464,8 +538,8 @@ public class ColorBlock extends BaseBlock{
 
         block.rf= red;
         block.gf= green;
+        block.bf= blue;
 
-        block.bf= red;
         block.opacity = alpha;
 
         float width = MapUtil.getFloatValue(map,"width");
@@ -475,6 +549,7 @@ public class ColorBlock extends BaseBlock{
         block.y=(int)y;
         block.z=(int)z;
         block.width=width;
+        block.height=height;
         block.thick =thick;
         return block;
 

@@ -5,15 +5,26 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
+import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
+import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.edit.view.ColorGroup;
+import com.dozenx.game.engine.item.action.ItemFactory;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
+import com.dozenx.util.MapUtil;
+import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -93,7 +104,7 @@ public class EditEngine {
 
         for(int i=0;i<colorBlockList.size();i++){
             BaseBlock colorBlock = colorBlockList.get(i);
-              colorBlock.update();
+              colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
         }
         if(startPoint!=null){
 
@@ -171,9 +182,9 @@ public class EditEngine {
      * @param direction
      * @return
      */
-        public ColorBlock  selectSingle(float x,float y){
+        public BaseBlock  selectSingle(float x,float y){
             Object[] results= this.getMouseChoosedBlock(x,y);
-            ColorBlock theNearestBlock = (ColorBlock)results[0];
+            BaseBlock theNearestBlock = (BaseBlock)results[0];
 
             if(theNearestBlock!=null){
 
@@ -556,17 +567,17 @@ public class EditEngine {
         endPoint=touchPoint;
         startPoint =placePoint;
         int face = (int)results[1];
-    if(theNearestBlock!=null){
-                                    BaseBlock addColorBlock =null;
+        if(theNearestBlock!=null){
+            BaseBlock addColorBlock =null;
 
-                                        addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
-                                    set(addColorBlock,(int) (placePoint.x), (int) (placePoint.y ), (int) (placePoint.z ),1,1,1,red,green,blue,alpha);
-                                 /*   }else{
-                                        addColorBlock = new ColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
-                                    }*/
+                addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+            set(addColorBlock,(int) (placePoint.x), (int) (placePoint.y ), (int) (placePoint.z ),1,1,1,red,green,blue,alpha);
+         /*   }else{
+                addColorBlock = new ColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+            }*/
 
 
-                                    colorBlockList.add(addColorBlock);
+            colorBlockList.add(addColorBlock);
 
 
             LogUtil.println("是那个面:"+face);
@@ -1205,7 +1216,7 @@ public class EditEngine {
      * 根据给定的名称保存当前选中的colorGroup 并保存到内存colorGroupHashMap中
      * @param name
      */
-    public void saveSelectAsColorGroup(String name ){
+    public void saveSelectAsColorGroup(int id,String name ){
 
         //这里还要增加imageblock colorblock 的支持 然后原生的支持
 
@@ -1213,22 +1224,35 @@ public class EditEngine {
         if(selectBlock == null){
             return;
         }
+        //获取现在设定的id
         StringBuffer sb =new StringBuffer();
+        selectBlock.setName(name);
+      //  TextureManager.putShape(selectBlock);
+
+        ItemFactory itemFactory =new ItemFactory();
 
 
-
-
-        sb.append("{name:'").append(name).append("',")
+        sb.append("{id:").append(id).append(",")
+       .append("name:'").append(name).append("',")
                 .append("type:'").append("block").append("',")
                 .append("remark:'").append(name).append("',")
                 .append("remark:'").append(name).append("',")
                 .append("shape:").append(selectBlock.toString()).append(",")
                 .append("baseon:'mantle'").append("}");
 
+
+
         try {
+
+            //保存之后存入到内存当中
+            LogUtil.println(sb.toString());
+            ItemDefinition itemDef =  itemFactory.parse(JSON.parseObject(sb.toString(), HashMap.class));
+
+            ItemManager.putItemDefinition(itemDef.getName(), itemDef);
+
             FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve(name+".block").toFile(),sb.toString());
             colorGroupHashMap.put(name,selectBlock);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1273,24 +1297,71 @@ public class EditEngine {
     public BaseBlock readyShootBlock = new ColorBlock();
 
     public void saveToGame(){
+
+
+        int preBlockIndex=-1;
+        int chunkIndex=-1;
+        Integer preChunkIndex=null;  //if preChunkIndex != chunkIndex bianlichunk will to find it's new chunk and also use to find the place block
+        int blockIndex=0;
+        Chunk bianliChunk=null;//need to be initialize
+        int chunkX,preChunkX,chunkZ,preChunkZ;
+        //int chunkY;
+        float nowX,nowY,nowZ,preX,preY,preZ;
+        nowX=nowY=nowZ=preX=preY=preZ=0;
+        int worldX,worldY,worldZ ,preWorldX,preWorldY,preWorldZ;
+        int offsetX ,offsetZ ,preOffsetX,preOffsetZ;
+        ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
+
         for(BaseBlock  colorBlock : colorBlockList){
-            if(colorBlock instanceof  ColorGroup){
-                ColorGroup colorGroup = (ColorGroup)colorBlock;
-                //每个block都可以有单独的id
-                //block 又分为多个类型 colorblock imageblock  GroupBlock  rotateBlock 这几种 每个都有自己单独的id 和name
-
-                //
-                // colorGroup都有单独的id
-                //把这个id 写入到对应的chunkimp中 array中 如果碰到有状态的可旋转的还有单独放出来记录他的实体对象 拿出chunk的x y z
-                //然后每个 在以后的历史长河中 我希望是这样的 玩家 拥有自己的一套 骨骼系统 这套系统支持 骨骼相连接 其他的 非骨骼系统就可以直接使用模型 colorgroup
-
-                //color group 里有 各种 colorBlock imageBlock rotateBlock组成 boneBlock组成 那么 所有的block 所有的模型都可以通过colorGroup来表达
-                //每个colorgroup 都有单独的id
+            int id = colorBlock.id;
+            worldX = colorBlock.x;
+            worldY = colorBlock.y;
+            worldZ = colorBlock.z;
 
 
-            }else if(colorBlock instanceof  ImageBlock){
+            offsetX = MathUtil.getOffesetChunk(worldX);
+            offsetZ = MathUtil.getOffesetChunk(worldZ);
+            blockIndex=offsetX*10000+offsetZ*100+worldY;//推进后落入的blockINdex
+            if(preBlockIndex==-1){
+                preBlockIndex = blockIndex;
+            }
+            chunkX=MathUtil.getBelongChunkInt(nowX);//换算出新的chunkX
+            chunkZ=MathUtil.getBelongChunkInt(nowZ);//换算出新的chunkZ
+            chunkIndex =  chunkX*10000+chunkZ;
+            if(preChunkIndex==null){
+                bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
+                preChunkIndex = chunkIndex;
+            }
+
+            if( chunkIndex!=preChunkIndex){//如果进入到新的chunk方格子空间
+                bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
 
             }
+
+
+            bianliChunk.setBlock(offsetX,worldY,offsetZ,colorBlock.id);
+
+
+
+
+
+//            if(colorBlock instanceof  ColorGroup){
+//                ColorGroup colorGroup = (ColorGroup)colorBlock;
+//                //每个block都可以有单独的id
+//                //block 又分为多个类型 colorblock imageblock  GroupBlock  rotateBlock 这几种 每个都有自己单独的id 和name
+//
+//                //
+//                // colorGroup都有单独的id
+//                //把这个id 写入到对应的chunkimp中 array中 如果碰到有状态的可旋转的还有单独放出来记录他的实体对象 拿出chunk的x y z
+//                //然后每个 在以后的历史长河中 我希望是这样的 玩家 拥有自己的一套 骨骼系统 这套系统支持 骨骼相连接 其他的 非骨骼系统就可以直接使用模型 colorgroup
+//
+//                //color group 里有 各种 colorBlock imageBlock rotateBlock组成 boneBlock组成 那么 所有的block 所有的模型都可以通过colorGroup来表达
+//                //每个colorgroup 都有单独的id
+//
+//
+//            }else if(colorBlock instanceof  ImageBlock){
+//
+//            }
         }
     }
 }

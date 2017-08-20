@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by luying on 16/7/23.
  */
-public class BeadComponent extends Component {
+public class BendComponent extends Component {
     float secdis;
     float angle;
     float banjin;
@@ -21,7 +21,7 @@ public class BeadComponent extends Component {
 
     GL_Vector[] points;
     GL_Vector[] newPoints;
-    public BeadComponent(float width, float height, float thick){
+    public BendComponent(float width, float height, float thick){
         super(width,height,thick);
 
         this.shapeType = ShapeType.ICON;
@@ -124,7 +124,7 @@ public class BeadComponent extends Component {
 
 
 
-
+/*
 
         for(int i=0;i<secnum;i++){
             GL11.glNormal3f( 0.0f, 0.0f, 1.0f);
@@ -181,7 +181,7 @@ public class BeadComponent extends Component {
             glVertex3fv(newPoints[4+4*i]);    // Top Right ǰ����
             GL11.glTexCoord2f(front.minX, front.maxY);
             glVertex3fv(newPoints[7+4*i]);
-        }
+        }*/
         GL11.glEnd();
 
 

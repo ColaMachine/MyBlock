@@ -207,11 +207,11 @@ public class Player extends LivingThing {
             parent = getModel().rootComponent.findChild("human_r_b_leg");
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        getModel().addChild(parent,"shoe",itemCfg);
+        getModel().addChild(parent,Component.body,"shoe",itemCfg);
     }
     public void addHeadEquip(ItemBean itemCfg)  {
         Component parent = 	getModel().rootComponent.findChild("human_head");
-        getModel().addChild(parent, "helmet",itemCfg);
+        getModel().addChild(parent,Component.body, "helmet",itemCfg);
     }
 
     public void clearHeadEquip(){
@@ -228,7 +228,7 @@ public class Player extends LivingThing {
     }
     public void addLegEquip(ItemBean itemCfg)  {
         Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
-        getModel().addChild(parent, "pants", itemCfg);
+        getModel().addChild(parent,Component.body, "pants", itemCfg);
     }
 
     public void clearLegEquip()  {
@@ -237,7 +237,7 @@ public class Player extends LivingThing {
     }
     public void addBodyEquip(ItemBean itemCfg)  {
         Component parent = 	getModel().rootComponent.findChild("human_body");
-        getModel().addChild(parent, "armor", itemCfg);
+        getModel().addChild(parent,Component.body, "armor", itemCfg);
     }
     public void clearBodyEquip()  {
         Component parent = 	getModel().rootComponent.findChild("human_body");
@@ -247,7 +247,7 @@ public class Player extends LivingThing {
     public void addHandEquip(ItemBean itemCfg)  {
         //Shape shape = itemCfg.getShape();
         Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
-        getModel().addChild(parent, "weapon", itemCfg);
+        getModel().addChild(parent,Component.hand, "weapon", itemCfg);
     }
     public void clearHandEquip()  {
         //Shape shape = itemCfg.getShape();
@@ -264,7 +264,7 @@ public class Player extends LivingThing {
             parent = getModel().rootComponent.findChild("human_r_b_leg");
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        getModel().addChild(parent,"shoe",itemCfg);
+        getModel().addChild(parent,Component.body,"shoe",itemCfg);
     }
     public PlayerModel getModel(){
         return (PlayerModel)this.getExecutor().getModel();
@@ -281,7 +281,7 @@ public class Player extends LivingThing {
     }
     public void addHeadEquip(ItemDefinition itemCfg)  {
         Component parent = 	getModel().rootComponent.findChild("human_head");
-        getModel().addChild(parent, "helmet", itemCfg);
+        getModel().addChild(parent,Component.body, "helmet", itemCfg);
     }
     public void addShoeEquip(ItemDefinition itemCfg)  {
         addShoeEquip(true, itemCfg);
@@ -289,17 +289,17 @@ public class Player extends LivingThing {
     }
     public void addLegEquip(ItemDefinition itemCfg)  {
         Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
-        getModel().addChild(parent, "pants", itemCfg);
+        getModel().addChild(parent,Component.body, "pants", itemCfg);
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
         Component parent = 	getModel().rootComponent.findChild("human_body");
-        getModel().addChild(parent, "armor", itemCfg);
+        getModel().addChild(parent,Component.body, "armor", itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
         Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
-        getModel().addChild(parent, "weapon", itemCfg);
+        getModel().addChild(parent,Component.hand, "weapon", itemCfg);
     }
 
 
@@ -307,23 +307,23 @@ public class Player extends LivingThing {
         super.setInfo(info);
         PlayerModel model = (PlayerModel)getModel();
         //if(info.getBodyEquip()>0){
-        model.addBodyEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]), 1));
+        model.addBodyEquip(new ItemBean(ItemManager.getItemDefinition(info.getBodyEquip()), 1));
         //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //}else {
         //getModel().addBodyEquip(null);
 
         //}if(info.getHeadEquip()>0){
-        model.addHeadEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]), 1));
+        model.addHeadEquip(new ItemBean(ItemManager.getItemDefinition(info.getHeadEquip()), 1));
         //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //   }
         //}if(info.getHandEquip()>0){
-        model.addHandEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getHandEquip()]), 1));
+        model.addHandEquip(new ItemBean(ItemManager.getItemDefinition(info.getHandEquip()), 1));
         //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //}if(info.getLegEquip()>0){
-        model.addLegEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getLegEquip()]), 1));
+        model.addLegEquip(new ItemBean(ItemManager.getItemDefinition(info.getLegEquip()), 1));
         //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
         //// }if(info.getFootEquip()>0){
-        model.addShoeEquip(new ItemBean(ItemManager.getItemDefinition(ItemType.values()[info.getFootEquip()]), 1));
+        model.addShoeEquip(new ItemBean(ItemManager.getItemDefinition(info.getFootEquip()), 1));
         //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
 
     }

@@ -237,7 +237,7 @@ public class ByteUtil
         System.out.println(ByteUtil.toBinaryStr(102));
         System.out.println(ByteUtil.toBinaryStr(43));
         System.out.println(ByteUtil.toBinaryStr(ByteUtil.HEX_1_1_0_0));
-        System.out.println(ItemType.wood_door.ordinal());
+        System.out.println(ItemType.wood_door.id);
 System.out.println(ByteUtil.get8_0Value(555));
 
         System.out.println((byte)254);

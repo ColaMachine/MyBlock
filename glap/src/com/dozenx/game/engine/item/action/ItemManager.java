@@ -93,8 +93,8 @@ public class ItemManager {
         return itemCfg;
     }
 
-    public static ItemDefinition getItemDefinition(ItemType itemType) {
-        if (itemType == null || itemType == ItemType.NULL) {
+    public static ItemDefinition getItemDefinition(Integer itemType) {
+        if (itemType == null || itemType <=0) {
             return null;
         }
 
@@ -217,10 +217,10 @@ public class ItemManager {
 
     }
 
-    public void putItemDefinition(String name, ItemDefinition item) {
-        this.itemDefinitionMap.put(name, item);
+    public static void putItemDefinition(String name, ItemDefinition item) {
+        itemDefinitionMap.put(name, item);
         try {
-            item.setItemType(ItemType.valueOf(name));
+            item.setItemType(item.id);
         } catch (Exception e) {
             LogUtil.err(name);
         }

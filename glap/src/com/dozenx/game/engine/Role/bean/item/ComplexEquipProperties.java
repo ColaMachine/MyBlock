@@ -16,27 +16,27 @@ public class ComplexEquipProperties extends CommonEquipProperties implements Syn
     public void getInfo(PlayerStatus info) {
         super.getInfo(info);
        /* if(this.getHeadEquip()!=null){
-            info.setHandEquip(this.getHeadEquip().ordinal());
+            info.setHandEquip(this.getHeadEquip());
         }*/
         if(this.getHeadEquip()!=null)
-        info.setHeadEquip(this.getHeadEquip().ordinal());
+        info.setHeadEquip(this.getHeadEquip());
         if(this.getBodyEquip()!=null)
-        info.setBodyEquip(this.getBodyEquip().ordinal());
+        info.setBodyEquip(this.getBodyEquip());
         if(this.getHandEquip()!=null)
-        info.setHandEquip(this.getHandEquip().ordinal());
+        info.setHandEquip(this.getHandEquip());
         if(this.getLegEquip()!=null)
-        info.setLegEquip(this.getLegEquip().ordinal());
+        info.setLegEquip(this.getLegEquip());
         if(this.getFootEquip()!=null)
-        info.setFootEquip(this.getFootEquip().ordinal());
+        info.setFootEquip(this.getFootEquip());
     }
     @Override
     public void setInfo(PlayerStatus info ){
         super.setInfo(info);
-        this.setHeadEquip(ItemType.values()[info.getHeadEquip()]);
-        this.setBodyEquip(ItemType.values()[info.getBodyEquip()]);
-        this.setHandEquip(ItemType.values()[info.getHandEquip()]);
-        this.setLegEquip(ItemType.values()[info.getLegEquip()]);
-        this.setFootEquip(ItemType.values()[info.getFootEquip()]);
+        this.setHeadEquip(info.getHeadEquip());
+        this.setBodyEquip(info.getBodyEquip());
+        this.setHandEquip(info.getHandEquip());
+        this.setLegEquip(info.getLegEquip());
+        this.setFootEquip(info.getFootEquip());
     }
     @Override
     public void changeProperty( ){
@@ -44,9 +44,9 @@ public class ComplexEquipProperties extends CommonEquipProperties implements Syn
         // totalPower = basePower+
 
         // acculateProperty(this.getExecutor().getModel().bodyComponent);
-        ItemType[] itemTypes = new ItemType[]{this.headEquip,this.handEquip,this.bodyEquip,this.legEquip,this.footEquip};
+        Integer[] itemTypes = new Integer[]{this.headEquip,this.handEquip,this.bodyEquip,this.legEquip,this.footEquip};
         for(int i=0;i<itemTypes.length;i++){
-            ItemType itemType  = itemTypes[i];
+            Integer itemType  = itemTypes[i];
 
            ItemDefinition itemDefinition =  ItemManager.getItemDefinition(itemType);
             if(itemDefinition!=null){

@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.element.bean;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.model.BaseBlock;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ShapeType;
@@ -25,7 +26,12 @@ import java.util.List;
  * 2017-04-07 22:59:08移入当前element 目录 是希望她发挥更大左右 她应该是世界一切物体的本源 有点元素的味道
  */
 public class Component {
-
+    public static int body =1;
+    public static int hand =2;
+    public static int drop =3;
+    public static int place=4;
+    public static int bag =5;
+    public BaseBlock block ;
     public int belongTo = 0 ;//private int belongTo = 2; //1 身上 2 手上 3丢弃 4安置 5 背包
     public ItemBean itemBean;
     public  ShapeType shapeType;    //形状类型
@@ -34,12 +40,12 @@ public class Component {
     public Point3f childLocation =new Point3f();    //子节点对应的位置
      public int id;      //每个元素都有唯一id
      public  String name;    //适用的名称
-    public TextureInfo front; //如果是盒状的话有四面 其实应该纳入什么模型具体对象中的
+   /* public TextureInfo front; //如果是盒状的话有四面 其实应该纳入什么模型具体对象中的
     public TextureInfo back;
     public TextureInfo top;
     public TextureInfo left;
     public TextureInfo right;
-    public TextureInfo bottom;
+    public TextureInfo bottom;*/
 
     public float rotateX;
     public float rotateY;
@@ -111,13 +117,13 @@ public class Component {
         this.name = shape.getName();
         this.parentLocation =new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z());
         this.childLocation =new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z());
-
-        this.front= shape.getFront();
+    this.block = shape;
+      /*  this.front= shape.getFront();
         this.back= shape.getBack();
         this.left=shape.getLeft();
         this.right=shape.getRight();
         this.top= shape.getTop();
-        this.bottom= shape.getBottom();
+        this.bottom= shape.getBottom();*/
         this.shapeType =ShapeType.BOX;
 
     }
@@ -168,6 +174,15 @@ public class Component {
 
     }
 
+    /**
+     *
+     * @param index
+     * @param matrix
+     * @param vertices
+     * @param texcoords
+     * @param faces
+     * @param normals
+     */
     public void getVertices(int index,GL_Matrix matrix,List<float[]> vertices,List<float[] > texcoords,List<int[]> faces,List<float[]> normals){
 
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentLocation.x, parentLocation.y, parentLocation.z);
@@ -191,7 +206,7 @@ public class Component {
 
 
 
-        if(front !=null) {
+        /*if(this.block.renderShader();front !=null) {
             this.addVerticesToList(vertices, BoxModel.getFrontVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
             this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
             this.addNormalsToList(normals, BoxModel.FRONT_DIR, rotateMatrix);
@@ -226,7 +241,7 @@ public class Component {
             this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
             this.addNormalsToList(normals, BoxModel.DOWN_DIR, rotateMatrix);
             this.addTexcoordsToList(texcoords, bottom);
-        }
+        }*/
 
         for(int i=0;i<children.size();i++){
             children.get(i).getVertices( index,matrix,vertices, texcoords, faces,normals);
@@ -261,7 +276,7 @@ public class Component {
             }
         }else*/
         //if(this.shapeType==ShapeType.CAKE){
-            if(this.itemBean !=null) {
+            if(this.itemBean !=null) {//让我们会议下component 是怎么从一个itemdefintion
                 if (this.belongTo == 2) {
                     this.itemBean.getItemDefinition().getItemModel().handModel.build(config, matrix);
                 } else if (this.belongTo == 1) {
@@ -274,8 +289,8 @@ public class Component {
             //}
             //}
         }else if(this.shapeType==ShapeType.BOX){
-
-            if(front!=null) {
+            block.renderShader(config,config.getVao(),rotateMatrix);
+           /* if(front!=null) {
                 // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
                 ShaderUtils.draw3dImage(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),front,floatBuffer, config);
             }
@@ -296,7 +311,7 @@ public class Component {
             }
             if(right!=null) {
                 ShaderUtils.draw3dImage(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),right,floatBuffer, config);
-            }
+            }*/
         }
 
 
@@ -305,22 +320,22 @@ public class Component {
         }
 
     }
-
-    public void render(){/*try{
+/*
+    public void render(){*//*try{
         Util.checkGLError();}catch (Exception e ){
         e.printStackTrace();
         LogUtil.println(e.getMessage());
         throw e;
     }
-*/
+*//*
         //GL11. glEnable(GL11.GL_DEPTH_TEST);
         GL11.glTranslatef(parentLocation.x, parentLocation.y, parentLocation.z);
-       /* try{
+       *//* try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }*//*
         if(rotateZ!=0){
             GL11.glRotatef(rotateZ, 0, 0, 1);
         }
@@ -329,12 +344,12 @@ public class Component {
         }
         //GL11.glRotatef(child.rotateX, child.rotateY, 90, 0);
         GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
-        /*try{
+        *//*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }*//*
 
         if(this.itemBean !=null){
             this.itemBean.getItemDefinition().getItemModel().render();
@@ -358,28 +373,28 @@ public class Component {
         }else if(bottom!=null){
             bottom.bind();
         }
-        /*try{
+        *//*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }*//*
 
-        /*if(this.id.equals("fur_helmet")){
+        *//*if(this.id.equals("fur_helmet")){
             LogUtil.println("iron_helmet");
-        }*/
+        }*//*
         GL11.glTranslatef(offsetPosition.x, offsetPosition.y, offsetPosition.z);
 //        GL11.glRotatef(rotateX, rotateY, rotateZ, 0);
         GL11.glBegin(GL11.GL_QUADS);
         // Front Face
 
-        /*try{
+        *//*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
         }
-*/
+*//*
         if(front!=null) {
 
 
@@ -407,28 +422,28 @@ public class Component {
         if(right!=null) {
             OpenglUtils.glVertex3fv4rect(P4, P1, P5, P8, right, Constants.RIGHT);
         }
-        /*try{
+        *//*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }*//*
         GL11.glEnd();
-        /*try{
+        *//*try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }*//*
         for(int i=0;i<children.size();i++){
             children.get(i).render();
         }
-       /* try{
+       *//* try{
             Util.checkGLError();}catch (Exception e ){
             e.printStackTrace();
             LogUtil.println(e.getMessage());
             throw e;
-        }*/
+        }*//*
 
 //        GL11.glRotatef(-rotateX, -rotateY, -rotateZ, 0);
         GL11.glTranslatef(-offsetPosition.x,-offsetPosition.y,-offsetPosition.z);
@@ -444,14 +459,14 @@ public class Component {
         GL11.glTranslatef(-parentLocation.x, -parentLocation.y, -parentLocation.z);
 
 
-    }
+    }*/
 
 
     public void setImage(String textureInfoName){
 
     }
 
-    public void setEightFace(String name,TextureManager textureManager){
+    /*public void setEightFace(String name,TextureManager textureManager){
 
        // this.name =name;
         this.front= textureManager.getTextureInfo(name+"_front");
@@ -460,8 +475,8 @@ public class Component {
         this.right= textureManager.getTextureInfo(name+"_right");
         this.top= textureManager.getTextureInfo(name+"_top");
         this.bottom= textureManager.getTextureInfo(name+"_bottom");
-    }
-    public void setEightFace(String name){
+    }*/
+    /*public void setEightFace(String name){
        // this.name =name;
         this.front= TextureManager.getTextureInfo(name+"_front");
         this.back= TextureManager.getTextureInfo(name+"_back");
@@ -469,7 +484,7 @@ public class Component {
         this.right= TextureManager.getTextureInfo(name+"_right");
         this.top= TextureManager.getTextureInfo(name+"_top");
         this.bottom= TextureManager.getTextureInfo(name+"_bottom");
-    }
+    }*/
     public ItemDefinition itemDefinition;
     public void setItem(ItemDefinition itemDefinition){
         this.itemDefinition = itemDefinition;
@@ -577,7 +592,7 @@ public class Component {
 
     public void setThick(float thick) {
         this.thick = thick;
-    }
+    }/*
     public TextureInfo getFront(){
         return front;
     }
@@ -599,6 +614,6 @@ public class Component {
     }
     public void setBottom(TextureInfo texture){
         this.bottom=texture;
-    }
+    }*/
 
 }

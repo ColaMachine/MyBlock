@@ -9,7 +9,7 @@ import glmodel.GL_Vector;
  */
 public class ItemSeed {
     GL_Vector position ;
-    ItemType seedType;
+    Integer seedType;
     Long plantedTime;
 
     public GL_Vector getPosition() {
@@ -20,11 +20,11 @@ public class ItemSeed {
         this.position = position;
     }
 
-    public ItemType getSeedType() {
+    public Integer getSeedType() {
         return seedType;
     }
 
-    public void setSeedType(ItemType seedType) {
+    public void setSeedType(Integer seedType) {
         this.seedType = seedType;
     }
 

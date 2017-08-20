@@ -1,11 +1,14 @@
 package com.dozenx.game.network.server.handler;
 
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.generator.ChunkGenerators.Random;
 import com.dozenx.game.engine.Role.bean.Wolf;
 import com.dozenx.game.engine.command.*;
+import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
@@ -136,7 +139,7 @@ public class SayHandler extends GameServerHandler {
                             if(StringUtil.isNumeric(arr[2])){
                                 beans[i].setItemType(Integer.valueOf(arr[2]));
                             }else{
-                                beans[i].setItemType(ItemType.valueOf(arr[2]).ordinal());
+                                beans[i].setItemType(ItemManager.getItemDefinition(arr[2]).id);
                             }
 
                             beans[i].setNum(Integer.valueOf(arr[3]));

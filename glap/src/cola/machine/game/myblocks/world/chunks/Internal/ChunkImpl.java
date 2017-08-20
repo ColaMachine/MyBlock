@@ -127,7 +127,7 @@ public class ChunkImpl implements Chunk {
             block = blockManager.getBlock(blockValue);
 
         }
-        if(block.getId() == ItemType.copy_down.ordinal()){
+        if(block.getId() == ItemType.copy_down.id){
             block=  blockMap.get(blockData.getIndex(x,y-1,z));
         }
         return block;
@@ -158,9 +158,9 @@ public class ChunkImpl implements Chunk {
     }
 
     @Override//返回原来的block 类型id  设置当前的block进入数据数组
-    public void setBlock(int x, int y, int z, ItemType block) {
-        int oldValue = blockData.set(x, y, z, block.ordinal());
-       /* if (oldValue != block.ordinal()) {
+    public void setBlock(int x, int y, int z, Integer block) {
+        int oldValue = blockData.set(x, y, z, block);
+       /* if (oldValue != block.id) {
             *//*
 			 * if (!block.isLiquid()) { setLiquid(x, y, z, new LiquidData()); }
 			 *//*
@@ -174,10 +174,10 @@ public class ChunkImpl implements Chunk {
             int realId = ByteUtil.get8_0Value(blockId);//获得真实的blockid
             blockData.set(x, y, z, blockId);//设置或者
             //if(blockId > 0)
-            if(realId==ItemType.wood_door.ordinal() || realId == ItemType.box.ordinal()){
+            if(realId==ItemType.wood_door.id || realId == ItemType.box.id){
                 LogUtil.println("is ad special block");
 
-            //if (realId ==ItemType.wood_door.ordinal() ) {
+            //if (realId ==ItemType.wood_door.id ) {
                 IBlock block = blockManager.getBlock(realId).clone();
                 block.setValue(blockId);
                 block.setCenter(x,y,z);
@@ -209,7 +209,7 @@ public class ChunkImpl implements Chunk {
         if (blockType == 0 || selfType == 0) {
             return true;
         }
-        if (blockType == ItemType.wood_door.ordinal() || selfType == ItemType.wood_door.ordinal()) {
+        if (blockType == ItemType.wood_door.id || selfType == ItemType.wood_door.id) {
             return true;
         }
 //如果一个是透明的 另一个是不透明的 就需要绘制
@@ -564,7 +564,7 @@ public class ChunkImpl implements Chunk {
                     if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
                         //如果不是box 类型的
 
-                        ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[currentBlockType]);
+                        ItemDefinition itemDefinition = ItemManager.getItemDefinition(currentBlockType);
                         if(itemDefinition == null ){
                             continue;
                         }
@@ -762,19 +762,19 @@ public class ChunkImpl implements Chunk {
         }
 */
 
-        /*if(this.currentBlockType== ItemType.stone_block.ordinal()){
+        /*if(this.currentBlockType== ItemType.stone_block.id){
             ti = TextureManager.getTextureInfo("stone");
-        }else if(this.currentBlockType== ItemType.soil_block.ordinal()){
+        }else if(this.currentBlockType== ItemType.soil_block.id){
             ti = TextureManager.getTextureInfo("soil");
-        }else if(this.currentBlockType== ItemType.mantle_block.ordinal()){
+        }else if(this.currentBlockType== ItemType.mantle_block.id){
             ti = TextureManager.getTextureInfo("mantle");
-        }else if(this.currentBlockType== ItemType.wood_block.ordinal()){
+        }else if(this.currentBlockType== ItemType.wood_block.id){
             ti = TextureManager.getTextureInfo("wood");
         }else {
             ti = TextureManager.getTextureInfo("wood");
         }*//*
         switch (this.currentBlockType) {
-            case ItemType.stone_block.ordinal():
+            case ItemType.stone_block.id:
                 ti = TextureManager.getTextureInfo("stone");
 
                 break;
@@ -1109,8 +1109,8 @@ public class ChunkImpl implements Chunk {
 
        // boolean flat = true;
         //blockDefManager.getBlockById()
-        ItemDefinition itemDefinition = ItemManager.getItemDefinition(ItemType.values()[this.currentBlockType]);
-//        if (/*ti==null||*/ itemDefinition.getShape() == null || itemDefinition.getShape().getTop() == null) {
+        ItemDefinition itemDefinition = ItemManager.getItemDefinition(this.currentBlockType);
+//        if (/*ti==null||*/ itemDefinition.getShape() == null || itemDefinition.getShape().etTop() == null) {
 //            LogUtil.err(ti.name + "'shape  is null ");
 //        }
         BaseBlock shape = itemDefinition.getShape();
@@ -1164,14 +1164,14 @@ public class ChunkImpl implements Chunk {
 
         }
 
-        if(currentBlockType== ItemType.box.ordinal()) {
+        if(currentBlockType== ItemType.box.id) {
             if(  faceIndex==Constants.FRONT){
                 IBlock block = this.getBlock(x, y, z);//this.blockManager.getBlock(currentBlockType);
                 block.renderShader(vao, shapeFace, ti,worldx,y,worldz);
             }
 
         }else
-        if (currentBlockType== ItemType.wood_door.ordinal()) {
+        if (currentBlockType== ItemType.wood_door.id) {
             //===========判断当前方块是不是有状态的方块 如果是有状态的方块调
             //=========判断当前方块是简单方块还是特殊方块如果是特殊方块调用他自身的渲染方法渲染
 
@@ -1181,7 +1181,7 @@ public class ChunkImpl implements Chunk {
 
         } else {
             try {
-                if (currentBlockType != ItemType.water.ordinal() && currentBlockType != ItemType.glass.ordinal()) {//正常的block的
+                if (currentBlockType != ItemType.water.id && currentBlockType != ItemType.glass.id) {//正常的block的
                     ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);
                 } else {//alpha的
                     ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, alphaVao, vertices[faces[0]], vertices[faces[1]], vertices[faces[2]], vertices[faces[3]], BoxModel.dirAry[dir], ti);

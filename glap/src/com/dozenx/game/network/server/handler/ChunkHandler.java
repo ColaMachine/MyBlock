@@ -48,7 +48,7 @@ public class ChunkHandler extends GameServerHandler {
         }else if(cmd.type==1||cmd.type==2){// 增加方块 或者 删除方块
             //LogUtil.println("服务器加载chunk:"+cmd.x+","+cmd.z+"");
             chunk.setBlock(cmd.cx,cmd.cy,cmd.cz,cmd.blockType);
-            if(cmd.blockType == ItemType.tree_seed.ordinal() ){
+            if(cmd.blockType == ItemType.tree_seed.id ){
                 ItemSeed itemSeed = new ItemSeed();
                 itemSeed.setPosition(new GL_Vector(cmd.x*16+cmd.cx,cmd.cy,cmd.z*16+cmd.cz));
                 itemSeed.setPlantedTime(TimeUtil.getNowMills());

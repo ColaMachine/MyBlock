@@ -42,7 +42,7 @@ public class DropHandler extends GameServerHandler {
                     itemAry[i].setZ(from.getZ());
 
                     bagService.addWorldItem( itemAry[i]);
-                    cmd.setItemType(ItemType.values()[itemAry[i].getItemType()]);
+                    cmd.setItemType(itemAry[i].getItemType());
                     cmd.setNum(itemAry[i].getNum());
                     //计算丢物品的角度
                     float bodyAngle = from.getBodyAngle();

@@ -33,9 +33,6 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     ItemDefinition itemDefinition;
 
-	public void renderShader(ShaderConfig config , GL_Matrix matrix){
-
-	}
     public BaseBlock(int x,int y,int z,float width,float height,float thick){
             this.x =x;
         this.y=y;
@@ -102,10 +99,10 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     }
 
-    @Override
+    /*@Override
     public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z) {
        
-    }
+    }*/
 
     public String name;
 	public BaseBlock(String name,int x,int y,int z){
@@ -452,8 +449,8 @@ public abstract class BaseBlock extends AABB implements IBlock {
     }
 
 
-    public abstract void update(float x, float y, float z, float width, float height, float thick);
-    public abstract void update();
+ /*   public abstract void update(float x, float y, float z, float width, float height, float thick);
+    public abstract void update();*/
 
     public abstract  BaseBlock copy();
     public void addWidth(int num){
@@ -480,4 +477,8 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     public abstract  void render(ShaderConfig config, Vao vao, int x,int y,int z ,boolean top,
                                  boolean bottom,boolean left,boolean right,boolean front ,boolean back);
+
+    public  abstract void renderShader(ShaderConfig config , Vao vao , GL_Matrix matrix);
+
+    public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x,float y,float z,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back);
 }

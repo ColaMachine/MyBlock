@@ -97,7 +97,7 @@ public class BoxController {
             ItemBean itemBean =new ItemBean();
             itemBean.setPosition(itemServerBean.getPosition());
             itemBean.setNum(itemServerBean.getNum());
-            itemBean.setItemDefinition(ItemManager.getItemDefinition(ItemType.values()[itemServerBean.getItemType()]));
+            itemBean.setItemDefinition(ItemManager.getItemDefinition(itemServerBean.getItemType()));
             itemBean.setId(0);
 
             itemBeans[itemBean.getPosition()-35] = itemBean;
