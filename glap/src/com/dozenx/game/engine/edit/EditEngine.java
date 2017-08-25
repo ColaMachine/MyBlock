@@ -8,18 +8,24 @@ import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.persistence.StorageManager;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
+import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import com.alibaba.fastjson.JSON;
+import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.command.ChunkResponseCmd;
+import com.dozenx.game.engine.command.SayCmd;
 import com.dozenx.game.engine.edit.view.ColorGroup;
 import com.dozenx.game.engine.item.action.ItemFactory;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
@@ -325,8 +331,14 @@ public class EditEngine {
 
         BaseBlock colorBlock =null;
         colorBlock =  readyShootBlock.copy();
-
-        set(colorBlock,minX,0,minZ,Math.max(width,1),1,Math.max(thick,1),red,green,blue,alpha);
+        for(int x =minX;x< width+minX;x++){
+            for(int z=minZ;z<thick+minZ;z++){
+                colorBlock =  readyShootBlock.copy();
+                set(colorBlock,x,0,z,Math.max(width,1),1,Math.max(thick,1),red,green,blue,alpha);
+                colorBlockList.add(colorBlock);
+            }
+        }
+        //set(colorBlock,minX,0,minZ,Math.max(width,1),1,Math.max(thick,1),red,green,blue,alpha);
 
       /*  if(chooseColorGroup!=null){
             colorBlock= chooseColorGroup.copy();
@@ -348,7 +360,7 @@ public class EditEngine {
 
             }
         }*/
-        colorBlockList.add(colorBlock);
+
 
         GamingState.editEngine.select(colorBlock);
     }
@@ -376,7 +388,7 @@ public class EditEngine {
         selectBlockList.add(block);
     }
 
-    public void adjustWidth(int num,boolean position){
+    public void adjustWidth(float num,boolean position){
         if(Switcher.size&&position) {
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
@@ -392,7 +404,7 @@ public class EditEngine {
             }
         }
     }
-    public void adjustHeight(int num,boolean position){
+    public void adjustHeight(float num,boolean position){
         if(Switcher.size && position) {
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
@@ -410,7 +422,7 @@ public class EditEngine {
         }
     }
 
-    public void adjustThick(int num,boolean position){
+    public void adjustThick(float num,boolean position){
         if(Switcher.size&&position){
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
@@ -561,7 +573,7 @@ public class EditEngine {
 
         }
         Object[] results = this.getMouseChoosedBlock(x,y);
-        BaseBlock theNearestBlock = (ColorBlock)results[0];
+        BaseBlock theNearestBlock = (BaseBlock)results[0];
         GL_Vector touchPoint = (GL_Vector) results[2];
         GL_Vector placePoint = (GL_Vector) results[3];
         endPoint=touchPoint;
@@ -587,7 +599,7 @@ public class EditEngine {
 
 
             addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
-            set(addColorBlock,curentX, 0, curentZ,1,1,1,red,green,blue,alpha);
+            set(addColorBlock,curentX, 0, curentZ,addColorBlock.width,addColorBlock.height,addColorBlock.thick,red,green,blue,alpha);
 
             this.colorBlockList.add(addColorBlock);
 
@@ -980,7 +992,12 @@ public class EditEngine {
                 }
             }
         }
-
+        group.x=minx;
+        group.y=miny;
+        group.z =minz;
+        group.width = maxx-minx;
+        group.height =maxy-miny;
+        group.thick = maxz-minz;
         //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
         for(int i=group.colorBlockList.size()-1;i>=0;i--){
             BaseBlock colorBlock = group.colorBlockList.get(i);
@@ -988,17 +1005,12 @@ public class EditEngine {
             colorBlock.y-=group.y;
             colorBlock.z-=group.z;
         }
-        group.x=minx;
-        group.y=miny;
-        group.z =minz;
-        group.width = maxx-minx;
-        group.height =maxy-miny;
-        group.thick = maxz-minz;
-        for(BaseBlock colorBlock : group.colorBlockList){
+
+       /* for(BaseBlock colorBlock : group.colorBlockList){
             colorBlock.x-= group.x;
             colorBlock.y-=group.y;
             colorBlock.z-=group.z;
-        }
+        }*/
         this.colorBlockList.add(group);
 
     }
@@ -1109,7 +1121,7 @@ public class EditEngine {
         if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
             ColorGroup group = (ColorGroup) selectBlockList.get(0);
             ColorGroup newGroup =group.copy();
-
+            newGroup .animations=null;
 
             group.animations.add(newGroup);
         }
@@ -1216,11 +1228,12 @@ public class EditEngine {
      * 根据给定的名称保存当前选中的colorGroup 并保存到内存colorGroupHashMap中
      * @param name
      */
-    public void saveSelectAsColorGroup(int id,String name ){
+    public void saveSelectAsColorGroup(int id,String name,boolean live ){
 
         //这里还要增加imageblock colorblock 的支持 然后原生的支持
 
         BaseBlock selectBlock = this.getSelectFirstBlock();
+        selectBlock.live=live;
         if(selectBlock == null){
             return;
         }
@@ -1236,6 +1249,7 @@ public class EditEngine {
        .append("name:'").append(name).append("',")
                 .append("type:'").append("block").append("',")
                 .append("remark:'").append(name).append("',")
+                .append("live:'").append(live).append("',")
                 .append("remark:'").append(name).append("',")
                 .append("shape:").append(selectBlock.toString()).append(",")
                 .append("baseon:'mantle'").append("}");
@@ -1274,15 +1288,19 @@ public class EditEngine {
             if(colorBlock instanceof RotateColorBlock2){
                 ((RotateColorBlock2) colorBlock) .rotateX(value);
             }
+            if(colorBlock instanceof ColorGroup){
+                ((ColorGroup) colorBlock) .rotateX(value);
+            }
         }
     }
 
     public void adjustRotateY(float value){
         for(int i=0;i<selectBlockList.size();i++){
             BaseBlock colorBlock  = selectBlockList.get(i);
-            if(colorBlock instanceof RotateColorBlock2){
-                ((RotateColorBlock2) colorBlock) .rotateY(value);
-            }
+            //if(colorBlock instanceof RotateColorBlock2){
+               // ((RotateColorBlock2) colorBlock) .rotateY(value);
+            colorBlock .rotateY(value);
+           // }
         }
     }
     public void adjustRotateZ(float value){
@@ -1311,13 +1329,23 @@ public class EditEngine {
         int worldX,worldY,worldZ ,preWorldX,preWorldY,preWorldZ;
         int offsetX ,offsetZ ,preOffsetX,preOffsetZ;
         ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
-
-        for(BaseBlock  colorBlock : colorBlockList){
+        Client client =  CoreRegistry.get(Client.class);
+        for(int i =colorBlockList.size()-1;i>=0;i--){
+           BaseBlock  colorBlock = colorBlockList.get(i);
             int id = colorBlock.id;
+
+            boolean live= colorBlock.live;
             worldX = colorBlock.x;
             worldY = colorBlock.y;
             worldZ = colorBlock.z;
 
+            if(live){
+                SayCmd sayCmd = new SayCmd(0,"","/create monster "+worldX+" "+worldY+" "+worldZ+" "+colorBlock.getId());
+                client.send(sayCmd);
+                continue;
+
+
+            }
 
             offsetX = MathUtil.getOffesetChunk(worldX);
             offsetZ = MathUtil.getOffesetChunk(worldZ);
@@ -1325,10 +1353,10 @@ public class EditEngine {
             if(preBlockIndex==-1){
                 preBlockIndex = blockIndex;
             }
-            chunkX=MathUtil.getBelongChunkInt(nowX);//换算出新的chunkX
-            chunkZ=MathUtil.getBelongChunkInt(nowZ);//换算出新的chunkZ
+            chunkX=MathUtil.getBelongChunkInt(worldX);//换算出新的chunkX
+            chunkZ=MathUtil.getBelongChunkInt(worldZ);//换算出新的chunkZ
             chunkIndex =  chunkX*10000+chunkZ;
-            if(preChunkIndex==null){
+          /*  if(preChunkIndex==null){
                 bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
                 preChunkIndex = chunkIndex;
             }
@@ -1339,11 +1367,19 @@ public class EditEngine {
             }
 
 
-            bianliChunk.setBlock(offsetX,worldY,offsetZ,colorBlock.id);
+            bianliChunk.setBlock(offsetX,worldY,offsetZ,colorBlock.id);*/
 
 
+            colorBlockList.remove(i);
 
 
+            ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+            cmd.cx = offsetX;
+            cmd.cz = offsetZ;
+            cmd.cy = worldY;
+            cmd.type = 1;
+            cmd.blockType = id;
+            client.send(cmd);
 
 //            if(colorBlock instanceof  ColorGroup){
 //                ColorGroup colorGroup = (ColorGroup)colorBlock;
@@ -1362,6 +1398,92 @@ public class EditEngine {
 //            }else if(colorBlock instanceof  ImageBlock){
 //
 //            }
+
+
         }
+    }
+
+
+    public void readBlocksFromCurrentChunk() {
+
+        //获取当前chunk
+
+        ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
+
+
+        int  chunkX=MathUtil.getBelongChunkInt(GamingState.instance.player.getX());//换算出新的chunkX
+        int chunkZ=MathUtil.getBelongChunkInt(GamingState.instance.player.getZ());//换算出新的chunkZ
+
+        Chunk chunk = localChunkProvider.getChunk(chunkX,0,chunkZ);
+
+        TeraArray data= chunk.getBlockData();
+        List<Integer> arr = new ArrayList<>();
+        for(int x =0;x<16;x++){
+
+            for(int y =0;y<128;y++){
+
+                for(int z =0;z<16;z++){
+                    int value = chunk.getBlockData(x,y,z);
+                    //x<<12 && y<<8&& z <<4 && value
+                    if(value>0){
+                      BaseBlock block = ItemManager.getItemDefinition(value).getShape().copy();
+                      chunk.setBlock(x,y,z,0);
+                        block.x=chunkX*16+x;
+                        block.y=y;
+                        block.z=chunkZ*16+z;
+                        this.colorBlockList.add(block);
+                    }
+
+                }
+            }
+        }
+
+        chunk.setNeedUpdate(true);
+    }
+
+    public void synChunkFromServer() {
+
+        ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
+
+
+        int  chunkX=MathUtil.getBelongChunkInt(GamingState.instance.player.getX());//换算出新的chunkX
+        int chunkZ=MathUtil.getBelongChunkInt(GamingState.instance.player.getZ());//换算出新的chunkZ
+
+
+
+        Chunk chunk = localChunkProvider.getChunk(chunkX,0,chunkZ);
+
+      localChunkProvider.reload(chunk);
+
+    }
+
+    public void synChunkFromClient() {
+        ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
+
+
+        int  chunkX=MathUtil.getBelongChunkInt(GamingState.instance.player.getX());//换算出新的chunkX
+        int chunkZ=MathUtil.getBelongChunkInt(GamingState.instance.player.getZ());//换算出新的chunkZ
+
+
+
+        Chunk chunk = localChunkProvider.getChunk(chunkX,0,chunkZ);
+
+        ChunkResponseCmd cmd =new ChunkResponseCmd(chunk);
+        CoreRegistry.get(Client.class).send(cmd);
+    }
+
+    public void synChunkFromEditToClient() {
+        ChunkProvider localChunkProvider= CoreRegistry.get(ChunkProvider.class);
+
+
+        int  chunkX=MathUtil.getBelongChunkInt(GamingState.instance.player.getX());//换算出新的chunkX
+        int chunkZ=MathUtil.getBelongChunkInt(GamingState.instance.player.getZ());//换算出新的chunkZ
+
+
+
+        Chunk chunk = localChunkProvider.getChunk(chunkX,0,chunkZ);
+
+        ChunkResponseCmd cmd =new ChunkResponseCmd(chunk);
+        CoreRegistry.get(Client.class).send(cmd);
     }
 }

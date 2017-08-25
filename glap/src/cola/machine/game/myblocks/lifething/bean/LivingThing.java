@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
@@ -11,12 +12,17 @@ import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.opengl.util.ShaderConfig;
+import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector4f;
 
 /**
  * Created by luying on 16/9/16.
@@ -31,6 +37,8 @@ public class LivingThing extends LivingThingBean {
 
 
     }
+
+
 
    /* public long updateTime;
     public int id;

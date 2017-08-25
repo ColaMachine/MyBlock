@@ -27,11 +27,38 @@ public class BaseModel implements Model   {
     public BaseModel(Role role ){
         this.role = role;
     }
+    public ItemDefinition itemDefinition;
     public Component rootComponent = new Component();
     Role role ;
 
 
+    public void clearAddChild(Component parent,int type ,String name,ItemBean itemBean) {
+        if(parent==null){
+            LogUtil.err("parent node is null");
+        }
+        Component shoe = parent.findChild(name);
+        if (shoe == null) {
+            if (itemBean == null||itemBean.itemDefinition == null) {
+                return;
+            } else {
+                parent.children.clear();
+                //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+                parent.addChild(addItemToComponent(type ,itemBean));
+                //changeProperty();
+            }
+        } else {
 
+            if (itemBean == null||itemBean.itemDefinition == null) {
+                //删除shoe节点
+                parent.children.clear();
+            } else {
+                parent.children.clear();
+
+                parent.addChild(addItemToComponent(type,itemBean));
+                //changeProperty();
+            }
+        }
+    }
     public void addChild(Component parent,int type ,String name,ItemBean itemBean) {
         if(parent==null){
             LogUtil.err("parent node is null");
@@ -137,6 +164,12 @@ public class BaseModel implements Model   {
                 //rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
                 //.getVao().getVertices()
                 //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
+                if(this.itemDefinition!=null){
+                   this.itemDefinition.getShape().renderShader(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix);
+
+                 /*   this.itemDefinition.getShape().render(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),
+                            role.getX(),role.getY(),role.getZ(),true,true,true,true,true,true);*/
+                }else
                 rootComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
                 //渲染头部名字
                 if(StringUtil.isNotEmpty(role.getName())){

@@ -21,7 +21,7 @@ public class GetHandler extends GameServerHandler {
 
         GetCmd cmd = (GetCmd)request.getCmd();
 
-
+        LogUtil.println("接收到线程id:"+cmd.getThreadId());
         byte[] data = cmd.getData();
         GameCmd childCmd = CmdUtil.getCmd(data);
 

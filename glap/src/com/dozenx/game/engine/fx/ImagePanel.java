@@ -28,7 +28,7 @@ import java.util.Iterator;
 /**
  * Created by dozen.zhang on 2017/8/14.
  */
-public class ImagePanel extends TitledPane {
+public class ImagePanel extends Tab {
     private GraphicsContext gc;
     private FlowPane flowPane =new FlowPane();
     public void add(Node node){
@@ -38,7 +38,7 @@ public class ImagePanel extends TitledPane {
 
         //double width, double height
         this.setContent(flowPane);
-
+    this.setText("图片资源");
         // CheckBox
         CheckBox checkBox = new CheckBox("Check Box");
 

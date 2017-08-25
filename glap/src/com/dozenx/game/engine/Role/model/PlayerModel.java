@@ -190,7 +190,7 @@ public class PlayerModel extends BaseModel   {
     public void addHeadEquip(ItemBean itemCfg)  {
 
         Component parent = 	rootComponent.findChild("human_head");
-        addChild(parent,Component.body, "helmet", itemCfg);
+        clearAddChild(parent,Component.body, "helmet", itemCfg);
     }
 
 
@@ -202,7 +202,7 @@ public class PlayerModel extends BaseModel   {
             parent = rootComponent.findChild(EquipPartType.RLEG.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,Component.body,EquipPartType.SHOOE.getName(),itemCfg);
+        clearAddChild(parent,Component.body,EquipPartType.SHOOE.getName(),itemCfg);
     }
     public void addShoeEquip(ItemBean itemCfg)  {
         addLRShoeEquip(true, itemCfg);
@@ -217,7 +217,7 @@ public class PlayerModel extends BaseModel   {
             parent = rootComponent.findChild(EquipPartType.RLEG.getName());
         }
         //Component shoe =   bodyComponent.findChild("shoe");
-        addChild(parent,Component.body,EquipPartType.PANTS.getName(),itemCfg);
+        clearAddChild(parent,Component.body,EquipPartType.PANTS.getName(),itemCfg);
     }
 
     public void addLegEquip(ItemBean itemCfg)  {
@@ -226,7 +226,7 @@ public class PlayerModel extends BaseModel   {
     }
     public void addBodyEquip(ItemBean itemCfg)  {
         Component parent = 	rootComponent.findChild(EquipPartType.BODY.getName());
-        addChild(parent,Component.body, EquipPartType.ARMOR.getName(), itemCfg);
+        clearAddChild(parent,Component.body, EquipPartType.ARMOR.getName(), itemCfg);
     }
 
     public void addHandEquip(ItemBean itemBean)  {
@@ -355,7 +355,11 @@ public class PlayerModel extends BaseModel   {
         }
     }*/
     public void addHandChild(Component parent,String name,ItemBean itemBean) {
-        super.addChild(parent,Component.hand,name,itemBean);
+
+      /*  Component rarm = 	rootComponent.findChild(EquipPartType.RARM.getName());
+        rarm.children.clear();;*/
+
+        super.clearAddChild(parent,Component.hand,name,itemBean);
         /*if(parent==null){
             LogUtil.err("parent node is null");
         }
@@ -364,7 +368,7 @@ public class PlayerModel extends BaseModel   {
             if (itemBean == null || itemBean.itemDefinition==null) {
                 return;
             } else {
-                BoneBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
+                BaseBlock shape = (BoneBlock)itemBean.itemDefinition.getShape();
                 if (shape == null) {
                     LogUtil.err("load shape from itemDefinition:" +  itemBean.itemDefinition.getName() + "failed");
 
@@ -377,6 +381,7 @@ public class PlayerModel extends BaseModel   {
 
                 component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
+                parent.children.clear();
                 parent.addChild(component);
                 //changeProperty();
             }
@@ -467,6 +472,7 @@ public class PlayerModel extends BaseModel   {
         }*/
     }
 
+/*
 
 
     public void addHeadEquip(ItemDefinition itemCfg)  {
@@ -474,6 +480,7 @@ public class PlayerModel extends BaseModel   {
         Component parent = 	rootComponent.findChild("human_head");
         addChild(parent,Component.body, "helmet", itemCfg);
     }
+*/
 
 
     public void addLRShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
@@ -534,7 +541,7 @@ public class PlayerModel extends BaseModel   {
         }
     }
     public void addChild(Component parent,int type ,String name,ItemDefinition itemCfg) {
-        super.addChild(parent,type,name,new ItemBean(itemCfg,1));
+        super.clearAddChild(parent,type,name,new ItemBean(itemCfg,1));
        /* if(parent==null){
             LogUtil.err("parent node is null");
         }

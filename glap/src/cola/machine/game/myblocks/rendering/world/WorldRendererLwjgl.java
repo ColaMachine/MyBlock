@@ -137,6 +137,7 @@ Client client;
 
         }
     }
+	//List<Chunk> chunkList =new ArrayList<>();
 	public void render() {
         OpenglUtils.checkGLError();
        // if(true)return;
@@ -144,7 +145,7 @@ Client client;
         //ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
         for (Chunk chunk : chunksInProximity) {
             if(chunk!=null)
-            ((ChunkImpl)chunk).update();//重新构建build
+            ((ChunkImpl)chunk).update();//如果vaoid是空的会重新构建build 这里需要给每个chunk一个标志位 如果更新了 就重新构建
         }
         OpenglUtils.checkGLError();
         //偶尔发生 或者当该用户登录 或者被创建的时候
@@ -156,12 +157,20 @@ Client client;
 				continue;
 			}
 			chunk.setBlock(cmd.cx,cmd.cy,cmd.cz,cmd.blockType);
+			chunk.setNeedUpdate (true);
             if(cmd.cy>20){
                 LogUtil.println(""+cmd.cy);
             }
-            chunk.build();
+			//chunkList.add(chunk);
 
-        } while(client.chunkAlls.size()>0 && client.chunkAlls.peek()!=null ) {
+        }
+		//这里的工作较给chunk的needupdate标志位来完成
+		/*for(int i=chunkList.size()-1;i>=0;i--){
+			chunkList.get(i).build();
+			chunkList.remove(i);
+		}*/
+
+		while(client.chunkAlls.size()>0 && client.chunkAlls.peek()!=null ) {
 			ChunkssCmd cmd = (ChunkssCmd) client.chunkAlls.poll();
 			List<Integer> list = cmd.list;
 			Chunk chunk;
@@ -331,6 +340,7 @@ Client client;
 										0, y));
 								chunksCurrentlyPending = true;
 								c = chunkProvider.getChunk(x, 0, y);
+
                                 if(c!=null)
 								chunksInProximity.add(c);
 							}

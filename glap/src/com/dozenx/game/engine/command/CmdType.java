@@ -25,7 +25,7 @@ public enum CmdType {
     DROP(DropCmd.class,DropHandler.class),//12
     //GROUP(),//13
     CHUNKREQUEST(ChunkRequestCmd.class,ChunkHandler.class),//14
-    CHUNKRESPONSE(ChunkResponseCmd.class),//15
+    CHUNKRESPONSE(ChunkResponseCmd.class,ChunkHandler.class),//15
     CHUNKS(ChunksCmd.class),//16
     CHUNKSS(ChunkssCmd.class),//17
     BACK(WalkBackCmd.class),

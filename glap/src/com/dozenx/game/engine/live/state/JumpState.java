@@ -73,7 +73,9 @@ public class JumpState extends State {
         }
 
        // livingThing.setPosition(G);
+        if(nowTime - startTime >3000){
 
-
+            this.livingThing.changeState(new IdleState(this.livingThing));
+        }
     }
 }

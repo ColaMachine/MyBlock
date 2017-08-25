@@ -1,9 +1,13 @@
 package cola.machine.game.myblocks.model;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.MapUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -66,7 +70,11 @@ public class RotateColorBlock2 extends ColorBlock{
 
     public RotateColorBlock2 copy(){
         RotateColorBlock2 colorBlock  =new RotateColorBlock2(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
+        colorBlock .rotateX= this.rotateX;
+        colorBlock .rotateY= this.rotateY;
 
+        colorBlock .rotateZ= this.rotateZ;
+        colorBlock.reCompute();
         return colorBlock;
     }
     public void rotateX(float value){
@@ -90,4 +98,103 @@ public class RotateColorBlock2 extends ColorBlock{
         }
 
     }
+
+    /**
+     * 长长使用再在group中
+     * @param config
+     * @param vao
+     * @param x
+     * @param y
+     * @param z
+     * @param width
+     * @param height
+     * @param thick
+     * @param top
+     * @param bottom
+     * @param left
+     * @param right
+     * @param front
+     * @param back
+     */
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
+        //ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
+
+        ShaderUtils.draw3dColorBox(config, vao,x,y,z, this.points,BoxModel.dirAry,  rf, gf, bf,this.opacity);
+
+    }
+
+    /**
+     * 在chunk当中直接使用
+     * @param config
+     * @param vao
+     * @param x
+     * @param y
+     * @param z
+     * @param top
+     * @param bottom
+     * @param left
+     * @param right
+     * @param front
+     * @param back
+     */
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+        ShaderUtils.draw3dColorBox(config, vao,x,y,z, this.points,BoxModel.dirAry,  rf, gf, bf,this.opacity);
+
+    }
+
+
+    public static RotateColorBlock2 parse(JSONObject map){
+
+        RotateColorBlock2 block =new RotateColorBlock2();
+        block.parse(block,map);
+        block.reCompute();
+        return block;
+
+
+    }
+
+    public  void parse(RotateColorBlock2 block ,JSONObject map){
+        super.parse(block,map);
+
+        float rotateX = MapUtil.getFloatValue(map,"rotateX");
+        float rotateY = MapUtil.getFloatValue(map,"rotateY");
+        float rotateZ = MapUtil.getFloatValue(map,"rotateZ");
+
+        block.rotateX= rotateX;
+
+        block.rotateY= rotateY;
+        block.rotateX= rotateX;
+
+
+    }
+
+    public String toString(){
+        StringBuffer buffer =new StringBuffer();
+        buffer.append("{").append("name:'").append(this.name).append("',")
+                .append("blocktype:'rotatecolorblock',")
+                .append("width:").append(this.width).append(",")
+                .append("height:").append(this.height).append(",")
+                .append("thick:").append(this.thick).append(",")
+                .append("x:").append(this.x).append(",")
+                .append("y:").append(this.y).append(",")
+                .append("z:").append(this.z).append(",")
+                .append("r:").append(this.rf).append(",")
+                .append("g:").append(this.gf).append(",")
+                .append("b:").append(this.bf).append(",")
+                .append("a:").append(this.opacity).append(",")
+                .append("rotateX:").append(this.rotateX).append(",")
+                .append("rotateY:").append(this.rotateY).append(",")
+                .append("rotateZ:").append(this.rotateZ).append(",")
+
+                .append("}");
+        /*StringBuffer sb = new StringBuffer();
+        sb.append(this.x).append(",").append(this.y).append(",").append(this.z).append(",")
+                .append(this.width).append(",").append(this.height).append(",").append(this.thick).append(",")
+                .append(this.rf).append(",").append(this.gf).append(",").append(this.bf);
+        return sb.toString();*/
+        return buffer.toString();
+    }
+
 }

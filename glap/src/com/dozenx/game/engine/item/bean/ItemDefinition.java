@@ -14,6 +14,7 @@ import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.BinaryUtil;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 
 import java.util.Map;
@@ -26,9 +27,13 @@ public class ItemDefinition implements Cloneable{
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
     public int id;
+    public boolean live=false;
     private Integer itemType;//物品的具体类型 详见ItemType
     public  ItemModel itemModel = new ItemModel();//模型描述
     public String engine;
+
+
+    public boolean isLive;
     public ItemTypeProperties itemTypeProperties ;//block food wear
     String name;//英文名称
 
@@ -435,7 +440,8 @@ public class ItemDefinition implements Cloneable{
         String baseOn = MapUtil.getStringValue(map,"baseon");
         String icon =MapUtil.getStringValue(map,"icon");//获取icon图片
         String engine = MapUtil.getStringValue(map,"engine");
-
+        Integer id = (int)map.get("id");
+        this.id =id;
         if(StringUtil.isNotEmpty(name)){
             this.name =name;
 
@@ -452,15 +458,20 @@ public class ItemDefinition implements Cloneable{
 
             Object shapeObj = map.get("shape");
             if(shapeObj instanceof  String){
-                String shape = MapUtil.getStringValue(map,"shape");
+                String shapeStr = MapUtil.getStringValue(map,"shape");
 
 
-                if (StringUtil.isNotEmpty(shape)) {
-                    this.setShape(TextureManager.getShape(shape));
+                if (StringUtil.isNotEmpty(shapeStr)) {
+                    this.setShape(TextureManager.getShape(shapeStr));
                 } else {
                     this.setShape(TextureManager.getShape(name));
                 }
-                TextureManager.getShape(shape).id=id;
+                 shape = TextureManager.getShape(shapeStr);
+                if(shape == null ){
+                    LogUtil.err("can't found "+ shapeStr);
+                    TextureManager.getShape(shapeStr);
+                }
+                shape.id=id;
             }else if(shapeObj instanceof JSONObject){
                 String blockType = (String)((JSONObject) shapeObj).get("blocktype");
                 BaseBlock  block =null;

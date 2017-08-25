@@ -8,6 +8,7 @@ import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.game.network.server.bean.ServerContext;
 import com.dozenx.game.network.server.service.GameServerService;
 import com.dozenx.util.FileUtil;
+import com.dozenx.util.TimeUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class EnemyService extends GameServerService {
     }
     public void addNewMonster(LivingThingBean livingThingBean){
         serverContext.enemyList.add(livingThingBean);
+
     }
     public void loadAllEnemy(){
         File player = PathManager.getInstance().getHomePath().resolve("saves").resolve("enemy").toFile();

@@ -54,7 +54,11 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
     public LocalChunkProvider() {
 
     }
-
+    public void reload(Chunk chunk ){
+       Chunk  chunk2 = storageManager.loadChunkStore(chunk.getPos());
+        chunk.setBlockData(chunk2.getBlockData());
+        chunk.setNeedUpdate(true);
+    }
     public void createOrLoadChunk(Vector3i chunkPos) {
         //System.out.printf("加载或创建地图  x:%d y:%d z:%d \n",chunkPos.x,chunkPos.y,chunkPos.z);
         Chunk chunk = nearCache.get(chunkPos);

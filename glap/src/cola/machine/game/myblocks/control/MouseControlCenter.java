@@ -239,7 +239,7 @@ public class MouseControlCenter {
             key= WalkCmd.STOP;
         }
 
-        if(key!=lastKey  || player.isDirChanged()){
+        if(TimeUtil.getNowMills() - lastkeyPressTime>500 || key!=lastKey  || player.isDirChanged()){
             lastKey= key;
             player.setDirChanged(false);
             //walkCmd.dir = key;
@@ -878,7 +878,9 @@ public class MouseControlCenter {
                    if(livingThing!=null) {
                        player.setTarget(livingThing);
                        CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
-                       CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
+
+                       //后退
+                       //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
 
                    }
                     CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, 0));

@@ -5,15 +5,13 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.*;
 //import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.IBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.edit.EditEngine;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
@@ -46,10 +44,6 @@ public class ColorGroup extends BaseBlock {
         this.width =width;
         this.height =height;
         this.thick =thick;*/
-    }
-    @Override
-    public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
-
     }
   /*  @Override
     public void update(float x, float y, float z, float width, float height, float thick) {
@@ -172,8 +166,8 @@ public class ColorGroup extends BaseBlock {
     }
 
 
-
-    public void addWidth(int num){
+    @Override
+    public void addWidth(float num){
         if(Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
@@ -186,7 +180,8 @@ public class ColorGroup extends BaseBlock {
         }
 
     }
-    public void addX(int num){
+    @Override
+    public void addX(float num){
 
 
         if(Switcher.isEditComponent) {
@@ -200,8 +195,8 @@ public class ColorGroup extends BaseBlock {
 
         }
     }
-
-    public void addHeight(int num){
+    @Override
+    public void addHeight(float num){
 
 
         if(Switcher.isEditComponent) {
@@ -215,7 +210,8 @@ public class ColorGroup extends BaseBlock {
 
         }
     }
-    public void addY(int num){
+    @Override
+    public void addY(float num){
 
 
 
@@ -230,8 +226,8 @@ public class ColorGroup extends BaseBlock {
 
         }
     }
-
-    public void addThick(int num){
+@Override
+    public void addThick(float num){
 
 
 
@@ -246,8 +242,8 @@ public class ColorGroup extends BaseBlock {
         }else{  this.thick+=num;
 
         }
-    }
-    public void addZ(int num){
+    }@Override
+    public void addZ(float num){
 
 
         if(Switcher.isEditComponent) {
@@ -262,85 +258,17 @@ public class ColorGroup extends BaseBlock {
         }
     }
 
-    @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-
-
-
-        //每隔1秒展示下一个动画
-        if(animations.size()>0) {
-            if (play  ) {//正常播放
-                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {
-                    lastAnimationTime = TimeUtil.getNowMills();
-                    nowIndex++;
-                    if (nowIndex > animations.size() - 1) {
-                        nowIndex = 0;
-                    }
-
-                }
-                //  animations.get(nowIndex).update();
-
-                for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
-                    BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
-                    float[] info  = getChildBlockPosition(block,x,y,z);
-                    block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
-                    //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
-
-                }
-                return;
-            }/* else {*///现实帧
-            //如果停止了播放就显示blockList中的内容
-               /* animations.get(nowIndex).update();
-                return;*/
-           /* }*/
-        }
-        for(int i=0;i<selectBlockList.size();i++){
-            BaseBlock colorBlock = selectBlockList.get(i);
-            float[] info  =this.getChildBlockPosition(colorBlock,x,y,z);
-            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),info[0],info[1],info[2],info[3],info[4],info[5]);
-        }
-
-        for(int i=0;i<colorBlockList.size();i++){
-            BaseBlock block = colorBlockList.get(i);
-            // colorBlock.update();
-            float[] info  =this.getChildBlockPosition(block,x,y,z);
-
-
-            block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
-
-            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
-
-        }
-
-
-        for(int i=0;i<colorBlockList.size();i++){
-            BaseBlock block = colorBlockList.get(i);
-            // colorBlock.update();
-            float[] info  =this.getChildBlockPosition(block,x,y,z);
-
-            block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
-
-            //colorBlock.update(info[0],info[1],info[2], info[3],info[4],info[5]);
-
-            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
-
-        }
-    }
-
-    @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-
-    }
 
     public ColorGroup copy(){
         //复制本身
 
 
         ColorGroup colorGroup =new ColorGroup( this.x,this.y,this.z,this.width,this.height,this.thick);
+        colorGroup.id =id;
         colorGroup.xoffset= this.xoffset;
         colorGroup.yoffset =this.yoffset;
         colorGroup.zoffset =this.zoffset;
-
+        colorGroup.live = this.live;
         colorGroup.xzoom= this.xzoom;
         colorGroup.yzoom= this.yzoom;
         colorGroup.zzoom= this.zzoom;
@@ -350,7 +278,11 @@ public class ColorGroup extends BaseBlock {
             colorGroup.colorBlockList.add(colorBlock.copy());
 
         }
-        colorGroup.animations=this.animations;
+        for(int i=0;i<this.animations.size();i++){
+            animations.get(i).animations.clear();
+        }
+        colorGroup.animations=this.animations;//没有深层次拷贝 担心引起无限循环 但问题也就出在这里 animations的对象里 colorgroup还有animations 需要斩草除根
+
 
         return colorGroup;
     }
@@ -396,11 +328,21 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
         }
     }
 
+    public float[] getChildBlockRelativePosition(BaseBlock colorBlock,float nowX,float nowY,float nowZ){
+        float[] info =new float[6];
+        float x = (colorBlock.x+xoffset)/xzoom ;
+        float y = (colorBlock.y+yoffset)/yzoom ;
+        float z = (colorBlock.z+zoffset)/zzoom;
+        float width = (colorBlock.width==0?1:colorBlock.width)/xzoom;
+        float height =(colorBlock.height==0?1:colorBlock.height)/yzoom;
+        float thick =(colorBlock.thick==0?1:colorBlock.thick) / zzoom;
+        return new float[]{x,y,z,width,height,thick};
+    }
     public float[] getChildBlockPosition(BaseBlock colorBlock,float nowX,float nowY,float nowZ){
         float[] info =new float[6];
-        float x = colorBlock.x/xzoom+xoffset + nowX;
-        float y = colorBlock.y/yzoom+yoffset + nowY;
-        float z = colorBlock.z/zzoom+xoffset + nowZ;
+        float x = (colorBlock.x+xoffset)/xzoom + nowX;
+        float y = (colorBlock.y+yoffset)/yzoom + nowY;
+        float z = (colorBlock.z+zoffset)/zzoom + nowZ;
         float width = colorBlock.width/xzoom;
         float height =colorBlock.height /yzoom;
         float thick =colorBlock.thick / zzoom;
@@ -658,7 +600,9 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
     }
 
     public void saveToCurFrame(){
-       this.animations.set(nowIndex,this.copy());
+        ColorGroup colorGroup = this.copy();
+        colorGroup.animations .clear();//防止无限循环
+       this.animations.set(nowIndex,colorGroup);
     }
     public boolean play(){
 
@@ -838,7 +782,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
                 .append("xzoom:").append(xzoom).append(",")
                 .append("yzoom:").append(yzoom).append(",")
                 .append("zzoom:").append(zzoom).append(",")
-
+                .append("live:").append(live).append(",")
                 .append("children:[");
 
 
@@ -847,9 +791,12 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
            }
         buffer.append("],");
         buffer.append("animation:[");
-        for(BaseBlock block : animations){
-            buffer.append(block.toString()).append(",");
+        if(animations!=null){
+            for(BaseBlock block : animations){
+                buffer.append(block.toString()).append(",");
+            }
         }
+
         buffer .append("]}");
 
 
@@ -862,21 +809,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
     }
     public static ColorGroup  parse(JSONObject map){
         ColorGroup group =new ColorGroup();
-
-        float x = MapUtil.getFloatValue(map,"x");
-        float y = MapUtil.getFloatValue(map,"y");
-        float z = MapUtil.getFloatValue(map,"z");
-
-        float width = MapUtil.getFloatValue(map,"width");
-        float height = MapUtil.getFloatValue(map,"height");
-        float thick = MapUtil.getFloatValue(map,"thick");
-        group.x=(int)x;
-        group.y=(int)y;
-        group.z=(int)z;
-        group.width=width;
-        group.thick =thick;
-
-
+        parse(group,map);
         group.xoffset=MapUtil.getFloatValue(map,"xoffset");
         group.yoffset=MapUtil.getFloatValue(map,"yoffset");
         group.zoffset=MapUtil.getFloatValue(map,"zoffset");
@@ -884,7 +817,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
         group.xzoom=MapUtil.getFloatValue(map,"xzoom");
         group.yzoom=MapUtil.getFloatValue(map,"yzoom");
         group.zzoom=MapUtil.getFloatValue(map,"zzoom");
-
+        group.live = MapUtil.getBooleanValue(map,"live",false);
         JSONArray ary = (JSONArray)map.get("children");
         if(ary!=null) {
             for (int i = 0; i < ary.size(); i++) {
@@ -897,19 +830,25 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
                 } else if ("colorblock".equals(blockType)) {
                     ColorBlock colorBlock = ColorBlock.parse(object);
                     group.addChild(colorBlock);
+                }else if("rotatecolorblock".equals(blockType)){
+                    RotateColorBlock2 shape = RotateColorBlock2.parse(object);
+                    group.addChild(shape);
+                }else if("groupblock".equals(blockType)){
+                    ColorGroup shape = ColorGroup.parse(object);
+                    group.addChild(shape);
                 }
 
 
             }
         }
 
-        JSONArray animation = (JSONArray)map.get("children");
+        JSONArray animation = (JSONArray)map.get("animation");
 
         for(int i=0;i<animation.size();i++){
             JSONObject object = (JSONObject)animation.get(i);
 
             String blockType = (String)object.get("blocktype");
-            if("colorgroup".equals(blockType)){
+            if("groupblock".equals(blockType)){
                 ColorGroup colorGroup = ColorGroup.parse(object);
                 group.animations.add(colorGroup);
             }/*else
@@ -928,5 +867,218 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
         return group;
 
     }
+    public void rotateX(float value){
 
+
+        adjustRotatex(value);
+    }
+
+
+    public void rotateY(float value){
+        adjustRotateY(value);
+    }
+    public void rotateZ(float value){
+        adjustRotateZ(value);
+    }
+
+
+    public void adjustRotatex(float value){
+        for(int i=0;i<selectBlockList.size();i++){
+            BaseBlock colorBlock  = selectBlockList.get(i);
+            if(colorBlock instanceof RotateColorBlock2){
+                ((RotateColorBlock2) colorBlock) .rotateX(value);
+            }
+            if(colorBlock instanceof ColorGroup){
+                ((ColorGroup) colorBlock) .rotateX(value);
+            }
+        }
+    }
+
+    public void adjustRotateY(float value){
+        for(int i=0;i<selectBlockList.size();i++){
+            BaseBlock colorBlock  = selectBlockList.get(i);
+           if(colorBlock instanceof RotateColorBlock2){
+            ((RotateColorBlock2) colorBlock) .rotateY(value);
+           // colorBlock .rotateY(value);
+            }
+            if(colorBlock instanceof ColorGroup){
+                ((ColorGroup) colorBlock) .rotateY(value);
+            }
+        }
+    }
+    public void adjustRotateZ(float value){
+        for(int i=0;i<selectBlockList.size();i++){
+            BaseBlock colorBlock  = selectBlockList.get(i);
+            if(colorBlock instanceof RotateColorBlock2){
+                ((RotateColorBlock2) colorBlock) .rotateZ(value);
+            }
+            if(colorBlock instanceof ColorGroup){
+                ((ColorGroup) colorBlock) .rotateZ(value);
+            }
+        }
+    }
+
+
+    @Override
+    public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
+
+
+        //每隔1秒展示下一个动画
+        if(animations.size()>0) {
+            if (play  ) {//正常播放
+                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {
+                    lastAnimationTime = TimeUtil.getNowMills();
+                    nowIndex++;
+                    if (nowIndex > animations.size() - 1) {
+                        nowIndex = 0;
+                    }
+
+                }
+                //  animations.get(nowIndex).update();
+
+                for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
+                    BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
+                    float[] info  = getChildBlockRelativePosition(block,x,y,z);
+                    //GL
+                    GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0],info[1],info[2],info[3],info[4],info[5]);
+                    for(int k =0 ;k<childPoints.length;k++){
+                        childPoints[k] = GL_Matrix.multiply(matrix,childPoints[k]);
+                    }
+                    block.renderShaderInGivexyzwht(config,vao, matrix,childPoints);
+                    //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+
+                }
+                return;
+            }/* else {*///现实帧
+            //如果停止了播放就显示blockList中的内容
+               /* animations.get(nowIndex).update();
+                return;*/
+           /* }*/
+        }
+        for(int i=0;i<selectBlockList.size();i++){
+            BaseBlock block = selectBlockList.get(i);
+            float[] info  =this.getChildBlockRelativePosition(block,x,y,z);
+
+
+            GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0],info[1],info[2],info[3],info[4],info[5]);
+            for(int k =0 ;k<childPoints.length;k++){
+                //childPoints[i] = GL_Matrix.multiply(childPoints[i],matrix);
+
+                childPoints[k] = GL_Matrix.multiply(matrix,childPoints[k]);
+            }
+            // block.renderShaderInGivexyzwht(config,vao, matrix,childPoints);
+        }
+
+        for(int i=0;i<colorBlockList.size();i++){
+            BaseBlock block = colorBlockList.get(i);
+            // colorBlock.update();
+            float[] info  =this.getChildBlockRelativePosition(block,x,y,z);
+
+
+            GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0],info[1],info[2],info[3],info[4],info[5]);
+            for(int k =0 ;k<childPoints.length;k++){
+                // childPoints[i] = GL_Matrix.multiply(childPoints[i],matrix);
+                childPoints[k] = GL_Matrix.multiply(matrix,childPoints[k]);
+            }
+            block.renderShaderInGivexyzwht(config,vao, matrix,childPoints);
+
+            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+
+        }
+
+
+//        for(int i=0;i<colorBlockList.size();i++){
+//            BaseBlock block = colorBlockList.get(i);
+//            // colorBlock.update();
+//            float[] info  =this.getChildBlockPosition(block,x,y,z);
+//
+//            GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0],info[1],info[2],info[3],info[4],info[5]);
+//            for(int k =0 ;k<childPoints.length;k++){
+//                childPoints[i] = GL_Matrix.multiply(childPoints[i],matrix);
+//            }
+//            block.renderShaderInGivexyzwht(config,vao, matrix,childPoints);
+//
+//            //colorBlock.update(info[0],info[1],info[2], info[3],info[4],info[5]);
+//
+//            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+//
+//        }
+    }
+
+
+
+    @Override
+    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+
+
+        //每隔1秒展示下一个动画
+        if(animations.size()>0) {
+            if (play  ) {//正常播放
+                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {
+                    lastAnimationTime = TimeUtil.getNowMills();
+                    nowIndex++;
+                    if (nowIndex > animations.size() - 1) {
+                        nowIndex = 0;
+                    }
+
+                }
+                //  animations.get(nowIndex).update();
+
+                for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
+                    BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
+                    float[] info  = getChildBlockPosition(block,x,y,z);
+                    block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+                    //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+
+                }
+                return;
+            }/* else {*///现实帧
+            //如果停止了播放就显示blockList中的内容
+               /* animations.get(nowIndex).update();
+                return;*/
+           /* }*/
+        }
+        for(int i=0;i<selectBlockList.size();i++){
+            BaseBlock colorBlock = selectBlockList.get(i);
+            float[] info  =this.getChildBlockPosition(colorBlock,x,y,z);
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),info[0],info[1],info[2],info[3],info[4],info[5]);
+        }
+
+        for(int i=0;i<colorBlockList.size();i++){
+            BaseBlock block = colorBlockList.get(i);
+            // colorBlock.update();
+            float[] info  =this.getChildBlockPosition(block,x,y,z);
+
+
+            block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+
+            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+
+        }
+//
+//
+//        for(int i=0;i<colorBlockList.size();i++){
+//            BaseBlock block = colorBlockList.get(i);
+//            // colorBlock.update();
+//            float[] info  =this.getChildBlockPosition(block,x,y,z);
+//
+//            block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+//
+//            //colorBlock.update(info[0],info[1],info[2], info[3],info[4],info[5]);
+//
+//            //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+//
+//        }
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+
+    }
 }

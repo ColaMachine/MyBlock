@@ -2,10 +2,13 @@ package cola.machine.game.myblocks.manager;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.ImageBlock;
+import cola.machine.game.myblocks.model.RotateColorBlock2;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.edit.view.ColorGroup;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
@@ -459,6 +462,15 @@ public class TextureManager {
                     String blockType =(String) map.get("blocktype");
                     if("imageblock".equals(blockType)){
                         ImageBlock shape = ImageBlock.parse(map);
+                        this.shapeMap.put(shape.getName(), shape);
+                    }else if("colorblock".equals(blockType)){
+                        ColorBlock shape = ColorBlock.parse(map);
+                        this.shapeMap.put(shape.getName(), shape);
+                    }else if("rotatecolorblock".equals(blockType)){
+                        RotateColorBlock2 shape = RotateColorBlock2.parse(map);
+                        this.shapeMap.put(shape.getName(), shape);
+                    }else if("groupblock".equals(blockType)){
+                        ColorGroup shape = ColorGroup.parse(map);
                         this.shapeMap.put(shape.getName(), shape);
                     }else{
                         BoneBlock shape = BoneBlock.parse(map);

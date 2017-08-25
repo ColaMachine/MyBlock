@@ -67,4 +67,7 @@ public interface Chunk {
 
     public void disposeMesh();
     public void build() ;
+
+    void setNeedUpdate(boolean b);
+     boolean isNeedUpdate();
 }

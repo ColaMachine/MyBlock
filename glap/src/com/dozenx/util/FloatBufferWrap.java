@@ -5,6 +5,7 @@ package com.dozenx.util;
  */
 
 import cola.machine.game.myblocks.engine.Constants;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import core.log.LogUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
@@ -25,11 +26,12 @@ public class FloatBufferWrap
     private FloatBuffer buffer;
 
     public  List<FloatBuffer> buffers= new ArrayList<FloatBuffer>();
+    public int size=120*10;
     public FloatBufferWrap(){
-        this.buffer= ByteBuffer.allocateDirect(1024*120) .order(ByteOrder.nativeOrder()).asFloatBuffer();;
+        this.buffer= ByteBuffer.allocateDirect(size) .order(ByteOrder.nativeOrder()).asFloatBuffer();;
         buffers.add(buffer);
     }
-    public int size;
+
     public FloatBufferWrap(int size){
         this.size=size;
         this.buffer= ByteBuffer.allocateDirect(size) .order(ByteOrder.nativeOrder()).asFloatBuffer();;
@@ -48,14 +50,14 @@ public class FloatBufferWrap
         return buffer.get();
     }
     public FloatBufferWrap put(float val){
-        if(buffer.position()==buffer.limit()){
+       /* if(buffer.position()==buffer.limit()){
             buffer.limit(buffer.capacity());
-        }
+        }*/
         if(buffer.position()==buffer.capacity()){
 
             listPosition++;
             if(buffers.size()<listPosition+1){
-                buffer = ByteBuffer.allocateDirect(1024*120).order(ByteOrder.nativeOrder()).asFloatBuffer();
+                buffer = ByteBuffer.allocateDirect(size).order(ByteOrder.nativeOrder()).asFloatBuffer();
                 buffers.add(buffer);
             }else{
                 buffer = buffers.get(listPosition);
@@ -74,9 +76,24 @@ try {
     }
 
     public void glBufferData(int type1,int type2){
-       // for(int i=0;i<=listLimit;i++){
-            GL15.glBufferData(type1, buffers.get(0), type2);//put data
-        //}
+
+        GL15.glBufferData(type1, position*4, type2);//put data
+        int offset = 0;
+        OpenglUtils.checkGLError();
+        listLimit = listPosition;
+        for(int i=0;i<=listLimit;i++){
+            int points = buffers.get(i).position();
+            if(points==0){
+                continue;
+            }
+            buffers.get(i).flip();
+            GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, offset*4,buffers.get(i));
+            OpenglUtils.checkGLError();
+            offset+= points;
+        }
+        this.rewind();
+        OpenglUtils.checkGLError();
+
 
     }
     public void rewind(){
@@ -87,6 +104,7 @@ try {
         for(int i=0;i<=listLimit;i++){
             FloatBuffer buffer = buffers.get(i);
             buffer.rewind();
+            buffer.clear();
         }
         buffer = buffers.get(0);
     }

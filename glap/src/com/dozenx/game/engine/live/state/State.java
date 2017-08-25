@@ -58,14 +58,15 @@ public class State {
             distance= GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
             if(distance>1){
                 nowTime = TimeUtil.getNowMills();
-                if(lastTime==0 || nowTime-lastTime >3000){       //如果开始时间是0说明刚开始
-                    lastTime = nowTime;  //修正第一帧 让lastTime一开始等于开始时间 防止移动超过最大距离
+                if(GamingState.player!=null) {
+                    if(lastTime==0 || nowTime-lastTime >3000){       //如果开始时间是0说明刚开始
+                        lastTime = nowTime;  //修正第一帧 让lastTime一开始等于开始时间 防止移动超过最大距离
                    // beginTime= TimeUtil.getNowMills();
-                    if(GamingState.player!=null) {
+
                         CoreRegistry.get(AnimationManager.class).apply(this.livingThing.getModel().getRootComponent(), "walkerFoward");
                     } // walkDir = GL_Vector.sub(livingThing.getDest(),livingThing.getPosition()).normalize();
-                    return;
-                }else{
+
+                }
 
                     if (nowTime - lastTime >50) {//如果大于50ms才执行
                         //调整计算新的位置
@@ -75,7 +76,7 @@ public class State {
                             livingThing.setWalkDir(walkDir);
                         }
                        //GL_Vector newPosition = nowPosition(nowTime, lastTime, livingThing.speed, livingThing.getPosition(), livingThing.getDest());
-                        float length = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
+                        //float length = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
                         //float moveDistance = GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),newPosition));
                        /* if(length<1){ //如果距离够近了 停止移动
 
@@ -84,16 +85,19 @@ public class State {
                             return;  //退出移动
                         }else*/
 
-                        if(GamingState.player==null){
+                       /* if(GamingState.player==null){
                             livingThing.setDest(livingThing.getDest());
-                        }
+                        }*/
+                        this.livingThing.speed=3;
                         if(moveDistance>distance -0.1f  ){//如果移动举例超过了最大距离 说明到达了目的地 防止因为卡顿引起超距离移动 结束移动
                             livingThing.move(livingThing.getDest().x,livingThing.getDest().y,livingThing.getDest().z);
                             livingThing.setDest(null);
                             lastTime = TimeUtil.getNowMills();
                             return;
                         }else {
-
+                            if(GamingState.player==null){
+                                LogUtil.println(""+livingThing.getPosition());
+                            }
                             GL_Vector newPosition =  GL_Vector.add(livingThing.getPosition(), GL_Vector.multiply(walkDir,moveDistance ));
                             livingThing.move(newPosition.x, newPosition.y, newPosition.z);
                            // LogUtil.println(""+livingThing.getPosition());
@@ -103,7 +107,7 @@ public class State {
 
                     }
 
-                }
+
                // GL_Vector dir = GL_Vector.sub(livingThing.getDest(),livingThing.getPosition());
                 //根据时间和速度 起开始位置 目的地 计算当前位置
 
@@ -265,7 +269,7 @@ public class State {
 
                             }
                             Vector2f xy = OpenglUtils.wordPositionToXY(ShaderManager.projection, livingThing.getTarget().getPosition(), GamingState.instance.camera.Position, GamingState.instance.camera.getViewDir());
-                            AttackManager.addText(new TimeString("砍伤" + cmd.getAttackValue(), xy.x * Constants.WINDOW_WIDTH, xy.y * Constants.WINDOW_HEIGHT));
+                            AttackManager.addText(new TimeString("-" + cmd.getAttackValue(), xy.x * Constants.WINDOW_WIDTH, xy.y * Constants.WINDOW_HEIGHT));
                             Document.needUpdate = true;
                         }
                     }
@@ -280,7 +284,7 @@ public class State {
                     livingThing.getTarget().beAttack(cmd.getAttackValue());
 
                     Vector2f xy = OpenglUtils.wordPositionToXY(ShaderManager.projection,livingThing.getTarget().getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
-                    AttackManager.addText(new TimeString("箭伤"+cmd.getAttackValue(),xy.x* Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
+                    AttackManager.addText(new TimeString("-"+cmd.getAttackValue(),xy.x* Constants.WINDOW_WIDTH,xy.y*Constants.WINDOW_HEIGHT));
                     Document.needUpdate=true;
                 }
 

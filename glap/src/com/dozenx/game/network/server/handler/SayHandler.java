@@ -19,6 +19,7 @@ import com.dozenx.game.network.server.service.impl.EnemyService;
 import com.dozenx.game.network.server.service.impl.UserService;
 import com.dozenx.util.MathUtil;
 import com.dozenx.util.StringUtil;
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -114,10 +115,21 @@ public class SayHandler extends GameServerHandler {
                 if("wolf".equals(name)){
                     LivingThingBean  wolf  = new LivingThingBean((int)(Math.random()*1000));
                     wolf.setName("wolf");
+                    wolf.setNowHP(100);
                     wolf.setPosition(x,y,z);
                     wolf.species=1;
                     LogUtil.println("create wolf:"+wolf.getId());
                     enemyService.addNewMonster(wolf);
+                    wolf.updateTime = TimeUtil.getNowMills();
+                }else{
+                    LivingThingBean  wolf  = new LivingThingBean((int)(Math.random()*1000));
+                    wolf.setName(String.valueOf(arr[5]));
+                    wolf.setNowHP(100);
+                    wolf.setPosition(x,y,z);
+                    wolf.species=Integer.valueOf(arr[5]);
+                    LogUtil.println("create wolf:"+wolf.getId());
+                    enemyService.addNewMonster(wolf);
+                    wolf.updateTime = TimeUtil.getNowMills();
                 }
             }
 

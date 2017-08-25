@@ -9,6 +9,7 @@ import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.bean.ItemBlockProperties;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.util.MapUtil;
 
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public class ItemBlockParser {
     public static void parse(ItemDefinition item,Map map){
 
         ItemBlockProperties blockProperties = (ItemBlockProperties)item.itemTypeProperties;//new ItemBlockProperties();
+        item.live = MapUtil.getBooleanValue(map,"live",false);
         Object penetrate = map.get("penetrate");
         if(blockProperties ==null){
             blockProperties = new ItemBlockProperties();

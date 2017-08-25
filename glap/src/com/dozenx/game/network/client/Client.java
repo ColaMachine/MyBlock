@@ -120,7 +120,7 @@ public class Client extends Thread{
                 outputStream.write(Constants.end);
 
                 synchronized (obj) {
-                    LogUtil.println("挂起线程");
+                    LogUtil.println("挂起线程 threadid:"+threadId);
                     obj.wait(55000); // 未收到响应，使线程等待
                 }
                 LogUtil.println("线程恢复");

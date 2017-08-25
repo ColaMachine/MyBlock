@@ -425,6 +425,11 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
 
     }
 
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+
+    }
+
     public static BoneBlock parse(JSONObject map) throws Exception {
 
         BoneBlock shape = new BoneBlock();

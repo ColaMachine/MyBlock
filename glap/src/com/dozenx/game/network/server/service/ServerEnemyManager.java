@@ -94,8 +94,10 @@ public class ServerEnemyManager implements Runnable {
                     //if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
                     //找寻目标
 
-                    //findTarget(enemy);
+                    //
 
+                    findTarget(enemy);
+                }
                     if(enemy.getTarget() == null && enemy.getDest()==null && enemy.getFinalDest()!=null){
                         if(enemy.isBlock()){
                             if (enemy.routes == null || enemy.routes.size() == 0) {
@@ -118,7 +120,7 @@ public class ServerEnemyManager implements Runnable {
                         }*/
                     }
                     //}
-                }
+
                 enemy.getExecutor().getCurrentState().update();
 
             }

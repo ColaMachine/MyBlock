@@ -230,17 +230,25 @@ public class ByteBufferWrap
         buffer.flip();
 
         buffer.get(bytes,4,length);*/
+        int length =0,position=0;
+        for(int i =0 ;i<buffers.size();i++){
+            length+= buffers.get(i).position();
+        }
 
-        int length = buffer.position();
         byte[] bytes = new byte[length];
         //byte[] lenAry = ByteUtil.getBytes(length);
        /* bytes[0]= lenAry[0];
         bytes[1]= lenAry[1];
         bytes[2]= lenAry[2];
         bytes[3]= lenAry[3];*/
-        buffer.flip();
+       // buffer.flip();
+        for(int i =0 ;i<buffers.size();i++){
+            int size = buffers.get(i).position();
+            buffers.get(i).flip();
+            buffers.get(i).get(bytes,position,size);
+            position +=size;
+        }
 
-        buffer.get(bytes,0,length);
 
 
         return bytes;

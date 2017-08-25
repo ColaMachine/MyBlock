@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.ByteUtil;
 
 public class BlockManagerImpl extends BlockManager {
@@ -100,7 +102,8 @@ public class BlockManagerImpl extends BlockManager {
            // block.setValue(id);
             return block;
         }else*/
-        return ItemManager.getItemDefinition(id).getShape();
+        ItemDefinition itemDefinition = ItemManager.getItemDefinition(id);
+        return itemDefinition==null?null:itemDefinition.getShape();
     }
 	/*@Override
 	public Block getBlock(int oldValue) {

@@ -4,6 +4,7 @@ import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ByteUtil;
 import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
 
 
 public class StateBlock extends BaseBlock{
@@ -39,6 +40,11 @@ public class StateBlock extends BaseBlock{
 
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
 
     }
 

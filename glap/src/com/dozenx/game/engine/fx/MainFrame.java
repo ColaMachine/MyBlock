@@ -48,9 +48,10 @@ public class MainFrame extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    TabPane root;
     @Override
     public void start(final Stage primaryStage) throws Exception {
+        root = new TabPane();
         primaryStage.setWidth(800);
         primaryStage.setHeight(800);
         this.primaryStage = primaryStage;
@@ -66,8 +67,7 @@ public class MainFrame extends Application {
         sp.setFitToWidth(true);
 */
 
-        FlowPane root
-                = new FlowPane();
+
 
         Scene scene = new Scene(sp, 800, 800);
 
@@ -80,28 +80,31 @@ public class MainFrame extends Application {
             }
         });
         sp.setContent(root);
-        root.setHgap(10);
-        root.setVgap(20);
+     /*   root.setHgap(10);
+        root.setVgap(20);*/
 
         root.setPadding(new Insets(15, 15, 15, 15));
-        root.getChildren().add(addSelectPanel());
+
+
+        add(addSelectPanel());
+        add(new BlockPanel(primaryStage));
+        add(addFilePanel());
+      add(addComponentPanel());
+        add(addComponentListPanel());
+       add(addAnimationEditPanel());
+        add(new ImagePanel(primaryStage));
+       add(new ItemPanel(primaryStage));
+
+
+   /*     root.getChildren().add(addSelectPanel());
         root.getChildren().add(new BlockPanel(primaryStage));
         root.getChildren().add(addFilePanel());
         root.getChildren().add(addComponentPanel());
         root.getChildren().add(addComponentListPanel());
         root.getChildren().add(addAnimationEditPanel());
         root.getChildren().add(new ImagePanel(primaryStage));
-
-        Button backGameBtn = new Button("保存到场景");
-        root.getChildren().add(backGameBtn);
-        backGameBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                //遍历所有的colorblocklist
-                Switcher.edit = !Switcher.edit;
-                GamingState.editEngine.saveToGame();
-            }
-        });
+        root.getChildren().add(new ItemPanel(primaryStage));*/
+    /*   */
 
 
         primaryStage.setTitle("FlowPane Layout Demo");
@@ -111,10 +114,12 @@ public class MainFrame extends Application {
 
 
     }
+    public void add(Tab tab){
+        root.getTabs().add(tab);
+    }
+    public Tab addSelectPanel() {
 
-    public TitledPane addSelectPanel() {
-
-        TitledPane selectGridTitlePane = new TitledPane();
+        Tab selectGridTitlePane = new Tab();
 
         selectGridTitlePane.setText("选择");
 
@@ -159,14 +164,91 @@ public class MainFrame extends Application {
         selectGrid.add(singleSelectBtn, 0, 2);
 
 
+
+
+        Button backGameBtn = new Button("保存到场景");
+
+        backGameBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //遍历所有的colorblocklist
+
+                GamingState.editEngine.saveToGame();
+            }
+        });
+        selectGrid.add(backGameBtn, 0, 3);
+
+
+
+
+
+
+
+        Button switchBtn = new Button("切换场景");
+
+        switchBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //遍历所有的colorblocklist
+                Switcher.edit = !Switcher.edit;
+                if(Switcher.edit ){
+                    switchBtn.setText("切换场景"+"编辑中");
+                }else{
+                    switchBtn.setText("切换场景"+"游戏中");
+                }
+
+            }
+        });
+        selectGrid.add(switchBtn, 0, 4);
+
+
+        Button readBlockFromGameCurrentChunkBtn = new Button("从当前场景读取方块");
+
+        readBlockFromGameCurrentChunkBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //遍历所有的colorblocklist
+
+                GamingState.editEngine.readBlocksFromCurrentChunk();
+            }
+        });
+        selectGrid.add(readBlockFromGameCurrentChunkBtn, 0, 5);
+
+        //==============从服务器同步次方块结构
+        Button synChunkFromServerBtn = new Button("从服务器同步此区块");
+
+        synChunkFromServerBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //遍历所有的colorblocklist
+
+                GamingState.editEngine.synChunkFromServer();
+            }
+        });
+        selectGrid.add(synChunkFromServerBtn, 0, 6);
+
+
+        //==============从客户端向服务器同步次方块结构
+        Button synChunkFromClientBtn = new Button("向服务器同步此区块");
+
+        synChunkFromClientBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //遍历所有的colorblocklist
+
+                GamingState.editEngine.synChunkFromClient();
+            }
+        });
+        selectGrid.add(synChunkFromClientBtn, 0, 7);
+
         selectGridTitlePane.setContent(selectGrid);
         return selectGridTitlePane;
     }
 
 
-    public TitledPane addFilePanel() {
+    public Tab addFilePanel() {
 
-        TitledPane titlePane = new TitledPane();
+        Tab titlePane = new Tab();
         titlePane.setText("文件");
         GridPane selectGrid = new GridPane();
         selectGrid.setVgap(5);
@@ -234,6 +316,9 @@ public class MainFrame extends Application {
         Button componentSave2 = new Button("保存为组件2");
 
 
+        CheckBox cb1 = new CheckBox();
+
+        cb1.setText("是否怪物");
         componentSave2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -242,10 +327,14 @@ public class MainFrame extends Application {
                 String text = compNameText.getText();
                 String id = compIdText.getText();
                 if (StringUtil.isNotEmpty(text)) {
-                    GamingState.editEngine.saveSelectAsColorGroup(Integer.valueOf(id),text);
+
+                    GamingState.editEngine.saveSelectAsColorGroup(Integer.valueOf(id),text, cb1.isSelected());
                 }
             }
         });
+
+
+
 
         selectGrid.add(saveBtn, 0, 0);
         selectGrid.add(readsaveBtn, 0, 1);
@@ -254,13 +343,14 @@ public class MainFrame extends Application {
         selectGrid.add(componentSave, 0, 4);
         selectGrid.add(openButton, 0, 5);
         selectGrid.add(componentSave2, 0, 6);
+        selectGrid.add(cb1, 0, 7);
         titlePane.setContent(selectGrid);
         return titlePane;
     }
 
-    public TitledPane addComponentPanel() {
+    public Tab addComponentPanel() {
 
-        TitledPane titlePane = new TitledPane();
+        Tab titlePane = new Tab();
         titlePane.setText("组件");
         GridPane selectGrid = new GridPane();
         selectGrid.setVgap(5);
@@ -377,9 +467,9 @@ public class MainFrame extends Application {
         return titlePane;
     }
 
-    public TitledPane addComponentListPanel() {
+    public Tab addComponentListPanel() {
 
-        TitledPane titlePane = new TitledPane();
+        Tab titlePane = new Tab();
         titlePane.setText("组件列表");
         GridPane selectGrid = new GridPane();
         selectGrid.setVgap(5);
@@ -444,9 +534,9 @@ public class MainFrame extends Application {
         return titlePane;
     }
 
-    public TitledPane addAnimationEditPanel() {
+    public Tab addAnimationEditPanel() {
 
-        TitledPane titlePane = new TitledPane();
+        Tab titlePane = new Tab();
         titlePane.setText("动画");
         GridPane selectGrid = new GridPane();
         selectGrid.setVgap(5);

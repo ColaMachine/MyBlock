@@ -114,6 +114,6 @@ public interface ChunkProvider {
 
 	void removeChunk(Chunk c);
     void save();
-
+    public void reload(Chunk chunk);
     public IBlock getBlockAt(int worldX, int worldY, int worldZ);
 }

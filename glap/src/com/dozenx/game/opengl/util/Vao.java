@@ -18,6 +18,7 @@ public class Vao {
      /*   if(config == null || config.getParamLenAry() ==null){
             LogUtil.err("dangerous");
         }*/
+        // 为什么一开始就要渲染vao呢 chunkimpl是不是在加载完毕后要主动渲染一次vao
         if(config!=null)
             ShaderUtils.initVao(config,this);
        // this.name=name;

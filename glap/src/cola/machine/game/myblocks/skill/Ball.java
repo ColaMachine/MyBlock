@@ -115,6 +115,10 @@ public class Ball  {
             this.died=true;
         }
         //如果撞到方块停止
+        if((int)this.position.y<0){
+            this.died=true;
+            return;
+        }
         IBlock block = chunkProvider.getBlockAt((int)this.position.x,(int)this.position.y,(int)this.position.z);
         if(block!=null && block.getId()!=0){
             this.readyDied=true;

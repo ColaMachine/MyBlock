@@ -3,7 +3,9 @@ package cola.machine.game.myblocks.model;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -11,6 +13,8 @@ import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
+import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -28,9 +32,33 @@ public abstract class BaseBlock extends AABB implements IBlock {
     boolean alpha =false;
     //是否可以通过
     public boolean penetration=false;
-    //
-    public int id=0;
 
+    public boolean live =false;
+    //
+    public int dir;
+    public int id=0;
+    public ChunkImpl chunk;
+
+
+    public int x=0;//0~16
+    public int y=0;//0~128
+    public int z=0;//0~16
+    public float width=1;
+    public float height=1;
+    public float thick=1;
+    public int chunkX=0;
+    public int chunkY=0;
+
+
+    public String name;
+    public boolean zh=true;
+    public boolean zl=true;
+    public boolean yl=true;
+    public boolean yh=true;
+    public boolean xl=true;
+    public boolean xh=true;
+
+    public GL_Vector[] points = BoxModel.getPoint(0,0,0);
     ItemDefinition itemDefinition;
 
     public BaseBlock(int x,int y,int z,float width,float height,float thick){
@@ -42,13 +70,6 @@ public abstract class BaseBlock extends AABB implements IBlock {
         this.thick=thick;
     }
 
-    public ChunkImpl chunk;
-
-
-	public int x=0;//0~16
-	public int y=0;//0~128
-	public int z=0;//0~16
-    public float width;
 
     public float getWidth() {
         return width;
@@ -74,10 +95,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
         this.thick = thick;
     }
 
-    public float height;
-    public float thick;
-    public int chunkX=0;
-    public int chunkY=0;
+
 
 	/*public int red=0;
 	public int blue=0;
@@ -104,7 +122,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
        
     }*/
 
-    public String name;
+
 	public BaseBlock(String name,int x,int y,int z){
 		this.name=name;
 		this.x=x;
@@ -391,15 +409,6 @@ public abstract class BaseBlock extends AABB implements IBlock {
     }
 
 
-
-
-    public boolean zh=true;
-    public boolean zl=true;
-    public boolean yl=true;
-    public boolean yh=true;
-    public boolean xl=true;
-    public boolean xh=true;
-
     public boolean isZh() {
         return zh;
     }
@@ -453,25 +462,30 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public abstract void update();*/
 
     public abstract  BaseBlock copy();
-    public void addWidth(int num){
+    public  void reComputePoints(){
+        this.points = BoxModel.getSmallPoint(0,0,0,width,height,thick);
+    }
+    public void addWidth(float num){
         this.width+=num;
+        reComputePoints();
     }
-    public void addX(int num){
+    public void addX(float num){
         this.x+=num;
+        reComputePoints();
     }
 
-    public void addHeight(int num){
-        this.height+=num;
+    public void addHeight(float num){
+        this.height+=num; reComputePoints();
     }
-    public void addY(int num){
-        this.y+=num;
+    public void addY(float num){
+        this.y+=num; reComputePoints();
     }
 
-    public void addThick(int num){
-        this.thick+=num;
+    public void addThick(float num){
+        this.thick+=num; reComputePoints();
     }
-    public void addZ(int num){
-        this.z+=num;
+    public void addZ(float num){
+        this.z+=num; reComputePoints();
     }
 
 
@@ -481,4 +495,31 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public  abstract void renderShader(ShaderConfig config , Vao vao , GL_Matrix matrix);
 
     public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x,float y,float z,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back);
+
+    public static void parse( BaseBlock  block , JSONObject map){
+        float x = MapUtil.getFloatValue(map,"x",0f);
+        float y = MapUtil.getFloatValue(map,"y",0f);
+        float z = MapUtil.getFloatValue(map,"z",0f);
+
+        float width = MapUtil.getFloatValue(map,"width");
+        float height = MapUtil.getFloatValue(map,"height");
+        float thick = MapUtil.getFloatValue(map,"thick");
+        block.x=(int)x;
+        block.y=(int)y;
+        block.z=(int)z;
+        block.width=width;
+        block.height=height;
+        block.thick =thick;
+
+    }
+
+    public void rotateY(float value){
+        this.dir++;
+        if(this.dir>=4){
+            this.dir=0;
+        }
+    }
+
+
+    public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints);
 }

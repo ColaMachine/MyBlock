@@ -227,6 +227,11 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 		}
 	}
 
+	@Override
+	public void reload(Chunk chunk) {
+
+	}
+
 
 	@Override
 	public IBlock getBlockAt(int worldX, int worldY, int worldZ){

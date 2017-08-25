@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -19,7 +20,7 @@ import javafx.stage.Stage;
 /**
  * Created by dozen.zhang on 2017/8/14.
  */
-public class CompPanel extends TitledPane {
+public class CompPanel extends Tab {
 
     private FlowPane flowPane =new FlowPane();
     public void add(Node node){
@@ -28,11 +29,11 @@ public class CompPanel extends TitledPane {
 
 
 
-    public TitledPane addCreatePanel() {
+    public void addCreatePanel() {
 
-        TitledPane titlePane = this;
 
-        titlePane.setText("方块");
+
+        this.setText("方块");
 
 
         GridPane selectGrid = new GridPane();
@@ -389,16 +390,15 @@ public class CompPanel extends TitledPane {
         });
 
 
-        titlePane.setContent(selectGrid);
-        return titlePane;
+        this.setContent(selectGrid);
+
     }
 
     public CompPanel(Stage primaryStage) {
 
-        //double width, double height
-        this.setContent(flowPane);
 
-        add(addCreatePanel());
+
+        addCreatePanel();
 
 
     }

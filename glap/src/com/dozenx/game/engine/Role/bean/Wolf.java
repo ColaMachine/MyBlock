@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.PhysicsEngine;
+import com.dozenx.game.engine.Role.model.BaseModel;
 import com.dozenx.game.engine.Role.model.PlayerModel;
 import com.dozenx.game.engine.Role.model.WolfModel;
 import com.dozenx.game.engine.element.bean.Component;
@@ -26,6 +27,19 @@ public class Wolf extends LivingThing {
        // this.speed=10;//由于服务器的所有生物都是livingthing 所以速度都是15
         this.getExecutor().setModel( new WolfModel(this));
         this.name="wolf";
+    }
+
+    public Wolf(int id,ItemDefinition itemDefinition) {
+        super(id);
+        this.idleAnimation=new String[]{"wag_tail","sniffer"};
+        // this.speed=10;//由于服务器的所有生物都是livingthing 所以速度都是15
+
+
+        BaseModel model = new WolfModel(this);
+        this.getExecutor().setModel(model);
+        model.itemDefinition = itemDefinition;
+        this.name="wolf";
+
     }
 
 

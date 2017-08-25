@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
+import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
@@ -7,6 +8,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.edit.view.ColorGroup;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.action.ItemManager;
@@ -62,7 +64,7 @@ public class ChunkImpl implements Chunk {
     public Vao alphaVao = null;
     private TeraArray blockData;
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
-
+    List<BaseBlock> animationBlock = new ArrayList<>();
     HashMap<Integer,IBlock> blockMap =new HashMap<>();//this map store the block has state
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
@@ -84,13 +86,13 @@ public class ChunkImpl implements Chunk {
         // extraData = c.getExtraDataEntry().factory.create(getChunkSizeX(),
         // getChunkSizeY(), getChunkSizeZ());
         blockManager = CoreRegistry.get(BlockManager.class);
-        if(GamingState.player!=null){
+       /* if(GamingState.player!=null){
              vao = new Vao(102400,ShaderManager.terrainShaderConfig);
              alphaVao = new Vao(102400,ShaderManager.terrainShaderConfig);
         }else{
              vao = new Vao(102400,null);
              alphaVao = new Vao(102400,null);
-        }
+        }*/
     }
 
     public ChunkImpl(int x, int y, int z) {
@@ -127,7 +129,7 @@ public class ChunkImpl implements Chunk {
             block = blockManager.getBlock(blockValue);
 
         }
-        if(block.getId() == ItemType.copy_down.id){
+        if(block!=null && block.getId() == ItemType.copy_down.id){
             block=  blockMap.get(blockData.getIndex(x,y-1,z));
         }
         return block;
@@ -158,8 +160,16 @@ public class ChunkImpl implements Chunk {
     }
 
     @Override//返回原来的block 类型id  设置当前的block进入数据数组
-    public void setBlock(int x, int y, int z, Integer block) {
-        int oldValue = blockData.set(x, y, z, block);
+    public void setBlock(int x, int y, int z, Integer blockid) {
+        int oldValue = blockData.set(x, y, z, blockid);
+
+        IBlock block = blockManager.getBlock(blockid);
+        if(block instanceof ColorGroup){
+            ColorGroup group  = (ColorGroup) block;
+            if(group.animations!=null  && group.animations.size() > 0){
+                animationBlock.add(group);
+            }
+        }
        /* if (oldValue != block.id) {
             *//*
 			 * if (!block.isLiquid()) { setLiquid(x, y, z, new LiquidData()); }
@@ -173,12 +183,23 @@ public class ChunkImpl implements Chunk {
         try {
             int realId = ByteUtil.get8_0Value(blockId);//获得真实的blockid
             blockData.set(x, y, z, blockId);//设置或者
+
+            IBlock block = blockManager.getBlock(blockId);
+            if(block instanceof ColorGroup){
+                ColorGroup group  = ((ColorGroup) block).copy();
+                group.x=x;
+                group.y=y;
+                group.z =z;
+                if(group.animations!=null  && group.animations.size() > 0){
+                    animationBlock.add(group.copy());
+                }
+            }
             //if(blockId > 0)
             if(realId==ItemType.wood_door.id || realId == ItemType.box.id){
                 LogUtil.println("is ad special block");
 
             //if (realId ==ItemType.wood_door.id ) {
-                IBlock block = blockManager.getBlock(realId).clone();
+                //IBlock block = blockManager.getBlock(realId).clone();
                 block.setValue(blockId);
                 block.setCenter(x,y,z);
                 block.setChunk(this);
@@ -469,6 +490,16 @@ public class ChunkImpl implements Chunk {
         GLApp.callDisplayList(this.displayId);
         Util.checkGLError();
     }
+    public boolean needupdate = true;
+    @Override
+    public void setNeedUpdate(boolean b) {
+        needupdate=b;
+    }
+
+    @Override
+    public boolean isNeedUpdate() {
+        return false;
+    }
 
     int VaoId;
     int VboId;
@@ -528,7 +559,9 @@ public class ChunkImpl implements Chunk {
     boolean right =true;
     boolean front =true;
     boolean back =true;
-    public void buildVao() {
+    public void buildVao() {needupdate=false;
+
+
         vao.getVertices().rewind();
 
         //glUseProgram(ShaderManager.terrainShaderConfig.getProgramId());
@@ -541,6 +574,7 @@ public class ChunkImpl implements Chunk {
         // block.render();
         //GL11.glBegin(GL11.GL_QUADS);
         //ShaderManager.terrainShaderConfig.addVao(new Vao(this.toString()));
+
         for (int x = 0; x < this.getChunkSizeX(); x++) {
             for (int z = 0; z < this.getChunkSizeZ(); z++) {
                 for (int y = 0; y < this.getChunkSizeY(); y++) {
@@ -691,8 +725,8 @@ public class ChunkImpl implements Chunk {
             }
         }
         //CreateTerrainVAO();
-        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig, vao);
-        ShaderManager.CreateTerrainVAO(ShaderManager.terrainShaderConfig, alphaVao);
+        ShaderUtils.freshVao(ShaderManager.terrainShaderConfig, vao);
+        ShaderUtils.freshVao(ShaderManager.terrainShaderConfig, alphaVao);
         // GL11.glEnd();
         //System.out.println(this.count);
     }
@@ -1116,6 +1150,8 @@ public class ChunkImpl implements Chunk {
         BaseBlock shape = itemDefinition.getShape();
         ShapeFace shapeFace = null;
         shape.render(ShaderManager.terrainShaderConfig,vao,worldx,y,worldz,top,bottom,left,right,front ,back );
+
+
         /*if (faceIndex == Constants.TOP) {
             ti = shape.getTop();
             //  ti = TextureManager.getTextureInfo("grass_top");
@@ -1536,13 +1572,17 @@ public class ChunkImpl implements Chunk {
 
     public void update() {
         if(Switcher.SHADER_ENABLE) {
+            if(vao==null) {
+                vao = new Vao(102400, ShaderManager.terrainShaderConfig);
+                alphaVao = new Vao(102400, ShaderManager.terrainShaderConfig);
+            }
             if (this.disposed ) {
                 // if(this.displayId==0){
 
 
-               // this.disposed = false;
+               this.disposed = false;
             }else
-            if (this.vao.getVaoId() == 0) {
+            if (this.vao.getVaoId() == 0 || needupdate) {
                 this.buildVao();//this.buildAlpha();
                /* int error = GL11.glGetError();
                 System.out.println("error: " + GLU.gluErrorString(error));
@@ -1570,6 +1610,9 @@ public class ChunkImpl implements Chunk {
                 System.out.println(this.chunkPos + "displayId should not be 0 in render");
             } else {
                 ShaderUtils.finalDraw(config,vao);
+
+
+
             }
 
     }
@@ -1581,6 +1624,13 @@ public class ChunkImpl implements Chunk {
                 System.out.println(this.chunkPos + "displayId should not be 0 in render");
             } else {
                 ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,vao);
+                //开始绘制动画
+                for(int i=0;i<animationBlock.size();i++){
+                    ColorGroup colorGroup  =(ColorGroup)animationBlock.get(i);
+
+
+                    colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16 +colorGroup.x ,colorGroup.y,chunkPos.z*16 +colorGroup.z,true,true,true,true,true ,true );
+                }
             }
         }
         else {

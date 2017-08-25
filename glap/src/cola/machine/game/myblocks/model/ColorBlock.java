@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
@@ -284,6 +285,11 @@ public class ColorBlock extends BaseBlock{
 
     }
 
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+        ShaderUtils.draw3dColorBox(config, vao, childPoints,new GL_Vector(rf, gf, bf),this.opacity);
+    }
+
     /**
      * 在chunk当中直接使用
      * @param config
@@ -300,9 +306,9 @@ public class ColorBlock extends BaseBlock{
      */
     @Override
     public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-        ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), 1, 1, 1, /*selectBlockList.size()>0?0.5f:*/this.opacity,
-                top,bottom,left,right,front,right);
-
+        ShaderUtils.draw3dColorBox(config, vao, x, y, z,points, BoxModel.dirAry,rf, gf, bf,this.opacity  );
+     /*   ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), 1, 1, 1, *//*selectBlockList.size()>0?0.5f:*//*this.opacity,
+                top,bottom,left,right,front,right);*/
     }
 
 	public void render() {
@@ -487,7 +493,7 @@ public class ColorBlock extends BaseBlock{
 
     public ColorBlock copy(){
         ColorBlock colorBlock  =new ColorBlock(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
-
+        colorBlock.id= id;
         return colorBlock;
     }
 
@@ -522,14 +528,20 @@ public class ColorBlock extends BaseBlock{
 
 
     public static ColorBlock parse(JSONObject map){
+
         ColorBlock block =new ColorBlock();
 
+        block. parse(block,map);
 
 
-        float x = MapUtil.getFloatValue(map,"x");
-        float y = MapUtil.getFloatValue(map,"y");
-        float z = MapUtil.getFloatValue(map,"z");
 
+
+        return block;
+
+
+    }
+    public  void parse(ColorBlock block ,JSONObject map){
+        super.parse(block,map);
 
         float red = MapUtil.getFloatValue(map,"r");
         float green = MapUtil.getFloatValue(map,"g");
@@ -541,17 +553,6 @@ public class ColorBlock extends BaseBlock{
         block.bf= blue;
 
         block.opacity = alpha;
-
-        float width = MapUtil.getFloatValue(map,"width");
-        float height = MapUtil.getFloatValue(map,"height");
-        float thick = MapUtil.getFloatValue(map,"thick");
-        block.x=(int)x;
-        block.y=(int)y;
-        block.z=(int)z;
-        block.width=width;
-        block.height=height;
-        block.thick =thick;
-        return block;
 
 
     }

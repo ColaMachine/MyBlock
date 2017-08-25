@@ -81,7 +81,6 @@ public class ImageBlock extends BaseBlock{
 
 
 
-    GL_Vector[] points = BoxModel.getPoint(0,0,0);
 
 
     public ImageBlock(String name, int i, boolean b) {
@@ -184,7 +183,10 @@ public class ImageBlock extends BaseBlock{
 //}
 
     public ImageBlock copy(){
+
         ImageBlock colorBlock  =new ImageBlock();
+
+        
         colorBlock.width=width;
         colorBlock.height=height;
         colorBlock.thick =thick;
@@ -194,6 +196,7 @@ public class ImageBlock extends BaseBlock{
         colorBlock.back=back;
         colorBlock.left=left;
         colorBlock.right=right;
+        colorBlock.id =id;
 
         return colorBlock;
     }
@@ -236,23 +239,28 @@ public class ImageBlock extends BaseBlock{
         }
 
         if(bottom!=null &&hasbottom) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+            ShaderUtils.draw3dImage(config, vao, x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
         }
 
         if(front!=null && hasfront) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
+            ShaderUtils.draw3dImage(config, vao,x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
         }
 
         if(back!=null && hasback) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
+            ShaderUtils.draw3dImage(config, vao, x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
         }
 
         if(left!=null && hasleft) {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
+            ShaderUtils.draw3dImage(config, vao,x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
         }
         if(right!=null && hasright)  {
-            ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
+            ShaderUtils.draw3dImage(config, vao, x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
         }
+
+    }
+
+    @Override
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
 
     }
 
@@ -300,13 +308,15 @@ public class ImageBlock extends BaseBlock{
 
     public static ImageBlock parse(JSONObject map){
         ImageBlock imageBlock =new ImageBlock();
+
+        parse(imageBlock,map);
         String front = (String) map.get("front");
         String back = (String) map.get("back");
         String left = (String) map.get("left");
         String right = (String) map.get("right");
         String top = (String) map.get("top");
-
-
+        String name = (String) map.get("name");
+        imageBlock.name = name ;
         String bottom = (String) map.get("bottom");
         String allSide =  MapUtil.getStringValue(map, "allSide");
         if(StringUtil.isNotEmpty(allSide)){
@@ -345,18 +355,6 @@ public class ImageBlock extends BaseBlock{
         if(StringUtil.isNotEmpty(right))
         imageBlock.right = TextureManager.getTextureInfo(right);
 
-        float x = MapUtil.getFloatValue(map,"x");
-        float y = MapUtil.getFloatValue(map,"y");
-        float z = MapUtil.getFloatValue(map,"z");
-
-        float width = MapUtil.getFloatValue(map,"width");
-        float height = MapUtil.getFloatValue(map,"height");
-        float thick = MapUtil.getFloatValue(map,"thick");
-        imageBlock.x=(int)x;
-        imageBlock.y=(int)y;
-        imageBlock.z=(int)z;
-        imageBlock.width=width;
-        imageBlock.thick =thick;
         return imageBlock;
 
     }

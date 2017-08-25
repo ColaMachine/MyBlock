@@ -17,6 +17,7 @@ import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.network.client.Client;
@@ -399,9 +400,13 @@ public class LivingThingManager {
             LivingThing livingThing = this.getLivingThingById(id);
             boolean exsits =true;
             if(livingThing==null ) {
-                if(info.species==1){
+                ItemManager.getItemDefinition(info.getName());
+                if(info.species==1){;
                     livingThing = new Wolf(info.getId());
 
+                }else if(info.species>1){
+
+                    livingThing = new Wolf(info.getId(),ItemManager.getItemDefinition(Integer.valueOf(info.species)));
                 }else{
                     livingThing = new Player(info.getId());
                 }

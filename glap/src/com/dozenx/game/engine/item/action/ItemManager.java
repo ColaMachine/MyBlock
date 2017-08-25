@@ -31,7 +31,7 @@ public class ItemManager {
 
     public static List<Ball> list = new ArrayList<>();
     private static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
-    private static HashMap<Integer, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<Integer, ItemDefinition>();
+    public static HashMap<Integer, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<Integer, ItemDefinition>();
     static float distance = 0;
     long lastCheckTime = 0;
 

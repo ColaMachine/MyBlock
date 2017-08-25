@@ -618,6 +618,40 @@ try {
         OpenglUtils.checkGLError();
         //glUseProgram(0);
     }
+
+    public static void finalDrawVbo(ShaderConfig config,Vao vao){
+        //TextureManager.getTextureInfo("soil").bind();
+        // ShaderUtils.get2dcolor
+        if(vao.getPoints()==0){
+            return;
+        }
+        assert config.getProgramId()>0;
+        glUseProgram(config.getProgramId());
+        OpenglUtils.checkGLError();
+        // glUniform3f(shaderConfig.getObejctColorLoc(), backgroundColor.x, backgroundColor.y, backgroundColor.z);
+        // OpenglUtils.checkGLError();
+        assert vao.getVaoId()>0;
+        glBindVertexArray(vao.getVaoId());
+        OpenglUtils.checkGLError();
+        assert vao.getPoints()>0;
+        glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
+    /*    for(int i=0;i<vao.getVertices().listLimit;i++){
+
+            vao.setPoints(vao.getVertices().buffers.get(i).limit()/config.getParamTotalLen());
+
+            //vao.getVertices().rewind();
+            glBufferData(GL_ARRAY_BUFFER,vao.getVertices().buffers.get(i), GL_STATIC_DRAW);*/
+        // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+        glDrawArrays(GL_TRIANGLES,0, vao.getPoints());
+        //  }
+
+        //config.getVao().getVertices().rewind();
+
+        OpenglUtils.checkGLError();
+        glBindVertexArray(0);
+        OpenglUtils.checkGLError();
+        //glUseProgram(0);
+    }
     /*
     public static void finalDraw2DImage(){
         ShaderConfig config = ShaderUtils.get2DImgConfig();
@@ -2298,6 +2332,27 @@ try {
         }
     }
 
+
+
+    public static void draw3dColorBox(ShaderConfig config, Vao vao, GL_Vector[] points, GL_Vector color, float alpha) {
+
+        FloatBufferWrap veticesBuffer = vao.getVertices();
+        int[][] faceAry = BoxModel.facesAry;
+        GL_Vector[] dirAry = BoxModel.dirAry;
+        for(int i=0;i<6;i++){
+            int[] faceAry2 = faceAry[i];
+
+            veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+
+            veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+
+        }
+    }
+
     /**
      * this function is for terrain draw
      * @param config
@@ -2719,8 +2774,8 @@ try {
     public static void freshVao(ShaderConfig config ,Vao vao){
         int position = vao.getVertices().position();
 
-        if(position==0)
-            return;
+     /*   if(position==0)
+            return;*/
 
 
 
@@ -2733,7 +2788,7 @@ try {
             //设置顶点组的数目
             vao.setPoints(vao.getVertices().position()/config.getParamTotalLen());
             glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
-            vao.getVertices().rewind();
+           // vao.getVertices().rewind();
             vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
             //glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
 
@@ -2778,21 +2833,31 @@ try {
         OpenglUtils.checkGLError();
         assert vao.getPoints()>0;
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
-        for(int i=0;i<=vao.getVertices().listLimit;i++){
-            int Points =vao.getVertices().buffers.get(i).position()/config.getParamTotalLen();
-            vao.setPoints(Points);
-            vao.getVertices().buffers.get(i).rewind();
-            //vao.getVertices().rewind();
-            glBufferData(GL_ARRAY_BUFFER,vao.getVertices().buffers.get(i), GL_STATIC_DRAW);
-            // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
-            glDrawArrays(GL_LINES,0, vao.getPoints());
-        }
+        freshVao(config,vao);
+       // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,GL_STATIC_DRAW);
+//        for(int i=0;i<=vao.getVertices().listLimit;i++){
+//            int Points =vao.getVertices().buffers.get(i).position()/config.getParamTotalLen();
+//            vao.setPoints(Points);
+//            vao.getVertices().buffers.get(i).rewind();
+//            //vao.getVertices().rewind();
+//            glBufferData(GL_ARRAY_BUFFER,vao.getVertices().buffers.get(i), GL_STATIC_DRAW);
+//            // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+//            glDrawArrays(GL_LINES,0, vao.getPoints());
+//        }
+
+        glDrawArrays(GL_LINES,0, vao.getPoints());
 
         //config.getVao().getVertices().rewind();
 
         OpenglUtils.checkGLError();
         glBindVertexArray(0);
         OpenglUtils.checkGLError();
+
+
+
+
+
+
     }
     public static void testDrawVbo(){
 
@@ -2887,6 +2952,14 @@ try {
             // vao.setVertices(twoDImgBuffer);
             glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
 
+            GL15.glBufferData(GL_ARRAY_BUFFER, 3000, GL_STATIC_DRAW);//put data
+
+            // Step3: 填充具体的数据
+          /*  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertPos), vertPos);
+            glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertPos), sizeof(vertColor), vertColor);*/
+
+
+
             vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);//put data
             //create ebo
             // float width = 1;
@@ -2908,6 +2981,7 @@ try {
 
    static  float near_plane = 1.0f, far_plane = 107.5f;
     public static GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+
 }
 
 

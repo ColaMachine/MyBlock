@@ -33,7 +33,7 @@ import java.util.Iterator;
 /**
  * Created by dozen.zhang on 2017/8/14.
  */
-public class BlockPanel extends TitledPane {
+public class BlockPanel extends Tab {
 
     private FlowPane flowPane =new FlowPane();
     public void add(Node node){
@@ -42,11 +42,11 @@ public class BlockPanel extends TitledPane {
 
 
 
-    public TitledPane addCreatePanel() {
+    public void addCreatePanel() {
 
-        TitledPane titlePane = this;
 
-        titlePane.setText("方块");
+
+        this.setText("方块");
 
 
         GridPane selectGrid = new GridPane();
@@ -252,21 +252,23 @@ public class BlockPanel extends TitledPane {
             }
         });
 
-
+        TextField danweiText = new TextField();
         selectGrid.add(colorBtn, 0, 14);
         selectGrid.add(roateBtn, 1, 14);
         selectGrid.add(imageBlockBtn, 2, 14);
+        selectGrid.add(danweiText, 0, 15);
+        danweiText.setText("1");
         rotatexMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotatex(-1);
+                GamingState.editEngine.adjustRotatex(-Float.valueOf(danweiText.getText()));
 
             }
         });
         rotatexadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotatex(1);
+                GamingState.editEngine.adjustRotatex(Float.valueOf(danweiText.getText()));
 
             }
         });
@@ -274,14 +276,14 @@ public class BlockPanel extends TitledPane {
         rotateyMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateY(-1);
+                GamingState.editEngine.adjustRotateY(-Float.valueOf(danweiText.getText()));
 
             }
         });
         rotateyadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateY(1);
+                GamingState.editEngine.adjustRotateY(Float.valueOf(danweiText.getText()));
 
             }
         });
@@ -290,14 +292,14 @@ public class BlockPanel extends TitledPane {
         rotatezMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateZ(-1);
+                GamingState.editEngine.adjustRotateZ(-Float.valueOf(danweiText.getText()));
 
             }
         });
         rotatezadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateZ(1);
+                GamingState.editEngine.adjustRotateZ(Float.valueOf(danweiText.getText()));
 
             }
         });
@@ -314,14 +316,14 @@ public class BlockPanel extends TitledPane {
         xMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(-1, false);
+                GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), false);
 
             }
         });
         xadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(1, false);
+                GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), false);
 
             }
         });
@@ -329,14 +331,14 @@ public class BlockPanel extends TitledPane {
         yMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(-1, false);
+                GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), false);
 
             }
         });
         yadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(1, false);
+                GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), false);
 
             }
         });
@@ -345,14 +347,14 @@ public class BlockPanel extends TitledPane {
         zMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(-1, false);
+                GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), false);
 
             }
         });
         zadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(1, false);
+                GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), false);
 
             }
         });
@@ -360,14 +362,14 @@ public class BlockPanel extends TitledPane {
         widthMiBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(-1, true);
+                GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), true);
 
             }
         });
         widthAddBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(1, true);
+                GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), true);
 
             }
         });
@@ -375,14 +377,14 @@ public class BlockPanel extends TitledPane {
         heightMiBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(-1, true);
+                GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), true);
 
             }
         });
         heightAddBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(1, true);
+                GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), true);
 
             }
         });
@@ -390,21 +392,21 @@ public class BlockPanel extends TitledPane {
         thickMiBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(-1, true);
+                GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), true);
 
             }
         });
         thickAddBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(1, true);
+                GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), true);
 
             }
         });
 
 
-        titlePane.setContent(selectGrid);
-        return titlePane;
+        flowPane.getChildren().add(selectGrid);
+
     }
 
     public BlockPanel(Stage primaryStage) {
@@ -412,7 +414,7 @@ public class BlockPanel extends TitledPane {
         //double width, double height
         this.setContent(flowPane);
 
-        add(addCreatePanel());
+        addCreatePanel();
 
 
     }
