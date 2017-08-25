@@ -202,9 +202,8 @@ public class ImageBlock extends BaseBlock{
     }
 
     @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean hastop, boolean hasbottom, boolean hasleft, boolean hasright, boolean hasfront, boolean hasback) {
+    public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean hastop, boolean hasbottom, boolean hasleft, boolean hasright, boolean hasfront, boolean hasback) {
         GL_Vector[] dirAry = BoxModel.dirAry;
-
         if(top!=null && hastop) {
             ShaderUtils.draw3dImage(config, vao,x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
         }

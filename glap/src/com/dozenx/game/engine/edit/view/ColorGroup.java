@@ -36,7 +36,7 @@ import java.util.List;
 public class ColorGroup extends BaseBlock {
 
 
-    public ColorGroup(int x,int y,int z,float width,float height,float thick){
+    public ColorGroup(float x,float y,float z,float width,float height,float thick){
         super(x,y,z,width,height,thick);
         /*this.x =x;
         this.y=y;
@@ -875,7 +875,8 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
 
 
     public void rotateY(float value){
-        adjustRotateY(value);
+      //  adjustRotateY(value);
+        super.rotateY(value);
     }
     public void rotateZ(float value){
         adjustRotateZ(value);
@@ -1008,7 +1009,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
 
 
     @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+    public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
 
 
@@ -1080,5 +1081,22 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
 
+    }
+
+
+    public  void reComputePoints(){
+        this.points = BoxModel.getSmallPoint(0,0 ,0,width,height,thick);
+
+        GL_Matrix rotateMatrix = GL_Matrix.multiply(GL_Matrix.translateMatrix(width/2,0,thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0));
+        for(int i=0;i<points.length;i++){
+            points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
+           /* points[i].x+=width/2;
+            points[i].z+=thick/2;*/
+        }
+
+        for(BaseBlock block:colorBlockList){
+          //float[] info =  this.getChildBlockRelativePosition(block,x,y,z);
+            block.reComputePoints(rotateMatrix);
+        }
     }
 }

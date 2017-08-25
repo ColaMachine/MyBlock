@@ -87,12 +87,12 @@ public class DoorBlock extends DirectionBlock {
         int chunkX =chunk.chunkPos.x;
         int chunkZ=chunk.chunkPos.z;
         ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-        cmd.cx = this.getX();
-        cmd.cz = this.getZ();
-        cmd.cy = this.getY();
+        cmd.cx = (int)this.getX();
+        cmd.cz = (int)this.getZ();
+        cmd.cy = (int)this.getY();
         cmd.type = 1;
         this.penetration =! penetration;
-        chunk.getBlock(x,y+1,z).setPenetrate(this.penetration);
+        chunk.getBlock(cmd.cx,cmd.cy+1,cmd.cz).setPenetrate(this.penetration);
         /*if(open==0){
             open=1;
         }else{

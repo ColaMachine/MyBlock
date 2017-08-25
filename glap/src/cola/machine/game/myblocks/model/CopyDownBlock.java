@@ -40,7 +40,7 @@ public class CopyDownBlock extends BaseBlock{
     }
     public boolean beuse(){
         //调用真正的block
-        chunk.getBlock(this.x,this.y-1,this.z).beuse();
+        chunk.getBlock(this.getX(),this.getY()-1,this.getZ()).beuse();
         //那开关状态也要和block 同步的
         return true;
     }
@@ -56,9 +56,9 @@ public class CopyDownBlock extends BaseBlock{
         int chunkZ = chunk.chunkPos.z;
 
         ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-        cmd.cx = x;//this.getX();
-        cmd.cy =y;//this.getX();
-        cmd.cz =z;// this.getZ();
+        cmd.cx =this.getX();
+        cmd.cy =this.getX();
+        cmd.cz = this.getZ();
 
         if(cmd.cy<0){
             LogUtil.err("y can't be <0 ");
@@ -88,7 +88,7 @@ public class CopyDownBlock extends BaseBlock{
     }
 
     @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+    public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
     }
 

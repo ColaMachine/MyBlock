@@ -14,13 +14,13 @@ public class RotatedColorBlock extends ColorBlock {
     public RotatedColorBlock() {
     }
 
-    public RotatedColorBlock(int x, int y, int z) {
+    public RotatedColorBlock(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public RotatedColorBlock(int x, int y, int z, float width, float height, float thick) {
+    public RotatedColorBlock(float x, float y, float z, float width, float height, float thick) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -29,7 +29,7 @@ public class RotatedColorBlock extends ColorBlock {
         this.thick = thick;
     }
 
-    public RotatedColorBlock(int x, int y, int z, float width, float height, float thick, float rf, float gf, float bf, float opacity) {
+    public RotatedColorBlock(float x, float y, float z, float width, float height, float thick, float rf, float gf, float bf, float opacity) {
         this.x = x;
         this.y = y;
         this.z = z;

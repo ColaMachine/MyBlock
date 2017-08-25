@@ -964,31 +964,31 @@ public class EditEngine {
             selectBlockList.remove(i);
             colorBlockList.remove(colorBlock);
             if(minx==null){
-                minx = colorBlock.x;
-                miny=colorBlock.y;
-                minz =colorBlock.z;
-                maxx=colorBlock.x+colorBlock.width;
-                maxy=colorBlock.y+colorBlock.height;
-                maxz = colorBlock.z+colorBlock.thick;
+                minx =(int) colorBlock.x;
+                miny=(int) colorBlock.y;
+                minz =(int) colorBlock.z;
+                maxx=(int) colorBlock.x+colorBlock.width;
+                maxy=(int) colorBlock.y+colorBlock.height;
+                maxz =(int)  colorBlock.z+colorBlock.thick;
             }
             else{
                 if( colorBlock.x<minx){
-                    minx = colorBlock.x;
+                    minx =(int)  colorBlock.x;
                 }
                 if( colorBlock.y<miny){
-                    miny = colorBlock.y;
+                    miny = (int) colorBlock.y;
                 }
                 if( colorBlock.z<minz){
-                    minz = colorBlock.z;
+                    minz =(int)  colorBlock.z;
                 }
                 if(colorBlock.x+colorBlock.width>maxx){
-                    maxx=colorBlock.x+colorBlock.width;
+                    maxx=(int) colorBlock.x+colorBlock.width;
                 }
                 if(colorBlock.y+colorBlock.height>maxy){
-                    maxy=colorBlock.y+colorBlock.height;
+                    maxy=(int) colorBlock.y+colorBlock.height;
                 }
                 if(colorBlock.z+colorBlock.thick>maxz){
-                    maxz=colorBlock.z+colorBlock.thick;
+                    maxz=(int) colorBlock.z+colorBlock.thick;
                 }
             }
         }
@@ -1335,9 +1335,9 @@ public class EditEngine {
             int id = colorBlock.id;
 
             boolean live= colorBlock.live;
-            worldX = colorBlock.x;
-            worldY = colorBlock.y;
-            worldZ = colorBlock.z;
+            worldX = colorBlock.getX();
+            worldY = colorBlock.getY();
+            worldZ = colorBlock.getZ();
 
             if(live){
                 SayCmd sayCmd = new SayCmd(0,"","/create monster "+worldX+" "+worldY+" "+worldZ+" "+colorBlock.getId());

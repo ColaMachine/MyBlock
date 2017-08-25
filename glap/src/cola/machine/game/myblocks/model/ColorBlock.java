@@ -24,7 +24,7 @@ public class ColorBlock extends BaseBlock{
 
     }
 
-    public ColorBlock(int x,int y,int z,float width,float height,float thick){
+    public ColorBlock(float x,float y,float z,float width,float height,float thick){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -33,7 +33,7 @@ public class ColorBlock extends BaseBlock{
         this.thick =thick;
 
     }
-    public ColorBlock(int x,int y,int z,float width,float height,float thick,float rf,float gf,float bf,float opacity){
+    public ColorBlock(float x,float y,float z,float width,float height,float thick,float rf,float gf,float bf,float opacity){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -137,7 +137,7 @@ public class ColorBlock extends BaseBlock{
     public ColorBlock(String name,int id,boolean alpha) {
         super( name, id, alpha);
     }
-	public ColorBlock(int x, int y, int z) {
+	public ColorBlock(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -150,7 +150,7 @@ public class ColorBlock extends BaseBlock{
 		this.maxZ = z + 1;
 	}
 
-	public ColorBlock(int x, int y, int z, Color color) {
+	public ColorBlock(float x, float y, float z, Color color) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -281,7 +281,8 @@ public class ColorBlock extends BaseBlock{
      */
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x,float y,float z,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
-        ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
+       // ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
+        ShaderUtils.draw3dColorBox(config, vao, x,y,z,points, BoxModel.dirAry,rf, gf, bf,this.opacity  );
 
     }
 
@@ -305,7 +306,7 @@ public class ColorBlock extends BaseBlock{
      * @param back
      */
     @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+    public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
         ShaderUtils.draw3dColorBox(config, vao, x, y, z,points, BoxModel.dirAry,rf, gf, bf,this.opacity  );
      /*   ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), 1, 1, 1, *//*selectBlockList.size()>0?0.5f:*//*this.opacity,
                 top,bottom,left,right,front,right);*/
@@ -379,23 +380,6 @@ public class ColorBlock extends BaseBlock{
 		this.maxY = y + 1;
 	}
 
-	@Override
-	public int getX() {
-		// VIP Auto-generated method stub
-		return x;
-	}
-
-	@Override
-	public int getY() {
-		// VIP Auto-generated method stub
-		return y;
-	}
-
-	@Override
-	public int getZ() {
-		// VIP Auto-generated method stub
-		return z;
-	}
 
 	public int r() {
 		return red;

@@ -40,9 +40,9 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public ChunkImpl chunk;
 
 
-    public int x=0;//0~16
-    public int y=0;//0~128
-    public int z=0;//0~16
+    public float x=0;//0~16
+    public float y=0;//0~128
+    public float z=0;//0~16
     public float width=1;
     public float height=1;
     public float thick=1;
@@ -61,7 +61,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public GL_Vector[] points = BoxModel.getPoint(0,0,0);
     ItemDefinition itemDefinition;
 
-    public BaseBlock(int x,int y,int z,float width,float height,float thick){
+    public BaseBlock(float x,float y,float z,float width,float height,float thick){
             this.x =x;
         this.y=y;
         this.z =z ;
@@ -310,17 +310,17 @@ public abstract class BaseBlock extends AABB implements IBlock {
 	@Override
 	public int getX() {
 		// VIP Auto-generated method stub
-		return x;
+		return (int)x;
 	}
 	@Override
 	public int getY() {
 		// VIP Auto-generated method stub
-		return y;
+		return (int)y;
 	}
 	@Override
 	public int getZ() {
 		// VIP Auto-generated method stub
-		return z;
+		return (int)z;
 	}
 
 /*
@@ -394,9 +394,9 @@ public abstract class BaseBlock extends AABB implements IBlock {
         int chunkZ = chunk.chunkPos.z;
 
         ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-        cmd.cx = x;//this.getX();
-        cmd.cy =y;//this.getX();
-        cmd.cz =z;// this.getZ();
+        cmd.cx = (int)x;//this.getX();
+        cmd.cy =(int)y;//this.getX();
+        cmd.cz =(int)z;// this.getZ();
 
         if(cmd.cy<0){
             LogUtil.err("y can't be <0 ");
@@ -464,7 +464,26 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public abstract  BaseBlock copy();
     public  void reComputePoints(){
         this.points = BoxModel.getSmallPoint(0,0,0,width,height,thick);
+        GL_Matrix rotateMatrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(width/2,0,thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
+      //  GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
+        for(int i=0;i<points.length;i++){
+            points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
+
+        }
     }
+
+
+    public  void reComputePoints(GL_Matrix rotateMatrix){
+        this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
+
+        //GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
+        for(int i=0;i<points.length;i++){
+            points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
+
+        }
+    }
+
+
     public void addWidth(float num){
         this.width+=num;
         reComputePoints();
@@ -489,7 +508,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
     }
 
 
-    public abstract  void render(ShaderConfig config, Vao vao, int x,int y,int z ,boolean top,
+    public abstract  void render(ShaderConfig config, Vao vao, float x,float y,float z ,boolean top,
                                  boolean bottom,boolean left,boolean right,boolean front ,boolean back);
 
     public  abstract void renderShader(ShaderConfig config , Vao vao , GL_Matrix matrix);
@@ -518,6 +537,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
         if(this.dir>=4){
             this.dir=0;
         }
+        reComputePoints();
     }
 
 

@@ -6,10 +6,10 @@ package cola.machine.game.myblocks.block;
 public class BlockDefManager {
     BlockDefRegistry  blockDefRegistry=new BlockDefRegistry();
     public void registerAllBlock(){
-        blockDefRegistry.registry(new Air());
-        blockDefRegistry.registry(new Stone());
-        blockDefRegistry.registry(new Water());
-        blockDefRegistry.registry(new Bedrock());
+//        blockDefRegistry.registry(new Air());
+//        blockDefRegistry.registry(new Stone());
+//        blockDefRegistry.registry(new Water());
+//        blockDefRegistry.registry(new Bedrock());
 
     }
 

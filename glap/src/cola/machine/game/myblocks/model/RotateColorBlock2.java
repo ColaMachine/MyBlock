@@ -25,14 +25,14 @@ public class RotateColorBlock2 extends ColorBlock{
 
 
     GL_Vector[] points = BoxModel.getPoint(0,0,0);
-    public RotateColorBlock2(int x, int y, int z){
+    public RotateColorBlock2(float x, float y, float z){
         this.x =x;
         this.y=y;
         this.z=z;
 
 
     }
-    public RotateColorBlock2(int x, int y, int z, float width, float height, float thick){
+    public RotateColorBlock2(float x, float y, float z, float width, float height, float thick){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -41,7 +41,7 @@ public class RotateColorBlock2 extends ColorBlock{
         this.thick =thick;
 
     }
-    public RotateColorBlock2(int x, int y, int z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
+    public RotateColorBlock2(float x, float y, float z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -139,7 +139,7 @@ public class RotateColorBlock2 extends ColorBlock{
      * @param back
      */
     @Override
-    public void render(ShaderConfig config, Vao vao, int x, int y, int z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+    public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
         ShaderUtils.draw3dColorBox(config, vao,x,y,z, this.points,BoxModel.dirAry,  rf, gf, bf,this.opacity);
 
     }

@@ -392,7 +392,7 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
     }
 
     @Override
-    public void render(ShaderConfig config, Vao vao, int worldX, int worldY, int worldZ, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+    public void render(ShaderConfig config, Vao vao, float worldX, float worldY, float worldZ, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
        GL_Vector[] points =  BoxModel.getPoint(worldX, worldY, worldZ);
 
