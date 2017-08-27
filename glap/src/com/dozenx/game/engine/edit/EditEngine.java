@@ -334,7 +334,8 @@ public class EditEngine {
         for(int x =minX;x< width+minX;x++){
             for(int z=minZ;z<thick+minZ;z++){
                 colorBlock =  readyShootBlock.copy();
-                set(colorBlock,x,0,z,Math.max(width,1),1,Math.max(thick,1),red,green,blue,alpha);
+                //set(colorBlock,x,0,z,Math.max(width,1),1,Math.max(thick,1),red,green,blue,alpha);
+                set(colorBlock,x,0,z,1,1,1,red,green,blue,alpha);
                 colorBlockList.add(colorBlock);
             }
         }
@@ -1005,6 +1006,7 @@ public class EditEngine {
             colorBlock.y-=group.y;
             colorBlock.z-=group.z;
         }
+        group.reComputePoints();
 
        /* for(BaseBlock colorBlock : group.colorBlockList){
             colorBlock.x-= group.x;
@@ -1121,7 +1123,7 @@ public class EditEngine {
         if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
             ColorGroup group = (ColorGroup) selectBlockList.get(0);
             ColorGroup newGroup =group.copy();
-            newGroup .animations=null;
+            newGroup .animations.clear();
 
             group.animations.add(newGroup);
         }
@@ -1309,6 +1311,9 @@ public class EditEngine {
             if(colorBlock instanceof RotateColorBlock2){
                 ((RotateColorBlock2) colorBlock) .rotateZ(value);
             }
+            if(colorBlock instanceof ColorGroup){
+                ((ColorGroup) colorBlock) .rotateZ(value);
+            }
         }
     }
 
@@ -1485,5 +1490,22 @@ public class EditEngine {
 
         ChunkResponseCmd cmd =new ChunkResponseCmd(chunk);
         CoreRegistry.get(Client.class).send(cmd);
+    }
+
+    public void setCenter(float x,float y,float z ){
+        for(BaseBlock block : selectBlockList){
+            if(block instanceof  RotateColorBlock2){
+                RotateColorBlock2  rotateBlock = (RotateColorBlock2) block;
+                rotateBlock.centerX = x;
+                rotateBlock.centerY = y;
+                rotateBlock.centerZ = z;
+
+            }else{
+                if(block instanceof  ColorGroup){
+                    ColorGroup group =(ColorGroup) block;
+                    group.setCenter(x,y,z);
+                }
+            }
+        }
     }
 }

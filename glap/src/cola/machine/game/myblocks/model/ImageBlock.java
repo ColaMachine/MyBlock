@@ -229,31 +229,31 @@ public class ImageBlock extends BaseBlock{
     }
 
     @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick,  boolean hastop, boolean hasbottom, boolean hasleft, boolean hasright, boolean hasfront, boolean hasback) {
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float parentX,float parentY,float parentZ, float childX,float childY,float childZ, float width, float height, float thick,  boolean hastop, boolean hasbottom, boolean hasleft, boolean hasright, boolean hasfront, boolean hasback) {
 
         GL_Vector[] dirAry = BoxModel.dirAry;
 
         if(top!=null && hastop) {
-            ShaderUtils.draw3dImage(config, vao,x,y,z, points[4], points[5], points[6], points[7], dirAry[0], top);
+            ShaderUtils.draw3dImage(config, vao,parentX,parentY,parentZ, points[4], points[5], points[6], points[7], dirAry[0], top);
         }
 
         if(bottom!=null &&hasbottom) {
-            ShaderUtils.draw3dImage(config, vao, x,y,z, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+            ShaderUtils.draw3dImage(config, vao,parentX,parentY,parentZ, points[3], points[2], points[1], points[0], dirAry[1], bottom);
         }
 
         if(front!=null && hasfront) {
-            ShaderUtils.draw3dImage(config, vao,x,y,z,  points[0], points[1], points[5], points[4], dirAry[2], front);
+            ShaderUtils.draw3dImage(config, vao,parentX,parentY,parentZ,  points[0], points[1], points[5], points[4], dirAry[2], front);
         }
 
         if(back!=null && hasback) {
-            ShaderUtils.draw3dImage(config, vao, x,y,z, points[2], points[3], points[7], points[6], dirAry[3], back);
+            ShaderUtils.draw3dImage(config, vao, parentX,parentY,parentZ,  points[2], points[3], points[7], points[6], dirAry[3], back);
         }
 
         if(left!=null && hasleft) {
-            ShaderUtils.draw3dImage(config, vao,x,y,z,  points[3], points[0], points[4], points[7], dirAry[4], left);
+            ShaderUtils.draw3dImage(config, vao,parentX,parentY,parentZ,  points[3], points[0], points[4], points[7], dirAry[4], left);
         }
         if(right!=null && hasright)  {
-            ShaderUtils.draw3dImage(config, vao, x,y,z, points[1], points[2], points[6], points[5], dirAry[5], right);
+            ShaderUtils.draw3dImage(config, vao,parentX,parentY,parentZ, points[1], points[2], points[6], points[5], dirAry[5], right);
         }
 
     }

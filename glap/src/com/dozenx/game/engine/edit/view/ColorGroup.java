@@ -279,11 +279,13 @@ public class ColorGroup extends BaseBlock {
 
         }
         for(int i=0;i<this.animations.size();i++){
-            animations.get(i).animations.clear();
+            if(animations.get(i).animations!=null ) {
+                animations.get(i).animations.clear();
+            }
         }
         colorGroup.animations=this.animations;//没有深层次拷贝 担心引起无限循环 但问题也就出在这里 animations的对象里 colorgroup还有animations 需要斩草除根
 
-
+        colorGroup.reComputePoints();
         return colorGroup;
     }
 
@@ -602,7 +604,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
     public void saveToCurFrame(){
         ColorGroup colorGroup = this.copy();
         colorGroup.animations .clear();//防止无限循环
-       this.animations.set(nowIndex,colorGroup);
+       this.animations.set(nowIndex, colorGroup);
     }
     public boolean play(){
 
@@ -920,7 +922,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
     }
 
 
-    @Override
+    @Override //具体场景中 生物有旋转身体的 需要用到
     public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
 
 
@@ -1008,10 +1010,10 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
 
 
 
-    @Override
+    @Override//再editegine中绘制 或者真实环境中需要用到
     public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
-
+       // this.reComputePoints();
 
         //每隔1秒展示下一个动画
         if(animations.size()>0) {
@@ -1029,7 +1031,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
                 for(int i=0;i<animations.get(nowIndex).colorBlockList.size();i++){
                     BaseBlock  block = animations.get(nowIndex).colorBlockList.get(i);
                     float[] info  = getChildBlockPosition(block,x,y,z);
-                    block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+                    block.renderShaderInGivexyzwht(config,vao,x,y,z,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
                     //   ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom, new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), colorBlock.width/xzoom, colorBlock.height/yzoom, colorBlock.thick/zzoom, colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
 
                 }
@@ -1051,9 +1053,10 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
             // colorBlock.update();
             float[] info  =this.getChildBlockPosition(block,x,y,z);
 
+            block.renderShaderInGivexyzwht(config,vao,x,y,z,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
 
-            block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
-
+           // block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back );
+           // block.renderShader(config,vao,x,y,z );
             //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf), info[3],info[4],info[5],  colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
 
         }
@@ -1074,7 +1077,7 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
     }
 
     @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
 
     }
 
@@ -1087,16 +1090,39 @@ float[] info =getChildBlockPosition(colorBlock,this.x,this.y,this.z);
     public  void reComputePoints(){
         this.points = BoxModel.getSmallPoint(0,0 ,0,width,height,thick);
 
-        GL_Matrix rotateMatrix = GL_Matrix.multiply(GL_Matrix.translateMatrix(width/2,0,thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0));
+        GL_Matrix rotateMatrix = GL_Matrix.multiply(GL_Matrix.translateMatrix(xoffset+width/2,yoffset,zoffset+thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0));
+        rotateMatrix = GL_Matrix.multiply(rotateMatrix,GL_Matrix.scaleMatrix(1/xzoom,1/yzoom,1/zzoom));
+        rotateMatrix = GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-width/2,0,-thick/2));
+
         for(int i=0;i<points.length;i++){
-            points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
+            points[i] = GL_Matrix.multiply(rotateMatrix,points[i]);
            /* points[i].x+=width/2;
             points[i].z+=thick/2;*/
         }
 
+
+
         for(BaseBlock block:colorBlockList){
           //float[] info =  this.getChildBlockRelativePosition(block,x,y,z);
             block.reComputePoints(rotateMatrix);
+        }
+
+        for(BaseBlock block:animations){
+            //float[] info =  this.getChildBlockRelativePosition(block,x,y,z);
+            block.reComputePoints();
+            block.dir = this.dir;
+        }
+    }
+
+    public void setCenter(float x ,float y ,float z ){
+        for( BaseBlock block : selectBlockList){
+            if(block instanceof  RotateColorBlock2){
+                RotateColorBlock2  rotateBlock = (RotateColorBlock2) block;
+                rotateBlock.centerX = x;//-rotateBlock.x;
+                rotateBlock.centerY = y;//-rotateBlock.y;
+                rotateBlock.centerZ = z;//-rotateBlock.z;
+
+            }
         }
     }
 }

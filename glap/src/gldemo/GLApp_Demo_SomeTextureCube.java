@@ -137,7 +137,7 @@ public class GLApp_Demo_SomeTextureCube extends GLApp {
 		IBlock block = new ImageBlock("water",1,false);
 		for (int j = 1; j < 20; j += 2)
 			for (int i = 1; i < 20; i += 2) {
-				block.setCenter(i, 1, j);
+				block.set(i, 1, j);
 				blockRepository.put(block);
 				block.renderCube();
 			}

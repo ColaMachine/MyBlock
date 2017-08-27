@@ -189,7 +189,7 @@ public class ColorBlock extends BaseBlock{
     GL_Vector P7 =new GL_Vector(maxX/beishu, maxY/beishu, minZ/beishu);
     GL_Vector P8 =new GL_Vector(minX/beishu, maxY/beishu, minZ/beishu);
 
-@Override
+@Override//这个方法应该被废弃 p1p2p3p4p5p6p7都应该被废弃 转而使用 points
     public void renderShader(ShaderConfig config , Vao vao ,GL_Matrix rotateMatrix) {
         // Front Face
         FloatBufferWrap floatBuffer = vao.getVertices();
@@ -264,29 +264,15 @@ public class ColorBlock extends BaseBlock{
 
     /**
      * 长长使用再在group中
-     * @param config
-     * @param vao
-     * @param x
-     * @param y
-     * @param z
-     * @param width
-     * @param height
-     * @param thick
-     * @param top
-     * @param bottom
-     * @param left
-     * @param right
-     * @param front
-     * @param back
      */
-    @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x,float y,float z,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
-       // ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
-        ShaderUtils.draw3dColorBox(config, vao, x,y,z,points, BoxModel.dirAry,rf, gf, bf,this.opacity  );
+    @Override //静态方块的绘制
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ,float childWidth,float childHeight,float childThick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
+       //ShaderUtils.draw3dColorBox(config, vao, childX, childY, childZ, new GL_Vector(rf, gf, bf), childWidth, childHeight, childThick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
+        ShaderUtils.draw3dColorBox(config, vao, parentX,parentY,parentZ,points, BoxModel.dirAry,rf, gf, bf,this.opacity  );
 
     }
 
-    @Override
+    @Override  //生物的动画
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
         ShaderUtils.draw3dColorBox(config, vao, childPoints,new GL_Vector(rf, gf, bf),this.opacity);
     }

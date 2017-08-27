@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.RotateColorBlock2;
+
 import cola.machine.game.myblocks.switcher.Switcher;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,10 +12,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -390,6 +393,23 @@ public class CompPanel extends Tab {
         });
 
 
+        final TextField centerXTxt = new TextField() ;
+        final TextField centerYTxt = new TextField() ;
+        final TextField centerZTxt = new TextField() ;
+        selectGrid.add(centerXTxt, 1, 15);
+        selectGrid.add(centerYTxt, 2, 15);
+        selectGrid.add(centerZTxt, 3, 15);
+
+        Button setCenterBtn = new Button("set center");
+
+        setCenterBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.setCenter(Float.valueOf(centerXTxt.getText()),Float.valueOf(centerYTxt.getText()),Float.valueOf(centerZTxt.getText()));
+
+            }
+        });
+        selectGrid.add(setCenterBtn, 0, 16);
         this.setContent(selectGrid);
 
     }

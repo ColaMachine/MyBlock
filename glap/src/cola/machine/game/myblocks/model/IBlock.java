@@ -24,7 +24,7 @@ public interface IBlock {
     public void render();
 	public void renderCube();
 	public void renderColor();
-	public void setCenter(int x,int y,int z);
+	public void set(int x,int y,int z);
 	public int getX();
 	public int getY();
 	public int getZ();

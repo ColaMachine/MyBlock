@@ -296,8 +296,13 @@ public abstract class BaseBlock extends AABB implements IBlock {
 	         GL11.glVertex3f(-1.0f+x,  1.0f+y, -1.0f+z);	// Top Left
 	        GL11.glEnd();
 	}
+    public void set(int x ,int y ,int z ){
+        this.x = x;
+        this.y = y ;
+         this .z = z;
+    }
     //设置中心点
-	public void setCenter(int x,int y,int z){
+	/*public void setCenter(int x,int y,int z){
 		this.x=x;
 		this.y=y;
 		this.z=z;
@@ -306,7 +311,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
 		this.minY=y;
 		this.maxX=x+1;
 		this.maxY=y+1;
-	}
+	}*/
 	@Override
 	public int getX() {
 		// VIP Auto-generated method stub
@@ -482,7 +487,14 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
         }
     }
+    public static void main(String args[]){
+        GL_Matrix rotate = GL_Matrix.translateMatrix(0.5f,0,0.5f);
 
+         rotate = GL_Matrix.multiply(rotate,GL_Matrix.rotateMatrix(0,0*3.14f/2,0));
+        rotate =GL_Matrix.multiply(rotate,GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
+        GL_Vector point = GL_Matrix.multiply(rotate,new GL_Vector(0,0,0.4f));
+        System.out.println(point);
+    }
 
     public void addWidth(float num){
         this.width+=num;
@@ -513,7 +525,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     public  abstract void renderShader(ShaderConfig config , Vao vao , GL_Matrix matrix);
 
-    public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x,float y,float z,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back);
+    public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back);
 
     public static void parse( BaseBlock  block , JSONObject map){
         float x = MapUtil.getFloatValue(map,"x",0f);
@@ -523,9 +535,9 @@ public abstract class BaseBlock extends AABB implements IBlock {
         float width = MapUtil.getFloatValue(map,"width");
         float height = MapUtil.getFloatValue(map,"height");
         float thick = MapUtil.getFloatValue(map,"thick");
-        block.x=(int)x;
-        block.y=(int)y;
-        block.z=(int)z;
+        block.x=x;
+        block.y=y;
+        block.z=z;
         block.width=width;
         block.height=height;
         block.thick =thick;

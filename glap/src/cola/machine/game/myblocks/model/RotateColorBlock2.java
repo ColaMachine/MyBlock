@@ -22,7 +22,9 @@ public class RotateColorBlock2 extends ColorBlock{
     public   float rotateX;
     public float rotateY;
     public float rotateZ;
-
+    public float centerX=0.5f;
+    public float centerY=0.5f;
+    public float centerZ=0.5f;
 
     GL_Vector[] points = BoxModel.getPoint(0,0,0);
     public RotateColorBlock2(float x, float y, float z){
@@ -72,7 +74,9 @@ public class RotateColorBlock2 extends ColorBlock{
         RotateColorBlock2 colorBlock  =new RotateColorBlock2(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
         colorBlock .rotateX= this.rotateX;
         colorBlock .rotateY= this.rotateY;
-
+        colorBlock.centerY = this.centerY;
+        colorBlock.centerX = this. centerX;
+        colorBlock .centerZ = this. centerZ;
         colorBlock .rotateZ= this.rotateZ;
         colorBlock.reCompute();
         return colorBlock;
@@ -90,9 +94,12 @@ public class RotateColorBlock2 extends ColorBlock{
     }
 
     public void reCompute(){
-        points= BoxModel.getSmallPoint(0,0,0,width,height,thick);
-        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0,0,0);
+        points= BoxModel.getSmallPoint(x,y,z,width,height,thick);
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(rotateX,rotateY,rotateZ);
+
+        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-centerX ,-centerY ,-centerZ));
         for(int i=0;i<points.length;i++){
             points[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
         }
@@ -101,26 +108,13 @@ public class RotateColorBlock2 extends ColorBlock{
 
     /**
      * 长长使用再在group中
-     * @param config
-     * @param vao
-     * @param x
-     * @param y
-     * @param z
-     * @param width
-     * @param height
-     * @param thick
-     * @param top
-     * @param bottom
-     * @param left
-     * @param right
-     * @param front
-     * @param back
+
      */
     @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float x, float y, float z, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
+    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
         //ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
 
-        ShaderUtils.draw3dColorBox(config, vao,x,y,z, this.points,BoxModel.dirAry,  rf, gf, bf,this.opacity);
+        ShaderUtils.draw3dColorBox(config, vao,parentX,parentY,parentZ, this.points,BoxModel.dirAry,  rf, gf, bf,this.opacity);
 
     }
 

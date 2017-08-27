@@ -258,6 +258,28 @@ public class BlockPanel extends Tab {
         selectGrid.add(imageBlockBtn, 2, 14);
         selectGrid.add(danweiText, 0, 15);
         danweiText.setText("1");
+
+
+
+        final TextField centerXTxt = new TextField() ;
+        final TextField centerYTxt = new TextField() ;
+        final TextField centerZTxt = new TextField() ;
+        selectGrid.add(centerXTxt, 0, 16);
+        selectGrid.add(centerYTxt, 1, 16);
+        selectGrid.add(centerZTxt, 2, 16);
+
+        Button setCenterBtn = new Button("set center");
+
+        setCenterBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.setCenter(Float.valueOf(centerXTxt.getText()),Float.valueOf(centerYTxt.getText()),Float.valueOf(centerZTxt.getText()));
+
+            }
+        });
+        selectGrid.add(setCenterBtn, 3, 16);
+
+
         rotatexMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

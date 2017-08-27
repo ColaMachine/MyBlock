@@ -201,7 +201,7 @@ public class ChunkImpl implements Chunk {
             //if (realId ==ItemType.wood_door.id ) {
                 //IBlock block = blockManager.getBlock(realId).clone();
                 block.setValue(blockId);
-                block.setCenter(x,y,z);
+                block.set(x,y,z);
                 block.setChunk(this);
                 blockMap.put(blockData.getIndex(x, y, z), block);
 
