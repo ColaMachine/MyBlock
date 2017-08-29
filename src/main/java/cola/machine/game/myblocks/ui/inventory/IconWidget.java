@@ -1,0 +1,205 @@
+/*
+ * Copyright (c) 2008-2011, Matthias Mann
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Matthias Mann nor the names of its contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package cola.machine.game.myblocks.ui.inventory;
+
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.skill.SkillDefinition;
+import com.dozenx.game.engine.item.bean.ItemBean;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
+import de.matthiasmann.twl.Label;
+import de.matthiasmann.twl.ParameterMap;
+import de.matthiasmann.twl.Widget;
+import de.matthiasmann.twl.renderer.Image;
+
+/**
+ *
+ * @author Matthias Mann
+ */
+public class IconWidget extends Widget {
+    public int type ;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public SkillDefinition getSkillDefinition() {
+        return skillDefinition;
+    }
+
+    public void setSkillDefinition(SkillDefinition skillDefinition) {
+        this.skillDefinition = skillDefinition;
+    }
+
+    private ItemDefinition itemCfg;
+    private SkillDefinition skillDefinition;
+
+
+    private ItemBean itemBean;
+
+    private Image icon;
+
+    private  TextureInfo icon2;
+
+    private Label label;
+
+
+    private ParameterMap icons;
+
+    public IconWidget(ItemBean itemBean) {
+        this.itemBean = itemBean;
+       // label =new Label();
+      // label.setText(""+itemBean.getNum());
+       // add(label);
+        //label.setPosition(30,30);
+        icon2=itemBean.getItemDefinition().getItemModel().getIcon();
+        if(icon2==  null){
+            assert icon2!=null;
+        }
+        this.itemCfg =itemBean.getItemDefinition();
+        if(itemCfg==  null) {
+            assert this.itemCfg!=null;
+        }
+    }
+    public IconWidget(SkillDefinition skillDefinition) {
+        this.skillDefinition=skillDefinition;
+        // label =new Label();
+        // label.setText(""+itemBean.getNum());
+        // add(label);
+        //label.setPosition(30,30);
+       // icon2= TextureManager.getItemCfg(skillDefinition.getIcon().getName()).getIcon();
+        if(icon2==  null){
+            assert icon2!=null;
+        }
+        this.itemCfg = itemBean.getItemDefinition();
+        if(itemCfg==  null) {
+            assert this.itemCfg!=null;
+        }
+    }
+    public int getNum(){
+        return itemBean.getNum();
+    }
+    public void  setNum(int num){
+        this.itemBean.setNum(num);
+    }
+    public String getItem() {
+        return itemBean.getItemDefinition().getName();
+    }
+
+    public void setItem(ItemBean itemBean) {
+        this.itemBean = itemBean;
+        findIcon();//根据name 查找
+    }
+
+
+
+
+    public Image getIcon() {
+        return icon;
+    }
+    public TextureInfo getIcon2() {
+        return icon2;
+    }
+/*    public void setIcon(Image icon) {
+        this. icon=icon;
+    }*/
+    public void setIcon(TextureInfo icon) {
+        this. icon2=icon;
+    }
+
+  //  @Override//静态绘制
+   /* protected void paintWidget(GUI gui) {
+
+            //icon.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            icon2.draw(getAnimationState(), getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+            //font.drawText(getAnimationState(),getInnerX()+15,getInnerY()+15,num+"");
+
+    }*/
+
+
+    //@Override
+  /*  protected void applyTheme(ThemeInfo themeInfo) {
+        super.applyTheme(themeInfo);
+        icons = themeInfo.getParameterMap("icons");
+*//*
+        findIcon();*//*
+      //  this.setBackground(icon);
+    }*/
+    
+    private void findIcon() {
+        if(itemBean == null || icons == null) {
+            icon2 = null;
+        } else {
+            //icon2= itemBean.getName();
+            //icon = icons.getImage(itemBean.getName());
+            //icon = icons.getImage(itemBean.getName());
+        }
+    }
+
+
+    public ItemDefinition getItemCfg() {
+        return itemCfg;
+    }
+
+    public void setItemCfg(ItemDefinition itemCfg) {
+        this.itemCfg = itemCfg;
+    }
+
+    public ItemBean getItemBean() {
+        return itemBean;
+    }
+
+    public void setItemBean(ItemBean itemBean) {
+        this.itemBean = itemBean;
+    }
+
+ /*   public void setIcon2(TextureInfo icon2) {
+        this.icon2 = icon2;
+    }*/
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    public ParameterMap getIcons() {
+        return icons;
+    }
+
+    public void setIcons(ParameterMap icons) {
+        this.icons = icons;
+    }
+}

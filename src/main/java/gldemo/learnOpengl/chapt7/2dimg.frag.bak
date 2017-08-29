@@ -1,0 +1,28 @@
+#version 330 core
+in vec2 TexCoord;
+
+
+in vec4 ourcolor;
+ in float ourTextureIndex;
+out vec4 color;
+#define NR_POINT_LIGHTS 4
+uniform sampler2D ourTextures[NR_POINT_LIGHTS];
+void main()
+{
+    if(ourTextureIndex==-1){
+        color = ourcolor;
+       // color = vec4(0,00,0,0.3);
+    }else {
+
+  color =texture(ourTextures[int(ourTextureIndex)], TexCoord);
+
+
+           
+
+    }
+
+
+    if(color.a<0.1)
+    discard;
+
+}

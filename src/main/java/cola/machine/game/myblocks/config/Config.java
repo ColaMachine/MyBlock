@@ -1,0 +1,266 @@
+/*
+ * Copyright 2013 MovingBlocks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package cola.machine.game.myblocks.config;
+
+import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.SimpleUri;
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.entitySystem.Component;
+import cola.machine.game.myblocks.input.Input;
+import cola.machine.game.myblocks.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
+import cola.machine.game.myblocks.utilities.gson.InputHandler;
+import cola.machine.game.myblocks.utilities.gson.SetMultimapTypeAdapter;
+import cola.machine.game.myblocks.utilities.gson.UriTypeAdapterFactory;
+import com.google.common.collect.Maps;
+import com.google.common.collect.SetMultimap;
+import com.google.gson.*;
+import org.lwjgl.opengl.PixelFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+
+//import org.terasology.naming.Name;
+//import org.terasology.naming.Version;
+//import org.terasology.naming.gson.NameTypeAdapter;
+//import org.terasology.naming.gson.VersionTypeAdapter;
+
+/**
+ * Terasology user config. Holds the various global configuration information that the user can modify. It can be saved
+ * and loaded in a JSON format.
+ *
+ * @author Immortius
+ */
+public final class Config {
+    private static final Logger logger = LoggerFactory.getLogger(Config.class);
+
+    private SystemConfig system = new SystemConfig();
+    private PlayerConfig player = new PlayerConfig();
+    private InputConfig input = new InputConfig();
+    private AudioConfig audio = new AudioConfig();
+    private RenderingConfig rendering = new RenderingConfig();
+    private ModuleConfig defaultModSelection = new ModuleConfig();
+    private WorldGenerationConfig worldGeneration = new WorldGenerationConfig();
+    private Map<SimpleUri, Map<String, JsonElement>> moduleConfigs = Maps.newHashMap();
+    private NetworkConfig network = new NetworkConfig();
+    private SecurityConfig security = new SecurityConfig();
+
+    /**
+     * Create a new, empty config
+     */
+    public Config() {
+    }
+
+    /**
+     * @return Input configuration (mostly binds)
+     */
+    public InputConfig getInput() {
+        return input;
+    }
+
+    public ModuleConfig getDefaultModSelection() {
+        return defaultModSelection;
+    }
+
+    public NetworkConfig getNetwork() {
+        return network;
+    }
+
+    public PlayerConfig getPlayer() {
+        return player;
+    }
+
+    public AudioConfig getAudio() {
+        return audio;
+    }
+
+    public SystemConfig getSystem() {
+        return system;
+    }
+//
+    public RenderingConfig getRendering() {
+        return rendering;
+    }
+
+    public WorldGenerationConfig getWorldGeneration() {
+        return worldGeneration;
+    }
+
+    public SecurityConfig getSecurity() {
+        return security;
+    }
+
+    /**
+     * Saves this config to the default configuration file
+     */
+    public void save() {
+        try {
+            save(getConfigFile(), this);
+        } catch (IOException e) {
+            logger.error("Failed to save config", e);
+        }
+    }
+
+    /**
+     * @return The default configuration file location
+     */
+    public static Path getConfigFile() {
+        return PathManager.getInstance().getHomePath().resolve("config").resolve("config.cfg");
+    }
+
+    /**
+     * Saves a Config to a file, in a JSON format
+     *
+     * @param toFile
+     * @param config
+     * @throws IOException
+     */
+    public static void save(Path toFile, Config config) throws IOException {
+        try (BufferedWriter writer = Files.newBufferedWriter(toFile, Constants.CHARSET)) {
+            createGson().toJson(config, writer);
+        }
+    }
+
+    /**
+     * Loads a JSON format configuration file as a new Config
+     *
+     * @param fromFile
+     * @return The loaded configuration
+     * @throws IOException
+     */
+    public static Config load(Path fromFile) throws IOException {
+        logger.info("Reading config file {}", fromFile);
+        try (Reader reader = Files.newBufferedReader(fromFile, Constants.CHARSET)) {
+            Gson gson = createGson();
+            JsonElement baseConfig = gson.toJsonTree(new Config());
+            JsonParser parser = new JsonParser();
+            JsonElement config = parser.parse(reader);
+            if (!config.isJsonObject()) {
+                return new Config();
+            } else {
+                merge(baseConfig.getAsJsonObject(), config.getAsJsonObject());
+                return gson.fromJson(baseConfig, Config.class);
+            }
+        } catch (JsonParseException e) {
+            throw new IOException("Failed to load config", e);
+        }
+    }
+//
+    protected static Gson createGson() {
+        return new GsonBuilder()//deserialize 是从config to class serialize是从class to config
+                /*.registerTypeAdapter(Name.class, new NameTypeAdapter())//if the variable instance of name then the value process by nametype adpter
+                .registerTypeAdapter(Version.class, new VersionTypeAdapter())*/
+                .registerTypeAdapter(BindsConfig.class, new BindsConfig.Handler())
+                .registerTypeAdapter(SetMultimap.class, new SetMultimapTypeAdapter<>(Input.class))
+                .registerTypeAdapter(SecurityConfig.class, new SecurityConfig.Handler())
+                .registerTypeAdapter(Input.class, new InputHandler())
+                .registerTypeAdapter(PixelFormat.class, new PixelFormatHandler())
+                .registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
+                .registerTypeAdapterFactory(new UriTypeAdapterFactory())
+                .setPrettyPrinting().create();
+    }
+
+    private static Gson createGsonForModules() {
+        return new GsonBuilder().
+               registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory())
+                .registerTypeAdapterFactory(new UriTypeAdapterFactory())
+                .setPrettyPrinting().create();
+    }
+
+    private static void merge(JsonObject target, JsonObject from) {
+        for (Map.Entry<String, JsonElement> entry : from.entrySet()) {
+            if (entry.getValue().isJsonObject()) {
+                if (target.has(entry.getKey()) && target.get(entry.getKey()).isJsonObject()) {
+                    merge(target.get(entry.getKey()).getAsJsonObject(), entry.getValue().getAsJsonObject());
+                } else {
+                    target.remove(entry.getKey());
+                    target.add(entry.getKey(), entry.getValue());
+                }
+            } else {
+                target.remove(entry.getKey());
+                target.add(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    /**
+     * @param uri the uri to look uo
+     * @return a set that contains all keys for that uri, never <code>null</code>
+     */
+    public Set<String> getModuleConfigKeys(SimpleUri uri) {
+        Map<String, JsonElement> map = moduleConfigs.get(uri);
+        if (map == null) {
+            return Collections.emptySet();
+        }
+        return Collections.unmodifiableSet(map.keySet());
+    }
+
+    /**
+     * @param uri   the uri to look up
+     * @param key   the look-up key
+     * @param clazz the class to convert the data to
+     * @return a config component for the given uri and class or <code>null</code>
+     */
+    public <T extends Component> T getModuleConfig(SimpleUri uri, String key, Class<T> clazz) {
+        Map<String, JsonElement> map = moduleConfigs.get(uri);
+        if (map == null) {
+            return null;
+        }
+
+        JsonElement element = map.get(key);
+        Gson gson = createGsonForModules();
+        return gson.fromJson(element, clazz);
+    }
+
+    /**
+     * @param generatorUri the generator Uri
+     * @param configs      the new config params for the world generator
+     */
+    public void setModuleConfigs(SimpleUri generatorUri, Map<String, Component> configs) {
+        Gson gson = createGsonForModules();
+        Map<String, JsonElement> map = Maps.newHashMap();
+        for (Map.Entry<String, Component> entry : configs.entrySet()) {
+            JsonElement json = gson.toJsonTree(entry.getValue());
+            map.put(entry.getKey(), json);
+        }
+        this.moduleConfigs.put(generatorUri, map);
+    }
+
+    private static class PixelFormatHandler implements JsonSerializer<PixelFormat>, JsonDeserializer<PixelFormat> {
+
+        @Override
+        public PixelFormat deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber()) {
+                return new PixelFormat().withDepthBits(json.getAsInt());
+            }
+            return new PixelFormat().withDepthBits(24);
+        }
+
+        @Override
+        public JsonElement serialize(PixelFormat src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.getDepthBits());
+        }
+    }
+}

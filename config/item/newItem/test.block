@@ -1,0 +1,2 @@
+{id:57,name:'test',type:'block',remark:'test',script:'def var="hello world"
+println var',live:'false',remark:'test',shape:{name:'test',blocktype:'colorblock',width:1.0,height:1.0,thick:1.0,x:36.0,y:0.0,z:25.0,r:0.0,g:0.0,b:0.0,a:1.0,points:[{"x":0,"y":0,"z":1},{"x":1,"y":0,"z":1},{"x":1,"y":0,"z":0},{"x":0,"y":0,"z":0},{"x":0,"y":1,"z":1},{"x":1,"y":1,"z":1},{"x":1,"y":1,"z":0},{"x":0,"y":1,"z":0}],},baseon:'mantle'}

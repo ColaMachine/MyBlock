@@ -206,3 +206,11 @@ cmd: boxopencmd箱子状态命令 boxItemcmd 箱子物品请求命令
 拟减少 限制getBlock的使用
 esc的时候关闭所有的窗口
 
+2017年8月28日19:18:35
+增加script 支持 在edit编辑器中增加script 脚本输入 并把他的的属性写进group中
+现在把script 写在了itemDefinition里了 那么就必须有一个东西要做 就是把实体
+增加animation 的名称输入框 colorgroup增加animationmap 增加保存按钮 把当前的animation存入到map中 脚本响应后 放入一个map中
+程序获取到脚本处理结果 把当前的animation 调整到对应的map中的值 并修改block的一些属性.
+
+
+
