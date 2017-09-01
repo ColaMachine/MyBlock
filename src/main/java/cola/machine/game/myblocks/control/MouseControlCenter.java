@@ -23,6 +23,7 @@ import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.util.MathUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
@@ -234,7 +235,7 @@ public class MouseControlCenter {
             key= WalkCmd.STOP;
         }
 
-        if(TimeUtil.getNowMills() - lastkeyPressTime>500 || key!=lastKey  || player.isDirChanged()){
+        if((key!=0 && TimeUtil.getNowMills() - lastkeyPressTime>500 )|| key!=lastKey  || player.isDirChanged()){
             lastKey= key;
             player.setDirChanged(false);
             //walkCmd.dir = key;
@@ -664,6 +665,18 @@ public class MouseControlCenter {
         mouseRightPressed=true;
         prevMouseX=x;
         prevMouseY=y;
+        
+        //选中xz平面
+        
+        GL_Vector from = GamingState.instance.camera.Position;
+        GL_Vector viewDir =  OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,y);
+
+        float weizhi = -from.y/viewDir.y;
+       int  curentX=(int)(from.x+weizhi*viewDir.x);
+        int curentZ= (int)(from.z+weizhi*viewDir.z);
+        
+        GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
+        
     }
     /**
      * gaming state 调用

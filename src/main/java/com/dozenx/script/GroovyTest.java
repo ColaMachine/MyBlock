@@ -4,6 +4,9 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 
 import java.util.Date;
+import java.util.HashMap;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * Created by dozen.zhang on 2017/8/28.
@@ -31,6 +34,13 @@ public class GroovyTest {
         //String joinString = (String)shell.evaluate("if(penetrate){retrun \"{state:'open'}}\";} else {  return \"{state:'close'}\";}");
         Object joinString = shell.evaluate("if(penetrate){return \"{state:'open'}}\";} else {  return \"{state:'close'}\";}");
         System.out.println("Array join:" + joinString);
+        HashMap<String ,String > map = new HashMap();
+        map.put("test", "if(penetrate){\r\n"+
+"return \"{state:'open'}}\";"+
+"} else {  "+
+"return \"{state:'\")");
+        
+        System.out.println(JSON.toJSONString(map));
         shell = null;
         binding = null;
     }

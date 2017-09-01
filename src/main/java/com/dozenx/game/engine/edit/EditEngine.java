@@ -14,6 +14,7 @@ import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.ChunkConstants;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import com.alibaba.fastjson.JSON;
@@ -31,6 +32,7 @@ import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.MathUtil;
 import core.log.LogUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector2f;
@@ -110,7 +112,9 @@ public class EditEngine {
 
         for(int i=0;i<colorBlockList.size();i++){
             BaseBlock colorBlock = colorBlockList.get(i);
-              colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
+            GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
+            colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(), matrx, colorBlock.points);
+            // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
         }
         if(startPoint!=null){
 
@@ -1123,7 +1127,7 @@ public class EditEngine {
         if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
             ColorGroup group = (ColorGroup) selectBlockList.get(0);
             ColorGroup newGroup =group.copy();
-            newGroup .animations.clear();
+            newGroup .animations=null;
 
             group.animations.add(newGroup);
         }
@@ -1251,13 +1255,13 @@ public class EditEngine {
        .append("name:'").append(name).append("',")
                 .append("type:'").append("block").append("',")
                 .append("remark:'").append(name).append("',")
-                .append("script:'").append(script).append("',")
+                .append("script:'").append(script.replaceAll("\"","\\\\\"").replaceAll("'","\\\\\'").replaceAll("\r\n", "")).append("',")
                 .append("live:'").append(live).append("',")
                 .append("remark:'").append(name).append("',")
                 .append("shape:").append(selectBlock.toString()).append(",")
                 .append("baseon:'mantle'").append("}");
 
-
+        
 
         try {
 
@@ -1267,7 +1271,7 @@ public class EditEngine {
 
             ItemManager.putItemDefinition(itemDef.getName(), itemDef);
 
-            FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve(name+".block").toFile(),sb.toString());
+            FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve(id+"_"+name+".block").toFile(),sb.toString());
             colorGroupHashMap.put(name,selectBlock);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1384,6 +1388,7 @@ public class EditEngine {
             cmd.cz = offsetZ;
             cmd.cy = worldY;
             cmd.type = 1;
+            cmd.dir=colorBlock.dir;
             cmd.blockType = id;
             client.send(cmd);
 
@@ -1424,11 +1429,11 @@ public class EditEngine {
 
         TeraArray data= chunk.getBlockData();
         List<Integer> arr = new ArrayList<>();
-        for(int x =0;x<16;x++){
+        for(int x =0;x<ChunkConstants.SIZE_X;x++){
 
-            for(int y =0;y<128;y++){
+            for(int y =0;y<ChunkConstants.SIZE_Y;y++){
 
-                for(int z =0;z<16;z++){
+                for(int z =0;z<ChunkConstants.SIZE_Z;z++){
                     int value = chunk.getBlockData(x,y,z);
                     //x<<12 && y<<8&& z <<4 && value
                     if(value>0){

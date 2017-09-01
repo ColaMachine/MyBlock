@@ -2349,6 +2349,30 @@ try {
 
         }
     }
+    
+    
+    public static void draw3dColorBox(ShaderConfig config, Vao vao,GL_Matrix matrix, GL_Vector[] points, GL_Vector color, float alpha) {
+        GL_Vector[] newPoints = new GL_Vector[8];
+        for(int i =0 ;i<8;i++){
+            newPoints[i]=GL_Matrix.multiply(matrix,points[i]);
+        }
+       
+        FloatBufferWrap veticesBuffer = vao.getVertices();
+        int[][] faceAry = BoxModel.facesAry;
+        GL_Vector[] dirAry = BoxModel.dirAry;
+        for(int i=0;i<6;i++){
+            int[] faceAry2 = faceAry[i];
+
+            veticesBuffer.put(newPoints[faceAry2[0]].x).put(newPoints[faceAry2[0]].y).put(newPoints[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[1]].x).put(newPoints[faceAry2[1]].y).put(newPoints[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[2]].x).put(newPoints[faceAry2[2]].y).put(newPoints[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[3]].x).put(newPoints[faceAry2[3]].y).put(newPoints[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+
+            veticesBuffer.put(newPoints[faceAry2[0]].x).put(newPoints[faceAry2[0]].y).put(newPoints[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[2]].x).put(newPoints[faceAry2[2]].y).put(newPoints[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+
+        }
+    }
 
     /**
      * this function is for terrain draw

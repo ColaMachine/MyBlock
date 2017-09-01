@@ -1,5 +1,6 @@
 package com.dozenx.game.network.server.handler;
 
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;
@@ -37,6 +38,7 @@ public class ChunkHandler extends GameServerHandler {
             ChunkResponseCmd cmd = (ChunkResponseCmd) request.getCmd();
             Chunk chunk = chunkProvider.getChunk(cmd.chunk.getPos().x,cmd.chunk.getPos().y,cmd.chunk.getPos().z);
             chunk.setBlockData( cmd.chunk.getBlockData());
+            //怎么保存呢这是个问题啊
             broadCast(cmd);
         }else {
             ChunkRequestCmd cmd = (ChunkRequestCmd) request.getCmd();
@@ -53,11 +55,17 @@ public class ChunkHandler extends GameServerHandler {
             } else if (cmd.type == 1 || cmd.type == 2) {// 增加方块 或者 删除方块
                 LogUtil.println("服务器加载chunk:" + cmd.x + "," + cmd.z + "" + "cmd.cx" + cmd.cx + "cmd.cz" + cmd.cz + "blockid" + cmd.blockType);
                 chunk.setBlock(cmd.cx, cmd.cy, cmd.cz, cmd.blockType);
+                if(cmd.dir>0){
+                BaseBlock baseBlock = (BaseBlock)chunk.getBlock(cmd.cx, cmd.cy, cmd.cz);
+                baseBlock.dir=cmd.dir;
+                }
                 if (cmd.blockType == ItemType.tree_seed.id) {
                     ItemSeed itemSeed = new ItemSeed();
                     itemSeed.setPosition(new GL_Vector(cmd.x * 16 + cmd.cx, cmd.cy, cmd.z * 16 + cmd.cz));
                     itemSeed.setPlantedTime(TimeUtil.getNowMills());
                     ServerGrowTask.seeds.add(itemSeed);
+                    //单独放一个文件 放置文件对应的xyz对应的status 序列化到文件里 这个文件的  对象是 blockstatus  dir status rotate 以后慢慢扩充吧 但是 加载后放到哪里呢放到chunkimpl里单独一个map么?那游戏里怎么办  也照样是一个
+                    //map <Integer , blockstatus> ?? 
                 }
                 broadCast(cmd);
             }

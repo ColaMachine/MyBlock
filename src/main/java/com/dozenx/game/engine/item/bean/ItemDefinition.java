@@ -325,6 +325,14 @@ public class ItemDefinition implements Cloneable{
                 if(block instanceof ColorGroup){
                     ColorGroup colorGroup = (ColorGroup)block;
                     colorGroup.animations = colorGroup.animationMap.get(state);
+                    colorGroup.play();
+                    
+                }
+            }
+            Object penetration = resultMap.get("penetrate");
+            if(penetration!=null){
+                if(block instanceof ColorGroup){
+                    block.penetration=(Boolean)penetration;
                     
                 }
             }

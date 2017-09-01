@@ -656,7 +656,7 @@ public class ColorGroup extends BaseBlock {
     }
 
     public boolean play() {
-
+        nowIndex=0;
         play = !play;
         return play;
 
@@ -820,7 +820,7 @@ public class ColorGroup extends BaseBlock {
                 .append("width:").append(this.width).append(",").append("height:").append(this.height).append(",")
                 .append("thick:").append(this.thick).append(",").append("x:").append(this.x).append(",").append("y:")
                 .append(this.y).append(",").append("z:").append(this.z).append(",")
-
+                .append("dir:").append(this.dir).append(",")
                 .append("xoffset:").append(xoffset).append(",").append("yoffset:").append(yoffset).append(",")
                 .append("zoffset:").append(zoffset).append(",").append("xzoom:").append(xzoom).append(",")
                 .append("yzoom:").append(yzoom).append(",").append("zzoom:").append(zzoom).append(",").append("live:")
@@ -872,7 +872,7 @@ public class ColorGroup extends BaseBlock {
                 List<ColorGroup> list = entry.getValue();
                 for(ColorGroup colorGroup : list){
                    
-                      
+                        //ColorGroup colorGroup = (ColorGroup)block;
                         colorGroup .animations=null;
                         colorGroup.animationMap = null;
                         
@@ -984,7 +984,7 @@ public class ColorGroup extends BaseBlock {
 
     public void rotateY(float value) {
         // adjustRotateY(value);
-        super.rotateY(value);
+        super.rotateY(value);//baseblock的调整方向都是顺时针90度的
     }
 
     public void rotateZ(float value) {
@@ -1048,12 +1048,15 @@ public class ColorGroup extends BaseBlock {
                     BaseBlock block = animations.get(nowIndex).colorBlockList.get(i);
                     float[] info = getChildBlockRelativePosition(block, x, y, z);
                     // GL
-                    GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0], info[1], info[2], info[3], info[4],
+                   /* GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0], info[1], info[2], info[3], info[4],
                             info[5]);
                     for (int k = 0; k < childPoints.length; k++) {
                         childPoints[k] = GL_Matrix.multiply(matrix, childPoints[k]);
-                    }
-                    block.renderShaderInGivexyzwht(config, vao, matrix, childPoints);
+                    }*/
+                    //block.reComputePoints();
+                    //block.reComputePoints(matrix);
+                  // this.reComputePoints();
+                    block.renderShaderInGivexyzwht(config, vao, matrix, block.points);
                     // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,
                     // ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom,
                     // new GL_Vector(colorBlock.rf, colorBlock.gf,
@@ -1126,21 +1129,26 @@ public class ColorGroup extends BaseBlock {
         //
         // }
     }
+    //recompute 传入transformmatrix 计算points
+    //渲染的时候根据points 渲染
 
     @Override // 再editegine中绘制 或者真实环境中需要用到
     public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom,
             boolean left, boolean right, boolean front, boolean back) {
+//GL_Matrix matrix =GL_Matrix.translateMatrix(x, y, z);
 
-        // this.reComputePoints();
-
-        // 每隔1秒展示下一个动画
+GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(x+width/2,y,z+thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
         if (animations.size() > 0) {
             if (play) {// 正常播放
-                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {
+                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {//这里的需求是动画按照正常流转 运行到最后一帧的时候保持最后一帧的状态 并且不动了 等待下一次动画的唤起
                     lastAnimationTime = TimeUtil.getNowMills();
                     nowIndex++;
                     if (nowIndex > animations.size() - 1) {
                         nowIndex = 0;
+                        play=false;
+                        this.colorBlockList =  animations.get(animations.size() - 1).colorBlockList;
+                        return ;
+                       
                     }
 
                 }
@@ -1148,15 +1156,10 @@ public class ColorGroup extends BaseBlock {
 
                 for (int i = 0; i < animations.get(nowIndex).colorBlockList.size(); i++) {
                     BaseBlock block = animations.get(nowIndex).colorBlockList.get(i);
+                    //System.out.println(nowIndex);
                     float[] info = getChildBlockPosition(block, x, y, z);
-                    block.renderShaderInGivexyzwht(config, vao, x, y, z, info[0], info[1], info[2], info[3], info[4],
-                            info[5], top, bottom, left, right, front, back);
-                    // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,
-                    // ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom,
-                    // new GL_Vector(colorBlock.rf, colorBlock.gf,
-                    // colorBlock.bf), colorBlock.width/xzoom,
-                    // colorBlock.height/yzoom, colorBlock.thick/zzoom,
-                    // colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
+                    block.renderShaderInGivexyzwht(config, vao,  matrix,block.points);
+                   
 
                 }
                 return;
@@ -1178,40 +1181,11 @@ public class ColorGroup extends BaseBlock {
             BaseBlock block = colorBlockList.get(i);
             // colorBlock.update();
             float[] info = this.getChildBlockPosition(block, x, y, z);
+            block.reComputePoints();
+            block.renderShaderInGivexyzwht(config, vao,matrix, block.points);
 
-            block.renderShaderInGivexyzwht(config, vao, x, y, z, info[0], info[1], info[2], info[3], info[4], info[5],
-                    top, bottom, left, right, front, back);
-
-            // block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back
-            // );
-            // block.renderShader(config,vao,x,y,z );
-            // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,
-            // ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new
-            // GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf),
-            // info[3],info[4],info[5],
-            // colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
 
         }
-        //
-        //
-        // for(int i=0;i<colorBlockList.size();i++){
-        // BaseBlock block = colorBlockList.get(i);
-        // // colorBlock.update();
-        // float[] info =this.getChildBlockPosition(block,x,y,z);
-        //
-        // block.renderShaderInGivexyzwht(config,vao,info[0],info[1],info[2],info[3],info[4],info[5],top,bottom,left,right,front,back
-        // );
-        //
-        // //colorBlock.update(info[0],info[1],info[2],
-        // info[3],info[4],info[5]);
-        //
-        // //ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,
-        // ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new
-        // GL_Vector(colorBlock.rf, colorBlock.gf, colorBlock.bf),
-        // info[3],info[4],info[5],
-        // colorBlock.opacity/*selectBlockList.size()>0?0.5f:1*/);
-        //
-        // }
     }
 
     @Override
@@ -1223,25 +1197,75 @@ public class ColorGroup extends BaseBlock {
 
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+        if (animations.size() > 0) {
+            if (play) {// 正常播放
+                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {//这里的需求是动画按照正常流转 运行到最后一帧的时候保持最后一帧的状态 并且不动了 等待下一次动画的唤起
+                    lastAnimationTime = TimeUtil.getNowMills();
+                    nowIndex++;
+                    if (nowIndex > animations.size() - 1) {
+                        nowIndex = 0;
+                        play=false;
+                        this.colorBlockList =  animations.get(animations.size() - 1).colorBlockList;
+                        return ;
+                       
+                    }
 
+                }
+                // animations.get(nowIndex).update();
+
+                for (int i = 0; i < animations.get(nowIndex).colorBlockList.size(); i++) {
+                    BaseBlock block = animations.get(nowIndex).colorBlockList.get(i);
+                    //System.out.println(nowIndex);
+                    float[] info = getChildBlockPosition(block, x, y, z);
+                    block.renderShaderInGivexyzwht(config, vao,  matrix,block.points);
+                   
+
+                }
+                return;
+            } /* else { */// 现实帧
+            // 如果停止了播放就显示blockList中的内容
+            /*
+             * animations.get(nowIndex).update(); return;
+             */
+            /* } */
+        }
+        for (int i = 0; i < selectBlockList.size(); i++) {
+            BaseBlock colorBlock = selectBlockList.get(i);
+            float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao(),
+                    info[0], info[1], info[2], info[3], info[4], info[5]);
+        }
+
+        for (int i = 0; i < colorBlockList.size(); i++) {
+            BaseBlock block = colorBlockList.get(i);
+            // colorBlock.update();
+            float[] info = this.getChildBlockPosition(block, x, y, z);
+            
+            block.renderShaderInGivexyzwht(config, vao,matrix, block.points);
+
+
+        }
     }
 
     public void reComputePoints() {
         this.points = BoxModel.getSmallPoint(0, 0, 0, width, height, thick);
 
         GL_Matrix rotateMatrix = GL_Matrix.multiply(
-                GL_Matrix.translateMatrix(xoffset + width / 2, yoffset, zoffset + thick / 2),
+                GL_Matrix.translateMatrix(xoffset + 1f/ 2, yoffset, zoffset + 1f/ 2),
                 GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 / xzoom, 1 / yzoom, 1 / zzoom));
-        rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-width / 2, 0, -thick / 2));
+        rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-1f/ 2, 0, -1f/ 2));
 
-        for (int i = 0; i < points.length; i++) {
+        /*for (int i = 0; i < points.length; i++) {
             points[i] = GL_Matrix.multiply(rotateMatrix, points[i]);
-            /*
+            
+            
              * points[i].x+=width/2; points[i].z+=thick/2;
-             */
-        }
-
+             
+        }*/
+        /*float tempthick =thick;
+        thick=width;
+        width = tempthick;*/
         for (BaseBlock block : colorBlockList) {
             // float[] info = this.getChildBlockRelativePosition(block,x,y,z);
             block.reComputePoints(rotateMatrix);
@@ -1252,6 +1276,24 @@ public class ColorGroup extends BaseBlock {
                 // this.getChildBlockRelativePosition(block,x,y,z);
                 block.reComputePoints();
                 block.dir = this.dir;
+            }
+        }
+        
+        
+        if (animationMap != null) {
+            for (Map.Entry<String, List<ColorGroup>> entry : animationMap.entrySet()) {
+             
+                List<ColorGroup> list = entry.getValue();
+                for(ColorGroup colorGroup : list){
+                        colorGroup.dir = this.dir;
+                        colorGroup.reComputePoints();
+                        
+                        
+                        
+                   
+                }
+              
+
             }
         }
     }

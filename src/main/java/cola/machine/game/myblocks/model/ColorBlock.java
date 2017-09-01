@@ -269,7 +269,9 @@ public class ColorBlock extends BaseBlock{
 
     @Override  //生物的动画
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-        ShaderUtils.draw3dColorBox(config, vao, childPoints,new GL_Vector(rf, gf, bf),this.opacity);
+        
+        
+        ShaderUtils.draw3dColorBox(config, vao, matrix ,childPoints,new GL_Vector(rf, gf, bf),this.opacity);
     }
 
     /**

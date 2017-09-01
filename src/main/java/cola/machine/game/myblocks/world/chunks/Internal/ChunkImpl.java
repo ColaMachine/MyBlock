@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.CopyBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -47,6 +48,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChunkImpl implements Chunk {
     int currentBlockType = 0;
@@ -61,6 +63,9 @@ public class ChunkImpl implements Chunk {
     public IntBuffer normalizes = BufferUtils.createIntBuffer(4);
     List<BaseBlock> animationBlock = new ArrayList<>();
     HashMap<Integer,IBlock> blockMap =new HashMap<>();//this map store the block has state
+    
+   // HashMap<Integer,BlockStatus> blockStatusMap =new HashMap<>();//this map store the block has state
+    
     //public FloatBuffer veticesBuffer = BufferUtils.createFloatBuffer(196608);
     public ChunkImpl(Vector3i chunkPos) {
         this(chunkPos.x, chunkPos.y, chunkPos.z);
@@ -143,43 +148,31 @@ public class ChunkImpl implements Chunk {
 
     @Override//返回原来的block 类型id  设置当前的block进入数据数组
     public IBlock setBlock(int x, int y, int z, IBlock block) {
-        //int oldValue = blockData.set(x, y, z, block.getId());
 
-        this.setBlock(x,y,z,block.getId());
-       // if (oldValue != block.getId()) {
-            /*
-			 * if (!block.isLiquid()) { setLiquid(x, y, z, new LiquidData()); }
-			 */
-       // }
-        return null;//blockManager.getBlock((short) oldValue);
-    }
-
-    @Override//返回原来的block 类型id  设置当前的block进入数据数组
-    public void setBlock(int x, int y, int z, Integer blockid) {
-        int oldValue = blockData.set(x, y, z, blockid);
-
-        IBlock block = blockManager.getBlock(blockid);
-        if(block instanceof ColorGroup){
-            ColorGroup group  = (ColorGroup) block;
-            if(group.animations!=null  && group.animations.size() > 0){
-                animationBlock.add(group);
+try {
+            
+            
+  /*  
+    BaseBlock baseBlock=(BaseBlock) block;
+    
+    
+    if(baseBlock .width>1|| baseBlock .thick>1 || baseBlock .height>1){
+        BaseBlock copyBlock = new CopyBlock(baseBlock);
+        for(int _x=0;_x<baseBlock.width;_x++){
+            for(int _z=0;_z<baseBlock.height;_z++){
+                for(int _y=0;_y<baseBlock.height;_y++){
+                    setBlock( x+_x,y+_y,z+_z, copyBlock);
+                    
+                }
             }
+            
+            
         }
-       /* if (oldValue != block.id) {
-            *//*
-			 * if (!block.isLiquid()) { setLiquid(x, y, z, new LiquidData()); }
-			 *//*
-        }
-        return blockManager.getBlock((short) oldValue);*/
     }
 
-    @Override
-    public void setBlock(int x, int y, int z, int blockId) {
-        try {
-            int realId = ByteUtil.get8_0Value(blockId);//获得真实的blockid
-            blockData.set(x, y, z, blockId);//设置或者
-            if(blockId > 0){
-            IBlock block = blockManager.getBlock(blockId);
+    setBlock(x,y,z,block);*/
+            //int realId = ByteUtil.get8_0Value(blockId);//获得真实的blockid
+            blockData.set(x, y, z, block.getId());//设置或者
             blockMap.put(blockData.getIndex(x, y, z), block);
             if(block instanceof ColorGroup){
                 ColorGroup group  = ((ColorGroup) block).copy();
@@ -187,10 +180,97 @@ public class ChunkImpl implements Chunk {
                 group.y=y;
                 group.z =z;
                 if(group.animations!=null  && group.animations.size() > 0){
-                    BaseBlock baseblock = group.copy();
-                    animationBlock.add(baseblock);
+                 
+                    animationBlock.add(((ColorGroup) block));
                     
                 }
+            }
+        
+           
+        }catch (Exception e ){
+e.printStackTrace();
+        }
+return null;
+    }
+
+    /*@Override//返回原来的block 类型id  设置当前的block进入数据数组
+    public void setBlock(int x, int y, int z, Integer blockid) {*/
+        /*//int oldValue = blockData.set(x, y, z, blockid);
+
+        IBlock block = blockManager.getBlock(blockid);
+        if(block instanceof ColorGroup){
+            ColorGroup group  = (ColorGroup) block;
+            if(group.animations!=null  && group.animations.size() > 0){
+                animationBlock.add(group);
+            }
+        }*/
+        //this.setBlock(x, y, z, blockId);
+       /* if (oldValue != block.id) {
+            *//*
+			 * if (!block.isLiquid()) { setLiquid(x, y, z, new LiquidData()); }
+			 *//*
+        }
+        return blockManager.getBlock((short) oldValue);*/
+   // }
+
+    @Override
+    public void setBlock(int x, int y, int z, int blockId) {
+        try {
+            
+            
+            //int realId = ByteUtil.get8_0Value(blockId);//获得真实的blockid
+            blockData.set(x, y, z, blockId);//设置或者
+            if(blockId ==0){
+                BaseBlock block =(BaseBlock) blockMap.get(blockData.getIndex(x, y, z));
+                if(block!=null && block instanceof ColorGroup){
+                    this.animationBlock.remove(block);
+                    blockMap.remove(blockData.getIndex(x, y, z));
+                }
+                
+            }else
+           {
+                //得到对象
+            IBlock block = blockManager.getBlock(blockId);
+            //复制对象
+            BaseBlock baseBlock = ((BaseBlock) block) .copy();
+            baseBlock.reComputePoints();
+            //判断对象
+            if(baseBlock instanceof ColorGroup){
+                ColorGroup group  = ((ColorGroup) baseBlock);
+                group.x=x;
+                group.y=y;
+                group.z =z;
+                if(group.animations!=null  && group.animations.size() > 0){
+                    //BaseBlock baseblock = group.copy();
+                    animationBlock.add(group);
+                    blockMap.put(blockData.getIndex(x, y, z), group);
+                }else{
+                    blockMap.put(blockData.getIndex(x, y, z), baseBlock);
+                }
+                
+                
+                //如果大于0的话 还有延展
+                if(baseBlock .width>1|| baseBlock .thick>1 || baseBlock .height>1){
+                    BaseBlock copyBlock = new CopyBlock(baseBlock);
+                    for(int _x=0;_x<baseBlock.width;_x++){
+                        for(int _z=0;_z<baseBlock.height;_z++){
+                            for(int _y=0;_y<baseBlock.height;_y++){
+                                if(_x==0 && _y==0 &&_z==0){
+                                    continue;
+                                }
+                                blockMap.put(blockData.getIndex(x+_x,y+_y,z+_z), copyBlock);
+                                blockData.set(x+_x,y+_y,z+_z, copyBlock.id);//设置或者
+                            }
+                        }
+                        
+                        
+                    }
+                }
+
+               // setBlock(x,y,z,block);
+              
+            }else{
+                blockMap.put(blockData.getIndex(x, y, z), baseBlock);
             }
         }
             //if(blockId > 0)
@@ -207,7 +287,7 @@ public class ChunkImpl implements Chunk {
             //}
             }*/
         }catch (Exception e ){
-
+e.printStackTrace();
         }
         //如果是特殊block的话 放入特殊map中 下次取或者修改都修改里面的值
 
@@ -573,7 +653,7 @@ public class ChunkImpl implements Chunk {
         // block.render();
         //GL11.glBegin(GL11.GL_QUADS);
         //ShaderManager.terrainShaderConfig.addVao(new Vao(this.toString()));
-
+BaseBlock nowBlock ;
         for (int x = 0; x < this.getChunkSizeX(); x++) {
             for (int z = 0; z < this.getChunkSizeZ(); z++) {
                 for (int y = 0; y < this.getChunkSizeY(); y++) {
@@ -581,7 +661,7 @@ public class ChunkImpl implements Chunk {
                     int i = 0;
                     try {
                         i = blockData.get(x, y, z);
-
+                       
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -589,6 +669,9 @@ public class ChunkImpl implements Chunk {
                     /*if(i==6||i==3)
                         continue;*/
                     currentBlockType = i;
+                    if(currentBlockType== ItemType.CopyBlock.id){
+                        continue;
+                    }
                     if (currentBlockType > 256) {
 
                        // state = ByteUtil.get16_8Value(i);
@@ -596,7 +679,7 @@ public class ChunkImpl implements Chunk {
                     }
                     if (i > 0) {// System.out.printf("%d %d %d /n\n",x,y,z);
                         //如果不是box 类型的
-
+                        
                         ItemDefinition itemDefinition = ItemManager.getItemDefinition(currentBlockType);
                         if(itemDefinition == null ){
                             continue;
@@ -1141,14 +1224,22 @@ public class ChunkImpl implements Chunk {
 
 
        // boolean flat = true;
-        //blockDefManager.getBlockById()
-        ItemDefinition itemDefinition = ItemManager.getItemDefinition(this.currentBlockType);
+        //blockDefManager.getBlockById()+
+        BaseBlock nowBlock=(BaseBlock)blockMap.get(blockData.getIndex(x,y,z));
+         
+       // ItemDefinition itemDefinition = ItemManager.getItemDefinition(this.currentBlockType);
 //        if (/*ti==null||*/ itemDefinition.getShape() == null || itemDefinition.getShape().etTop() == null) {
 //            LogUtil.err(ti.name + "'shape  is null ");
 //        }
-        BaseBlock shape = itemDefinition.getShape();
-        ShapeFace shapeFace = null;
-        shape.render(ShaderManager.terrainShaderConfig,vao,worldx,y,worldz,top,bottom,left,right,front ,back );
+       // BaseBlock shape = itemDefinition.getShape();
+       // ShapeFace shapeFace = null;
+        if(nowBlock instanceof ColorGroup){
+           ColorGroup group =  (ColorGroup)nowBlock;
+            if(group.animations!= null && group.animations.size()>0){
+                return ;
+            }
+        }
+        nowBlock.render(ShaderManager.terrainShaderConfig,vao,worldx,y,worldz,top,bottom,left,right,front ,back );
 
 
         /*if (faceIndex == Constants.TOP) {
@@ -1627,8 +1718,9 @@ public class ChunkImpl implements Chunk {
                 for(int i=0;i<animationBlock.size();i++){
                     ColorGroup colorGroup  =(ColorGroup)animationBlock.get(i);
 
-
-                    colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16 +colorGroup.x ,colorGroup.y,chunkPos.z*16 +colorGroup.z,true,true,true,true,true ,true );
+                    colorGroup.reComputePoints();
+                    colorGroup.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),GL_Matrix.translateMatrix(chunkPos.x*16 +colorGroup.x ,colorGroup.y,chunkPos.z*16 +colorGroup.z),colorGroup.points);
+                    //colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16 +colorGroup.x ,colorGroup.y,chunkPos.z*16 +colorGroup.z,true,true,true,true,true ,true );
                 }
             }
         }
@@ -1702,11 +1794,11 @@ public class ChunkImpl implements Chunk {
 @Override
     public Integer[] zip(){
         List<Integer> arr = new ArrayList<>();
-        for(int x =0;x<16;x++){
+        for(int x =0;x<ChunkConstants.SIZE_X;x++){
 
-            for(int y =0;y<128;y++){
+            for(int y =0;y<ChunkConstants.SIZE_Y;y++){
 
-                for(int z =0;z<16;z++){
+                for(int z =0;z<ChunkConstants.SIZE_Z;z++){
                     int value = blockData.get(x,y,z);
                     //x<<12 && y<<8&& z <<4 && value
                     if(value>0){
@@ -1770,4 +1862,8 @@ public class ChunkImpl implements Chunk {
         vetices1.position(vetices1.position() - 1);
         System.out.println(vetices1.get());
     }*/
+    @Override
+    public Map<Integer,IBlock> getBlockMap(){
+        return this.blockMap;
+    }
 }

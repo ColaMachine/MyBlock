@@ -40,8 +40,11 @@ public class Constants {
     public static final int BACK=3;
     public static final int LEFT =4;
     public static final int RIGHT=5;
+    
+    public static final int CHUNK_HEIGHT=128;
 
-
+    public static final int CHUNK_WIDTH=16;
+    public static final int CHUNK_THICK=16;
     private Constants(){
 
     }

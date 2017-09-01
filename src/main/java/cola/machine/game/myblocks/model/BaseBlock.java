@@ -371,6 +371,9 @@ public abstract class BaseBlock extends AABB implements IBlock {
             return itemDefinition .beUsed(this);
         }else{
             this.itemDefinition =  ItemManager.getItemDefinition(this.id);
+            if(itemDefinition!=null){
+                return itemDefinition .beUsed(this);
+            }
         }
         
        return false;
@@ -476,6 +479,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     public abstract  BaseBlock copy();
     public  void reComputePoints(){
+       
         this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
         GL_Matrix rotateMatrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(width/2,0,thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
       //  GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
@@ -527,18 +531,71 @@ public abstract class BaseBlock extends AABB implements IBlock {
         this.z+=num; reComputePoints();
     }
 
-
+    /**
+     * 最简单的渲染 因为不能支持旋转面临被替换的风险
+     * @param config
+     * @param vao
+     * @param x
+     * @param y
+     * @param z
+     * @param top
+     * @param bottom
+     * @param left
+     * @param right
+     * @param front
+     * @param back
+     * @author 张智威  
+     * @date 2017年8月31日 下午6:05:56
+     */
     public abstract  void render(ShaderConfig config, Vao vao, float x,float y,float z ,boolean top,
                                  boolean bottom,boolean left,boolean right,boolean front ,boolean back);
-
+/**
+ * 现在使用在骨骼系统中的渲染 用于实时计算 性能有点差 其他都很好
+ * @param config
+ * @param vao
+ * @param matrix
+ * @author 张智威  
+ * @date 2017年8月31日 下午6:07:07
+ */
     public  abstract void renderShader(ShaderConfig config , Vao vao , GL_Matrix matrix);
-
+/**
+ * 在colorgroup中渲染时候用这种方式 但是参数太多 而且不支持旋转
+ * @param config
+ * @param vao
+ * @param parentX
+ * @param parentY
+ * @param parentZ
+ * @param childX
+ * @param childY
+ * @param childZ
+ * @param width
+ * @param height
+ * @param thick
+ * @param top
+ * @param bottom
+ * @param left
+ * @param right
+ * @param front
+ * @param back
+ * @author 张智威  
+ * @date 2017年8月31日 下午6:07:32
+ */
     public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back);
-
+    /**
+     * 一种支持旋转的折中方案 但是需要先计算几个点的位置
+     * @param config
+     * @param vao
+     * @param matrix是父亲的旋转逻辑
+     * @param childPoints 都是事先计算好的
+     * @author 张智威  
+     * @date 2017年8月31日 下午6:08:34
+     */
+    public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints);
     public static void parse( BaseBlock  block , JSONObject map){
         float x = MapUtil.getFloatValue(map,"x",0f);
         float y = MapUtil.getFloatValue(map,"y",0f);
         float z = MapUtil.getFloatValue(map,"z",0f);
+        int dir = MapUtil.getIntValue(map, "dir",0);
 
         String pointsStr = MapUtil.getStringValue(map,"points");
         if(StringUtil.isNotEmpty(pointsStr)){
@@ -572,5 +629,4 @@ public abstract class BaseBlock extends AABB implements IBlock {
     }
 
 
-    public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints);
 }

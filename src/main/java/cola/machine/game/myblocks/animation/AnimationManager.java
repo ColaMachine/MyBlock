@@ -62,7 +62,7 @@ public class AnimationManager {
         if(animation!=null){
 
             if(id2animatorMap.get(component.hashCode()+component.name+":"+action)!=null ){
-        LogUtil.println(component.hashCode()+component.name+":"+action+"动画已经存在");
+       // LogUtil.println(component.hashCode()+component.name+":"+action+"动画已经存在");
                 return;
                 //animatorMap.get(component.id).complete=true;
             }else{

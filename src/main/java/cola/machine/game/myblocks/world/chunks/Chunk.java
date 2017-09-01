@@ -1,6 +1,8 @@
 package cola.machine.game.myblocks.world.chunks;
 
 
+import java.util.Map;
+
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
@@ -18,7 +20,7 @@ public interface Chunk {
     IBlock getBlock(int x, int y, int z);
 
     public void setBlock(int x, int y, int z, int block) ;
-    public void setBlock(int x, int y, int z, Integer block) ;
+    //public void setBlock(int x, int y, int z, Integer block) ;
     IBlock setBlock(int x, int y, int z, IBlock block);
 
     IBlock setBlock(Vector3i pos, IBlock block);
@@ -69,4 +71,6 @@ public interface Chunk {
 
     void setNeedUpdate(boolean b);
      boolean isNeedUpdate();
+
+    Map<Integer, IBlock> getBlockMap();
 }

@@ -29,7 +29,7 @@ public enum ItemType {
 
 
     ,wood(3),glass(4),sand(11),mantle(1),water(10),tree_wood(14,"tree_wood","木头"),tree_leaf(15,"tree_leaf","树叶"),
-    tree_seed(16),wood_door(17),copy_down,box(18),red(2),StoneBrick(7),MossyStoneBrick(8),CrackedStoneBrick(6),grass(9),OakWood(5);
+    tree_seed(16),wood_door(17),copy_down,box(18),red(2),StoneBrick(7),MossyStoneBrick(8),CrackedStoneBrick(6),grass(9),OakWood(5),CopyBlock(40);
     /**测试的时候打印itemtype**/
     public static void main(String args[]){
         System.out.println(ItemType.red.ordinal());

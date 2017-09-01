@@ -3,6 +3,8 @@ package com.dozenx.game.engine.fx;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.util.StringUtil;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,7 +67,7 @@ public class ItemPanel extends Tab {
 
 
             Integer id = (Integer) it.next();
-            items.add(ItemManager.getItemDefinition(id).getName());
+            items.add(id+"_"+ItemManager.getItemDefinition(id).getName());
 
 
         }
@@ -75,7 +77,16 @@ public class ItemPanel extends Tab {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("clicked on " + list.getSelectionModel().getSelectedItem());
-                GamingState.editEngine.readyShootBlock = ItemManager.getItemDefinition(list.getSelectionModel().getSelectedItem()).getShape();
+                String name = list.getSelectionModel().getSelectedItem();
+                if(StringUtil.isNotEmpty(name)){
+                     name= name.split("_")[1];
+                    ItemDefinition item = ItemManager.getItemDefinition(name);
+                    if(item!=null ){
+                        GamingState.editEngine.readyShootBlock = item.getShape();
+                    }
+                          
+                }
+                
             }
         });
 
@@ -100,7 +111,7 @@ public class ItemPanel extends Tab {
 
 
                     Integer id = (Integer) it.next();
-                    items.add(ItemManager.getItemDefinition(id).getName());
+                    items.add(id+"_"+ItemManager.getItemDefinition(id).getName());
 
 
                 }

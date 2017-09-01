@@ -64,5 +64,12 @@ if(object == null ){
 		Integer value =(Integer)object;
 		return value;
 	}
-	
+	   public static Integer getIntValue(Map map , String name,int defaultValue){
+	        Object object =map.get(name);
+	        if(object == null){
+	            return defaultValue;
+	        }
+	        Integer value =(Integer)object;
+	        return value;
+	    }
 }

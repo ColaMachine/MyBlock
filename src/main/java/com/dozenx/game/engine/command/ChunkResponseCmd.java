@@ -1,7 +1,13 @@
 package com.dozenx.game.engine.command;
 
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
+
+import java.util.List;
+import java.util.Map;
+
+import com.dozenx.game.engine.edit.view.ColorGroup;
 import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.ByteUtil;
 
@@ -48,6 +54,13 @@ public class ChunkResponseCmd extends   BaseGameCmd{
             }*/
             wrap.put(data[i]);
         }
+       
+        
+        for (Map.Entry<Integer, IBlock > entry : chunk.getBlockMap().entrySet()) {  
+            
+            wrap.put(data[i]);
+          
+        }  
 
         return wrap.array();
 

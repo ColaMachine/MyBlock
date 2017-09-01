@@ -12,7 +12,7 @@ public class ChunkRequestCmd extends   BaseGameCmd{
 
     public int x;
     public int z;
-
+    public int dir;
     public int cx;
     public int cy;
     public int cz;
@@ -49,7 +49,7 @@ public class ChunkRequestCmd extends   BaseGameCmd{
 
         ByteBufferWrap wrap =   ByteUtil.createBuffer()
             .put(cmdType.getType())
-                 .put( x) .put( z) .put( cx) .put( cy) .put( cz) .put( type) .put( blockType);
+                 .put( x) .put( z) .put( cx) .put( cy) .put( cz) .put( type) .put( blockType).put(dir);
 
 
         return wrap.array();
@@ -67,7 +67,7 @@ public class ChunkRequestCmd extends   BaseGameCmd{
         this.cz=byteBufferWrap.getInt();
         this.type=byteBufferWrap.getInt();
         this.blockType=byteBufferWrap.getInt();
-
+        this.dir = byteBufferWrap.getInt();
     }
 
     @Override
