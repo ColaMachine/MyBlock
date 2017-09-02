@@ -54,6 +54,7 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
     public void reload(Chunk chunk ){
        Chunk  chunk2 = storageManager.loadChunkStore(chunk.getPos());
         chunk.setBlockData(chunk2.getBlockData());
+        chunk.getBlockMap().putAll(chunk2.getBlockMap());
         chunk.setNeedUpdate(true);
     }
     public void createOrLoadChunk(Vector3i chunkPos) {

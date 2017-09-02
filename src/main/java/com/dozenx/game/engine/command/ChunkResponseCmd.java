@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.command;
 
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
@@ -56,9 +57,21 @@ public class ChunkResponseCmd extends   BaseGameCmd{
         }
        
         
-        for (Map.Entry<Integer, IBlock > entry : chunk.getBlockMap().entrySet()) {  
+        for (Map.Entry<Integer, IBlock > entry : chunk.getBlockMap().entrySet()) { 
+            BaseBlock block = (BaseBlock)entry.getValue();
+            if(block.dir>0){
+                Integer index = entry.getKey();
+                int y = index /16/16;
+                int yu = index %( 16 *16);
+                int z = yu /16;
+                int x = yu % 16;
+                wrap.put(x);
+                wrap.put(y);
+                wrap.put(z);
+                wrap.put(block.dir);
+            }
+        
             
-            wrap.put(data[i]);
           
         }  
 
@@ -82,7 +95,7 @@ public class ChunkResponseCmd extends   BaseGameCmd{
         //data=  byteBufferWrap.array(16);
        // short val ;
          chunk =new ChunkImpl(x,y,z);
-        int[] tt;
+      //  int[] tt;
         data = new Integer[length];
         for(int i=0;i<length;i++){
             data[i]=byteBufferWrap.getInt();
@@ -91,6 +104,16 @@ public class ChunkResponseCmd extends   BaseGameCmd{
                // LogUtil.println("hello");
             }
             chunk.setBlock(ByteUtil.get32_28Value(data[i]),ByteUtil.get24_16Value(data[i]),ByteUtil.get28_24Value(data[i]),ByteUtil.get16_0Value(data[i]));
+        }
+        
+        int value;
+        while(byteBufferWrap.buffer.position()<=byteBufferWrap.buffer.limit()-4){
+            int x = byteBufferWrap.getInt();
+            int y = byteBufferWrap.getInt();
+            int z = byteBufferWrap .getInt();
+            int dir =byteBufferWrap.getInt();
+            chunk.setBlockStatus(x, y, z, dir);
+           
         }
 
 

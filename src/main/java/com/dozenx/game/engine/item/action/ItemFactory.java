@@ -23,7 +23,7 @@ public class ItemFactory {
 
         int id = MapUtil.getIntValue(map,"id");
 
-        if(name.equals("tree_seed")){
+        if(name.equals("langan3")){
             LogUtil.println("is arrow");
         }
 //        String category = MapUtil.getStringValue(map,"category");

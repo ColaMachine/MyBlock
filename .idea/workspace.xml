@@ -39,11 +39,13 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ChunkConstants.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ChunkConstants.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkRequestCmd.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkRequestCmd.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkResponseCmd.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkResponseCmd.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ItemType.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ItemType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/ColorGroup.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/ColorGroup.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/ChunkHandler.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/ChunkHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/script/GroovyTest.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/script/GroovyTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/util/MapUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/util/MapUtil.java" />
@@ -266,8 +268,8 @@
       <file leaf-file-name="settings.xml" pinned="false" current-in-tab="true">
         <entry file="file://$USER_HOME$/.m2/settings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14686468">
-              <caret line="188" column="8" selection-start-line="188" selection-start-column="4" selection-end-line="199" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.59363955">
+              <caret line="171" column="14" selection-start-line="171" selection-start-column="14" selection-end-line="171" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -556,7 +558,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/fastjson-1.1.39.jar!/" />
-    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="SearchEverywhereHistoryKey" value="slf4j-&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/lib/slf4j-api-1.7.7.jar&#10;servermain&#9;PSI&#9;JAVA://com.dozenx.game.network.server.ServerMain&#10;gr&#9;RUN_CONFIGURATION&#9;GroovyTest&#10;mainfr&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/fx/MainFrame.java&#10;livingthing&#9;PSI&#9;JAVA://cola.machine.game.myblocks.lifething.bean.LivingThing&#10;playerMo&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/Role/model/PlayerModel.java&#10;anima&#9;PSI&#9;JAVA://cola.machine.game.myblocks.animation.AnimationManager&#10;sayha&#9;PSI&#9;JAVA://com.dozenx.game.network.server.handler.SayHandler&#10;rotate&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;colorg&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java&#10;image&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ImageBlock.java&#10;GL&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/glmodel/GL_Vector.java&#10;glV&#9;PSI&#9;JAVA://glmodel.GL_Vector&#10;colorgrou&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java&#10;color&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;base&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/BaseBlock.java&#10;block&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;kan.&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/config/animation/kan.cfg&#10;ColorBlock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;rotatecolorblock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;playerm&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/Role/model/PlayerModel.java&#10;imageB&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ImageBlock.java&#10;component&#9;PSI&#9;JAVA://cola.machine.game.myblocks.entitySystem.Component&#10;colorgr&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java&#10;colorblock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;baseB&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/BaseBlock.java&#10;imagebl&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.ImageBlock&#10;edit&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/EditEngine.java&#10;main&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/fx/MainFrame.java&#10;lw&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java&#10;chunkha&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/network/server/handler/ChunkHandler.java&#10;chunkhan&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/network/server/handler/ChunkHandler.java&#10;serverMain&#9;PSI&#9;JAVA://com.dozenx.game.network.server.ServerMain&#10;worker&#9;PSI&#9;JAVA://com.dozenx.game.network.server.Worker&#10;mainf&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/fx/MainFrame.java&#10;serverchu&#9;PSI&#9;JAVA://cola.machine.game.myblocks.world.chunks.ServerChunkProvider&#10;localchun&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/LocalChunkProvider.java&#10;storageManagerI&#9;PSI&#9;JAVA://cola.machine.game.myblocks.persistence.impl.StorageManagerInternal&#10;Store&#9;PSI&#9;JAVA://cola.machine.game.myblocks.persistence.internal.ChunkStoreInternal&#10;stor&#9;PSI&#9;JAVA://cola.machine.game.myblocks.persistence.StorageManager&#10;chunkim&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java&#10;wo&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java&#10;chunkimp&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java&#10;localchu&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/LocalChunkProvider.java&#10;chunkHan&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/network/server/handler/ChunkHandler.java&#10;local&#9;PSI&#9;JAVA://cola.machine.game.myblocks.world.chunks.LocalChunkProvider&#10;chunk&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java&#10;wol&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java&#10;shaderCon&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/opengl/util/ShaderConfig.java&#10;constant&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/engine/Constants.java" />
@@ -1029,17 +1031,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32792208" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28246754" sideWeight="0.45779914" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28246754" sideWeight="0.45779914" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23027375" sideWeight="0.57466066" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23027375" sideWeight="0.42533937" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23027375" sideWeight="0.57463884" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23027375" sideWeight="0.42536116" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5898268" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43506494" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32575756" sideWeight="0.4974293" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32575756" sideWeight="0.4974293" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20987654" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2012987" sideWeight="0.491453" order="1" side_tool="false" content_ui="tabs" />
@@ -2077,8 +2079,8 @@
     </entry>
     <entry file="file://$USER_HOME$/.m2/settings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14686468">
-          <caret line="188" column="8" selection-start-line="188" selection-start-column="4" selection-end-line="199" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.59363955">
+          <caret line="171" column="14" selection-start-line="171" selection-start-column="14" selection-end-line="171" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -2123,7 +2125,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8 (1)</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -2140,6 +2142,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

@@ -62,7 +62,11 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     public GL_Vector[] points = BoxModel.getPoint(0,0,0);
     ItemDefinition itemDefinition;
-
+    
+    public BaseBlock(){
+        
+    }
+  
     public BaseBlock(float x,float y,float z,float width,float height,float thick){
             this.x =x;
         this.y=y;
@@ -163,9 +167,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
         return this.alpha;
     }
 
-	public BaseBlock(){
-		
-	}
+
 		
 	
 	public void renderCube(){

@@ -199,12 +199,14 @@ public class OpenglUtils {
                 GL_Matrix.LookAt(new GL_Vector(0,0,0),viewDir);
 
         //GL_Vector vector1 = GL_Matrix.multiply(project.getClone().invert(),newV);
+        GL_Matrix invert = view.copyClone().invert();
         try {
-            GL_Vector vector2 = GL_Matrix.multiply(view.copyClone().invert(), newV);
+       
+            GL_Vector vector2 = GL_Matrix.multiply(invert, newV);
             return vector2.normalize();
         }catch (Exception e){
             e.printStackTrace();
-            throw  e;
+           return new GL_Vector();
         }
        /* GL_Vector right = GL_Vector.crossProduct(viewDir,new GL_Vector(0,1,0));
         GL_Vector up = GL_Vector.crossProduct(viewDir,right);

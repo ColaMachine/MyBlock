@@ -56,8 +56,9 @@ public class ChunkHandler extends GameServerHandler {
                 LogUtil.println("服务器加载chunk:" + cmd.x + "," + cmd.z + "" + "cmd.cx" + cmd.cx + "cmd.cz" + cmd.cz + "blockid" + cmd.blockType);
                 chunk.setBlock(cmd.cx, cmd.cy, cmd.cz, cmd.blockType);
                 if(cmd.dir>0){
-                BaseBlock baseBlock = (BaseBlock)chunk.getBlock(cmd.cx, cmd.cy, cmd.cz);
-                baseBlock.dir=cmd.dir;
+               /* BaseBlock baseBlock = (BaseBlock)chunk.getBlock(cmd.cx, cmd.cy, cmd.cz);
+                baseBlock.dir=cmd.dir;*/
+                    chunk.setBlockStatus(cmd.cx, cmd.cy, cmd.cz, cmd.dir);
                 }
                 if (cmd.blockType == ItemType.tree_seed.id) {
                     ItemSeed itemSeed = new ItemSeed();

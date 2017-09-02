@@ -73,4 +73,6 @@ public interface Chunk {
      boolean isNeedUpdate();
 
     Map<Integer, IBlock> getBlockMap();
+
+    void setBlockStatus(int x, int y, int z, int dir);
 }

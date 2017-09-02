@@ -20,7 +20,7 @@ public class ByteBufferWrap
     int listPosition;
     int limit =0;
     int position;
-    private ByteBuffer buffer;
+    public  ByteBuffer buffer;
 
     private List<ByteBuffer> buffers= new ArrayList<ByteBuffer>();
     public ByteBufferWrap(){
@@ -35,6 +35,7 @@ public class ByteBufferWrap
     }
 
     public byte get(){
+        
         return buffer.get();
     }
     public boolean  getBoolean(){
@@ -79,6 +80,9 @@ public class ByteBufferWrap
             GL15.glBufferData(type1, buffers.get(i), type2);//put data
         }
 
+    }
+    public int limit(){
+        return this.limit;
     }
     public void rewind(){
         this.limit = position;
