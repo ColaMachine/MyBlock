@@ -13,7 +13,8 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.dozenx.game.engine.edit.view.ColorGroup;
+import com.dozenx.game.engine.edit.view.AnimationBlock;
+import com.dozenx.game.engine.edit.view.GroupBlock;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
@@ -471,7 +472,10 @@ public class TextureManager {
                         RotateColorBlock2 shape = RotateColorBlock2.parse(map);
                         this.shapeMap.put(shape.getName(), shape);
                     }else if("groupblock".equals(blockType)){
-                        ColorGroup shape = ColorGroup.parse(map);
+                        GroupBlock shape = GroupBlock.parse(map);
+                        this.shapeMap.put(shape.getName(), shape);
+                    }else if("animationblock".equals(blockType)){
+                        AnimationBlock shape = AnimationBlock.parse(map);
                         this.shapeMap.put(shape.getName(), shape);
                     }else{
                         BoneBlock shape = BoneBlock.parse(map);

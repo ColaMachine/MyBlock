@@ -32,9 +32,9 @@ import java.util.Map;
 /**
  * Created by dozen.zhang on 2017/8/9.
  */
-public class ColorGroup extends BaseBlock {
+public class AnimationBlock2 extends BaseBlock {
 
-    public ColorGroup(float x, float y, float z, float width, float height, float thick) {
+    public AnimationBlock2(float x, float y, float z, float width, float height, float thick) {
         super(x, y, z, width, height, thick);
         /*
          * this.x =x; this.y=y; this.z=z; this.width =width; this.height
@@ -54,9 +54,9 @@ public class ColorGroup extends BaseBlock {
     public float zzoom = 1;
     public List<BaseBlock> colorBlockList = new ArrayList<BaseBlock>();
     public List<BaseBlock> selectBlockList = new ArrayList<BaseBlock>();
-    public List<ColorGroup> animations = new ArrayList<ColorGroup>();
+    public List<GroupBlock> animations = new ArrayList<GroupBlock>();
     public String state;
-    public Map<String, List<ColorGroup>> animationMap = new HashMap<String, List<ColorGroup>>();
+    public Map<String, List<GroupBlock>> animationMap = new HashMap<String, List<GroupBlock>>();
     /*
      * public ColorGroup(int x, int y, int z) { super(x, y, z); }
      */
@@ -172,7 +172,7 @@ public class ColorGroup extends BaseBlock {
     }
 
     @Override
-    public void addWidth(float num) {
+    public float  addWidth(float num) {
         if (Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
@@ -184,11 +184,11 @@ public class ColorGroup extends BaseBlock {
             this.width += num;
 
         }
-
+        return width;
     }
 
     @Override
-    public void addX(float num) {
+    public float addX(float num) {
 
         if (Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
@@ -201,10 +201,11 @@ public class ColorGroup extends BaseBlock {
             this.x += num;
 
         }
+        return this.x;
     }
 
     @Override
-    public void addHeight(float num) {
+    public float addHeight(float num) {
 
         if (Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
@@ -217,10 +218,11 @@ public class ColorGroup extends BaseBlock {
             this.height += num;
 
         }
+        return this.height;
     }
 
     @Override
-    public void addY(float num) {
+    public float  addY(float num) {
 
         if (Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
@@ -233,10 +235,11 @@ public class ColorGroup extends BaseBlock {
             this.y += num;
 
         }
+        return this.y;
     }
 
     @Override
-    public void addThick(float num) {
+    public float addThick(float num) {
 
         if (Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
@@ -249,10 +252,11 @@ public class ColorGroup extends BaseBlock {
             this.thick += num;
 
         }
+        return this.thick;
     }
 
     @Override
-    public void addZ(float num) {
+    public float addZ(float num) {
 
         if (Switcher.isEditComponent) {
             for (int i = 0; i < selectBlockList.size(); i++) {
@@ -265,81 +269,82 @@ public class ColorGroup extends BaseBlock {
             this.z += num;
 
         }
+        return this.z;
     }
 
-    public ColorGroup copy() {
+    public AnimationBlock2 copy() {
         // 复制本身
 
-        ColorGroup colorGroup = new ColorGroup(this.x, this.y, this.z, this.width, this.height, this.thick);
-        colorGroup.id = id;
-        colorGroup.xoffset = this.xoffset;
-        colorGroup.yoffset = this.yoffset;
-        colorGroup.zoffset = this.zoffset;
-        colorGroup.live = this.live;
-        colorGroup.xzoom = this.xzoom;
-        colorGroup.yzoom = this.yzoom;
-        colorGroup.zzoom = this.zzoom;
+        AnimationBlock2 animationBlock = new AnimationBlock2(this.x, this.y, this.z, this.width, this.height, this.thick);
+        animationBlock.id = id;
+        animationBlock.xoffset = this.xoffset;
+        animationBlock.yoffset = this.yoffset;
+        animationBlock.zoffset = this.zoffset;
+        animationBlock.live = this.live;
+        animationBlock.xzoom = this.xzoom;
+        animationBlock.yzoom = this.yzoom;
+        animationBlock.zzoom = this.zzoom;
         // 复制所有child block
         for (int i = 0; i < colorBlockList.size(); i++) {
             BaseBlock colorBlock = colorBlockList.get(i);
-            colorGroup.colorBlockList.add(colorBlock.copy());
+            animationBlock.colorBlockList.add(colorBlock.copy());
 
         }
-        if (animations != null)
+    /*    if (animations != null)
             for (int i = 0; i < this.animations.size(); i++) {
                 if (animations.get(i) != null && animations.get(i).animations != null) {
                     animations.get(i).animations.clear();
                 }
-            }
+            }*/
 
-        
+
         if (animationMap != null)
-            colorGroup.animationMap = this.animationMap;
-        
-        colorGroup.animations = this.animations;// 没有深层次拷贝 担心引起无限循环 但问题也就出在这里
+            animationBlock.animationMap = this.animationMap;
+
+        animationBlock.animations = this.animations;// 没有深层次拷贝 担心引起无限循环 但问题也就出在这里
                                                 // animations的对象里
                                                 // colorgroup还有animations 需要斩草除根
 
-        colorGroup.reComputePoints();
-        return colorGroup;
+        animationBlock.reComputePoints();
+        return animationBlock;
     }
 
     /**
      * 深处拷贝 拷贝animation
-     * 
+     *
      * @return
      * @author 张智威
      * @date 2017年8月29日 下午4:17:21
      */
-    public ColorGroup deepcopy() {
+    public AnimationBlock2 deepcopy() {
         // 复制本身
 
-        ColorGroup colorGroup = new ColorGroup(this.x, this.y, this.z, this.width, this.height, this.thick);
-        colorGroup.id = id;
-        colorGroup.xoffset = this.xoffset;
-        colorGroup.yoffset = this.yoffset;
-        colorGroup.zoffset = this.zoffset;
-        colorGroup.live = this.live;
-        colorGroup.xzoom = this.xzoom;
-        colorGroup.yzoom = this.yzoom;
-        colorGroup.zzoom = this.zzoom;
+        AnimationBlock2 animationBlock = new AnimationBlock2(this.x, this.y, this.z, this.width, this.height, this.thick);
+        animationBlock.id = id;
+        animationBlock.xoffset = this.xoffset;
+        animationBlock.yoffset = this.yoffset;
+        animationBlock.zoffset = this.zoffset;
+        animationBlock.live = this.live;
+        animationBlock.xzoom = this.xzoom;
+        animationBlock.yzoom = this.yzoom;
+        animationBlock.zzoom = this.zzoom;
         // 复制所有child block
         for (int i = 0; i < colorBlockList.size(); i++) {
             BaseBlock block = colorBlockList.get(i);
-            colorGroup.colorBlockList.add(block.copy());
+            animationBlock.colorBlockList.add(block.copy());
 
         }
-        for (int i = 0; i < this.animations.size(); i++) {
+        /*for (int i = 0; i < this.animations.size(); i++) {
             if (animations.get(i).animations != null) {
                 animations.get(i).animations.clear();
             }
-        }
-        colorGroup.animations = this.animations;// 没有深层次拷贝 担心引起无限循环 但问题也就出在这里
+        }*/
+        animationBlock.animations = this.animations;// 没有深层次拷贝 担心引起无限循环 但问题也就出在这里
                                                 // animations的对象里
                                                 // colorgroup还有animations 需要斩草除根
 
-        colorGroup.reComputePoints();
-        return colorGroup;
+        animationBlock.reComputePoints();
+        return animationBlock;
     }
 
     // 选择区域
@@ -361,7 +366,7 @@ public class ColorGroup extends BaseBlock {
              * GL_Vector[] gl_vectors =
              * BoxModel.getSmaillPoint(colorBlock.x,colorBlock.y,colorBlock.z,
              * colorBlock.width, colorBlock.height, colorBlock.thick); for(){
-             * 
+             *
              * }
              */
             float[] info = getChildBlockPosition(colorBlock, this.x, this.y, this.z);
@@ -647,12 +652,14 @@ public class ColorGroup extends BaseBlock {
     }
 
     public void saveToCurFrame() {
-        ColorGroup colorGroup = this.copy();
-        colorGroup.animations = null;// 防止无限循环 不做这一步 在下一次saveToCurFrame的时候
+        AnimationBlock2 animationBlock = this.copy();
+        GroupBlock groupBlock =new GroupBlock();
+        groupBlock.colorBlockList = animationBlock.colorBlockList;
+       // animationBlock.animations = null;// 防止无限循环 不做这一步 在下一次saveToCurFrame的时候
                                      // 会把子节点的animation.clear 由于
                                      // 父子animiations都是指向同一个
                                      // name必然会导致animations瞬间空了 下面的代码就会爆数组越界错误
-        this.animations.set(nowIndex, colorGroup);
+        this.animations.set(nowIndex, groupBlock);
     }
 
     public boolean play() {
@@ -807,7 +814,7 @@ public class ColorGroup extends BaseBlock {
         return null;
     }
 
-    public ColorGroup() {
+    public AnimationBlock2() {
 
     }
 
@@ -816,7 +823,7 @@ public class ColorGroup extends BaseBlock {
         //遍历animationMap下的所有colorgroup 清理他们的animationMap
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append("{").append("name:\"").append(this.name).append("\",").append("blocktype:'groupblock',")
+        buffer.append("{").append("name:\"").append(this.name).append("\",").append("blocktype:'animationlock',")
                 .append("width:").append(this.width).append(",").append("height:").append(this.height).append(",")
                 .append("thick:").append(this.thick).append(",").append("x:").append(this.x).append(",").append("y:")
                 .append(this.y).append(",").append("z:").append(this.z).append(",")
@@ -843,10 +850,10 @@ public class ColorGroup extends BaseBlock {
         index = 0;
         if (animations != null) {
             for (BaseBlock block : animations) {
-                if(block instanceof ColorGroup){
-                    ColorGroup colorGroup = (ColorGroup)block;
-                    colorGroup .animations=null;
-                    colorGroup.animationMap = null;
+                if(block instanceof AnimationBlock2){
+                    AnimationBlock2 animationBlock = (AnimationBlock2)block;
+                    animationBlock.animations=null;
+                    animationBlock.animationMap = null;
                     
                 }
                 if (index >= 1) {
@@ -861,20 +868,20 @@ public class ColorGroup extends BaseBlock {
 
         if (animationMap != null) {
             buffer.append("animationMap:{");
-            Map<String, List<ColorGroup>> map = animationMap;
+            Map<String, List<GroupBlock>> map = animationMap;
 
              index = 0;
-            for (Map.Entry<String, List<ColorGroup>> entry : map.entrySet()) {
+            for (Map.Entry<String, List<GroupBlock>> entry : map.entrySet()) {
                 if (index >= 1) {
                     buffer.append(",");
                 }
                 
-                List<ColorGroup> list = entry.getValue();
-                for(ColorGroup colorGroup : list){
+                List<GroupBlock> list = entry.getValue();
+                for(GroupBlock animationBlock : list){
                    
                         //ColorGroup colorGroup = (ColorGroup)block;
-                        colorGroup .animations=null;
-                        colorGroup.animationMap = null;
+//                        animationBlock.animations=null;
+//                        animationBlock.animationMap = null;
                         
                    
                 }
@@ -898,8 +905,8 @@ public class ColorGroup extends BaseBlock {
 
     }
 
-    public static ColorGroup parse(JSONObject map) {
-        ColorGroup group = new ColorGroup();
+    public static AnimationBlock2 parse(JSONObject map) {
+        AnimationBlock2 group = new AnimationBlock2();
         parse(group, map);
         group.xoffset = MapUtil.getFloatValue(map, "xoffset");
         group.yoffset = MapUtil.getFloatValue(map, "yoffset");
@@ -925,7 +932,7 @@ public class ColorGroup extends BaseBlock {
                     RotateColorBlock2 shape = RotateColorBlock2.parse(object);
                     group.addChild(shape);
                 } else if ("groupblock".equals(blockType)) {
-                    ColorGroup shape = ColorGroup.parse(object);
+                    GroupBlock shape = GroupBlock.parse(object);
                     group.addChild(shape);
                 }
 
@@ -939,8 +946,8 @@ public class ColorGroup extends BaseBlock {
 
             String blockType = (String) object.get("blocktype");
             if ("groupblock".equals(blockType)) {
-                ColorGroup colorGroup = ColorGroup.parse(object);
-                group.animations.add(colorGroup);
+                GroupBlock animationBlock = GroupBlock.parse(object);
+                group.animations.add(animationBlock);
             } /*
                * else if("imageblock".equals(blockType)){ ImageBlock imageBlock
                * = ImageBlock.parse(object); group.animations.add(imageBlock);
@@ -956,14 +963,14 @@ public class ColorGroup extends BaseBlock {
             String name = entry.getKey();
             JSONArray animationAry = (JSONArray)entry.getValue();
             
-            List<ColorGroup > list =new ArrayList<>();
+            List<GroupBlock> list =new ArrayList<>();
             for (int i = 0; i < animationAry.size(); i++) {
                 JSONObject object = (JSONObject) animationAry.get(i);
 
                 String blockType = (String) object.get("blocktype");
                 if ("groupblock".equals(blockType)) {
-                    ColorGroup colorGroup = ColorGroup.parse(object);
-                    list.add(colorGroup);
+                    GroupBlock animationBlock = GroupBlock.parse(object);
+                    list.add(animationBlock);
                 } 
 
             }
@@ -977,55 +984,57 @@ public class ColorGroup extends BaseBlock {
 
     }
 
-    public void rotateX(float value) {
+    public float rotateX(float value) {
 
-        adjustRotatex(value);
+        return adjustRotatex(value);
     }
 
-    public void rotateY(float value) {
+    public float rotateY(float value) {
         // adjustRotateY(value);
-        super.rotateY(value);//baseblock的调整方向都是顺时针90度的
+        return super.rotateY(value);//baseblock的调整方向都是顺时针90度的
     }
 
-    public void rotateZ(float value) {
-        adjustRotateZ(value);
+    public float rotateZ(float value) {
+        return  adjustRotateZ(value);
     }
 
-    public void adjustRotatex(float value) {
+    public float adjustRotatex(float value) {
+        float degree = 0 ;
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
             if (colorBlock instanceof RotateColorBlock2) {
-                ((RotateColorBlock2) colorBlock).rotateX(value);
+                degree =((RotateColorBlock2) colorBlock).rotateX(value);
             }
-            if (colorBlock instanceof ColorGroup) {
-                ((ColorGroup) colorBlock).rotateX(value);
+            if (colorBlock instanceof AnimationBlock2) {
+                degree = ((AnimationBlock2) colorBlock).rotateX(value);
             }
-        }
+        } return degree;
     }
 
-    public void adjustRotateY(float value) {
+    public float adjustRotateY(float value) {float degree = 0 ;
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
             if (colorBlock instanceof RotateColorBlock2) {
-                ((RotateColorBlock2) colorBlock).rotateY(value);
+                degree =((RotateColorBlock2) colorBlock).rotateY(value);
                 // colorBlock .rotateY(value);
             }
-            if (colorBlock instanceof ColorGroup) {
-                ((ColorGroup) colorBlock).rotateY(value);
+            if (colorBlock instanceof AnimationBlock2) {
+                ((AnimationBlock2) colorBlock).rotateY(value);
             }
-        }
+        } return degree;
     }
 
-    public void adjustRotateZ(float value) {
+    public float adjustRotateZ(float value) {float degree = 0 ;
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
             if (colorBlock instanceof RotateColorBlock2) {
-                ((RotateColorBlock2) colorBlock).rotateZ(value);
+                degree =((RotateColorBlock2) colorBlock).rotateZ(value);
             }
-            if (colorBlock instanceof ColorGroup) {
-                ((ColorGroup) colorBlock).rotateZ(value);
+            if (colorBlock instanceof AnimationBlock2) {
+                degree =((AnimationBlock2) colorBlock).rotateZ(value);
             }
         }
+        return degree;
     }
 
     @Override // 具体场景中 生物有旋转身体的 需要用到
@@ -1281,19 +1290,14 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
         
         
         if (animationMap != null) {
-            for (Map.Entry<String, List<ColorGroup>> entry : animationMap.entrySet()) {
+            for (Map.Entry<String, List<GroupBlock>> entry : animationMap.entrySet()) {
              
-                List<ColorGroup> list = entry.getValue();
-                for(ColorGroup colorGroup : list){
-                        colorGroup.dir = this.dir;
-                        colorGroup.reComputePoints();
-                        
-                        
-                        
-                   
-                }
-              
+                List<GroupBlock> list = entry.getValue();
+                for(GroupBlock animationBlock : list){
+                        animationBlock.dir = this.dir;
+                        animationBlock.reComputePoints();
 
+                }
             }
         }
     }

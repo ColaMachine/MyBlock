@@ -114,12 +114,12 @@ public class FilePanel extends Tab {
         Button componentSave2 = new Button("保存为组件2");
 
 
-        CheckBox cb1 = new CheckBox();
+        final CheckBox cb1 = new CheckBox();
 
         cb1.setText("是否怪物");
        
         Label label  =new Label("脚本:");
-        TextArea scriptTxt =new TextArea();
+        final TextArea scriptTxt =new TextArea();
 
         componentSave2.setOnAction(new EventHandler<ActionEvent>() {
             @Override

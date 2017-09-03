@@ -15,11 +15,7 @@
 
 		<!-- maven私库 -->
 
-			<repository>
-				<id>aWiFi-rep</id>
-				<name>aWiFi Private Repository</name>
-				<url>http://192.168.41.25:8081/nexus/content/groups/public/</url>
-			</repository>
+
 
 		<!-- 阿里巴巴发布版本仓库 -->
 		<repository>
@@ -56,7 +52,7 @@
 
 	</dependencies>
 
-	<build>
+	<!--<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -67,7 +63,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</build>-->
 </project>
 
 

@@ -2,53 +2,70 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05ed9f65-f8cd-47e7-b544-b0c1b482b26b" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_2_1_6.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/icons/gooey_sweet_128.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/icons/gooey_sweet_16.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/icons/gooey_sweet_32.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/icons/gooey_sweet_64.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/thequad/fragment.glsl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/thequad/vertex.glsl" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-1_0_-1.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-1_0_-2.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-1_0_0.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-1_0_1.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-1_0_2.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-2_0_-1.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-2_0_-2.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-2_0_0.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/-2_0_1.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/0_0_-1.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/0_0_-2.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/0_0_0.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/0_0_1.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/0_0_2.chunk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/0_0_3.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/1_0_-1.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/1_0_-2.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/1_0_0.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/1_0_1.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/1_0_2.chunk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/1_0_3.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/2_0_-1.chunk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/2_0_-2.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/2_0_0.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/2_0_1.chunk" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/saves/2_0_2.chunk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/2_0_3.chunk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/3_0_0.chunk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/3_0_1.chunk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saves/3_0_2.chunk" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MyBlock.iml" afterPath="$PROJECT_DIR$/MyBlock.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/item/newItem/test1.block" afterPath="$PROJECT_DIR$/config/item/newItem/test1.block" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/ColorGroup.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saves/player/123.txt" afterPath="$PROJECT_DIR$/saves/player/123.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/animation/AnimationManager.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/animation/AnimationManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/engine/Constants.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/engine/Constants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/AnimationPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/AnimationPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Chunk.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Chunk.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ChunkConstants.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ChunkConstants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkRequestCmd.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkRequestCmd.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkResponseCmd.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkResponseCmd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ItemType.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ItemType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/client/Client.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/client/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompListPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompListPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/ColorGroup.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/ColorGroup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/GetHandler.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/GetHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ImagePanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ImagePanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/ChunkHandler.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/ChunkHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MyBlock.iml" afterPath="$PROJECT_DIR$/MyBlock.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotatedColorBlock.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotatedColorBlock.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ServerChunkProvider.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ServerChunkProvider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/script/GroovyTest.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/script/GroovyTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/util/MapUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/util/MapUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/manager/TextureManager.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/manager/TextureManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/item/newItem/bigmantle.block" afterPath="$PROJECT_DIR$/config/item/newItem/bigmantle.block" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/开发日志" afterPath="$PROJECT_DIR$/开发日志" />
     </list>
     <ignored path="MyBlock.iws" />
@@ -57,7 +74,6 @@
     <ignored path="$PROJECT_DIR$/glap/bin/" />
     <ignored path="$PROJECT_DIR$/out/test/glap/" />
     <ignored path="$PROJECT_DIR$/target/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +89,9 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
   <component name="ErrorTreeViewConfiguration">
     <option name="hideWarnings" value="true" />
     <option name="HIDE_WARNINGS" value="true" />
@@ -82,223 +101,102 @@
     <favorites_list name="MyBlock" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MyBlock.iml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MyBlock.iml">
+    <leaf>
+      <file leaf-file-name="ChunkImpl.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.34415585" vertical-offset="3614" max-vertical-offset="28650">
+              <caret line="304" column="54" selection-start-line="304" selection-start-column="54" selection-end-line="304" selection-end-column="54" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EditEngine.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java">
+      <file leaf-file-name="ItemDefinition.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <marker date="1504180887100" expanded="true" signature="59570:59576" placeholder="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerMain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/ServerMain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="44" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-24.178572">
-              <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4773" max-vertical-offset="7545">
+              <caret line="354" column="5" selection-start-line="354" selection-start-column="5" selection-end-line="354" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BoneBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java">
+      <file leaf-file-name="bigmantle.block" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/item/newItem/bigmantle.block">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+              <caret line="0" column="81" selection-start-line="0" selection-start-column="81" selection-end-line="0" selection-end-column="81" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ItemType.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ItemType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1050">
+              <caret line="31" column="141" selection-start-line="31" selection-start-column="141" selection-end-line="31" selection-end-column="141" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ItemManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/action/ItemManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1158" max-vertical-offset="3270">
+              <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/block/BlockManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
+              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockManagerImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/block/internal/BlockManagerImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="1650">
+              <caret line="53" column="15" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CopyBlock.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/CopyBlock.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1095">
+              <caret line="16" column="20" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="65_animationdoor65.block" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/item/newItem/65_animationdoor65.block">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#989#990#0" expanded="false" />
-                <element signature="e#1021#1022#0" expanded="false" />
-                <element signature="e#1136#1137#0" expanded="false" />
-                <element signature="e#1178#1179#0" expanded="false" />
-                <element signature="e#1320#1321#0" expanded="false" />
-                <element signature="e#1349#1350#0" expanded="false" />
-                <element signature="e#1393#1394#0" expanded="false" />
-                <element signature="e#1429#1430#0" expanded="false" />
-                <element signature="e#1461#1462#0" expanded="false" />
-                <element signature="e#1489#1490#0" expanded="false" />
-                <element signature="e#1531#1532#0" expanded="false" />
-                <element signature="e#1565#1566#0" expanded="false" />
-                <element signature="e#1604#1605#0" expanded="false" />
-                <element signature="e#1636#1637#0" expanded="false" />
-                <element signature="e#1689#1690#0" expanded="false" />
-                <element signature="e#1731#1732#0" expanded="false" />
-                <element signature="e#1769#1770#0" expanded="false" />
-                <element signature="e#1800#1801#0" expanded="false" />
-                <element signature="e#1851#1852#0" expanded="false" />
-                <element signature="e#1891#1892#0" expanded="false" />
-                <element signature="e#1928#1929#0" expanded="false" />
-                <element signature="e#1958#1959#0" expanded="false" />
-                <element signature="e#2007#2008#0" expanded="false" />
-                <element signature="e#2045#2046#0" expanded="false" />
-                <element signature="e#2085#2086#0" expanded="false" />
-                <element signature="e#2118#2119#0" expanded="false" />
-                <element signature="e#2173#2174#0" expanded="false" />
-                <element signature="e#2217#2218#0" expanded="false" />
-                <element signature="e#2255#2256#0" expanded="false" />
-                <element signature="e#2286#2287#0" expanded="false" />
-                <element signature="e#2337#2338#0" expanded="false" />
-                <element signature="e#2377#2378#0" expanded="false" />
-                <element signature="e#2416#2417#0" expanded="false" />
-                <element signature="e#2448#2449#0" expanded="false" />
-                <element signature="e#2501#2502#0" expanded="false" />
-                <element signature="e#2543#2544#0" expanded="false" />
-                <element signature="e#2999#3000#0" expanded="false" />
-                <element signature="e#3030#3031#0" expanded="false" />
-                <element signature="e#3077#3078#0" expanded="false" />
-                <element signature="e#3117#3118#0" expanded="false" />
-                <element signature="e#3151#3152#0" expanded="false" />
-                <element signature="e#3182#3183#0" expanded="false" />
-                <element signature="e#3229#3230#0" expanded="false" />
-                <element signature="e#3269#3270#0" expanded="false" />
-                <element signature="e#3303#3304#0" expanded="false" />
-                <element signature="e#3334#3335#0" expanded="false" />
-                <element signature="e#3381#3382#0" expanded="false" />
-                <element signature="e#3421#3422#0" expanded="false" />
-                <element signature="e#3455#3456#0" expanded="false" />
-                <element signature="e#3486#3487#0" expanded="false" />
-                <element signature="e#3533#3534#0" expanded="false" />
-                <element signature="e#3573#3574#0" expanded="false" />
-                <element signature="e#3607#3608#0" expanded="false" />
-                <element signature="e#3638#3639#0" expanded="false" />
-                <element signature="e#3685#3686#0" expanded="false" />
-                <element signature="e#3725#3726#0" expanded="false" />
-                <element signature="e#3759#3760#0" expanded="false" />
-                <element signature="e#3790#3791#0" expanded="false" />
-                <element signature="e#3837#3838#0" expanded="false" />
-                <element signature="e#3877#3878#0" expanded="false" />
-                <element signature="e#5163#5164#0" expanded="false" />
-                <element signature="e#5191#5192#0" expanded="false" />
-                <element signature="e#5232#5233#0" expanded="false" />
-                <element signature="e#5266#5267#0" expanded="false" />
-                <element signature="e#5298#5299#0" expanded="false" />
-                <element signature="e#5327#5328#0" expanded="false" />
-                <element signature="e#5370#5371#0" expanded="false" />
-                <element signature="e#5406#5407#0" expanded="false" />
-                <element signature="e#5437#5438#0" expanded="false" />
-                <element signature="e#5465#5466#0" expanded="false" />
-                <element signature="e#5506#5507#0" expanded="false" />
-                <element signature="e#5540#5541#0" expanded="false" />
-                <element signature="e#5716#5717#0" expanded="false" />
-                <element signature="e#5744#5745#0" expanded="false" />
-                <element signature="e#5791#5792#0" expanded="false" />
-                <element signature="e#5825#5826#0" expanded="false" />
-                <element signature="e#5861#5862#0" expanded="false" />
-                <element signature="e#5888#5889#0" expanded="false" />
-                <element signature="e#5933#5934#0" expanded="false" />
-                <element signature="e#5965#5966#0" expanded="false" />
-                <element signature="e#6001#6002#0" expanded="false" />
-                <element signature="e#6028#6029#0" expanded="false" />
-                <element signature="e#6073#6074#0" expanded="false" />
-                <element signature="e#6105#6106#0" expanded="false" />
-                <element signature="e#6142#6143#0" expanded="false" />
-                <element signature="e#6170#6171#0" expanded="false" />
-                <element signature="e#6218#6219#0" expanded="false" />
-                <element signature="e#6252#6253#0" expanded="false" />
-                <element signature="e#6287#6288#0" expanded="false" />
-                <element signature="e#6313#6314#0" expanded="false" />
-                <element signature="e#6356#6357#0" expanded="false" />
-                <element signature="e#6386#6387#0" expanded="false" />
-                <element signature="e#6424#6425#0" expanded="false" />
-                <element signature="e#6453#6454#0" expanded="false" />
-                <element signature="e#6502#6503#0" expanded="false" />
-                <element signature="e#6538#6539#0" expanded="false" />
-                <element signature="e#9115#9116#0" expanded="false" />
-                <element signature="e#9142#9143#0" expanded="false" />
-                <element signature="e#22201#22202#0" expanded="false" />
-                <element signature="e#22228#22229#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShaderUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#63904#63922#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SkillManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/skill/SkillManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="78" selection-start-line="15" selection-start-column="78" selection-end-line="15" selection-end-column="78" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$USER_HOME$/.m2/settings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.59363955">
-              <caret line="171" column="14" selection-start-line="171" selection-start-column="14" selection-end-line="171" selection-end-column="14" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AttackManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/skill/AttackManager.java">
+      <file leaf-file-name="BaseBlock.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="25" column="49" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#756#757#0" expanded="false" />
-                <element signature="e#815#816#0" expanded="false" />
-                <element signature="e#1190#1202#0" expanded="false" />
-                <element signature="e#1243#1244#0" expanded="false" />
-                <element signature="e#1273#1274#0" expanded="false" />
-                <element signature="e#1328#1329#0" expanded="false" />
-                <element signature="e#1367#1368#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoggerFactory.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.7.jar!/org/slf4j/LoggerFactory.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.5689654">
-              <caret line="34" column="47" selection-start-line="34" selection-start-column="47" selection-end-line="34" selection-end-column="47" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5178" max-vertical-offset="9045">
+              <caret line="372" column="0" selection-start-line="372" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -315,68 +213,48 @@
       </list>
     </option>
   </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GradleLocalSettings">
-    <option name="externalProjectsViewState">
-      <projects_view />
-    </option>
-  </component>
   <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
+    <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/graphics/shader/ShaderManager.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/engine/Constants.java" />
-        <option value="$PROJECT_DIR$/glap/src/gldemo/learnOpengl/chapt16/multilightwithshadow.frag" />
-        <option value="$PROJECT_DIR$/glap/src/gldemo/learnOpengl/chapt7/3dimg.frag" />
-        <option value="$PROJECT_DIR$/glap/src/gldemo/learnOpengl/chapt7/2dimg.frag" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/opengl/util/Vao.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/world/chunks/Chunk.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/world/chunks/LocalChunkProvider.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/world/chunks/ChunkProvider.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/world/chunks/ServerChunkProvider.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/command/CmdType.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/opengl/util/ShaderUtils.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/network/server/handler/ChunkHandler.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/DoorBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/IBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/RotatedColorBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/textture/BoneBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/CopyDownBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/StateBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/BoxBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/block/Glass.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/block/BlockDefManager.java" />
-        <option value="$PROJECT_DIR$/glap/config/animation/kan.cfg" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/BaseBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/glmodel/GL_Vector.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/Role/controller/LivingThingManager.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/control/MouseControlCenter.java" />
-        <option value="$PROJECT_DIR$/glap/src/glmodel/GL_Triangle.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/live/state/State.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/live/state/WalkState.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/edit/EditEngine.java" />
-        <option value="$PROJECT_DIR$/glap/src/glmodel/GL_Vertex.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/live/state/ShootState.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/live/state/ChaseAttackState.java" />
-        <option value="$PROJECT_DIR$/glap/src/glmodel/GL_Matrix.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/opengl/util/OpenglUtils.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/ColorBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/ImageBlock.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/RotateColorBlock2.java" />
-        <option value="$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/animation/AnimationManager.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/util/JSONUtil.java" />
-        <option value="$PROJECT_DIR$/开发日志" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/game/engine/fx/MainFrame.java" />
-        <option value="$PROJECT_DIR$/glap/src/com/dozenx/script/GroovyTest.java" />
-        <option value="$PROJECT_DIR$/glap/pom.xml" />
-        <option value="$PROJECT_DIR$/MyBlock.iml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/AnimationPanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ImagePanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$USER_HOME$/.m2/settings.xml" />
+        <option value="$PROJECT_DIR$/saves/0_0_1.map" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java" />
+        <option value="$PROJECT_DIR$/saves/0_0_0.map" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ServerChunkProvider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/GetHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java" />
+        <option value="$PROJECT_DIR$/config/item/newItem/60_colorblock.block" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/client/Client.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/manager/TextureManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompListPanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompPanel.java" />
+        <option value="$PROJECT_DIR$/开发日志" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateImageBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock2.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotatedColorBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/GroupBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock.java" />
+        <option value="$PROJECT_DIR$/config/item/newItem/bigmantle.block" />
       </list>
     </option>
   </component>
@@ -398,6 +276,10 @@
           <option name="myItemId" value="calendar Maven Webapp" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
       </PATH>
       <PATH>
         <PATH_ELEMENT>
@@ -409,17 +291,31 @@
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="Lifecycle" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org.codehaus.groovy:groovy:2.1.6" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependencyNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="calendar Maven Webapp" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
       </PATH>
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1924" />
-    <option name="height" value="1056" />
+    <option name="x" value="56" />
+    <option name="y" value="23" />
+    <option name="width" value="1292" />
+    <option name="height" value="739" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -456,11 +352,13 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
+    <OptionsSetting value="true" id="Undo Check Out" />
+    <OptionsSetting value="true" id="Get Latest Version" />
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="1" />
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -473,13 +371,8 @@
       <autoscrollToSource />
       <autoscrollFromSource />
       <sortByType />
-      <manualOrder />
-      <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -495,7 +388,7 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -505,33 +398,15 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="slf4j-api-1.7.7.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="slf4j" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -541,42 +416,381 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="slf4j-api-1.7.7.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dozenx" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dozenx" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dozenx" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dozenx" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fx" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dozenx" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="edit" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dozenx" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="edit" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="myblocks" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="myblocks" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saves" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="item" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="item" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="newItem" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/fastjson-1.1.39.jar!/" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="SearchEverywhereHistoryKey" value="slf4j-&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/lib/slf4j-api-1.7.7.jar&#10;servermain&#9;PSI&#9;JAVA://com.dozenx.game.network.server.ServerMain&#10;gr&#9;RUN_CONFIGURATION&#9;GroovyTest&#10;mainfr&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/fx/MainFrame.java&#10;livingthing&#9;PSI&#9;JAVA://cola.machine.game.myblocks.lifething.bean.LivingThing&#10;playerMo&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/Role/model/PlayerModel.java&#10;anima&#9;PSI&#9;JAVA://cola.machine.game.myblocks.animation.AnimationManager&#10;sayha&#9;PSI&#9;JAVA://com.dozenx.game.network.server.handler.SayHandler&#10;rotate&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;colorg&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java&#10;image&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ImageBlock.java&#10;GL&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/glmodel/GL_Vector.java&#10;glV&#9;PSI&#9;JAVA://glmodel.GL_Vector&#10;colorgrou&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java&#10;color&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;base&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/BaseBlock.java&#10;block&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;kan.&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/config/animation/kan.cfg&#10;ColorBlock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;rotatecolorblock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;playerm&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/Role/model/PlayerModel.java&#10;imageB&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ImageBlock.java&#10;component&#9;PSI&#9;JAVA://cola.machine.game.myblocks.entitySystem.Component&#10;colorgr&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java&#10;colorblock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/ColorBlock.java&#10;baseB&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/model/BaseBlock.java&#10;imagebl&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.ImageBlock&#10;edit&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/EditEngine.java&#10;main&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/fx/MainFrame.java&#10;lw&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java&#10;chunkha&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/network/server/handler/ChunkHandler.java&#10;chunkhan&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/network/server/handler/ChunkHandler.java&#10;serverMain&#9;PSI&#9;JAVA://com.dozenx.game.network.server.ServerMain&#10;worker&#9;PSI&#9;JAVA://com.dozenx.game.network.server.Worker&#10;mainf&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/fx/MainFrame.java&#10;serverchu&#9;PSI&#9;JAVA://cola.machine.game.myblocks.world.chunks.ServerChunkProvider&#10;localchun&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/LocalChunkProvider.java&#10;storageManagerI&#9;PSI&#9;JAVA://cola.machine.game.myblocks.persistence.impl.StorageManagerInternal&#10;Store&#9;PSI&#9;JAVA://cola.machine.game.myblocks.persistence.internal.ChunkStoreInternal&#10;stor&#9;PSI&#9;JAVA://cola.machine.game.myblocks.persistence.StorageManager&#10;chunkim&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java&#10;wo&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java&#10;chunkimp&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java&#10;localchu&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/LocalChunkProvider.java&#10;chunkHan&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/network/server/handler/ChunkHandler.java&#10;local&#9;PSI&#9;JAVA://cola.machine.game.myblocks.world.chunks.LocalChunkProvider&#10;chunk&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java&#10;wol&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java&#10;shaderCon&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/opengl/util/ShaderConfig.java&#10;constant&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/cola/machine/game/myblocks/engine/Constants.java" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="258" />
+    <property name="SearchEverywhereHistoryKey" value="copy&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.CopyBlock&#10;blockManagerIm&#9;PSI&#9;JAVA://cola.machine.game.myblocks.world.block.internal.BlockManagerImpl&#10;blockman&#9;PSI&#9;JAVA://cola.machine.game.myblocks.world.block.BlockManager&#10;itemTyp&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/command/ItemType.java&#10;itemType&#9;PSI&#9;JAVA://com.dozenx.game.engine.command.ItemType&#10;base&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java&#10;animation&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock.java&#10;anima&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/AnimationPanel.java&#10;group&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/GroupBlock.java&#10;groupBlock&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/GroupBlock.java&#10;bas&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java&#10;blockP&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;grou&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/GroupBlock.java&#10;colorBlock&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.ColorBlock&#10;color&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;imageBl&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;63&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/config/item/newItem/61_test3.block&#10;edit&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/EditEngine.java&#10;Group&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/GroupBlock.java&#10;baseB&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java&#10;imageBloc&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;rotat&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;image&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;blockpa&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;ro&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;rotate&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;compP&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/CompPanel.java&#10;animati&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock.java&#10;62_test&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/config/item/newItem/62_test62.block&#10;MAIN&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/MainFrame.java&#10;itemMan&#9;PSI&#9;JAVA://com.dozenx.game.engine.item.action.ItemManager&#10;imageb&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;editE&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/EditEngine.java&#10;imageB&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.ImageBlock&#10;chunkim&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java&#10;serverCh&#9;PSI&#9;JAVA://cola.machine.game.myblocks.world.chunks.ServerChunkProvider&#10;chunk&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/engine/command/ChunkResponseCmd.java&#10;chunkH&#9;PSI&#9;JAVA://com.dozenx.game.network.server.handler.ChunkHandler&#10;chunkR&#9;PSI&#9;JAVA://com.dozenx.game.engine.command.ChunkResponseCmd&#10;mouseC&#9;PSI&#9;JAVA://cola.machine.game.myblocks.control.MouseControlCenter&#10;serv&#9;FILE&#9;file:///Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/network/server/ServerMain.java&#10;slf4j-&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/lib/slf4j-api-1.7.7.jar&#10;servermain&#9;PSI&#9;JAVA://com.dozenx.game.network.server.ServerMain&#10;gr&#9;RUN_CONFIGURATION&#9;GroovyTest&#10;mainfr&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/fx/MainFrame.java&#10;livingthing&#9;PSI&#9;JAVA://cola.machine.game.myblocks.lifething.bean.LivingThing&#10;playerMo&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/Role/model/PlayerModel.java&#10;sayha&#9;PSI&#9;JAVA://com.dozenx.game.network.server.handler.SayHandler&#10;colorg&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/com/dozenx/game/engine/edit/view/ColorGroup.java&#10;GL&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/glap/src/glmodel/GL_Vector.java" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="148" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="282" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="161" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="285" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="162" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1009" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="734" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="296" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="196" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="300" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="199" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="304" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="202" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="934" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="608" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
@@ -584,8 +798,27 @@
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="myblock" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="recentsLimit" value="5" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="FullScreen" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cola.machine.game.myblocks.model" />
+      <recent name="com.dozenx.game.engine.edit.view" />
+      <recent name="com.dozenx.script" />
+      <recent name="com.dozenx.game.engine.fx" />
+      <recent name="gldemo.learnOpengl" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\zzw\workspace\MyBlock" />
+      <recent name="C:\zzw\workspace\MyBlock\glap" />
+      <recent name="C:\zzw\workspace\MyBlock\glap\lib" />
+      <recent name="C:\zzw\workspace\MyBlock\glap\src\gldemo\learnOpengl\chapt7" />
+      <recent name="C:\zzw\workspace\MyBlock\glap\src\gldemo\learnOpengl\chapt16" />
+    </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="cola.machine.game.myblocks.world.chunks" />
     </key>
@@ -596,22 +829,8 @@
       <recent name="C:\zzw\workspace\MyBlock\glap\src\com\dozenx\game\network\client" />
       <recent name="C:\zzw\workspace\MyBlock\glap\src\com\dozenx\game\network\server\" />
     </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.dozenx.script" />
-      <recent name="com.dozenx.game.engine.fx" />
-      <recent name="cola.machine.game.myblocks.model" />
-      <recent name="gldemo.learnOpengl" />
-      <recent name="com.dozenx.game.opengl.util" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\zzw\workspace\MyBlock" />
-      <recent name="C:\zzw\workspace\MyBlock\glap" />
-      <recent name="C:\zzw\workspace\MyBlock\glap\lib" />
-      <recent name="C:\zzw\workspace\MyBlock\glap\src\gldemo\learnOpengl\chapt7" />
-      <recent name="C:\zzw\workspace\MyBlock\glap\src\gldemo\learnOpengl\chapt16" />
-    </key>
   </component>
-  <component name="RunManager" selected="Application.ServerMain">
+  <component name="RunManager" selected="Application.BlockEngine">
     <configuration default="false" name="BlockEngine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -630,6 +849,14 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="MyBlock" />
       <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="ServerMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -644,12 +871,20 @@
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH" value="/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="MyBlock" />
       <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="SimpleInterleavedVboExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -712,196 +947,20 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <module name="" />
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="depsClasspath" value="false" />
+      <setting name="passParentEnv" value="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <setting name="launchBrowser" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
-      <method />
-    </configuration>
-    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
-      <module name="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="DEPLOY" value="true" />
-      <option name="ARTIFACT_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
-      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
-      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
-      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
-      <module name="" />
-      <option name="TESTING_TYPE" value="0" />
-      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
-      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
-      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
-      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <module />
-      <method />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <method />
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="true" type="JUnitTestDiscovery" factoryName="JUnit Test Discovery" changeList="All">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="true" type="JarApplication" factoryName="JAR Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="Java Scratch" factoryName="Java Scratch">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="SCRATCH_FILE_ID" value="0" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="glap" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="filePath" />
-      <option name="vmParameters" />
-      <option name="alternativeJrePath" />
-      <option name="programParameters" />
-      <option name="passParentEnvs" value="true" />
-      <option name="workingDirectory" />
-      <option name="isAlternativeJrePathEnabled" value="false" />
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
@@ -934,6 +993,22 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -962,32 +1037,164 @@
       <listeners />
       <method />
     </configuration>
-    <configuration default="true" type="TestNGTestDiscovery" factoryName="TestNG Test Discovery" changeList="All">
+    <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
       <option name="PACKAGE_NAME" />
       <option name="MAIN_CLASS_NAME" />
       <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
       <envs />
-      <properties />
-      <listeners />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+      <option name="BCName" value="" />
+      <option name="IOSSimulatorSdkPath" value="" />
+      <option name="adlOptions" value="" />
+      <option name="airProgramParameters" value="" />
+      <option name="appDescriptorForEmulator" value="Android" />
+      <option name="debugTransport" value="USB" />
+      <option name="debuggerSdkRaw" value="BC SDK" />
+      <option name="emulator" value="NexusOne" />
+      <option name="emulatorAdlOptions" value="" />
+      <option name="fastPackaging" value="true" />
+      <option name="fullScreenHeight" value="0" />
+      <option name="fullScreenWidth" value="0" />
+      <option name="launchUrl" value="false" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="/Applications/Flash Player Debugger.app" />
+        </LauncherParameters>
+      </option>
+      <option name="mobileRunTarget" value="Emulator" />
+      <option name="moduleName" value="" />
+      <option name="overriddenMainClass" value="" />
+      <option name="overriddenOutputFileName" value="" />
+      <option name="overrideMainClass" value="false" />
+      <option name="runTrusted" value="true" />
+      <option name="screenDpi" value="0" />
+      <option name="screenHeight" value="0" />
+      <option name="screenWidth" value="0" />
+      <option name="url" value="http://" />
+      <option name="usbDebugPort" value="7936" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="/Applications/Flash Player Debugger.app" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
       <method />
     </configuration>
     <list size="5">
@@ -999,9 +1206,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.ServerMain" />
-        <item index="1" class="java.lang.String" itemvalue="Application.GroovyTest" />
-        <item index="2" class="java.lang.String" itemvalue="Application.BlockEngine" />
+        <item index="0" class="java.lang.String" itemvalue="Application.BlockEngine" />
+        <item index="1" class="java.lang.String" itemvalue="Application.ServerMain" />
+        <item index="2" class="java.lang.String" itemvalue="Application.GroovyTest" />
         <item index="3" class="java.lang.String" itemvalue="Application.GL_Vector" />
         <item index="4" class="java.lang.String" itemvalue="Application.SimpleInterleavedVboExample" />
       </list>
@@ -1015,48 +1222,76 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="05ed9f65-f8cd-47e7-b544-b0c1b482b26b" name="Default" comment="" />
       <created>1467626553267</created>
-      <option name="number" value="Default" />
       <updated>1467626553267</updated>
+      <workItem from="1504346694152" duration="418000" />
+      <workItem from="1504347117410" duration="701000" />
+      <workItem from="1504347822725" duration="66000" />
+      <workItem from="1504347892179" duration="39000" />
+      <workItem from="1504347932275" duration="2128000" />
+      <workItem from="1504359932356" duration="246000" />
+      <workItem from="1504360182793" duration="9686000" />
+      <workItem from="1504399084395" duration="31594000" />
     </task>
     <servers />
   </component>
-  <component name="TodoView">
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="44878000" />
+  </component>
+  <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
       <is-autoscroll-to-source value="true" />
     </todo-panel>
     <todo-panel id="all">
       <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
       <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
+    <frame x="56" y="23" width="1292" height="739" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32792208" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28246754" sideWeight="0.45779914" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23027375" sideWeight="0.57463884" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23027375" sideWeight="0.42536116" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5898268" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43506494" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32575756" sideWeight="0.4974293" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20987654" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2012987" sideWeight="0.491453" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959743" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24871466" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38419914" sideWeight="0.4409871" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14378238" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24935234" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Dynamic Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973805" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32511556" sideWeight="0.4974293" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37288135" sideWeight="0.491453" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24871466" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973805" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39137134" sideWeight="0.4409871" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16907051" sideWeight="0.5775" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.58859783" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26040062" sideWeight="0.45779914" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3266564" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24919872" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39583334" sideWeight="0.42" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26923078" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43451464" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14378238" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24935234" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Dynamic Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1069,6 +1304,11 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1541,6 +1781,72 @@
           <properties />
           <option name="timeStamp" value="2325" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java</url>
+          <line>250</line>
+          <properties />
+          <option name="timeStamp" value="2326" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/LocalChunkProvider.java</url>
+          <line>67</line>
+          <properties />
+          <option name="timeStamp" value="2328" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java</url>
+          <line>122</line>
+          <properties />
+          <option name="timeStamp" value="2332" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java</url>
+          <line>230</line>
+          <properties />
+          <option name="timeStamp" value="2334" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java</url>
+          <line>121</line>
+          <properties />
+          <option name="timeStamp" value="2351" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java</url>
+          <line>141</line>
+          <properties />
+          <option name="timeStamp" value="2352" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java</url>
+          <line>69</line>
+          <properties />
+          <option name="timeStamp" value="2353" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/GroupBlock.java</url>
+          <line>814</line>
+          <properties />
+          <option name="timeStamp" value="2354" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java</url>
+          <line>484</line>
+          <properties />
+          <option name="timeStamp" value="2370" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java</url>
+          <line>374</line>
+          <properties />
+          <option name="timeStamp" value="2379" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java</url>
+          <line>372</line>
+          <properties />
+          <option name="timeStamp" value="2380" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/glap/src/cola/machine/game/myblocks/model/RotatedColorBlock.java</url>
           <line>60</line>
@@ -1557,530 +1863,451 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="2326" />
+      <option name="time" value="2381" />
     </breakpoint-manager>
-    <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/开发日志">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1320" max-vertical-offset="2160">
+          <caret line="116" column="13" selection-start-line="116" selection-start-column="13" selection-end-line="116" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
+    <entry file="file://$PROJECT_DIR$/.idea/compiler.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Login.html">
+    <entry file="file://$PROJECT_DIR$/.idea/encodings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/物品说明">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="13491" max-vertical-offset="19965">
+          <caret line="878" column="41" selection-start-line="878" selection-start-column="41" selection-end-line="878" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MyBlock.iml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/ChunkHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1050">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ChunkResponseCmd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="52" column="22" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1504180887100" expanded="true" signature="59570:59576" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/ServerMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/开发日志">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/物品说明">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MyBlock.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="1800">
+          <caret line="63" column="37" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1125">
+          <caret line="65" column="15" selection-start-line="54" selection-start-column="4" selection-end-line="65" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/开发日志">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/persistence/internal/ChunkStoreInternal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="470" max-vertical-offset="1185">
+          <caret line="51" column="42" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/LocalChunkProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1115" max-vertical-offset="3690">
+          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/物品说明">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/开发日志">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/物品说明">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/开发日志">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/物品说明">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/开发日志">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/物品说明">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_25/src.zip!/java/util/List.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3320965">
-          <caret line="210" column="12" selection-start-line="210" selection-start-column="12" selection-end-line="210" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/物品说明">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/开发日志">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="210" column="0" selection-start-line="210" selection-start-column="0" selection-end-line="210" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MyBlock.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1504180887100" expanded="true" signature="59570:59576" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/ServerMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="44" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#989#990#0" expanded="false" />
-            <element signature="e#1021#1022#0" expanded="false" />
-            <element signature="e#1136#1137#0" expanded="false" />
-            <element signature="e#1178#1179#0" expanded="false" />
-            <element signature="e#1320#1321#0" expanded="false" />
-            <element signature="e#1349#1350#0" expanded="false" />
-            <element signature="e#1393#1394#0" expanded="false" />
-            <element signature="e#1429#1430#0" expanded="false" />
-            <element signature="e#1461#1462#0" expanded="false" />
-            <element signature="e#1489#1490#0" expanded="false" />
-            <element signature="e#1531#1532#0" expanded="false" />
-            <element signature="e#1565#1566#0" expanded="false" />
-            <element signature="e#1604#1605#0" expanded="false" />
-            <element signature="e#1636#1637#0" expanded="false" />
-            <element signature="e#1689#1690#0" expanded="false" />
-            <element signature="e#1731#1732#0" expanded="false" />
-            <element signature="e#1769#1770#0" expanded="false" />
-            <element signature="e#1800#1801#0" expanded="false" />
-            <element signature="e#1851#1852#0" expanded="false" />
-            <element signature="e#1891#1892#0" expanded="false" />
-            <element signature="e#1928#1929#0" expanded="false" />
-            <element signature="e#1958#1959#0" expanded="false" />
-            <element signature="e#2007#2008#0" expanded="false" />
-            <element signature="e#2045#2046#0" expanded="false" />
-            <element signature="e#2085#2086#0" expanded="false" />
-            <element signature="e#2118#2119#0" expanded="false" />
-            <element signature="e#2173#2174#0" expanded="false" />
-            <element signature="e#2217#2218#0" expanded="false" />
-            <element signature="e#2255#2256#0" expanded="false" />
-            <element signature="e#2286#2287#0" expanded="false" />
-            <element signature="e#2337#2338#0" expanded="false" />
-            <element signature="e#2377#2378#0" expanded="false" />
-            <element signature="e#2416#2417#0" expanded="false" />
-            <element signature="e#2448#2449#0" expanded="false" />
-            <element signature="e#2501#2502#0" expanded="false" />
-            <element signature="e#2543#2544#0" expanded="false" />
-            <element signature="e#2999#3000#0" expanded="false" />
-            <element signature="e#3030#3031#0" expanded="false" />
-            <element signature="e#3077#3078#0" expanded="false" />
-            <element signature="e#3117#3118#0" expanded="false" />
-            <element signature="e#3151#3152#0" expanded="false" />
-            <element signature="e#3182#3183#0" expanded="false" />
-            <element signature="e#3229#3230#0" expanded="false" />
-            <element signature="e#3269#3270#0" expanded="false" />
-            <element signature="e#3303#3304#0" expanded="false" />
-            <element signature="e#3334#3335#0" expanded="false" />
-            <element signature="e#3381#3382#0" expanded="false" />
-            <element signature="e#3421#3422#0" expanded="false" />
-            <element signature="e#3455#3456#0" expanded="false" />
-            <element signature="e#3486#3487#0" expanded="false" />
-            <element signature="e#3533#3534#0" expanded="false" />
-            <element signature="e#3573#3574#0" expanded="false" />
-            <element signature="e#3607#3608#0" expanded="false" />
-            <element signature="e#3638#3639#0" expanded="false" />
-            <element signature="e#3685#3686#0" expanded="false" />
-            <element signature="e#3725#3726#0" expanded="false" />
-            <element signature="e#3759#3760#0" expanded="false" />
-            <element signature="e#3790#3791#0" expanded="false" />
-            <element signature="e#3837#3838#0" expanded="false" />
-            <element signature="e#3877#3878#0" expanded="false" />
-            <element signature="e#5163#5164#0" expanded="false" />
-            <element signature="e#5191#5192#0" expanded="false" />
-            <element signature="e#5232#5233#0" expanded="false" />
-            <element signature="e#5266#5267#0" expanded="false" />
-            <element signature="e#5298#5299#0" expanded="false" />
-            <element signature="e#5327#5328#0" expanded="false" />
-            <element signature="e#5370#5371#0" expanded="false" />
-            <element signature="e#5406#5407#0" expanded="false" />
-            <element signature="e#5437#5438#0" expanded="false" />
-            <element signature="e#5465#5466#0" expanded="false" />
-            <element signature="e#5506#5507#0" expanded="false" />
-            <element signature="e#5540#5541#0" expanded="false" />
-            <element signature="e#5716#5717#0" expanded="false" />
-            <element signature="e#5744#5745#0" expanded="false" />
-            <element signature="e#5791#5792#0" expanded="false" />
-            <element signature="e#5825#5826#0" expanded="false" />
-            <element signature="e#5861#5862#0" expanded="false" />
-            <element signature="e#5888#5889#0" expanded="false" />
-            <element signature="e#5933#5934#0" expanded="false" />
-            <element signature="e#5965#5966#0" expanded="false" />
-            <element signature="e#6001#6002#0" expanded="false" />
-            <element signature="e#6028#6029#0" expanded="false" />
-            <element signature="e#6073#6074#0" expanded="false" />
-            <element signature="e#6105#6106#0" expanded="false" />
-            <element signature="e#6142#6143#0" expanded="false" />
-            <element signature="e#6170#6171#0" expanded="false" />
-            <element signature="e#6218#6219#0" expanded="false" />
-            <element signature="e#6252#6253#0" expanded="false" />
-            <element signature="e#6287#6288#0" expanded="false" />
-            <element signature="e#6313#6314#0" expanded="false" />
-            <element signature="e#6356#6357#0" expanded="false" />
-            <element signature="e#6386#6387#0" expanded="false" />
-            <element signature="e#6424#6425#0" expanded="false" />
-            <element signature="e#6453#6454#0" expanded="false" />
-            <element signature="e#6502#6503#0" expanded="false" />
-            <element signature="e#6538#6539#0" expanded="false" />
-            <element signature="e#9115#9116#0" expanded="false" />
-            <element signature="e#9142#9143#0" expanded="false" />
-            <element signature="e#22201#22202#0" expanded="false" />
-            <element signature="e#22228#22229#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="33564" max-vertical-offset="45120">
+          <caret line="2271" column="23" selection-start-line="2271" selection-start-column="8" selection-end-line="2271" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/ServerChunkProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="878" max-vertical-offset="3765">
+          <caret line="92" column="0" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/blockdata/TeraDenseArray16Bit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="818" max-vertical-offset="2580">
+          <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/60_colorblock.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="313">
+          <caret line="0" column="195" selection-start-line="0" selection-start-column="195" selection-end-line="0" selection-end-column="195" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/GetHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="301" max-vertical-offset="735">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/client/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="5220">
+          <caret line="123" column="30" selection-start-line="123" selection-start-column="30" selection-end-line="123" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/59_test2.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="290">
+          <caret line="0" column="170" selection-start-line="0" selection-start-column="56" selection-end-line="0" selection-end-column="170" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/manager/TextureManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6491" max-vertical-offset="10635">
+          <caret line="476" column="39" selection-start-line="476" selection-start-column="39" selection-end-line="476" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/engine/modes/GamingState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12885">
+          <caret line="73" column="22" selection-start-line="73" selection-start-column="22" selection-end-line="73" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5954" max-vertical-offset="9330">
+          <caret line="455" column="6" selection-start-line="455" selection-start-column="6" selection-end-line="520" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#63904#63922#0" expanded="false" />
+            <marker date="1504419953000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1504419953000" expanded="false" signature="-1:-1" placeholder="(event) -&gt; {" />
+            <marker date="1504419953000" expanded="false" signature="-1:-1" placeholder="}" />
+            <marker date="1504419953000" expanded="false" signature="-1:-1" placeholder="(event) -&gt; {" />
+            <marker date="1504419953000" expanded="false" signature="-1:-1" placeholder="(event) -&gt; {" />
+            <marker date="1504419953000" expanded="false" signature="-1:-1" placeholder="}" />
+            <marker date="1504419953000" expanded="false" signature="-1:-1" placeholder="}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.7.jar!/org/slf4j/LoggerFactory.class">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompListPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.5689654">
-          <caret line="34" column="47" selection-start-line="34" selection-start-column="47" selection-end-line="34" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="704" max-vertical-offset="1875">
+          <caret line="54" column="36" selection-start-line="54" selection-start-column="36" selection-end-line="54" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1020#1021#0" expanded="false" />
+            <element signature="e#1068#1069#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1533" max-vertical-offset="2490">
+          <caret line="137" column="41" selection-start-line="137" selection-start-column="41" selection-end-line="137" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/math/AABB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="232" max-vertical-offset="10335">
+          <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1590" max-vertical-offset="4935">
+          <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
+          <folding>
+            <element signature="e#3487#3488#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/开发日志">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3163" max-vertical-offset="3495">
+          <caret line="223" column="96" selection-start-line="223" selection-start-column="96" selection-end-line="223" selection-end-column="96" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/src.zip!/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3465" max-vertical-offset="20760">
+          <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+          <folding>
+            <element signature="e#9560#9561#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/63_box2.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="90">
+          <caret line="0" column="451" selection-start-line="0" selection-start-column="451" selection-end-line="0" selection-end-column="451" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/src.zip!/java/lang/Override.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6363636" vertical-offset="195" max-vertical-offset="525">
+          <caret line="50" column="18" selection-start-line="50" selection-start-column="18" selection-end-line="50" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5550">
+          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+          <folding>
+            <element signature="e#14591#14592#0" expanded="true" />
+            <element signature="e#14618#14619#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3349" max-vertical-offset="19365">
+          <caret line="271" column="22" selection-start-line="271" selection-start-column="22" selection-end-line="271" selection-end-column="22" />
+          <folding>
+            <element signature="e#40883#40884#0" expanded="true" />
+            <element signature="e#40927#40928#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotatedColorBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="664" max-vertical-offset="1275">
+          <caret line="68" column="36" selection-start-line="68" selection-start-column="36" selection-end-line="68" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3817" max-vertical-offset="5400">
+          <caret line="334" column="74" selection-start-line="334" selection-start-column="74" selection-end-line="334" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateImageBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2388" max-vertical-offset="3150">
+          <caret line="182" column="0" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1635" max-vertical-offset="3120">
+          <caret line="108" column="9" selection-start-line="108" selection-start-column="9" selection-end-line="108" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6558" max-vertical-offset="7140">
+          <caret line="504" column="0" selection-start-line="504" selection-start-column="0" selection-end-line="504" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/GroupBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3142" max-vertical-offset="14865">
+          <caret line="223" column="9" selection-start-line="223" selection-start-column="9" selection-end-line="223" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#31083#31084#0" expanded="true" />
+            <element signature="e#31126#31127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/AnimationPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1218" max-vertical-offset="3135">
+          <caret line="122" column="35" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
+          <folding>
+            <element signature="e#5717#6164#0" expanded="true" />
+            <element signature="e#6153#6154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/dooranimation2.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+          <caret line="0" column="75" selection-start-line="0" selection-start-column="75" selection-end-line="0" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/62_test62.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+          <caret line="0" column="50" selection-start-line="0" selection-start-column="50" selection-end-line="0" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/61_test3.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="308">
+          <caret line="0" column="170" selection-start-line="0" selection-start-column="56" selection-end-line="0" selection-end-column="170" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="19368" max-vertical-offset="24315">
+          <caret line="1339" column="0" selection-start-line="1339" selection-start-column="0" selection-end-line="1339" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2445" max-vertical-offset="9210">
+          <caret line="205" column="114" selection-start-line="205" selection-start-column="114" selection-end-line="205" selection-end-column="114" />
+          <folding>
+            <element signature="e#1815#1827#0" expanded="true" />
+            <element signature="e#1923#1949#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/65_animationdoor65.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="308">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5178" max-vertical-offset="9045">
+          <caret line="372" column="0" selection-start-line="372" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/skill/AttackManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="49" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#756#757#0" expanded="false" />
-            <element signature="e#815#816#0" expanded="false" />
-            <element signature="e#1190#1202#0" expanded="false" />
-            <element signature="e#1243#1244#0" expanded="false" />
-            <element signature="e#1273#1274#0" expanded="false" />
-            <element signature="e#1328#1329#0" expanded="false" />
-            <element signature="e#1367#1368#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-24.178572">
-          <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4773" max-vertical-offset="7545">
+          <caret line="354" column="5" selection-start-line="354" selection-start-column="5" selection-end-line="354" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/skill/SkillManager.java">
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/bigmantle.block">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="78" selection-start-line="15" selection-start-column="78" selection-end-line="15" selection-end-column="78" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+          <caret line="0" column="81" selection-start-line="0" selection-start-column="81" selection-end-line="0" selection-end-column="81" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.m2/settings.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/ItemType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59363955">
-          <caret line="171" column="14" selection-start-line="171" selection-start-column="14" selection-end-line="171" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1050">
+          <caret line="31" column="141" selection-start-line="31" selection-start-column="141" selection-end-line="31" selection-end-column="141" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/action/ItemManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1158" max-vertical-offset="3270">
+          <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/block/BlockManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/block/internal/BlockManagerImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="1650">
+          <caret line="53" column="15" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/CopyBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1095">
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/world/chunks/Internal/ChunkImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34415585" vertical-offset="3614" max-vertical-offset="28650">
+          <caret line="304" column="54" selection-start-line="304" selection-start-column="54" selection-end-line="304" selection-end-column="54" />
           <folding />
         </state>
       </provider>
@@ -2091,10 +2318,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>MyBlock:war</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -2102,7 +2331,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>No facets are configured</last-edited>
+          <last-edited>Web</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -2142,7 +2371,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -2166,3 +2394,4 @@
     <option value="" />
   </component>
 </project>
+

@@ -502,7 +502,7 @@ public class ColorBlock extends BaseBlock{
 
         ColorBlock block =new ColorBlock();
 
-        block. parse(block,map);
+        block. parseColor(block,map);
 
 
 
@@ -511,8 +511,8 @@ public class ColorBlock extends BaseBlock{
 
 
     }
-    public  void parse(ColorBlock block ,JSONObject map){
-        super.parse(block,map);
+    public  void parseColor(ColorBlock block ,JSONObject map){
+        parse(block,map);
 
         float red = MapUtil.getFloatValue(map,"r");
         float green = MapUtil.getFloatValue(map,"g");

@@ -54,55 +54,55 @@ public class CompListPanel extends Tab {
 
         box.getChildren().add(refreshBtn);
 
-        for (File file : list) {
-            Button component = new Button();
-            component.setText(file.getName());
-            final String name = file.getName();
-            GamingState.editEngine.readAndLoadColorGroupFromFile(file);
-            box.getChildren().add(component);
-            component.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    GamingState.editEngine.changeCurrentComponent(name);
-                }
-            });
-        }
+//        for (File file : list) {
+//            Button component = new Button();
+//            component.setText(file.getName());
+//            final String name = file.getName();
+//            GamingState.editEngine.readAndLoadColorGroupFromFile(file);
+//            box.getChildren().add(component);
+//            component.setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    GamingState.editEngine.changeCurrentComponent(name);
+//                }
+//            });
+//        }
 
-        refreshBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+//        refreshBtn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//
+//                //获取名称
+//                for (int i = box.getChildren().size() - 1; i >= 1; i--) {
+//                    box.getChildren().remove(i);
+//                }
+//
+//                List<File> list = FileUtil.listFile(PathManager.getInstance().getHomePath().resolve("save/component").toFile());
+//
+//                for (File file : list) {
+//                    Button component = new Button();
+//                    component.setText(file.getName());
+//                    final String name = file.getName();
+//                    GamingState.editEngine.readAndLoadColorGroupFromFile(file);
+//                    box.getChildren().add(component);
+//                    component.setOnAction(new EventHandler<ActionEvent>() {
+//                        @Override
+//                        public void handle(ActionEvent event) {
+//
+//
+//                            GamingState.editEngine.changeCurrentComponent(name);
+//
+//
+//                        }
+//                    });
+//                }
+//
+//            }
+//        });
 
-                //获取名称
-                for (int i = box.getChildren().size() - 1; i >= 1; i--) {
-                    box.getChildren().remove(i);
-                }
-
-                List<File> list = FileUtil.listFile(PathManager.getInstance().getHomePath().resolve("save/component").toFile());
-
-                for (File file : list) {
-                    Button component = new Button();
-                    component.setText(file.getName());
-                    final String name = file.getName();
-                    GamingState.editEngine.readAndLoadColorGroupFromFile(file);
-                    box.getChildren().add(component);
-                    component.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
 
 
-                            GamingState.editEngine.changeCurrentComponent(name);
 
-
-                        }
-                    });
-                }
-
-            }
-        });
-        
-        
-        
-      
         this.setContent(selectGrid);
 
     }

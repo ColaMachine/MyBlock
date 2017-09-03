@@ -34,7 +34,7 @@ public class ImagePanel extends Tab {
     public void add(Node node){
         flowPane.getChildren().add(node);
     }
-    public ImagePanel(Stage primaryStage) {
+    public ImagePanel(final Stage primaryStage) {
 
         //double width, double height
         this.setContent(flowPane);
@@ -101,7 +101,7 @@ public class ImagePanel extends Tab {
 
 
         //init(  root );
-        MyCanvas canvas = new MyCanvas(600, 600);
+        final MyCanvas canvas = new MyCanvas(600, 600);
 
        /* canvas.widthProperty().bind(root.widthProperty().subtract(20));
         canvas.heightProperty().bind(root.heightProperty().subtract(20));*/
@@ -140,9 +140,9 @@ public class ImagePanel extends Tab {
 
 
         final ListView<String> textureListView = new ListView<String>();
-        ObservableList<String> textureItems = FXCollections.observableArrayList();
+        final ObservableList<String> textureItems = FXCollections.observableArrayList();
 
-        HashMap<String, TextureInfo> textureMap = TextureManager.textureInfoMap;
+        final HashMap<String, TextureInfo> textureMap = TextureManager.textureInfoMap;
 
 
         Iterator texutreit = textureMap.keySet().iterator();
@@ -212,7 +212,7 @@ public class ImagePanel extends Tab {
                 }
             }
         });
-        TextField saveTextureText = new TextField("纹理文件名");
+        final TextField saveTextureText = new TextField("纹理文件名");
 
         saveTextureButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override

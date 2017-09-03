@@ -53,19 +53,22 @@ public class RotatedColorBlock extends ColorBlock {
         return colorBlock;
     }
 
-    public void rotateX(float value) {
+    public float rotateX(float value) {
         this.rotateX += value * 0.1;
         reCompute();
+        return this.rotateX;
     }
 
-    public void rotateY(float value) {
+    public float rotateY(float value) {
         this.rotateY += value * 0.1;
         reCompute();
+        return this.rotateY;
     }
 
-    public void rotateZ(float value) {
+    public float rotateZ(float value) {
         this.rotateZ += value * 0.1;
         reCompute();
+        return this.rotateZ;
     }
 
     public void reCompute() {

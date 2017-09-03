@@ -52,11 +52,11 @@ public class ItemPanel extends Tab {
 
         //创建列表
         final ListView<String> list = new ListView<String>();
-        ObservableList<String> items = FXCollections.observableArrayList(
+        final ObservableList<String> items = FXCollections.observableArrayList(
         );
         list.setItems(items);//ba
 
-        HashMap<Integer, ItemDefinition> imageMap = ItemManager.itemType2ItemDefinitionMap; //遍历所有的物品项目
+        final HashMap<Integer, ItemDefinition> imageMap = ItemManager.itemType2ItemDefinitionMap; //遍历所有的物品项目
 
 
 

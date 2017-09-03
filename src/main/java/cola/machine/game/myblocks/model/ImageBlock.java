@@ -257,7 +257,30 @@ public class ImageBlock extends BaseBlock{
 
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+        GL_Vector[] dirAry = BoxModel.dirAry;
 
+        if(top!=null ) {
+            ShaderUtils.draw3dImage(config, vao,matrix, points[4], points[5], points[6], points[7], dirAry[0], top);
+        }
+
+        if(bottom!=null) {
+            ShaderUtils.draw3dImage(config, vao,matrix, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+        }
+
+        if(front!=null ) {
+            ShaderUtils.draw3dImage(config, vao,matrix,  points[0], points[1], points[5], points[4], dirAry[2], front);
+        }
+
+        if(back!=null ) {
+            ShaderUtils.draw3dImage(config, vao, matrix,  points[2], points[3], points[7], points[6], dirAry[3], back);
+        }
+
+        if(left!=null ) {
+            ShaderUtils.draw3dImage(config, vao,matrix,  points[3], points[0], points[4], points[7], dirAry[4], left);
+        }
+        if(right!=null )  {
+            ShaderUtils.draw3dImage(config, vao,matrix, points[1], points[2], points[6], points[5], dirAry[5], right);
+        }
     }
 
     public String toString(){
@@ -302,9 +325,14 @@ public class ImageBlock extends BaseBlock{
 */
         return buffer.toString();
     }
-
     public static ImageBlock parse(JSONObject map){
         ImageBlock imageBlock =new ImageBlock();
+        parseImage(imageBlock,map);
+        return imageBlock;
+    }
+
+    public static void  parseImage(ImageBlock imageBlock,JSONObject map){
+
 
         parse(imageBlock,map);
         String front = (String) map.get("front");
@@ -352,7 +380,7 @@ public class ImageBlock extends BaseBlock{
         if(StringUtil.isNotEmpty(right))
         imageBlock.right = TextureManager.getTextureInfo(right);
 
-        return imageBlock;
+
 
     }
     @Override

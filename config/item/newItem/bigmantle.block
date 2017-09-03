@@ -1,1 +1,1 @@
-{id:40,name:'bigmantle',type:'block',remark:'bigmantle',remark:'bigmantle',shape:{name:'bigmantle',blocktype:'imageblock',width:4.0,height:8.0,thick:2.0,x:8,y:0,z:12,front:'mantle',back:'mantle',bottom:'mantle',top:'mantle',left:'mantle',right:'mantle',},baseon:'mantle'}
+{id:140,name:'bigmantle',type:'block',remark:'bigmantle',remark:'bigmantle',shape:{name:'bigmantle',blocktype:'imageblock',width:4.0,height:8.0,thick:2.0,x:8,y:0,z:12,front:'mantle',back:'mantle',bottom:'mantle',top:'mantle',left:'mantle',right:'mantle',},baseon:'mantle'}

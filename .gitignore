@@ -1,2 +1,4 @@
 /glap
 /target/
+/saves/*.chunk
+/saves/*.map

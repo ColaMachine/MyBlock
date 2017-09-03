@@ -10,7 +10,8 @@ import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.command.ItemMainType;
-import com.dozenx.game.engine.edit.view.ColorGroup;
+import com.dozenx.game.engine.edit.view.AnimationBlock;
+import com.dozenx.game.engine.edit.view.GroupBlock;
 import com.dozenx.util.BinaryUtil;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
@@ -19,7 +20,6 @@ import glmodel.GL_Vector;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 /**
@@ -322,16 +322,16 @@ public class ItemDefinition implements Cloneable{
             Map<String,Object> resultMap = JSON.parseObject(jsonString, HashMap.class);
             String state = MapUtil.getStringValue(resultMap,"state");
             if(StringUtil.isNotEmpty(state)){
-                if(block instanceof ColorGroup){
-                    ColorGroup colorGroup = (ColorGroup)block;
-                    colorGroup.animations = colorGroup.animationMap.get(state);
-                    colorGroup.play();
+                if(block instanceof AnimationBlock){
+                    AnimationBlock animationBlock = (AnimationBlock)block;
+                    animationBlock.animations = animationBlock.animationMap.get(state);
+                    animationBlock.play();
                     
                 }
             }
             Object penetration = resultMap.get("penetrate");
             if(penetration!=null){
-                if(block instanceof ColorGroup){
+                if(block instanceof AnimationBlock){
                     block.penetration=(Boolean)penetration;
                     
                 }
@@ -541,7 +541,10 @@ public class ItemDefinition implements Cloneable{
                 }else if("colorblock".equals(blockType)){
                     block = ColorBlock.parse((JSONObject) shapeObj);
                 }else if("groupblock".equals(blockType)){
-                    block = ColorGroup.parse((JSONObject) shapeObj);
+                    block = GroupBlock.parse((JSONObject) shapeObj);
+                }
+                else if("animationblock".equals(blockType)){
+                    block = AnimationBlock.parse((JSONObject) shapeObj);
                 }
                 block.id =id;
 

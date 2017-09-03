@@ -14,6 +14,7 @@ import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import cola.machine.game.myblocks.world.generator.WorldGenerator;
+import com.dozenx.util.FileUtil;
 import com.dozenx.util.MathUtil;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -21,13 +22,12 @@ import core.log.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -80,6 +80,28 @@ public class ServerChunkProvider implements ChunkProvider,GeneratingChunkProvide
 								LogUtil.err("block data  is null");
 							}
 							in.close();
+
+                            String additionalFileName =""+chunkPos.x +"_"+chunkPos.y+"_"+chunkPos.z+".map";
+                            Path additionalPath =
+                                    PathManager.getInstance().getInstallPath().resolve("saves").resolve(additionalFileName);
+
+                            File additionalFile = additionalPath.toFile();
+                            if(additionalFile.exists()){
+                                List<String> lineList = FileUtil.readFile2List(additionalFile);
+
+                    for(String line : lineList){
+                        String[] ary = line.split(",");
+        int x = Integer.valueOf(ary[0]);
+                        int y=Integer.valueOf(ary[1]);
+                        int z = Integer.valueOf(ary[2]);
+                        int dir = Integer.valueOf(ary[3]);
+
+
+                        chunkImpl.setBlockStatus(x,y,z,dir);
+                    }
+                            }
+
+
 							//byte[] chunkData =Files.readAllBytes(chunkPath);
 						} catch (Exception e) {
 							// VIP Auto-generated catch block

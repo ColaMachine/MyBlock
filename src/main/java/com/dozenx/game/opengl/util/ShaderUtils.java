@@ -2266,6 +2266,30 @@ try {
         }
     }
 
+
+    public static void draw3dImage(ShaderConfig config,Vao vao , GL_Matrix matrix,GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  GL_Vector normal, TextureInfo ti ){
+        //ti= TextureManager.getTextureInfo("mantle");
+        FloatBufferWrap floatBuffer = vao.getVertices();
+        try {
+            int index = ShaderUtils.bindAndGetTextureIndex(config, ti.textureHandle);
+
+            p1 = GL_Matrix.multiply(matrix, p1);
+
+            p2 = GL_Matrix.multiply(matrix, p2);
+            p3 = GL_Matrix.multiply(matrix, p3);
+            p4 = GL_Matrix.multiply(matrix, p4);
+            normal = GL_Matrix.multiply(matrix, normal);
+            floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
+            floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);
+            floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
+            floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);
+            floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
+            floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
+        }catch(Exception e ){
+            e.printStackTrace();
+        }
+    }
+
     public static void draw3dImage(ShaderConfig config,Vao vao ,float[][] vertices,float[][] texoords,float[][] normal,int[] faces,TextureInfo ti,int x,int y,int z,GL_Matrix transMatrix){
         //ti=TextureManager.getTextureInfo("mantle");
 

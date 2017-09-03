@@ -481,10 +481,20 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     public abstract  BaseBlock copy();
     public  void reComputePoints(){
-       
-        this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
+        this.points = BoxModel.getSmallPoint(0,0,0,width,height,thick);
+       // this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
         GL_Matrix rotateMatrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(width/2,0,thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
       //  GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
+        for(int i=0;i<points.length;i++){
+            points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
+
+        }
+    }
+    public  void reComputePointsInGroup(){
+        this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
+        // this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
+        GL_Matrix rotateMatrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(width/2,0,thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
+        //  GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
         for(int i=0;i<points.length;i++){
             points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
 
@@ -510,27 +520,33 @@ public abstract class BaseBlock extends AABB implements IBlock {
         System.out.println(point);
     }
 
-    public void addWidth(float num){
+    public float addWidth(float num){
         this.width+=num;
         reComputePoints();
+        return this.width;
     }
-    public void addX(float num){
+    public float addX(float num){
         this.x+=num;
         reComputePoints();
+        return this.x;
     }
 
-    public void addHeight(float num){
+    public float addHeight(float num){
         this.height+=num; reComputePoints();
+        return this.height;
     }
-    public void addY(float num){
+    public float addY(float num){
         this.y+=num; reComputePoints();
+        return this.y;
     }
 
-    public void addThick(float num){
+    public float addThick(float num){
         this.thick+=num; reComputePoints();
+        return this.thick;
     }
-    public void addZ(float num){
+    public float addZ(float num){
         this.z+=num; reComputePoints();
+        return this.z;
     }
 
     /**
@@ -622,12 +638,13 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     }
 
-    public void rotateY(float value){
+    public float rotateY(float value){
         this.dir++;
         if(this.dir>=4){
             this.dir=0;
         }
         reComputePoints();
+        return this.dir;
     }
 
 

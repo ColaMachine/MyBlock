@@ -1,15 +1,13 @@
 package com.dozenx.game.engine.edit;
 
+import cola.machine.game.myblocks.animation.Animation;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock2;
+import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -21,7 +19,8 @@ import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ChunkResponseCmd;
 import com.dozenx.game.engine.command.SayCmd;
-import com.dozenx.game.engine.edit.view.ColorGroup;
+import com.dozenx.game.engine.edit.view.AnimationBlock;
+import com.dozenx.game.engine.edit.view.GroupBlock;
 import com.dozenx.game.engine.item.action.ItemFactory;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
@@ -75,7 +74,7 @@ public class EditEngine {
     /**
      * 当前编辑的组件库
      */
-    ColorGroup currentChoosedGroupForEdit =null;
+    GroupBlock currentChoosedGroupForEdit =null;
     public float red ,green,blue,alpha=1;
 
     /**
@@ -188,10 +187,11 @@ public class EditEngine {
 
     /**
      *调用getSelectBlock 来选择方块
-     * @param from
-     * @param direction
+     * @param x
+     * @param y
      * @return
      */
+
         public BaseBlock  selectSingle(float x,float y){
             Object[] results= this.getMouseChoosedBlock(x,y);
             BaseBlock theNearestBlock = (BaseBlock)results[0];
@@ -229,9 +229,10 @@ public class EditEngine {
 
         BaseBlock colorBlock = getSelectFirstBlock();
 
-        if(colorBlock!=null && colorBlock instanceof  ColorGroup ){
+        if(colorBlock!=null &&( colorBlock instanceof AnimationBlock ||  colorBlock instanceof GroupBlock
+        )){
             Switcher.isEditComponent =true;
-            currentChoosedGroupForEdit = (ColorGroup) colorBlock;
+            currentChoosedGroupForEdit = (GroupBlock)colorBlock;
         }else{
             Switcher.isEditComponent =false;
             currentChoosedGroupForEdit=null;
@@ -393,56 +394,59 @@ public class EditEngine {
         selectBlockList.add(block);
     }
 
-    public void adjustWidth(float num,boolean position){
+    public float adjustWidth(float num,boolean position){
         if(Switcher.size&&position) {
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-                colorBlock.addWidth(num);//(false);
+                return colorBlock.addWidth(num);//(false);
 
             }}else{
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-                colorBlock.addX(num);//(false);
+               return  colorBlock.addX(num);//(false);
 
             }
         }
+        return 0;
     }
-    public void adjustHeight(float num,boolean position){
+    public float adjustHeight(float num,boolean position){
         if(Switcher.size && position) {
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
 
-                colorBlock.addHeight(num);//(false);
+               return colorBlock.addHeight(num);//(false);
 
             }
         }else{
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
 
-                colorBlock.addY(num) ;//(false);
+                return colorBlock.addY(num) ;//(false);
 
             }
         }
+        return 0;
     }
 
-    public void adjustThick(float num,boolean position){
+    public float adjustThick(float num,boolean position){
         if(Switcher.size&&position){
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-                colorBlock.addThick( num);//(false);
+                return colorBlock.addThick( num);//(false);
 
             }
         }else{
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-                colorBlock.addZ( num);//(false);
+                return colorBlock.addZ( num);//(false);
 
             }
         }
+        return 0;
 
     }
 
@@ -957,8 +961,8 @@ public class EditEngine {
         }
 
     }
-    public void buildComponent(){
-        ColorGroup group =new ColorGroup(1,1,1,1,1,1);
+    public void buildAnimationComponent(){
+        AnimationBlock group =new AnimationBlock(1,1,1,1,1,1);
         Integer  minx=null,miny=null,minz=null;
              Float   maxx=null,maxy=null,maxz=null;
 
@@ -1021,18 +1025,83 @@ public class EditEngine {
 
     }
 
+
+    public void buildComponent(){
+        GroupBlock group =new GroupBlock(1,1,1,1,1,1);
+        Integer  minx=null,miny=null,minz=null;
+        Float   maxx=null,maxy=null,maxz=null;
+
+        //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
+        for(int i=selectBlockList.size()-1;i>=0;i--){
+            BaseBlock colorBlock = selectBlockList.get(i);
+            group.addChild(selectBlockList.get(i));
+            selectBlockList.remove(i);
+            colorBlockList.remove(colorBlock);
+            if(minx==null){
+                minx =(int) colorBlock.x;
+                miny=(int) colorBlock.y;
+                minz =(int) colorBlock.z;
+                maxx=(int) colorBlock.x+colorBlock.width;
+                maxy=(int) colorBlock.y+colorBlock.height;
+                maxz =(int)  colorBlock.z+colorBlock.thick;
+            }
+            else{
+                if( colorBlock.x<minx){
+                    minx =(int)  colorBlock.x;
+                }
+                if( colorBlock.y<miny){
+                    miny = (int) colorBlock.y;
+                }
+                if( colorBlock.z<minz){
+                    minz =(int)  colorBlock.z;
+                }
+                if(colorBlock.x+colorBlock.width>maxx){
+                    maxx=(int) colorBlock.x+colorBlock.width;
+                }
+                if(colorBlock.y+colorBlock.height>maxy){
+                    maxy=(int) colorBlock.y+colorBlock.height;
+                }
+                if(colorBlock.z+colorBlock.thick>maxz){
+                    maxz=(int) colorBlock.z+colorBlock.thick;
+                }
+            }
+        }
+        group.x=minx;
+        group.y=miny;
+        group.z =minz;
+        group.width = maxx-minx;
+        group.height =maxy-miny;
+        group.thick = maxz-minz;
+        //FileOutputStream outputStream =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("save").resolve("save1.block").toFile());
+        for(int i=group.colorBlockList.size()-1;i>=0;i--){
+            BaseBlock colorBlock = group.colorBlockList.get(i);
+            colorBlock.x-=group.x;
+            colorBlock.y-=group.y;
+            colorBlock.z-=group.z;
+        }
+        group.reComputePoints();
+
+       /* for(BaseBlock colorBlock : group.colorBlockList){
+            colorBlock.x-= group.x;
+            colorBlock.y-=group.y;
+            colorBlock.z-=group.z;
+        }*/
+        this.colorBlockList.add(group);
+
+    }
+
    /* List<ColorGroup> groups =new ArrayList<>();*/
 
     public void adjustComponent(float xzoom,float yzoom,float zzoom,float xoffset ,float yoffset , float zoffset){
-        if(selectBlockList.size()>0 && selectBlockList.get(0)instanceof ColorGroup){
-            ColorGroup colorGroup = (ColorGroup ) selectBlockList.get(0);
-            colorGroup.xzoom=xzoom;
-            colorGroup.yzoom=yzoom;
-            colorGroup.zzoom=zzoom;
+        if(selectBlockList.size()>0 && selectBlockList.get(0)instanceof AnimationBlock){
+            AnimationBlock animationBlock = (AnimationBlock) selectBlockList.get(0);
+            animationBlock.xzoom=xzoom;
+            animationBlock.yzoom=yzoom;
+            animationBlock.zzoom=zzoom;
 
-            colorGroup.xoffset=xoffset;
-            colorGroup.yoffset=yoffset;
-            colorGroup.zoffset=zoffset;
+            animationBlock.xoffset=xoffset;
+            animationBlock.yoffset=yoffset;
+            animationBlock.zoffset=zoffset;
         }
     }
 
@@ -1099,22 +1168,22 @@ public class EditEngine {
      * @return
      */
     public int getCurrentColorGroupAnimationFrameCount(){
-        if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
-            return ((ColorGroup) selectBlockList.get(0) ).animations.size();
+        if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof AnimationBlock){
+            return ((AnimationBlock) selectBlockList.get(0) ).animations.size();
         }
         return 0;
     }
     public void saveToCurFrame(){
-       ColorGroup colorGroup = currentChoosedGroupForEdit;
-        if(colorGroup!=null){
-            colorGroup.saveToCurFrame();
+       AnimationBlock animationBlock = (AnimationBlock)currentChoosedGroupForEdit;
+        if(animationBlock !=null){
+            animationBlock.saveToCurFrame();
         }
        // currentChoosedGroupForEdit.animations(currentChoosedGroupForEdit.)
     }
     public void deleteCurFrame(){
-        ColorGroup colorGroup = currentChoosedGroupForEdit;
-        if(colorGroup!=null){
-            colorGroup.deleteCurFrame();
+        AnimationBlock animationBlock = (AnimationBlock)currentChoosedGroupForEdit;
+        if(animationBlock !=null){
+            animationBlock.deleteCurFrame();
         }
     }
 
@@ -1124,12 +1193,13 @@ public class EditEngine {
      * 把当前的colorgroup 复制并新增一个动画帧
      */
     public void currentColorAddGroupAnimationFrame(){
-        if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof  ColorGroup){
-            ColorGroup group = (ColorGroup) selectBlockList.get(0);
-            ColorGroup newGroup =group.copy();
+        if(selectBlockList.size()>0 && selectBlockList.get(0) instanceof AnimationBlock){
+            AnimationBlock group = (AnimationBlock) selectBlockList.get(0);
+            AnimationBlock newGroup =group.copy();
             newGroup .animations=null;
-
-            group.animations.add(newGroup);
+            GroupBlock groupBlock =new GroupBlock();
+            groupBlock.colorBlockList = newGroup .colorBlockList;
+            group.animations.add(groupBlock);
         }
 
     }
@@ -1148,21 +1218,21 @@ public class EditEngine {
     /*public void loadColorGroup(String componentName,List<String > contents) {
         chooseColorGroup = colorGroupHashMap.get(componentName);
     }*/
-    public int readColorGroupFromList(List<String> contents,int nowIndex,ColorGroup colorGroup){
+    public int readColorGroupFromList(List<String> contents,int nowIndex,AnimationBlock animationBlock){
 
         String groupInfo = contents.get(nowIndex);
         String infoAry[] = groupInfo.split(",");
-        colorGroup.width=Float.valueOf(infoAry[0]);
-        colorGroup.height=Float.valueOf(infoAry[1]);
-        colorGroup.thick=Float.valueOf(infoAry[2]);
+        animationBlock.width=Float.valueOf(infoAry[0]);
+        animationBlock.height=Float.valueOf(infoAry[1]);
+        animationBlock.thick=Float.valueOf(infoAry[2]);
 
-        colorGroup.xoffset=Float.valueOf(infoAry[3]);
-        colorGroup.yoffset=Float.valueOf(infoAry[4]);
-        colorGroup.zoffset=Float.valueOf(infoAry[5]);
+        animationBlock.xoffset=Float.valueOf(infoAry[3]);
+        animationBlock.yoffset=Float.valueOf(infoAry[4]);
+        animationBlock.zoffset=Float.valueOf(infoAry[5]);
 
-        colorGroup.xzoom=Float.valueOf(infoAry[6]);
-        colorGroup.yzoom=Float.valueOf(infoAry[7]);
-        colorGroup.zzoom=Float.valueOf(infoAry[8]);
+        animationBlock.xzoom=Float.valueOf(infoAry[6]);
+        animationBlock.yzoom=Float.valueOf(infoAry[7]);
+        animationBlock.zzoom=Float.valueOf(infoAry[8]);
         int lastIndex =0;
         for(int i=nowIndex+1,size= contents.size();i<size;i++){
             String s = contents.get(i);
@@ -1180,7 +1250,7 @@ public class EditEngine {
                 block.back = TextureManager.getTextureInfo(String.valueOf(ary[13]));
                 block.left = TextureManager.getTextureInfo(String.valueOf(ary[14]));
                 block.right = TextureManager.getTextureInfo(String.valueOf(ary[15]));
-                colorGroup.colorBlockList.add(block);
+                animationBlock.colorBlockList.add(block);
             }else{
                 ColorBlock colorBlock = new ColorBlock(Math.round(Float.valueOf(ary[0])), Math.round(Float.valueOf(ary[1])), Math.round(Float.valueOf(ary[2])));
                 colorBlock.width = Float.valueOf(ary[3]);
@@ -1192,7 +1262,7 @@ public class EditEngine {
                 if(ary.length>=10){
                     colorBlock.opacity = Float.valueOf(ary[9]);
                 }
-                colorGroup.colorBlockList.add(colorBlock);
+                animationBlock.colorBlockList.add(colorBlock);
             }
 
 
@@ -1206,29 +1276,29 @@ public class EditEngine {
      * 从指定文件读取colorGroup并 加载到系统组件当中
      * @param file
      */
-    public void readAndLoadColorGroupFromFile(File file) {
-
-
-        try {
-
-            List<String> list = FileUtil.readFile2List(file);
-        if(file.getName().equals("yanjiang3.block")){
-            LogUtil.println("hello");
-        }
-            ColorGroup colorGroup = new ColorGroup(0,0,0,1,1,1);
-            int index = this.readColorGroupFromList(list,0,colorGroup);
-            while(index != -1){
-                ColorGroup animationGroup = new ColorGroup(0,0,0,1,1,1);
-                index = this.readColorGroupFromList(list,index,animationGroup);
-                colorGroup.animations.add(animationGroup);
-            }
-
-            colorGroupHashMap.put(file.getName(),colorGroup);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public void readAndLoadColorGroupFromFile(File file) {
+//
+//
+//        try {
+//
+//            List<String> list = FileUtil.readFile2List(file);
+//        if(file.getName().equals("yanjiang3.block")){
+//            LogUtil.println("hello");
+//        }
+//            AnimationBlock animationBlock = new AnimationBlock(0,0,0,1,1,1);
+//            int index = this.readColorGroupFromList(list,0, animationBlock);
+//            while(index != -1){
+//                AnimationBlock animationGroup = new AnimationBlock(0,0,0,1,1,1);
+//                index = this.readColorGroupFromList(list,index,animationGroup);
+//                animationBlock.animations.add(animationGroup);
+//            }
+//
+//            colorGroupHashMap.put(file.getName(), animationBlock);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     /**
      * 根据给定的名称保存当前选中的colorGroup 并保存到内存colorGroupHashMap中
@@ -1279,47 +1349,62 @@ public class EditEngine {
     }
 
     public void animationFrameShowNum(int num){
-        currentChoosedGroupForEdit.showAnimationFrame(num);
+        ( (AnimationBlock)currentChoosedGroupForEdit).showAnimationFrame(num);
     }
 
     public boolean playAnimation(){
         if(currentChoosedGroupForEdit!= null){
-           return  currentChoosedGroupForEdit.play();
+           return  ((AnimationBlock)currentChoosedGroupForEdit).play();
         }
         return true;
     }
 
-    public void adjustRotatex(float value){
+    public float adjustRotatex(float value){
+        float rotateX = 0 ;
         for(int i=0;i<selectBlockList.size();i++){
             BaseBlock colorBlock  = selectBlockList.get(i);
             if(colorBlock instanceof RotateColorBlock2){
-                ((RotateColorBlock2) colorBlock) .rotateX(value);
+                rotateX= ((RotateColorBlock2) colorBlock) .rotateX(value);
             }
-            if(colorBlock instanceof ColorGroup){
-                ((ColorGroup) colorBlock) .rotateX(value);
+            if(colorBlock instanceof RotateImageBlock){
+                rotateX= ((RotateImageBlock) colorBlock) .rotateX(value);
+            }
+            if(colorBlock instanceof AnimationBlock){
+                rotateX= ((AnimationBlock) colorBlock) .rotateX(value);
+            }
+            if(colorBlock instanceof GroupBlock){
+                rotateX= ((GroupBlock) colorBlock) .rotateX(value);
             }
         }
+        return rotateX;
     }
 
-    public void adjustRotateY(float value){
+    public float adjustRotateY(float value){
+        float rotate=0;
         for(int i=0;i<selectBlockList.size();i++){
             BaseBlock colorBlock  = selectBlockList.get(i);
             //if(colorBlock instanceof RotateColorBlock2){
                // ((RotateColorBlock2) colorBlock) .rotateY(value);
-            colorBlock .rotateY(value);
+            rotate= colorBlock .rotateY(value);
            // }
         }
+        return rotate;
     }
-    public void adjustRotateZ(float value){
+    public float  adjustRotateZ(float value){
+        float rotate=0;
         for(int i=0;i<selectBlockList.size();i++){
             BaseBlock colorBlock  = selectBlockList.get(i);
             if(colorBlock instanceof RotateColorBlock2){
-                ((RotateColorBlock2) colorBlock) .rotateZ(value);
+                rotate=((RotateColorBlock2) colorBlock) .rotateZ(value);
             }
-            if(colorBlock instanceof ColorGroup){
-                ((ColorGroup) colorBlock) .rotateZ(value);
+            if(colorBlock instanceof RotateImageBlock){
+                rotate=((RotateImageBlock) colorBlock) .rotateZ(value);
+            }
+            if(colorBlock instanceof AnimationBlock){
+                rotate= ((AnimationBlock) colorBlock) .rotateZ(value);
             }
         }
+        return rotate;
     }
 
     public BaseBlock readyShootBlock = new ColorBlock();
@@ -1507,8 +1592,8 @@ public class EditEngine {
                 rotateBlock.centerZ = z;
 
             }else{
-                if(block instanceof  ColorGroup){
-                    ColorGroup group =(ColorGroup) block;
+                if(block instanceof AnimationBlock){
+                    AnimationBlock group =(AnimationBlock) block;
                     group.setCenter(x,y,z);
                 }
             }
@@ -1520,11 +1605,11 @@ public class EditEngine {
         // TODO Auto-generated method stub
         
         BaseBlock block  =  this.getSelectFirstBlock();
-        if(block instanceof ColorGroup ){
-            ColorGroup group = (ColorGroup) block;
-            List<ColorGroup> copyAnimationList = new ArrayList<>();
+        if(block instanceof AnimationBlock){
+            AnimationBlock group = (AnimationBlock) block;
+            List<GroupBlock> copyAnimationList = new ArrayList<>();
             
-            for(ColorGroup animationBlock : group.animations){
+            for(GroupBlock animationBlock : group.animations){
                 copyAnimationList.add(animationBlock.copy());
             }
             group.animationMap.put(name, copyAnimationList);
@@ -1535,12 +1620,12 @@ public class EditEngine {
 
     public void animationNameShow(String selectedItem) {
         BaseBlock block  =  this.getSelectFirstBlock();
-        if(block instanceof ColorGroup ){
-            ColorGroup group = (ColorGroup) block;
+        if(block instanceof AnimationBlock){
+            AnimationBlock group = (AnimationBlock) block;
             group.animations.clear();//不合适吧
-            List<ColorGroup> copyAnimationList = group.animationMap.get(selectedItem);
+            List<GroupBlock> copyAnimationList = group.animationMap.get(selectedItem);
             
-            for(ColorGroup animationBlock : copyAnimationList){
+            for(GroupBlock animationBlock : copyAnimationList){
                 group.animations.add(animationBlock.copy());
                 
              
@@ -1554,12 +1639,12 @@ public class EditEngine {
     public List<String> getAnimationName() {
         List nameList =new ArrayList<String>();
         BaseBlock block  =  this.getSelectFirstBlock();
-        if(block instanceof ColorGroup ){
-            ColorGroup group = (ColorGroup) block;
-            Map<String, List<ColorGroup>> map =group.animationMap;
+        if(block instanceof AnimationBlock){
+            AnimationBlock group = (AnimationBlock) block;
+            Map<String, List<GroupBlock>> map =group.animationMap;
             
             
-            for (Map.Entry<String, List<ColorGroup>> entry : map.entrySet()) {  
+            for (Map.Entry<String, List<GroupBlock>> entry : map.entrySet()) {
               
                 nameList.add(entry.getKey() );
               

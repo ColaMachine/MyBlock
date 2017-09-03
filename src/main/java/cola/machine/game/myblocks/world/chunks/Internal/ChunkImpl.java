@@ -22,9 +22,8 @@ import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.engine.edit.view.ColorGroup;
+import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -32,6 +31,7 @@ import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ByteUtil;
+import com.dozenx.util.FileUtil;
 import core.log.LogUtil;
 import glapp.GLApp;
 import glmodel.GL_Matrix;
@@ -173,14 +173,14 @@ public class ChunkImpl implements Chunk {
             // int realId = ByteUtil.get8_0Value(blockId);//获得真实的blockid
             blockData.set(x, y, z, block.getId());// 设置或者
             blockMap.put(blockData.getIndex(x, y, z), block);
-            if (block instanceof ColorGroup) {
-                ColorGroup group = ((ColorGroup) block).copy();
+            if (block instanceof AnimationBlock) {
+                AnimationBlock group = ((AnimationBlock) block).copy();
                 group.x = x;
                 group.y = y;
                 group.z = z;
                 if (group.animations != null && group.animations.size() > 0) {
 
-                    animationBlock.add(((ColorGroup) block));
+                    animationBlock.add(((AnimationBlock) block));
 
                 }
             }
@@ -244,6 +244,10 @@ public class ChunkImpl implements Chunk {
                                 blockMap.put(blockData.getIndex(x + _x, y + _y, z + _z), copyBlock);
                                 blockData.set(x + _x, y + _y, z + _z, copyBlock.id);// 设置或者
                             }else if(block.dir==1){
+
+                                //清理原来的copydown
+                                blockData.set(x +  _x, y + _y, z +_z, 0);// 设置或者
+
                                 blockMap.put(blockData.getIndex(x +  _z, y + _y, z +_x), copyBlock);
                               
                                 
@@ -271,7 +275,7 @@ public class ChunkImpl implements Chunk {
             if (GamingState.player != null) {
                 if (blockId == 0) {
                     BaseBlock block = (BaseBlock) blockMap.get(blockData.getIndex(x, y, z));
-                    if (block != null && block instanceof ColorGroup) {
+                    if (block != null && block instanceof AnimationBlock) {
                         this.animationBlock.remove(block);
                         blockMap.remove(blockData.getIndex(x, y, z));
                     }
@@ -283,8 +287,8 @@ public class ChunkImpl implements Chunk {
                     BaseBlock baseBlock = ((BaseBlock) block).copy();
                     baseBlock.reComputePoints();
                     // 判断对象
-                    if (baseBlock instanceof ColorGroup) {
-                        ColorGroup group = ((ColorGroup) baseBlock);
+                    if (baseBlock instanceof AnimationBlock) {
+                        AnimationBlock group = ((AnimationBlock) baseBlock);
                         group.x = x;
                         group.y = y;
                         group.z = z;
@@ -1306,8 +1310,8 @@ public class ChunkImpl implements Chunk {
         // }
         // BaseBlock shape = itemDefinition.getShape();
         // ShapeFace shapeFace = null;
-        if (nowBlock instanceof ColorGroup) {
-            ColorGroup group = (ColorGroup) nowBlock;
+        if (nowBlock instanceof AnimationBlock) {
+            AnimationBlock group = (AnimationBlock) nowBlock;
             if (group.animations != null && group.animations.size() > 0) {
                 return;
             }
@@ -1793,14 +1797,14 @@ public class ChunkImpl implements Chunk {
                 ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig, vao);
                 // 开始绘制动画
                 for (int i = 0; i < animationBlock.size(); i++) {
-                    ColorGroup colorGroup = (ColorGroup) animationBlock.get(i);
+                    AnimationBlock animationBlock = (AnimationBlock) this.animationBlock.get(i);
 
-                    colorGroup.reComputePoints();
-                    colorGroup.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,
+                    animationBlock.reComputePoints();
+                    animationBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,
                             ShaderManager.anotherShaderConfig.getVao(),
-                            GL_Matrix.translateMatrix(chunkPos.x * 16 + colorGroup.x, colorGroup.y,
-                                    chunkPos.z * 16 + colorGroup.z),
-                            colorGroup.points);
+                            GL_Matrix.translateMatrix(chunkPos.x * 16 + animationBlock.x, animationBlock.y,
+                                    chunkPos.z * 16 + animationBlock.z),
+                            animationBlock.points);
                     // colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16
                     // +colorGroup.x ,colorGroup.y,chunkPos.z*16
                     // +colorGroup.z,true,true,true,true,true ,true );
@@ -1862,6 +1866,29 @@ public class ChunkImpl implements Chunk {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path.toFile()));
             this.blockData.writeExternal(out);
             out.close();
+
+
+            //遍历所有的blockMap x ,y ,z ,dir
+            if(blockMap!=null){
+                StringBuffer sb = new StringBuffer();
+                for(Map.Entry<Integer,IBlock> entry: blockMap.entrySet()){
+                    Integer index = entry.getKey();
+                    BaseBlock block = (BaseBlock) entry.getValue();
+
+                    if(block.dir>0){
+                        int y = index /16/16;
+                        int yu = index %( 16 *16);
+                        int z = yu /16;
+                        int x = yu % 16;
+                        sb.append(x).append(",").append(y).append(",").append(z).append(",").append(block.dir).append("\r\n");
+                    }
+
+
+                }
+                String afixfileName = "" + chunkPos.x + "_" + chunkPos.y + "_" + chunkPos.z + ".map";
+                Path afixPath = PathManager.getInstance().getInstallPath().resolve("saves").resolve(afixfileName);
+                FileUtil.writeFile(afixPath.toFile(),sb.toString() );
+            }
         } catch (FileNotFoundException e) {
             // VIP Auto-generated catch block
             e.printStackTrace();

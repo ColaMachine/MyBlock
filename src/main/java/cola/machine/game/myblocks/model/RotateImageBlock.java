@@ -13,8 +13,8 @@ import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 
-public class RotateColorBlock2 extends ColorBlock{
-    public RotateColorBlock2(){
+public class RotateImageBlock extends ImageBlock{
+    public RotateImageBlock(){
 
     }
 
@@ -28,14 +28,14 @@ public class RotateColorBlock2 extends ColorBlock{
     public float centerZ=0.5f;
 
 
-    public RotateColorBlock2(float x, float y, float z){
+    public RotateImageBlock(float x, float y, float z){
         this.x =x;
         this.y=y;
         this.z=z;
 
 
     }
-    public RotateColorBlock2(float x, float y, float z, float width, float height, float thick){
+    public RotateImageBlock(float x, float y, float z, float width, float height, float thick){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -44,21 +44,19 @@ public class RotateColorBlock2 extends ColorBlock{
         this.thick =thick;
 
     }
-    public RotateColorBlock2(float x, float y, float z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
+    public RotateImageBlock(float x, float y, float z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
         this.x =x;
         this.y=y;
         this.z=z;
-        this.opacity = opacity;
+
         this.width =width;
         this.height =height;
         this.thick =thick;
-        this.rf =rf;
-        this.gf =gf;
-        this.bf =bf;
+
     }
 
 
-
+/*
     public void update(){
 
 
@@ -69,35 +67,42 @@ public class RotateColorBlock2 extends ColorBlock{
 
         ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z, this.points,dirAry,  rf, gf, bf,this.opacity);
 
-    }
+    }*/
 
-    public RotateColorBlock2 copy(){
-        RotateColorBlock2 colorBlock  =new RotateColorBlock2(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
-        colorBlock .rotateX= this.rotateX;
-        colorBlock .rotateY= this.rotateY;
-        colorBlock.centerY = this.centerY;
-        colorBlock.centerX = this. centerX;
-        colorBlock .centerZ = this. centerZ;
-        colorBlock .rotateZ= this.rotateZ;
-        colorBlock.reComputePoints();
-        return colorBlock;
+    public RotateImageBlock copy(){
+        RotateImageBlock block  =new RotateImageBlock(this.x,this.y,this.z,this.width,this.height,this.thick);
+        block.front=front;
+        block.back = back;
+        block.left = left;
+        block.right = right;
+        block.top =top;
+        block.bottom = bottom;
+        block .rotateX= this.rotateX;
+        block .rotateY= this.rotateY;
+        block.centerY = this.centerY;
+        block.centerX = this. centerX;
+        block .centerZ = this. centerZ;
+        block .rotateZ= this.rotateZ;
+        block.reComputePoints();
+        return block;
     }
-    public float  rotateX(float value){
-        this.rotateX+=value*0.1;//reComputePoints();
+    public float rotateX(float value){
+        this.rotateX+=value*0.1;reComputePoints();
         return this.rotateX;
     }
     public float rotateY(float value){
         this.rotateY+=value*0.1;
+        reComputePoints();
         return this.rotateY;
-        //reComputePoints();
     }
     public float rotateZ(float value){
         this.rotateZ+=value*0.1;
+        reComputePoints();
         return this.rotateZ;
-        //reComputePoints();
     }
+
     @Override
-     public void reComputePoints(){
+    public void reComputePoints(){
         points= BoxModel.getSmallPoint(0,0,0,width,height,thick);
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(rotateX,rotateY,rotateZ);
@@ -107,7 +112,6 @@ public class RotateColorBlock2 extends ColorBlock{
         for(int i=0;i<points.length;i++){
             points[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
         }
-
     }
     @Override
     public void reComputePointsInGroup(){
@@ -129,9 +133,6 @@ public class RotateColorBlock2 extends ColorBlock{
      */
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ, float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
-        //ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
-
-        ShaderUtils.draw3dColorBox(config, vao,parentX,parentY,parentZ, this.points,BoxModel.dirAry,  rf, gf, bf,this.opacity);
 
     }
 
@@ -151,23 +152,22 @@ public class RotateColorBlock2 extends ColorBlock{
      */
     @Override
     public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-        ShaderUtils.draw3dColorBox(config, vao,x,y,z, this.points,BoxModel.dirAry,  rf, gf, bf,this.opacity);
 
     }
 
 
-    public static RotateColorBlock2 parse(JSONObject map){
+    public static RotateImageBlock parse(JSONObject map){
 
-        RotateColorBlock2 block =new RotateColorBlock2();
-        block.parse(block,map);
+        RotateImageBlock block =new RotateImageBlock();
+        block.parseRotateImage(block,map);
         block.reComputePoints();
         return block;
 
 
     }
 
-    public  void parseRotateColor(RotateColorBlock2 block ,JSONObject map){
-        parseColor(block,map);
+    public  void parseRotateImage(RotateImageBlock block ,JSONObject map){
+        parseImage(block,map);
 
         float rotateX = MapUtil.getFloatValue(map,"rotateX");
         float rotateY = MapUtil.getFloatValue(map,"rotateY");
@@ -184,17 +184,19 @@ public class RotateColorBlock2 extends ColorBlock{
     public String toString(){
         StringBuffer buffer =new StringBuffer();
         buffer.append("{").append("name:'").append(this.name).append("',")
-                .append("blocktype:'rotatecolorblock',")
+                .append("blocktype:'rotateimageblock',")
                 .append("width:").append(this.width).append(",")
                 .append("height:").append(this.height).append(",")
                 .append("thick:").append(this.thick).append(",")
                 .append("x:").append(this.x).append(",")
                 .append("y:").append(this.y).append(",")
                 .append("z:").append(this.z).append(",")
-                .append("r:").append(this.rf).append(",")
-                .append("g:").append(this.gf).append(",")
-                .append("b:").append(this.bf).append(",")
-                .append("a:").append(this.opacity).append(",")
+                .append("front:'").append(this.front==null?"":this.front.name).append("',")
+                .append("back:'").append(this.back==null?"":this.back.name).append("',")
+                .append("bottom:'").append(this.bottom==null?"":this.bottom.name).append("',")
+                .append("top:'").append(this.top==null?"":this.top.name).append("',")
+                .append("left:'").append(this.left==null?"":this.left.name).append("',")
+                .append("right:'").append(this.right==null?"":this.right.name).append("',")
                 .append("rotateX:").append(this.rotateX).append(",")
                 .append("rotateY:").append(this.rotateY).append(",")
                 .append("rotateZ:").append(this.rotateZ).append(",")

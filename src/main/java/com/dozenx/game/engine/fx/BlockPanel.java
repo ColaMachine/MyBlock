@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.RotateColorBlock2;
+import cola.machine.game.myblocks.model.RotateImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -144,24 +145,35 @@ public class BlockPanel extends Tab {
         final Label xLabel = new Label("x");
         Button xMi = new Button("-");
         Button xadd = new Button("+");
+        final TextField xTextField = new TextField( );
+
 
         final Label yLabel = new Label("y");
         Button yMi = new Button("-");
         Button yadd = new Button("+");
+        final TextField yTextField = new TextField( );
 
         final Label zLabel = new Label("z");
         Button zMi = new Button("-");
         Button zadd = new Button("+");
+        final TextField zTextField = new TextField( );
 
         selectGrid.add(xLabel, 0, 5);
+
         selectGrid.add(xMi, 1, 5);
-        selectGrid.add(xadd, 2, 5);
+        selectGrid.add(xTextField, 2, 5);
+        selectGrid.add(xadd, 3, 5);
+
+
         selectGrid.add(yLabel, 0, 6);
         selectGrid.add(yMi, 1, 6);
-        selectGrid.add(yadd, 2, 6);
+        selectGrid.add(yTextField, 2, 6);
+        selectGrid.add(yadd, 3, 6);
+
         selectGrid.add(zLabel, 0, 7);
         selectGrid.add(zMi, 1, 7);
-        selectGrid.add(zadd, 2, 7);
+        selectGrid.add(zTextField, 2, 7);
+        selectGrid.add(zadd, 3, 7);
 
 
         Label widthLabel = new Label("宽度");
@@ -173,48 +185,82 @@ public class BlockPanel extends Tab {
         Button heightMiBtn = new Button("-");
         Button thickMiBtn = new Button("-");
 
+
         Button widthAddBtn = new Button("+");
         Button heightAddBtn = new Button("+");
         Button thickAddBtn = new Button("+");
 
 
+        final TextField widthTextField = new TextField( );
+        final TextField heightTextField = new TextField( );
+        final TextField thickTextField = new TextField( );
+
+
         selectGrid.add(widthLabel, 0, 8);
         selectGrid.add(widthMiBtn, 1, 8);
-        selectGrid.add(widthAddBtn, 2, 8);
+        selectGrid.add(widthTextField, 2, 8);
+
+        selectGrid.add(widthAddBtn, 3, 8);
+
+
         selectGrid.add(heightLabel, 0, 9);
         selectGrid.add(heightMiBtn, 1, 9);
-        selectGrid.add(heightAddBtn, 2, 9);
+        selectGrid.add(heightTextField, 2, 9);
+        selectGrid.add(heightAddBtn, 3, 9);
+
+
         selectGrid.add(thickLabel, 0, 10);
         selectGrid.add(thickMiBtn, 1, 10);
-        selectGrid.add(thickAddBtn, 2, 10);
+        selectGrid.add(thickTextField, 2, 10);
+        selectGrid.add(thickAddBtn, 3, 10);
 
 
         final Label rotatexLabel = new Label("rotatex");
         Button rotatexMi = new Button("-");
         Button rotatexadd = new Button("+");
+        final TextField rotateXTextField = new TextField();
 
         final Label rotateyLabel = new Label("rotatey");
         Button rotateyMi = new Button("-");
         Button rotateyadd = new Button("+");
+        final TextField rotateYTextField = new TextField();
 
         final Label rotatezLabel = new Label("rotatez");
         Button rotatezMi = new Button("-");
         Button rotatezadd = new Button("+");
+        final TextField rotateZTextField = new TextField();
 
         selectGrid.add(rotatexLabel, 0, 11);
         selectGrid.add(rotatexMi, 1, 11);
-        selectGrid.add(rotatexadd, 2, 11);
+        selectGrid.add(rotateXTextField, 2, 11);
+        selectGrid.add(rotatexadd, 3, 11);
+
+
         selectGrid.add(rotateyLabel, 0, 12);
         selectGrid.add(rotateyMi, 1, 12);
-        selectGrid.add(rotateyadd, 2, 12);
+        selectGrid.add(rotateYTextField, 2, 12);
+        selectGrid.add(rotateyadd, 3, 12);
+
         selectGrid.add(rotatezLabel, 0, 13);
         selectGrid.add(rotatezMi, 1, 13);
-        selectGrid.add(rotatezadd, 2, 13);
-        Button roateBtn = new Button("rotate");
+        selectGrid.add(rotateZTextField, 2, 13);
+        selectGrid.add(rotatezadd, 3, 13);
+
+
+        Button roateBtn = new Button("rotatecolor");
         roateBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 GamingState.editEngine.readyShootBlock = new RotateColorBlock2();
+
+            }
+        });
+
+        Button rotateImgBtn = new Button("rotateimage");
+        rotateImgBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.readyShootBlock = new RotateImageBlock();
 
             }
         });
@@ -239,10 +285,11 @@ public class BlockPanel extends Tab {
             }
         });
 
-        TextField danweiText = new TextField();
+        final TextField danweiText = new TextField();
         selectGrid.add(colorBtn, 0, 14);
         selectGrid.add(roateBtn, 1, 14);
         selectGrid.add(imageBlockBtn, 2, 14);
+        selectGrid.add(rotateImgBtn, 3, 14);
         selectGrid.add(danweiText, 0, 15);
         danweiText.setText("1");
 
@@ -270,14 +317,14 @@ public class BlockPanel extends Tab {
         rotatexMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotatex(-Float.valueOf(danweiText.getText()));
+                rotateXTextField.setText(""+GamingState.editEngine.adjustRotatex(-Float.valueOf(danweiText.getText())));
 
             }
         });
         rotatexadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotatex(Float.valueOf(danweiText.getText()));
+                rotateXTextField.setText(""+GamingState.editEngine.adjustRotatex(Float.valueOf(danweiText.getText())));
 
             }
         });
@@ -285,14 +332,14 @@ public class BlockPanel extends Tab {
         rotateyMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateY(-Float.valueOf(danweiText.getText()));
+                rotateYTextField.setText(""+GamingState.editEngine.adjustRotateY(-Float.valueOf(danweiText.getText())));
 
             }
         });
         rotateyadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateY(Float.valueOf(danweiText.getText()));
+                rotateYTextField.setText(""+ GamingState.editEngine.adjustRotateY(Float.valueOf(danweiText.getText())));
 
             }
         });
@@ -301,14 +348,14 @@ public class BlockPanel extends Tab {
         rotatezMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateZ(-Float.valueOf(danweiText.getText()));
+                rotateZTextField.setText(""+GamingState.editEngine.adjustRotateZ(-Float.valueOf(danweiText.getText())));
 
             }
         });
         rotatezadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustRotateZ(Float.valueOf(danweiText.getText()));
+                rotateZTextField.setText(""+GamingState.editEngine.adjustRotateZ(Float.valueOf(danweiText.getText())));
 
             }
         });
@@ -325,14 +372,14 @@ public class BlockPanel extends Tab {
         xMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), false);
+               xTextField.setText( ""+GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), false));
 
             }
         });
         xadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), false);
+                xTextField.setText( ""+GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), false));
 
             }
         });
@@ -340,14 +387,14 @@ public class BlockPanel extends Tab {
         yMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), false);
+                yTextField.setText( ""+ GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), false));
 
             }
         });
         yadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), false);
+                yTextField.setText( ""+GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), false));
 
             }
         });
@@ -356,14 +403,14 @@ public class BlockPanel extends Tab {
         zMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), false);
+                zTextField.setText( ""+GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), false));
 
             }
         });
         zadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), false);
+                zTextField.setText( ""+GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), false));
 
             }
         });
@@ -371,14 +418,14 @@ public class BlockPanel extends Tab {
         widthMiBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), true);
+                widthTextField.setText( ""+GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), true));
 
             }
         });
         widthAddBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), true);
+                widthTextField.setText( ""+GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), true));
 
             }
         });
@@ -386,14 +433,14 @@ public class BlockPanel extends Tab {
         heightMiBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), true);
+                heightTextField.setText( ""+GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), true));
 
             }
         });
         heightAddBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), true);
+                heightTextField.setText( ""+GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), true));
 
             }
         });
@@ -401,14 +448,14 @@ public class BlockPanel extends Tab {
         thickMiBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), true);
+                thickTextField.setText( ""+GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), true));
 
             }
         });
         thickAddBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), true);
+                thickTextField.setText( ""+GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), true));
 
             }
         });

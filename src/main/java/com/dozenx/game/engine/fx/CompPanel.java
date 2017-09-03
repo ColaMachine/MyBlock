@@ -103,7 +103,20 @@ public class CompPanel extends Tab {
 
             }
         });
-        final Button buildComponentButton = new Button("合成组件");
+        final Button buildAnimationComponentButton = new Button("合成动画组件");
+
+
+        buildAnimationComponentButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.buildAnimationComponent();
+
+            }
+        });
+
+
+        final Button buildComponentButton = new Button("合成普通组件");
 
 
         buildComponentButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -127,6 +140,9 @@ public class CompPanel extends Tab {
                     //Border border = new Border();
                     //editComponentButton.setBorder();
                     GamingState.editEngine.enterComponentEdit();
+                    editComponentButton.setText("退出组件编辑模式");
+                }else{
+                    editComponentButton.setText("进入组件编辑模式");
                 }
                 //s GamingState.editEngine.buildComponent();
 
@@ -149,6 +165,7 @@ public class CompPanel extends Tab {
 
         selectGrid.add(componentAdjust, 0, 6);
         selectGrid.add(buildComponentButton, 1, 6);
+        selectGrid.add(buildAnimationComponentButton, 2, 6);
         selectGrid.add(editComponentButton, 0, 7);
 
        

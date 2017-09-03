@@ -1,20 +1,10 @@
 package com.dozenx.game.engine.fx;
 
-import java.io.File;
 import java.util.List;
 
-import com.dozenx.game.engine.edit.view.ColorGroup;
-import com.dozenx.game.engine.item.action.ItemManager;
-import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock2;
-import cola.machine.game.myblocks.switcher.Switcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,19 +12,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -160,7 +144,7 @@ public class AnimationPanel extends Tab {
         selectGrid.add(deleteBtn, 4, 0);
 
         Label animationMaplabel =new Label("动画名称");
-        TextField animationMapTextField =new TextField("");
+        final TextField animationMapTextField =new TextField("");
       //创建列表
         final Button addAnimationMapBtn = new Button("增加动画名称");
         addAnimationMapBtn.setOnAction(new EventHandler<ActionEvent>() {
