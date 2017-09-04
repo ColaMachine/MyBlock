@@ -235,7 +235,7 @@ public class ChunkImpl implements Chunk {
             if (block.width > 1 || block.thick > 1 || block.height > 1) {
                 BaseBlock copyBlock = new CopyBlock(block);
                 for (int _x = 0; _x < block.width; _x++) {
-                    for (int _z = 0; _z < block.height; _z++) {
+                    for (int _z = 0; _z < block.thick; _z++) {
                         for (int _y = 0; _y < block.height; _y++) {
                             if (_x == 0 && _y == 0 && _z == 0) {
                                 continue;
@@ -243,14 +243,16 @@ public class ChunkImpl implements Chunk {
                             if(block.dir==0){
                                 blockMap.put(blockData.getIndex(x + _x, y + _y, z + _z), copyBlock);
                                 blockData.set(x + _x, y + _y, z + _z, copyBlock.id);// 设置或者
+                                
+                                LogUtil.println("add"+(x + _x)+","+(y + _y )+ ","+(z + _z));
                             }else if(block.dir==1){
 
                                 //清理原来的copydown
                                 blockData.set(x +  _x, y + _y, z +_z, 0);// 设置或者
-
+                                LogUtil.println("clear"+(x + _x)+","+(y + _y )+ ","+(z + _z));
                                 blockMap.put(blockData.getIndex(x +  _z, y + _y, z +_x), copyBlock);
-                              
                                 
+                                LogUtil.println("addnow "+(x +  _z)+","+ (y + _y)+ ","+ (z +_x));
                                 blockData.set(x +  _z, y + _y, z +_x, copyBlock.id);// 设置或者
                             }
                             
@@ -304,7 +306,7 @@ public class ChunkImpl implements Chunk {
                         if (baseBlock.width > 1 || baseBlock.thick > 1 || baseBlock.height > 1) {
                             BaseBlock copyBlock = new CopyBlock(baseBlock);
                             for (int _x = 0; _x < baseBlock.width; _x++) {
-                                for (int _z = 0; _z < baseBlock.height; _z++) {
+                                for (int _z = 0; _z < baseBlock.thick; _z++) {
                                     for (int _y = 0; _y < baseBlock.height; _y++) {
                                         if (_x == 0 && _y == 0 && _z == 0) {
                                             continue;
@@ -312,7 +314,7 @@ public class ChunkImpl implements Chunk {
                                         if(baseBlock.dir==1){
                                             blockMap.put(blockData.getIndex(x + _x, y + _y, z + _z), copyBlock);
                                         }
-                                        
+                                        LogUtil.println("add"+(x + _x)+","+(y + _y) + ","+(z + _z));
                                         blockData.set(x + _x, y + _y, z + _z, copyBlock.id);// 设置或者
                                     }
                                 }
@@ -727,6 +729,8 @@ public class ChunkImpl implements Chunk {
                      */
                     currentBlockType = i;
                     if (currentBlockType == ItemType.CopyBlock.id) {
+                        LogUtil.println("render:"+x+","+y+","+z);
+                        ShaderUtils.draw3dColorBox(ShaderManager.terrainShaderConfig,vao,x,y,z,new GL_Vector(1,1,1),0.2f,0.5f);
                         continue;
                     }
                     if (currentBlockType > 256) {
@@ -1798,12 +1802,14 @@ public class ChunkImpl implements Chunk {
                 // 开始绘制动画
                 for (int i = 0; i < animationBlock.size(); i++) {
                     AnimationBlock animationBlock = (AnimationBlock) this.animationBlock.get(i);
-
-                    animationBlock.reComputePoints();
+                    GL_Matrix translateMatrix  = GL_Matrix.translateMatrix(chunkPos.x * 16 + animationBlock.x, animationBlock.y,
+                            chunkPos.z * 16 + animationBlock.z);
+                    GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir*3.14f/2, 0);
+                    rotateMatrix = GL_Matrix.multiply(translateMatrix, rotateMatrix);
+                    //animationBlock.reComputePoints();
                     animationBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,
-                            ShaderManager.anotherShaderConfig.getVao(),
-                            GL_Matrix.translateMatrix(chunkPos.x * 16 + animationBlock.x, animationBlock.y,
-                                    chunkPos.z * 16 + animationBlock.z),
+                            ShaderManager.anotherShaderConfig.getVao(),rotateMatrix
+                           ,
                             animationBlock.points);
                     // colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16
                     // +colorGroup.x ,colorGroup.y,chunkPos.z*16

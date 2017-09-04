@@ -16,6 +16,7 @@ import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
 
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector4f;
@@ -182,10 +183,14 @@ public class BaseModel implements Model   {
                     rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
 
                     // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
-                    rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(-2f, 0,0));
+                    rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(0, 0,0));
 
-                    ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 24, new Vector4f(1, 1, 1, 1), ShaderManager.livingThingShaderConfig);
-
+                    ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 12, new Vector4f(1, 1, 1, 1), ShaderManager.livingThingShaderConfig);
+                   // ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
+                    ShaderUtils.draw3dColor(
+                            
+                             new GL_Vector(0,-0.25f,0), new GL_Vector(this.role.nowHP*3f/30,-0.25f,0),
+                            new GL_Vector(this.role.nowHP*3f/30,0,0), new GL_Vector(0,0,0),rotateMatrix1, new GL_Vector(0,0,1),  new GL_Vector(1,0,0),ShaderManager.livingThingShaderConfig.getVao().getVertices(),ShaderManager.livingThingShaderConfig);
 
 
                 }
@@ -194,6 +199,8 @@ public class BaseModel implements Model   {
 
             }
     }
+    
+    
 
     @Override
     public void build(ShaderConfig config, Vao vao, int x, int y, int z) {

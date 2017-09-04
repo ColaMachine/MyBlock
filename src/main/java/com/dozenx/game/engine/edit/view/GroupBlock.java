@@ -831,10 +831,10 @@ public class GroupBlock extends BaseBlock {
             float[] info = this.getChildBlockRelativePosition(block, x, y, z);
 
             GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0], info[1], info[2], info[3], info[4], info[5]);
-            for (int k = 0; k < childPoints.length; k++) {
-                // childPoints[i] = GL_Matrix.multiply(childPoints[i],matrix);
-                childPoints[k] = GL_Matrix.multiply(matrix, childPoints[k]);
-            }
+//            for (int k = 0; k < childPoints.length; k++) {
+//                // childPoints[i] = GL_Matrix.multiply(childPoints[i],matrix);
+//                childPoints[k] = GL_Matrix.multiply(matrix, childPoints[k]);
+//            }
             block.renderShaderInGivexyzwht(config, vao, matrix, childPoints);
 
             // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,
@@ -983,5 +983,21 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
         float height = colorBlock.height;
         float thick = colorBlock.thick ;
         return new float[] { x, y, z, width, height, thick };
+    }
+    
+    public void scale(float xzoom,float yzoom,float zzoom){
+        this.x=this.x*xzoom;
+        this.y= this.y*yzoom;
+        this.z=this.z*zzoom;
+        this.width = this.width * xzoom;
+        this.height =this.height*yzoom;
+        this.thick =this.thick*zzoom;
+        
+        for (BaseBlock block : colorBlockList) {
+            // float[] info = this.getChildBlockRelativePosition(block,x,y,z);
+            block.scale(xzoom,yzoom,zzoom);
+        }
+        
+        this.reComputePoints();
     }
 }

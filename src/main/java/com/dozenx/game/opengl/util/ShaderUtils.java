@@ -1553,12 +1553,12 @@ try {
     public static void draw3dText(String s, GL_Matrix matrix, float fontSize,Vector4f color,ShaderConfig shaderConfig) {
         int preX=0;
         int preY=0;
-
+        fontSize= fontSize/50;
         GL_Vector p1 =new GL_Vector(0,0,0);
-        GL_Vector p2 =new GL_Vector(1,0,0);
-        GL_Vector p3 =new GL_Vector(1,1,0);
-        GL_Vector p4 =new GL_Vector(0,1,0);
-        GL_Vector normal =new GL_Vector(0,0,1);
+        GL_Vector p2 =new GL_Vector(fontSize,0,0);
+        GL_Vector p3 =new GL_Vector(fontSize,fontSize,0);
+        GL_Vector p4 =new GL_Vector(0,fontSize,0);
+        GL_Vector normal =new GL_Vector(0,0,fontSize);
 
         TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
         for(int i=0;i<s.length();i++){
@@ -1584,10 +1584,10 @@ try {
                 ti.maxY=(height-location.y)/height;
 
                // ShaderUtils.draw2dImg(new Image(ti), innerX+preX,innerY+preY,z,(int)fontSize,(int)fontSize,color);
-                p1.x+=1;
-                p2.x+=1;
-                p3.x+=1;
-                p4.x+=1;
+                p1.x+=fontSize;
+                p2.x+=fontSize;
+                p3.x+=fontSize;
+                p4.x+=fontSize;
                 ShaderUtils.draw3dImage(p1,p2,p3,p4,matrix,normal,ti,shaderConfig.getVao().getVertices(),shaderConfig);
 
                // ShaderUtils.draw3dImg(p1,p2,p3,p4,new Image(ti), x,y,z,(int)fontSize,(int)fontSize,color);

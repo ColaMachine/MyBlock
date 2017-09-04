@@ -20,6 +20,7 @@ import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.network.client.Client;
@@ -472,7 +473,17 @@ public class MouseControlCenter {
 //        GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x,player.getPosition().y+2,player.getPosition().z), viewDir,
 //                20, "soil", true);
         // camera.getviewDir().add();
-        livingThingManager.chooseObject(camera.Position, camera.getViewDir());
+        LivingThing livingThing = livingThingManager.chooseObject(x, Constants.WINDOW_HEIGHT-y);
+        
+        if(livingThing !=null ){
+            player.setTarget(livingThing);
+            Document.needUpdate=true;
+            LogUtil.println(livingThing.getId()+"");
+            CoreRegistry.get(HeadPanel.class).bind(livingThing).show();
+        }
+      //  livingThingManager.chooseObject(camera.Position, camera.getViewDir());
+        
+    
 
         //选中一个colorblock 作为当前的block
        /* ChunkProvider localChunkProvider = CoreRegistry
@@ -882,7 +893,15 @@ public class MouseControlCenter {
             }else*/{
                 //选取当前人面前的目标
                 if(now-player.getLastAttackTime()>1000){
-                    LivingThing livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
+                    LivingThing livingThing = null;
+                    //如果当前目标距离人物小于多少的距离
+                    if(player.getTarget()!=null){
+                        if(player.getPosition().copyClone().sub(player.getTarget().getPosition()).length()<2){
+                            livingThing = (LivingThing)player.getTarget();
+                        }
+                    }else{
+                     livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
+                    }
                    if(livingThing!=null) {
                        player.setTarget(livingThing);
                        CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));

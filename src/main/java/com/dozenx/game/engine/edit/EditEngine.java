@@ -376,7 +376,7 @@ public class EditEngine {
         block.z=z;
 
         block.width =Math.max(width,1);
-        block.height=1;
+        block.height=height;
         block.thick  =Math.max(thick,1);
         if(block instanceof  ColorBlock){
             ColorBlock colorBlock = (ColorBlock) block;
@@ -1102,6 +1102,7 @@ public class EditEngine {
             animationBlock.xoffset=xoffset;
             animationBlock.yoffset=yoffset;
             animationBlock.zoffset=zoffset;
+            animationBlock.scale(xzoom,yzoom,zzoom);
         }
     }
 

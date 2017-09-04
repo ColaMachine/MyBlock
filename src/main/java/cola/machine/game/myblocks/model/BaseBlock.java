@@ -646,6 +646,13 @@ public abstract class BaseBlock extends AABB implements IBlock {
         reComputePoints();
         return this.dir;
     }
-
+    public void scale(float xzoom,float yzoom,float zzoom){
+        this.x=this.x*xzoom;
+        this.y= this.y*yzoom;
+        this.z=this.z*zzoom;
+        this.width = this.width * xzoom;
+        this.height =this.height*yzoom;
+        this.thick =this.thick*zzoom;
+    }
 
 }

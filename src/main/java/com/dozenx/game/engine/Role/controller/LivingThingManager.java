@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -25,6 +26,7 @@ import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
@@ -135,13 +137,18 @@ public class LivingThingManager {
            // livingThing.distance = GL_Vector.length(GL_Vector.sub(player.position, livingThing.position));
 
         }
-
+        if(this.player.getTarget()!=null){
+            GL_Vector position = this.player.getTarget().getPosition();
+            ShaderUtils.draw3dColorBox(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao(), position.x, position.y+1,position.z, new GL_Vector(1,0,0), 0.5f, 0.5f, 0.5f, 1);
+        }
         //player update
         this.player.render();//心更新
         if (Switcher.SHADER_ENABLE) {
             ShaderUtils.freshVao(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
             //ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
         }
+        
+       
         //ShaderUtils.updateLivingVao(ShaderManager.livingThingShaderConfig.getVao());//createVAO(floatBuffer);
         GamingState.livingThingChanged = false;
 
@@ -250,6 +257,49 @@ public class LivingThingManager {
        // LogUtil.println("未选中");
         return null;
     }
+    
+    
+    public LivingThing chooseObject(float x, float y){
+        // LogUtil.println("开始选择");
+        GL_Vector from = GamingState.instance.camera.Position.copyClone();
+        GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,Constants.WINDOW_HEIGHT-y);
+         direction=direction.normalize();
+
+         // LogUtil.println("开始选择");
+         Vector3f fromV= new Vector3f(from.x,from.y,from.z);
+         Vector3f directionV= new Vector3f(direction.x,direction.y,direction.z);
+         float distance =0;
+         LivingThing theNearestBlock = null;
+         float[] xiangjiao=null;
+         float[] right=null;
+         for(int i=0;i<livingThings.size();i++){
+             LivingThing colorBlock =  livingThings.get(i);
+             AABB aabb = new AABB(new Vector3f(colorBlock.getX(),colorBlock.getY(),colorBlock.getZ()),new Vector3f(colorBlock.getX()+1,colorBlock.getY()+1,colorBlock.getZ()+1));
+
+             // LogUtil.println(fromV.toString() );
+             // LogUtil.println(directionV.toString() );
+             if( (xiangjiao=aabb.intersectRectangle2(fromV,directionV))!=null){//这里进行了按照list的顺序进行选择 其实应该按照距离的最近选择
+
+                 //计算点在了那个面上
+                 //有上下左右前后6个面
+                 LogUtil.println("选中了");
+                 float _tempDistance = xiangjiao[0]* xiangjiao[0]+ xiangjiao[1]* xiangjiao[1]+ xiangjiao[2]* xiangjiao[2];
+
+                 if(distance ==0||_tempDistance<distance){
+                     distance=_tempDistance;
+                     theNearestBlock=colorBlock;
+                     right = xiangjiao;
+                 }
+
+
+
+
+             }
+
+
+         }
+         return theNearestBlock;
+     }
     public void findWay(){
 
 

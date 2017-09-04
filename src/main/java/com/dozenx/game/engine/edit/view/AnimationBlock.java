@@ -150,7 +150,7 @@ public class AnimationBlock extends GroupBlock {
         this.colorBlockList=new ArrayList();
         for(BaseBlock block :this.animations.get(nowIndex).colorBlockList){
             BaseBlock copy =block.copy();
-            copy.reComputePoints();
+            copy.reComputePointsInGroup();
             this.colorBlockList.add(copy);//解决copy后points不对的问题
         }
         //this.colorBlockList = this.animations.get(nowIndex).colorBlockList;
@@ -614,7 +614,7 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
             for (BaseBlock block : animations) {
                 // float[] info =
                 // this.getChildBlockRelativePosition(block,x,y,z);
-                block.reComputePoints();
+                block.reComputePoints(rotateMatrix);
                 block.dir = this.dir;
             }
         }
@@ -632,6 +632,43 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
             }
         }
     }
+    
+    public void scale(float xzoom,float yzoom,float zzoom){
+        this.x=this.x*xzoom;
+        this.y= this.y*yzoom;
+        this.z=this.z*zzoom;
+        this.width = this.width * xzoom;
+        this.height =this.height*yzoom;
+        this.thick =this.thick*zzoom;
+        
+        for (BaseBlock block : colorBlockList) {
+            // float[] info = this.getChildBlockRelativePosition(block,x,y,z);
+            block.scale(xzoom,yzoom,zzoom);
+        }
+        if (animations != null) {
+            for (BaseBlock block : animations) {
+                // float[] info =
+                // this.getChildBlockRelativePosition(block,x,y,z);
+                block.scale(xzoom,yzoom,zzoom);
+            }
+        }
+        
+        
+        if (animationMap != null) {
+            for (Map.Entry<String, List<GroupBlock>> entry : animationMap.entrySet()) {
+             
+                List<GroupBlock> list = entry.getValue();
+                for(GroupBlock animationBlock : list){
+                        
+                        animationBlock.scale(xzoom,yzoom,zzoom);
+                      
+
+                }
+            }
+        }
+        this.reComputePoints();
+    }
+   
 
 
 }
