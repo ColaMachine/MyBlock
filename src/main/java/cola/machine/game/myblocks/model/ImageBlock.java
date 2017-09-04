@@ -283,25 +283,31 @@ public class ImageBlock extends BaseBlock{
         }
     }
 
-    public String toString(){
+    public String toImageBlockString(){
 
 
         StringBuffer buffer =new StringBuffer();
-        buffer.append("{").append("name:'").append(this.name).append("',")
-                .append("blocktype:'imageblock',")
-                .append("width:").append(this.width).append(",")
-                .append("height:").append(this.height).append(",")
-                .append("thick:").append(this.thick).append(",")
-                .append("x:").append(this.x).append(",")
-                .append("y:").append(this.y).append(",")
-                .append("z:").append(this.z).append(",")
+        buffer
                 .append("front:'").append(this.front==null?"":this.front.name).append("',")
                 .append("back:'").append(this.back==null?"":this.back.name).append("',")
                 .append("bottom:'").append(this.bottom==null?"":this.bottom.name).append("',")
                 .append("top:'").append(this.top==null?"":this.top.name).append("',")
                 .append("left:'").append(this.left==null?"":this.left.name).append("',")
-                .append("right:'").append(this.right==null?"":this.right.name).append("',")
-                .append("points:").append(JSON.toJSON(this.points)).append(",")
+                .append("right:'").append(this.right==null?"":this.right.name).append("',");
+
+
+
+
+        return buffer.toString();
+    }
+    public String toString(){
+
+
+        StringBuffer buffer =new StringBuffer();
+        buffer.append("{")
+                .append("blocktype:'imageblock',")
+               .append(toBaseBlockString())
+                .append(toImageBlockString())
                 .append("}");
 
        /* StringBuffer sb =new StringBuffer();

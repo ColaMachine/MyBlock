@@ -470,24 +470,26 @@ public class ColorBlock extends BaseBlock{
         ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), x, y, z, new GL_Vector(rf, gf, bf), width, height, thick, *//*selectBlockList.size()>0?0.5f:*//*this.opacity);
 
     }*/
+    public String toColorBlockString(){
+        StringBuffer buffer =new StringBuffer();
 
-
-    public String toString(){
-       StringBuffer buffer =new StringBuffer();
-        buffer.append("{").append("name:'").append(this.name).append("',")
-                .append("blocktype:'colorblock',")
-               .append("width:").append(this.width).append(",")
-                .append("height:").append(this.height).append(",")
-                .append("thick:").append(this.thick).append(",")
-                .append("x:").append(this.x).append(",")
-                .append("y:").append(this.y).append(",")
-                .append("z:").append(this.z).append(",")
-                .append("r:").append(this.rf).append(",")
+        buffer.append("r:").append(this.rf).append(",")
                 .append("g:").append(this.gf).append(",")
                 .append("b:").append(this.bf).append(",")
 
-                .append("a:").append(this.opacity).append(",")
-                .append("points:").append(JSON.toJSON(this.points)).append("")
+                .append("a:").append(this.opacity).append(",");
+
+
+        return buffer.toString();
+    }
+
+    public String toString(){
+       StringBuffer buffer =new StringBuffer();
+        buffer.append("{")
+                .append("blocktype:'colorblock',")
+               .append(toBaseBlockString())
+                .append(toColorBlockString())
+
                 .append("}");
         /*StringBuffer sb = new StringBuffer();
         sb.append(this.x).append(",").append(this.y).append(",").append(this.z).append(",")

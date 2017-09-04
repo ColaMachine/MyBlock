@@ -11,11 +11,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,14 +37,19 @@ public class ImagePanel extends Tab {
         flowPane.getChildren().add(node);
     }
     public ImagePanel(final Stage primaryStage) {
+        GridPane selectGrid = new GridPane();
+        selectGrid.setVgap(5);
+        selectGrid.setPadding(new Insets(5, 5, 5, 5));
+
+
 
         //double width, double height
-        this.setContent(flowPane);
+        this.setContent(selectGrid);
     this.setText("图片资源");
         // CheckBox
-        CheckBox checkBox = new CheckBox("Check Box");
-
-        add(checkBox);
+//        CheckBox checkBox = new CheckBox("Check Box");
+//
+//        add(checkBox);
         final ToggleGroup group = new ToggleGroup();
         // RadioButton
         RadioButton radioButton = new RadioButton("size");
@@ -66,13 +73,14 @@ public class ImagePanel extends Tab {
         });
         final ColorPicker colorPicker = new ColorPicker();
         colorPicker.setValue(Color.CORAL);
-        add(colorPicker);
+      //  add(colorPicker);
 
-
+        selectGrid.add(colorPicker,0,0);
 
         Button setColorBtn = new Button("设置颜色");
 
-        add(setColorBtn);
+       // add(setColorBtn);
+        selectGrid.add(setColorBtn,1,0);
         setColorBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -166,6 +174,7 @@ public class ImagePanel extends Tab {
 
                 //加载所有的相关的textureinfo
                 textureItems.clear();
+                textureItems.add("空");
                 Iterator texutreit = textureMap.keySet().iterator();
                 while (texutreit.hasNext()) {
 
@@ -191,17 +200,20 @@ public class ImagePanel extends Tab {
                 System.out.println("clicked on " + textureInfoName);
 
                 TextureInfo ti = TextureManager.getTextureInfo(textureInfoName);
+                if(ti!=null ){
+                    canvas.drawSelect(ti.minX, 1 - ti.maxY, ti.maxX, 1 - ti.minY);
 
-                canvas.drawSelect(ti.minX, 1 - ti.maxY, ti.maxX, 1 - ti.minY);
+                }
                 GamingState.editEngine.nowTextureInfo = ti;
+
             }
         });
 
+        selectGrid.add(list,0,1);
 
-        add(list);
 
-
-        add(textureListView);
+        selectGrid.add(textureListView,1,1);
+        //add(textureListView);
 
         openButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -262,12 +274,12 @@ public class ImagePanel extends Tab {
 */
             }
         });
+        selectGrid.add(openButton,2,0);
+        selectGrid.add(canvas,0,2);
 
+        selectGrid.add(saveTextureText,3,0);
+        selectGrid.add(saveTextureButton,4,0);
 
-        add(openButton);
-        add(canvas);
-        add(saveTextureText);
-        add(saveTextureButton);
 
     }
 

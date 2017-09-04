@@ -352,7 +352,7 @@ if(!Switcher.SHADER_ENABLE) {
 
                             //创建Human
                            Player player = new Player(cmd.getPlayerStatus().getId());
-                            player.setInfo(cmd.getPlayerStatus() );
+                            player.setInfo(cmd.getPlayerStatus() );//要等所有的东西都除湿玩了才能运作
                             //human.setPlayerStatus(status);
                             CoreRegistry.put(Player.class, player);
 

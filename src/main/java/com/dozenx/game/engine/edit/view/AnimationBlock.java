@@ -203,15 +203,12 @@ public class AnimationBlock extends GroupBlock {
         //遍历animationMap下的所有colorgroup 清理他们的animationMap
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append("{").append("name:\"").append(this.name).append("\",").append("blocktype:'animationblock',")
-                .append("width:").append(this.width).append(",").append("height:").append(this.height).append(",")
-                .append("thick:").append(this.thick).append(",").append("x:").append(this.x).append(",").append("y:")
-                .append(this.y).append(",").append("z:").append(this.z).append(",")
-                .append("dir:").append(this.dir).append(",")
+        buffer.append("{").append("blocktype:'animationblock',")
+                .append(toBaseBlockString())
                 .append("xoffset:").append(xoffset).append(",").append("yoffset:").append(yoffset).append(",")
                 .append("zoffset:").append(zoffset).append(",").append("xzoom:").append(xzoom).append(",")
-                .append("yzoom:").append(yzoom).append(",").append("zzoom:").append(zzoom).append(",").append("live:")
-                .append(live).append(",").append("points:").append(JSON.toJSON(this.points)).append(",")
+                .append("yzoom:").append(yzoom).append(",").append("zzoom:").append(zzoom).append(",")
+
                 .append("children:[");
         int index = 0 ;
         for (BaseBlock block : colorBlockList) {

@@ -183,22 +183,14 @@ public class RotateColorBlock2 extends ColorBlock{
 
     public String toString(){
         StringBuffer buffer =new StringBuffer();
-        buffer.append("{").append("name:'").append(this.name).append("',")
+        buffer.append("{")
                 .append("blocktype:'rotatecolorblock',")
-                .append("width:").append(this.width).append(",")
-                .append("height:").append(this.height).append(",")
-                .append("thick:").append(this.thick).append(",")
-                .append("x:").append(this.x).append(",")
-                .append("y:").append(this.y).append(",")
-                .append("z:").append(this.z).append(",")
-                .append("r:").append(this.rf).append(",")
-                .append("g:").append(this.gf).append(",")
-                .append("b:").append(this.bf).append(",")
-                .append("a:").append(this.opacity).append(",")
+                .append(toColorBlockString())
+                .append(toBaseBlockString())
                 .append("rotateX:").append(this.rotateX).append(",")
                 .append("rotateY:").append(this.rotateY).append(",")
                 .append("rotateZ:").append(this.rotateZ).append(",")
-                .append("points:").append(JSON.toJSON(this.points)).append(",")
+
                 .append("}");
         /*StringBuffer sb = new StringBuffer();
         sb.append(this.x).append(",").append(this.y).append(",").append(this.z).append(",")

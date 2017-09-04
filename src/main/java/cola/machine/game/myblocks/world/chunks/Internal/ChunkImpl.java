@@ -311,9 +311,9 @@ public class ChunkImpl implements Chunk {
                                         if (_x == 0 && _y == 0 && _z == 0) {
                                             continue;
                                         }
-                                        if(baseBlock.dir==1){
+                                        //if(baseBlock.dir==1){
                                             blockMap.put(blockData.getIndex(x + _x, y + _y, z + _z), copyBlock);
-                                        }
+                                        //}
                                         LogUtil.println("add"+(x + _x)+","+(y + _y) + ","+(z + _z));
                                         blockData.set(x + _x, y + _y, z + _z, copyBlock.id);// 设置或者
                                     }

@@ -1305,7 +1305,7 @@ public class EditEngine {
      * 根据给定的名称保存当前选中的colorGroup 并保存到内存colorGroupHashMap中
      * @param name
      */
-    public void saveSelectAsColorGroup(int id,String name,boolean live,String script ){
+    public void saveSelectAsColorGroup(int id,String name,boolean live,String script ,boolean isPenetrate){
 
         //这里还要增加imageblock colorblock 的支持 然后原生的支持
 
@@ -1320,7 +1320,7 @@ public class EditEngine {
       //  TextureManager.putShape(selectBlock);
 
         ItemFactory itemFactory =new ItemFactory();
-
+        selectBlock.penetration = isPenetrate;
 
         sb.append("{id:").append(id).append(",")
        .append("name:'").append(name).append("',")

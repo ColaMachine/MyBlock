@@ -183,30 +183,16 @@ public class RotateImageBlock extends ImageBlock{
 
     public String toString(){
         StringBuffer buffer =new StringBuffer();
-        buffer.append("{").append("name:'").append(this.name).append("',")
+        buffer.append("{")
                 .append("blocktype:'rotateimageblock',")
-                .append("width:").append(this.width).append(",")
-                .append("height:").append(this.height).append(",")
-                .append("thick:").append(this.thick).append(",")
-                .append("x:").append(this.x).append(",")
-                .append("y:").append(this.y).append(",")
-                .append("z:").append(this.z).append(",")
-                .append("front:'").append(this.front==null?"":this.front.name).append("',")
-                .append("back:'").append(this.back==null?"":this.back.name).append("',")
-                .append("bottom:'").append(this.bottom==null?"":this.bottom.name).append("',")
-                .append("top:'").append(this.top==null?"":this.top.name).append("',")
-                .append("left:'").append(this.left==null?"":this.left.name).append("',")
-                .append("right:'").append(this.right==null?"":this.right.name).append("',")
+                .append(toBaseBlockString())
+                .append(toImageBlockString())
                 .append("rotateX:").append(this.rotateX).append(",")
                 .append("rotateY:").append(this.rotateY).append(",")
                 .append("rotateZ:").append(this.rotateZ).append(",")
-                .append("points:").append(JSON.toJSON(this.points)).append(",")
+
                 .append("}");
-        /*StringBuffer sb = new StringBuffer();
-        sb.append(this.x).append(",").append(this.y).append(",").append(this.z).append(",")
-                .append(this.width).append(",").append(this.height).append(",").append(this.thick).append(",")
-                .append(this.rf).append(",").append(this.gf).append(",").append(this.bf);
-        return sb.toString();*/
+
         return buffer.toString();
     }
 

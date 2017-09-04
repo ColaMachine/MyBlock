@@ -675,13 +675,8 @@ public class GroupBlock extends BaseBlock {
         //遍历animationMap下的所有colorgroup 清理他们的animationMap
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append("{").append("name:\"").append(this.name).append("\",").append("blocktype:'groupblock',")
-                .append("width:").append(this.width).append(",").append("height:").append(this.height).append(",")
-                .append("thick:").append(this.thick).append(",").append("x:").append(this.x).append(",").append("y:")
-                .append(this.y).append(",").append("z:").append(this.z).append(",")
-                .append("dir:").append(this.dir).append(",")
-                .append(",").append("live:")
-                .append(live).append(",").append("points:").append(JSON.toJSON(this.points)).append(",")
+        buffer.append("{").append("blocktype:'groupblock',")
+                .append(toBaseBlockString())
                 .append("children:[");
         int index = 0 ;
         for (BaseBlock block : colorBlockList) {

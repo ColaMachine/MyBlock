@@ -35,7 +35,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
 
     public boolean live =false;
     
-  
+    public float zuni =0;
     //
     public int dir;
     public int id=0;
@@ -609,12 +609,34 @@ public abstract class BaseBlock extends AABB implements IBlock {
      * @date 2017年8月31日 下午6:08:34
      */
     public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints);
+
+   public  String toBaseBlockString(){
+       StringBuffer buffer = new StringBuffer();
+       buffer.append("name:\"").append(this.name).append("\",")
+               .append("width:").append(this.width).append(",").append("height:").append(this.height).append(",")
+               .append("thick:").append(this.thick).append(",").append("x:").append(this.x).append(",").append("y:")
+               .append(this.y).append(",").append("z:").append(this.z).append(",")
+               .append("dir:").append(this.dir).append(",")
+               .append("penetration:").append(this.penetration).append(",")
+               .append("zuni:").append(this.zuni).append(",")
+               .append("live:")
+
+               .append(live).append(",").append("points:").append(JSON.toJSON(this.points)).append(",");
+
+
+
+
+
+
+       return buffer.toString();
+   }
     public static void parse( BaseBlock  block , JSONObject map){
         float x = MapUtil.getFloatValue(map,"x",0f);
         float y = MapUtil.getFloatValue(map,"y",0f);
         float z = MapUtil.getFloatValue(map,"z",0f);
         int dir = MapUtil.getIntValue(map, "dir",0);
-
+        float zuni = MapUtil.getFloatValue(map,"zuni",0f);
+        boolean penetration = MapUtil.getBooleanValue(map,"penetration",false);
         String pointsStr = MapUtil.getStringValue(map,"points");
         if(StringUtil.isNotEmpty(pointsStr)){
            /* JSONArray jsonArray = JSON.parseArray(pointsStr,GL_Vector.class);
@@ -625,7 +647,8 @@ public abstract class BaseBlock extends AABB implements IBlock {
             GL_Vector[] pointAry = new GL_Vector[list.size()];
             block.points  =(GL_Vector[] )list.toArray(pointAry) ;
         }
-
+        block.zuni= zuni;
+        block.penetration = penetration;
         float width = MapUtil.getFloatValue(map,"width");
         float height = MapUtil.getFloatValue(map,"height");
         float thick = MapUtil.getFloatValue(map,"thick");
