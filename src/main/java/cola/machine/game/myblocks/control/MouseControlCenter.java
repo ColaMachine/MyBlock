@@ -618,6 +618,9 @@ public class MouseControlCenter {
         prevMouseX=x;
         prevMouseY=y;
         mouseLClick(x, y);
+        if(Switcher.edit){
+            GamingState.editEngine.mouseClick(x, y);
+        }
         mouseLeftPressed=true;
 //        LogUtil.println("mouseLeftDown");
     }
@@ -630,7 +633,7 @@ public class MouseControlCenter {
     public void mouseLeftUp(int x, int y) {
         mouseLeftPressed=false;
         if(Switcher.edit){
-            GamingState.selectDiv.setVisible(false);
+           // GamingState.selectDiv.setVisible(false);
          /*   GamingState.editEngine.selectObject(GamingState.selectDiv.getLeft(),GamingState.selectDiv.getTop(),
                     GamingState.selectDiv.getLeft()+ GamingState.selectDiv.getWidth(),GamingState.selectDiv.getTop()+GamingState.selectDiv.getHeight());
 */

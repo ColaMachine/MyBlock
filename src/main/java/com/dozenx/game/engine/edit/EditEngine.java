@@ -50,6 +50,8 @@ public class EditEngine {
 
     public List<BaseBlock> colorBlockList  =new ArrayList<>();
     public List<BaseBlock> selectBlockList  =new ArrayList<>();
+    
+    public List<BaseBlock> appendingBlockList  =new ArrayList<>();
     public float prevX ;
     public float prevY;
     public float nowX;
@@ -71,6 +73,9 @@ public class EditEngine {
     public int lastFaceZ=0;
     public int lastFaceMaxX=0;
     public int lastFaceMaxZ=0;
+    
+    
+    
     /**
      * 当前编辑的组件库
      */
@@ -84,9 +89,15 @@ public class EditEngine {
     HashMap<String,BaseBlock > colorGroupHashMap =new HashMap<>();
 
     int minX,minZ;
-    public GL_Vector startPoint;
-    public GL_Vector endPoint;
+    public GL_Vector startPoint =new GL_Vector();//用来强调记录placePoint
+    public GL_Vector endPoint=new GL_Vector();//用来记录touchPoint
+    
+    public GL_Vector touchStartPoint =new GL_Vector();//用来记录选择的时候开始的位置
+    public GL_Vector touchEndPoint=new GL_Vector();//用来记录选择结束的点
 
+    
+    public GL_Vector placeStartPoint =new GL_Vector();//用来记录选择的时候开始的位置
+    public GL_Vector placeEndPoint=new GL_Vector();//用来记录选择结束的点
 
     public void update(){
        /* for(int i =0;i<groups.size();i++){
@@ -111,6 +122,13 @@ public class EditEngine {
 
         for(int i=0;i<colorBlockList.size();i++){
             BaseBlock colorBlock = colorBlockList.get(i);
+            GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
+            colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(), matrx, colorBlock.points);
+            // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
+        }
+        
+        for(int i=0;i<appendingBlockList.size();i++){
+            BaseBlock colorBlock = appendingBlockList.get(i);
             GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
             colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(), matrx, colorBlock.points);
             // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
@@ -588,8 +606,8 @@ public class EditEngine {
         BaseBlock theNearestBlock = (BaseBlock)results[0];
         GL_Vector touchPoint = (GL_Vector) results[2];
         GL_Vector placePoint = (GL_Vector) results[3];
-        endPoint=touchPoint;
-        startPoint =placePoint;
+        /*endPoint=touchPoint;
+        startPoint =placePoint;*/
         int face = (int)results[1];
         if(theNearestBlock!=null){
             BaseBlock addColorBlock =null;
@@ -1122,8 +1140,8 @@ public class EditEngine {
             BaseBlock theNearestBlock = (BaseBlock)results[0];
             GL_Vector touchPoint = (GL_Vector) results[2];
             GL_Vector placePoint = (GL_Vector) results[3];
-            endPoint=touchPoint;
-            startPoint =placePoint;
+           /* endPoint=touchPoint;
+            startPoint =placePoint;*/
             int face = (int)results[1];
             if(theNearestBlock!=null){
            
@@ -1136,12 +1154,12 @@ public class EditEngine {
         BaseBlock theNearestBlock = (BaseBlock)results[0];
         GL_Vector touchPoint = (GL_Vector) results[2];
         GL_Vector placePoint = (GL_Vector) results[3];
-        endPoint=touchPoint;
-        startPoint =placePoint;
+        
         int face = (int)results[1];
         if(theNearestBlock!=null){
             
-           
+            endPoint=touchPoint;
+            startPoint =placePoint;
            /* BaseBlock addColorBlock =null;
 
                 addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
@@ -1165,6 +1183,10 @@ public class EditEngine {
             float weizhi = -from.y/viewDir.y;
             curentX=(int)(from.x+weizhi*viewDir.x);
             curentZ= (int)(from.z+weizhi*viewDir.z);
+           endPoint.x =  startPoint.x = curentX;
+           endPoint.z =  startPoint.z = curentZ;
+           endPoint.y = startPoint.y=0;
+            
 
         }
         
@@ -1174,8 +1196,15 @@ public class EditEngine {
 
 
     }
+    
+    
 
     public void mouseClick(int x,int y){
+       
+
+
+      
+        
         if(Switcher.mouseState==Switcher.faceSelectMode) {
             prevFaceX = curentX;
             prevMaxFaceX = curentX + 1;
@@ -1184,24 +1213,57 @@ public class EditEngine {
             lastFaceX = curentX + 1;
             lastFaceZ = curentZ + 1;
 
+        }else if(Switcher.mouseState==Switcher.shootMode){
+         
+            touchStartPoint.x = startPoint.x;
+            placeStartPoint.x = endPoint.x;
+            
+            touchStartPoint.y = startPoint.y;
+            placeStartPoint.y = endPoint.y;
+            
+            touchStartPoint.z = startPoint.z;
+            placeStartPoint.z = endPoint.z;
+            
+            if(placeStartPoint.x>100){
+                LogUtil.println("123");
+            }
+        
+     
         }
     }
     int lastPaintX =0;
     int lastPaintZ=0;
     public void mouseDrag(int x,int y){
-
+        
+        
+        
+       
+        
+        
         if(Switcher.mouseState==Switcher.faceSelectMode) {
             lastFaceX = curentX;
             lastFaceZ = curentZ;
             lastFaceMaxX = curentX + 1;
             lastFaceMaxZ = curentZ + 1;
         }else if(Switcher.mouseState==Switcher.shootMode){
+           
 
-            if(lastPaintX!=curentX  || lastPaintZ != curentZ){
-                shootBlock(x,y);
+           
+            if(placeEndPoint.x!=endPoint.x  || placeEndPoint.z != endPoint.z || placeEndPoint.y != endPoint.y  ){
+               // shootBlock(x,y);
                 lastPaintX=curentX;
                 lastPaintZ =curentZ;
-            }
+                touchEndPoint.x = startPoint.x;
+                placeEndPoint.x = endPoint.x;
+                
+                touchEndPoint.y = startPoint.y;
+                placeEndPoint.y = endPoint.y;
+                
+                touchEndPoint.z = startPoint.z;
+                placeEndPoint.z = endPoint.z;
+              
+                reComputeAppend();
+           }
         }else if(Switcher.mouseState==Switcher.shootComponentMode){
             if(lastPaintX!=curentX  || lastPaintZ != curentZ){
                 shootBlock(x,y);
@@ -1215,6 +1277,8 @@ public class EditEngine {
         if(Switcher.mouseState==Switcher.faceSelectMode) {
             lastFaceX=curentX;
             lastFaceZ=curentZ;
+        }else if(Switcher.mouseState==Switcher.shootMode){
+            colorBlockList.addAll(appendingBlockList);
         }
     }
 
@@ -1711,5 +1775,34 @@ public class EditEngine {
             
         }
         return nameList;
+    }
+    
+    
+    public void reComputeAppend(){
+        appendingBlockList.clear();
+        int minx = (int)(Math.min(placeStartPoint.x, placeEndPoint.x));
+        int maxx = (int)(Math.max(placeStartPoint.x, placeEndPoint.x));
+        
+        int miny = (int)(Math.min(placeStartPoint.y, placeEndPoint.y));
+        int maxy = (int)(Math.max(placeStartPoint.y, placeEndPoint.y));
+        
+        int minz = (int)(Math.min(placeStartPoint.z, placeEndPoint.z));
+        int maxz = (int)(Math.max(placeStartPoint.z, placeEndPoint.z));
+        if(maxx - minx>100){
+            LogUtil.println("is not block ");
+        }
+      
+        for(int x =minx;x<=maxx;x++){
+            for(int y =miny;y<=maxy;y++){
+                for(int z =minz;z<=maxz;z++){
+                    ColorBlock colorBlock = new ColorBlock(x,y,z,1,1,1,red,green,blue,alpha);
+                    //colorBlock.reComputePoints();
+                    LogUtil.println("widht:"+minx+":"+maxx);
+                    this.appendingBlockList.add(colorBlock);
+                }
+                
+            }
+            
+        }
     }
 }
