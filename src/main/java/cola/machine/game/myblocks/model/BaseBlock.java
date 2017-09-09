@@ -480,6 +480,18 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public abstract void update();*/
 
     public abstract  BaseBlock copy();
+    public void copyBaseBlock(BaseBlock block){
+        block.x=this.x;
+        block.y=this.y;
+        block.z=z;
+        block.width=width;
+        block.id=id;
+        block.penetration=penetration;
+        block.height=height;
+        block.thick =thick;
+        block.live = live;
+        block.name =name;
+    }
     public  void reComputePoints(){
         this.points = BoxModel.getSmallPoint(0,0,0,width,height,thick);
        // this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);

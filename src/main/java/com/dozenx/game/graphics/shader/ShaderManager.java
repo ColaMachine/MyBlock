@@ -609,32 +609,7 @@ public class ShaderManager {
                 config.setTexture0Loc(ourTexture0Loc);
             }
         }*/
-        if (Constants.SHADOW_ENABLE) {
-
-            int depthMapLoc = glGetUniformLocation(config.getProgramId(), "shadowMap");
-            if (depthMapLoc >= 0) {
-                config.setDepthMapLoc(depthMapLoc);
-                //但是不能用这个方法 这个方法的前半段是正确的 将纹理id映射到全局的texture顺序上
-                //但是后半段 她会根据config的
-                //这里要确保再shadow的depthMap初始化后
-                int loc = ShaderUtils.bindDepth(config, shadow.getDepthMap());OpenglUtils.checkGLError();
-
-               /* GL13.glActiveTexture(GL13.GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
-                GL13.glActiveTexture(GL13.GL_TEXTURE9);
-                //shaderManager.terrainShaderConfig.depthMapLoc
-                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
-                GL13.glActiveTexture(GL13.GL_TEXTURE8);
-                //shaderManager.terrainShaderConfig.depthMapLoc
-                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
-                GL13.glActiveTexture(GL13.GL_TEXTURE7);
-                //shaderManager.terrainShaderConfig.depthMapLoc
-                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);*/
-
-            }
-
-
-        }
+       
         OpenglUtils.checkGLError();
         int ourTexture0Loc = glGetUniformLocation(config.getProgramId(), "ourTexture0");
         if (ourTexture0Loc >= 0) {
@@ -737,7 +712,33 @@ public class ShaderManager {
             }
         }
 
+        if (Constants.SHADOW_ENABLE) {
 
+            int depthMapLoc = glGetUniformLocation(config.getProgramId(), "shadowMap");
+            OpenglUtils.checkGLError();
+            if (depthMapLoc >= 0) {
+                config.setDepthMapLoc(depthMapLoc);OpenglUtils.checkGLError();
+                //但是不能用这个方法 这个方法的前半段是正确的 将纹理id映射到全局的texture顺序上
+                //但是后半段 她会根据config的
+                //这里要确保再shadow的depthMap初始化后
+                int loc = ShaderUtils.bindDepth(config, shadow.getDepthMap());OpenglUtils.checkGLError();
+                OpenglUtils.checkGLError();
+               /* GL13.glActiveTexture(GL13.GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE9);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE8);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE7);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);*/
+
+            }
+
+
+        }
         // glUseProgram(0);
         //glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
         // glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);

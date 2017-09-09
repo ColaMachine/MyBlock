@@ -1,6 +1,8 @@
 package com.dozenx.game.engine.item.parser;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.ColorBlock;
+
 import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.bean.ItemBlockProperties;
@@ -29,6 +31,7 @@ public class ItemBlockParser {
         }
         item.itemTypeProperties = blockProperties;
         item.setType(ItemMainType.BLOCK);
+        
         if (GamingState.player != null) {//区分服务器版本和客户端版本
 //            String shapeName = (String) map.get("shape");
                         /*if(icon.equals("fur_helmet")){
@@ -46,6 +49,10 @@ public class ItemBlockParser {
 
                 item.itemModel.placeModel = item.itemModel.handModel;
             }
+        }else{
+            ColorBlock colorBlock =new ColorBlock();
+            colorBlock.id = item.id;
+            item.setShape(colorBlock);
         }
       //  return null;
     }

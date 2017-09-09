@@ -189,8 +189,8 @@ public class BaseModel implements Model   {
                    // ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
                     ShaderUtils.draw3dColor(
                             
-                             new GL_Vector(0,-0.25f,0), new GL_Vector(this.role.nowHP*3f/30,-0.25f,0),
-                            new GL_Vector(this.role.nowHP*3f/30,0,0), new GL_Vector(0,0,0),rotateMatrix1, new GL_Vector(0,0,1),  new GL_Vector(1,0,0),ShaderManager.livingThingShaderConfig.getVao().getVertices(),ShaderManager.livingThingShaderConfig);
+                             new GL_Vector(0,-0.25f,0), new GL_Vector(this.role.nowHP*3f/300,-0.25f,0),
+                            new GL_Vector(this.role.nowHP*3f/300,0,0), new GL_Vector(0,0,0),rotateMatrix1, new GL_Vector(0,0,1),  new GL_Vector(1,0,0),ShaderManager.livingThingShaderConfig.getVao().getVertices(),ShaderManager.livingThingShaderConfig);
 
 
                 }

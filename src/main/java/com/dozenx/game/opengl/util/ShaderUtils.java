@@ -2363,13 +2363,13 @@ try {
         for(int i=0;i<6;i++){
             int[] faceAry2 = faceAry[i];
 
-            veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
-            veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
         }
     }
@@ -2387,13 +2387,13 @@ try {
         for(int i=0;i<6;i++){
             int[] faceAry2 = faceAry[i];
 
-            veticesBuffer.put(newPoints[faceAry2[0]].x).put(newPoints[faceAry2[0]].y).put(newPoints[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(newPoints[faceAry2[1]].x).put(newPoints[faceAry2[1]].y).put(newPoints[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(newPoints[faceAry2[2]].x).put(newPoints[faceAry2[2]].y).put(newPoints[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(newPoints[faceAry2[3]].x).put(newPoints[faceAry2[3]].y).put(newPoints[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[0]].x).put(newPoints[faceAry2[0]].y).put(newPoints[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[1]].x).put(newPoints[faceAry2[1]].y).put(newPoints[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[2]].x).put(newPoints[faceAry2[2]].y).put(newPoints[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[3]].x).put(newPoints[faceAry2[3]].y).put(newPoints[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
-            veticesBuffer.put(newPoints[faceAry2[0]].x).put(newPoints[faceAry2[0]].y).put(newPoints[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-            veticesBuffer.put(newPoints[faceAry2[2]].x).put(newPoints[faceAry2[2]].y).put(newPoints[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[0]].x).put(newPoints[faceAry2[0]].y).put(newPoints[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+            veticesBuffer.put(newPoints[faceAry2[2]].x).put(newPoints[faceAry2[2]].y).put(newPoints[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
         }
     }
@@ -2472,13 +2472,13 @@ try {
             for(int i=0;i<6;i++){
                 int[] faceAry2 = faceAry[i];
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
             }
 
@@ -2518,13 +2518,13 @@ try {
                 }
                 int[] faceAry2 = faceAry[i];
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
             }
 
@@ -2548,13 +2548,13 @@ try {
                 int[] faceAry2 = faceAry[i];
 
 
-                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(x+points[faceAry2[1]].x).put(y+points[faceAry2[1]].y).put(z+points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(x+points[faceAry2[3]].x).put(y+points[faceAry2[3]].y).put(z+points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[1]].x).put(y+points[faceAry2[1]].y).put(z+points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[3]].x).put(y+points[faceAry2[3]].y).put(z+points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
 
-                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red+0.03f*(i-3)).put(green+0.03f*(i-3)).put(blue+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
 
             }
 
@@ -2667,13 +2667,13 @@ try {
                 int[] faceAry2 = faceAry[i];
 
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z).put(dirAry[1].x).put(dirAry[1].y).put(dirAry[1].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z).put(dirAry[3].x).put(dirAry[3].y).put(dirAry[3].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x+0.03f*(i-3)).put(color.y+0.03f*(i-3)).put(color.z+0.03f*(i-3)).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z).put(dirAry[0].x).put(dirAry[0].y).put(dirAry[0].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z).put(dirAry[2].x).put(dirAry[2].y).put(dirAry[2].z).put(color.x/*+0.03f*(i-3)*/).put(color.y/*+0.03f*(i-3)*/).put(color.z/*+0.03f*(i-3)*/).put(-alpha);//p1
 
             }
 

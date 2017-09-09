@@ -460,9 +460,18 @@ public class ColorBlock extends BaseBlock{
 
 
     public ColorBlock copy(){
-        ColorBlock colorBlock  =new ColorBlock(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
-        colorBlock.id= id;
+        ColorBlock colorBlock  =new ColorBlock();
+        copyBaseBlock(colorBlock);
+        copyColorBlock(colorBlock);
         return colorBlock;
+    }
+    
+    public void copyColorBlock(ColorBlock block){
+        block.rf =rf;
+        block.gf=gf;
+        block.bf =bf;
+        block.opacity = opacity;
+        copyBaseBlock(block);
     }
 
 

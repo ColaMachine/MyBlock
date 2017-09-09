@@ -34,7 +34,7 @@ public class State {
     float distance =0;
     long  nowTime = 0 ;
     public void update(){
-
+        
        if(this.livingThing.routes!=null && livingThing.routes.size()>0){
             if(livingThing.getDest() == null ){
                 GL_Vector dest =livingThing.routes.remove(0);
@@ -49,7 +49,7 @@ public class State {
         if(this.livingThing.getDest()!=null){
             //计算当前和目的地的距离
             distance= GL_Vector.length(GL_Vector.sub(livingThing.getPosition(),livingThing.getDest()));
-            if(distance>1){
+            if(distance>0.5){
                 nowTime = TimeUtil.getNowMills();
                 if(GamingState.player!=null) {
                     if(lastTime==0 || nowTime-lastTime >3000){       //如果开始时间是0说明刚开始
@@ -63,7 +63,10 @@ public class State {
 
                     if (nowTime - lastTime >50) {//如果大于50ms才执行
                         //调整计算新的位置
-                        float moveDistance =  livingThing.speed* (nowTime-lastTime)/1000;
+                        
+                        float moveDistance =  livingThing.speed* /*(nowTime-lastTime)*/100f/1000;
+                        
+                        //判断移动过程中是否有碰到障碍物
                         GL_Vector walkDir = GL_Vector.sub( livingThing.getDest(),livingThing.getPosition()).normalize();
                         if(!livingThing.isPlayer()) {
                             livingThing.setWalkDir(walkDir);
@@ -83,16 +86,20 @@ public class State {
                         }*/
                         this.livingThing.speed=3;
                         if(moveDistance>distance -0.1f  ){//如果移动举例超过了最大距离 说明到达了目的地 防止因为卡顿引起超距离移动 结束移动
-                            livingThing.move(livingThing.getDest().x,livingThing.getDest().y,livingThing.getDest().z);
+                            livingThing.move(livingThing.getDest().x,livingThing.position.y,livingThing.getDest().z);
                             livingThing.setDest(null);
                             lastTime = TimeUtil.getNowMills();
                             return;
                         }else {
                             if(GamingState.player==null){
-                                LogUtil.println(""+livingThing.getPosition());
+                        //        LogUtil.println(""+livingThing.getPosition());
                             }
                             GL_Vector newPosition =  GL_Vector.add(livingThing.getPosition(), GL_Vector.multiply(walkDir,moveDistance ));
-                            livingThing.move(newPosition.x, newPosition.y, newPosition.z);
+                            livingThing.move(newPosition.x,newPosition.y, newPosition.z);
+                            if(walkDir.y==1){
+                                livingThing.setDest(null);
+                            }
+                            //如果长期被拒绝
                            // LogUtil.println(""+livingThing.getPosition());
                             lastTime = TimeUtil.getNowMills();
                         }

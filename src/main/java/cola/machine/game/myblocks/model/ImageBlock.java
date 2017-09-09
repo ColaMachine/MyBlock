@@ -181,22 +181,24 @@ public class ImageBlock extends BaseBlock{
 
     public ImageBlock copy(){
 
-        ImageBlock colorBlock  =new ImageBlock();
+        ImageBlock block  =new ImageBlock();
 
-        
-        colorBlock.width=width;
-        colorBlock.height=height;
-        colorBlock.thick =thick;
-        colorBlock.top=top;
-        colorBlock.bottom=bottom;
-        colorBlock.front=front;
-        colorBlock.back=back;
-        colorBlock.left=left;
-        colorBlock.right=right;
-        colorBlock.id =id;
-
-        return colorBlock;
+       
+        copyBaseBlock(block);
+        copyImageBlock( block);
+        return block;
     }
+    
+    public void copyImageBlock(ImageBlock block){
+        block.top=top;
+        block.bottom=bottom;
+        block.front=front;
+        block.back=back;
+        block.left=left;
+        block.right=right;
+     
+    }
+
 
     @Override
     public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean hastop, boolean hasbottom, boolean hasleft, boolean hasright, boolean hasfront, boolean hasback) {

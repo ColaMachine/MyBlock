@@ -93,6 +93,9 @@ public class PosCmd extends   BaseGameCmd{
         }
         this.x = livingThing.position.x;
         this.y = livingThing.position.y;
+        if(this.y<0){
+            LogUtil.println("1");
+        }
         this.z = livingThing.position.z;
         this.bodyAngle = livingThing.getBodyAngle();
         this.headAngle = livingThing.getHeadAngle();

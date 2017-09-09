@@ -5,6 +5,8 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import core.log.LogUtil;
+
 import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.excutor.Executor;
@@ -487,6 +489,9 @@ public class LivingThingBean extends Role {
     public void move(GL_Vector newPosition) {
         this.oldPosition.copy(this.position);
         this.position.set(newPosition.x, newPosition.y, newPosition.z);
+        if(newPosition.y<0){
+            LogUtil.println("1");
+        }
         this.updateTime =  TimeUtil.getNowMills();
     }
     public void move(float x, float y, float z) {
@@ -520,7 +525,23 @@ public class LivingThingBean extends Role {
                 //尝试高度太高1
                 this.position.y=(int)Math.floor(this.position.y+1);
                 if(CoreRegistry.get(PhysicsEngine.class).collision(this)){
+                    
+                    
+                    
                     this.position.copy(oldPosition);
+                    if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞 
+                        GL_Vector new_Vectory = new GL_Vector((float)Math.floor(oldPosition.x)+0.5f,(float)Math.floor(oldPosition.y)+0.2f,(float)Math.floor(oldPosition.z)+0.5f);
+                        this.position.copy(new_Vectory);
+                        if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞 
+                             new_Vectory = new GL_Vector((float)Math.floor(oldPosition.x)+1.5f,(float)Math.floor(oldPosition.y)+0.2f,(float)Math.floor(oldPosition.z)+0.5f);
+                             this.position.copy(new_Vectory);
+                            
+                            if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞 
+                                new_Vectory = new GL_Vector((float)Math.floor(oldPosition.x)+0.5f,(float)Math.floor(oldPosition.y)+0.2f,(float)Math.floor(oldPosition.z)+1.5f);
+                               this.position.copy(new_Vectory);
+                           }
+                        }
+                    }
                     this.setBlock(true);
                     this.setDest(null);
                 }
@@ -534,6 +555,9 @@ public class LivingThingBean extends Role {
     }
     boolean block =false;
     public void setBlock(boolean flag){
+        if(block==true  && flag ==false){
+            LogUtil.println("1");
+        }
         this.block=flag;
     }
     public boolean isBlock(){
@@ -560,6 +584,9 @@ public class LivingThingBean extends Role {
         this.maxX=posx+0.5f;
         this.maxY=posy+4;
         this.maxZ=posz+0.5f;
+        if(posy<0){
+            LogUtil.println("1");
+        }
         position = new GL_Vector(posx, posy, posz);
     }
 

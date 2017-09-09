@@ -142,6 +142,7 @@ public class CompPanel extends Tab {
                     GamingState.editEngine.enterComponentEdit();
                     editComponentButton.setText("退出组件编辑模式");
                 }else{
+                    GamingState.editEngine.currentChoosedGroupForEdit=null;
                     editComponentButton.setText("进入组件编辑模式");
                 }
                 //s GamingState.editEngine.buildComponent();

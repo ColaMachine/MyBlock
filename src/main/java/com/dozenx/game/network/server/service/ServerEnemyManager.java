@@ -1,8 +1,11 @@
 package com.dozenx.game.network.server.service;
 
 import cola.machine.game.myblocks.model.IBlock;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.command.AttackCmd;
 import com.dozenx.game.engine.command.AttackType;
 import com.dozenx.game.engine.command.PosCmd;
@@ -57,7 +60,7 @@ public class ServerEnemyManager implements Runnable {
                 //this.moveOrAttack();
                 //this.testCmd();
                 try {
-                    Thread.sleep(1000);//1秒同步一次
+                    Thread.sleep(400);//1秒同步一次
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,31 +101,40 @@ public class ServerEnemyManager implements Runnable {
 
                     findTarget(enemy);
                 }
-                    if(enemy.getTarget() == null && enemy.getDest()==null && enemy.getFinalDest()!=null){
-                        if(enemy.isBlock()){
-                            if (enemy.routes == null || enemy.routes.size() == 0) {
-                                this.pathRoute(enemy.getPosition(), enemy.getFinalDest(), enemy);
-                                enemy.setFinalDest(null);
-                            }else{
-
-
-                            }
-                        }else {
-                            enemy.setDest(enemy.getFinalDest());
-                        }
-                        //如果长时间由于卡住过不去 就动用path寻路
-                      /*  if (enemy.routes == null || enemy.routes.size() == 0) {
-                            this.pathRoute(enemy.getPosition(), enemy.getFinalDest(), enemy);
-                            enemy.setFinalDest(null);
-                        }else{
-
-
-                        }*/
-                    }
+                //怪物
+//                    if(enemy.getTarget() != null && enemy.getDest()==null && enemy.getFinalDest()!=null){
+//                        if( enemy.isBlock() ){//如果立马取消掉dest
+//                            if (enemy.routes.size() == 0&&enemy.routes == null || enemy.routes.size() == 0) {
+//                                
+//                                AStar astar =new  AStar();
+//                               // astar.map
+//                                this.pathRoute2(enemy.getPosition(), enemy.getFinalDest(), enemy);
+//                                enemy.setFinalDest(null);
+//                            }else{
+//
+//
+//                            }
+//                        }else {
+//                            //如果当前有pathroute的结果
+//                            if(enemy.getDest()==null){
+//                                enemy.setDest(enemy.getFinalDest());
+//                            }
+//                           
+//                        }
+//                        //如果长时间由于卡住过不去 就动用path寻路
+//                      /*  if (enemy.routes == null || enemy.routes.size() == 0) {
+//                            this.pathRoute(enemy.getPosition(), enemy.getFinalDest(), enemy);
+//                            enemy.setFinalDest(null);
+//                        }else{
+//
+//
+//                        }*/
+//                    }
                     //}
 
                 enemy.getExecutor().getCurrentState().update();
-
+                CoreRegistry.get(PhysicsEngine.class).checkIsDrop(enemy);
+               CoreRegistry.get(PhysicsEngine.class).gravitation(enemy);
             }
         }
         for (LivingThingBean player : userService.getAllOnlinePlayer()) {
@@ -258,15 +270,20 @@ public class ServerEnemyManager implements Runnable {
         //enemy.setWalkDir(direction);
 
         float length = GL_Vector.length(direction);
-        if (GL_Vector.length(direction) < 2) {
-            AttackCmd attackCmd = new AttackCmd(enemy.getId(), AttackType.KAN, enemy.getTargetId());
-            serverContext.broadCast(attackCmd.toBytes());
-            enemy.getExecutor().receive(attackCmd);
+        if (length < 2) {
+            if(TimeUtil.getNowMills()-enemy.getLastAttackTime()>1000){
+                AttackCmd attackCmd = new AttackCmd(enemy.getId(), AttackType.KAN, enemy.getTargetId());
+                serverContext.broadCast(attackCmd.toBytes());
+                enemy.getExecutor().receive(attackCmd);
+                enemy.setLastAttackTime(TimeUtil.getNowMills());
+            }
+           
+            
             //开始攻击
                   /* enemy.
                     attack(enemy,enemy.getTarget());*/
             //livingThing.nextPosition=null;
-        } else {
+        } else if(length<50){
             // this.getAnimationManager().apply(livingThing.bodyComponent,"walkerFoward");
                    /*GL_Vector newPosition = GL_Vector.add(enemy.getPosition(),GL_Vector.multiply(direction.normalize(),1*1));
                     enemy .setPosition(newPosition);
@@ -274,18 +291,43 @@ public class ServerEnemyManager implements Runnable {
 
 */                      //这段代码会导致一个问题 怪物到了目的地后才会再计算下一个目的地
             //每隔一段时间就修正怪物的walkstate
-            LivingThingBean player = userService.getOnlinePlayerById(enemy.getTargetId());
-            if (player != null) {
-                //移动到制定位置设置目标
+            
+            if(enemy.getDest()==null && enemy.getFinalDest()==null){
+                LivingThingBean player = userService.getOnlinePlayerById(enemy.getTargetId());
+                if (player != null) {
+                    //移动到制定位置设置目标
 
-                //可达性分析
+                    //可达性分析
 
+                    
+                    enemy.setFinalDest(player.getPosition());
+                   // enemy.setDest(player.getPosition());
+                    //
+                    // enemy.setBodyAngle( GL_Vector.getAnagleFromXZVectory(direction));
+                }
+                   
+                  
+            }else{
+                if( enemy.isBlock() ){//如果立马取消掉dest
+                    if (enemy.routes.size() == 0&&enemy.routes == null || enemy.routes.size() == 0) {
+                        
+                        //AStar astar =new  AStar();
+                       // astar.map
+                        this.pathRoute2(enemy.getPosition(), enemy.getFinalDest(), enemy);
+                        enemy.setBlock(false);
+                        //enemy.setFinalDest(null);
+                    }else{
+                        
 
-                enemy.setDest(player.getPosition());
-
-                //
-                // enemy.setBodyAngle( GL_Vector.getAnagleFromXZVectory(direction));
+                    }
+                }else {
+                    //如果当前有pathroute的结果
+                    if(enemy.getDest()==null && enemy.routes.size()==0){
+                        enemy.setDest(enemy.getFinalDest());
+                    }
+                }
             }
+           
 
 //                       if(enemy.getExecutor().getCurrentState() instanceof IdleState ){//就是说还没开始追击
 //
@@ -303,10 +345,70 @@ public class ServerEnemyManager implements Runnable {
 //                       }
 
 
+        }else{
+            enemy.setTarget(null);
+            enemy.setDest(null);
+            enemy.setFinalDest(null);
         }
 
     }
+    public void  pathRoute2(GL_Vector from, GL_Vector to, LivingThingBean livingThingBean) {
+        int xDistance = (int) (to.x - from.x);//caculate the x distance
+        int zDistance = (int) (to.z - from.z);//caculate the z distance
+        int width =40;
+        int height=40;
+        int map[][] =new int[width][height];
+        int srcX = (int)from.x;
+        int srcZ= (int)from.z;
+        int dstX = (int )to.x;
+        int dstZ =(int )to.z;
+        int minX = srcX-10;
+        int minZ = srcZ-10;
+      
+       for(int x =0;x<width;x++){
+           for(int z =0;z<height;z++){
+               int offsetX =MathUtil.getOffesetChunk(x+srcX-10);
+               int offsetZ = MathUtil.getOffesetChunk(z+srcZ-10);
+               Chunk chunk = chunkProvider.getChunk(MathUtil.getBelongChunkInt(x), 0, MathUtil.getBelongChunkInt(z));
+               IBlock block = chunk.getBlock(offsetX, 1, offsetZ);
 
+
+               if (block == null || block.getId() == 0 || block.isPenetrate()) { //说明这边的block也是空的 it's empt
+                   
+               }else{
+                   map[x][z]=1;
+               }
+               
+               
+              
+           }
+       }
+     
+        
+        
+        AStar astar =new AStar();
+        astar.map=map;
+        List<GL_Vector> routeList = new ArrayList<>();
+        CloseSet p = astar.start(srcX-minX, srcZ-minZ, dstX-minX, dstZ-minZ);
+        int step =0;
+        if(p!=null){
+            while (p.from!=null)
+            {routeList.add(new GL_Vector(p.cur.x+minX,1,p.cur.y+minZ));
+                
+               System.out.printf("（%d，%d）→\n", p.cur.x+minX,p.cur.y+minZ);
+                p = p.from;
+                step++;
+            }
+           
+            livingThingBean.routes.add(new GL_Vector((int)livingThingBean.getPosition().x+0.5f,(int)livingThingBean.getPosition().y,(int)livingThingBean.getPosition().z+0.5f));
+            livingThingBean.routes.addAll(routeList);
+
+            livingThingBean.setFinalDest(null);
+            GL_Vector point = routeList.get(0);
+            
+           livingThingBean.setDest(point);
+        }
+    }
     public List<GL_Vector> pathRoute(GL_Vector from, GL_Vector to, LivingThingBean livingThingBean) {
         //首先判断from 下面有没有基础方块
         List<GL_Vector> routeList = new ArrayList<>();
@@ -355,11 +457,12 @@ public class ServerEnemyManager implements Runnable {
 
                 livingThingBean.routes.clear();
                 Collections.reverse(routeList);
+                livingThingBean.routes.add(new GL_Vector((int)livingThingBean.getPosition().x+0.5f,(int)livingThingBean.getPosition().y,(int)livingThingBean.getPosition().z+0.5f));
                 livingThingBean.routes.addAll(routeList);
 
                 livingThingBean.setFinalDest(null);
                 GL_Vector point = routeList.get(0);
-
+                
                livingThingBean.setDest(point);
                 //先判断左
 
@@ -383,7 +486,7 @@ public class ServerEnemyManager implements Runnable {
             return false;
         }
         if(nowY==2){
-            LogUtil.println("why");
+//            LogUtil.println("why");
         }
         if (alreadyMap.get(nowX * 1000 * 1000 + nowZ * 1000 + nowY) != null) {
             return false;
@@ -398,7 +501,7 @@ public class ServerEnemyManager implements Runnable {
         if(nowX==toX && nowZ==toZ){
             //y 先不判断了 原来是要 && nowY == toY
 
-            routeList.add(new GL_Vector(nowX, nowY, nowZ));
+            routeList.add(new GL_Vector(nowX+0.5f, nowY, nowZ+0.5f));
             return true;
         }
         int dir=3;//0 is x 1 is z
@@ -483,7 +586,7 @@ public class ServerEnemyManager implements Runnable {
                 if (diguiTest(fromX, fromY, fromZ, nextX, nowY + luocha, nextZ, toX, toY, toZ, xDir, zDir,alreadyMap ,routeList,dir,level)) {
                    // if(lastDir != dir) {
                         //如果这次和上次 还有这次和下次都是在同一个方向上 本次就不需要记录节点
-                        routeList.add(new GL_Vector(nowX, nowY, nowZ));
+                        routeList.add(new GL_Vector(nowX+0.5f, nowY, nowZ+0.5f));
                    // }
                     return true;
                 }
@@ -529,7 +632,7 @@ public class ServerEnemyManager implements Runnable {
     public int luocha(int x, int y, int z) {
         // Block block = chunkProvider.getBlockAt(thereX,thereY,thereZ);
         if(x==15 && z==0){
-            LogUtil.println("why");
+           // LogUtil.println("why");
         }
         int offsetX =MathUtil.getOffesetChunk(x);
         int offsetZ = MathUtil.getOffesetChunk(z);

@@ -62,7 +62,7 @@ public class PhysicsEngine {
 
         //ȡ�����������������
 
-        if(livingThing.position.y<=0){//触底了
+        if(livingThing.position.y<0){//触底了
             livingThing.position.y=0f;
             livingThing.setStable(true);
         }
@@ -156,7 +156,9 @@ public class PhysicsEngine {
                         );
 
                         if(k>0){
-
+                            if(GamingState.player==null){
+                                return true;
+                            }
                             IBlock block =chunk_corner.getBlock(blockX,
                                     blockY, blockZ);
                             if(block == null ){
@@ -186,11 +188,30 @@ public class PhysicsEngine {
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
-
+        
         if(plr_world_pos_y<0){
             return true;
         }
+        if(GamingState.player == null){
+            int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt( plr_world_pos_x);
+            int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(plr_world_pos_z);
+            Chunk chunk_corner  = chunkProvider.getChunk(temp_chunk_pos_x_16,0,temp_chunk_pos_z_16);
+            
+            int blockX = MathUtil.getOffesetChunk(plr_world_pos_x);
+            int blockY = (int) (plr_world_pos_y);
+            int blockZ = MathUtil.getOffesetChunk(plr_world_pos_z);
+            int k = chunk_corner.getBlockData(blockX,
+                    blockY, blockZ
+            );
+            
 
+            if (k > 0) {
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
 
         for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
 
@@ -220,6 +241,9 @@ public class PhysicsEngine {
                     );
 
                     if (k > 0) {
+                        if(GamingState.player==null){
+                            return true;
+                        }
                         IBlock block =chunk_corner.getBlock(blockX,
                                 blockY, blockZ);
                         if(block == null ){

@@ -70,18 +70,27 @@ public class RotateColorBlock2 extends ColorBlock{
         ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z, this.points,dirAry,  rf, gf, bf,this.opacity);
 
     }
-
+    
+    
     public RotateColorBlock2 copy(){
-        RotateColorBlock2 colorBlock  =new RotateColorBlock2(this.x,this.y,this.z,this.width,this.height,this.thick,this.rf,this.gf,this.bf,this.opacity);
-        colorBlock .rotateX= this.rotateX;
-        colorBlock .rotateY= this.rotateY;
-        colorBlock.centerY = this.centerY;
-        colorBlock.centerX = this. centerX;
-        colorBlock .centerZ = this. centerZ;
-        colorBlock .rotateZ= this.rotateZ;
+        RotateColorBlock2 colorBlock  =new RotateColorBlock2();
+        copyBaseBlock(colorBlock);
+        copyColorBlock(colorBlock);
+        copyRotateColorBlock(colorBlock);
         colorBlock.reComputePoints();
         return colorBlock;
     }
+    
+    public void copyRotateColorBlock(RotateColorBlock2 block){
+        block .rotateX= this.rotateX;
+        block .rotateY= this.rotateY;
+        block.centerY = this.centerY;
+        block.centerX = this. centerX;
+        block .centerZ = this. centerZ;
+        block .rotateZ= this.rotateZ;
+        copyBaseBlock(block);
+    }
+   
     public float  rotateX(float value){
         this.rotateX+=value*0.1;//reComputePoints();
         return this.rotateX;

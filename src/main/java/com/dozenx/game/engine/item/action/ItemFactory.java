@@ -22,7 +22,9 @@ public class ItemFactory {
       String name = MapUtil.getStringValue(map,"name");
 
         int id = MapUtil.getIntValue(map,"id");
-
+        if(id==7){
+            LogUtil.println("7");
+        }
         if(name.equals("langan3")){
             LogUtil.println("is arrow");
         }

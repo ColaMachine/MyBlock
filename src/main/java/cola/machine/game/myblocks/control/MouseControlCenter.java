@@ -686,7 +686,7 @@ public class MouseControlCenter {
        int  curentX=(int)(from.x+weizhi*viewDir.x);
         int curentZ= (int)(from.z+weizhi*viewDir.z);
         
-        GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
+       // GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
         
     }
     /**

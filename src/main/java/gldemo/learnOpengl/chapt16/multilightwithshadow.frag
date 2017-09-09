@@ -1,7 +1,11 @@
 #version 330 core
 out vec4 FragColor;
+
+#define NR_TEXTURES 8
+
+
 #define NR_POINT_LIGHTS 4
-uniform sampler2D ourTextures[NR_POINT_LIGHTS];
+uniform sampler2D ourTextures[NR_TEXTURES];
  in float ourTextureIndex;
 in vec4 FragPosLightSpace;
 struct Material
@@ -41,13 +45,13 @@ struct PointLight {
     vec3 diffuse;
     vec3 specular;
 };
-#define NR_POINT_LIGHTS 4
+
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 uniform sampler2D shadowMap;
 
 
-float ShadowCalculation(vec4 fragPosLightSpace)
+float ShadowCalculation(vec4 fragPosLightSpace,vec3 normal,  vec3 lightDir )
 {
 
        vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -59,9 +63,13 @@ float ShadowCalculation(vec4 fragPosLightSpace)
        float currentDepth = projCoords.z;
        // Check whether current frag pos is in shadow
        //设置阴影偏移
-       float bias = 0.005;
+      // float bias = 0.005;
+       
+       float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+       
        float shadow = currentDepth- bias >closestDepth?1.0 : 0.0;
-
+ if(projCoords.z > 1.0)
+        shadow = 0.0;
        return shadow;
 }
 
@@ -101,12 +109,12 @@ vec3 CalcDirLight(Light light, vec3 normal, vec3 viewDir,vec4 oricolor)
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 132);
     // combine results
     vec3 ambient  = light.ambient  * vec3(oricolor);
     vec3 diffuse  = light.diffuse  * diff * vec3(oricolor);
     vec3 specular = light.specular * spec * vec3(oricolor);
-  float shadow = ShadowCalculation(FragPosLightSpace);
+    float shadow = ShadowCalculation(FragPosLightSpace,normal,lightDir);
 
 
 
@@ -119,17 +127,17 @@ void main()
 
 
     vec4 oricolor ;
-
+ 
     if(ourTextureIndex<0){
          oricolor = vec4(TexCoord,ourTextureIndex*(-1));
 
-   }else if(ourTextureIndex==0){ vec2 TexCoordReal=vec2(TexCoord.x,TexCoord.y);
+   }else{ vec2 TexCoordReal=vec2(TexCoord.x,TexCoord.y);
                oricolor = texture(ourTextures[int(ourTextureIndex)], TexCoordReal);
 
    }
     
-    if(oricolor.a<0.1)
-    discard;
+  //  if(oricolor.a<0.1)
+    //discard;
 
 vec3 norm = normalize(Normal);//faxian guiyi
 

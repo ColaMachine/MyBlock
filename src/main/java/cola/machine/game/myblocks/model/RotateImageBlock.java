@@ -68,24 +68,28 @@ public class RotateImageBlock extends ImageBlock{
         ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),x,y,z, this.points,dirAry,  rf, gf, bf,this.opacity);
 
     }*/
-
+    
+    
     public RotateImageBlock copy(){
-        RotateImageBlock block  =new RotateImageBlock(this.x,this.y,this.z,this.width,this.height,this.thick);
-        block.front=front;
-        block.back = back;
-        block.left = left;
-        block.right = right;
-        block.top =top;
-        block.bottom = bottom;
+        RotateImageBlock colorBlock  =new RotateImageBlock();
+        copyBaseBlock(colorBlock);
+        copyImageBlock(colorBlock);
+        copyRotateImageBlock(colorBlock);
+        colorBlock.reComputePoints();
+        return colorBlock;
+    }
+    
+    public void copyRotateImageBlock(RotateImageBlock block){
         block .rotateX= this.rotateX;
         block .rotateY= this.rotateY;
         block.centerY = this.centerY;
         block.centerX = this. centerX;
         block .centerZ = this. centerZ;
         block .rotateZ= this.rotateZ;
-        block.reComputePoints();
-        return block;
+        copyBaseBlock(block);
     }
+
+   
     public float rotateX(float value){
         this.rotateX+=value*0.1;reComputePoints();
         return this.rotateX;

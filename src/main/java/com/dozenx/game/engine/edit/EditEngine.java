@@ -58,8 +58,8 @@ public class EditEngine {
 
 
     ColorBlock mouseOvercolorBlock =null;
-    int curentX = 0;
-    int curentZ =0;
+    public int curentX = 0;
+    public int curentZ =0;
 
     public int prevFaceX = 0;
     public int prevFaceZ =0;
@@ -74,7 +74,7 @@ public class EditEngine {
     /**
      * 当前编辑的组件库
      */
-    GroupBlock currentChoosedGroupForEdit =null;
+    public GroupBlock currentChoosedGroupForEdit =null;
     public float red ,green,blue,alpha=1;
 
     /**
@@ -116,7 +116,7 @@ public class EditEngine {
             // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
         }
         if(startPoint!=null){
-
+            
             ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),startPoint.x,startPoint.y,startPoint.z,new GL_Vector(1,0,0),0.3f,0.3f,0.3f,1);
 
             ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),endPoint.x,endPoint.y,endPoint.z,new GL_Vector(0,0,1),0.3f,0.3f,0.3f,1);
@@ -399,13 +399,13 @@ public class EditEngine {
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-                return colorBlock.addWidth(num);//(false);
+                 colorBlock.addWidth(num);//(false);
 
             }}else{
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-               return  colorBlock.addX(num);//(false);
+                 colorBlock.addX(num);//(false);
 
             }
         }
@@ -416,18 +416,20 @@ public class EditEngine {
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
 
-               return colorBlock.addHeight(num);//(false);
+                colorBlock.addHeight(num);//(false);
 
             }
+            return 0;
         }else{
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
 
-                return colorBlock.addY(num) ;//(false);
+                 colorBlock.addY(num) ;//(false);
 
             }
+            return 0;
         }
-        return 0;
+       // return 0;
     }
 
     public float adjustThick(float num,boolean position){
@@ -435,14 +437,14 @@ public class EditEngine {
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-                return colorBlock.addThick( num);//(false);
+                 colorBlock.addThick( num);//(false);
 
             }
         }else{
             for( int i=0;i<selectBlockList.size();i++){
                 BaseBlock colorBlock  =  selectBlockList.get(i);
 
-                return colorBlock.addZ( num);//(false);
+                 colorBlock.addZ( num);//(false);
 
             }
         }
@@ -574,6 +576,7 @@ public class EditEngine {
     }
 //,float red,float green ,float blue
     public void shootBlock(float x,float y){
+        LogUtil.println("shoot outer");
 
         if(Switcher.isEditComponent){
             currentChoosedGroupForEdit.shootBlock(x,y);
@@ -652,7 +655,7 @@ public class EditEngine {
 
                 //计算点在了那个面上
                 //有上下左右前后6个面
-                LogUtil.println("选中了");
+                //LogUtil.println("选中了");
                 float _tempDistance = xiangjiao[0]* xiangjiao[0]+ xiangjiao[1]* xiangjiao[1]+ xiangjiao[2]* xiangjiao[2];
 
                 if(distance ==0||_tempDistance<distance){
@@ -1109,14 +1112,65 @@ public class EditEngine {
 
 
     public void mouseMove(int x,int y){
+        y=Constants.WINDOW_HEIGHT-y;
         // mouseOvercolorBlock = selectSingle(GamingState.instance.camera.Position.copyClone(), OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,Constants.WINDOW_HEIGHT-y));
         //计算 鼠标和xz平面的交接处
-        GL_Vector from = GamingState.instance.camera.Position;
-        GL_Vector viewDir =  OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,y);
+        
+        if(currentChoosedGroupForEdit!=null){//内部绘制
+            //((GroupBlock )currentChoosedGroupForEdit).getMouseChoosedBlock(x,y);
+            Object[] results =  currentChoosedGroupForEdit.getMouseChoosedBlock( x, y);
+            BaseBlock theNearestBlock = (BaseBlock)results[0];
+            GL_Vector touchPoint = (GL_Vector) results[2];
+            GL_Vector placePoint = (GL_Vector) results[3];
+            endPoint=touchPoint;
+            startPoint =placePoint;
+            int face = (int)results[1];
+            if(theNearestBlock!=null){
+           
+                return;
+            }
+        }
+        
+        
+        Object[] results = this.getMouseChoosedBlock(x,y);
+        BaseBlock theNearestBlock = (BaseBlock)results[0];
+        GL_Vector touchPoint = (GL_Vector) results[2];
+        GL_Vector placePoint = (GL_Vector) results[3];
+        endPoint=touchPoint;
+        startPoint =placePoint;
+        int face = (int)results[1];
+        if(theNearestBlock!=null){
+            
+           
+           /* BaseBlock addColorBlock =null;
 
-        float weizhi = -from.y/viewDir.y;
-        curentX=(int)(from.x+weizhi*viewDir.x);
-        curentZ= (int)(from.z+weizhi*viewDir.z);
+                addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+            set(addColorBlock,(int) (placePoint.x), (int) (placePoint.y ), (int) (placePoint.z ),1,1,1,red,green,blue,alpha);
+            }else{
+                addColorBlock = new ColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
+            }
+
+
+            colorBlockList.add(addColorBlock);
+
+
+            LogUtil.println("是那个面:"+face);*/
+
+        }else{//射在地面上
+            
+            y=Constants.WINDOW_HEIGHT-y;
+            GL_Vector from = GamingState.instance.camera.Position;
+            GL_Vector viewDir =  OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,y);
+
+            float weizhi = -from.y/viewDir.y;
+            curentX=(int)(from.x+weizhi*viewDir.x);
+            curentZ= (int)(from.z+weizhi*viewDir.z);
+
+        }
+        
+        
+        
+      
 
 
     }
@@ -1144,7 +1198,7 @@ public class EditEngine {
         }else if(Switcher.mouseState==Switcher.shootMode){
 
             if(lastPaintX!=curentX  || lastPaintZ != curentZ){
-            shootBlock(x,y);
+                shootBlock(x,y);
                 lastPaintX=curentX;
                 lastPaintZ =curentZ;
             }
@@ -1523,12 +1577,16 @@ public class EditEngine {
                     int value = chunk.getBlockData(x,y,z);
                     //x<<12 && y<<8&& z <<4 && value
                     if(value>0){
-                      BaseBlock block = ItemManager.getItemDefinition(value).getShape().copy();
+                        if(value!=40){
+                            BaseBlock block = ItemManager.getItemDefinition(value).getShape().copy();
+                            block.x=chunkX*16+x;
+                            block.y=y;
+                            block.z=chunkZ*16+z;
+                            this.colorBlockList.add(block);
+                        }
+                   
                       chunk.setBlock(x,y,z,0);
-                        block.x=chunkX*16+x;
-                        block.y=y;
-                        block.z=chunkZ*16+z;
-                        this.colorBlockList.add(block);
+                       
                     }
 
                 }

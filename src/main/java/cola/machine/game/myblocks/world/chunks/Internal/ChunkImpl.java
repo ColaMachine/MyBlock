@@ -124,16 +124,23 @@ public class ChunkImpl implements Chunk {
     public IBlock getBlock(int x, int y, int z) {
         // VIP Auto-generated method stub
         // return null;
+       
         int blockValue = blockData.get(x, y, z);
+        if(GamingState.player==null){
+            
+        }
+        if(blockValue == 0 ){
+            return null;
+        }
         IBlock block = blockMap.get(blockData.getIndex(x, y, z));// .getBlock((short)
                                                                  // blockValue);
         if (block == null) {
             block = blockManager.getBlock(blockValue);
 
         }
-        if (block != null && block.getId() == ItemType.copy_down.id) {
+        if (block != null && blockValue == ItemType.copy_down.id) {
             block = blockMap.get(blockData.getIndex(x, y - 1, z));
-        }
+        }//().id=blockValue;//TODO 暂时修正在服务端取出来的block id 都是0 应该是item load 的时候没处理好
         return block;
         // return new BaseBlock();
     }

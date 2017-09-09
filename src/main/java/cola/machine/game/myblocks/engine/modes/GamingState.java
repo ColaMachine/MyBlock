@@ -595,9 +595,9 @@ public ShaderManager shaderManager;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor( 0.4648f, 0.734375f,0.96484375f,1);
         //不应该每次都绘制 二应该放入
-        if(Constants.SHADOW_ENABLE &&  Math.random()>0.99) {
+        if(Constants.SHADOW_ENABLE ) {
             //以灯光的角度进行观察 保存一个深度缓冲帧
-            shaderManager.shadow.render(shaderManager,worldRenderer);
+           shaderManager.shadow.render(shaderManager,worldRenderer);
         }
         //ShaderUtils.testDrawVbo();
         //LogUtil.println(TimeUtil.getNowMills()+"'");

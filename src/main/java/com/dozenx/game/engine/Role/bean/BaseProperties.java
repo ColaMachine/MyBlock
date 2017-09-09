@@ -162,6 +162,10 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
 
     public void setY(float y) {
         this.position.y = y;
+        if(y<0){
+            y=0;
+            LogUtil.println("1");
+        }
     }
 
     public float getZ() {

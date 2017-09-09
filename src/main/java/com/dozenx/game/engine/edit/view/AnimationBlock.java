@@ -60,46 +60,32 @@ public class AnimationBlock extends GroupBlock {
      * public ColorGroup(int x, int y, int z) { super(x, y, z); }
      */
 
-
     long lastAnimationTime = 0;
     int nowIndex = 0;// 动画运行到的帧数
-
 
     public AnimationBlock copy() {
         // 复制本身
 
-        AnimationBlock animationBlock = new AnimationBlock(this.x, this.y, this.z, this.width, this.height, this.thick);
-        animationBlock.id = id;
-        animationBlock.xoffset = this.xoffset;
-        animationBlock.yoffset = this.yoffset;
-        animationBlock.zoffset = this.zoffset;
-        animationBlock.live = this.live;
-        animationBlock.xzoom = this.xzoom;
-        animationBlock.yzoom = this.yzoom;
-        animationBlock.zzoom = this.zzoom;
-        // 复制所有child block
-        for (int i = 0; i < colorBlockList.size(); i++) {
-            BaseBlock colorBlock = colorBlockList.get(i);
-            animationBlock.colorBlockList.add(colorBlock.copy());
+        AnimationBlock animationBlock = new AnimationBlock();
 
-        }
-    /*    if (animations != null)
-            for (int i = 0; i < this.animations.size(); i++) {
-                if (animations.get(i) != null && animations.get(i).animations != null) {
-                    animations.get(i).animations.clear();
-                }
-            }*/
+        copyBaseBlock(animationBlock);
+        copyGroupBlock(animationBlock);
 
-        
-        if (animationMap != null)
-            animationBlock.animationMap = this.animationMap;
-        
-        animationBlock.animations = this.animations;// 没有深层次拷贝 担心引起无限循环 但问题也就出在这里
-                                                // animations的对象里
-                                                // colorgroup还有animations 需要斩草除根
+        copyAniamtionBlock(animationBlock);
 
         animationBlock.reComputePoints();
         return animationBlock;
+    }
+
+    public void copyAniamtionBlock(AnimationBlock animationBlock) {
+
+        if (animationMap != null)
+            animationBlock.animationMap = this.animationMap;
+
+        animationBlock.animations = this.animations;// 没有深层次拷贝 担心引起无限循环
+                                                    // 但问题也就出在这里
+        // animations的对象里
+        // colorgroup还有animations 需要斩草除根
     }
 
     /**
@@ -127,14 +113,15 @@ public class AnimationBlock extends GroupBlock {
             animationBlock.colorBlockList.add(block.copy());
 
         }
-        /*for (int i = 0; i < this.animations.size(); i++) {
-            if (animations.get(i).animations != null) {
-                animations.get(i).animations.clear();
-            }
-        }*/
-        animationBlock.animations = this.animations;// 没有深层次拷贝 担心引起无限循环 但问题也就出在这里
-                                                // animations的对象里
-                                                // colorgroup还有animations 需要斩草除根
+        /*
+         * for (int i = 0; i < this.animations.size(); i++) { if
+         * (animations.get(i).animations != null) {
+         * animations.get(i).animations.clear(); } }
+         */
+        animationBlock.animations = this.animations;// 没有深层次拷贝 担心引起无限循环
+                                                    // 但问题也就出在这里
+        // animations的对象里
+        // colorgroup还有animations 需要斩草除根
 
         animationBlock.reComputePoints();
         return animationBlock;
@@ -147,28 +134,29 @@ public class AnimationBlock extends GroupBlock {
         play = false;
         nowIndex = num;
         // 把主要的对象关联到
-        this.colorBlockList=new ArrayList();
-        for(BaseBlock block :this.animations.get(nowIndex).colorBlockList){
-            BaseBlock copy =block.copy();
+        this.colorBlockList = new ArrayList();
+        for (BaseBlock block : this.animations.get(nowIndex).colorBlockList) {
+            BaseBlock copy = block.copy();
             copy.reComputePointsInGroup();
-            this.colorBlockList.add(copy);//解决copy后points不对的问题
+            this.colorBlockList.add(copy);// 解决copy后points不对的问题
         }
-        //this.colorBlockList = this.animations.get(nowIndex).colorBlockList;
+        // this.colorBlockList = this.animations.get(nowIndex).colorBlockList;
     }
 
     public void saveToCurFrame() {
         AnimationBlock animationBlock = this.copy();
-        GroupBlock groupBlock =new GroupBlock();
+        GroupBlock groupBlock = new GroupBlock();
         groupBlock.colorBlockList = animationBlock.colorBlockList;
-       // animationBlock.animations = null;// 防止无限循环 不做这一步 在下一次saveToCurFrame的时候
-                                     // 会把子节点的animation.clear 由于
-                                     // 父子animiations都是指向同一个
-                                     // name必然会导致animations瞬间空了 下面的代码就会爆数组越界错误
+        // animationBlock.animations = null;// 防止无限循环 不做这一步
+        // 在下一次saveToCurFrame的时候
+        // 会把子节点的animation.clear 由于
+        // 父子animiations都是指向同一个
+        // name必然会导致animations瞬间空了 下面的代码就会爆数组越界错误
         this.animations.set(nowIndex, groupBlock);
     }
 
     public boolean play() {
-        nowIndex=0;
+        nowIndex = 0;
         play = !play;
         return play;
 
@@ -188,7 +176,6 @@ public class AnimationBlock extends GroupBlock {
 
     }
 
-
     @Override
     public IBlock clone() {
         return null;
@@ -199,39 +186,38 @@ public class AnimationBlock extends GroupBlock {
     }
 
     public String toString() {
-        //开始清理
-        //遍历animationMap下的所有colorgroup 清理他们的animationMap
+        // 开始清理
+        // 遍历animationMap下的所有colorgroup 清理他们的animationMap
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append("{").append("blocktype:'animationblock',")
-                .append(toBaseBlockString())
-                .append("xoffset:").append(xoffset).append(",").append("yoffset:").append(yoffset).append(",")
-                .append("zoffset:").append(zoffset).append(",").append("xzoom:").append(xzoom).append(",")
-                .append("yzoom:").append(yzoom).append(",").append("zzoom:").append(zzoom).append(",")
+        buffer.append("{").append("blocktype:'animationblock',").append(toBaseBlockString()).append("xoffset:")
+                .append(xoffset).append(",").append("yoffset:").append(yoffset).append(",").append("zoffset:")
+                .append(zoffset).append(",").append("xzoom:").append(xzoom).append(",").append("yzoom:").append(yzoom)
+                .append(",").append("zzoom:").append(zzoom).append(",")
 
                 .append("children:[");
-        int index = 0 ;
+        int index = 0;
         for (BaseBlock block : colorBlockList) {
-            if(index>0){
+            if (index > 0) {
                 buffer.append(",");
             }
             buffer.append(block.toString());
-            
+
             index++;
         }
         buffer.append("],");
-        
-        //=======child end ===========
-        //========animation start==============
+
+        // =======child end ===========
+        // ========animation start==============
         buffer.append("animation:[");
         index = 0;
         if (animations != null) {
             for (BaseBlock block : animations) {
-                if(block instanceof AnimationBlock){
-                    AnimationBlock animationBlock = (AnimationBlock)block;
-                    animationBlock.animations=null;
+                if (block instanceof AnimationBlock) {
+                    AnimationBlock animationBlock = (AnimationBlock) block;
+                    animationBlock.animations = null;
                     animationBlock.animationMap = null;
-                    
+
                 }
                 if (index >= 1) {
                     buffer.append(",");
@@ -247,20 +233,19 @@ public class AnimationBlock extends GroupBlock {
             buffer.append("animationMap:{");
             Map<String, List<GroupBlock>> map = animationMap;
 
-             index = 0;
+            index = 0;
             for (Map.Entry<String, List<GroupBlock>> entry : map.entrySet()) {
                 if (index >= 1) {
                     buffer.append(",");
                 }
-                
+
                 List<GroupBlock> list = entry.getValue();
-                for(GroupBlock animationBlock : list){
-                   
-                        //ColorGroup colorGroup = (ColorGroup)block;
-//                        animationBlock.animations=null;
-//                        animationBlock.animationMap = null;
-                        
-                   
+                for (GroupBlock animationBlock : list) {
+
+                    // ColorGroup colorGroup = (ColorGroup)block;
+                    // animationBlock.animations=null;
+                    // animationBlock.animationMap = null;
+
                 }
                 String name = entry.getKey();
                 buffer.append(name + ":[");
@@ -286,12 +271,11 @@ public class AnimationBlock extends GroupBlock {
         AnimationBlock group = new AnimationBlock();
         parseAnimationBlock(group, map);
 
-
         return group;
 
     }
 
-    public static void parseAnimationBlock (AnimationBlock group ,JSONObject map ){
+    public static void parseAnimationBlock(AnimationBlock group, JSONObject map) {
         parse(group, map);
         group.xoffset = MapUtil.getFloatValue(map, "xoffset");
         group.yoffset = MapUtil.getFloatValue(map, "yoffset");
@@ -343,12 +327,12 @@ public class AnimationBlock extends GroupBlock {
         }
 
         JSONObject animationMap = (JSONObject) map.get("animationMap");
-        if(animationMap!= null ){
+        if (animationMap != null) {
             for (Map.Entry<String, Object> entry : animationMap.entrySet()) {
                 String name = entry.getKey();
-                JSONArray animationAry = (JSONArray)entry.getValue();
+                JSONArray animationAry = (JSONArray) entry.getValue();
 
-                List<GroupBlock> list =new ArrayList<>();
+                List<GroupBlock> list = new ArrayList<>();
                 for (int i = 0; i < animationAry.size(); i++) {
                     JSONObject object = (JSONObject) animationAry.get(i);
 
@@ -359,12 +343,13 @@ public class AnimationBlock extends GroupBlock {
                     }
 
                 }
-                group.animationMap.put(name,list);
+                group.animationMap.put(name, list);
 
             }
         }
 
     }
+
     @Override // 具体场景中 生物有旋转身体的 需要用到
     public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
 
@@ -385,14 +370,15 @@ public class AnimationBlock extends GroupBlock {
                     BaseBlock block = animations.get(nowIndex).colorBlockList.get(i);
                     float[] info = getChildBlockRelativePosition(block, x, y, z);
                     // GL
-                   /* GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0], info[1], info[2], info[3], info[4],
-                            info[5]);
-                    for (int k = 0; k < childPoints.length; k++) {
-                        childPoints[k] = GL_Matrix.multiply(matrix, childPoints[k]);
-                    }*/
-                    //block.reComputePoints();
-                    //block.reComputePoints(matrix);
-                  // this.reComputePoints();
+                    /*
+                     * GL_Vector[] childPoints = BoxModel.getSmallPoint(info[0],
+                     * info[1], info[2], info[3], info[4], info[5]); for (int k
+                     * = 0; k < childPoints.length; k++) { childPoints[k] =
+                     * GL_Matrix.multiply(matrix, childPoints[k]); }
+                     */
+                    // block.reComputePoints();
+                    // block.reComputePoints(matrix);
+                    // this.reComputePoints();
                     block.renderShaderInGivexyzwht(config, vao, matrix, block.points);
                     // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,
                     // ShaderManager.anotherShaderConfig.getVao(),this.x+this.xoffset+colorBlock.x/xzoom,this.y+this.yoffset+colorBlock.y/yzoom,this.z+this.zoffset+colorBlock.z/zzoom,
@@ -466,26 +452,32 @@ public class AnimationBlock extends GroupBlock {
         //
         // }
     }
-    //recompute 传入transformmatrix 计算points
-    //渲染的时候根据points 渲染
+    // recompute 传入transformmatrix 计算points
+    // 渲染的时候根据points 渲染
 
     @Override // 再editegine中绘制 或者真实环境中需要用到
     public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom,
             boolean left, boolean right, boolean front, boolean back) {
-//GL_Matrix matrix =GL_Matrix.translateMatrix(x, y, z);
+        // GL_Matrix matrix =GL_Matrix.translateMatrix(x, y, z);
 
-GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(x+width/2,y,z+thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
+        GL_Matrix matrix = GL_Matrix.multiply(
+                GL_Matrix.multiply(GL_Matrix.translateMatrix(x + width / 2, y, z + thick / 2),
+                        GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0)),
+                GL_Matrix.translateMatrix(-width / 2, 0, -thick / 2));
         if (animations.size() > 0) {
             if (play) {// 正常播放
-                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {//这里的需求是动画按照正常流转 运行到最后一帧的时候保持最后一帧的状态 并且不动了 等待下一次动画的唤起
+                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {// 这里的需求是动画按照正常流转
+                                                                       // 运行到最后一帧的时候保持最后一帧的状态
+                                                                       // 并且不动了
+                                                                       // 等待下一次动画的唤起
                     lastAnimationTime = TimeUtil.getNowMills();
                     nowIndex++;
                     if (nowIndex > animations.size() - 1) {
                         nowIndex = 0;
-                        play=false;
-                        this.colorBlockList =  animations.get(animations.size() - 1).colorBlockList;
-                        return ;
-                       
+                        play = false;
+                        this.colorBlockList = animations.get(animations.size() - 1).colorBlockList;
+                        return;
+
                     }
 
                 }
@@ -493,10 +485,9 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
 
                 for (int i = 0; i < animations.get(nowIndex).colorBlockList.size(); i++) {
                     BaseBlock block = animations.get(nowIndex).colorBlockList.get(i);
-                    //System.out.println(nowIndex);
+                    // System.out.println(nowIndex);
                     float[] info = getChildBlockPosition(block, x, y, z);
-                    block.renderShaderInGivexyzwht(config, vao,  matrix,block.points);
-                   
+                    block.renderShaderInGivexyzwht(config, vao, matrix, block.points);
 
                 }
                 return;
@@ -519,8 +510,7 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
             // colorBlock.update();
             float[] info = this.getChildBlockPosition(block, x, y, z);
             block.reComputePoints();
-            block.renderShaderInGivexyzwht(config, vao,matrix, block.points);
-
+            block.renderShaderInGivexyzwht(config, vao, matrix, block.points);
 
         }
     }
@@ -536,15 +526,18 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
         if (animations.size() > 0) {
             if (play) {// 正常播放
-                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {//这里的需求是动画按照正常流转 运行到最后一帧的时候保持最后一帧的状态 并且不动了 等待下一次动画的唤起
+                if (TimeUtil.getNowMills() - lastAnimationTime > 100) {// 这里的需求是动画按照正常流转
+                                                                       // 运行到最后一帧的时候保持最后一帧的状态
+                                                                       // 并且不动了
+                                                                       // 等待下一次动画的唤起
                     lastAnimationTime = TimeUtil.getNowMills();
                     nowIndex++;
                     if (nowIndex > animations.size() - 1) {
                         nowIndex = 0;
-                        play=false;
-                        this.colorBlockList =  animations.get(animations.size() - 1).colorBlockList;
-                        return ;
-                       
+                        play = false;
+                        this.colorBlockList = animations.get(animations.size() - 1).colorBlockList;
+                        return;
+
                     }
 
                 }
@@ -552,10 +545,9 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
 
                 for (int i = 0; i < animations.get(nowIndex).colorBlockList.size(); i++) {
                     BaseBlock block = animations.get(nowIndex).colorBlockList.get(i);
-                    //System.out.println(nowIndex);
+                    // System.out.println(nowIndex);
                     float[] info = getChildBlockPosition(block, x, y, z);
-                    block.renderShaderInGivexyzwht(config, vao,  matrix,block.points);
-                   
+                    block.renderShaderInGivexyzwht(config, vao, matrix, block.points);
 
                 }
                 return;
@@ -577,9 +569,8 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
             BaseBlock block = colorBlockList.get(i);
             // colorBlock.update();
             float[] info = this.getChildBlockPosition(block, x, y, z);
-            
-            block.renderShaderInGivexyzwht(config, vao,matrix, block.points);
 
+            block.renderShaderInGivexyzwht(config, vao, matrix, block.points);
 
         }
     }
@@ -588,21 +579,23 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
         this.points = BoxModel.getSmallPoint(0, 0, 0, width, height, thick);
 
         GL_Matrix rotateMatrix = GL_Matrix.multiply(
-                GL_Matrix.translateMatrix(xoffset + 1f/ 2, yoffset, zoffset + 1f/ 2),
+                GL_Matrix.translateMatrix(xoffset + 1f / 2, yoffset, zoffset + 1f / 2),
                 GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 / xzoom, 1 / yzoom, 1 / zzoom));
-        rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-1f/ 2, 0, -1f/ 2));
+        rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-1f / 2, 0, -1f / 2));
 
-        /*for (int i = 0; i < points.length; i++) {
-            points[i] = GL_Matrix.multiply(rotateMatrix, points[i]);
-            
-            
-             * points[i].x+=width/2; points[i].z+=thick/2;
-             
-        }*/
-        /*float tempthick =thick;
-        thick=width;
-        width = tempthick;*/
+        /*
+         * for (int i = 0; i < points.length; i++) { points[i] =
+         * GL_Matrix.multiply(rotateMatrix, points[i]);
+         * 
+         * 
+         * points[i].x+=width/2; points[i].z+=thick/2;
+         * 
+         * }
+         */
+        /*
+         * float tempthick =thick; thick=width; width = tempthick;
+         */
         for (BaseBlock block : colorBlockList) {
             // float[] info = this.getChildBlockRelativePosition(block,x,y,z);
             block.reComputePoints(rotateMatrix);
@@ -615,57 +608,52 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
                 block.dir = this.dir;
             }
         }
-        
-        
+
         if (animationMap != null) {
             for (Map.Entry<String, List<GroupBlock>> entry : animationMap.entrySet()) {
-             
+
                 List<GroupBlock> list = entry.getValue();
-                for(GroupBlock animationBlock : list){
-                        animationBlock.dir = this.dir;
-                        animationBlock.reComputePoints();
+                for (GroupBlock animationBlock : list) {
+                    animationBlock.dir = this.dir;
+                    animationBlock.reComputePoints();
 
                 }
             }
         }
     }
-    
-    public void scale(float xzoom,float yzoom,float zzoom){
-        this.x=this.x*xzoom;
-        this.y= this.y*yzoom;
-        this.z=this.z*zzoom;
+
+    public void scale(float xzoom, float yzoom, float zzoom) {
+        this.x = this.x * xzoom;
+        this.y = this.y * yzoom;
+        this.z = this.z * zzoom;
         this.width = this.width * xzoom;
-        this.height =this.height*yzoom;
-        this.thick =this.thick*zzoom;
-        
+        this.height = this.height * yzoom;
+        this.thick = this.thick * zzoom;
+
         for (BaseBlock block : colorBlockList) {
             // float[] info = this.getChildBlockRelativePosition(block,x,y,z);
-            block.scale(xzoom,yzoom,zzoom);
+            block.scale(xzoom, yzoom, zzoom);
         }
         if (animations != null) {
             for (BaseBlock block : animations) {
                 // float[] info =
                 // this.getChildBlockRelativePosition(block,x,y,z);
-                block.scale(xzoom,yzoom,zzoom);
+                block.scale(xzoom, yzoom, zzoom);
             }
         }
-        
-        
+
         if (animationMap != null) {
             for (Map.Entry<String, List<GroupBlock>> entry : animationMap.entrySet()) {
-             
+
                 List<GroupBlock> list = entry.getValue();
-                for(GroupBlock animationBlock : list){
-                        
-                        animationBlock.scale(xzoom,yzoom,zzoom);
-                      
+                for (GroupBlock animationBlock : list) {
+
+                    animationBlock.scale(xzoom, yzoom, zzoom);
 
                 }
             }
         }
         this.reComputePoints();
     }
-   
-
 
 }
