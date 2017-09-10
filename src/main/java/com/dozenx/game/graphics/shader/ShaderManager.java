@@ -113,6 +113,7 @@ public class ShaderManager {
     public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "chapt13/light.frag", "chapt13/light.vert",new int[]{3});
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
 
+    public static ShaderConfig delayConfig = new ShaderConfig("delay", "chapt16/delay.frag", "chapt16/delay.vert",new int[]{3});
 
     //透视矩阵
    public static GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);

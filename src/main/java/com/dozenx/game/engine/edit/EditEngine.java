@@ -30,6 +30,7 @@ import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.MathUtil;
+import com.sun.tools.internal.jxc.ap.Const;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -74,7 +75,7 @@ public class EditEngine {
     public int lastFaceMaxX=0;
     public int lastFaceMaxZ=0;
     
-    
+    public int nowFace=0;
     
     /**
      * 当前编辑的组件库
@@ -1160,6 +1161,7 @@ public class EditEngine {
             
             endPoint=touchPoint;
             startPoint =placePoint;
+            nowFace = face;
            /* BaseBlock addColorBlock =null;
 
                 addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
@@ -1215,22 +1217,23 @@ public class EditEngine {
 
         }else if(Switcher.mouseState==Switcher.shootMode){
          
-            touchStartPoint.x = startPoint.x;
-            placeStartPoint.x = endPoint.x;
+            touchStartPoint.x = endPoint.x;
+            placeStartPoint.x = startPoint.x;
             
-            touchStartPoint.y = startPoint.y;
-            placeStartPoint.y = endPoint.y;
+            touchStartPoint.y = endPoint.y;
+            placeStartPoint.y = startPoint.y;
             
-            touchStartPoint.z = startPoint.z;
-            placeStartPoint.z = endPoint.z;
+            touchStartPoint.z = endPoint.z;
+            placeStartPoint.z = startPoint.z;
             
             if(placeStartPoint.x>100){
                 LogUtil.println("123");
             }
-        
+            lastFace =nowFace;
      
         }
     }
+    public int lastFace=0;
     int lastPaintX =0;
     int lastPaintZ=0;
     public void mouseDrag(int x,int y){
@@ -1253,14 +1256,14 @@ public class EditEngine {
                // shootBlock(x,y);
                 lastPaintX=curentX;
                 lastPaintZ =curentZ;
-                touchEndPoint.x = startPoint.x;
-                placeEndPoint.x = endPoint.x;
+                touchEndPoint.x = endPoint.x;
+                placeEndPoint.x = startPoint.x;
                 
-                touchEndPoint.y = startPoint.y;
-                placeEndPoint.y = endPoint.y;
+                touchEndPoint.y = endPoint.y;
+                placeEndPoint.y = startPoint.y;
                 
-                touchEndPoint.z = startPoint.z;
-                placeEndPoint.z = endPoint.z;
+                touchEndPoint.z = endPoint.z;
+                placeEndPoint.z = startPoint.z;
               
                 reComputeAppend();
            }
@@ -1788,21 +1791,181 @@ public class EditEngine {
         
         int minz = (int)(Math.min(placeStartPoint.z, placeEndPoint.z));
         int maxz = (int)(Math.max(placeStartPoint.z, placeEndPoint.z));
+        if(Switcher.shapeMode== Switcher.shapeBlockMode){
+            for(int x =minx;x<=maxx;x++){
+                for(int y =miny;y<=maxy;y++){
+                    for(int z =minz;z<=maxz;z++){
+                        BaseBlock colorBlock = this.readyShootBlock.copy();
+                        this.set(colorBlock,x,y,z,1,1,1,red,green,blue,alpha);
+                        //colorBlock.reComputePoints();
+                        LogUtil.println("widht:"+minx+":"+maxx);
+                        this.appendingBlockList.add(colorBlock);
+                    }
+
+                }
+
+            }
+        }else if(Switcher.shapeMode== Switcher.shapeLineMode){
+
+            minx = (int)placeStartPoint.x;
+            maxx = (int)placeEndPoint.x;
+
+            miny = (int)placeStartPoint.y;
+            maxy = (int)placeEndPoint.y;
+
+
+            minz = (int)placeStartPoint.z;
+            maxz = (int)placeEndPoint.z;
+            if(maxx-minx ==0&& maxy-miny ==0&& maxz-minz==0){
+                ColorBlock colorBlock = new ColorBlock(minx,miny,minz,1,1,1,red,green,blue,alpha);
+
+                this.appendingBlockList.add(colorBlock);
+            }else {
+                int maxv=0,minv=0;
+                if (Math.abs(maxx - minx )>= Math.abs(maxy - miny )&& Math.abs(maxx - minx) >= Math.abs(maxz - minz)) {
+                    maxv=maxx;
+                    minv=minx;
+
+                } else if (Math.abs(maxy - miny )>= Math.abs(maxx - minx) && Math.abs(maxy - miny) >= Math.abs(maxz - minz) ){
+                    maxv=maxy;
+                    minv=miny;
+                } else if (Math.abs(maxz - minz) >= Math.abs(maxx - minx )&& Math.abs(maxz - minz) >= Math.abs(maxy - miny) ){
+
+                    maxv=maxz;
+                    minv=minz;
+
+                }
+
+                int _minv=Math.min(minv,maxv);
+                int _maxv=Math.max(minv,maxv);
+                LogUtil.println("_minv:"+minv+"_maxv:"+maxv);
+                for (int v = _minv; v<= _maxv; v++) {
+                    if(maxv-minv==0){
+                        LogUtil.println("hello");
+                    }
+
+                    int x = (int) ((v - _minv) *1f/ (_maxv - _minv) * (maxx - minx) + minx);
+                    int y = (int) ((v - _minv) *1f/ (_maxv - _minv) * (maxy - miny) + miny);
+                    int z = (int) ((v - _minv) *1f/ (_maxv - _minv)  * (maxz - minz) + minz);
+                    ColorBlock colorBlock = new ColorBlock(x, y, z, 1, 1, 1, red, green, blue, alpha);
+
+                    this.appendingBlockList.add(colorBlock);
+                }
+            }
+        }else if(Switcher.shapeMode== Switcher.shapeCircleMode){
+            //获取当前是哪个面 上下 就取xz 然后对比距离
+            int startX= (int)placeStartPoint.x;
+            int startY= (int)placeStartPoint.y;
+            int startZ= (int)placeStartPoint.z;
+
+            int endX= (int)placeEndPoint.x;
+            int endY= (int)placeEndPoint.y;
+            int endZ= (int)placeEndPoint.z;
+
+            if(lastFace == Constants.TOP  || lastFace == Constants.BOTTOM  ){
+                float lengthSqr= (startZ-endZ)*(startZ-endZ) +
+                        (startX-endX)*(startX-endX) ;
+
+                if(lengthSqr==0){
+                    return;
+                }
+                float length =(float) Math.sqrt(lengthSqr);
+                for( int x = 0;x<length;x++){
+                    for( int z = 0;z<length;z++){
+                        if(x==0&&z==0)continue;
+                        int nowLength = x*x + z*z;
+                        if(nowLength <lengthSqr)
+                        {
+                            BaseBlock colorBlock = getNewBlock(startX+x,startY,startZ+z);//,1,1,1,red,green,blue,alpha);
+                            BaseBlock colorBlock2 = getNewBlock(startX+x,startY,startZ-z);//,1,1,1,red,green,blue,alpha);
+
+                            BaseBlock colorBlock3 = getNewBlock(startX-x,startY,startZ-z);//,1,1,1,red,green,blue,alpha);
+
+                            BaseBlock colorBlock4 = getNewBlock(startX-x,startY,startZ+z);//,1,1,1,red,green,blue,alpha);
+
+                            this.appendingBlockList.add(colorBlock);
+                            this.appendingBlockList.add(colorBlock2);
+                            this.appendingBlockList.add(colorBlock3);
+                            this.appendingBlockList.add(colorBlock4);
+                        }
+                    }
+                }
+            }else if(lastFace == Constants.LEFT  || lastFace == Constants.RIGHT  ){
+                //y z的差别
+
+                float lengthSqr= (startZ-endZ)*(startZ-endZ) +
+                        (startY-endY)*(startY-endY) ;
+
+                if(lengthSqr==0){
+                    return;
+                }
+                float length =(float) Math.sqrt(lengthSqr);
+                for( int y = 0;y<length;y++){
+                    for( int z = 0;z<length;z++){
+                        if(y==0&&z==0)continue;
+                        int nowLength = y*y + z*z;
+                        if(nowLength <lengthSqr)
+                        {
+
+                            BaseBlock colorBlock =  getNewBlock(startX,startY+y,startZ+z);//1,1,1,red,green,blue,alpha);
+                            BaseBlock colorBlock2 = getNewBlock(startX,startY+y,startZ-z);//,1,1,1,red,green,blue,alpha);
+
+                            BaseBlock colorBlock3 = getNewBlock(startX,startY-y,startZ-z);//,1,1,1,red,green,blue,alpha);
+
+                            BaseBlock colorBlock4 = getNewBlock(startX,startY-y,startZ+z);//,1,1,1,red,green,blue,alpha);
+
+                            this.appendingBlockList.add(colorBlock);
+                            this.appendingBlockList.add(colorBlock2);
+                            this.appendingBlockList.add(colorBlock3);
+                            this.appendingBlockList.add(colorBlock4);
+                        }
+                    }
+                }
+
+
+            }else if(lastFace == Constants.FRONT  || lastFace == Constants.BACK  ) {
+                //y z的差别
+
+                float lengthSqr = (startX - endX) * (startX - endX) +
+                        (startY - endY) * (startY - endY);
+
+                if (lengthSqr == 0) {
+                    return;
+                }
+                float length = (float) Math.sqrt(lengthSqr);
+                for (int x = 0; x < length; x++) {
+                    for (int y = 0; y < length; y++) {
+                        if (y == 0 && x == 0) continue;
+                        int nowLength = y * y + x * x;
+                        if (nowLength < lengthSqr) {
+                            BaseBlock colorBlock = getNewBlock(startX+x, startY + y, startZ );//, 1, 1, 1, red, green, blue, alpha);
+                            BaseBlock colorBlock2 = getNewBlock(startX-x, startY + y, startZ);//, 1, 1, 1, red, green, blue, alpha);
+
+                            BaseBlock colorBlock3 = getNewBlock(startX+x, startY - y, startZ );//, 1, 1, 1, red, green, blue, alpha);
+
+                            BaseBlock colorBlock4 = getNewBlock(startX-x, startY - y, startZ );//, 1, 1, 1, red, green, blue, alpha);
+
+                            this.appendingBlockList.add(colorBlock);
+                            this.appendingBlockList.add(colorBlock2);
+                            this.appendingBlockList.add(colorBlock3);
+                            this.appendingBlockList.add(colorBlock4);
+                        }
+                    }
+                }
+            }
+
+
+        }
         if(maxx - minx>100){
             LogUtil.println("is not block ");
         }
       
-        for(int x =minx;x<=maxx;x++){
-            for(int y =miny;y<=maxy;y++){
-                for(int z =minz;z<=maxz;z++){
-                    ColorBlock colorBlock = new ColorBlock(x,y,z,1,1,1,red,green,blue,alpha);
-                    //colorBlock.reComputePoints();
-                    LogUtil.println("widht:"+minx+":"+maxx);
-                    this.appendingBlockList.add(colorBlock);
-                }
-                
-            }
-            
-        }
+
+    }
+
+    public BaseBlock getNewBlock(int x,int y,int z){
+        BaseBlock colorBlock = this.readyShootBlock.copy();
+        this.set(colorBlock,x,y,z,1,1,1,red,green,blue,alpha);
+        return colorBlock;
     }
 }

@@ -142,24 +142,33 @@ public class Bloom {
         //ShaderUtils.bindDepth();
         //glUseProgram(0);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        ShaderUtils.initVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao());
+
         ShaderUtils.draw2dImg(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao(),shaderManager.hdr.getTextureId());
-        //ShaderUtils.createVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao());
+        ShaderUtils.freshVao(shaderManager.bloomShaderConfig,shaderManager.bloomShaderConfig.getVao());
+
         OpenglUtils.checkGLError();
         //高斯vao 和 绑定高亮纹理
+        ShaderUtils.initVao(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao());
+
         ShaderUtils.draw2dImg(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao(),colorBuffers[0]);
+        ShaderUtils.freshVao(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao());
+
+
         //ShaderUtils.bindAndGetTextureIndex();
         //glUniform1("gaosi中纹理的位置",colorBuffers[1]或者pingpongBuffer[0]或者pingPongBUffer[1]);
 
 
 
-        ShaderUtils.initVao(shaderManager.gaosiShaderConfig,shaderManager.gaosiShaderConfig.getVao());
-        OpenglUtils.checkGLError();
+         OpenglUtils.checkGLError();
         glUseProgram(shaderManager.gaosihebingShaderConfig.getProgramId());
+
         glUniform1i(shaderManager.gaosihebingShaderConfig.getTexture0Loc(),ShaderUtils.getActiveTextureLoc(colorBuffers[0]));
         glUniform1i(shaderManager.gaosihebingShaderConfig.getTexture1Loc(),ShaderUtils.getActiveTextureLoc(pingpongBuffer[1]));
+        ShaderUtils.initVao(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao());
 
         ShaderUtils.draw2dImg(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao(),shaderManager.hdr.getTextureId());
-        //ShaderUtils.freshVao(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao());
+        ShaderUtils.freshVao(shaderManager.gaosihebingShaderConfig,shaderManager.gaosihebingShaderConfig.getVao());
 
 
 

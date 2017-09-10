@@ -56,7 +56,7 @@ public class GroupBlock extends BaseBlock {
      * public ColorGroup(int x, int y, int z) { super(x, y, z); }
      */
 
-    public void addChild(BaseBlock colorBlock) {LogUtil.println("123");
+    public void addChild(BaseBlock colorBlock) {//LogUtil.println("123");
        colorBlockList.add(colorBlock);
         this.reComputePoints();
     }

@@ -85,6 +85,33 @@ public class BlockPanel extends Tab {
         });
         ;
 
+        Button lineBtn = new Button("线");
+        lineBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.shapeMode = Switcher.shapeLineMode;
+            }
+        });
+        ;
+
+        Button blocktn = new Button("块");
+        blocktn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.shapeMode = Switcher.shapeBlockMode;
+            }
+        });
+        ;
+
+
+        Button circleBtn = new Button("圆");
+        circleBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.shapeMode = Switcher.shapeCircleMode;
+            }
+        });
+        ;
 
         Button textureBtn = new Button("纹理");
         textureBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -138,6 +165,9 @@ public class BlockPanel extends Tab {
         selectGrid.add(textureBtn, 1, 2);
         selectGrid.add(shootBtn, 0, 3);
         selectGrid.add(shootComponentBtn, 1, 3);
+        selectGrid.add(blocktn, 2, 3);
+        selectGrid.add(lineBtn, 3, 3);
+        selectGrid.add(circleBtn, 4, 3);
         selectGrid.add(brushBtn, 0, 4);
         selectGrid.add(seperate, 1, 4);
 
