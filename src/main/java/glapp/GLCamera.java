@@ -1,5 +1,6 @@
 package glapp;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.switcher.Switcher;
 import glmodel.GL_Matrix;
@@ -322,5 +323,24 @@ public class GLCamera {
 		glUseProgram(GamingState.instance.shaderManager.lineShaderConfig.getProgramId());
 		glUniformMatrix4(GamingState.instance.shaderManager.lineShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
 		org.lwjgl.opengl.Util.checkGLError();
+
+
+		if(Constants.DELAY_ENABLE){
+
+			glUseProgram(GamingState.instance.shaderManager.shaderGeometryPass.getProgramId());
+
+
+
+			glUniformMatrix4(GamingState.instance.shaderManager.shaderGeometryPass.getViewLoc(),  false,cameraViewBuffer);
+			org.lwjgl.opengl.Util.checkGLError();
+
+			glUseProgram(GamingState.instance.shaderManager.shaderLightingPass.getProgramId());
+
+
+			glUniform3f(GamingState.instance.shaderManager.shaderLightingPass.getViewPosLoc(),  Position.x,Position.y,Position.z);
+			org.lwjgl.opengl.Util.checkGLError();
+
+
+		}
 	}
 }

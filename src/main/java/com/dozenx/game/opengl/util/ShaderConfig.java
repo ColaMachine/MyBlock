@@ -1,10 +1,16 @@
 package com.dozenx.game.opengl.util;
 
+import com.dozenx.game.graphics.shader.ShaderManager;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
+import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL20;
 
 import javax.vecmath.Vector3f;
 import java.util.HashMap;
+
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glUniform1i;
 
 /**
  * Created by luying on 16/11/26.
@@ -461,5 +467,22 @@ private int viewPosLoc;
     public void use(){
         GL20.glUseProgram(getProgramId());
     }
+    public void setInt(String name , int val){
 
+        int location = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "name");
+        if(location>=0){
+            glUniform1i(location, val);
+        }else{
+            LogUtil.err("gPosition hasnot find ");
+        }
+    }
+
+    public void setVec3(String name , GL_Vector vec3){
+        int location = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "name");
+        if(location>=0){
+            GL20.glUniform3f(location, vec3.x,vec3.y,vec3.z);
+        }else{
+            LogUtil.err("gPosition hasnot find ");
+        }
+    }
 }

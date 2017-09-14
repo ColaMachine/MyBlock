@@ -237,3 +237,26 @@ esc的时候关闭所有的窗口
 
 
 2017-09-10 16:30:35 实现拖动删除,
+
+2017年9月12日12:15:35 实现延迟渲染
+
+创建两个shaderconfig
+
+开始使用shaderGemoetry Program
+创建fbo
+绑定fbo
+创建纹理gPosition 设置并绑定为帧缓冲纹理
+创建纹理gNormal 设置并绑定为帧缓冲纹理
+创建纹理gColorSpec 设置并绑定为帧缓冲纹理
+
+绘制并读取一次帧缓冲
+
+初始化32个光源
+
+开始使用shaderLiging Program
+设置并绑定纹理
+
+创建vao
+
+感觉最后一个在绘制的时候根本就
+

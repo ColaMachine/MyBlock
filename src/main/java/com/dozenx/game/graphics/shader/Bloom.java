@@ -205,7 +205,7 @@ public class Bloom {
         //获得是否水平参数位置
         int hirizonTalLoc = glGetUniformLocation(shaderManager.gaosiShaderConfig.getProgramId(), "horizontal");
         //10次乒乓球式横竖模糊
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < amount; i++)//现在出现了一个问题  内部的纹理绘制出来都是空的
         {
             glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal?1:0]);OpenglUtils.checkGLError();
             //1 为true 0 为false

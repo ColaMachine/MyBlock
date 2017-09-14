@@ -1330,6 +1330,8 @@ public class ChunkImpl implements Chunk {
         nowBlock.render(ShaderManager.terrainShaderConfig, vao, worldx, y, worldz, top, bottom, left, right, front,
                 back);
 
+
+
         /*
          * if (faceIndex == Constants.TOP) { ti = shape.getTop(); // ti =
          * TextureManager.getTextureInfo("grass_top"); if (shape.getTopFace() !=

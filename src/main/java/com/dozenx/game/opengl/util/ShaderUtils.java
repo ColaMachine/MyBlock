@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -1814,6 +1815,8 @@ try {
                 GL13.glActiveTexture(GL13.GL_TEXTURE10);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
 
+            }else{
+                LogUtil.err("超出纹理数量");
             }
 
 
@@ -1821,6 +1824,45 @@ try {
         return activeTextureLoc;
     }
 
+
+    public static void bindTextureFromAnotherConfig(ShaderConfig to,ShaderConfig from){
+        HashMap<Integer,Integer > map = from.getSampleLocMap();
+        for(Map.Entry<Integer,Integer> entry:map.entrySet()){
+            int glTexLoc = entry.getKey();
+            int sampleLoc=entry.getValue();
+            if(sampleLoc==0){
+
+                glUniform1i(to.getTexture0Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else if(sampleLoc==1){
+
+                glUniform1i(to.getTexture1Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else if(sampleLoc==2){
+
+                glUniform1i(to.getTexture2Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else if(sampleLoc==3){
+
+                glUniform1i(to.getTexture3Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }
+            else if(sampleLoc==4){
+                glUniform1i(to.getTexture4Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            } else if(sampleLoc==5){
+                glUniform1i(to.getTexture5Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else if(sampleLoc==6){
+                glUniform1i(to.getTexture6Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else{
+                LogUtil.err("超出预想的范围了");
+            }
+
+
+        }
+    }
     /**
      * 绑定纹理到全局的 纹理index 再把纹理index 对应到本地的texture0~9
      * @param config
@@ -1882,6 +1924,12 @@ try {
                 OpenglUtils.checkGLError();
             }else if(sampleLoc==6){
                 glUniform1i(config.getTexture6Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else if(sampleLoc==7){
+                glUniform1i(config.getTexture7Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else if(sampleLoc==8){
+                glUniform1i(config.getTexture8Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
             }else{
                 LogUtil.err("超出预想的范围了");

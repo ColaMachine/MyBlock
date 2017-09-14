@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="lwjgl_util_applet">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../newTWL/TWL/libs/lwjgl_util_applet.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

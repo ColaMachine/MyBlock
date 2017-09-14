@@ -113,8 +113,17 @@ public class ShaderManager {
     public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "chapt13/light.frag", "chapt13/light.vert",new int[]{3});
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
 
-    public static ShaderConfig delayConfig = new ShaderConfig("delay", "chapt16/delay.frag", "chapt16/delay.vert",new int[]{3});
+    public static ShaderConfig shaderGeometryPass = new ShaderConfig("delay", "chapt16/gbuffer1.frag", "chapt16/gbuffer1.vert",new int[]{3,3,3,1});
 
+    
+    
+    public static ShaderConfig shaderLightingPass = new ShaderConfig("delay", "chapt16/deferred_shading.frag", "chapt16/deferred_shading.vert",new int[]{3,2});
+
+
+
+    public static ShaderConfig shaderSSAO = new ShaderConfig("ssao", "chapt16/ssao.vert", "chapt16/ssao.frag",new int[]{3,3,3,1});
+
+    public static ShaderConfig shaderSSAOBlur = new ShaderConfig("ssao", "chapt16/ssao.vert", "chapt16/ssao_blur.frag",new int[]{3,3,3,1});
     //透视矩阵
    public static GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     //相机
@@ -122,6 +131,8 @@ public class ShaderManager {
     public Hdr hdr;
     public Bloom bloom ;
     public Shadow shadow;//阴影
+    
+    public DelayBuffer delay;//延迟
     public void registerConfig(ShaderConfig config) throws Exception {
         if (StringUtil.isBlank(config.getName())) {
             throw new Exception("not allow shader config has no name!");
@@ -142,6 +153,8 @@ public class ShaderManager {
             this.initUniform(shadowShaderConfig);
 
         }
+        
+        
 
         //这里需要initHdr产生的hdrFBO
         //initBloom();
@@ -155,7 +168,11 @@ public class ShaderManager {
         this.createProgram(anotherShaderConfig);
         this.createProgram(dropItemShaderConfig);
         this.createProgram(uifloatShaderConfig);
-        this.createProgram(lineShaderConfig);  OpenglUtils.checkGLError();
+        this.createProgram(lineShaderConfig);  
+        
+       
+        
+        OpenglUtils.checkGLError();
 
 
 
@@ -175,6 +192,19 @@ public class ShaderManager {
         this.initUniform(dropItemShaderConfig);
         this.initUniform(uifloatShaderConfig);
         this.initUniform(lineShaderConfig);
+        if(Constants.DELAY_ENABLE){
+            this.createProgram(shaderGeometryPass);  
+            this.initUniform(shaderGeometryPass);
+            
+            this.createProgram(shaderLightingPass);  
+            this.initUniform(shaderLightingPass);
+           
+            
+           
+            
+            delay = new DelayBuffer();
+        }
+       
         // this.initUniform(shadowShaderConfig);
 
         //this.createProgram(lightShaderConfig);
@@ -185,6 +215,8 @@ public class ShaderManager {
         //this.uniformLight();
 
         //;
+      
+            
         if (Constants.HDR_ENABLE) {
             hdr =new Hdr();
             this.createProgram(hdrShaderConfig);

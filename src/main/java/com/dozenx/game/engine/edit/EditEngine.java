@@ -30,7 +30,7 @@ import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.MathUtil;
-import com.sun.tools.internal.jxc.ap.Const;
+
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -152,6 +152,9 @@ public class EditEngine {
             minZ = Math.min(prevFaceZ, lastFaceZ);
             ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), Math.min(prevFaceX, lastFaceX), 0, Math.min(prevFaceZ, lastFaceZ), new GL_Vector(1, 1, 1), Math.max(lastFaceMaxX, prevMaxFaceX) - minX, 0.2f, Math.max(lastFaceMaxZ, prevMaxFaceZ) - minZ, 1f);
         }
+
+        ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao());
         //绘制
     }
 
@@ -654,7 +657,7 @@ public class EditEngine {
     public  Object[] getMouseChoosedBlock(float x,float y){
 
         GL_Vector from = GamingState.instance.camera.Position.copyClone();
-       GL_Vector direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,Constants.WINDOW_HEIGHT-y);
+        direction =OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,Constants.WINDOW_HEIGHT-y);
         direction=direction.normalize();
 
         // LogUtil.println("开始选择");
@@ -1780,6 +1783,7 @@ public class EditEngine {
         return nameList;
     }
     
+    GL_Vector direction =null;
     
     public void reComputeAppend(){
         appendingBlockList.clear();
@@ -1861,8 +1865,19 @@ public class EditEngine {
             int endX= (int)placeEndPoint.x;
             int endY= (int)placeEndPoint.y;
             int endZ= (int)placeEndPoint.z;
-
+            GL_Vector from = GamingState.instance.camera.Position;
             if(lastFace == Constants.TOP  || lastFace == Constants.BOTTOM  ){
+                //获取当前射线
+                
+                
+                
+              
+                
+                float weizhi = (startY-from.y)/direction.y;
+                endX=(int)(from.x+weizhi*direction.x);
+                endZ= (int)(from.z+weizhi*direction.z);
+                endY=startY;
+              
                 float lengthSqr= (startZ-endZ)*(startZ-endZ) +
                         (startX-endX)*(startX-endX) ;
 
@@ -1893,6 +1908,15 @@ public class EditEngine {
             }else if(lastFace == Constants.LEFT  || lastFace == Constants.RIGHT  ){
                 //y z的差别
 
+                
+                
+                float weizhi = (startX-from.x)/direction.x;
+                endX= startX;
+                endY=(int)(from.y+weizhi*direction.y);
+                
+                endZ= (int)(from.z+weizhi*direction.z);
+                
+                
                 float lengthSqr= (startZ-endZ)*(startZ-endZ) +
                         (startY-endY)*(startY-endY) ;
 
@@ -1925,6 +1949,12 @@ public class EditEngine {
 
             }else if(lastFace == Constants.FRONT  || lastFace == Constants.BACK  ) {
                 //y z的差别
+                
+                float weizhi = (startZ-from.z)/direction.z;
+                endX=(int)(from.x+weizhi*direction.x);
+                endY= (int)(from.y+weizhi*direction.y);
+                endZ= startZ;
+                
 
                 float lengthSqr = (startX - endX) * (startX - endX) +
                         (startY - endY) * (startY - endY);

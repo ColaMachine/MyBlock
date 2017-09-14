@@ -45,6 +45,13 @@ public class FloatBufferWrap
     public Float getFloat(){
         return buffer.get();
     }
+
+    public FloatBufferWrap put(float[] ary){
+        for(int i=0;i<ary.length;i++){
+            this.put(ary[i]);
+        }
+        return  this;
+    }
     public FloatBufferWrap put(float val){
        /* if(buffer.position()==buffer.limit()){
             buffer.limit(buffer.capacity());

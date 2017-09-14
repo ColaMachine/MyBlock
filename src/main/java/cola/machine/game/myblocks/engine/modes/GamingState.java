@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
@@ -225,7 +226,7 @@ public class GamingState implements GameState {
             selectDiv.setWidth(40);
             document.body.appendChild(selectDiv);
             document.needUpdate=true;
-             /*shadowDiv =new Div();
+         /*  shadowDiv =new Div();
             shadowDiv.setBorderWidth(2);
             shadowDiv.setBorderColor(new Vector4f(1f, 1f, 1f, 1f));
             shadowDiv.setWidth(200);
@@ -366,16 +367,30 @@ public ShaderManager shaderManager;
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     //非ui接收鼠标左键
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
-                  //  TextureInfo info =new TextureInfo();
-                  // info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
-                   // info.textureHandle=shaderManager.bloom.colorBuffers[1];//shaderManager.bloom.pingpongBuffer[1];//.colorBuffers[1];//shaderManager.bloom.colorBuffers[1];//////hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
-                   // info.textureHandle=shaderManager.hdr.getTextureId();
-                    //info.textureHandle=shaderManager.shadow.getDepthMap();
-                 /*   info.minX=0;
-                    info.minY=0;
-                    info.maxX=1;
-                    info.maxY=1;
-                    shadowDiv.setBackgroundImage(new Image(info));*/
+                // TextureInfo info =new TextureInfo();
+                   
+//                    info.textureHandle=shaderManager.bloom.colorBuffers[1];//shaderManager.bloom.pingpongBuffer[1];//.colorBuffers[1];//shaderManager.bloom.colorBuffers[1];//////hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
+
+                  //  ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gColorSpec);
+                 //   info.textureHandle=shaderManager.delay.gPosition;
+                   // info.textureHandle=shaderManager.delay.gPosition;//.getDepthMap();
+//                    ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gPosition);
+//                   info.textureHandle=shaderManager.delay.gPosition;
+
+                //    ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gNormal);
+                 //   info.textureHandle=shaderManager.delay.gNormal;
+                    //info.textureHandle=shaderManager.delay.gColorSpec;
+                  //  info.textureHandle=shaderManager.delay.gNormal;//.getDepthMap();
+                    //info.textureHandle=shaderManager.delay.gColorSpec;//.getDepthMap();
+                  //  info.textureHandle=shaderManager.shadow.getDepthMap();
+                    //info.textureHandle=shaderManager.hdr.getTextureId();
+                   // info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
+//                
+//                   info.minX=0;
+//                  info.minY=0;
+//                   info.maxX=1;
+//                   info.maxY=1;
+//                   shadowDiv.setBackgroundImage(new Image(info));
                 }
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
                     mouseControlCenter.mouseLeftUp(cursorX, cursorY);
@@ -594,22 +609,27 @@ public ShaderManager shaderManager;
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor( 0.4648f, 0.734375f,0.96484375f,1);
+         /*glEnable(GL_BLEND);
+       glEnable(GL_DEPTH_TEST);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        */
         //不应该每次都绘制 二应该放入
         if(Constants.SHADOW_ENABLE ) {
             //以灯光的角度进行观察 保存一个深度缓冲帧
            shaderManager.shadow.render(shaderManager,worldRenderer);
         }
+        
+
         //ShaderUtils.testDrawVbo();
         //LogUtil.println(TimeUtil.getNowMills()+"'");
         OpenglUtils.checkGLError();
 
 
-        glEnable(GL_BLEND);
-        glEnable(GL_DEPTH_TEST);
+
        // glEnable(GL_DEPTH);
         //亮度按照人眼做调整 2.2次方
        // glEnable(GL30.GL_FRAMEBUFFER_SRGB);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
        // OpenglUtils.checkGLError();
         if(!Switcher.SHADER_ENABLE) {
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -677,6 +697,8 @@ public ShaderManager shaderManager;
 
         //用制定的hdr进行重新绘制
         //}
+      //  worldRenderer.render();
+
         if (Switcher.SHADER_ENABLE) {
 
 
@@ -687,7 +709,9 @@ public ShaderManager shaderManager;
             Util.checkGLError();
             glBindVertexArray(0);*/
 
-
+            if(Constants.DELAY_ENABLE ) {
+                shaderManager.delay.render(shaderManager,worldRenderer);//
+            }else
             if(Constants.GAOSI_ENABLE){
 
                 shaderManager.bloom.getBrightTexture(shaderManager);

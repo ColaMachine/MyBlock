@@ -117,35 +117,22 @@ public class WorldRendererLwjgl implements WorldRenderer {
             if (chunk != null)
                 ((ChunkImpl) chunk).update();// 重新构建build
         }
-
+        this.update();
         for (Chunk chunk : chunksInProximity) {
 
-            if (chunk != null)
+            if (chunk != null/* && chunk.getPos().x==0 &&chunk.getPos().z==0*/ )
                 ((ChunkImpl) chunk).render(config);// 调用draw方法
 
         }
     }
 
-    // List<Chunk> chunkList =new ArrayList<>();
-    public void render() {
-        OpenglUtils.checkGLError();
-        // if(true)return;
-        this.updateChunksInProximity(false);
-        // ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
-        for (Chunk chunk : chunksInProximity) {
-            if (chunk != null)
-                ((ChunkImpl) chunk).update();// 如果vaoid是空的会重新构建build
-                                             // 这里需要给每个chunk一个标志位 如果更新了 就重新构建
-        }
-        OpenglUtils.checkGLError();
-        // 偶尔发生 或者当该用户登录 或者被创建的时候
-        // CoreRegistry.get(Client.class);
+    public void update(){
         while (client.chunks.size() > 0 && client.chunks.peek() != null) {
             ChunkRequestCmd cmd = (ChunkRequestCmd) client.chunks.poll();
             Chunk chunk = chunkProvider.getChunk(new Vector3i(cmd.x, 0, cmd.z));// 因为拉远距离了之后
-                                                                                // 会导致相机的位置其实是在很远的位置
-                                                                                // 改为只其实还没有chunk加载
-                                                                                // 所以最好是从任务的头顶开始出发
+            // 会导致相机的位置其实是在很远的位置
+            // 改为只其实还没有chunk加载
+            // 所以最好是从任务的头顶开始出发
             if (chunk == null) {
                 continue;
             }
@@ -190,9 +177,9 @@ public class WorldRendererLwjgl implements WorldRenderer {
                 chunk = map.get(new Vector2i(chunkX, chunkZ));
                 if (chunk == null) {
                     chunk = chunkProvider.getChunk(new Vector3i(chunkX, 0, chunkZ));// 因为拉远距离了之后
-                                                                                    // 会导致相机的位置其实是在很远的位置
-                                                                                    // 改为只其实还没有chunk加载
-                                                                                    // 所以最好是从任务的头顶开始出发
+                    // 会导致相机的位置其实是在很远的位置
+                    // 改为只其实还没有chunk加载
+                    // 所以最好是从任务的头顶开始出发
                     map.put(new Vector2i(chunkX, chunkZ), chunk);
                 }
                 chunk.setBlock(blockX, blockY, blockZ, blockValue);
@@ -205,6 +192,22 @@ public class WorldRendererLwjgl implements WorldRenderer {
             }
 
         }
+    }
+    // List<Chunk> chunkList =new ArrayList<>();
+    public void render() {
+        OpenglUtils.checkGLError();
+        // if(true)return;
+        this.updateChunksInProximity(false);
+        // ShaderManager.terrainShaderConfig.getVao().getVertices().clear();
+        for (Chunk chunk : chunksInProximity) {
+            if (chunk != null)
+                ((ChunkImpl) chunk).update();// 如果vaoid是空的会重新构建build
+                                             // 这里需要给每个chunk一个标志位 如果更新了 就重新构建
+        }
+        OpenglUtils.checkGLError();
+        // 偶尔发生 或者当该用户登录 或者被创建的时候
+        // CoreRegistry.get(Client.class);
+
         // skysphere.update();
         /*
          * try{ Util.checkGLError();}catch (Exception e ){ e.printStackTrace();
@@ -240,8 +243,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
             }
         }
         // 编辑器里的方块
-        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao());
-        ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+      //
+
         // skysphere.render();
     }
 

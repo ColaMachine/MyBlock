@@ -101,6 +101,8 @@ public class AttackManager {
 
         //ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),anotherShaderConfig);
         ShaderUtils.freshVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
+       /* ShaderUtils.freshVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());*/
 
     }
     int anotherShaderConfig[] = new int[]{3,3,3,1};
