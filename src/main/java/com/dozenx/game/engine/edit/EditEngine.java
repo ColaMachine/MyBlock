@@ -154,7 +154,7 @@ public class EditEngine {
         }
 
         ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
-        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao());
+       // ShaderUtils.finalDraw(ShaderManager.shaderLightingPass, ShaderManager.anotherShaderConfig.getVao());
         //绘制
     }
 

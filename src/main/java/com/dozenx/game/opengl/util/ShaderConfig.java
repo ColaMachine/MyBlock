@@ -10,6 +10,7 @@ import javax.vecmath.Vector3f;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 
 /**
@@ -469,7 +470,7 @@ private int viewPosLoc;
     }
     public void setInt(String name , int val){
 
-        int location = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "name");
+        int location = glGetUniformLocation(getProgramId(), name);
         if(location>=0){
             glUniform1i(location, val);
         }else{
@@ -477,8 +478,20 @@ private int viewPosLoc;
         }
     }
 
+    public void setFloat(String name , float val){
+
+        int location = glGetUniformLocation(getProgramId(), name);
+        if(location>=0){
+            glUniform1f(location, val);
+        }else{
+            LogUtil.err("gPosition hasnot find ");
+        }
+    }
+
+
+
     public void setVec3(String name , GL_Vector vec3){
-        int location = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "name");
+        int location = glGetUniformLocation(getProgramId(),name);
         if(location>=0){
             GL20.glUniform3f(location, vec3.x,vec3.y,vec3.z);
         }else{

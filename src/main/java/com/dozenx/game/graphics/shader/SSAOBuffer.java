@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.ByteUtil;
 import com.sun.prism.ps.Shader;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -13,6 +14,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +22,23 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL30.*;
 
 /**
  * Created by luying on 17/4/22.
  */
 public class SSAOBuffer {
-   private   int textureId;
+
     private  int ssaoFBO,ssaoBlurFBO;
 
-    int ssaoColorBuffer, ssaoColorBufferBlur,noiseTexture;
+   public  int ssaoColorBuffer, ssaoColorBufferBlur,noiseTexture;
     List<GL_Vector> ssaoKernel =new ArrayList<>();
     public SSAOBuffer(){
 
         init();
     }
-    public int gPosition, gNormal, gColorSpec;
+
     
     
     public void init(){
@@ -48,8 +51,9 @@ public class SSAOBuffer {
         // SSAO color buffer
 
         ssaoColorBuffer =glGenTextures();
-        GL13.glActiveTexture(GL13.GL_TEXTURE15);
-        glBindTexture(GL_TEXTURE_2D,ssaoColorBuffer );
+
+        ShaderUtils.getActiveTextureLoc(ssaoColorBuffer);
+
         glTexImage2D(
                 GL_TEXTURE_2D, 0, GL_RED, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null
         );
@@ -58,7 +62,7 @@ public class SSAOBuffer {
         // 帧缓冲连接上纹理
         ShaderUtils.checkGLError();
         glFramebufferTexture2D(
-                GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 , GL_TEXTURE_2D, ssaoFBO, 0
+                GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 , GL_TEXTURE_2D, ssaoColorBuffer, 0
         );
         //=====================================
         // and blur stage
@@ -66,8 +70,8 @@ public class SSAOBuffer {
         glBindFramebuffer(GL_FRAMEBUFFER, ssaoBlurFBO);//gBuffer
         //创建一个帧缓冲的纹理和创建普通纹理差不多：
         ssaoColorBufferBlur =glGenTextures();
-        GL13.glActiveTexture(GL13.GL_TEXTURE16);
-        glBindTexture(GL_TEXTURE_2D,ssaoColorBufferBlur );
+        ShaderUtils.getActiveTextureLoc(ssaoColorBufferBlur);
+
         glTexImage2D(
                 GL_TEXTURE_2D, 0, GL_RED, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null
         );
@@ -103,20 +107,24 @@ public class SSAOBuffer {
         // ----------------------
 
         List<GL_Vector> ssaoNoise =new ArrayList<>();
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(48*4);
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(48);
 
         for ( int i = 0; i < 16; i++)
         {GL_Vector noise = new GL_Vector((float)Math.random()*2-1,(float)Math.random()*2-1,0);
             ssaoNoise.add(noise);
+
+            byteBuffer.put(ByteUtil.getBytes(noise.x)).put(ByteUtil.getBytes(noise.y)).put(ByteUtil.getBytes(noise.z));
+            floatBuffer . put(noise.x).put(noise.y).put(noise.z);
         }
 
-
-
+        byteBuffer.flip();
+        floatBuffer.flip();
         noiseTexture   = glGenFramebuffers();
+        ShaderUtils.getActiveTextureLoc(noiseTexture);
 
-        GL13.glActiveTexture(GL13.GL_TEXTURE17);
-        glBindTexture(GL_TEXTURE_2D,noiseTexture );
         glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_RGB32F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null
+                GL_TEXTURE_2D, 0, GL_RGB16F, 4,4, 0, GL_RGB, GL_FLOAT,floatBuffer
         );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -127,12 +135,12 @@ public class SSAOBuffer {
         ///=======================
 
 
-ShaderManager.shaderSSAO.use();
-        ShaderManager.shaderSSAO.setInt("gPosition", 0);
-        ShaderManager. shaderSSAO.setInt("gNormal", 1);
-        ShaderManager.shaderSSAO.setInt("texNoise", 2);
+        ShaderManager.shaderSSAO.use();
+        ShaderManager.shaderSSAO.setInt("gPosition", ShaderUtils.getActiveTextureLoc(DelayBuffer.gPosition));
+        ShaderManager. shaderSSAO.setInt("gNormal", ShaderUtils.getActiveTextureLoc(DelayBuffer.gNormal));
+        ShaderManager.shaderSSAO.setInt("texNoise", ShaderUtils.getActiveTextureLoc(this.noiseTexture));
         ShaderManager.  shaderSSAOBlur.use();
-        ShaderManager. shaderSSAOBlur.setInt("ssaoInput", 0);
+        ShaderManager. shaderSSAOBlur.setInt("ssaoInput", ShaderUtils.getActiveTextureLoc(ssaoColorBuffer));
 
 
 
@@ -155,6 +163,11 @@ ShaderManager.shaderSSAO.use();
 
         ShaderUtils.freshVao(ShaderManager.shaderSSAOBlur,ShaderManager.shaderSSAOBlur.getVao());
 
+
+
+        ShaderManager.shaderLightingPass.use();
+        ShaderManager.shaderLightingPass.setInt("ssao",ShaderUtils.getActiveTextureLoc(ssaoColorBufferBlur));
+
     }
     
     List<GL_Vector> lightPositions  =new ArrayList<>();
@@ -176,16 +189,16 @@ ShaderManager.shaderSSAO.use();
         for ( int i = 0; i < 64; ++i)
         ShaderManager.shaderSSAO.setVec3("samples[" + i + "]", ssaoKernel.get(i));
 
-        GL13.glActiveTexture(GL13.GL_TEXTURE12);
+      /*  GL13.glActiveTexture(GL13.GL_TEXTURE12);
         glBindTexture(GL_TEXTURE_2D,gPosition );
         GL13. glActiveTexture(GL13.GL_TEXTURE13);
         glBindTexture(GL_TEXTURE_2D, gNormal);
         GL13. glActiveTexture(GL13.GL_TEXTURE17);
         glBindTexture(GL_TEXTURE_2D, noiseTexture);
+*/
 
 
-
-        ShaderUtils.finalDraw(ShaderManager.shaderLightingPass,ShaderManager.shaderLightingPass.getVao());
+        ShaderUtils.finalDraw(ShaderManager.shaderSSAO,ShaderManager.shaderSSAO.getVao());
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
         //  glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);      OpenglUtils.checkGLError();
@@ -198,21 +211,18 @@ ShaderManager.shaderSSAO.use();
         GL20.glUseProgram(shaderManager.shaderSSAOBlur.getProgramId()); OpenglUtils.checkGLError();
 
 
-        for ( int i = 0; i < 64; ++i)
-            ShaderManager.shaderSSAO.setVec3("samples[" + i + "]", ssaoKernel.get(i));
 
-        GL13.glActiveTexture(GL13.GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D,gPosition );
-        GL13. glActiveTexture(GL13.GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, gNormal);
-        GL13. glActiveTexture(GL13.GL_TEXTURE17);
-        glBindTexture(GL_TEXTURE_2D, noiseTexture);
+
+ /*       GL13.glActiveTexture(GL13.GL_TEXTURE15);
+        glBindTexture(GL_TEXTURE_2D,ssaoColorBuffer );*/
 
 
 
-        ShaderUtils.finalDraw(ShaderManager.shaderLightingPass,ShaderManager.shaderLightingPass.getVao());
+        ShaderUtils.finalDraw(ShaderManager.shaderSSAOBlur,ShaderManager.shaderSSAOBlur.getVao());
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
+
+
 
 
     }
@@ -224,13 +234,6 @@ ShaderManager.shaderSSAO.use();
 
     }
 
-    public int getTextureId() {
-        return textureId;
-    }
-
-    public void setTextureId(int textureId) {
-        this.textureId = textureId;
-    }
 
     float lerp(float a, float b, float f)
     {

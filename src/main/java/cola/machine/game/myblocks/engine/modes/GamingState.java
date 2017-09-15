@@ -226,13 +226,13 @@ public class GamingState implements GameState {
             selectDiv.setWidth(40);
             document.body.appendChild(selectDiv);
             document.needUpdate=true;
-         /*  shadowDiv =new Div();
+           shadowDiv =new Div();
             shadowDiv.setBorderWidth(2);
             shadowDiv.setBorderColor(new Vector4f(1f, 1f, 1f, 1f));
             shadowDiv.setWidth(200);
             shadowDiv.setHeight(200);
             shadowDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("items")));
-            document.body.appendChild(shadowDiv);*/
+            //document.body.appendChild(shadowDiv);
             Client500msTask client500msTask =new Client500msTask();
             client500msTask.start();
             SynchronTask task = new SynchronTask();
@@ -367,30 +367,31 @@ public ShaderManager shaderManager;
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     //非ui接收鼠标左键
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
-                // TextureInfo info =new TextureInfo();
+                 TextureInfo info =new TextureInfo();
                    
 //                    info.textureHandle=shaderManager.bloom.colorBuffers[1];//shaderManager.bloom.pingpongBuffer[1];//.colorBuffers[1];//shaderManager.bloom.colorBuffers[1];//////hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
 
                   //  ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gColorSpec);
-                 //   info.textureHandle=shaderManager.delay.gPosition;
-                   // info.textureHandle=shaderManager.delay.gPosition;//.getDepthMap();
+                  // info.textureHandle=shaderManager.delay.gPosition;
+                   info.textureHandle=shaderManager.delay.gNormal;//.getDepthMap();
 //                    ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gPosition);
 //                   info.textureHandle=shaderManager.delay.gPosition;
 
                 //    ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gNormal);
-                 //   info.textureHandle=shaderManager.delay.gNormal;
+               // info.textureHandle=shaderManager.delay.gNormal;
                     //info.textureHandle=shaderManager.delay.gColorSpec;
                   //  info.textureHandle=shaderManager.delay.gNormal;//.getDepthMap();
                     //info.textureHandle=shaderManager.delay.gColorSpec;//.getDepthMap();
                   //  info.textureHandle=shaderManager.shadow.getDepthMap();
                     //info.textureHandle=shaderManager.hdr.getTextureId();
                    // info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
-//                
-//                   info.minX=0;
-//                  info.minY=0;
-//                   info.maxX=1;
-//                   info.maxY=1;
-//                   shadowDiv.setBackgroundImage(new Image(info));
+//
+                // info.textureHandle = shaderManager.ssao.ssaoColorBuffer;
+                   info.minX=0;
+                  info.minY=0;
+                   info.maxX=1;
+                   info.maxY=1;
+                   shadowDiv.setBackgroundImage(new Image(info));
                 }
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == false) {
                     mouseControlCenter.mouseLeftUp(cursorX, cursorY);

@@ -103,4 +103,6 @@ public class Constants {
     public static boolean GAOSI_ENABLE=false;
     
     public static boolean DELAY_ENABLE=true;
+
+    public static boolean SSAO_ENABLE =true;
 }

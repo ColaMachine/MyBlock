@@ -15,14 +15,14 @@ uniform mat4 model;
 out float ourTextureIndex;
 void main()
 {
-   vec4 viewPos = vec4(position, 1.0);
+   vec4 viewPos = view * model * vec4(position, 1.0);
      FragPos = viewPos.xyz;
      TexCoord = texCoord;
 
      mat3 normalMatrix = transpose(inverse(mat3(view * model)));
      Normal = normalMatrix * normal ;
     ourTextureIndex= textureIndex;
-     gl_Position = projection * view * model * viewPos;
+     gl_Position = projection * viewPos;
 
 }
 

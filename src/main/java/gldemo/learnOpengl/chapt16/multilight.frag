@@ -97,7 +97,6 @@ void main()
                oricolor = texture(ourTextures[int(ourTextureIndex)], TexCoordReal);
 
    }
-
     
     if(oricolor.a<0.1)
     discard;

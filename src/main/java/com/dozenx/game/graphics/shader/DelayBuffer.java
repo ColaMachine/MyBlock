@@ -2,6 +2,7 @@ package com.dozenx.game.graphics.shader;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
+import com.sun.prism.ps.Shader;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
@@ -37,7 +38,7 @@ public class DelayBuffer {
 
         init();
     }
-    public int gPosition, gNormal, gColorSpec;
+    public static int gPosition, gNormal, gColorSpec;
     
     
     public void init(){
@@ -49,12 +50,10 @@ public class DelayBuffer {
 //        int colorTexture1= glGenTextures();
         //创建一个帧缓冲的纹理和创建普通纹理差不多：
         gPosition =glGenTextures();
-        GL13.glActiveTexture(GL13.GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D,gPosition );
 
-
+        ShaderUtils.getActiveTextureLoc(gPosition);
         glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_RGB16F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null
+                GL_TEXTURE_2D, 0, GL_RGBA16F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null
         );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -70,11 +69,10 @@ public class DelayBuffer {
         //=====================================
 
         gNormal =glGenTextures();
-        GL13. glActiveTexture(GL13.GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, gNormal);
+        ShaderUtils.getActiveTextureLoc(gNormal);
 
         glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_RGBA16F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null
+                GL_TEXTURE_2D, 0, GL_RGB16F, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, (ByteBuffer) null
         );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -89,10 +87,10 @@ public class DelayBuffer {
         );
 
         //========================================
-
         gColorSpec =glGenTextures();
-        GL13. glActiveTexture(GL13.GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, gColorSpec);
+        ShaderUtils.getActiveTextureLoc(gColorSpec);
+
+
 
 
         glTexImage2D(
@@ -188,78 +186,57 @@ public class DelayBuffer {
        ShaderManager.shaderLightingPass.setInt("gNormal", 1);
        ShaderManager.shaderLightingPass.setInt("gAlbedoSpec", 2);*/
 
-
-      int gPositionTextureLoc = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "gPosition");
-        if(gPositionTextureLoc>=0){
-            glUniform1i(gPositionTextureLoc, 12);
-        }else{
-            LogUtil.err("gPosition hasnot find ");
-        }
+        ShaderManager.shaderLightingPass.setInt("gPosition",ShaderUtils.getActiveTextureLoc(gPosition));
 
 
-        int gNormalTextureLoc = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "gNormal");
-        if(gNormalTextureLoc>=0){
-            glUniform1i(gNormalTextureLoc, 13);
-        }else{
-            LogUtil.err("gNormal hasnot find ");
-        }
+        ShaderManager.shaderLightingPass.setInt("gNormal",ShaderUtils.getActiveTextureLoc(gNormal));
 
-        int gAlbedoSpecTextureLoc = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "gAlbedoSpec");
-        if(gAlbedoSpecTextureLoc>0){
-            glUniform1i(gAlbedoSpecTextureLoc, 14);
-        }else{
-            LogUtil.err("gAlbedoSpec hasnot find ");
-        }
+        ShaderManager.shaderLightingPass.setInt("gAlbedo",ShaderUtils.getActiveTextureLoc(gColorSpec));
+
+
+
 
         OpenglUtils.checkGLError();
 
 
         ShaderManager.shaderLightingPass.use();
         //传送灯光位置
-        for ( int i = 0; i < lightPositions.size(); i++)
-        {
 
-           // glUniform1i(gNormalTextureLoc, ShaderUtils.getActiveTextureLoc(gNormal));
+      if(!Constants.SSAO_ENABLE){
+          for ( int i = 0; i < lightPositions.size(); i++)
+          {
 
-            int positionLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Position");
-            if(positionLoc>=0){
-                GL20.glUniform3f(positionLoc, lightPositions.get(i).x,lightPositions.get(i).y,lightPositions.get(i).z);
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
+              // glUniform1i(gNormalTextureLoc, ShaderUtils.getActiveTextureLoc(gNormal));
 
+              ShaderManager.shaderLightingPass.setVec3("lights[" +i + "].Position" ,lightPositions.get(i) );
 
-            int colorLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Color");
-            if(colorLoc>=0){
-                GL20.glUniform3f(colorLoc, lightColors.get(i).x,lightColors.get(i).y,lightColors.get(i).z);
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
+              ShaderManager.shaderLightingPass.setVec3("lights[" +i + "].Color" ,lightColors.get(i) );
+
+              // update attenuation parameters and calculate radius
+              float constant = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
+              float linear = 0.7f;
+              float quadratic = 1.8f;
 
 
+              ShaderManager.shaderLightingPass.setFloat("lights[" +i + "].Linear",linear);
 
-            // update attenuation parameters and calculate radius
-             float constant = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
-             float linear = 0.7f;
-             float quadratic = 1.8f;
-
-            int linearLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Linear");
-            if(linearLoc>=0){
-                GL20.glUniform1f(linearLoc, linear);
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
-
-            int QuadraticLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Quadratic");
-            if(QuadraticLoc>=0){
-                GL20.glUniform1f(QuadraticLoc,quadratic);
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
+              ShaderManager.shaderLightingPass.setFloat("lights[" +i + "].Quadratic",quadratic);
 
 
 
-        }
+
+          }
+      }else{
+           float constant  = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
+           float linear    = 0.09f;
+           float quadratic = 0.032f;
+          ShaderManager. shaderLightingPass.setVec3("light.Position",new GL_Vector(1,1,1));
+          ShaderManager. shaderLightingPass.setVec3("light.Color",new GL_Vector(1,1,1));
+             ShaderManager. shaderLightingPass.setFloat("light.Linear", linear);
+          ShaderManager. shaderLightingPass.setFloat("light.Quadratic", quadratic);
+
+      }
+
         //创建vao
         float quadVertices[] = {
                 // positions        // texture Coords
@@ -340,7 +317,7 @@ public class DelayBuffer {
 
     //通过hdr的方式 把世界缓存到帧里 hdrfbo
     public void render(ShaderManager shaderManager,WorldRenderer worldRenderer){
-
+        //==============begin go=====================
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //将terrain的纹理全部重新赋值一遍
@@ -360,91 +337,27 @@ public class DelayBuffer {
 //        ShaderUtils.freshVao(shaderManager.shaderGeometryPass,shaderManager.shaderGeometryPass.getVao());
 //        ShaderUtils.finalDraw(shaderManager.shaderGeometryPass,shaderManager.shaderGeometryPass.getVao());
        worldRenderer.render(shaderManager.shaderGeometryPass); OpenglUtils.checkGLError();
+
+        ShaderUtils.tempfinalDraw(ShaderManager.shaderGeometryPass, ShaderManager.anotherShaderConfig.getVao());
+
+
         ShaderUtils.tempfinalDraw(shaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig.getVao());
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
       //  glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);      OpenglUtils.checkGLError();
+        //==============begin light=====================
 
+        if(Constants.SSAO_ENABLE){
+            shaderManager.ssao.render(shaderManager,worldRenderer);
+        }
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ShaderManager.shaderLightingPass.use();
-/*
-        for ( int i = 0; i < lightPositions.size(); i++)
-        {
-
-            // glUniform1i(gNormalTextureLoc, ShaderUtils.getActiveTextureLoc(gNormal));
-
-            int positionLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Position");
-            if(positionLoc>=0){
-                GL20.glUniform3f(positionLoc, lightPositions.get(i).x,2,lightPositions.get(i).z);
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
-
-
-            int colorLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Color");
-            if(colorLoc>=0){
-                GL20.glUniform3f(colorLoc,lightColors.get(i));
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
 
 
 
-            // update attenuation parameters and calculate radius
-            float constant = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
-            float linear = 0.7f;
-            float quadratic = 1.8f;
-
-            int linearLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Linear");
-            if(linearLoc>=0){
-                GL20.glUniform1f(linearLoc, linear);
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
-
-            int QuadraticLoc= glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(),"lights[" +i + "].Quadratic");
-            if(QuadraticLoc>=0){
-                GL20.glUniform1f(QuadraticLoc,quadratic);
-            }else{
-                LogUtil.err("positionLoc can't not be negative");
-            }
-
-
-
-        }*/
-
-       /* int gPositionTextureLoc = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "gPosition");
-        if(gPositionTextureLoc>=0){
-            glUniform1i(gPositionTextureLoc, ShaderUtils.getActiveTextureLoc(gPosition));
-        }else{
-            LogUtil.err("gPosition hasnot find ");
-        }
-
-
-        int gNormalTextureLoc = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "gNormal");
-        if(gNormalTextureLoc>=0){
-            glUniform1i(gNormalTextureLoc, ShaderUtils.getActiveTextureLoc(gNormal));
-        }else{
-            LogUtil.err("gNormal hasnot find ");
-        }
-
-        int gAlbedoSpecTextureLoc = glGetUniformLocation(ShaderManager.shaderLightingPass.getProgramId(), "gAlbedoSpec");
-        if(gAlbedoSpecTextureLoc>0){
-            glUniform1i(gAlbedoSpecTextureLoc, ShaderUtils.getActiveTextureLoc(gColorSpec));
-        }else{
-            LogUtil.err("gAlbedoSpec hasnot find ");
-        }
-*/
-
-       GL13.glActiveTexture(GL13.GL_TEXTURE12);
-        glBindTexture(GL_TEXTURE_2D,gPosition );
-        GL13. glActiveTexture(GL13.GL_TEXTURE13);
-        glBindTexture(GL_TEXTURE_2D, gNormal);
-        GL13. glActiveTexture(GL13.GL_TEXTURE14);
-        glBindTexture(GL_TEXTURE_2D, gColorSpec);
 
         renderQuad();
 

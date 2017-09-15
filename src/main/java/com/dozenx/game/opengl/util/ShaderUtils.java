@@ -1815,6 +1815,26 @@ try {
                 GL13.glActiveTexture(GL13.GL_TEXTURE10);
                 glBindTexture(GL_TEXTURE_2D, textureHandle);
 
+            } else if(activeTextureLoc==11){
+                GL13.glActiveTexture(GL13.GL_TEXTURE11);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            } else if(activeTextureLoc==12){
+                GL13.glActiveTexture(GL13.GL_TEXTURE12);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            } else if(activeTextureLoc==13){
+                GL13.glActiveTexture(GL13.GL_TEXTURE13);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            } else if(activeTextureLoc==14){
+                GL13.glActiveTexture(GL13.GL_TEXTURE14);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+            } else if(activeTextureLoc==15){
+                GL13.glActiveTexture(GL13.GL_TEXTURE15);
+                glBindTexture(GL_TEXTURE_2D, textureHandle);
+
             }else{
                 LogUtil.err("超出纹理数量");
             }

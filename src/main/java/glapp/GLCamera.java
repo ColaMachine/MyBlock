@@ -3,6 +3,7 @@ package glapp;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.BufferUtils;
@@ -11,6 +12,7 @@ import org.lwjgl.util.glu.GLU;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 /**
  * Camera class by Philipp Crocoll at CodeColony (codecolony.de).
@@ -336,9 +338,12 @@ public class GLCamera {
 
 			glUseProgram(GamingState.instance.shaderManager.shaderLightingPass.getProgramId());
 
-
-			glUniform3f(GamingState.instance.shaderManager.shaderLightingPass.getViewPosLoc(),  Position.x,Position.y,Position.z);
-			org.lwjgl.opengl.Util.checkGLError();
+			GL_Matrix vieDirw=
+					GL_Matrix.LookAt(new GL_Vector(0,0,0),ViewDir);
+			GL_Vector lightPositionView = view.multiply(vieDirw,new GL_Vector(0.1f,0.5f,1).normalize());
+			ShaderManager. shaderLightingPass.setVec3("light.Position",lightPositionView);
+			//glUniform3f(GamingState.instance.shaderManager.shaderLightingPass.getViewPosLoc(),  Position.x,Position.y,Position.z);
+			//org.lwjgl.opengl.Util.checkGLError();
 
 
 		}
