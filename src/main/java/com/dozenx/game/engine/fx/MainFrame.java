@@ -114,40 +114,7 @@ public class MainFrame extends Application {
         selectGrid.setVgap(4);
         selectGrid.setPadding(new Insets(5, 5, 5, 5));
 
-        final Button faceSelectBtn = new Button("面选择");
 
-
-        faceSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                Switcher.mouseState = Switcher.faceSelectMode;
-            }
-        });
-        selectGrid.add(faceSelectBtn, 0, 0);
-
-
-        Button boxSelectBtn = new Button("框体选择");
-
-
-        boxSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Switcher.mouseState = Switcher.boxSelectMode;
-            }
-        });
-        Button singleSelectBtn = new Button("单个选择");
-
-
-        singleSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Switcher.mouseState = Switcher.singleSelectMode;
-            }
-        });
-
-        selectGrid.add(boxSelectBtn, 0, 1);
-        selectGrid.add(singleSelectBtn, 0, 2);
 
 
 

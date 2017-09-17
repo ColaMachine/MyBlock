@@ -149,11 +149,11 @@ public class EditEngine {
 
         ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),curentX,0,curentZ,new GL_Vector(1,1,1),1,0.2f,1,1f);
 
-        if(Switcher.mouseState==Switcher.faceSelectMode) {
+       /* if(Switcher.mouseState==Switcher.faceSelectMode) {
             minX = Math.min(prevFaceX, lastFaceX);
             minZ = Math.min(prevFaceZ, lastFaceZ);
             ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), Math.min(prevFaceX, lastFaceX), 0, Math.min(prevFaceZ, lastFaceZ), new GL_Vector(1, 1, 1), Math.max(lastFaceMaxX, prevMaxFaceX) - minX, 0.2f, Math.max(lastFaceMaxZ, prevMaxFaceZ) - minZ, 1f);
-        }
+        }*/
         //ShaderManager.lineShaderConfig.getVao().getVertices().rewind();
         //ShaderUtils.freshVao(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
         ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
@@ -1222,7 +1222,7 @@ public class EditEngine {
 
       
         
-        if(Switcher.mouseState==Switcher.faceSelectMode) {
+       /* if(Switcher.mouseState==Switcher.faceSelectMode) {
             prevFaceX = curentX;
             prevMaxFaceX = curentX + 1;
             prevFaceZ = curentZ;
@@ -1230,7 +1230,7 @@ public class EditEngine {
             lastFaceX = curentX + 1;
             lastFaceZ = curentZ + 1;
 
-        }else if(Switcher.mouseState==Switcher.shootMode ||Switcher.mouseState==Switcher.boxSelectMode ){//选择的开始也需要确定起点
+        }else */if(Switcher.mouseState==Switcher.shootMode ||Switcher.mouseState==Switcher.faceSelectMode ){//选择的开始也需要确定起点
          
             touchStartPoint.x = endPoint.x;
             placeStartPoint.x = startPoint.x;
@@ -1258,12 +1258,12 @@ public class EditEngine {
        
         
         
-        if(Switcher.mouseState==Switcher.faceSelectMode) {
+      /*  if(Switcher.mouseState==Switcher.faceSelectMode) {
             lastFaceX = curentX;
             lastFaceZ = curentZ;
             lastFaceMaxX = curentX + 1;
             lastFaceMaxZ = curentZ + 1;
-        }else if( Switcher.mouseState==Switcher.boxSelectMode){
+        }else */if( Switcher.mouseState==Switcher.faceSelectMode){
             //开始选择了哈哈哈
             if(placeEndPoint.x!=endPoint.x  || placeEndPoint.z != endPoint.z || placeEndPoint.y != endPoint.y  ){
                 // shootBlock(x,y);
@@ -1309,10 +1309,10 @@ public class EditEngine {
         }
     }
     public void mouseUp(int x,int y){
-        if(Switcher.mouseState==Switcher.faceSelectMode) {
+        /*if(Switcher.mouseState==Switcher.faceSelectMode) {
             lastFaceX=curentX;
             lastFaceZ=curentZ;
-        }else if(Switcher.mouseState==Switcher.shootMode){
+        }else */if(Switcher.mouseState==Switcher.shootMode){
             colorBlockList.addAll(appendingBlockList);
 
             for(BaseBlock block : appendingBlockList){

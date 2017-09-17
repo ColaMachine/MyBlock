@@ -49,7 +49,7 @@ public class BlockPanel extends Tab {
         Button setColorBtn = new Button("设置颜色");
 
         // add(setColorBtn);
-        selectGrid.add(setColorBtn,1,0);
+        selectGrid.add(setColorBtn,2,0);
         setColorBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -57,8 +57,6 @@ public class BlockPanel extends Tab {
                 GamingState.editEngine.setColor((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
             }
         });
-
-
         colorPicker.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -68,6 +66,50 @@ public class BlockPanel extends Tab {
                 GamingState.editEngine.blue = (float) color.getBlue();
             }
         });
+
+//=============select
+
+        final Button faceSelectBtn = new Button("面选择");
+
+
+        faceSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                Switcher.mouseState = Switcher.faceSelectMode;
+            }
+        });
+        selectGrid.add(faceSelectBtn, 1, 1);
+
+
+        Button boxSelectBtn = new Button("框体选择");
+
+
+        boxSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState = Switcher.boxSelectMode;
+            }
+        });
+        Button singleSelectBtn = new Button("单个选择");
+
+
+        singleSelectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState = Switcher.singleSelectMode;
+            }
+        });
+
+        selectGrid.add(boxSelectBtn, 2, 1);
+        selectGrid.add(singleSelectBtn, 3, 1);
+
+
+
+
+
+//========
+
 
 
         // Button 1
