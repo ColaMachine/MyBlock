@@ -337,11 +337,12 @@ public class GLCamera {
 			org.lwjgl.opengl.Util.checkGLError();
 
 			glUseProgram(GamingState.instance.shaderManager.shaderLightingPass.getProgramId());
-
-			GL_Matrix vieDirw=
-					GL_Matrix.LookAt(new GL_Vector(0,0,0),ViewDir);
-			GL_Vector lightPositionView = view.multiply(vieDirw,new GL_Vector(0.1f,0.5f,1).normalize());
-			ShaderManager. shaderLightingPass.setVec3("light.Position",lightPositionView);
+            if(Constants.SSAO_ENABLE) {
+                GL_Matrix vieDirw =
+                        GL_Matrix.LookAt(new GL_Vector(0, 0, 0), ViewDir);
+                GL_Vector lightPositionView = view.multiply(vieDirw, new GL_Vector(0.1f, 0.5f, 1).normalize());
+                ShaderManager.shaderLightingPass.setVec3("light.Position", lightPositionView);
+            }
 			//glUniform3f(GamingState.instance.shaderManager.shaderLightingPass.getViewPosLoc(),  Position.x,Position.y,Position.z);
 			//org.lwjgl.opengl.Util.checkGLError();
 

@@ -49,6 +49,8 @@ import java.util.Map;
  */
 public class EditEngine {
 
+    public BaseBlock[] blockAry = new BaseBlock[40*40*40];
+
     public List<BaseBlock> colorBlockList  =new ArrayList<>();
     public List<BaseBlock> selectBlockList  =new ArrayList<>();
     
@@ -152,7 +154,8 @@ public class EditEngine {
             minZ = Math.min(prevFaceZ, lastFaceZ);
             ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), Math.min(prevFaceX, lastFaceX), 0, Math.min(prevFaceZ, lastFaceZ), new GL_Vector(1, 1, 1), Math.max(lastFaceMaxX, prevMaxFaceX) - minX, 0.2f, Math.max(lastFaceMaxZ, prevMaxFaceZ) - minZ, 1f);
         }
-
+        //ShaderManager.lineShaderConfig.getVao().getVertices().rewind();
+        //ShaderUtils.freshVao(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
         ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
        // ShaderUtils.finalDraw(ShaderManager.shaderLightingPass, ShaderManager.anotherShaderConfig.getVao());
         //绘制
@@ -635,7 +638,7 @@ public class EditEngine {
             addColorBlock = readyShootBlock.copy();//new RotateColorBlock((int) (from.x + right[0]), (int) (from.y + right[1]), (int) (from.z + right[2]));
             set(addColorBlock,curentX, 0, curentZ,addColorBlock.width,addColorBlock.height,addColorBlock.thick,red,green,blue,alpha);
 
-            this.colorBlockList.add(addColorBlock);
+            this.colorBlockList.add(addColorBlock);//假如到这里
 
         }
     }
@@ -1161,8 +1164,17 @@ public class EditEngine {
         
         int face = (int)results[1];
         if(theNearestBlock!=null){
-            
+
             endPoint=touchPoint;
+            if(face ==Constants.TOP){
+                endPoint.y-=1;
+            }
+            if(face ==Constants.RIGHT){
+                endPoint.x-=1;
+            }
+            if(face ==Constants.FRONT){
+                endPoint.z-=1;
+            }
             startPoint =placePoint;
             nowFace = face;
            /* BaseBlock addColorBlock =null;
@@ -1218,7 +1230,7 @@ public class EditEngine {
             lastFaceX = curentX + 1;
             lastFaceZ = curentZ + 1;
 
-        }else if(Switcher.mouseState==Switcher.shootMode){
+        }else if(Switcher.mouseState==Switcher.shootMode ||Switcher.mouseState==Switcher.boxSelectMode ){//选择的开始也需要确定起点
          
             touchStartPoint.x = endPoint.x;
             placeStartPoint.x = startPoint.x;
@@ -1251,7 +1263,24 @@ public class EditEngine {
             lastFaceZ = curentZ;
             lastFaceMaxX = curentX + 1;
             lastFaceMaxZ = curentZ + 1;
-        }else if(Switcher.mouseState==Switcher.shootMode){
+        }else if( Switcher.mouseState==Switcher.boxSelectMode){
+            //开始选择了哈哈哈
+            if(placeEndPoint.x!=endPoint.x  || placeEndPoint.z != endPoint.z || placeEndPoint.y != endPoint.y  ){
+                // shootBlock(x,y);
+                lastPaintX=curentX;
+                lastPaintZ =curentZ;
+                touchEndPoint.x = endPoint.x;
+                placeEndPoint.x = startPoint.x;
+
+                touchEndPoint.y = endPoint.y;
+                placeEndPoint.y = startPoint.y;
+
+                touchEndPoint.z = endPoint.z;
+                placeEndPoint.z = startPoint.z;
+
+                reComputeSelect();//重新设置选择的对象
+            }
+        }else  if(Switcher.mouseState==Switcher.shootMode){
            
 
            
@@ -1285,6 +1314,19 @@ public class EditEngine {
             lastFaceZ=curentZ;
         }else if(Switcher.mouseState==Switcher.shootMode){
             colorBlockList.addAll(appendingBlockList);
+
+            for(BaseBlock block : appendingBlockList){
+                if(block.x<40 && block.x>=0  &&
+                        block.y<40 && block.y>=0){
+                    blockAry[(int)(block.y*40*40 + block.z*40+block.x)]= block;
+
+                    //把bock塞入到了数组当中 是一个40*40*y的数组
+                }
+
+            }
+            appendingBlockList.clear();
+
+
         }
     }
 
@@ -1802,7 +1844,7 @@ public class EditEngine {
                         BaseBlock colorBlock = this.readyShootBlock.copy();
                         this.set(colorBlock,x,y,z,1,1,1,red,green,blue,alpha);
                         //colorBlock.reComputePoints();
-                        LogUtil.println("widht:"+minx+":"+maxx);
+                        //LogUtil.println("widht:"+minx+":"+maxx);
                         this.appendingBlockList.add(colorBlock);
                     }
 
@@ -1982,6 +2024,10 @@ public class EditEngine {
                         }
                     }
                 }
+
+                //把所有的东西都同步到制定的blokAry里
+
+
             }
 
 
@@ -1997,5 +2043,251 @@ public class EditEngine {
         BaseBlock colorBlock = this.readyShootBlock.copy();
         this.set(colorBlock,x,y,z,1,1,1,red,green,blue,alpha);
         return colorBlock;
+    }
+
+
+
+    public void reComputeSelect(){//把原来的删除? 把现在替换上?
+        selectBlockList.clear();
+        int minx = (int)(Math.min(touchStartPoint.x, touchEndPoint.x));
+        int maxx = (int)(Math.max(touchStartPoint.x, touchEndPoint.x));
+
+        int miny = (int)(Math.min(touchStartPoint.y, touchEndPoint.y));
+        int maxy = (int)(Math.max(touchStartPoint.y, touchEndPoint.y));
+
+        int minz = (int)(Math.min(touchStartPoint.z, touchEndPoint.z));
+        int maxz = (int)(Math.max(touchStartPoint.z, touchEndPoint.z));
+        if(Switcher.shapeMode== Switcher.shapeBlockMode){
+            for(int x =minx;x<=maxx;x++){
+                for(int y =miny;y<=maxy;y++){
+                    for(int z =minz;z<=maxz;z++){
+                        if(x>=0&& x<=40 && y>=0 && y<=40 && z>=0 && z <=40)
+                            if(blockAry[this.getIndex(x,y,z)]!=null){
+                                this.selectBlockList.add(blockAry[this.getIndex(x,y,z)]);
+                            }
+                        //colorBlock.reComputePoints();
+                        //LogUtil.println("widht:"+minx+":"+maxx);
+
+                    }
+
+                }
+
+            }
+        }else if(Switcher.shapeMode== Switcher.shapeLineMode){
+
+            minx = (int)touchStartPoint.x;
+            maxx = (int)touchEndPoint.x;
+
+            miny = (int)touchStartPoint.y;
+            maxy = (int)touchEndPoint.y;
+
+
+            minz = (int)touchStartPoint.z;
+            maxz = (int)touchEndPoint.z;
+            if(maxx-minx ==0&& maxy-miny ==0&& maxz-minz==0){
+               // ColorBlock colorBlock = new ColorBlock(minx,miny,minz,1,1,1,red,green,blue,alpha);
+                if(blockAry[this.getIndex(minX,miny,minz)]!=null){
+                    this.selectBlockList.add(blockAry[this.getIndex(minX,miny,minz)]);
+                }
+               // this.appendingBlockList.add(colorBlock);
+            }else {
+                int maxv=0,minv=0;
+                if (Math.abs(maxx - minx )>= Math.abs(maxy - miny )&& Math.abs(maxx - minx) >= Math.abs(maxz - minz)) {
+                    maxv=maxx;
+                    minv=minx;
+
+                } else if (Math.abs(maxy - miny )>= Math.abs(maxx - minx) && Math.abs(maxy - miny) >= Math.abs(maxz - minz) ){
+                    maxv=maxy;
+                    minv=miny;
+                } else if (Math.abs(maxz - minz) >= Math.abs(maxx - minx )&& Math.abs(maxz - minz) >= Math.abs(maxy - miny) ){
+
+                    maxv=maxz;
+                    minv=minz;
+
+                }
+
+                int _minv=Math.min(minv,maxv);
+                int _maxv=Math.max(minv,maxv);
+               // LogUtil.println("_minv:"+minv+"_maxv:"+maxv);
+                for (int v = _minv; v<= _maxv; v++) {
+                    if(maxv-minv==0){
+                        LogUtil.println("hello");
+                    }
+
+                    int x = (int) ((v - _minv) *1f/ (_maxv - _minv) * (maxx - minx) + minx);
+                    int y = (int) ((v - _minv) *1f/ (_maxv - _minv) * (maxy - miny) + miny);
+                    int z = (int) ((v - _minv) *1f/ (_maxv - _minv)  * (maxz - minz) + minz);
+
+                    if(blockAry[this.getIndex(x,y,z)]!=null){
+                        this.selectBlockList.add(blockAry[this.getIndex(x,y,z)]);
+                    }
+                   // ColorBlock colorBlock = new ColorBlock(x, y, z, 1, 1, 1, red, green, blue, alpha);
+
+                   // this.appendingBlockList.add(colorBlock);
+                }
+            }
+        }else if(Switcher.shapeMode== Switcher.shapeCircleMode){
+            //获取当前是哪个面 上下 就取xz 然后对比距离
+            int startX= (int)touchStartPoint.x;
+            int startY= (int)touchStartPoint.y;
+            int startZ= (int)touchStartPoint.z;
+
+            int endX= (int)placeEndPoint.x;
+            int endY= (int)placeEndPoint.y;
+            int endZ= (int)placeEndPoint.z;
+            GL_Vector from = GamingState.instance.camera.Position;
+            if(lastFace == Constants.TOP  || lastFace == Constants.BOTTOM  ){
+                //获取当前射线
+
+
+
+                float weizhi = (startY-from.y)/direction.y;
+                endX=(int)(from.x+weizhi*direction.x);
+                endZ= (int)(from.z+weizhi*direction.z);
+                endY=startY;
+
+                float lengthSqr= (startZ-endZ)*(startZ-endZ) +
+                        (startX-endX)*(startX-endX) ;
+
+                if(lengthSqr==0){
+                    return;
+                }
+                float length =(float) Math.sqrt(lengthSqr);
+                for( int x = 0;x<length;x++){
+                    for( int z = 0;z<length;z++){
+                        if(x==0&&z==0)continue;
+                        int nowLength = x*x + z*z;
+                        if(nowLength <lengthSqr)
+                        {
+
+
+                            if(blockAry[getIndex(startX+x,startY,startZ+z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX+x,startY,startZ+z)]);
+                            }
+                            if(blockAry[getIndex(startX+x,startY,startZ-z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX+x,startY,startZ-z)]);
+                            }
+                            if(blockAry[getIndex(startX-x,startY,startZ-z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX-x,startY,startZ-z)]);
+                            }
+                            if(blockAry[getIndex(startX-x,startY,startZ+z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX-x,startY,startZ+z)]);
+                            }
+
+
+                        }
+                    }
+                }
+            }else if(lastFace == Constants.LEFT  || lastFace == Constants.RIGHT  ){
+                //y z的差别
+
+
+
+                float weizhi = (startX-from.x)/direction.x;
+                endX= startX;
+                endY=(int)(from.y+weizhi*direction.y);
+
+                endZ= (int)(from.z+weizhi*direction.z);
+
+
+                float lengthSqr= (startZ-endZ)*(startZ-endZ) +
+                        (startY-endY)*(startY-endY) ;
+
+                if(lengthSqr==0){
+                    return;
+                }
+                float length =(float) Math.sqrt(lengthSqr);
+                for( int y = 0;y<length;y++){
+                    for( int z = 0;z<length;z++){
+                        if(y==0&&z==0)continue;
+                        int nowLength = y*y + z*z;
+                        if(nowLength <lengthSqr)
+                        {
+
+
+
+
+                            if(blockAry[getIndex(startX,startY+y,startZ+z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX,startY+y,startZ+z)]);
+                            }
+                            if(blockAry[getIndex(startX,startY+y,startZ-z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX,startY+y,startZ-z)]);
+                            }
+                            if(blockAry[getIndex(startX,startY-y,startZ-z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX,startY-y,startZ-z)]);
+                            }
+                            if(blockAry[getIndex(startX,startY-y,startZ+z)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX,startY-y,startZ+z)]);
+                            }
+
+
+
+
+                        }
+                    }
+                }
+
+
+            }else if(lastFace == Constants.FRONT  || lastFace == Constants.BACK  ) {
+                //y z的差别
+
+                float weizhi = (startZ-from.z)/direction.z;
+                endX=(int)(from.x+weizhi*direction.x);
+                endY= (int)(from.y+weizhi*direction.y);
+                endZ= startZ;
+
+
+                float lengthSqr = (startX - endX) * (startX - endX) +
+                        (startY - endY) * (startY - endY);
+
+                if (lengthSqr == 0) {
+                    return;
+                }
+                float length = (float) Math.sqrt(lengthSqr);
+                for (int x = 0; x < length; x++) {
+                    for (int y = 0; y < length; y++) {
+                        if (y == 0 && x == 0) continue;
+                        int nowLength = y * y + x * x;
+                        if (nowLength < lengthSqr) {
+
+
+
+
+
+
+
+                            if(blockAry[getIndex(startX+x, startY + y, startZ)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX+x, startY + y, startZ)]);
+                            }
+                            if(blockAry[getIndex(startX-x, startY + y, startZ)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX-x, startY + y, startZ)]);
+                            }
+                            if(blockAry[getIndex(startX+x, startY - y, startZ)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX+x, startY - y, startZ)]);
+                            }
+                            if(blockAry[getIndex(startX-x, startY - y, startZ)]!=null){
+                                this.selectBlockList.add(blockAry[getIndex(startX-x, startY - y, startZ)]);
+                            }
+                        }
+                    }
+                }
+
+                //把所有的东西都同步到制定的blokAry里
+
+
+            }
+
+
+        }
+        if(maxx - minx>100){
+            LogUtil.println("is not block ");
+        }
+
+
+    }
+    public int getIndex(int x ,int y ,int z ){
+
+        return y*40*40 + x+40*z;
+
     }
 }

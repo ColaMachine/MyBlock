@@ -109,6 +109,7 @@ try {
             buffer.rewind();
             buffer.clear();
         }
+
         buffer = buffers.get(0);
     }
     public void flip(){

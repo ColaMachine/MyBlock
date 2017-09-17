@@ -85,7 +85,7 @@ public class Shadow {
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         //GL30.RenderScene(simpleDepthShader);
         worldRenderer.render(shaderManager.shadowShaderConfig);
-        ShaderUtils.tempfinalDraw(shaderManager.shadowShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.freshVaoAndDraw(shaderManager.shadowShaderConfig,ShaderManager.anotherShaderConfig.getVao());
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);

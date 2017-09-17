@@ -10,12 +10,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -40,6 +38,38 @@ public class BlockPanel extends Tab {
         GridPane selectGrid = new GridPane();
         selectGrid.setVgap(5);
         selectGrid.setPadding(new Insets(5, 5, 5, 5));
+
+
+        final ColorPicker colorPicker = new ColorPicker();
+        colorPicker.setValue(Color.CORAL);
+        //  add(colorPicker);
+
+        selectGrid.add(colorPicker,1,0);
+
+        Button setColorBtn = new Button("设置颜色");
+
+        // add(setColorBtn);
+        selectGrid.add(setColorBtn,1,0);
+        setColorBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Color color = colorPicker.getValue();
+                GamingState.editEngine.setColor((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
+            }
+        });
+
+
+        colorPicker.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Color color = colorPicker.getValue();
+                GamingState.editEngine.red = (float) color.getRed();
+                GamingState.editEngine.green = (float) color.getGreen();
+                GamingState.editEngine.blue = (float) color.getBlue();
+            }
+        });
+
+
         // Button 1
         Button addBlockBtn = new Button("在原点添加方块");
         // Button 2

@@ -552,7 +552,12 @@ try {
         glUseProgram(0);
     }*/
 
-    public static void tempfinalDraw(ShaderConfig config,Vao vao){
+    /**
+     * 和正式的finaldraw 相比 temp 会遍历buffer 生成vao
+     * @param config
+     * @param vao
+     */
+    public static void freshVaoAndDraw(ShaderConfig config,Vao vao){
         //TextureManager.getTextureInfo("soil").bind();
         // ShaderUtils.get2dcolor
 

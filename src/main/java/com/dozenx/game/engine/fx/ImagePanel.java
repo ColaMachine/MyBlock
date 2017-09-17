@@ -71,34 +71,7 @@ public class ImagePanel extends Tab {
                 Switcher.size = false;
             }
         });
-        final ColorPicker colorPicker = new ColorPicker();
-        colorPicker.setValue(Color.CORAL);
-      //  add(colorPicker);
 
-        selectGrid.add(colorPicker,0,0);
-
-        Button setColorBtn = new Button("设置颜色");
-
-       // add(setColorBtn);
-        selectGrid.add(setColorBtn,1,0);
-        setColorBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Color color = colorPicker.getValue();
-                GamingState.editEngine.setColor((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
-            }
-        });
-
-
-        colorPicker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Color color = colorPicker.getValue();
-                GamingState.editEngine.red = (float) color.getRed();
-                GamingState.editEngine.green = (float) color.getGreen();
-                GamingState.editEngine.blue = (float) color.getBlue();
-            }
-        });
 
 
 
@@ -127,8 +100,9 @@ public class ImagePanel extends Tab {
 
         //遍历所有的image下的纹理
 
-        final ListView<String> list = new ListView<String>();
-        ObservableList<String> items = FXCollections.observableArrayList(
+        final ListView<String> imageList = new ListView<String>();
+
+        ObservableList<String> imageItems = FXCollections.observableArrayList(
         );
 
         HashMap<String, GLImage> imageMap = TextureManager.imageMap;
@@ -141,7 +115,7 @@ public class ImagePanel extends Tab {
 
 
             String key = (String) it.next();
-            items.add(key);
+            imageItems.add(key);
 
 
         }
@@ -162,13 +136,13 @@ public class ImagePanel extends Tab {
 
 
         }
-        list.setItems(items);
-        list.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        imageList.setItems(imageItems);
+        imageList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("clicked on " + list.getSelectionModel().getSelectedItem());
-                String imageName = list.getSelectionModel().getSelectedItem();
+                System.out.println("clicked on " + imageList.getSelectionModel().getSelectedItem());
+                String imageName = imageList.getSelectionModel().getSelectedItem();
                 GLImage image = TextureManager.getImage(imageName);
               /*  IntBuffer byteBuffer =IntBuffer.wrap(image.pixels);*/
 
@@ -209,7 +183,7 @@ public class ImagePanel extends Tab {
             }
         });
 
-        selectGrid.add(list,0,1);
+        selectGrid.add(imageList,0,1);
 
 
         selectGrid.add(textureListView,1,1);
@@ -231,7 +205,7 @@ public class ImagePanel extends Tab {
             public void handle(ActionEvent event) {
                 System.out.println(canvas.mouseStartX);
 
-                String imageName = list.getSelectionModel().getSelectedItem();
+                String imageName = imageList.getSelectionModel().getSelectedItem();
                 String textureName = textureListView.getSelectionModel().getSelectedItem();
 
 
@@ -274,11 +248,11 @@ public class ImagePanel extends Tab {
 */
             }
         });
-        selectGrid.add(openButton,2,0);
-        selectGrid.add(canvas,0,2);
+        selectGrid.add(openButton,0,0);
+        selectGrid.add(canvas,0,2,2,1);
 
-        selectGrid.add(saveTextureText,3,0);
-        selectGrid.add(saveTextureButton,4,0);
+        selectGrid.add(saveTextureText,1,0);
+        selectGrid.add(saveTextureButton,2,0);
 
 
     }

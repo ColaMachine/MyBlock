@@ -4,3 +4,7 @@
 /saves/*.map
 .idea/workspace.xml
 hs_err_*.log
+.idea/misc.xml
+.idea/workspace.xml
+MyBlock.iml
+saves/player/123.txt

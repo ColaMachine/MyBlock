@@ -141,7 +141,7 @@ public class AnimationPanel extends Tab {
         selectGrid.add(animationEditBtn, 0, 2);
         selectGrid.add(playBtn, 0, 3);
         selectGrid.add(frameList, 0, 4);
-        selectGrid.add(deleteBtn, 4, 0);
+        selectGrid.add(deleteBtn, 2, 1);
 
         Label animationMaplabel =new Label("动画名称");
         final TextField animationMapTextField =new TextField("");
@@ -159,14 +159,14 @@ public class AnimationPanel extends Tab {
         });
         selectGrid.add(animationMaplabel, 1, 0);
         selectGrid.add(animationMapTextField, 2, 0);
-        selectGrid.add(addAnimationMapBtn, 3, 0);
+        selectGrid.add(addAnimationMapBtn, 2, 3);
         
         
       
         
        
         animationNameList.setItems(animationNameItems);//ba
-        selectGrid.add(animationNameList, 3, 4);
+        selectGrid.add(animationNameList, 1, 4);
      
         //final VBox box = new VBox();
         //box.getChildren().addAll(sp);

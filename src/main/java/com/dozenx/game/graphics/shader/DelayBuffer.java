@@ -338,10 +338,10 @@ public class DelayBuffer {
 //        ShaderUtils.finalDraw(shaderManager.shaderGeometryPass,shaderManager.shaderGeometryPass.getVao());
        worldRenderer.render(shaderManager.shaderGeometryPass); OpenglUtils.checkGLError();
 
-        ShaderUtils.tempfinalDraw(ShaderManager.shaderGeometryPass, ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.freshVaoAndDraw(ShaderManager.shaderGeometryPass, ShaderManager.anotherShaderConfig.getVao());
 
 
-        ShaderUtils.tempfinalDraw(shaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig.getVao());
+        ShaderUtils.freshVaoAndDraw(shaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig.getVao());
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
       //  glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);      OpenglUtils.checkGLError();
@@ -361,13 +361,13 @@ public class DelayBuffer {
 
         renderQuad();
 
-    /*   glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+      glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
         // blit to default framebuffer. Note that this may or may not work as the internal formats of both the FBO and default framebuffer have to match.
         // the internal formats are implementation defined. This works on all of my systems, but if it doesn't on yours you'll likely have to write to the
         // depth buffer in another shader stage (or somehow see to match the default framebuffer's internal format with the FBO's internal format).
         glBlitFramebuffer(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-*/
+
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }

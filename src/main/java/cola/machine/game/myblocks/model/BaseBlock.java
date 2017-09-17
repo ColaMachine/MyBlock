@@ -28,6 +28,8 @@ import java.util.List;
  * 方块实体 如果你想找的是方块说明 那么应该找 blockDefinition
  */
 public abstract class BaseBlock extends AABB implements IBlock {
+
+    boolean delete =false;
     //是否是透明
     boolean alpha =false;
     //是否可以通过
