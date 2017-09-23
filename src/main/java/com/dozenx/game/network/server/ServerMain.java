@@ -93,11 +93,14 @@ public class ServerMain {
 
         //将message 及时发送
         Thread allSender =new ServerAllSender(serverContext.getMessages(),serverContext.getWorkers());
+        allSender.setName("allSender");
         allSender.start();
 
         ServerEnemyManager enemyManager =new ServerEnemyManager(serverContext);
        // enemyManager.run();
-        new Thread(enemyManager).start();
+        Thread enemyManagerThread =new Thread();
+        enemyManagerThread.setName("enmyManagerThread");
+        enemyManagerThread.start();
 
 
 
@@ -106,6 +109,7 @@ public class ServerMain {
         //timer.schedule(serverSynTask,0,200);
 
         timer = new Timer();
+
         timer.schedule(new ServerGrowTask(serverContext),0, 10*1000);
         timer.schedule(new ServerSaveTask(serverContext),0, 60*1000);
         System.out.println("Task scheduled.");
@@ -119,6 +123,7 @@ public class ServerMain {
             while(true){
                 Socket socket = s.accept();
                 Worker worker =new Worker(socket,serverContext);
+
                 worker.start();
                 serverContext.addWorker(worker);
                // serverContext.workerMap.put(worker.hashCode(),worker);

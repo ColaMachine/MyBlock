@@ -61,6 +61,7 @@ public class ColorBlock extends BaseBlock{
     public float bf=0;
     public float gf=0;
     public float opacity =1;
+    public boolean isLight =false;
    /* public float width=1;
     public float height=1;
     public float thick=1;*/
@@ -471,6 +472,7 @@ public class ColorBlock extends BaseBlock{
         block.gf=gf;
         block.bf =bf;
         block.opacity = opacity;
+        block.isLight=isLight;
         copyBaseBlock(block);
     }
 
@@ -486,7 +488,9 @@ public class ColorBlock extends BaseBlock{
                 .append("g:").append(this.gf).append(",")
                 .append("b:").append(this.bf).append(",")
 
-                .append("a:").append(this.opacity).append(",");
+                .append("a:").append(this.opacity).append(",")
+                .append("light:").append(this.isLight).append(",")
+        ;
 
 
         return buffer.toString();
@@ -529,11 +533,11 @@ public class ColorBlock extends BaseBlock{
         float green = MapUtil.getFloatValue(map,"g");
         float blue = MapUtil.getFloatValue(map,"b");
         float alpha = MapUtil.getFloatValue(map,"a");
-
+        boolean isLight = MapUtil.getBooleanValue(map,"light",false);
         block.rf= red;
         block.gf= green;
         block.bf= blue;
-
+        block.isLight=isLight;
         block.opacity = alpha;
 
 

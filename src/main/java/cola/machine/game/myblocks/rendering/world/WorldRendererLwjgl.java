@@ -128,6 +128,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
 
     public void update(){
         while (client.chunks.size() > 0 && client.chunks.peek() != null) {
+
             ChunkRequestCmd cmd = (ChunkRequestCmd) client.chunks.poll();
             Chunk chunk = chunkProvider.getChunk(new Vector3i(cmd.x, 0, cmd.z));// 因为拉远距离了之后
             // 会导致相机的位置其实是在很远的位置

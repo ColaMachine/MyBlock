@@ -275,7 +275,10 @@ public class Component {
                 if (this.belongTo == 2) {
                     this.itemBean.getItemDefinition().getItemModel().handModel.build(config, matrix);
                 } else if (this.belongTo == 1) {
-                    this.itemBean.getItemDefinition().getItemModel().wearModel.build(config, matrix);
+                    if(this.itemBean.getItemDefinition()!=null && this.itemBean.getItemDefinition().getItemModel()!=null && this.itemBean.getItemDefinition().getItemModel().wearModel!=null){
+                        this.itemBean.getItemDefinition().getItemModel().wearModel.build(config, matrix);
+                    }
+
                 } else if (this.belongTo == 3) {
                     this.itemBean.getItemDefinition().getItemModel().outdoorModel.build(config, matrix);
                 }

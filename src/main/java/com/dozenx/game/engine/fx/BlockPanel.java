@@ -202,7 +202,18 @@ public class BlockPanel extends Tab {
         });
 
 
+        Button reLoadBtn = new Button("去重");
 
+        ;
+
+        reLoadBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.readFromChunk();
+            }
+        });
+
+        selectGrid.add(reLoadBtn, 2, 2);
 
 
 
@@ -404,6 +415,10 @@ public class BlockPanel extends Tab {
         selectGrid.add(centerYTxt, 1, 16);
         selectGrid.add(centerZTxt, 2, 16);
 
+
+
+
+
         Button setCenterBtn = new Button("set center");
 
         setCenterBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -562,6 +577,40 @@ public class BlockPanel extends Tab {
             }
         });
 
+        final Button clearAllBtn = new Button("清除所有") ;
+        selectGrid.add(clearAllBtn, 0, 17);
+
+        clearAllBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+              GamingState.editEngine.clearAll();
+
+            }
+        });
+
+
+        final Button pullBtn = new Button("拉") ;
+        selectGrid.add(pullBtn, 1, 17);
+
+        pullBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState=Switcher.pullMode;
+
+            }
+        });
+
+
+        final Button pushBtn = new Button("推") ;
+        selectGrid.add(pushBtn, 2, 17);
+
+        pushBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState=Switcher.pushMode;
+
+            }
+        });
 
         flowPane.getChildren().add(selectGrid);
 

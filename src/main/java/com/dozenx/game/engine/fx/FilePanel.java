@@ -124,6 +124,11 @@ public class FilePanel extends Tab {
         isPenetrateCb.setText("是否可以穿透");
 
 
+        final CheckBox isLightCB = new CheckBox();
+
+        isLightCB.setText("是否灯光");
+
+
        
         Label label  =new Label("脚本:");
         final TextArea scriptTxt =new TextArea();
@@ -137,7 +142,7 @@ public class FilePanel extends Tab {
                 String id = compIdText.getText();
                 if (StringUtil.isNotEmpty(text)) {
                     String script = scriptTxt.getText();
-                    GamingState.editEngine.saveSelectAsColorGroup(Integer.valueOf(id),text, cb1.isSelected(),script,isPenetrateCb.isSelected());
+                    GamingState.editEngine.saveSelectAsColorGroup(Integer.valueOf(id),text, cb1.isSelected(),script,isPenetrateCb.isSelected(),isLightCB.isSelected());
                 }
             }
         });
@@ -151,7 +156,7 @@ public class FilePanel extends Tab {
         selectGrid.add(openButton, 0, 5);
         selectGrid.add(componentSave2, 0, 6);
    
-        selectGrid.add(cb1, 0, 7);selectGrid.add(isPenetrateCb, 1, 7);
+        selectGrid.add(cb1, 0, 7);selectGrid.add(isPenetrateCb, 1, 7);selectGrid.add(isLightCB, 2, 7);
         selectGrid.add(label, 0, 8);
         selectGrid.add(scriptTxt, 1, 8);
         

@@ -232,7 +232,7 @@ public class GamingState implements GameState {
             shadowDiv.setWidth(200);
             shadowDiv.setHeight(200);
             shadowDiv.setBackgroundImage(new Image(TextureManager.getTextureInfo("items")));
-            //document.body.appendChild(shadowDiv);
+          // document.body.appendChild(shadowDiv);
             Client500msTask client500msTask =new Client500msTask();
             client500msTask.start();
             SynchronTask task = new SynchronTask();
@@ -373,7 +373,7 @@ public ShaderManager shaderManager;
 
                   //  ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gColorSpec);
                   // info.textureHandle=shaderManager.delay.gPosition;
-                   info.textureHandle=shaderManager.delay.gNormal;//.getDepthMap();
+                  // info.textureHandle=shaderManager.delay.gNormal;//.getDepthMap();
 //                    ShaderUtils.bindAndGetTextureIndex(ShaderManager.uifloatShaderConfig,shaderManager.delay.gPosition);
 //                   info.textureHandle=shaderManager.delay.gPosition;
 
@@ -382,7 +382,7 @@ public ShaderManager shaderManager;
                     //info.textureHandle=shaderManager.delay.gColorSpec;
                   //  info.textureHandle=shaderManager.delay.gNormal;//.getDepthMap();
                     //info.textureHandle=shaderManager.delay.gColorSpec;//.getDepthMap();
-                  //  info.textureHandle=shaderManager.shadow.getDepthMap();
+                   info.textureHandle=shaderManager.shadow.getDepthMap();
                     //info.textureHandle=shaderManager.hdr.getTextureId();
                    // info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
 //
@@ -486,14 +486,14 @@ public ShaderManager shaderManager;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 
-            lightPos.x += -1;
+            lightPos.x += 1;
 
             shaderManager.lightPosChangeListener();
 
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            lightPos.x += 1.1;
+            lightPos.x += -1;
 
             shaderManager.lightPosChangeListener();
 
@@ -559,7 +559,7 @@ public ShaderManager shaderManager;
                 if(GamingState.cameraChanged){
                     GL_Vector camera_pos = GL_Vector.add(player.position,
                             GL_Vector.multiply(player.viewDir, Switcher.CAMERA_MODEL == 2 ? Switcher.CAMERA_2_PLAYER : (-1 * Switcher.CAMERA_2_PLAYER)));
-                   camera.MoveTo(camera_pos.x, camera_pos.y, camera_pos.z);
+                   camera.MoveTo(camera_pos.x, camera_pos.y+1, camera_pos.z);
                   /*  if (Switcher.CAMERA_MODEL == 2) {
                         // camera1.ViewDir.reverse();
                         camera.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);
@@ -567,8 +567,9 @@ public ShaderManager shaderManager;
 
                         camera.viewDir(player.viewDir);
                   //  }
-
+//                    LogUtil.println("hello");
                     camera.changeCallBack();
+
                     GamingState.cameraChanged=false;
                 }
                 if(GamingState.lightPosChanged){
@@ -614,10 +615,14 @@ public ShaderManager shaderManager;
        glEnable(GL_DEPTH_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         */
+//        LogUtil.println("hello render");
         //不应该每次都绘制 二应该放入
         if(Constants.SHADOW_ENABLE ) {
             //以灯光的角度进行观察 保存一个深度缓冲帧
+
            shaderManager.shadow.render(shaderManager,worldRenderer);
+
+
         }
         
 
@@ -643,8 +648,8 @@ public ShaderManager shaderManager;
         //glTranslatef( 0.0f, 0.0f, -5.0f );
 
         Long time = TimeUtil.getNowMills();
-       /* try {
-            Thread.sleep(50);
+      /* try {
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
@@ -662,6 +667,7 @@ public ShaderManager shaderManager;
 
        if(Constants.HDR_ENABLE /*&&  Math.random()>0.1*/) {
            shaderManager.hdr.render(worldRenderer);
+
        }
 //        ShaderManager.hdrShaderConfig.getVao().getVertices().rewind();
 

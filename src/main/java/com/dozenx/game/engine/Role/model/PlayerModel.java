@@ -673,10 +673,10 @@ public class PlayerModel extends BaseModel   {
 
 
             GL_Matrix /*translateMatrix=GL_Matrix.scaleMatrix(1f);*/
-             translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.75f, role.getZ());//-BODY_THICK/2
+             translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.35f, role.getZ());//-BODY_THICK/2
             //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
              rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
-
+      //  LogUtil.println("bodyAngle:"+role.getBodyAngle());
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 
             GL_Matrix newtranslateMatrix=GL_Matrix.translateMatrix(-BODY_WIDTH*0.3f/2, 0, -BODY_THICK*0.3f/2);
@@ -699,7 +699,7 @@ public class PlayerModel extends BaseModel   {
                 // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
                 rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(-2f, 0,0));
 
-                ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 24, new Vector4f(1, 1, 1, 1), ShaderManager.livingThingShaderConfig);
+//                ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 24, new Vector4f(1, 1, 1, 1), ShaderManager.livingThingShaderConfig);
 
 
 

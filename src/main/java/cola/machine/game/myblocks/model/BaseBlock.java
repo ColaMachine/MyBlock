@@ -43,7 +43,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public int id=0;
     public ChunkImpl chunk;
 
-
+    public int light = 0 ;
     public float x=0;//0~16
     public float y=0;//0~128
     public float z=0;//0~16

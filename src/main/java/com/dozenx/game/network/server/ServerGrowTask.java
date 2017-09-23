@@ -20,6 +20,7 @@ public class ServerGrowTask extends TimerTask {
     public ServerGrowTask(ServerContext serverContext){
         this.serverContext = serverContext;
 
+
     }
     //如何把小怪物的动作行动同步到各个客户端呢 一个办法是告诉客户端 怪物的一个5秒动作 即是 要到哪个点 要执行哪个动作 这样能减少客户端的数据交互 所以最终还是得看指令
     public void run(){

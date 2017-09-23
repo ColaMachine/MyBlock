@@ -132,6 +132,19 @@ public class MainFrame extends Application {
         selectGrid.add(backGameBtn, 0, 3);
 
 
+        Button saveToChunkBtn = new Button("保存到chunk");
+
+        saveToChunkBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //遍历所有的colorblocklist
+
+                GamingState.editEngine.saveToGame2();
+            }
+        });
+        selectGrid.add(saveToChunkBtn, 1, 3);
+
+
 
 
 
@@ -194,9 +207,31 @@ public class MainFrame extends Application {
         });
         selectGrid.add(synChunkFromClientBtn, 0, 7);
 
+
+        final Button hideBackGroudBtn = new Button("切换背景 当前显示背景");
+
+        hideBackGroudBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //遍历所有的colorblocklist
+                Switcher.hideTerrain = !Switcher.hideTerrain;
+                if(Switcher.hideTerrain ){
+                    hideBackGroudBtn.setText("切换背景 "+" 当前隐藏背景");
+                }else{
+                    hideBackGroudBtn.setText("切换背景 "+" 当前显示背景");
+                }
+
+            }
+        });
+
+
+        selectGrid.add(hideBackGroudBtn, 1, 7);
         selectGridTitlePane.setContent(selectGrid);
         return selectGridTitlePane;
     }
+
+
+
 
 
 //    public Tab addFilePanel() {

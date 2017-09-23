@@ -303,8 +303,10 @@ public class GL_Matrix
 		newVector.x=  m1.m00*vector.x + m1.m01*vector.y + m1.m02*vector.z+ m1.m03;
 		newVector.y=  m1.m10*vector.x + m1.m11*vector.y + m1.m12*vector.z+ m1.m13;
 		newVector.z=  m1.m20*vector.x + m1.m21*vector.y + m1.m22*vector.z+ m1.m23;
-		//newVector.w=  m1.m30*vector.x + m1.m31*vector.x + m1.m32*vector.x+ m1.m33;
-
+		float w=  m1.m30*vector.x + m1.m31*vector.x + m1.m32*vector.x+ m1.m33;
+		newVector.x=newVector.x/w;
+		newVector.y=newVector.y/w;
+		newVector.z=newVector.z/w;
 
 		return newVector;
 	}
@@ -577,25 +579,25 @@ public class GL_Matrix
     public static GL_Matrix ortho(float left, float right,float bottom,float top ,float near ,float far)
     {
         GL_Matrix m = new GL_Matrix();
-        m.m00=2*near/(right-left);
+        m.m00=2/(right-left);
         m.m01=0;
-        m.m02=(right+left)/(right-left);
+        m.m02=0;
         m.m03=0;
 
         m.m10=0;
-        m.m11=2*near/(top-bottom);
-        m.m12=(top+bottom)/(top-bottom);
+        m.m11=2/(top-bottom);
+        m.m12=0;
         m.m13=0;
 
         m.m20=0;
         m.m21=0;
-        m.m22=-(far+near)/(far-near);
-        m.m23=-2*far*near/(far-near);
+        m.m22=2/(near-far);
+        m.m23=(far+near)/(near-far);
 
         m.m30=0;
         m.m31=0;
-        m.m32=-1;
-        m.m33=0;
+        m.m32=0;
+        m.m33=1;
 
         return m;
     }

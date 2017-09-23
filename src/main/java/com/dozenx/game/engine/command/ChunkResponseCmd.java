@@ -11,6 +11,7 @@ import com.dozenx.util.ByteBufferWrap;
 import com.dozenx.util.ByteUtil;
 
 /**
+ * 用于整个的更新整个chunk
  * Created by luying on 17/2/7.
  */
 public class ChunkResponseCmd extends   BaseGameCmd{

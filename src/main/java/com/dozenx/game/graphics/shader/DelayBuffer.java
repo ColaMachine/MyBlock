@@ -2,6 +2,7 @@ package com.dozenx.game.graphics.shader;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
+import cola.machine.game.myblocks.switcher.Switcher;
 import com.sun.prism.ps.Shader;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -230,10 +231,10 @@ public class DelayBuffer {
            float constant  = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
            float linear    = 0.09f;
            float quadratic = 0.032f;
-          ShaderManager. shaderLightingPass.setVec3("light.Position",new GL_Vector(1,1,1));
-          ShaderManager. shaderLightingPass.setVec3("light.Color",new GL_Vector(1,1,1));
-             ShaderManager. shaderLightingPass.setFloat("light.Linear", linear);
-          ShaderManager. shaderLightingPass.setFloat("light.Quadratic", quadratic);
+//          ShaderManager. shaderLightingPass.setVec3("light.Position",new GL_Vector(1,1,1));
+//          ShaderManager. shaderLightingPass.setVec3("light.Color",new GL_Vector(1,1,1));
+//             ShaderManager. shaderLightingPass.setFloat("light.Linear", linear);
+//          ShaderManager. shaderLightingPass.setFloat("light.Quadratic", quadratic);
 
       }
 
@@ -250,6 +251,12 @@ public class DelayBuffer {
         ShaderManager.shaderLightingPass.getVao().getVertices().put(quadVertices);
 
         ShaderUtils.freshVao(ShaderManager.shaderLightingPass,ShaderManager.shaderLightingPass.getVao());
+
+
+        if(Constants.SHADOW_ENABLE){
+            ShaderManager.shaderGeometryPass.use();
+            ShaderManager.shaderGeometryPass.setInt("shadowMap",ShaderUtils.getActiveTextureLoc(ShaderManager.shadow.getDepthMap()));
+        }
 
     }
     
@@ -318,13 +325,13 @@ public class DelayBuffer {
     //通过hdr的方式 把世界缓存到帧里 hdrfbo
     public void render(ShaderManager shaderManager,WorldRenderer worldRenderer){
         //==============begin go=====================
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.3f,0.3f,0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //将terrain的纹理全部重新赋值一遍
 
 
         GL20.glUseProgram(shaderManager.shaderGeometryPass.getProgramId()); OpenglUtils.checkGLError();
-        ShaderUtils.bindTextureFromAnotherConfig(ShaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig);
+       ShaderUtils.bindTextureFromAnotherConfig(ShaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig);
         // glEnable(GL_DEPTH_TEST);
         //glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
       //  glViewport(0, 0, 1024, 1024);   OpenglUtils.checkGLError();
@@ -336,12 +343,14 @@ public class DelayBuffer {
 //        ShaderUtils.draw3dColorBox(shaderManager.shaderGeometryPass,shaderManager.shaderGeometryPass.getVao(),10,5,10,new GL_Vector(1,1,1),1,1,1,1);
 //        ShaderUtils.freshVao(shaderManager.shaderGeometryPass,shaderManager.shaderGeometryPass.getVao());
 //        ShaderUtils.finalDraw(shaderManager.shaderGeometryPass,shaderManager.shaderGeometryPass.getVao());
-       worldRenderer.render(shaderManager.shaderGeometryPass); OpenglUtils.checkGLError();
+      if(!Switcher.hideTerrain) {
+          worldRenderer.render(shaderManager.shaderGeometryPass);
+          OpenglUtils.checkGLError();
+      }
+        ShaderUtils.finalDraw(ShaderManager.shaderGeometryPass, ShaderManager.anotherShaderConfig.getVao());
 
-        ShaderUtils.freshVaoAndDraw(ShaderManager.shaderGeometryPass, ShaderManager.anotherShaderConfig.getVao());
 
-
-        ShaderUtils.freshVaoAndDraw(shaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig.getVao());
+       // ShaderUtils.finalDraw(shaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig.getVao());
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
       //  glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);      OpenglUtils.checkGLError();
@@ -350,26 +359,26 @@ public class DelayBuffer {
         if(Constants.SSAO_ENABLE){
             shaderManager.ssao.render(shaderManager,worldRenderer);
         }
-
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.3f,0.3f,0.3f, 1.0f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ShaderManager.shaderLightingPass.use();
+        OpenglUtils.checkGLError();
 
 
 
-
-        renderQuad();
-
-      glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+        renderQuad();  OpenglUtils.checkGLError();
+        OpenglUtils.checkGLError();
+      glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);  OpenglUtils.checkGLError();
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
+        OpenglUtils.checkGLError();
         // blit to default framebuffer. Note that this may or may not work as the internal formats of both the FBO and default framebuffer have to match.
         // the internal formats are implementation defined. This works on all of my systems, but if it doesn't on yours you'll likely have to write to the
         // depth buffer in another shader stage (or somehow see to match the default framebuffer's internal format with the FBO's internal format).
         glBlitFramebuffer(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+        OpenglUtils.checkGLError();
 
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);  OpenglUtils.checkGLError();
     }
 
     public  void  renderQuad(){

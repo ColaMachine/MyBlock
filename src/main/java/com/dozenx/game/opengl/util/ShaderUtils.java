@@ -1730,19 +1730,9 @@ try {
 
     public static void main(String args[]){
 
-        for(int i=0;i<10000;i++){
-            FloatBuffer floatBuffer =BufferUtils.createFloatBuffer(102400);
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        Integer b=1;
-        Integer a =b;
-        b++;
-        System.out.println(a);
+GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
+      System.out.println(tt  );
     }
     public static HashMap<Integer ,Integer> texHandle2glTexLocMap =new HashMap<Integer ,Integer>();
     public static int globalActiveIndex=0;
@@ -1881,6 +1871,12 @@ try {
             }else if(sampleLoc==6){
                 glUniform1i(to.getTexture6Loc(), glTexLoc);
                 OpenglUtils.checkGLError();
+            }else if(sampleLoc==7){
+                glUniform1i(to.getTexture7Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
+            }else if(sampleLoc==8){
+                glUniform1i(to.getTexture8Loc(), glTexLoc);
+                OpenglUtils.checkGLError();
             }else{
                 LogUtil.err("超出预想的范围了");
             }
@@ -1907,6 +1903,7 @@ try {
         //根据纹理顺序从config的sample 中返回值 没有就让textureINdex自增并绑定到这个值上
         Integer sampleLoc = config.getSampleLocMap().get(glTexLoc);
 
+
        /* if(index == null){
             index = config.getTextureIndexMap().get(textureHandle);
             if(index !=null){
@@ -1920,6 +1917,9 @@ try {
             OpenglUtils.checkGLError();
            //index =textureIndex;
             sampleLoc=config.textureIndex;
+            if(sampleLoc>10){
+                LogUtil.err("no it's un possible");
+            }
             config.getSampleLocMap().put(glTexLoc,sampleLoc);
            config.textureIndex++;
             //textureIndex++;
@@ -1965,7 +1965,7 @@ try {
 
     }
 
-    public static Integer bindDepth(ShaderConfig config,int textureHandle) {
+   /* public static Integer bindDepth(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
             LogUtil.err("no programid");
         }
@@ -1978,12 +1978,12 @@ try {
         //根据纹理顺序从config的sample 中返回值 没有就让textureINdex自增并绑定到这个值上
         Integer sampleLoc = config.getSampleLocMap().get(glTexLoc);
 
-       /* if(index == null){
+       *//* if(index == null){
             index = config.getTextureIndexMap().get(textureHandle);
             if(index !=null){
 
             }
-        }*/
+        }*//*
         //texturenhande ===> ative texture====>uniformloc
         if(sampleLoc==null){
 
@@ -2006,7 +2006,7 @@ try {
         }
         return sampleLoc;
 
-    }
+    }*/
 
     public static Integer bindAndGetTextureIndex123(ShaderConfig config,int textureHandle) {
         if(config.getProgramId()==0){
@@ -2951,7 +2951,7 @@ try {
         OpenglUtils.checkGLError();
         assert vao.getPoints()>0;
         glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
-        freshVao(config,vao);
+
        // vao.getVertices().glBufferData(GL_ARRAY_BUFFER,GL_STATIC_DRAW);
 //        for(int i=0;i<=vao.getVertices().listLimit;i++){
 //            int Points =vao.getVertices().buffers.get(i).position()/config.getParamTotalLen();
@@ -3097,8 +3097,10 @@ try {
         }
     }
 
-   static  float near_plane = 1.0f, far_plane = 107.5f;
-    public static GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+   static  float near_plane = 51f, far_plane =100.5f;
+    public static GL_Matrix ortho = GL_Matrix.ortho(-130.0f, 130.0f, -130.0f, 130.0f, near_plane, far_plane);
+
+
 
 }
 

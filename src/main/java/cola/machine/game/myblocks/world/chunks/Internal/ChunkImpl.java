@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
+import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
@@ -45,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.ref.WeakReference;
 import java.nio.IntBuffer;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -331,7 +333,12 @@ public class ChunkImpl implements Chunk {
 
                         // setBlock(x,y,z,block);
 
-                    } else {
+                    }else if(baseBlock instanceof  ColorBlock){
+                        if(((ColorBlock) baseBlock).isLight){//如果是灯光就加入到灯光秀里
+                            GamingState.editEngine.lightBlockHashMap.put(new GL_Vector(this.chunkPos.x*ChunkConstants.SIZE_X+x,y,this.chunkPos.z*ChunkConstants.SIZE_Z+z),new WeakReference<ColorBlock>((ColorBlock)baseBlock));
+                        }
+                        blockMap.put(blockData.getIndex(x, y, z), baseBlock);
+                    } else{
                         blockMap.put(blockData.getIndex(x, y, z), baseBlock);
                     }
                 }

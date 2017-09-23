@@ -6,9 +6,7 @@ layout (location = 3) in float textureIndex;
 out vec3 Normal;
 out vec3    FragPos;
 out  vec3 TexCoord;
-out float ourTextureIndex;
 
-out vec3   realNormal;
 out vec3   realFragPos;
 out vec4 FragPosLightSpace;
 
@@ -16,8 +14,7 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform mat4 lightSpaceMatrix;
-
+out float ourTextureIndex;
 void main()
 {
     vec4 viewPos = view * model * vec4(position, 1.0);
@@ -25,9 +22,8 @@ void main()
      TexCoord = texCoord;
 
      mat3 normalMatrix = transpose(inverse(mat3(view * model)));
-    realFragPos=vec3(model*vec4(position,1.0f));//真实的物体位置;
+     realFragPos=normal;
      Normal = normalMatrix * normal ;
-realNormal = normal;
      ourTextureIndex= textureIndex;
      gl_Position = projection * viewPos;
 //转换成灯光视角中的位置

@@ -417,6 +417,30 @@ public class MouseControlCenter {
 //    }
 
     private void mouseLClick(int x, int y) {
+
+
+        long now =TimeUtil.getNowMills();
+        if(now-player.getLastAttackTime()>1000){
+            LivingThing livingThing = null;
+            //如果当前目标距离人物小于多少的距离
+            if(player.getTarget()!=null){
+                if(player.getPosition().copyClone().sub(player.getTarget().getPosition()).length()<2){
+                    livingThing = (LivingThing)player.getTarget();
+                }
+            }else{
+                livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
+            }
+            if(livingThing!=null) {
+                player.setTarget(livingThing);
+                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
+
+                //后退
+                //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
+
+            }
+            CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, 0));
+
+        }
         startX = x;
         startY =Constants.WINDOW_HEIGHT- y ;
         if(Switcher.edit){
@@ -618,9 +642,9 @@ public class MouseControlCenter {
         prevMouseX=x;
         prevMouseY=y;
         mouseLClick(x, y);
-        if(Switcher.edit){
+        /*if(Switcher.edit){
             GamingState.editEngine.mouseClick(x, y);
-        }
+        }*/
         mouseLeftPressed=true;
 //        LogUtil.println("mouseLeftDown");
     }
@@ -688,8 +712,10 @@ public class MouseControlCenter {
         float weizhi = -from.y/viewDir.y;
        int  curentX=(int)(from.x+weizhi*viewDir.x);
         int curentZ= (int)(from.z+weizhi*viewDir.z);
-        
-       // GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
+        if(!Switcher.edit){
+            GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
+        }
+
         
     }
     /**
@@ -903,83 +929,89 @@ public class MouseControlCenter {
                             livingThing = (LivingThing)player.getTarget();
                         }
                     }else{
-                     livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
+                        livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
                     }
-                   if(livingThing!=null) {
-                       player.setTarget(livingThing);
-                       CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
+                    if(livingThing!=null) {
+                        player.setTarget(livingThing);
+                        CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
 
-                       //后退
-                       //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
+                        //后退
+                        //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
 
-                   }
-                    CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, 0));
-
+                    }
+                    try {
+                        CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                }
-            //TODO 如果使用了武器 比如射箭 就不用再消除方块了
-            GL_Vector to = GL_Vector.add(camera.Position,
-                    GL_Vector.multiply(camera.getViewDir(), 100));
+
+            if(player.getMainWeapon()==null ) {
+                //TODO 如果使用了武器 比如射箭 就不用再消除方块了
+                GL_Vector to = GL_Vector.add(camera.Position,
+                        GL_Vector.multiply(camera.getViewDir(), 100));
 
        /* GamingState.instance.lightPos.x= to.x;
         GamingState.instance.lightPos.y= to.y;
         GamingState.instance.lightPos.z= to.z;
         GamingState.lightPosChanged=true;*/
-            //this.engine.lineStart = camera.Position;
-            //this.engine.mouseEnd = to;
-            //获取客户端的方块管理器
-            //TODO 消除方块 的距离太远了 改成了4
-            ChunkProvider localChunkProvider = CoreRegistry
-                    .get(ChunkProvider.class);
-            boolean delete = true;
-            //获取当前的block item
-            //
-            BulletResultDTO arr  = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
-                    4, "soil", delete);
+                //this.engine.lineStart = camera.Position;
+                //this.engine.mouseEnd = to;
+                //获取客户端的方块管理器
+                //TODO 消除方块 的距离太远了 改成了4
+                ChunkProvider localChunkProvider = CoreRegistry
+                        .get(ChunkProvider.class);
+                boolean delete = true;
+                //获取当前的block item
+                //
+                BulletResultDTO arr = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+                        4, "soil", delete);
 
 
-            if(arr!=null){
+                if (arr != null) {
 
-                GL_Vector  hitPoint = arr.targetPoint;
-                //打印点
-                //获得朝向
+                    GL_Vector hitPoint = arr.targetPoint;
+                    //打印点
+                    //获得朝向
 
-                //获得靠近还是靠远
-                if(hitPoint ==null){
-                    return;
-                }
-                LogUtil.println("x:"+hitPoint.x%1 + "y:"+hitPoint.y%1+"z:"+hitPoint.z%1);
+                    //获得靠近还是靠远
+                    if (hitPoint == null) {
+                        return;
+                    }
+                    LogUtil.println("x:" + hitPoint.x % 1 + "y:" + hitPoint.y % 1 + "z:" + hitPoint.z % 1);
 
            /*     if(arr.targetBlock.getId()>ItemType.wood_door.ordinal()){
                     arr.targetBlock.beAttack();
                     return ;
                 }*/
-                //获得上一层还是下一层
+                    //获得上一层还是下一层
 
-                //其实我就是想知道点击的是哪一个面上 点击的面上
-                //得出当前人手上拿的是不是方块
-                int chunkX = arr.targetChunX;
-                int chunkZ = arr.targetChunZ;
-                //   TreeBlock treeBlock =new TreeBlock(hitPoint);
-                //treeBlock.startPosition=hitPoint;
-                //  treeBlock.generator();
+                    //其实我就是想知道点击的是哪一个面上 点击的面上
+                    //得出当前人手上拿的是不是方块
+                    int chunkX = arr.targetChunX;
+                    int chunkZ = arr.targetChunZ;
+                    //   TreeBlock treeBlock =new TreeBlock(hitPoint);
+                    //treeBlock.startPosition=hitPoint;
+                    //  treeBlock.generator();
 
-//                int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
-//                int blockY = MathUtil.floor(hitPoint.y);
-//                int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
-                ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-                cmd.cx = (int)hitPoint.x;
-                cmd.cy = (int)hitPoint.y;
-                cmd.cz = (int)hitPoint.z;
+                    // int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
+                    // int blockY = MathUtil.floor(hitPoint.y);
+                    // int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+                    ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+                    cmd.cx = (int) hitPoint.x;
+                    cmd.cy = (int) hitPoint.y;
+                    cmd.cz = (int) hitPoint.z;
 
-                if(cmd.cy<0){
-                    LogUtil.err("y can't be <0 ");
+                    if (cmd.cy < 0) {
+                        LogUtil.err("y can't be <0 ");
+                    }
+                    cmd.type = delete ? 2 : 1;
+                    //blockType 应该和IteType类型联系起来
+                    cmd.blockType = 0;
+
+                    CoreRegistry.get(Client.class).send(cmd);
                 }
-                cmd.type = delete?2:1;
-                //blockType 应该和IteType类型联系起来
-                cmd.blockType = 0;
-
-                CoreRegistry.get(Client.class).send(cmd);
             }
 
            // Client.messages.push(new AttackCmd(AttackType.ARROW));

@@ -15,34 +15,41 @@ struct Light {
     float Linear;
     float Quadratic;
 };
-uniform Light light;
+
+const int NR_LIGHTS = 32;
+uniform Light lights[NR_LIGHTS];
 
 void main()
 {
     // retrieve data from gbuffer
+    //这个坐标是视野空间 的坐标
     vec3 FragPos = texture(gPosition, TexCoords).rgb;
+    //这个坐标是视野空间的normal
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     vec3 Diffuse = texture(gAlbedo, TexCoords).rgb;
+     float Specular = texture(gAlbedo, TexCoords).a;
     float AmbientOcclusion = texture(ssao, TexCoords).r;
 
     // then calculate lighting as usual
-    vec3 ambient = vec3(0.3 * Diffuse * AmbientOcclusion);
+    vec3 ambient = vec3(1 * Diffuse * AmbientOcclusion);
+
     vec3 lighting  = ambient;
     vec3 viewDir  = normalize(-FragPos); // viewpos is (0.0.0)
-    // diffuse
-    vec3 lightDir = normalize(light.Position );//这里的position已经是是平面里的position了 我要找到原点的微站接好办了 或者list.position就是原来的灯光的方向 就可了 那么 变化后的light的position也是是接的灯光方向了应该没有关系的
-    vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * light.Color;
-    // specular
-    vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(Normal, lightDir), 0.0), 8.0);
-    vec3 specular = light.Color * spec;
-    // attenuation
-    float distance = length(light.Position - FragPos);
-    float attenuation = 1.0 / (1.0 + light.Linear * distance + light.Quadratic * distance * distance);
- //   diffuse *= a  ttenuation;
-  //  specular *= attenuation;
-    lighting += diffuse ;
+    for(int i = 0; i < NR_LIGHTS; ++i)
+       {
+       if(lights[i].Position.x!=0){
+           // diffuse
+             //vec3 lightDir = normalize(FragPos-lights[i].Position);
+              // vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].Color;
+            vec3 diffuse = lights[i].Color;
 
+           float distance = length(lights[i].Position - FragPos);
+           float attenuation = 1.0 / (1.0 + lights[i].Linear * distance + lights[i].Quadratic * distance * distance);
+           diffuse *= attenuation;
+
+           lighting += diffuse ;
+           }
+       }
     FragColor = vec4(lighting, 1.0);
 }
 

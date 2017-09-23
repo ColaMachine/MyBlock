@@ -121,11 +121,11 @@ public class ShaderManager {
         if(Constants.SSAO_ENABLE)
 
         {
-             shaderGeometryPass = new ShaderConfig("shaderLightingPass", "chapt16/gbuffer1.frag", "chapt16/ssao_gbuffer.vert", new int[]{3, 2});
+             shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/gbuffer1.frag", "chapt16/ssao_gbuffer.vert", new int[]{3, 2});
         }
 
     }
-    public static ShaderConfig shaderLightingPass = new ShaderConfig("shaderLightingPass", "chapt16/deferred_shading.frag", "chapt16/deferred_shading.vert", new int[]{3, 2});
+    public static ShaderConfig shaderLightingPass =null;
 
     static {
 
@@ -134,6 +134,8 @@ public class ShaderManager {
 
     {
          shaderLightingPass = new ShaderConfig("shaderLightingPass", "chapt16/ssao_lighting.frag", "chapt16/ssao.vert", new int[]{3, 2});
+    }else{
+        shaderLightingPass = new ShaderConfig("shaderLightingPass", "chapt16/deferred_shading.frag", "chapt16/deferred_shading.vert", new int[]{3, 2});
     }
 
 }
@@ -149,7 +151,7 @@ public class ShaderManager {
     FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
     public Hdr hdr;
     public Bloom bloom ;
-    public Shadow shadow;//阴影
+    public static  Shadow shadow;//阴影
     
     public DelayBuffer delay;//延迟
 
@@ -438,13 +440,18 @@ public class ShaderManager {
 
 
     public  void lightPosChangeListener() {
-
+//        GamingState.instance.lightPos.x=1;
+//        GamingState.instance.lightPos.y=10;
+//        GamingState.instance.lightPos.z=0;
 
 //        float near_plane = 1.0f, far_plane = 107.5f;
 //        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
         if(Constants.SHADOW_ENABLE){
-            shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(0, -0.3f, -1f))));
+            shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(-0.5f, -0.5f,0.5f).normalize())));
+            shadowShaderConfig.use();;
+            glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
         }
+
 
        // GL_Matrix lightViewMatrix =  ShaderManager.getInstance().shadow.lightViewMatrix ;
 
@@ -454,6 +461,12 @@ public class ShaderManager {
         glUniform3f(terrainShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
         if(Constants.SHADOW_ENABLE) {
             glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
+
+        }
+
+        if(Constants.SHADOW_ENABLE && Constants.DELAY_ENABLE) {
+            glUseProgram(shaderGeometryPass.getProgramId());
+            glUniformMatrix4(shaderGeometryPass.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
 
         }
         OpenglUtils.checkGLError();
@@ -475,7 +488,11 @@ public class ShaderManager {
             glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
         }
         OpenglUtils.checkGLError();
-
+        if(Constants.SSAO_ENABLE) {shaderGeometryPass.use();
+            shaderGeometryPass.setVec3("lightPos",GamingState.instance.lightPos);
+            //glUniform3f(shaderGeometryPass.getLightPosLoc(), GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
+        }
+        OpenglUtils.checkGLError();
         //hdr
 //        glUseProgram(hdrShaderConfig.getProgramId());
 //
@@ -493,7 +510,7 @@ public class ShaderManager {
 
         glUniformMatrix4(livingThingShaderConfig.getModelLoc(), false, model.toFloatBuffer());
         OpenglUtils.checkGLError();*/
-
+        GamingState.lightPosChanged=false;
         glUseProgram(0);
     }
 
@@ -528,18 +545,20 @@ public class ShaderManager {
             OpenglUtils.checkGLError();
         }
         //阴影灯光投影矩阵
-        int lightSpaceMatrixLoc = glGetUniformLocation(config.getProgramId(), "lightSpaceMatrix");
-        //config.setProjLoc(projectionLoc);
-        OpenglUtils.checkGLError();
-        if (lightSpaceMatrixLoc >= 0) {
-            // GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
-            // FloatBuffer lightViewBuffer = BufferUtils.createFloatBuffer(16);
-            // OpenglUtils.checkGLError();
-            // //光源的视角
-            config.setShadowLightViewLoc(lightSpaceMatrixLoc);
-            glUniformMatrix4(lightSpaceMatrixLoc, false, shadow.getLightViewMatrix().toFloatBuffer());
-            //config.setViewLoc(viewLoc);
+        if(Constants.SHADOW_ENABLE) {
+            int lightSpaceMatrixLoc = glGetUniformLocation(config.getProgramId(), "lightSpaceMatrix");
+            //config.setProjLoc(projectionLoc);
             OpenglUtils.checkGLError();
+            if (lightSpaceMatrixLoc >= 0) {
+                // GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+                // FloatBuffer lightViewBuffer = BufferUtils.createFloatBuffer(16);
+                // OpenglUtils.checkGLError();
+                // //光源的视角
+                config.setShadowLightViewLoc(lightSpaceMatrixLoc);
+                glUniformMatrix4(lightSpaceMatrixLoc, false, shadow.getLightViewMatrix().toFloatBuffer());
+                //config.setViewLoc(viewLoc);
+                OpenglUtils.checkGLError();
+            }
         }
 
 
@@ -784,7 +803,10 @@ public class ShaderManager {
                 //但是不能用这个方法 这个方法的前半段是正确的 将纹理id映射到全局的texture顺序上
                 //但是后半段 她会根据config的
                 //这里要确保再shadow的depthMap初始化后
-                int loc = ShaderUtils.bindDepth(config, shadow.getDepthMap());OpenglUtils.checkGLError();
+
+                int loc = ShaderUtils.getActiveTextureLoc( shadow.getDepthMap());OpenglUtils.checkGLError();
+
+               config.setInt("shadowMap",loc);
                 OpenglUtils.checkGLError();
                /* GL13.glActiveTexture(GL13.GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);

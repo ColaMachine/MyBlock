@@ -2,6 +2,7 @@ package com.dozenx.game.graphics.shader;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.rendering.world.WorldRenderer;
+import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import glmodel.GL_Matrix;
@@ -32,6 +33,8 @@ public class Shadow {
     /**
      * 阴影缓冲帧的初始化
      */
+
+    int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;// Constants.WINDOW_WIDTH, SHADOW_HEIGHT =  Constants.WINDOW_HEIGHT
     public void init() {
         //初始化正交矩阵 阴影灯的视角用
         float near_plane = 1.0f, far_plane = 107.5f;
@@ -42,7 +45,7 @@ public class Shadow {
         depthMapFBO = glGenFramebuffers(); OpenglUtils.checkGLError();
 
         //然后，创建一个2D纹理，提供给帧缓冲的深度缓冲使用：
-        int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
         depthMap = GL11.glGenTextures(); OpenglUtils.checkGLError();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthMap);
         OpenglUtils.checkGLError();
@@ -79,13 +82,19 @@ public class Shadow {
         GL20.glUseProgram(shaderManager.shadowShaderConfig.getProgramId());
         // glEnable(GL_DEPTH_TEST);
         //glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-        glViewport(0, 0, 1024, 1024);
+        glViewport(0, 0,SHADOW_WIDTH,   SHADOW_HEIGHT);
         //绑定使用帧缓冲 fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.shadow.depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         //GL30.RenderScene(simpleDepthShader);
-        worldRenderer.render(shaderManager.shadowShaderConfig);
-        ShaderUtils.freshVaoAndDraw(shaderManager.shadowShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        glCullFace(GL_FRONT);
+        if(!Switcher.hideTerrain) {
+            worldRenderer.render(shaderManager.shadowShaderConfig);
+        }
+        ShaderUtils.finalDraw(shaderManager.shadowShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.finalDraw(shaderManager.shadowShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
+
+        glCullFace(GL_BACK);
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);

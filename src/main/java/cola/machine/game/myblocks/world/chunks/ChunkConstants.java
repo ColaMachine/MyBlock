@@ -26,7 +26,7 @@ import cola.machine.game.myblocks.math.Vector3i;
  */
 public final class ChunkConstants {
     public static final int SIZE_X = 16;
-    public static final int SIZE_Y = 12;
+    public static final int SIZE_Y = 128;
     public static final int SIZE_Z = 16;
     public static final int INNER_CHUNK_POS_FILTER_X = TeraMath.ceilPowerOfTwo(SIZE_X) - 1;
     public static final int INNER_CHUNK_POS_FILTER_Z = TeraMath.ceilPowerOfTwo(SIZE_Z) - 1;

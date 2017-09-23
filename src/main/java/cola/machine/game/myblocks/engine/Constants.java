@@ -17,8 +17,8 @@ public class Constants {
     public final static byte end=(byte)112;
     public static  int USER_ID=30;
     public static final int FPS=30;
-    public static final int WINDOW_WIDTH=600;
-    public static final int WINDOW_HEIGHT=600;
+    public static final int WINDOW_WIDTH=1024;
+    public static final int WINDOW_HEIGHT=1024;
     public static final String ENTITY_DATA_FILE="entity.dat";
     public static final int DEFAULT_PORT=25777;//server port
     public static final String WORLD_DATA_FILE="world.dat";
@@ -40,11 +40,11 @@ public class Constants {
     public static final int BACK=3;
     public static final int LEFT =4;
     public static final int RIGHT=5;
-    
-    public static final int CHUNK_HEIGHT=128;
-
-    public static final int CHUNK_WIDTH=16;
-    public static final int CHUNK_THICK=16;
+    //移入chunkconstants
+//    public static final int CHUNK_HEIGHT=128;
+//
+//    public static final int CHUNK_WIDTH=16;
+//    public static final int CHUNK_THICK=16;
     private Constants(){
 
     }
@@ -97,7 +97,7 @@ public class Constants {
 
     static final float PIdiv180 = (float)Math.PI/2;
 
-    public static boolean SHADOW_ENABLE=false;
+    public static boolean SHADOW_ENABLE=true;
     public static boolean TRIABLE_ENABLE=false;
     public static boolean HDR_ENABLE=false;
     public static boolean GAOSI_ENABLE=false;

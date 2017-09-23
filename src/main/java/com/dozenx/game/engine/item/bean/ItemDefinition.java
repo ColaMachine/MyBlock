@@ -546,6 +546,7 @@ public class ItemDefinition implements Cloneable{
                 else if("animationblock".equals(blockType)){
                     block = AnimationBlock.parse((JSONObject) shapeObj);
                 }
+
                 block.id =id;
 
                 this.setShape( block);

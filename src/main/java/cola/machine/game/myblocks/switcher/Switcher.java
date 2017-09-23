@@ -25,16 +25,21 @@ public class Switcher {
 
     public static boolean size =true;
 
-    public static int shootMode =3;
+
     public static int boxSelectMode =1;
     public static int singleSelectMode =2;
+    public static int shootMode =3;
     public static int brushMode =4;
     public static int faceSelectMode =5;
+    public static int pullMode =6;
+    public static int  pushMode = 7 ;
 
+    public static int shapeBlockMode =0;
     public static int shapeLineMode =1;
     public static int shapeCircleMode =2;
 
-    public static int shapeBlockMode =0;
+
+
     public static int shapeMode = shapeBlockMode;//shapeBlockMode;
 
     public static int shootComponentMode = 6;
@@ -50,4 +55,6 @@ public class Switcher {
     public static int IMAGEBLOCK=2;
     public static int COMPONENTBLOCK=3;
     public static int BLOCKTYPE= COLORBLOCK;
+    /**是否隐藏背景地形 用在编辑的时候*/
+    public static boolean hideTerrain =false;
 }
