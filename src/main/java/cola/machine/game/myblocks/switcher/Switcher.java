@@ -31,8 +31,12 @@ public class Switcher {
     public static int shootMode =3;
     public static int brushMode =4;
     public static int faceSelectMode =5;
-    public static int pullMode =6;
-    public static int  pushMode = 7 ;
+
+    public static int shootComponentMode = 6;
+    public static int textureMode = 7;
+
+    public static int pullMode =8;
+    public static int  pushMode = 9 ;
 
     public static int shapeBlockMode =0;
     public static int shapeLineMode =1;
@@ -42,8 +46,7 @@ public class Switcher {
 
     public static int shapeMode = shapeBlockMode;//shapeBlockMode;
 
-    public static int shootComponentMode = 6;
-    public static int textureMode = 7;
+
 
 
     public static int mouseState = boxSelectMode;

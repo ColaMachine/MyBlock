@@ -87,7 +87,7 @@ public class ImagePanel extends Tab {
        /* canvas.widthProperty().bind(root.widthProperty().subtract(20));
         canvas.heightProperty().bind(root.heightProperty().subtract(20));*/
 
-
+        gc=canvas.getGraphicsContext2D();
         final FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(PathManager.getInstance().getHomePath().toFile());
         fileChooser.setTitle("加载组件");
@@ -174,7 +174,9 @@ public class ImagePanel extends Tab {
                 System.out.println("clicked on " + textureInfoName);
 
                 TextureInfo ti = TextureManager.getTextureInfo(textureInfoName);
+
                 if(ti!=null ){
+                    gc.setStroke(Color.BLUE);
                     canvas.drawSelect(ti.minX, 1 - ti.maxY, ti.maxX, 1 - ti.minY);
 
                 }
@@ -210,14 +212,14 @@ public class ImagePanel extends Tab {
 
 
                 String textTureName = saveTextureText.getText();
-                int minX = (int) (canvas.mouseStartX / canvas.getWidth() * canvas.imgwidth);
-                int minY = (int) (canvas.mouseStartY / canvas.getHeight() * canvas.imgheight);
+                int minX = (int) (canvas.mouseStartX / canvas.getWidth() * canvas.imgheight);
+                int minY = (int) (canvas.mouseStartY / canvas.getHeight() * canvas.imgwidth);
 
-                int maxX = (int) (canvas.mouseEndX / canvas.getWidth() * canvas.imgwidth);
-                int maxY = (int) (canvas.mouseEndY / canvas.getHeight() * canvas.imgheight);
+                int maxX = (int) (canvas.mouseEndX / canvas.getWidth() * canvas.imgheight);
+                int maxY = (int) (canvas.mouseEndY / canvas.getHeight() * canvas.imgwidth);
                 int w = maxX - minX;
                 int h = maxY - minY;
-                minY = canvas.imgheight - maxY;
+                minY = canvas.imgwidth - maxY;
 
 
                 StringBuffer sb = new StringBuffer();

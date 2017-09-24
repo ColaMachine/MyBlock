@@ -261,10 +261,12 @@ public class ColorBlock extends BaseBlock{
     /**
      * 长长使用再在group中
      */
-    @Override //静态方块的绘制
+    @Override //静态方块的绘制 in chunk
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ,float childWidth,float childHeight,float childThick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back){
        //ShaderUtils.draw3dColorBox(config, vao, childX, childY, childZ, new GL_Vector(rf, gf, bf), childWidth, childHeight, childThick, /*selectBlockList.size()>0?0.5f:*/this.opacity);
-        ShaderUtils.draw3dColorBox(config, vao, parentX,parentY,parentZ,points, BoxModel.dirAry,rf, gf, bf,this.opacity  );
+        ShaderUtils.draw3dColorBox(config, vao, parentX,parentY,parentZ,points, BoxModel.dirAry,rf, gf, bf,this.opacity , new boolean[]{top,  bottom,  left,  right,  front, back} );
+
+
 
     }
 
@@ -291,7 +293,7 @@ public class ColorBlock extends BaseBlock{
      */
     @Override
     public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-        ShaderUtils.draw3dColorBox(config, vao, x, y, z,points, BoxModel.dirAry,rf, gf, bf,this.opacity  );
+        ShaderUtils.draw3dColorBox(config, vao, x, y, z,points, BoxModel.dirAry,rf, gf, bf,this.opacity , new boolean[]{top,  bottom,  left,  right,  front, back} );
      /*   ShaderUtils.draw3dColorBox(config, vao, x, y, z, new GL_Vector(rf, gf, bf), 1, 1, 1, *//*selectBlockList.size()>0?0.5f:*//*this.opacity,
                 top,bottom,left,right,front,right);*/
     }

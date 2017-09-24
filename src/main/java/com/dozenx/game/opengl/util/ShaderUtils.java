@@ -2638,6 +2638,39 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     }
 
 
+    public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector[] points,GL_Vector[] dirAry,float red,float green,float blue,float alpha,boolean[] faceExistAry){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+
+        try {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+
+
+            int[][] faceAry = BoxModel.facesAry;
+
+            for(int i=0;i<6;i++){
+                if(!faceExistAry[i])
+                    continue;
+                int[] faceAry2 = faceAry[i];
+
+
+                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[1]].x).put(y+points[faceAry2[1]].y).put(z+points[faceAry2[1]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[3]].x).put(y+points[faceAry2[3]].y).put(z+points[faceAry2[3]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+
+                veticesBuffer.put(x+points[faceAry2[0]].x).put(y+points[faceAry2[0]].y).put(z+points[faceAry2[0]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+                veticesBuffer.put(x+points[faceAry2[2]].x).put(y+points[faceAry2[2]].y).put(z+points[faceAry2[2]].z).put(dirAry[i].x).put(dirAry[i].y).put(dirAry[i].z).put(red/*+0.03f*(i-3)*/).put(green/*+0.03f*(i-3)*/).put(blue/*+0.03f*(i-3)*/).put(-alpha);//p1
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
 
     public static void draw3dColorBoxLine(ShaderConfig config,Vao vao ,float x,float y,float z ,float width,float height,float thick){
         //ti=TextureManager.getTextureInfo("mantle");

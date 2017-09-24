@@ -436,6 +436,7 @@ public class EditEngine {
             }
             selectBlockList.clear();
         }
+        needUpdate=true;
         lineNeedUpdate=true;
     }
 
