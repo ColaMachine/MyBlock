@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="05ed9f65-f8cd-47e7-b544-b0c1b482b26b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/image/image.cfg" afterPath="$PROJECT_DIR$/config/image/image.cfg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saves/player/123.txt" afterPath="$PROJECT_DIR$/saves/player/123.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/switcher/Switcher.java" afterPath="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/switcher/Switcher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ImagePanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ImagePanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java" />
     </list>
     <ignored path="MyBlock.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,6 +44,7 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="219" column="36" selection-start-line="219" selection-start-column="36" selection-end-line="219" selection-end-column="36" />
               <folding>
+                <element signature="imports" expanded="false" />
                 <element signature="e#1170#1171#0" expanded="false" />
                 <element signature="e#1218#1219#0" expanded="false" />
                 <element signature="e#1992#1993#0" expanded="false" />
@@ -65,7 +61,19 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="123" column="62" selection-start-line="123" selection-start-column="62" selection-end-line="123" selection-end-column="62" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#15101#15102#0" expanded="false" />
+                <element signature="e#15189#15190#0" expanded="false" />
+                <element signature="e#15439#15440#0" expanded="false" />
+                <element signature="e#15485#15486#0" expanded="false" />
+                <element signature="e#15606#15607#0" expanded="false" />
+                <element signature="e#15694#15695#0" expanded="false" />
+                <element signature="e#16657#16658#0" expanded="false" />
+                <element signature="e#16692#16693#0" expanded="false" />
+                <element signature="e#18445#18446#0" expanded="false" />
+                <element signature="e#18481#18482#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -83,8 +91,8 @@
       <file leaf-file-name="ColorBlock.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66505635">
-              <caret line="295" column="162" selection-start-line="295" selection-start-column="162" selection-end-line="295" selection-end-column="162" />
+            <state vertical-scroll-proportion="0.34299517">
+              <caret line="295" column="146" selection-start-line="295" selection-start-column="146" selection-end-line="295" selection-end-column="146" />
               <folding />
             </state>
           </provider>
@@ -95,7 +103,11 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="1030" column="125" selection-start-line="1030" selection-start-column="125" selection-end-line="1030" selection-end-column="125" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#32828#32829#0" expanded="false" />
+                <element signature="e#32867#32868#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -115,7 +127,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#806#807#0" expanded="false" />
+                <element signature="e#833#834#0" expanded="false" />
+                <element signature="e#3879#3880#0" expanded="false" />
+                <element signature="e#3906#3907#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -125,16 +143,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="316" column="0" selection-start-line="316" selection-start-column="0" selection-end-line="316" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShaderUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2651" column="20" selection-start-line="2651" selection-start-column="20" selection-end-line="2651" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -808,43 +816,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MyBlock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="texture" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1621,7 +1597,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="237" column="12" selection-start-line="237" selection-start-column="12" selection-end-line="237" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1637,7 +1612,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1790,7 +1764,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="254" column="16" selection-start-line="254" selection-start-column="16" selection-end-line="254" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1870,7 +1843,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="1005" column="0" selection-start-line="1005" selection-start-column="0" selection-end-line="1005" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1879,7 +1852,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="47" column="2" selection-start-line="47" selection-start-column="2" selection-end-line="47" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1887,7 +1859,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1895,7 +1866,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1941,7 +1911,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="29" selection-start-line="0" selection-start-column="29" selection-end-line="0" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1958,6 +1927,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="219" column="36" selection-start-line="219" selection-start-column="36" selection-end-line="219" selection-end-column="36" />
           <folding>
+            <element signature="imports" expanded="false" />
             <element signature="e#1170#1171#0" expanded="false" />
             <element signature="e#1218#1219#0" expanded="false" />
             <element signature="e#1992#1993#0" expanded="false" />
@@ -1972,7 +1942,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="123" column="62" selection-start-line="123" selection-start-column="62" selection-end-line="123" selection-end-column="62" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#15101#15102#0" expanded="false" />
+            <element signature="e#15189#15190#0" expanded="false" />
+            <element signature="e#15439#15440#0" expanded="false" />
+            <element signature="e#15485#15486#0" expanded="false" />
+            <element signature="e#15606#15607#0" expanded="false" />
+            <element signature="e#15694#15695#0" expanded="false" />
+            <element signature="e#16657#16658#0" expanded="false" />
+            <element signature="e#16692#16693#0" expanded="false" />
+            <element signature="e#18445#18446#0" expanded="false" />
+            <element signature="e#18481#18482#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1984,18 +1966,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2651" column="20" selection-start-line="2651" selection-start-column="20" selection-end-line="2651" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/model/CakeModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#806#807#0" expanded="false" />
+            <element signature="e#833#834#0" expanded="false" />
+            <element signature="e#3879#3880#0" expanded="false" />
+            <element signature="e#3906#3907#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1030" column="125" selection-start-line="1030" selection-start-column="125" selection-end-line="1030" selection-end-column="125" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#32828#32829#0" expanded="false" />
+            <element signature="e#32867#32868#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/opengl/util/ShaderUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.030595813">
+          <caret line="2640" column="23" selection-start-line="2640" selection-start-column="23" selection-end-line="2640" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -2004,14 +2004,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="316" column="0" selection-start-line="316" selection-start-column="0" selection-end-line="316" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1030" column="125" selection-start-line="1030" selection-start-column="125" selection-end-line="1030" selection-end-column="125" />
           <folding />
         </state>
       </provider>
@@ -2026,8 +2018,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ColorBlock.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66505635">
-          <caret line="295" column="162" selection-start-line="295" selection-start-column="162" selection-end-line="295" selection-end-column="162" />
+        <state vertical-scroll-proportion="0.34299517">
+          <caret line="295" column="146" selection-start-line="295" selection-start-column="146" selection-end-line="295" selection-end-column="146" />
           <folding />
         </state>
       </provider>
