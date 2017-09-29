@@ -129,6 +129,8 @@ public class FilePanel extends Tab {
         isLightCB.setText("是否灯光");
 
 
+
+
        
         Label label  =new Label("脚本:");
         final TextArea scriptTxt =new TextArea();

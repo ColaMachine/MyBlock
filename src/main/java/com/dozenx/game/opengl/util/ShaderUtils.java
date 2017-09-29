@@ -34,7 +34,11 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class ShaderUtils {
-
+    public static final GL_Vector BLUE = new GL_Vector(0,0,1) ;
+    public static final GL_Vector RED = new GL_Vector(1,0,0) ;
+    public static final GL_Vector GREEN = new GL_Vector(0,1,0) ;
+    public static final GL_Vector WHITE = new GL_Vector(0,0,0) ;
+    public static final GL_Vector BLACK = new GL_Vector(1,1,1) ;
 
    /*public static void initShader(ShaderConfig shaderConfig){
 
@@ -2520,6 +2524,29 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
         }
     }
 
+    public static void draw3dColorTriangle(ShaderConfig config,Vao vao ,
+            float x1,float y1,float z1,
+                                           float x2,float y2,float z2,
+                                           float x3,float y3,float z3
+            ,GL_Vector normal,float rf,float gf,float bf){
+
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        try {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+
+            veticesBuffer.put(x1).put(y1).put(z1).put(normal.x).put(normal.y).put(normal.z).put(rf).put(gf).put(bf).put(-1);//p1
+            veticesBuffer.put(x2).put(y2).put(z2).put(normal.x).put(normal.y).put(normal.z).put(rf).put(gf).put(bf).put(-1);//p2
+            veticesBuffer.put(x3).put(y3).put(z3).put(normal.x).put(normal.y).put(normal.z).put(rf).put(gf).put(bf).put(-1);//p3
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float width,float height,float thick,float alpha){
         //ti=TextureManager.getTextureInfo("mantle");
 
@@ -3130,11 +3157,15 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
         }
     }
 
-   static  float near_plane = 51f, far_plane =100.5f;
+   static  float near_plane = 1f, far_plane =150.5f;
     public static GL_Matrix ortho = GL_Matrix.ortho(-130.0f, 130.0f, -130.0f, 130.0f, near_plane, far_plane);
 
 
+    public static void drawLine(float x, float y, float z, float x1, float y1, float z1) {
 
+        ShaderManager.lineShaderConfig.getVao().getVertices().put(x).put(y).put(z);
+        ShaderManager.lineShaderConfig.getVao().getVertices().put(x1).put(y1).put(z1);
+    }
 }
 
 

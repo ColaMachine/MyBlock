@@ -1,20 +1,17 @@
 package cola.machine.game.myblocks.model;
 
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
-import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.MapUtil;
 import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
 
 
-public class RotateImageBlock extends ImageBlock implements RotateBlock{
-    public RotateImageBlock(){
+public class BoneRotateImageBlock extends ImageBlock implements RotateBlock{
+
+    public BoneRotateImageBlock(){
 
     }
 
@@ -28,14 +25,14 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
     public float centerZ=0.5f;
 
 
-    public RotateImageBlock(float x, float y, float z){
+    public BoneRotateImageBlock(float x, float y, float z){
         this.x =x;
         this.y=y;
         this.z=z;
 
 
     }
-    public RotateImageBlock(float x, float y, float z, float width, float height, float thick){
+    public BoneRotateImageBlock(float x, float y, float z, float width, float height, float thick){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -44,7 +41,7 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
         this.thick =thick;
 
     }
-    public RotateImageBlock(float x, float y, float z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
+    public BoneRotateImageBlock(float x, float y, float z, float width, float height, float thick, float rf, float gf, float bf, float opacity){
         this.x =x;
         this.y=y;
         this.z=z;
@@ -70,8 +67,8 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
     }*/
     
     
-    public RotateImageBlock copy(){
-        RotateImageBlock colorBlock  =new RotateImageBlock();
+    public BoneRotateImageBlock copy(){
+        BoneRotateImageBlock colorBlock  =new BoneRotateImageBlock();
         copyBaseBlock(colorBlock);
         copyImageBlock(colorBlock);
         copyRotateImageBlock(colorBlock);
@@ -79,7 +76,7 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
         return colorBlock;
     }
     
-    public void copyRotateImageBlock(RotateImageBlock block){
+    public void copyRotateImageBlock(BoneRotateImageBlock block){
         block .rotateX= this.rotateX;
         block .rotateY= this.rotateY;
         block.centerY = this.centerY;
@@ -225,9 +222,9 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
         this.centerZ = centerZ;
     }
 
-    public static RotateImageBlock parse(JSONObject map){
+    public static BoneRotateImageBlock parse(JSONObject map){
 
-        RotateImageBlock block =new RotateImageBlock();
+        BoneRotateImageBlock block =new BoneRotateImageBlock();
         block.parseRotateImage(block,map);
         block.reComputePoints();
         return block;
@@ -235,7 +232,7 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
 
     }
 
-    public  void parseRotateImage(RotateImageBlock block ,JSONObject map){
+    public  void parseRotateImage(BoneRotateImageBlock block , JSONObject map){
         parseImage(block,map);
 
         float rotateX = MapUtil.getFloatValue(map,"rotateX");

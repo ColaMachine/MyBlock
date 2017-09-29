@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.model.RotateColorBlock2;
 import cola.machine.game.myblocks.model.RotateImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
+import com.dozenx.game.engine.edit.EditEngine;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -57,6 +58,20 @@ public class BlockPanel extends Tab {
                 GamingState.editEngine.setColor((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
             }
         });
+
+        Button fillBtn = new Button("设置当前方块");
+
+        // add(setColorBtn);
+        selectGrid.add(fillBtn,3,0);
+        fillBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.setBlock();
+            }
+        });
+
+
         colorPicker.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -611,6 +626,103 @@ public class BlockPanel extends Tab {
 
             }
         });
+
+
+        final Button freshBtn = new Button("刷新") ;
+        selectGrid.add(freshBtn, 2, 18);
+
+        freshBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.fresh();
+
+            }
+        });
+
+        final Button rotateBtn = new Button("旋转") ;
+        selectGrid.add(rotateBtn, 3, 18);
+
+        rotateBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               Switcher.mouseState=Switcher.rotateMode;
+                GamingState.editEngine.beginRotate();
+            }
+        });
+
+
+
+
+        final Button moveBtn = new Button("移动") ;
+        selectGrid.add(moveBtn, 4, 18);
+
+        moveBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState=Switcher.moveMode;
+                GamingState.editEngine.beginMove();
+            }
+        });
+
+
+        final Button moveAxisBtn = new Button("移动坐标") ;
+        selectGrid.add(moveAxisBtn, 5, 18);
+
+        moveAxisBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState=Switcher.moveAxisMode;
+                GamingState.editEngine.beginMoveAxis();
+            }
+        });
+
+        final Button sizeBtn = new Button("缩放") ;
+        selectGrid.add(sizeBtn, 6, 18);
+
+        sizeBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Switcher.mouseState=Switcher.resizeMode;
+                GamingState.editEngine.beginResize();
+            }
+        });
+
+
+        final Button resetBtn = new Button("归为") ;
+        selectGrid.add(resetBtn, 7, 18);
+
+        resetBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.reset();
+            }
+        });
+
+
+        final Button triangleBtn = new Button("生成3角") ;
+        selectGrid.add(triangleBtn, 0, 19);
+
+        triangleBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.generatorTriangle();
+            }
+        });
+
+
+        final Button delTriangleBtn = new Button("删除3角") ;
+        selectGrid.add(delTriangleBtn, 1, 19);
+
+        delTriangleBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.deleteTriangle();
+            }
+        });
+
 
         flowPane.getChildren().add(selectGrid);
 

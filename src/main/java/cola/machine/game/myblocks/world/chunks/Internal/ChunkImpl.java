@@ -23,6 +23,7 @@ import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.action.ItemManager;
@@ -1802,6 +1803,23 @@ public class ChunkImpl implements Chunk {
             int error = GL11.glGetError();
             System.out.println(this.chunkPos + "displayId should not be 0 in render");
         } else {
+            for (int i = 0; i < animationBlock.size(); i++) {
+                AnimationBlock animationBlock = (AnimationBlock) this.animationBlock.get(i);
+                GL_Matrix translateMatrix  = GL_Matrix.translateMatrix(chunkPos.x * 16 + animationBlock.x, animationBlock.y,
+                        chunkPos.z * 16 + animationBlock.z);
+                GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir*3.14f/2, 0);
+                rotateMatrix = GL_Matrix.multiply(translateMatrix, rotateMatrix);
+                //animationBlock.reComputePoints();
+                animationBlock.renderShaderInGivexyzwht(config,
+                        ShaderManager.anotherShaderConfig.getVao(),rotateMatrix
+                        ,
+                        animationBlock.points);
+                GamingState.editEngine.needUpdate=true;
+                // colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16
+                // +colorGroup.x ,colorGroup.y,chunkPos.z*16
+                // +colorGroup.z,true,true,true,true,true ,true );
+            }
+
             ShaderUtils.finalDraw(config, vao);
 
         }

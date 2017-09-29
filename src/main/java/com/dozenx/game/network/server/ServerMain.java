@@ -97,8 +97,8 @@ public class ServerMain {
         allSender.start();
 
         ServerEnemyManager enemyManager =new ServerEnemyManager(serverContext);
-       // enemyManager.run();
-        Thread enemyManagerThread =new Thread();
+
+        Thread enemyManagerThread =new Thread(enemyManager);
         enemyManagerThread.setName("enmyManagerThread");
         enemyManagerThread.start();
 

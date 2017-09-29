@@ -87,14 +87,14 @@ public class Shadow {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.shadow.depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         //GL30.RenderScene(simpleDepthShader);
-        glCullFace(GL_FRONT);
+      //  glCullFace(GL_FRONT);
         if(!Switcher.hideTerrain) {
             worldRenderer.render(shaderManager.shadowShaderConfig);
         }
         ShaderUtils.finalDraw(shaderManager.shadowShaderConfig,ShaderManager.anotherShaderConfig.getVao());
         ShaderUtils.finalDraw(shaderManager.shadowShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
 
-        glCullFace(GL_BACK);
+      //  glCullFace(GL_BACK);
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);

@@ -883,11 +883,11 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
 
     public void setCenter(float x, float y, float z) {
         for (BaseBlock block : selectBlockList) {
-            if (block instanceof RotateColorBlock2) {
-                RotateColorBlock2 rotateBlock = (RotateColorBlock2) block;
-                rotateBlock.centerX = x;// -rotateBlock.x;
-                rotateBlock.centerY = y;// -rotateBlock.y;
-                rotateBlock.centerZ = z;// -rotateBlock.z;
+            if (block instanceof RotateBlock) {
+                RotateBlock rotateBlock = (RotateBlock) block;
+                rotateBlock.setCenterX( x);// -rotateBlock.x;
+                rotateBlock.setCenterY( y);// -rotateBlock.y;
+                rotateBlock.setCenterZ( z);// -rotateBlock.z;
 
             }
         }

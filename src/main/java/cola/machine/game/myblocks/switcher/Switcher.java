@@ -38,6 +38,11 @@ public class Switcher {
     public static int pullMode =8;
     public static int  pushMode = 9 ;
 
+    public static int rotateMode =10;
+    public static int  moveMode = 11 ;
+    public static int  resizeMode = 12 ;
+    public static int  moveAxisMode = 13 ;
+
     public static int shapeBlockMode =0;
     public static int shapeLineMode =1;
     public static int shapeCircleMode =2;

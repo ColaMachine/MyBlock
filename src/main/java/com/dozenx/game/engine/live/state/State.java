@@ -276,8 +276,9 @@ public class State {
                 //getExecutor().getCurrentState().dispose();
                 //livingThing.getExecutor().getModel().
             }else if(cmd.getAttackType()== AttackType.ARROW){
-                AttackManager.add(new Ball(1,new GL_Vector(livingThing.getPosition().x,livingThing.getPosition().y+1.5f,livingThing.getPosition().z),
-                        livingThing.getViewDir().copyClone(), 5.1f,ItemType.arrow.id,livingThing
+
+                AttackManager.add(new Ball(1,new GL_Vector(livingThing.getPosition().x,livingThing.getPosition().y+0.5f,livingThing.getPosition().z),
+                        livingThing.getWalkDir().copyClone(), 5.1f,ItemType.arrow.id,livingThing
                 ));
                 this.livingThing.changeState( new ShootState(this.livingThing));
                 if(livingThing.getTarget()!=null){

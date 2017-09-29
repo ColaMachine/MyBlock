@@ -47,6 +47,12 @@ public class AttackManager {
         GamingState.editEngine.update();
         for(int i=diedList.size()-1;i>=0;i--) {
             Ball ball = diedList.get(i);
+            if(ball.died) {
+                list.remove(ball);
+                diedList.remove(i);
+            }else{
+                ball.update(ShaderManager.anotherShaderConfig);
+            }
 
         }
         for(int i=list.size()-1;i>=0;i--){
@@ -89,6 +95,7 @@ public class AttackManager {
 
         }
         Iterator<TimeString> shanghais = texts.iterator();
+        //伤害文字
         while (shanghais.hasNext()){
             index++;
             TimeString shanghai = shanghais.next();
@@ -101,8 +108,8 @@ public class AttackManager {
 
         //ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),anotherShaderConfig);
         ShaderUtils.freshVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
-       /* ShaderUtils.freshVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
-        ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());*/
+       // ShaderUtils.freshVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+       /* ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());*/
 
     }
     int anotherShaderConfig[] = new int[]{3,3,3,1};

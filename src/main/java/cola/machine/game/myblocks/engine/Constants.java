@@ -102,7 +102,7 @@ public class Constants {
     public static boolean HDR_ENABLE=false;
     public static boolean GAOSI_ENABLE=false;
     
-    public static boolean DELAY_ENABLE=true;
+    public static boolean DELAY_ENABLE=false;
 
-    public static boolean SSAO_ENABLE =true;
+    public static boolean SSAO_ENABLE =false;
 }

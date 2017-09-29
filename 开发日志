@@ -266,3 +266,24 @@ esc的时候关闭所有的窗口
 2017年9月18日15:02:29 增加阴影的功能
 
 2017年9月21日15:31:40 最好修改的东西能直接保存到chunkimpl中 不然 每次更新都要重新刷新一遍 真的很慢 而且要实时选择面 性能有很大的损耗
+
+2017年9月28日10:18:34 增加xyz坐标系统 可以利用坐标系统进行移动 缩放  旋转  设定中心坐标
+
+2017-9-28 11:05:14 增加人物捏zhi 现在的人物是一套 component 树节点管理的 如果要改成animationblock 要支持一下几点 可以
+
+component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+需要设置换算出一个boneblock需要的父原点的
+
+也就是说所有的节点的xyz坐标都无效了 改成parent position 和 childposition
+
+最好是提供一个和animationblock一样可以编辑的界面 或者在animationblock上改造支持现在的boneblock 现在的问题是手写的配置 感觉的有一些不妥
+首先要给每一个block命名的机会
+其次要可以根据现在的block位置计算出 p和c的属性
+当前的block的位置   childblock的位置
+最好是能头一个parent的位置 和child的位置出来
+parent和child的位置其实可以拖一个坐标出来
+那不是所有的boneblock 都要继承RotateImageBlock才行?
+
+http://blog.csdn.net/zoharwolf/article/details/50216839
+
+

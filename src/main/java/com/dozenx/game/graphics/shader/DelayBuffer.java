@@ -347,10 +347,12 @@ public class DelayBuffer {
           worldRenderer.render(shaderManager.shaderGeometryPass);
           OpenglUtils.checkGLError();
       }
+        ShaderUtils.freshVao(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao());
+
         ShaderUtils.finalDraw(ShaderManager.shaderGeometryPass, ShaderManager.anotherShaderConfig.getVao());
 
 
-       // ShaderUtils.finalDraw(shaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig.getVao());
+        // ShaderUtils.finalDraw(shaderManager.shaderGeometryPass,ShaderManager.terrainShaderConfig.getVao());
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); OpenglUtils.checkGLError();
       //  glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);      OpenglUtils.checkGLError();

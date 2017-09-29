@@ -50,7 +50,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     // calculate bias (based on depth map resolution and slope)
     vec3 normal = normalize(realNormal);
     vec3 lightDir = normalize(lightPos - realFragPos);
-    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    float bias = max(0.05 * (1.0 - dot(realNormal, lightDir)), 0.005);
     // check whether current frag pos is in shadow
     // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
     // PCF
@@ -61,7 +61,9 @@ float ShadowCalculation(vec4 fragPosLightSpace)
         for(int y = -1; y <= 1; ++y)
         {
             float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+
             shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;
+            //当前的深度
         }
     }
     shadow /= 9.0;
@@ -108,7 +110,7 @@ if(oricolor.w<=0.1){
     vec3 halfwayDir = normalize(lightDir + viewDir);
     spec = pow(max(dot(realNormal, halfwayDir), 0.0), 64.0);
     vec3 specular = spec * lightColor;
-    // calculate shadow
+    // calculate shadow  现在的
     float shadow = ShadowCalculation(FragPosLightSpace);
     //2017年9月21日17:09:56  vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular )) * oricolor.xyz;  把镜反去掉了 很难看
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse )) * oricolor.xyz;

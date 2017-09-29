@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by luying on 16/9/17.
@@ -44,7 +45,7 @@ import java.util.Map;
 public class LivingThingManager {
 
 
-    public  List<LivingThing> livingThings = new ArrayList<>();
+    public  List<LivingThing> livingThings = new CopyOnWriteArrayList<>();
     private Map<Integer,LivingThing> livingThingsMap =new HashMap();
     //public LivingThing target ;
     public  LivingThing player;

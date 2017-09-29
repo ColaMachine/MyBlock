@@ -110,9 +110,9 @@ public class MouseControlCenter {
         }   if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
             if(Switcher.edit){
                 if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustWidth(-1,true);
+                    GamingState.editEngine.adjustWidth(1,true);
                 }else{
-                    GamingState.editEngine.adjustWidth(-1,false);
+                    GamingState.editEngine.adjustWidth(1,false);
                 }
 
             }else
@@ -124,9 +124,9 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
             if(Switcher.edit){
                 if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustWidth(1,true);
+                    GamingState.editEngine.adjustWidth(-1,true);
                 }else{
-                    GamingState.editEngine.adjustWidth(1,false);
+                    GamingState.editEngine.adjustWidth(-1,false);
                 }
 
             }else
@@ -438,7 +438,11 @@ public class MouseControlCenter {
                 //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
 
             }
-            CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, 0));
+            try {
+                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
+            }catch(Exception e){
+                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
+            }
 
         }
         startX = x;

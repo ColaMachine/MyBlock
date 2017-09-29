@@ -13,7 +13,7 @@ import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 
-public class RotateColorBlock2 extends ColorBlock{
+public class RotateColorBlock2 extends ColorBlock implements RotateBlock{
     public RotateColorBlock2(){
 
     }
@@ -25,6 +25,43 @@ public class RotateColorBlock2 extends ColorBlock{
     public float rotateZ;
     public float centerX=0.5f;
     public float centerY=0.5f;
+
+    public float getRotateX() {
+        return rotateX;
+    }
+
+    public void setRotateX(float rotateX) {
+        this.rotateX = rotateX;
+    }
+
+    public float getRotateY() {
+        return rotateY;
+    }
+
+    public void setRotateY(float rotateY) {
+        this.rotateY = rotateY;
+    }
+
+    public float getRotateZ() {
+        return rotateZ;
+    }
+
+    public void setRotateZ(float rotateZ) {
+        this.rotateZ = rotateZ;
+    }
+
+    public void setCenterX(float centerX) {
+        this.centerX = centerX;
+    }
+
+    public void setCenterY(float centerY) {
+        this.centerY = centerY;
+    }
+
+    public void setCenterZ(float centerZ) {
+        this.centerZ = centerZ;
+    }
+
     public float centerZ=0.5f;
 
 
@@ -182,6 +219,11 @@ public class RotateColorBlock2 extends ColorBlock{
         float rotateY = MapUtil.getFloatValue(map,"rotateY");
         float rotateZ = MapUtil.getFloatValue(map,"rotateZ");
 
+
+        block.centerX = MapUtil.getFloatValue(map,"centerX",0f);
+        block.centerY = MapUtil.getFloatValue(map,"centerY",0f);
+        block.centerZ = MapUtil.getFloatValue(map,"centerZ",0f);
+
         block.rotateX= rotateX;
 
         block.rotateY= rotateY;
@@ -196,6 +238,9 @@ public class RotateColorBlock2 extends ColorBlock{
                 .append("blocktype:'rotatecolorblock',")
                 .append(toColorBlockString())
                 .append(toBaseBlockString())
+                .append("centerX:").append(this.centerX).append(",")
+                .append("centerY:").append(this.centerY).append(",")
+                .append("centerZ:").append(this.centerZ).append(",")
                 .append("rotateX:").append(this.rotateX).append(",")
                 .append("rotateY:").append(this.rotateY).append(",")
                 .append("rotateZ:").append(this.rotateZ).append(",")
@@ -208,5 +253,18 @@ public class RotateColorBlock2 extends ColorBlock{
         return sb.toString();*/
         return buffer.toString();
     }
+    @Override
+    public float getCenterX() {
+        return centerX;
+    }
 
+    @Override
+    public float getCenterY() {
+        return centerY;
+    }
+
+    @Override
+    public float getCenterZ() {
+        return centerZ;
+    }
 }

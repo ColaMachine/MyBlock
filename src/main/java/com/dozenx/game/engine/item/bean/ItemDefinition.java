@@ -2,9 +2,7 @@ package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
+import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 
 import com.alibaba.fastjson.JSON;
@@ -545,6 +543,10 @@ public class ItemDefinition implements Cloneable{
                 }
                 else if("animationblock".equals(blockType)){
                     block = AnimationBlock.parse((JSONObject) shapeObj);
+                }else if("rotateimageblock".equals(blockType)){
+                    block = RotateImageBlock.parse((JSONObject) shapeObj);
+                }else if("rotatecolorblock".equals(blockType)){
+                    block = RotateColorBlock2.parse((JSONObject) shapeObj);
                 }
 
                 block.id =id;

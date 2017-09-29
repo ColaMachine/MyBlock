@@ -382,7 +382,7 @@ public ShaderManager shaderManager;
                     //info.textureHandle=shaderManager.delay.gColorSpec;
                   //  info.textureHandle=shaderManager.delay.gNormal;//.getDepthMap();
                     //info.textureHandle=shaderManager.delay.gColorSpec;//.getDepthMap();
-                   info.textureHandle=shaderManager.shadow.getDepthMap();
+//                   info.textureHandle=shaderManager.shadow.getDepthMap();
                     //info.textureHandle=shaderManager.hdr.getTextureId();
                    // info.textureHandle=shaderManager.bloom.pingpongBuffer[0];
 //
@@ -611,10 +611,13 @@ public ShaderManager shaderManager;
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor( 0.4648f, 0.734375f,0.96484375f,1);
-         /*glEnable(GL_BLEND);
+
+        if(!Constants.SSAO_ENABLE) {
+       glEnable(GL_BLEND);
        glEnable(GL_DEPTH_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        */
+
+        }
 //        LogUtil.println("hello render");
         //不应该每次都绘制 二应该放入
         if(Constants.SHADOW_ENABLE ) {
@@ -730,14 +733,14 @@ public ShaderManager shaderManager;
                 // return;
 
             }
-            else {
-                ShaderUtils.finalDraw(ShaderManager.lightShaderConfig, ShaderManager.lightShaderConfig.getVao());
+            else {                ShaderUtils.finalDraw(ShaderManager.lightShaderConfig, ShaderManager.lightShaderConfig.getVao());
 
 //
-                OpenglUtils.checkGLError();
-                worldRenderer.render();
-                OpenglUtils.checkGLError();
-
+                if(!Switcher.hideTerrain) {
+                    OpenglUtils.checkGLError();
+                    worldRenderer.render();
+                    OpenglUtils.checkGLError();
+                }
             }
             livingThingManager.render();
             OpenglUtils.checkGLError();
@@ -756,6 +759,11 @@ public ShaderManager shaderManager;
         itemManager.render();
         attackManager.render();
         OpenglUtils.checkGLError();
+
+
+        ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+
+        ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();
 

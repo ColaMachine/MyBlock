@@ -300,6 +300,9 @@ public class AnimationBlock extends GroupBlock {
                 } else if ("rotatecolorblock".equals(blockType)) {
                     RotateColorBlock2 shape = RotateColorBlock2.parse(object);
                     group.addChild(shape);
+                } else if ("rotateimageblock".equals(blockType)) {
+                    RotateImageBlock shape = RotateImageBlock.parse(object);
+                    group.addChild(shape);
                 } else if ("groupblock".equals(blockType)) {
                     GroupBlock shape = GroupBlock.parse(object);
                     group.addChild(shape);
@@ -558,7 +561,7 @@ public class AnimationBlock extends GroupBlock {
              */
             /* } */
         }
-        for (int i = 0; i < selectBlockList.size(); i++) {
+        for (int i = 0; i < selectBlockList.size(); i++) {//animationblock的选择边线
             BaseBlock colorBlock = selectBlockList.get(i);
             float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
             ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao(),
@@ -579,9 +582,13 @@ public class AnimationBlock extends GroupBlock {
         this.points = BoxModel.getSmallPoint(0, 0, 0, width, height, thick);
 
         GL_Matrix rotateMatrix = GL_Matrix.multiply(
-                GL_Matrix.translateMatrix(xoffset + 1f / 2, yoffset, zoffset + 1f / 2),
+                GL_Matrix.translateMatrix(1f / 2, 0, 1f / 2),
+
+          /*      GL_Matrix rotateMatrix = GL_Matrix.multiply(
+                        GL_Matrix.translateMatrix(xoffset + 1f / 2, yoffset, zoffset + 1f / 2),*/
                 GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0));
-        rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 / xzoom, 1 / yzoom, 1 / zzoom));
+        //rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 / xzoom, 1 / yzoom, 1 / zzoom));
+        rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 , 1 , 1 ));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-1f / 2, 0, -1f / 2));
 
         /*
@@ -598,7 +605,7 @@ public class AnimationBlock extends GroupBlock {
          */
         for (BaseBlock block : colorBlockList) {
             // float[] info = this.getChildBlockRelativePosition(block,x,y,z);
-            block.reComputePoints(rotateMatrix);
+            block.reComputePointsInGroup();//rotateMatrix
         }
         if (animations != null) {
             for (BaseBlock block : animations) {
@@ -623,9 +630,9 @@ public class AnimationBlock extends GroupBlock {
     }
 
     public void scale(float xzoom, float yzoom, float zzoom) {
-        this.x = this.x * xzoom;
-        this.y = this.y * yzoom;
-        this.z = this.z * zzoom;
+       // this.x = this.x * xzoom;
+        //this.y = this.y * yzoom;
+       // this.z = this.z * zzoom;
         this.width = this.width * xzoom;
         this.height = this.height * yzoom;
         this.thick = this.thick * zzoom;

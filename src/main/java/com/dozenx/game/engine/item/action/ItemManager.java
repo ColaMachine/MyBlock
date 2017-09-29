@@ -182,6 +182,10 @@ public class ItemManager {
             ItemFactory itemFactory =new ItemFactory();
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
             for (File file : fileList) {//遍历配置文件
+
+                if(file.getName().startsWith("88")){
+                    LogUtil.println("steve");
+                }
                 String json = FileUtil.readFile2Str(file);
 
                 if(json.trim().startsWith("[")) {

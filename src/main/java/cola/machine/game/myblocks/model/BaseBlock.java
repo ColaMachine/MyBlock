@@ -519,7 +519,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public  void reComputePoints(GL_Matrix rotateMatrix){
         this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
 
-        //GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
+        GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
         for(int i=0;i<points.length;i++){
             points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
 

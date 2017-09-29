@@ -92,7 +92,7 @@ public class ShaderManager {
     //扔在地上的东关系
     public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "chapt7/3dimg.frag", "chapt7/3dimg.vert", new int[]{3, 3, 3, 1});
 
-
+//现在的流程shadow==> shaderGeometryPass==>   shaderLightPass  ==>ssao ==> ssao blur
     //扔在地上的东西
     public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop", "chapt7/3dimg.frag", "chapt7/3dimg.vert", new int[]{3, 3, 3, 1});
     //伤害字符
@@ -110,7 +110,7 @@ public class ShaderManager {
     public static ShaderConfig gaosihebingShaderConfig = new ShaderConfig("gaosihebing", "chapt16/gaosihebing.frag", "chapt16/gaosihebing.vert", new int[]{2, 2});
 
     //灯光方块
-    public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "chapt13/light.frag", "chapt13/light.vert", new int[]{3});
+    public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "chapt13/line.frag", "chapt13/line.vert", new int[]{3});
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
 
     public static ShaderConfig shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/gbuffer1.frag", "chapt16/gbuffer1.vert", new int[]{3, 3, 3, 1});
