@@ -3,6 +3,8 @@ package com.dozenx.game.engine.fx;
 import java.io.File;
 import java.util.List;
 
+import com.dozenx.game.engine.element.model.BoxModel;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 
@@ -114,9 +116,9 @@ public class FilePanel extends Tab {
         Button componentSave2 = new Button("保存为组件2");
 
 
-        final CheckBox cb1 = new CheckBox();
+        final CheckBox monsterCb = new CheckBox();
 
-        cb1.setText("是否怪物");
+        monsterCb.setText("是否怪物");
 
 
         final CheckBox isPenetrateCb = new CheckBox();
@@ -127,13 +129,85 @@ public class FilePanel extends Tab {
         final CheckBox isLightCB = new CheckBox();
 
         isLightCB.setText("是否灯光");
+        //===============
+
+        final CheckBox isEquipCB = new CheckBox();
+
+        isEquipCB.setText("装备");
+
+        selectGrid.add(isEquipCB, 0, 9);
+
+        //==============
+
+        final CheckBox isWeaponCB = new CheckBox();
+
+        isWeaponCB.setText("武器");
+
+        selectGrid.add(isWeaponCB, 1, 9);
+
+        //==============
+
+        final CheckBox isClothCB = new CheckBox();
+
+        isClothCB.setText("衣服");
+
+        selectGrid.add(isClothCB, 2, 9);
+        //==============
+
+        final CheckBox hatCb = new CheckBox();
+
+        hatCb.setText("帽子");
 
 
+        selectGrid.add(hatCb,3, 9);
 
+        //==============
+
+        final CheckBox kuziCb = new CheckBox();
+
+        kuziCb.setText("裤子");
+
+        selectGrid.add(kuziCb,4, 9);
+
+        //==============
+
+        final TextField mingjieText = new TextField("敏捷");
+        final TextField zhiliText = new TextField("智力");
+        final TextField liliangText = new TextField("力量");
+        final TextField tiliText = new TextField("体力");
+        selectGrid.add(kuziCb,0, 10);
+        selectGrid.add(kuziCb,1, 10);
+        selectGrid.add(kuziCb,2, 10);
+        selectGrid.add(kuziCb,3, 10);
+        ItemDefinition item = new ItemDefinition();
+        item.setType(0);
 
        
         Label label  =new Label("脚本:");
         final TextArea scriptTxt =new TextArea();
+
+        int firstType=0;
+        int secondType=0;
+        if(monsterCb.isSelected() ){
+            firstType=1;
+        }else if(isWeaponCB.isSelected() ||
+                isClothCB.isSelected() ||
+                hatCb.isSelected() ||
+                kuziCb.isSelected() ){
+            firstType = 2;
+            if(isWeaponCB.isSelected()){
+                secondType=1;
+            }else if(isClothCB.isSelected()){
+                secondType=2;
+            }else if(hatCb.isSelected()){
+                secondType=3;
+            }else if(kuziCb.isSelected()){
+                secondType=4;
+
+            }
+        }else{
+
+        }
 
         componentSave2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -144,7 +218,7 @@ public class FilePanel extends Tab {
                 String id = compIdText.getText();
                 if (StringUtil.isNotEmpty(text)) {
                     String script = scriptTxt.getText();
-                    GamingState.editEngine.saveSelectAsColorGroup(Integer.valueOf(id),text, cb1.isSelected(),script,isPenetrateCb.isSelected(),isLightCB.isSelected());
+                    GamingState.editEngine.saveSelectAsColorGroup(Integer.valueOf(id),text, monsterCb.isSelected(),script,isPenetrateCb.isSelected(),isLightCB.isSelected());
                 }
             }
         });
@@ -158,7 +232,7 @@ public class FilePanel extends Tab {
         selectGrid.add(openButton, 0, 5);
         selectGrid.add(componentSave2, 0, 6);
    
-        selectGrid.add(cb1, 0, 7);selectGrid.add(isPenetrateCb, 1, 7);selectGrid.add(isLightCB, 2, 7);
+        selectGrid.add(monsterCb, 0, 7);selectGrid.add(isPenetrateCb, 1, 7);selectGrid.add(isLightCB, 2, 7);
         selectGrid.add(label, 0, 8);
         selectGrid.add(scriptTxt, 1, 8);
         
