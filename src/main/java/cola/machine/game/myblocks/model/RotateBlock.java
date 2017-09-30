@@ -19,4 +19,8 @@ public interface RotateBlock {
     public void setCenterX(float value);
     public void setCenterY(float value);
     public void setCenterZ(float value);
+//
+//    public float getX();
+//    public float getY();
+//    public float  getZ();
 }

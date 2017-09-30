@@ -464,7 +464,7 @@ public class ColorBlock extends BaseBlock{
 
     public ColorBlock copy(){
         ColorBlock colorBlock  =new ColorBlock();
-        copyBaseBlock(colorBlock);
+
         copyColorBlock(colorBlock);
         return colorBlock;
     }

@@ -55,7 +55,7 @@ public class Shadow {
                 SHADOW_WIDTH, SHADOW_HEIGHT,                    // size of texture image
                 0,                        // no border
                 GL11.GL_DEPTH_COMPONENT,            // incoming pixel format: 4 bytes in RGBA order
-                GL11.GL_UNSIGNED_BYTE,    // incoming pixel data type: unsigned bytes
+                GL11.GL_FLOAT,    // incoming pixel data type: unsigned bytes
                 (ByteBuffer) null);                // incoming pixels
 
         OpenglUtils.checkGLError();

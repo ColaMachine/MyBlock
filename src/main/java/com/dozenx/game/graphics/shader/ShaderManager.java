@@ -658,7 +658,7 @@ public class ShaderManager {
         }
         int lightMatDiffuseLoc = glGetUniformLocation(programId, "light.diffuse");
         if (lightMatDiffuseLoc >= 0) {
-            glUniform3f(lightMatDiffuseLoc, 1f, 1f, 1f);
+            glUniform3f(lightMatDiffuseLoc, 1f, 1f, 0.3f);
         }OpenglUtils.checkGLError();
         int lightMatSpecularLoc = glGetUniformLocation(programId, "light.specular");
         if (lightMatSpecularLoc >= 0) {

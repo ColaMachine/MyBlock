@@ -72,8 +72,7 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
     
     public RotateImageBlock copy(){
         RotateImageBlock colorBlock  =new RotateImageBlock();
-        copyBaseBlock(colorBlock);
-        copyImageBlock(colorBlock);
+
         copyRotateImageBlock(colorBlock);
         colorBlock.reComputePoints();
         return colorBlock;
@@ -86,7 +85,10 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
         block.centerX = this. centerX;
         block .centerZ = this. centerZ;
         block .rotateZ= this.rotateZ;
-        copyBaseBlock(block);
+
+        copyImageBlock(block);
+
+//        copyBaseBlock(block);  这个是有copy 调用的 但是 copy的时候已经调用copyBaseBlock过了 2017年9月30日10:34:09 去掉
     }
 
    
@@ -238,9 +240,9 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
     public  void parseRotateImage(RotateImageBlock block ,JSONObject map){
         parseImage(block,map);
 
-        float rotateX = MapUtil.getFloatValue(map,"rotateX");
-        float rotateY = MapUtil.getFloatValue(map,"rotateY");
-        float rotateZ = MapUtil.getFloatValue(map,"rotateZ");
+        float rotateX = MapUtil.getFloatValue(map,"rotateX",0f);
+        float rotateY = MapUtil.getFloatValue(map,"rotateY",0f);
+        float rotateZ = MapUtil.getFloatValue(map,"rotateZ",0f);
 
         block.centerX = MapUtil.getFloatValue(map,"centerX",0f);
         block.centerY = MapUtil.getFloatValue(map,"centerY",0f);

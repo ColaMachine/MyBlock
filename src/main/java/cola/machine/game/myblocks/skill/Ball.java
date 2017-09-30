@@ -77,7 +77,7 @@ public class Ball  {
         component.setItem();
     }*/
     public boolean jinzhi;
-    int type=2;//2是伤害  1 是掉落物品
+    public int type=2;//2是伤害  1 是掉落物品
     GL_Vector p1 =new GL_Vector(0,0,0);
     GL_Vector p2 =new GL_Vector(1,0,0);
     GL_Vector p3 =new GL_Vector(1,1,0);
@@ -129,21 +129,25 @@ public class Ball  {
         if(block!=null && block.getId()!=0){
             this.readyDied=true;
         }if(type==2) {
-            //伤害求
+            //求
             //这里可以调整涉及
             ShaderUtils.draw3dColorBox(shaderConfig,shaderConfig.getVao(),this.position.x,this.position.y,this.position.z,new GL_Vector(0,0,0),0.1f,1 );
         }else if(type==1){
-            //物品 掉落的物品
+            //掉落的物品
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
-            float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
-            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
+           // itemDefinition.getItemModel().outdoorModel.build(shaderConfig,shaderConfig.getVao(), (int) this.position.x, (int)this.position.y, (int)this.position.z);
+           // itemDefinition.getItemModel().outdoorModel.build(shaderConfig,translateMatrix);
 
-            rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
-
-
-            ShaderUtils.draw3dImage(p2,p1,p4,p3,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
-
-            ShaderUtils.draw3dImage(p1,p2,p3,p4,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
+            itemDefinition.getShape().renderShader(shaderConfig,shaderConfig.getVao(),translateMatrix);
+//            float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
+//            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
+//
+//            rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+//
+//
+//            ShaderUtils.draw3dImage(p2,p1,p4,p3,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
+//
+//            ShaderUtils.draw3dImage(p1,p2,p3,p4,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
 
         }else{
             //        GL11.glTranslatef(position.x, position.y, position.z);

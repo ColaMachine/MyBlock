@@ -184,12 +184,13 @@ public class ImageBlock extends BaseBlock{
         ImageBlock block  =new ImageBlock();
 
        
-        copyBaseBlock(block);
+
         copyImageBlock( block);
         return block;
     }
     
     public void copyImageBlock(ImageBlock block){
+        copyBaseBlock(block);
         block.top=top;
         block.bottom=bottom;
         block.front=front;

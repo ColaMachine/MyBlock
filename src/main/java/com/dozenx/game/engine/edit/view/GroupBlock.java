@@ -230,12 +230,13 @@ public class GroupBlock extends BaseBlock {
         // 复制本身
 
         GroupBlock groupBlock = new GroupBlock();
-        copyBaseBlock(groupBlock);
+
         copyGroupBlock(groupBlock);
         groupBlock.reComputePoints();
         return groupBlock;
     }
     public void copyGroupBlock(GroupBlock groupBlock){
+        copyBaseBlock(groupBlock);
      // 复制所有child block
         for (int i = 0; i < colorBlockList.size(); i++) {
             BaseBlock colorBlock = colorBlockList.get(i);

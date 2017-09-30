@@ -111,34 +111,40 @@ public class RotateColorBlock2 extends ColorBlock implements RotateBlock{
     
     public RotateColorBlock2 copy(){
         RotateColorBlock2 colorBlock  =new RotateColorBlock2();
-        copyBaseBlock(colorBlock);
-        copyColorBlock(colorBlock);
+
         copyRotateColorBlock(colorBlock);
         colorBlock.reComputePoints();
         return colorBlock;
     }
     
     public void copyRotateColorBlock(RotateColorBlock2 block){
+
+        copyColorBlock(block);
         block .rotateX= this.rotateX;
         block .rotateY= this.rotateY;
         block.centerY = this.centerY;
         block.centerX = this. centerX;
         block .centerZ = this. centerZ;
         block .rotateZ= this.rotateZ;
-        copyBaseBlock(block);
+
     }
    
     public float  rotateX(float value){
         this.rotateX+=value*0.1;//reComputePoints();
+        reComputePoints();
         return this.rotateX;
     }
     public float rotateY(float value){
         this.rotateY+=value*0.1;
+
+        reComputePoints();
+
         return this.rotateY;
         //reComputePoints();
     }
     public float rotateZ(float value){
         this.rotateZ+=value*0.1;
+        reComputePoints();
         return this.rotateZ;
         //reComputePoints();
     }

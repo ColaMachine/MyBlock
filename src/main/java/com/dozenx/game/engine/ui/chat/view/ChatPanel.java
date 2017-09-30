@@ -77,10 +77,10 @@ public class ChatPanel extends HtmlObject {
                     }
                     text=text.trim();
                     if(text.startsWith("/createboxopen")){
-                        TextureManager.createBoxShape();
+                       // TextureManager.createBoxShape();
                     }
                     if(text.startsWith("/createboxclose")){
-                        TextureManager.createBoxCloseShape();
+                      //  TextureManager.createBoxCloseShape();
                     }
                     if(text.startsWith("/chunk")) {
                         String[] arr = text.split(" ");

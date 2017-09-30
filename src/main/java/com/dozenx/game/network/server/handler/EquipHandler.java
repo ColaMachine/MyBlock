@@ -35,19 +35,19 @@ public class EquipHandler extends GameServerHandler {
             if(cmd.getPart()==EquipPartType.HEAD){
                 bean.setHeadEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
-            }
+            }else
             if(cmd.getPart()==EquipPartType.BODY){
                 bean.setBodyEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
-            }
+            }else
             if(cmd.getPart()==EquipPartType.LEG){
                 bean.setHeadEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
-            }
+            }else
             if(cmd.getPart()==EquipPartType.FOOT){
                 bean.setFootEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256
-            }
+            }else
             if(cmd.getPart()==EquipPartType.HAND){
                 bean.setHandEquip(cmd.getItemType());
                 //TODO Item 's num may be over 256

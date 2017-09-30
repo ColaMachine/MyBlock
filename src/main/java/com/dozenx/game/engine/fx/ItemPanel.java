@@ -79,7 +79,9 @@ public class ItemPanel extends Tab {
                 System.out.println("clicked on " + list.getSelectionModel().getSelectedItem());
                 String name = list.getSelectionModel().getSelectedItem();
                 if(StringUtil.isNotEmpty(name)){
-                     name= name.split("_")[1];
+                     //name= name.split("_")[1];
+                    int index = name.indexOf("_")+1;// 19_fur_hekmet
+                    name= name.substring(index);
                     ItemDefinition item = ItemManager.getItemDefinition(name);
                     if(item!=null ){
                         GamingState.editEngine.readyShootBlock = item.getShape();

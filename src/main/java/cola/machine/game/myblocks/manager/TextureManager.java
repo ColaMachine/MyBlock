@@ -519,136 +519,136 @@ public class TextureManager {
     public static void putShape(BaseBlock block ){
         shapeMap.put(block.getName(),block);
     }
-    public static BoneBlock createDoorShape(){
-        float minX=0;
-        float minY=0;
-        float minZ=0;
-        int width=1;
-        int height=2;
-        float thick =0.125f;
-        int tex_minx = 16;
-        //16,160,16,16
-        float tex_miny=144;
-        float tex_width=16;
-        float tex_height=32;
-        float imageHeight=256;
-        float imageWidth=256;
-        TextureInfo frontTi =new TextureInfo();
-        frontTi.minX=tex_minx/imageWidth;
-        frontTi.minY = tex_miny / imageHeight;
-
-        frontTi.maxX=(tex_minx+tex_width)/imageWidth;
-        frontTi.maxY = (tex_miny+tex_height) / imageHeight;
-        TextureInfo woodTi =new TextureInfo();
-        woodTi.minX=tex_minx/imageWidth;
-        woodTi.minY = tex_miny / imageHeight;
-
-        woodTi.maxX=(tex_minx+5)/imageWidth;
-        woodTi.maxY = (tex_miny+5) / imageHeight;
-
-        //StringBuffer sb =new StringBuffer();
-        /*sb.append("\"frontFace\": {\n")
-                .append("\"vertices\": [[0, 0, "+thick+"], ["+width+", 0, "+thick+"], ["+width+", "+height+", "+thick+"], [0, "+height+", "+thick+"]],")
-                .append("\"normals\": [["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"]],")
-                .append(" \"texcoords\": [["+tex_minx/imageWidth+","+tex_miny/imageHeight+"], ["+(tex_minx+tex_width)/imageWidth+", "+tex_miny/imageHeight+"], ["+(tex_minx+tex_width)/imageWidth+", "+(tex_miny+tex_height)/imageHeight+"], ["+tex_minx/imageWidth+", "+(tex_miny+tex_height)/imageHeight+"]],")
-                .append("\"faces\": [[0, 1, 2, 3] ],")
-                .append("  \"fullSide\": false")
-                .append("},");*/
-        BoneBlock shape =new BoneBlock();
-
-        ShapeFace frontFace =new ShapeFace();
-
-
-
-        //float[][] vertices = BoxModel.frontVertices;
-        frontFace.setVertices(BoxModel.getFrontVertices(minX, minY, minZ, width, height, thick));
-        frontFace.setFaces(new int[][]{{0, 1, 2, 3}});
-        //TextureInfo ti =TextureManager.getTextureInfo("wood_door_part1");
-        TextureInfo ti =frontTi;
-        frontFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
-
-        GL_Vector nowDir = BoxModel.FRONT_DIR;
-        frontFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
-
-        shape.setFrontFace(frontFace);
-
-        ///////////
-        ShapeFace backFace =new ShapeFace();
-
-        backFace.setVertices(BoxModel.getBackVertices(minX, minY, minZ, width, height, thick));
-        backFace.setFaces(new int[][]{{0, 1, 2, 3}});
-        // ti =TextureManager.getTextureInfo("wood_door_part1");
-        backFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
-
-        nowDir = BoxModel.BACK_DIR;
-        backFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
-
-        shape.setBackFace(backFace);
-
-
-
-        ////////////
-        ti =woodTi;
-        ShapeFace topFace =new ShapeFace();
-
-        topFace.setVertices(BoxModel.getTopVertices(minX, minY, minZ, width, height, thick));
-        topFace.setFaces(new int[][]{{0, 1, 2, 3}});
-        // ti =TextureManager.getTextureInfo("wood_door_part1");
-        topFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
-
-        nowDir = BoxModel.TOP_DIR;
-        topFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
-
-        shape.setTopFace(topFace);
-
-
-        ShapeFace bottomFace =new ShapeFace();
-
-        bottomFace.setVertices(BoxModel.getBottomVertices(minX, minY, minZ, width, height, thick));
-        bottomFace.setFaces(new int[][]{{0, 1, 2, 3}});
-        // ti =TextureManager.getTextureInfo("wood_door_part1");
-        bottomFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
-
-        nowDir = BoxModel.DOWN_DIR;
-        bottomFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
-
-        shape.setBottomFace(bottomFace);
-
-
-        ShapeFace leftFace =new ShapeFace();
-
-        leftFace.setVertices(BoxModel.getLeftVertices(minX, minY, minZ, width, height, thick));
-        leftFace.setFaces(new int[][]{{0, 1, 2, 3}});
-        // ti =TextureManager.getTextureInfo("wood_door_part1");
-        leftFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
-
-        nowDir = BoxModel.LEFT_DIR;
-        leftFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
-
-        shape.setLeftFace(leftFace);
-
-
-        ShapeFace rightFace =new ShapeFace();
-
-        rightFace.setVertices(BoxModel.getRightVertices(minX, minY, minZ, width, height, thick));
-        rightFace.setFaces(new int[][]{{0, 1, 2, 3}});
-        // ti =TextureManager.getTextureInfo("wood_door_part1");
-        rightFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
-
-        nowDir = BoxModel.RIGHT_DIR;
-        rightFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
-
-        shape.setRightFace(rightFace);
-
-
-        System.out.println("frontFace:"+JSON.toJSONString(shape.getFrontFace())+",");
-        System.out.println("backFace:"+JSON.toJSONString(shape.getBackFace())+",");
-        System.out.println("topFace:"+JSON.toJSONString(shape.getTopFace())+",");
-        System.out.println("bottomFace:"+JSON.toJSONString(shape.getBottomFace())+",");
-        System.out.println("leftFace:"+JSON.toJSONString(shape.getLeftFace())+",");
-        System.out.println("rightFace:"+JSON.toJSONString(shape.getRightFace())+",");
-        return shape;
-    }
+//    public static BoneBlock createDoorShape(){
+//        float minX=0;
+//        float minY=0;
+//        float minZ=0;
+//        int width=1;
+//        int height=2;
+//        float thick =0.125f;
+//        int tex_minx = 16;
+//        //16,160,16,16
+//        float tex_miny=144;
+//        float tex_width=16;
+//        float tex_height=32;
+//        float imageHeight=256;
+//        float imageWidth=256;
+//        TextureInfo frontTi =new TextureInfo();
+//        frontTi.minX=tex_minx/imageWidth;
+//        frontTi.minY = tex_miny / imageHeight;
+//
+//        frontTi.maxX=(tex_minx+tex_width)/imageWidth;
+//        frontTi.maxY = (tex_miny+tex_height) / imageHeight;
+//        TextureInfo woodTi =new TextureInfo();
+//        woodTi.minX=tex_minx/imageWidth;
+//        woodTi.minY = tex_miny / imageHeight;
+//
+//        woodTi.maxX=(tex_minx+5)/imageWidth;
+//        woodTi.maxY = (tex_miny+5) / imageHeight;
+//
+//        //StringBuffer sb =new StringBuffer();
+//        /*sb.append("\"frontFace\": {\n")
+//                .append("\"vertices\": [[0, 0, "+thick+"], ["+width+", 0, "+thick+"], ["+width+", "+height+", "+thick+"], [0, "+height+", "+thick+"]],")
+//                .append("\"normals\": [["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"], ["+ BoxModel.FRONT_DIR.x+","+BoxModel.FRONT_DIR.y+","+BoxModel.FRONT_DIR.z+"]],")
+//                .append(" \"texcoords\": [["+tex_minx/imageWidth+","+tex_miny/imageHeight+"], ["+(tex_minx+tex_width)/imageWidth+", "+tex_miny/imageHeight+"], ["+(tex_minx+tex_width)/imageWidth+", "+(tex_miny+tex_height)/imageHeight+"], ["+tex_minx/imageWidth+", "+(tex_miny+tex_height)/imageHeight+"]],")
+//                .append("\"faces\": [[0, 1, 2, 3] ],")
+//                .append("  \"fullSide\": false")
+//                .append("},");*/
+//        BoneBlock shape =new BoneBlock();
+//
+//        ShapeFace frontFace =new ShapeFace();
+//
+//
+//
+//        //float[][] vertices = BoxModel.frontVertices;
+//        frontFace.setVertices(BoxModel.getFrontVertices(minX, minY, minZ, width, height, thick));
+//        frontFace.setFaces(new int[][]{{0, 1, 2, 3}});
+//        //TextureInfo ti =TextureManager.getTextureInfo("wood_door_part1");
+//        TextureInfo ti =frontTi;
+//        frontFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+//
+//        GL_Vector nowDir = BoxModel.FRONT_DIR;
+//        frontFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+//
+//        shape.setFrontFace(frontFace);
+//
+//        ///////////
+//        ShapeFace backFace =new ShapeFace();
+//
+//        backFace.setVertices(BoxModel.getBackVertices(minX, minY, minZ, width, height, thick));
+//        backFace.setFaces(new int[][]{{0, 1, 2, 3}});
+//        // ti =TextureManager.getTextureInfo("wood_door_part1");
+//        backFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+//
+//        nowDir = BoxModel.BACK_DIR;
+//        backFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+//
+//        shape.setBackFace(backFace);
+//
+//
+//
+//        ////////////
+//        ti =woodTi;
+//        ShapeFace topFace =new ShapeFace();
+//
+//        topFace.setVertices(BoxModel.getTopVertices(minX, minY, minZ, width, height, thick));
+//        topFace.setFaces(new int[][]{{0, 1, 2, 3}});
+//        // ti =TextureManager.getTextureInfo("wood_door_part1");
+//        topFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+//
+//        nowDir = BoxModel.TOP_DIR;
+//        topFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+//
+//        shape.setTopFace(topFace);
+//
+//
+//        ShapeFace bottomFace =new ShapeFace();
+//
+//        bottomFace.setVertices(BoxModel.getBottomVertices(minX, minY, minZ, width, height, thick));
+//        bottomFace.setFaces(new int[][]{{0, 1, 2, 3}});
+//        // ti =TextureManager.getTextureInfo("wood_door_part1");
+//        bottomFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+//
+//        nowDir = BoxModel.DOWN_DIR;
+//        bottomFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+//
+//        shape.setBottomFace(bottomFace);
+//
+//
+//        ShapeFace leftFace =new ShapeFace();
+//
+//        leftFace.setVertices(BoxModel.getLeftVertices(minX, minY, minZ, width, height, thick));
+//        leftFace.setFaces(new int[][]{{0, 1, 2, 3}});
+//        // ti =TextureManager.getTextureInfo("wood_door_part1");
+//        leftFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+//
+//        nowDir = BoxModel.LEFT_DIR;
+//        leftFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+//
+//        shape.setLeftFace(leftFace);
+//
+//
+//        ShapeFace rightFace =new ShapeFace();
+//
+//        rightFace.setVertices(BoxModel.getRightVertices(minX, minY, minZ, width, height, thick));
+//        rightFace.setFaces(new int[][]{{0, 1, 2, 3}});
+//        // ti =TextureManager.getTextureInfo("wood_door_part1");
+//        rightFace.setTexcoords(new float[][]{{ti.minX,ti.minY},{ti.maxX,ti.minY},{ti.maxX,ti.maxY},{ti.minX,ti.maxY}});
+//
+//        nowDir = BoxModel.RIGHT_DIR;
+//        rightFace.setNormals(new float[][]{{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z},{nowDir.x,nowDir.y,nowDir.z}});
+//
+//        shape.setRightFace(rightFace);
+//
+//
+//        System.out.println("frontFace:"+JSON.toJSONString(shape.getFrontFace())+",");
+//        System.out.println("backFace:"+JSON.toJSONString(shape.getBackFace())+",");
+//        System.out.println("topFace:"+JSON.toJSONString(shape.getTopFace())+",");
+//        System.out.println("bottomFace:"+JSON.toJSONString(shape.getBottomFace())+",");
+//        System.out.println("leftFace:"+JSON.toJSONString(shape.getLeftFace())+",");
+//        System.out.println("rightFace:"+JSON.toJSONString(shape.getRightFace())+",");
+//        return shape;
+//    }
 
 
     public void print(Component component,BoneBlock shape){
@@ -669,75 +669,75 @@ public class TextureManager {
 
     }
 
-    public static BoneBlock createBoxShape(){
-
-
-        Component rootComponent =new Component();
-
-        BoneBlock bodyShape = (BoneBlock)TextureManager.getShape("box_open_body");//加载箱体shape
-        rootComponent =
-                new Component(bodyShape);
-
-        rootComponent.addChild((BoneBlock)TextureManager.getShape("box_open_head"));//加载箱子的盖子
-
-
-        List<float[]> vertices = new ArrayList<>();
-
-        float[][] verticesAry= new float[vertices.size()][3];
-        List<float[] > texcoords = new ArrayList<>();
-
-        List<int[]> faces =new ArrayList<>();
-        List<float[]> normals= new ArrayList<>();
-        HashMap map =new HashMap();
-        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);//将绘制的结果放在vertices里
-        bodyShape.setFrontFace(new ShapeFace());
-        bodyShape.getFrontFace().setVertices(vertices.toArray(verticesAry));
-        bodyShape.getFrontFace().setNormals(normals.toArray(new float[normals.size()][3]));
-
-        bodyShape.getFrontFace().setTexcoords(texcoords.toArray(new float[texcoords.size()][3]));
-
-        bodyShape.getFrontFace().setFaces(faces.toArray(new int[faces.size()][6]));
-
-        System.out.println("frontFace:" + JSON.toJSONString(bodyShape.getFrontFace()) + ",");
-
-
-        return bodyShape;
-    }
-    public static BoneBlock createBoxCloseShape(){
-
-
-        Component rootComponent =new Component();
-
-        BoneBlock bodyShape = (BoneBlock)TextureManager.getShape("box_close");//加载箱体shape
-        rootComponent =
-                new Component(bodyShape);
-
-
-        List<float[]> vertices = new ArrayList<>();
-
-        float[][] verticesAry= new float[vertices.size()][3];
-        List<float[] > texcoords = new ArrayList<>();
-
-        List<int[]> faces =new ArrayList<>();
-        List<float[]> normals= new ArrayList<>();
-        HashMap map =new HashMap();
-        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);//将绘制的结果放在vertices里
-        bodyShape.setFrontFace(new ShapeFace());
-        bodyShape.getFrontFace().setVertices(vertices.toArray(verticesAry));
-        bodyShape.getFrontFace().setNormals(normals.toArray(new float[normals.size()][3]));
-
-        bodyShape.getFrontFace().setTexcoords(texcoords.toArray(new float[texcoords.size()][3]));
-
-        bodyShape.getFrontFace().setFaces(faces.toArray(new int[faces.size()][6]));
-
-        System.out.println("frontFace:" + JSON.toJSONString(bodyShape.getFrontFace()) + ",");
-
-
-        return bodyShape;
-    }
+//    public static BoneBlock createBoxShape(){
+//
+//
+//        Component rootComponent =new Component();
+//
+//        BoneBlock bodyShape = (BoneBlock)TextureManager.getShape("box_open_body");//加载箱体shape
+//        rootComponent =
+//                new Component(bodyShape);
+//
+//        rootComponent.addChild((BoneBlock)TextureManager.getShape("box_open_head"));//加载箱子的盖子
+//
+//
+//        List<float[]> vertices = new ArrayList<>();
+//
+//        float[][] verticesAry= new float[vertices.size()][3];
+//        List<float[] > texcoords = new ArrayList<>();
+//
+//        List<int[]> faces =new ArrayList<>();
+//        List<float[]> normals= new ArrayList<>();
+//        HashMap map =new HashMap();
+//        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);//将绘制的结果放在vertices里
+//        bodyShape.setFrontFace(new ShapeFace());
+//        bodyShape.getFrontFace().setVertices(vertices.toArray(verticesAry));
+//        bodyShape.getFrontFace().setNormals(normals.toArray(new float[normals.size()][3]));
+//
+//        bodyShape.getFrontFace().setTexcoords(texcoords.toArray(new float[texcoords.size()][3]));
+//
+//        bodyShape.getFrontFace().setFaces(faces.toArray(new int[faces.size()][6]));
+//
+//        System.out.println("frontFace:" + JSON.toJSONString(bodyShape.getFrontFace()) + ",");
+//
+//
+//        return bodyShape;
+//    }
+//    public static BoneBlock createBoxCloseShape(){
+//
+//
+//        Component rootComponent =new Component();
+//
+//        BoneBlock bodyShape = (BoneBlock)TextureManager.getShape("box_close");//加载箱体shape
+//        rootComponent =
+//                new Component(bodyShape);
+//
+//
+//        List<float[]> vertices = new ArrayList<>();
+//
+//        float[][] verticesAry= new float[vertices.size()][3];
+//        List<float[] > texcoords = new ArrayList<>();
+//
+//        List<int[]> faces =new ArrayList<>();
+//        List<float[]> normals= new ArrayList<>();
+//        HashMap map =new HashMap();
+//        rootComponent.getVertices(0,GL_Matrix.translateMatrix(0,0,0),vertices,texcoords,faces,normals);//将绘制的结果放在vertices里
+//        bodyShape.setFrontFace(new ShapeFace());
+//        bodyShape.getFrontFace().setVertices(vertices.toArray(verticesAry));
+//        bodyShape.getFrontFace().setNormals(normals.toArray(new float[normals.size()][3]));
+//
+//        bodyShape.getFrontFace().setTexcoords(texcoords.toArray(new float[texcoords.size()][3]));
+//
+//        bodyShape.getFrontFace().setFaces(faces.toArray(new int[faces.size()][6]));
+//
+//        System.out.println("frontFace:" + JSON.toJSONString(bodyShape.getFrontFace()) + ",");
+//
+//
+//        return bodyShape;
+//    }
     public static void main(String args[]){
 
-        TextureManager.createBoxCloseShape();
+      //  TextureManager.createBoxCloseShape();
     }
 
 

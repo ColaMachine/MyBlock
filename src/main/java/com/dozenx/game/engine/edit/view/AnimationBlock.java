@@ -68,8 +68,8 @@ public class AnimationBlock extends GroupBlock {
 
         AnimationBlock animationBlock = new AnimationBlock();
 
-        copyBaseBlock(animationBlock);
-        copyGroupBlock(animationBlock);
+
+
 
         copyAniamtionBlock(animationBlock);
 
@@ -78,7 +78,7 @@ public class AnimationBlock extends GroupBlock {
     }
 
     public void copyAniamtionBlock(AnimationBlock animationBlock) {
-
+        copyGroupBlock(animationBlock);
         if (animationMap != null)
             animationBlock.animationMap = this.animationMap;
 

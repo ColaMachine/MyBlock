@@ -25,8 +25,8 @@ void main()
                oricolor = texture(ourTextures[int(ourTextureIndex)], TexCoordReal);
 
    }
-    //if(oricolor.a<0.1)
-    //discard;
+    if(oricolor.a<0.1)
+    discard;
    // color.w=1;
 vec3 norm = normalize(Normal);//faxian guiyi
 vec3 lightDir = normalize(vec3(100,100,100)-FragPos);//guang de xian lu

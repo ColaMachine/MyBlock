@@ -441,7 +441,7 @@ public class MouseControlCenter {
             try {
                 CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
             }catch(Exception e){
-                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
+               e.printStackTrace();
             }
 
         }

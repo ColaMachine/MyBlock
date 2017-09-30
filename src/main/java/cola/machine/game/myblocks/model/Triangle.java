@@ -33,4 +33,15 @@ public class Triangle {
         ShaderUtils.drawLine( block2.x, block2.y, block2.z,  block3.x, block3.y, block3.z);
         ShaderUtils.drawLine( block1.x, block1.y, block1.z,  block3.x, block3.y, block3.z);
     }
+
+    public boolean hashBlock(BaseBlock tb1,BaseBlock tb2,BaseBlock tb3){
+        if(block1 ==tb1 || block1==tb2 || block1==tb3){
+            if(block2 ==tb1 || block2==tb2 || block2==tb3){
+                if(block3 ==tb1 || block3==tb2 || block3==tb3){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

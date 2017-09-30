@@ -201,7 +201,9 @@ public class State {
             }else{//就是其他人掉落的 或者是数据同步到你机器上的 早就掉落的
 
             }
-            ItemManager.add(new Ball(cmd.getItemId(), new GL_Vector(cmd.getX(), cmd.getY(), cmd.getZ()), livingThing.getWalkDir().copyClone(), 0, cmd.getItemType(), livingThing));
+            Ball ball = new Ball(cmd.getItemId(), new GL_Vector(cmd.getX(), cmd.getY(), cmd.getZ()), livingThing.getWalkDir().copyClone(), 0, cmd.getItemType(), livingThing);
+            ball.type=1;
+            ItemManager.add(ball);
             //livingThing.getItemBeans()[24]=null;
 
 

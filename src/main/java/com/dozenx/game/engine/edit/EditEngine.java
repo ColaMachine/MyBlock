@@ -146,7 +146,7 @@ public class EditEngine {
                 for (int i = 0; i < colorBlockList.size(); i++) {
                     BaseBlock colorBlock = colorBlockList.get(i);
                     GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
-                    colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), matrx, colorBlock.points);
+                colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), matrx, colorBlock.points);
                     // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
                 }
 
@@ -1512,8 +1512,25 @@ public class EditEngine {
 
 
         if (Switcher.mouseState == Switcher.rotateMode) {
-
-            if (nowMoveScaleRotateBlock!=null) {
+            for(BaseBlock block : selectBlockList){
+                if(block instanceof  RotateBlock){
+                    RotateBlock rotateBlock= (RotateBlock)block;
+                    if (nowAxis == 1) {
+                        //x
+                        rotateBlock.rotateX((y - (Constants.WINDOW_HEIGHT - rotateScreenY)) * 0.01f);
+                        needUpdate = true;
+                    } else if (nowAxis == 2) {
+                        needUpdate = true;
+                        //y
+                        rotateBlock.rotateY((x - rotateScreenX) * 0.01f);
+                    } else if (nowAxis == 3) {
+                        needUpdate = true;
+                        //z
+                        rotateBlock.rotateZ((y - (Constants.WINDOW_HEIGHT - rotateScreenY)) * 0.01f);
+                    }
+                }
+            }
+          /*  if (nowMoveScaleRotateBlock!=null) {
                 BaseBlock block = nowMoveScaleRotateBlock;
                 if (block instanceof RotateBlock) {
                     RotateBlock rotateBlock = (RotateBlock) block;
@@ -1532,7 +1549,7 @@ public class EditEngine {
                     }
                 }
 
-            }
+            }*/
             return;
         }
 
@@ -1610,13 +1627,15 @@ public class EditEngine {
         if (Switcher.mouseState == Switcher.moveAxisMode) {
 
             if (nowMoveScaleRotateBlock!=null) {
-                RotateBlock block = (RotateBlock)nowMoveScaleRotateBlock;
+               RotateBlock block = (RotateBlock)nowMoveScaleRotateBlock;
                 GL_Vector from = GamingState.instance.camera.Position;
                 GL_Vector viewDir = OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(), x, Constants.WINDOW_HEIGHT-y).normalize();
 
-//                LogUtil.println( "y:"+y);
-//                LogUtil.println("viewDir:"+viewDir);
-                //计算出现在的xyz
+
+
+               // LogUtil.println( "y:"+y);
+                //LogUtil.println("viewDir:"+viewDir);
+               // 计算出现在的xyz
                 if (nowAxis == 1) {
                     //x轴线移动 所以和z=原来的平面有交际 计算出这个焦点位置
                     //x
@@ -1647,6 +1666,24 @@ public class EditEngine {
                     float newZ= position[2] - jianTouSize;
                     block.setCenterZ(newZ - nowMoveScaleRotateBlock.z);
 
+                }
+
+
+
+
+                for(BaseBlock blockOther : selectBlockList){
+                    if(block instanceof  RotateBlock){
+                        RotateBlock rotateBlock= (RotateBlock)blockOther;
+
+                            rotateBlock.setCenterX(nowMoveScaleRotateBlock.x-((BaseBlock)rotateBlock).getX()+block.getCenterX());
+
+                            rotateBlock.setCenterY(nowMoveScaleRotateBlock.y-((BaseBlock)rotateBlock).getY()+block.getCenterY());
+
+
+                            rotateBlock.setCenterZ(nowMoveScaleRotateBlock.z-((BaseBlock)rotateBlock).getZ()+block.getCenterZ());
+
+
+                    }
                 }
             }
 
@@ -3225,8 +3262,8 @@ public class EditEngine {
                 if(block instanceof  GroupBlock){
                     for(BaseBlock childBlock : ((GroupBlock)block).selectBlockList){
 
-                        childBlock.points = BoxModel.getSmallPoint(childBlock.x,childBlock.y,childBlock.z,
-                                childBlock.width,childBlock.height,childBlock.thick);
+//                        childBlock.points = BoxModel.getSmallPoint(childBlock.x,childBlock.y,childBlock.z,
+//                                childBlock.width,childBlock.height,childBlock.thick);
 
                         if(childBlock instanceof  RotateBlock){
                             RotateBlock rotateBlock = (RotateBlock) childBlock;
@@ -3239,6 +3276,23 @@ public class EditEngine {
 
                         }
                     }
+                }
+            }
+        }else{
+            for(BaseBlock childBlock : selectBlockList){
+
+                childBlock.points = BoxModel.getSmallPoint(childBlock.x,childBlock.y,childBlock.z,
+                        childBlock.width,childBlock.height,childBlock.thick);
+
+                if(childBlock instanceof  RotateBlock){
+                    RotateBlock rotateBlock = (RotateBlock) childBlock;
+                    rotateBlock.setCenterX(childBlock.width/2);;
+                    rotateBlock.setCenterY(childBlock.height/2);
+                    rotateBlock.setCenterZ(childBlock.thick/2);
+                    rotateBlock.setRotateX(0);
+                    rotateBlock.setRotateY(0);
+                    rotateBlock.setRotateZ(0);
+
                 }
             }
         }
@@ -3277,17 +3331,72 @@ public class EditEngine {
             needUpdate=true;
         }
     }
-
-    public void deleteTriangle(){
-        if(selectBlockList.size()>0){
+    /**
+     * 事先选中 3个block 然后在里面进行 trianglelist 进行匹配 如果3个block都匹配上了
+     */
+    public Triangle getSelectedTriangle(){
+        if(selectBlockList.size()>=3){
             for(int i=triangleList.size()-1;i>=0;i--){
                 Triangle triangle =triangleList.get(i);
-                if(triangle.block1==selectBlockList.get(0)){
-                    triangleList.remove(i);
+                if(triangle.hashBlock(selectBlockList.get(0),selectBlockList.get(1),selectBlockList.get(2))){
+                    return  triangle;
                 }
+
             }
 
+
+        }
+        return null;
+    }
+    /**
+     * 事先选中 3个block 然后在里面进行 trianglelist 进行匹配 如果3个block都匹配上了就进行删除
+     */
+    public void deleteTriangle(){
+        Triangle triangle = getSelectedTriangle();
+        if(triangle != null) {
+            triangleList.remove(triangle);
             needUpdate=true;
+        }
+
+    }
+
+    public void setX(Float val) {
+
+        for(BaseBlock block : selectBlockList){
+            block.x=val;
+        }
+    }
+
+    public void setY(Float val) {
+
+        for(BaseBlock block : selectBlockList){
+            block.y=val;
+        }
+    }
+
+    public void setZ(Float val) {
+
+        for(BaseBlock block : selectBlockList){
+            block.z=val;
+        }
+    }
+
+    public void setWidth(Float val) {
+
+        for(BaseBlock block : selectBlockList){
+            block.width=val;
+        }
+    }
+    public void setHeight(Float val) {
+
+        for(BaseBlock block : selectBlockList){
+            block.height=val;
+        }
+    }
+    public void setThick(Float val) {
+
+        for(BaseBlock block : selectBlockList){
+            block.thick=val;
         }
     }
 }

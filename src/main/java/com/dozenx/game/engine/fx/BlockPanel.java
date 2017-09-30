@@ -7,6 +7,9 @@ import cola.machine.game.myblocks.model.RotateColorBlock2;
 import cola.machine.game.myblocks.model.RotateImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.EditEngine;
+import com.dozenx.util.StringUtil;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -275,16 +278,42 @@ public class BlockPanel extends Tab {
         Button xadd = new Button("+");
         final TextField xTextField = new TextField( );
 
-
+        xTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+                    GamingState.editEngine.setX(Float.valueOf(newValue));
+                }
+            }
+        });
         final Label yLabel = new Label("y");
         Button yMi = new Button("-");
         Button yadd = new Button("+");
         final TextField yTextField = new TextField( );
 
+        yTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+                    GamingState.editEngine.setY(Float.valueOf(newValue));
+                }
+            }
+        });
+
         final Label zLabel = new Label("z");
         Button zMi = new Button("-");
         Button zadd = new Button("+");
         final TextField zTextField = new TextField( );
+
+        zTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+                    GamingState.editEngine.setZ(Float.valueOf(newValue));
+                }
+            }
+        });
+
 
         selectGrid.add(xLabel, 0, 5);
 
@@ -320,8 +349,37 @@ public class BlockPanel extends Tab {
 
 
         final TextField widthTextField = new TextField( );
+
+        widthTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+                    GamingState.editEngine.setWidth(Float.valueOf(newValue));
+                }
+            }
+        });
+
         final TextField heightTextField = new TextField( );
+
+        heightTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+                    GamingState.editEngine.setHeight(Float.valueOf(newValue));
+                }
+            }
+        });
+
         final TextField thickTextField = new TextField( );
+
+        thickTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+                    GamingState.editEngine.setThick(Float.valueOf(newValue));
+                }
+            }
+        });
 
 
         selectGrid.add(widthLabel, 0, 8);

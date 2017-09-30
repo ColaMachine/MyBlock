@@ -98,7 +98,7 @@ if(oricolor.w<=0.1){
 
  vec3 lightColor = vec3(1);
     // ambient
-    vec3 ambient = 0.3 * oricolor.xyz;
+    vec3 ambient = 0.7 * oricolor.xyz;
     // diffuse
     vec3 lightDir = normalize(lightPos - realFragPos);
     float diff = max(dot(lightDir, realNormal), 0.0);
