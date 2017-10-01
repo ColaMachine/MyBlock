@@ -3,8 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="05ed9f65-f8cd-47e7-b544-b0c1b482b26b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/item/newItem/yellowblock.block" afterPath="$PROJECT_DIR$/config/item/newItem/yellowblock.block" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saves/item/123" afterPath="$PROJECT_DIR$/saves/item/123" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saves/player/123.txt" afterPath="$PROJECT_DIR$/saves/player/123.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java" afterPath="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java" />
     </list>
     <ignored path="MyBlock.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,41 +43,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BlockPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java">
+      <file leaf-file-name="ToolBarView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/ui/toolbar/view/ToolBarView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="403" column="56" selection-start-line="403" selection-start-column="56" selection-end-line="403" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CompPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/CompPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FilePanel.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.89827853">
-              <caret line="182" column="22" selection-start-line="182" selection-start-column="22" selection-end-line="182" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemDefinition.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -82,7 +57,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/Role/controller/LivingThingManager.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+              <caret line="398" column="0" selection-start-line="398" selection-start-column="0" selection-end-line="398" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -90,21 +65,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LivingThing.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/lifething/bean/LivingThing.java">
+      <file leaf-file-name="yellowblock.block" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/item/newItem/yellowblock.block">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="255" column="0" selection-start-line="255" selection-start-column="0" selection-end-line="255" selection-end-column="0" />
+              <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GL_Matrix.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/glmodel/GL_Matrix.java">
+      <file leaf-file-name="93_testWeapon.block" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/item/newItem/93_testWeapon.block">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <caret line="0" column="177" selection-start-line="0" selection-start-column="177" selection-end-line="0" selection-end-column="177" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SayHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/SayHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="145" column="39" selection-start-line="145" selection-start-column="39" selection-end-line="145" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -114,27 +99,47 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/Role/model/PlayerModel.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="687" column="0" selection-start-line="687" selection-start-column="0" selection-end-line="687" selection-end-column="0" />
+              <caret line="599" column="0" selection-start-line="599" selection-start-column="0" selection-end-line="599" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Component.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="EquipHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/EquipHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="29" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Component.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="275" column="101" selection-start-line="275" selection-start-column="101" selection-end-line="275" selection-end-column="101" />
+            <state vertical-scroll-proportion="0.48200312">
+              <caret line="284" column="98" selection-start-line="284" selection-start-column="98" selection-end-line="284" selection-end-column="98" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImageBlock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java">
+      <file leaf-file-name="ItemManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/action/ItemManager.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+              <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MouseControlCenter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="1324" column="48" selection-start-line="1324" selection-start-column="48" selection-end-line="1324" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -165,8 +170,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ImagePanel.java" />
-        <option value="$PROJECT_DIR$/config/texture/banmaxian3.cfg" />
         <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/action/ItemManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/gldemo/learnOpengl/chapt13/line.vert" />
@@ -203,7 +206,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/graphics/shader/Shadow.java" />
         <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java" />
         <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateBlock.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/graphics/shader/ShaderManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/live/state/State.java" />
         <option value="$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java" />
@@ -214,8 +216,11 @@
         <option value="$PROJECT_DIR$/config/item/newItem/whiteblack.block" />
         <option value="$PROJECT_DIR$/config/item/newItem/testWeapon" />
         <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/EquipHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java" />
+        <option value="$PROJECT_DIR$/config/item/newItem/yellowblock.block" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java" />
       </list>
     </option>
   </component>
@@ -556,6 +561,44 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dozenx" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="edit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyBlock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="saves" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -635,8 +678,8 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -644,7 +687,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="SearchEverywhereHistoryKey" value="boxmo&#9;PSI&#9;JAVA://com.dozenx.game.engine.element.model.BoxModel&#10;BLOCKPANEL&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;player&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/Role/model/PlayerModel.java&#10;imageBlock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;itemT&#9;PSI&#9;JAVA://com.dozenx.game.engine.command.ItemType&#10;living&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/Role/controller/LivingThingManager.java&#10;equip&#9;PSI&#9;JAVA://com.dozenx.game.network.server.handler.EquipHandler&#10;mouse&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java&#10;shaderGe&#9;PSI&#9;JAVA://com.dozenx.game.graphics.shader.ShaderManager#shaderGeometryPass&#10;shado&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/multilightwithshadow.frag&#10;gbuffer&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/gbuffer1.frag&#10;delayb&#9;PSI&#9;JAVA://com.dozenx.game.graphics.shader.DelayBuffer&#10;cons&#9;PSI&#9;JAVA://cola.machine.game.myblocks.engine.Constants&#10;开发日志&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/开发日志&#10;ball&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/skill/Ball.java&#10;atta&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/skill/AttackManager.java&#10;shaderMan&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/graphics/shader/ShaderManager.java&#10;mul&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/multilightwithshadow.frag&#10;rotateCol&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;rotate&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateImageBlock.java&#10;editE&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/EditEngine.java&#10;s&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/graphics/shader/Shadow.java&#10;block&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;blockPa&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;edit&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/EditEngine.java&#10;3d&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt7/3dimg.frag&#10;boneBlock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java&#10;Bone&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java&#10;bone&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.textture.BoneBlock&#10;anima&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock.java&#10;groupB&#9;PSI&#9;JAVA://com.dozenx.game.engine.edit.view.GroupBlock&#10;baseBlo&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java&#10;image&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;coloblo&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.ColorBlock&#10;baseB&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.BaseBlock&#10;comp&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/CompPanel.java&#10;ga&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/engine/modes/GamingState.java&#10;boneblock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java&#10;mouseC&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java&#10;attac&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/skill/AttackManager.java&#10;gaming&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/engine/modes/GamingState.java&#10;compPane&#9;PSI&#9;JAVA://com.dozenx.game.engine.fx.CompPanel&#10;wolf&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/Role/model/WolfModel.java&#10;attackmana&#9;PSI&#9;JAVA://cola.machine.game.myblocks.skill.AttackManager&#10;3dimg&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt7/3dimg.frag&#10;shad&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/graphics/shader/Shadow.java&#10;gbuff&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/gbuffer1.frag&#10;gb&#9;PSI&#9;JAVA://cola.machine.game.myblocks.engine.subsystem.lwjgl.GLBufferPool&#10;ssao.f&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/ssao.frag&#10;worl&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/rendering/world/WorldRendererLwjgl.java" />
+    <property name="SearchEverywhereHistoryKey" value="comp&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/element/bean/Component.java&#10;player&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/Role/model/PlayerModel.java&#10;sayha&#9;PSI&#9;JAVA://com.dozenx.game.network.server.handler.SayHandler&#10;mouse&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java&#10;mainf&#9;PSI&#9;JAVA://com.dozenx.game.engine.fx.MainFrame&#10;consta&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/engine/Constants.java&#10;filep&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/FilePanel.java&#10;blockP&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;boxmo&#9;PSI&#9;JAVA://com.dozenx.game.engine.element.model.BoxModel&#10;BLOCKPANEL&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;imageBlock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;itemT&#9;PSI&#9;JAVA://com.dozenx.game.engine.command.ItemType&#10;living&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/Role/controller/LivingThingManager.java&#10;equip&#9;PSI&#9;JAVA://com.dozenx.game.network.server.handler.EquipHandler&#10;shaderGe&#9;PSI&#9;JAVA://com.dozenx.game.graphics.shader.ShaderManager#shaderGeometryPass&#10;shado&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/multilightwithshadow.frag&#10;gbuffer&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/gbuffer1.frag&#10;delayb&#9;PSI&#9;JAVA://com.dozenx.game.graphics.shader.DelayBuffer&#10;cons&#9;PSI&#9;JAVA://cola.machine.game.myblocks.engine.Constants&#10;开发日志&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/开发日志&#10;ball&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/skill/Ball.java&#10;atta&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/skill/AttackManager.java&#10;shaderMan&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/graphics/shader/ShaderManager.java&#10;mul&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt16/multilightwithshadow.frag&#10;rotateCol&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java&#10;rotate&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/RotateImageBlock.java&#10;editE&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/EditEngine.java&#10;s&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/graphics/shader/Shadow.java&#10;block&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;blockPa&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java&#10;edit&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/EditEngine.java&#10;3d&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt7/3dimg.frag&#10;boneBlock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java&#10;Bone&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java&#10;bone&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.textture.BoneBlock&#10;anima&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/edit/view/AnimationBlock.java&#10;groupB&#9;PSI&#9;JAVA://com.dozenx.game.engine.edit.view.GroupBlock&#10;baseBlo&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/BaseBlock.java&#10;image&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java&#10;coloblo&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.ColorBlock&#10;baseB&#9;PSI&#9;JAVA://cola.machine.game.myblocks.model.BaseBlock&#10;ga&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/engine/modes/GamingState.java&#10;boneblock&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java&#10;mouseC&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java&#10;attac&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/skill/AttackManager.java&#10;gaming&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/cola/machine/game/myblocks/engine/modes/GamingState.java&#10;compPane&#9;PSI&#9;JAVA://com.dozenx.game.engine.fx.CompPanel&#10;wolf&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/com/dozenx/game/engine/Role/model/WolfModel.java&#10;attackmana&#9;PSI&#9;JAVA://cola.machine.game.myblocks.skill.AttackManager&#10;3dimg&#9;FILE&#9;file://C:/zzw/workspace/MyBlock/src/main/java/gldemo/learnOpengl/chapt7/3dimg.frag" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="239" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="268" />
@@ -1165,7 +1208,6 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32359308" sideWeight="0.4974293" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24639231" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37012988" sideWeight="0.491453" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.312667" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24871466" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1185,6 +1227,7 @@
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14378238" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37012988" sideWeight="0.491453" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1359,13 +1402,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>1569</line>
+          <line>1570</line>
           <properties />
           <option name="timeStamp" value="2744" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>2334</line>
+          <line>2364</line>
           <properties />
           <option name="timeStamp" value="2752" />
         </line-breakpoint>
@@ -1395,37 +1438,37 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>805</line>
+          <line>806</line>
           <properties />
           <option name="timeStamp" value="2785" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>806</line>
+          <line>807</line>
           <properties />
           <option name="timeStamp" value="2786" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>820</line>
+          <line>821</line>
           <properties />
           <option name="timeStamp" value="2787" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>821</line>
+          <line>822</line>
           <properties />
           <option name="timeStamp" value="2788" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>778</line>
+          <line>779</line>
           <properties />
           <option name="timeStamp" value="2789" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java</url>
-          <line>777</line>
+          <line>778</line>
           <properties />
           <option name="timeStamp" value="2790" />
         </line-breakpoint>
@@ -1472,22 +1515,10 @@
           <option name="timeStamp" value="2897" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/ui/toolbar/view/ToolBarView.java</url>
-          <line>34</line>
-          <properties />
-          <option name="timeStamp" value="2902" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/EquipHandler.java</url>
           <line>20</line>
           <properties />
           <option name="timeStamp" value="2903" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/Role/controller/LivingThingManager.java</url>
-          <line>398</line>
-          <properties />
-          <option name="timeStamp" value="2904" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java</url>
@@ -1507,11 +1538,47 @@
           <properties />
           <option name="timeStamp" value="2909" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/SayHandler.java</url>
+          <line>132</line>
+          <properties />
+          <option name="timeStamp" value="2915" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/SayHandler.java</url>
+          <line>148</line>
+          <properties />
+          <option name="timeStamp" value="2916" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/SayHandler.java</url>
+          <line>133</line>
+          <properties />
+          <option name="timeStamp" value="2917" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/SayHandler.java</url>
+          <line>134</line>
+          <properties />
+          <option name="timeStamp" value="2918" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/SayHandler.java</url>
+          <line>135</line>
+          <properties />
+          <option name="timeStamp" value="2919" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java</url>
+          <line>273</line>
+          <properties />
+          <option name="timeStamp" value="2921" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="2914" />
+      <option name="time" value="2922" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1520,62 +1587,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/ItemPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
-          <folding>
-            <element signature="e#1953#2751#0" expanded="false" />
-            <element signature="e#2750#2751#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/textture/BoneBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="447" column="5" selection-start-line="447" selection-start-column="5" selection-end-line="447" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/gldemo/learnOpengl/chapt7/3dimg.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.5">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/Triangle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/graphics/shader/Shadow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="52" selection-start-line="56" selection-start-column="52" selection-end-line="56" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateColorBlock2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="135" column="5" selection-start-line="135" selection-start-column="5" selection-end-line="135" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/RotateBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="21" column="0" selection-start-line="21" selection-start-column="2" selection-end-line="24" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1587,21 +1602,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1682" column="101" selection-start-line="1682" selection-start-column="101" selection-end-line="1682" selection-end-column="101" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/item/Item-block.cfg">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1609,7 +1613,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="133.67857">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1617,7 +1620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.0357144">
           <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1633,7 +1635,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="203" column="31" selection-start-line="203" selection-start-column="31" selection-end-line="203" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1642,7 +1643,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
           <folding>
-            <element signature="e#3749#3750#0" expanded="true" />
+            <element signature="e#3749#3750#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1651,7 +1652,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1675,7 +1675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.607143">
           <caret line="69" column="74" selection-start-line="67" selection-start-column="4" selection-end-line="69" selection-end-column="74" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1691,15 +1690,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.5">
           <caret line="107" column="34" selection-start-line="107" selection-start-column="34" selection-end-line="107" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/engine/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="104" column="44" selection-start-line="104" selection-start-column="39" selection-end-line="104" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1707,7 +1697,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="290" column="5" selection-start-line="290" selection-start-column="5" selection-end-line="290" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1715,7 +1704,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1723,7 +1711,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.142858">
           <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1731,15 +1718,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="206" selection-start-line="10" selection-start-column="206" selection-end-line="10" selection-end-column="206" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1313" column="51" selection-start-line="1313" selection-start-column="51" selection-end-line="1313" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1763,37 +1741,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/ui/toolbar/view/ToolBarView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/EquipHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="58" column="23" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/command/EquipCmd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding>
-            <element signature="e#1152#1153#0" expanded="true" />
+            <element signature="e#1152#1153#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/action/ItemManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1836,7 +1790,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
           <folding>
-            <element signature="e#3064#3065#0" expanded="true" />
+            <element signature="e#3064#3065#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1845,9 +1799,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding>
-            <element signature="e#455#456#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1856,66 +1807,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="258" column="0" selection-start-line="258" selection-start-column="0" selection-end-line="258" selection-end-column="0" />
           <folding>
-            <element signature="e#8669#8670#0" expanded="true" />
+            <element signature="e#8669#8670#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/glmodel/GL_Matrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/lifething/bean/LivingThing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="255" column="0" selection-start-line="255" selection-start-column="0" selection-end-line="255" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/Role/controller/LivingThingManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/Role/model/PlayerModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="687" column="0" selection-start-line="687" selection-start-column="0" selection-end-line="687" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="275" column="101" selection-start-line="275" selection-start-column="101" selection-end-line="275" selection-end-column="101" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="403" column="56" selection-start-line="403" selection-start-column="56" selection-end-line="403" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1935,6 +1828,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/lifething/bean/LivingThing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="255" column="0" selection-start-line="255" selection-start-column="0" selection-end-line="255" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/glmodel/GL_Matrix.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/model/ImageBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/bean/ItemDefinition.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1943,10 +1860,142 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/engine/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="10" selection-start-line="67" selection-start-column="10" selection-end-line="71" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/BlockPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="403" column="56" selection-start-line="403" selection-start-column="56" selection-end-line="403" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/MainFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="19.833334">
+          <caret line="340" column="23" selection-start-line="340" selection-start-column="14" selection-end-line="340" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_25/javafx-src.zip!/javafx/scene/layout/GridPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="977" column="16" selection-start-line="977" selection-start-column="16" selection-end-line="977" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/Item-fur.cfg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.75">
+          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/edit/EditEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2005" column="62" selection-start-line="2005" selection-start-column="62" selection-end-line="2005" selection-end-column="62" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/fx/FilePanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.89827853">
-          <caret line="182" column="22" selection-start-line="182" selection-start-column="22" selection-end-line="182" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="70" column="18" selection-start-line="70" selection-start-column="18" selection-end-line="70" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cola/machine/game/myblocks/control/MouseControlCenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1324" column="48" selection-start-line="1324" selection-start-column="48" selection-end-line="1324" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/ui/toolbar/view/ToolBarView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/Role/controller/LivingThingManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="398" column="0" selection-start-line="398" selection-start-column="0" selection-end-line="398" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/yellowblock.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/item/newItem/93_testWeapon.block">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="177" selection-start-line="0" selection-start-column="177" selection-end-line="0" selection-end-column="177" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/item/action/ItemManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/SayHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="145" column="39" selection-start-line="145" selection-start-column="39" selection-end-line="145" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/network/server/handler/EquipHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="29" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/Role/model/PlayerModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="599" column="0" selection-start-line="599" selection-start-column="0" selection-end-line="599" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dozenx/game/engine/element/bean/Component.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48200312">
+          <caret line="284" column="98" selection-start-line="284" selection-start-column="98" selection-end-line="284" selection-end-column="98" />
           <folding />
         </state>
       </provider>

@@ -1,1 +1,1 @@
-{id:38,name:'yellowblock',type:'block',remark:'yellowblock',remark:'yellowblock',shape:{name:'yellowblock',blocktype:'imageblock',width:1.0,height:1.0,thick:1.0,x:0,y:0,z:10,front:'mantle',back:'mantle',bottom:'mantle',top:'mantle',left:'mantle',right:'mantle',},baseon:'mantle'}
+{id:38,icon:"mantle",name:'yellowblock',type:'block',remark:'yellowblock',remark:'yellowblock',shape:{name:'yellowblock',blocktype:'imageblock',width:1.0,height:1.0,thick:1.0,x:0,y:0,z:10,front:'mantle',back:'mantle',bottom:'mantle',top:'mantle',left:'mantle',right:'mantle',},baseon:'mantle'}

@@ -75,11 +75,11 @@ public class MainFrame extends Application {
         add(addSelectPanel());
         add(new BlockPanel(primaryStage));
         add(new FilePanel(primaryStage));
-      add(new CompPanel(primaryStage));
+        add(new CompPanel(primaryStage));
         add(new CompListPanel(primaryStage));
-       add(new AnimationPanel(primaryStage));
+        add(new AnimationPanel(primaryStage));
         add(new ImagePanel(primaryStage));
-       add(new ItemPanel(primaryStage));
+        add(new ItemPanel(primaryStage));
 
 
    /*     root.getChildren().add(addSelectPanel());

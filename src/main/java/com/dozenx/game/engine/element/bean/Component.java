@@ -281,6 +281,8 @@ public class Component {
 
                 } else if (this.belongTo == 3) {
                     this.itemBean.getItemDefinition().getItemModel().outdoorModel.build(config, matrix);
+                }else{
+                    this.itemBean.getItemDefinition().getItemModel().renderShader(config, matrix);
                 }
                // this.itemBean.getItemDefinition().getItemModel().renderShader(config, matrix);
                 // return;

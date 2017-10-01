@@ -32,6 +32,7 @@ import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
+import com.dozenx.util.MapUtil;
 import com.dozenx.util.MathUtil;
 
 import core.log.LogUtil;
@@ -1971,12 +1972,14 @@ public class EditEngine {
      *
      * @param name
      */
-    public void saveSelectAsColorGroup(int id, String name, boolean live, String script, boolean isPenetrate, boolean isLight) {
+    public void saveSelectAsColorGroup(int id, String name, int firstType,int secondType, String script, boolean isPenetrate, boolean isLight,HashMap param,String icon) {
 
         //这里还要增加imageblock colorblock 的支持 然后原生的支持
 
         BaseBlock selectBlock = this.getSelectFirstBlock();
-        selectBlock.live = live;
+        if(firstType==1) {
+            selectBlock.live = true;
+        }
         if (selectBlock == null) {
             return;
         }
@@ -1994,11 +1997,38 @@ public class EditEngine {
 
         sb.append("{id:").append(id).append(",")
                 .append("name:'").append(name).append("',")
-                .append("type:'").append("block").append("',")
+
+                .append("icon:'").append(icon).append("',")
                 .append("remark:'").append(name).append("',")
-                .append("script:'").append(script.replaceAll("\"", "\\\\\"").replaceAll("'", "\\\\\'").replaceAll("\r\n", "")).append("',")
-                .append("live:'").append(live).append("',")
-                .append("remark:'").append(name).append("',")
+                .append("script:'").append(script.replaceAll("\"", "\\\\\"").replaceAll("'", "\\\\\'").replaceAll("\r\n", "")).append("',");
+        if(  firstType==1){
+            sb  .append("live:").append("true,");
+            sb .append("type:'").append("block").append("',");
+        }else
+
+
+
+        if(  firstType==2){
+            sb  .append("type:'").append("wear").append("',");
+            sb  .append("spirit:").append(MapUtil.getIntValue(param,"spirit",0)).append(",");
+            sb  .append("agile:").append(MapUtil.getIntValue(param,"agile",0)).append(",");
+            sb  .append("intelli:").append(MapUtil.getIntValue(param,"intelli",0)).append(",");
+            sb  .append("strenth:").append(MapUtil.getIntValue(param,"strenth",0)).append(",");
+            sb  .append("tili:").append(MapUtil.getIntValue(param,"tili",0)).append(",");
+            if(secondType==Constants.WEAR_POSI_HEAD){
+                sb  .append("position:'").append("head").append("',");
+            }else if(secondType==Constants.WEAR_POSI_BODY){
+                sb  .append("position:'").append("body").append("',");
+            }else if(secondType==Constants.WEAR_POSI_LEG){
+                sb  .append("position:'").append("leg").append("',");
+            }else if(secondType==Constants.WEAR_POSI_HAND){
+                sb  .append("position:'").append("hand").append("',");
+            }
+        }else{
+            sb .append("type:'").append("block").append("',");
+        }
+
+        sb.append("remark:'").append(name).append("',")
                 .append("shape:").append(selectBlock.toString()).append(",")
                 .append("baseon:'mantle'").append("}");
 
