@@ -11,6 +11,7 @@ import com.dozenx.game.engine.element.model.CakeModel;
 import com.dozenx.game.engine.element.model.IconModel;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ItemWearProperties;
+import core.log.LogUtil;
 
 import java.util.Map;
 
@@ -72,6 +73,7 @@ public class ItemEquipParser {
             item.getItemModel().setIcon(item.itemModel.getIcon());
             BaseBlock shape = TextureManager.getShape(item.getName());
             if (shape == null) {//如果没有shape 说明还没有用到该物体 还没有定义shape
+                LogUtil.println("hello");
                 item.getItemModel().init();
             } else {
                 item.setShape(shape);

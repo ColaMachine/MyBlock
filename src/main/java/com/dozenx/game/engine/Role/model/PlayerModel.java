@@ -187,6 +187,7 @@ public class PlayerModel extends BaseModel   {
     public void addHeadEquip(ItemBean itemCfg)  {
 
         Component parent = 	rootComponent.findChild("human_head");
+        LogUtil.println("添加头盔"+(itemCfg==null ?"空":itemCfg.getId()));
         clearAddChild(parent,Component.body, "helmet", itemCfg);
     }
 

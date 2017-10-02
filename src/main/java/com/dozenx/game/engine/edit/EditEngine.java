@@ -2004,6 +2004,7 @@ public class EditEngine {
         if(  firstType==1){
             sb  .append("live:").append("true,");
             sb .append("type:'").append("block").append("',");
+            sb  .append("baseon:'mantle',");
         }else
 
 
@@ -2017,20 +2018,25 @@ public class EditEngine {
             sb  .append("tili:").append(MapUtil.getIntValue(param,"tili",0)).append(",");
             if(secondType==Constants.WEAR_POSI_HEAD){
                 sb  .append("position:'").append("head").append("',");
+                sb  .append("baseon:'fur_helmet',");
             }else if(secondType==Constants.WEAR_POSI_BODY){
                 sb  .append("position:'").append("body").append("',");
+                sb  .append("baseon:'fur_armor',");
             }else if(secondType==Constants.WEAR_POSI_LEG){
                 sb  .append("position:'").append("leg").append("',");
+                sb  .append("baseon:'fur_pants',");
             }else if(secondType==Constants.WEAR_POSI_HAND){
                 sb  .append("position:'").append("hand").append("',");
+                sb  .append("baseon:'wood_sword',");
             }
         }else{
             sb .append("type:'").append("block").append("',");
+            sb  .append("baseon:'mantle',");
         }
 
         sb.append("remark:'").append(name).append("',")
                 .append("shape:").append(selectBlock.toString()).append(",")
-                .append("baseon:'mantle'").append("}");
+                .append("}");
 
 
         try {

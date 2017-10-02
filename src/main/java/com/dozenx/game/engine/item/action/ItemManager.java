@@ -183,7 +183,7 @@ public class ItemManager {
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
             for (File file : fileList) {//遍历配置文件
 
-                if(file.getName().startsWith("88")){
+                if(file.getName().startsWith("95")){
                     LogUtil.println("steve");
                 }
                 String json = FileUtil.readFile2Str(file);
@@ -226,6 +226,9 @@ public class ItemManager {
             item.setItemType(item.id);
         } catch (Exception e) {
             LogUtil.err(name);
+        }
+        if(item.id==0){
+            LogUtil.println("item.id should not be 0s");
         }
         itemType2ItemDefinitionMap.put(/*ItemType.valueOf(name).ordinal()*/item.id, item);
         if (name.equals("wood_axe")) {

@@ -8,6 +8,7 @@ import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ShapeType;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.util.FloatBufferWrap;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -272,7 +273,7 @@ public class Component {
         }else*/
         //if(this.shapeType==ShapeType.CAKE){
             if(this.itemBean !=null) {//让我们会议下component 是怎么从一个itemdefintion
-                if (this.belongTo == 2) {
+              /*  if (this.belongTo == 2) {
                     this.itemBean.getItemDefinition().getItemModel().handModel.build(config, matrix);
                 } else if (this.belongTo == 1) {
                     if(this.itemBean.getItemDefinition()!=null && this.itemBean.getItemDefinition().getItemModel()!=null && this.itemBean.getItemDefinition().getItemModel().wearModel!=null){
@@ -281,9 +282,22 @@ public class Component {
 
                 } else if (this.belongTo == 3) {
                     this.itemBean.getItemDefinition().getItemModel().outdoorModel.build(config, matrix);
-                }else{
-                    this.itemBean.getItemDefinition().getItemModel().renderShader(config, matrix);
+                }else{*/
+                if(this.name.equals("testWeapon")){
+                  //  LogUtil.println("testWeapon");
                 }
+                if(this.itemBean.getItemDefinition().getShape()!=null){
+                   // this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(), matrix);
+                    if(this.itemBean.getItemDefinition().getShape().points!=null){
+                        this.itemBean.getItemDefinition().getShape().renderShaderInGivexyzwht(config,config.getVao(),matrix,this.itemBean.getItemDefinition().getShape().points);
+                    }else{
+                        this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(), matrix);
+                    }
+
+                }
+
+                  //  this.itemBean.getItemDefinition().getItemModel().renderShader(config, matrix);
+                //}
                // this.itemBean.getItemDefinition().getItemModel().renderShader(config, matrix);
                 // return;
             //}

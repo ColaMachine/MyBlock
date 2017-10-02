@@ -48,6 +48,9 @@ public class ItemFactory {
             itemDef = parentDef.clone();
             //type= itemDef.getType().toString().toLowerCase();
             itemDef.receive(map);
+
+            //解析position
+
         }else
         //再处理特殊的属性
         //首先确定engine engine 决定她的 definition的类型.

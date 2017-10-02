@@ -37,6 +37,8 @@ public class BaseModel implements Model   {
         if(parent==null){
             LogUtil.err("parent node is null");
         }
+       // parent.children.clear();
+        //一个很明确的是问题是如果body添加了一个装备 name 是不能清除所有子节点的
         Component shoe = parent.findChild(name);
         if (shoe == null) {
             if (itemBean == null||itemBean.itemDefinition == null) {
@@ -44,7 +46,7 @@ public class BaseModel implements Model   {
             } else {
                 parent.children.clear();
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-                parent.addChild(addItemToComponent(type ,itemBean));
+                parent.addChild(addItemToComponent(name,type ,itemBean));
                 //changeProperty();
             }
         } else {
@@ -55,7 +57,7 @@ public class BaseModel implements Model   {
             } else {
                 parent.children.clear();
 
-                parent.addChild(addItemToComponent(type,itemBean));
+                parent.addChild(addItemToComponent(name,type,itemBean));
                 //changeProperty();
             }
         }
@@ -71,7 +73,7 @@ public class BaseModel implements Model   {
             } else {
 
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-                parent.addChild(addItemToComponent(type ,itemBean));
+                parent.addChild(addItemToComponent(name,type ,itemBean));
                 //changeProperty();
             }
         } else {
@@ -82,12 +84,12 @@ public class BaseModel implements Model   {
             } else {
                 parent.removeChild(shoe);
 
-                parent.addChild(addItemToComponent(type,itemBean));
+                parent.addChild(addItemToComponent(name,type,itemBean));
                 //changeProperty();
             }
         }
     }
-    public Component addItemToComponent(int type ,ItemBean itemBean){
+    public Component addItemToComponent(String name,int type ,ItemBean itemBean){
 
         BaseBlock baseBlock = itemBean.getItemDefinition().getShape();
         if (baseBlock == null) {
@@ -103,7 +105,7 @@ public class BaseModel implements Model   {
         }
         //component.setShape(itemCfg.getShape());
         component.setItem(itemBean);
-        component.name = itemBean.getItemDefinition().getName();
+        component.name =name;// itemBean.getItemDefinition().getName();
         if(baseBlock instanceof  BoneBlock){
             BoneBlock boneBlock = (BoneBlock) baseBlock;
             component.setOffset(new Point3f(boneBlock.getP_posi_x(), boneBlock.getP_posi_y(), boneBlock.getP_posi_z()), new Point3f(boneBlock.getC_posi_x(), boneBlock.getC_posi_y(), boneBlock.getC_posi_z()));

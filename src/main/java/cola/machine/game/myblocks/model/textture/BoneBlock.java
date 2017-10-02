@@ -449,7 +449,7 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
 
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-        LogUtil.println("hello");
+       // LogUtil.println("hello");
         super.renderShaderInGivexyzwht( config,  vao,  matrix,  childPoints);
     }
 
