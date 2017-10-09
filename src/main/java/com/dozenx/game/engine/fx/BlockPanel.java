@@ -1,10 +1,7 @@
 package com.dozenx.game.engine.fx;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock2;
-import cola.machine.game.myblocks.model.RotateImageBlock;
+import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.util.StringUtil;
@@ -476,6 +473,19 @@ public class BlockPanel extends Tab {
         selectGrid.add(roateBtn, 1, 14);
         selectGrid.add(imageBlockBtn, 2, 14);
         selectGrid.add(rotateImgBtn, 3, 14);
+
+
+        Button boneBtn = new Button("bone");
+        boneBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //  Switcher.BLOCKTYPE=Switcher.COLORBLOCK;
+                GamingState.editEngine.readyShootBlock = new BoneRotateImageBlock();
+
+            }
+        });
+        selectGrid.add(boneBtn, 4, 14);
+
         selectGrid.add(danweiText, 0, 15);
         danweiText.setText("1");
 
@@ -780,6 +790,144 @@ public class BlockPanel extends Tab {
                 GamingState.editEngine.deleteTriangle();
             }
         });
+
+
+
+        final Button connectBtn = new Button("链接") ;
+        selectGrid.add(connectBtn, 2, 19);
+
+        connectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.connect();
+            }
+        });
+
+
+        final Label parentLabel = new Label("parentPosition");
+
+        final TextField pXTextField = new TextField( );
+        final TextField pYTextField = new TextField( );
+        final TextField pZTextField = new TextField( );
+        final Button parentPosBtnRead = new Button("读取" );
+        final Button parentPosBtnSet = new Button( "设置");
+        selectGrid.add(parentLabel, 0, 20);
+        selectGrid.add(pXTextField, 1, 20);
+        selectGrid.add(pYTextField, 2, 20);
+        selectGrid.add(pZTextField, 3, 20);
+        selectGrid.add(parentPosBtnRead, 4, 20);
+        selectGrid.add(parentPosBtnSet, 5, 20);
+
+//        pXTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+//                    GamingState.editEngine.setParentX(Float.valueOf(newValue));
+//                }
+//            }
+//        });
+//
+//        pYTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+//                    GamingState.editEngine.setParentY(Float.valueOf(newValue));
+//                }
+//            }
+//        });
+//        pZTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+//                    GamingState.editEngine.setParentZ(Float.valueOf(newValue));
+//                }
+//            }
+//        });
+        parentPosBtnRead.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pXTextField.setText(GamingState.editEngine.lastTouchPoint.x-GamingState.editEngine.getSelectFirstBlock().x+"");
+                pYTextField.setText(GamingState.editEngine.lastTouchPoint.y-GamingState.editEngine.getSelectFirstBlock().y+"");
+                pZTextField.setText(GamingState.editEngine.lastTouchPoint.z-GamingState.editEngine.getSelectFirstBlock().z+"");
+            }
+        });
+
+        parentPosBtnSet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.setParentX(Float.valueOf(pXTextField.getText()));
+                GamingState.editEngine.setParentY(Float.valueOf(pYTextField.getText()));
+                GamingState.editEngine.setParentZ(Float.valueOf(pZTextField.getText()));
+            }
+        });
+
+        final Label childLabel = new Label("childPos");
+
+        final TextField cXTextField = new TextField( );
+        final TextField cYTextField = new TextField( );
+        final TextField cZTextField = new TextField( );
+        final Button childPosBtnRead = new Button("读取");
+        final Button childPosBtnSet = new Button( "设置");
+//        cXTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+//                    GamingState.editEngine.setChildX(Float.valueOf(newValue));
+//                }
+//            }
+//        });
+//
+//        cYTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+//                    GamingState.editEngine.setChildY(Float.valueOf(newValue));
+//                }
+//            }
+//        });
+//        cZTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+//                    GamingState.editEngine.setChildZ(Float.valueOf(newValue));
+//                }
+//            }
+//        });
+
+        selectGrid.add(childLabel, 0, 21);
+        selectGrid.add(cXTextField, 1, 21);
+        selectGrid.add(cYTextField, 2, 21);
+        selectGrid.add(cZTextField, 3, 21);
+        selectGrid.add(childPosBtnRead, 4, 21);
+        selectGrid.add(childPosBtnSet, 5, 21);
+
+        childPosBtnRead.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cXTextField.setText(GamingState.editEngine.lastTouchPoint.x-GamingState.editEngine.getSelectFirstBlock().x+"");
+                cYTextField.setText(GamingState.editEngine.lastTouchPoint.y-GamingState.editEngine.getSelectFirstBlock().y+"");
+                cZTextField.setText(GamingState.editEngine.lastTouchPoint.z-GamingState.editEngine.getSelectFirstBlock().z+"");
+            }
+        });
+
+        childPosBtnSet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.setChildX(Float.valueOf(cXTextField.getText()));
+                GamingState.editEngine.setChildY(Float.valueOf(cYTextField.getText()));
+                GamingState.editEngine.setChildZ(Float.valueOf(cZTextField.getText()));
+            }
+        });
+
+//        pXTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if(StringUtil.isNotEmpty(newValue) && StringUtil.isNumeric(newValue)){
+//                    GamingState.editEngine.setParentX(Float.valueOf(newValue));
+//                }
+//            }
+//        });
 
 
         flowPane.getChildren().add(selectGrid);

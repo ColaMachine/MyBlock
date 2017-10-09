@@ -113,7 +113,9 @@ public class ShaderManager {
     public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "chapt13/line.frag", "chapt13/line.vert", new int[]{3});
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
 
-    public static ShaderConfig shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/gbuffer1.frag", "chapt16/gbuffer1.vert", new int[]{3, 3, 3, 1});
+
+    //ssao 进行屏幕渲染的时候 把纹理的坐标位置 法线 颜色 深度 进行缓存 如果要进行环境光遮蔽 那么输出的坐标是法线都是 视线空间的
+    public static ShaderConfig shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/gbuffer.frag", "chapt16/gbuffer.vert", new int[]{3, 3, 3, 1});
 
     static {
 
@@ -121,7 +123,16 @@ public class ShaderManager {
         if(Constants.SSAO_ENABLE)
 
         {
-             shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/gbuffer1.frag", "chapt16/ssao_gbuffer.vert", new int[]{3, 2});
+
+            if (Constants.SHADOW_ENABLE)
+
+            {
+                shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/ssao_gbuffer_shadow.frag", "chapt16/ssao_gbuffer_shadow.vert", new int[]{3, 3, 3, 1});
+
+            }else{
+                shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/ssao_gbuffer.frag", "chapt16/ssao_gbuffer.vert", new int[]{3, 3, 3, 1});
+
+            }
         }
 
     }
@@ -144,7 +155,7 @@ public class ShaderManager {
     public static ShaderConfig shaderSSAOBlur = new ShaderConfig("ssaoblur", "chapt16/ssao_blur.frag","chapt16/ssao.vert", new int[]{3,2});
 
 
-
+    //public static Vao blockVao = new Vao(ShaderManager.anotherShaderConfig);
     //透视矩阵
    public static GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     //相机

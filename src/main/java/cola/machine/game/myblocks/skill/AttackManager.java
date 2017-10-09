@@ -44,7 +44,7 @@ public class AttackManager {
             ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,new GL_Vector(0,0,0),selectThing.width,selectThing.height,selectThing.thick,0.5f);
 
         }
-        GamingState.editEngine.update();
+
         for(int i=diedList.size()-1;i>=0;i--) {
             Ball ball = diedList.get(i);
             if(ball.died) {
@@ -107,9 +107,7 @@ public class AttackManager {
         }
 
         //ShaderUtils.createVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),anotherShaderConfig);
-        ShaderUtils.freshVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
-       // ShaderUtils.freshVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
-       /* ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());*/
+
 
     }
     int anotherShaderConfig[] = new int[]{3,3,3,1};
@@ -141,8 +139,10 @@ public class AttackManager {
             Ball ball = list.get(i);
             ball.render();
         }
+        ShaderUtils.freshVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
 
-
+        ShaderUtils.freshVao(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao());
 //        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
         ShaderUtils.finalDraw(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
 

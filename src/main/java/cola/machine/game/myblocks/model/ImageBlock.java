@@ -290,7 +290,7 @@ public class ImageBlock extends BaseBlock{
 
 
         StringBuffer buffer =new StringBuffer();
-        buffer
+        buffer .append(toBaseBlockString())
                 .append("front:'").append(this.front==null?"":this.front.name).append("',")
                 .append("back:'").append(this.back==null?"":this.back.name).append("',")
                 .append("bottom:'").append(this.bottom==null?"":this.bottom.name).append("',")
@@ -309,7 +309,7 @@ public class ImageBlock extends BaseBlock{
         StringBuffer buffer =new StringBuffer();
         buffer.append("{")
                 .append("blocktype:'imageblock',")
-               .append(toBaseBlockString())
+
                 .append(toImageBlockString())
                 .append("}");
 

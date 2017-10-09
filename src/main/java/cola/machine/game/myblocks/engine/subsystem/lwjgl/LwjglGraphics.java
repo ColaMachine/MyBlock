@@ -205,7 +205,7 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
         if (!canRunGame) {
             String message = "Your GPU driver is not supporting the mandatory versions or extensions of OpenGL. Considered updating your GPU drivers? Exiting...";
             logger.error(message);
-            JOptionPane.showMessageDialog(null, message, "Mandatory OpenGL version(s) or extension(s) not supported", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, message, "Mandatory OpenGL version(s) or extension(s) not supported", JOptionPane.ERROR_MESSAGE);
             //throw new RuntimeException(message);
         }
 

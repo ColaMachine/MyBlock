@@ -547,6 +547,10 @@ public class ItemDefinition implements Cloneable{
                     block = RotateImageBlock.parse((JSONObject) shapeObj);
                 }else if("rotatecolorblock".equals(blockType)){
                     block = RotateColorBlock2.parse((JSONObject) shapeObj);
+                }else if("bonerotateimageblock".equals(blockType)){
+                    block = BoneRotateImageBlock.parse((JSONObject) shapeObj);
+                }else if("boneblock".equals(blockType)){
+                    block = BoneBlock.parse((JSONObject) shapeObj);
                 }
 
                 block.id =id;

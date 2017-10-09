@@ -504,7 +504,7 @@ public class AnimationBlock extends GroupBlock {
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
             float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
-            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao(),
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),
                     info[0], info[1], info[2], info[3], info[4], info[5]);
         }
 
@@ -564,7 +564,7 @@ public class AnimationBlock extends GroupBlock {
         for (int i = 0; i < selectBlockList.size(); i++) {//animationblock的选择边线
             BaseBlock colorBlock = selectBlockList.get(i);
             float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
-            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao(),
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),
                     info[0], info[1], info[2], info[3], info[4], info[5]);
         }
 

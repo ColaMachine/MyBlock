@@ -2699,7 +2699,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
 
 
-    public static void draw3dColorBoxLine(ShaderConfig config,Vao vao ,float x,float y,float z ,float width,float height,float thick){
+    public static void draw3dColorBoxLine(Vao vao ,float x,float y,float z ,float width,float height,float thick){
         //ti=TextureManager.getTextureInfo("mantle");
 
 
@@ -2950,6 +2950,10 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
 
     public static void freshVao(ShaderConfig config ,Vao vao){
+//        if(config.getName().equals("another")){
+//            LogUtil.println("another");
+//        }
+
         int position = vao.getVertices().position();
 
      /*   if(position==0)
@@ -2996,9 +3000,9 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     static FloatBufferWrap testVboDotbufferWrap  ;
     static int testVboId;
 
-    public static void drawLine(GL_Vector startPoint,GL_Vector endPoint){
-        ShaderManager.lineShaderConfig.getVao().getVertices().put(startPoint.x).put(startPoint.y).put(startPoint.z);
-        ShaderManager.lineShaderConfig.getVao().getVertices().put(endPoint.x).put(endPoint.y).put(endPoint.z);
+    public static void drawLine(Vao vao ,GL_Vector startPoint,GL_Vector endPoint){
+        vao.getVertices().put(startPoint.x).put(startPoint.y).put(startPoint.z);
+        vao.getVertices().put(endPoint.x).put(endPoint.y).put(endPoint.z);
     }
 
     public static void finalDrawLine(ShaderConfig config ,Vao vao){
@@ -3106,8 +3110,12 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
             //设置参数总长度
 
             //设置参数长度数组
+            try {
 
-            vao.setVaoId(glGenVertexArrays());
+                vao.setVaoId(glGenVertexArrays());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             OpenglUtils.checkGLError();
             //  glBindVertexArray(vao.getVaoId());
             int VboId = glGenBuffers();//create vbo
@@ -3123,7 +3131,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
             //create vbo 创建vbo  vertex buffer objects
             //创建顶点数组
 
-            vao.setPoints(10);
+            vao.setPoints(0);
 
             //LogUtil.println("twoDImgBuffer:"+vao.getVertices().position());
             vao.getVertices().rewind();

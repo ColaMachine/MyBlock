@@ -682,8 +682,8 @@ public class GroupBlock extends BaseBlock {
     }
 
     public float rotateY(float value) {
-        // adjustRotateY(value);
-        return super.rotateY(value);//baseblock的调整方向都是顺时针90度的
+
+        return adjustRotateY(value);//super.rotateY(value);//baseblock的调整方向都是顺时针90度的
     }
 
     public float rotateZ(float value) {
@@ -694,15 +694,15 @@ public class GroupBlock extends BaseBlock {
         float degree=0;
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
-            if (colorBlock instanceof RotateColorBlock2) {
-                degree= ((RotateColorBlock2) colorBlock).rotateX(value);
+            if (colorBlock instanceof RotateBlock) {
+                degree= ((RotateBlock) colorBlock).rotateX(value);
             }
-            if (colorBlock instanceof RotateImageBlock) {
+           /* if (colorBlock instanceof RotateImageBlock) {
                 degree=((RotateImageBlock) colorBlock).rotateX(value);
             }
             if (colorBlock instanceof GroupBlock) {
                 degree= ((GroupBlock) colorBlock).rotateX(value);
-            }
+            }*/
         }
         this.reComputePoints();
         return degree;
@@ -712,13 +712,13 @@ public class GroupBlock extends BaseBlock {
         float degree= 0 ;
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
-            if (colorBlock instanceof RotateColorBlock2) {
-                degree= ((RotateColorBlock2) colorBlock).rotateY(value);
+            if (colorBlock instanceof RotateBlock) {
+                degree= ((RotateBlock) colorBlock).rotateY(value);
                 // colorBlock .rotateY(value);
             }
-            if (colorBlock instanceof GroupBlock) {
+          /*  if (colorBlock instanceof GroupBlock) {
                 degree= ((GroupBlock) colorBlock).rotateY(value);
-            }
+            }*/
         }
         this.reComputePoints();
         return degree;
@@ -728,12 +728,12 @@ public class GroupBlock extends BaseBlock {
         float degree= 0 ;
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
-            if (colorBlock instanceof RotateColorBlock2) {
-                degree=   ((RotateColorBlock2) colorBlock).rotateZ(value);
+            if (colorBlock instanceof RotateBlock) {
+                degree=   ((RotateBlock) colorBlock).rotateZ(value);
             }
-            if (colorBlock instanceof GroupBlock) {
+            /*if (colorBlock instanceof GroupBlock) {
                 degree=  ((GroupBlock) colorBlock).rotateZ(value);
-            }
+            }*/
         }
         this.reComputePoints();
         return degree;
@@ -811,7 +811,7 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
             float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
-            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao(),
+            ShaderUtils.draw3dColorBoxLine( ShaderManager.lineShaderConfig.getVao(),
                     info[0], info[1], info[2], info[3], info[4], info[5]);
         }
 
@@ -838,7 +838,7 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
             float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
-            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao(),
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),
                     info[0], info[1], info[2], info[3], info[4], info[5]);
         }
 

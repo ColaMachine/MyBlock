@@ -470,7 +470,7 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
 
     public void parseBoneBlock(BoneBlock boneBlock,JSONObject map){
         int shapeType =
-                MapUtil.getIntValue(map, "shapeType");
+                MapUtil.getIntValue(map, "shapeType",0);
         if(shapeType!=2 && shapeType!=3){
             LogUtil.err("shaperType is error ");
         }

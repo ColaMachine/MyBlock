@@ -30,7 +30,7 @@ public class CopyBlock extends BaseBlock{
     @Override
     public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
 
-        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
+        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
     }
 
     @Override
@@ -77,16 +77,16 @@ public class CopyBlock extends BaseBlock{
 
     @Override
     public void render(ShaderConfig config, Vao vao, float x, float y, float z, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
+        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
     }
 
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, float parentX,float parentY,float parentZ, float childX,float childY,float childZ,float width, float height, float thick, boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back) {
-        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
+        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
     }
 
     @Override
     public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig,ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
+        ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),1,1,1,1,1,1);
     }
 }

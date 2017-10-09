@@ -260,18 +260,22 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
         StringBuffer buffer =new StringBuffer();
         buffer.append("{")
                 .append("blocktype:'rotateimageblock',")
-                .append(toBaseBlockString())
+                .append(toRotateImageBlockString())
+
+                .append("}");
+
+        return buffer.toString();
+    }
+    public String toRotateImageBlockString(){
+        StringBuffer buffer =new StringBuffer();
+        buffer.append(toBaseBlockString())
                 .append(toImageBlockString())
                 .append("centerX:").append(this.centerX).append(",")
                 .append("centerY:").append(this.centerY).append(",")
                 .append("centerZ:").append(this.centerZ).append(",")
                 .append("rotateX:").append(this.rotateX).append(",")
                 .append("rotateY:").append(this.rotateY).append(",")
-                .append("rotateZ:").append(this.rotateZ).append(",")
-
-                .append("}");
-
+                .append("rotateZ:").append(this.rotateZ).append(",");
         return buffer.toString();
     }
-
 }

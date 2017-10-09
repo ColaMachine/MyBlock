@@ -138,6 +138,20 @@ public class AnimationPanel extends Tab {
         });
         selectGrid.add(saveToCurFrameBtn, 0, 0);
         selectGrid.add(addAnimationFrameBtn, 0, 1);
+
+        final Button printAnimationBtn = new Button("print");
+        printAnimationBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.getAniationCfgFromAnimationBlock();
+
+            }
+        });
+
+        selectGrid.add(printAnimationBtn, 3, 1);
+
+
         selectGrid.add(animationEditBtn, 0, 2);
         selectGrid.add(playBtn, 0, 3);
         selectGrid.add(frameList, 0, 4);

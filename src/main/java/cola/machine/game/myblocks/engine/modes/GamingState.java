@@ -72,7 +72,7 @@ public class GamingState implements GameState {
     public static GamingState instance;
     public static  Player player;//= new Human();
     public static String catchThing;
-    public static EditEngine editEngine= new EditEngine();
+    public static EditEngine editEngine;
     public static boolean isCameraChanged() {
         return cameraChanged;
     }
@@ -135,7 +135,7 @@ public class GamingState implements GameState {
         try {
 
             initGL();
-
+            editEngine= new EditEngine();
             lastTime= TimeUtil.getNowMills();
             this.initManagers();
             this.initEntities();
@@ -757,13 +757,16 @@ public ShaderManager shaderManager;
         OpenglUtils.checkGLError();
         document.render();
         itemManager.render();
+        editEngine.render();
         attackManager.render();
         OpenglUtils.checkGLError();
 
+        if(Switcher.edit) {
 
-        ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+            GamingState.editEngine.update();
 
-        ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+
+        }
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();
 

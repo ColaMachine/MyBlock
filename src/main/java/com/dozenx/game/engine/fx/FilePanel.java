@@ -68,6 +68,24 @@ public class FilePanel extends Tab {
         final TextField compNameText = new TextField("代保存组件名称");
         compNameText.setPrefWidth(110);
 
+
+        Label nameLabel = new Label("设置blockName");
+        final TextField nameText = new TextField("设置blockName");
+
+        Button saveNameBtn = new Button("设置方块名称");
+
+        saveNameBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                GamingState.editEngine.setName(nameText.getText());
+
+            }
+        });
+        selectGrid.add(nameLabel, 1, 1);
+        selectGrid.add(nameText, 2, 1);
+        selectGrid.add(saveNameBtn, 3, 1);
+
         Label iconLabel = new Label("ICON");
         final TextField iconText = new TextField("icon");
 

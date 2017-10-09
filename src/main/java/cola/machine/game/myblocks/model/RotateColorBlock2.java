@@ -9,6 +9,7 @@ import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.MapUtil;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -154,27 +155,51 @@ public class RotateColorBlock2 extends ColorBlock implements RotateBlock{
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(rotateX,rotateY,rotateZ);
 
-        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
-        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-centerX ,-centerY ,-centerZ));
+       rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+       rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-centerX ,-centerY ,-centerZ));
         for(int i=0;i<points.length;i++){
             points[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
         }
 
+    }
+
+    public static void main(String args[]){
+        GL_Vector point =new GL_Vector(0,1,0);
+        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0.9f,0,0);
+        point= rotateMatrix.multiply(rotateMatrix ,point);
+        System.out.println(point);
+
+        //x=0.4 y=0.1 z=1.4 width = 0.5 height =1 thick=0.5 centerX=0.25 centerY=0.5 centerZ=0.25
+        float x=0.4f,y=0.1f,z=1.4f,height=1,thick=0.5f,width=0.5f,centerX=0.25f,centerY=0.5f,centerZ=0.25f;
+        GL_Vector[] points= BoxModel.getSmallPoint(x,y,z,width,height,thick);
+        //必须按照x y z 增量旋转
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(x+centerX ,y+centerY ,z+centerZ);
+        // GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
+         rotateMatrix = GL_Matrix.rotateMatrix(3.14f,0,0);
+        GL_Vector[] points2=new GL_Vector[8];
+        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-x-centerX ,-y-centerY ,-z-centerZ));
+        for(int i=0;i<points.length;i++){
+            points2[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
+        }
+        System.out.println(points[0]);
     }
     @Override
     public void reComputePointsInGroup(){
         points= BoxModel.getSmallPoint(x,y,z,width,height,thick);
-        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
+        //必须按照x y z 增量旋转
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(x+centerX ,y+centerY ,z+centerZ);
+       // GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(rotateX,rotateY,rotateZ);
 
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
-        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-centerX ,-centerY ,-centerZ));
+        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-x-centerX ,-y-centerY ,-z-centerZ));
         for(int i=0;i<points.length;i++){
             points[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
         }
 
     }
-
+    //x=0.4 y=0.1 z=1.4 width = 0.5 height =1 thick=0.5 centerX=0.25 centerY=0.5 centerZ=0.25
     /**
      * 长长使用再在group中
 
@@ -211,7 +236,7 @@ public class RotateColorBlock2 extends ColorBlock implements RotateBlock{
     public static RotateColorBlock2 parse(JSONObject map){
 
         RotateColorBlock2 block =new RotateColorBlock2();
-        block.parse(block,map);
+        block.parseRotateColor(block,map);
         block.reComputePoints();
         return block;
 
@@ -237,19 +262,28 @@ public class RotateColorBlock2 extends ColorBlock implements RotateBlock{
 
 
     }
-
-    public String toString(){
+    public String toRotateColorString(){
         StringBuffer buffer =new StringBuffer();
-        buffer.append("{")
-                .append("blocktype:'rotatecolorblock',")
-                .append(toColorBlockString())
-                .append(toBaseBlockString())
+
+        buffer  .append(toColorBlockString())
+
                 .append("centerX:").append(this.centerX).append(",")
                 .append("centerY:").append(this.centerY).append(",")
                 .append("centerZ:").append(this.centerZ).append(",")
                 .append("rotateX:").append(this.rotateX).append(",")
                 .append("rotateY:").append(this.rotateY).append(",")
-                .append("rotateZ:").append(this.rotateZ).append(",")
+                .append("rotateZ:").append(this.rotateZ).append(",");
+
+
+
+        return buffer.toString();
+    }
+    public String toString(){
+        StringBuffer buffer =new StringBuffer();
+        buffer.append("{")
+                .append("blocktype:'rotatecolorblock',")
+                .append(toRotateColorString())
+
 
                 .append("}");
         /*StringBuffer sb = new StringBuffer();

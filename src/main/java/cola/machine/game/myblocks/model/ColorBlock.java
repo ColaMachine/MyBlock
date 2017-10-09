@@ -381,26 +381,8 @@ public class ColorBlock extends BaseBlock{
 		return green;
 	}
 
-	//@Override
-	public String getName() {
-		// VIP Auto-generated method stub
-		return null;
-	}
 
-    @Override
-    public void setChunk(ChunkImpl chunk) {
 
-    }
-
-    @Override
-    public boolean isPenetrate() {
-        return false;
-    }
-
-    @Override
-    public void setPenetrate(boolean penetrate) {
-
-    }
 
 
 
@@ -409,38 +391,6 @@ public class ColorBlock extends BaseBlock{
         return null;
     }
 
-    @Override
-    public void setValue(int value) {
-
-    }
-
-
-
-    @Override
-	public void renderCube() {
-		// VIP Auto-generated method stub
-		
-	}
-
-	@Override
-	public void renderColor() {
-		// VIP Auto-generated method stub
-		
-	}
-
-	/*@Override
-	public int getId() {
-		// VIP Auto-generated method stub
-		return 0;
-	}*/
-    public boolean getAlpha(){
-        return false;
-    }
-
-    @Override
-    public boolean use() {
-        return false;
-    }
 
     @Override
     public boolean beuse() {
@@ -454,10 +404,7 @@ public class ColorBlock extends BaseBlock{
         return new ColorBlock(x,y,z);
     }
 
-    @Override
-    public void beAttack() {
 
-    }
 
 
 
@@ -486,7 +433,8 @@ public class ColorBlock extends BaseBlock{
     public String toColorBlockString(){
         StringBuffer buffer =new StringBuffer();
 
-        buffer.append("r:").append(this.rf).append(",")
+        buffer .append(toBaseBlockString())
+                .append("r:").append(this.rf).append(",")
                 .append("g:").append(this.gf).append(",")
                 .append("b:").append(this.bf).append(",")
 
@@ -502,7 +450,7 @@ public class ColorBlock extends BaseBlock{
        StringBuffer buffer =new StringBuffer();
         buffer.append("{")
                 .append("blocktype:'colorblock',")
-               .append(toBaseBlockString())
+
                 .append(toColorBlockString())
 
                 .append("}");

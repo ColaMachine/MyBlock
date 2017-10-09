@@ -254,16 +254,20 @@ public class Component {
 
         if(rotateZ!=0){
             //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -rotateZ*3.14f/180));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, rotateZ*3.14f/180));
         }
         if(rotateY!=0){
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, -rotateY*3.14f/180, 0));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, rotateY*3.14f/180, 0));
         }
         if(rotateX!=0){
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -rotateX*3.14f/180, 0, 0));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( rotateX*3.14f/180, 0, 0));
 
         } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
          translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
+
+        if(this.name.equals("rhand")&& this.rotateX>0){
+//            LogUtil.println("hello");
+        }
         rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
         /*if(this.shapeType==ShapeType.ICON){
             if(this.itemBean !=null){
@@ -289,9 +293,9 @@ public class Component {
                 if(this.itemBean.getItemDefinition().getShape()!=null){
                    // this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(), matrix);
                     if(this.itemBean.getItemDefinition().getShape().points!=null){
-                        this.itemBean.getItemDefinition().getShape().renderShaderInGivexyzwht(config,config.getVao(),matrix,this.itemBean.getItemDefinition().getShape().points);
+                        this.itemBean.getItemDefinition().getShape().renderShaderInGivexyzwht(config,config.getVao(),rotateMatrix,this.itemBean.getItemDefinition().getShape().points);
                     }else{
-                        this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(), matrix);
+                        this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(), rotateMatrix);
                     }
 
                 }

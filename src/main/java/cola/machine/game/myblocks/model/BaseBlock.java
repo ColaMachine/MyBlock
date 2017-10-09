@@ -614,7 +614,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
  */
     public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back);
     /**
-     * 一种支持旋转的折中方案 但是需要先计算几个点的位置
+     * 一种支持旋转的折中方案 但是需要先计算几个点的位置 再editEngine 中渲染
      * @param config
      * @param vao
      * @param matrix是父亲的旋转逻辑
@@ -650,6 +650,8 @@ public abstract class BaseBlock extends AABB implements IBlock {
         float z = MapUtil.getFloatValue(map,"z",0f);
         int dir = MapUtil.getIntValue(map, "dir",0);
         float zuni = MapUtil.getFloatValue(map,"zuni",0f);
+        String name = MapUtil.getStringValue(map,"name");
+
         boolean penetration = MapUtil.getBooleanValue(map,"penetration",false);
         String pointsStr = MapUtil.getStringValue(map,"points");
         if(StringUtil.isNotEmpty(pointsStr)){
@@ -662,6 +664,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
             block.points  =(GL_Vector[] )list.toArray(pointAry) ;
         }
         block.zuni= zuni;
+        block.name =name;
         block.penetration = penetration;
         float width = MapUtil.getFloatValue(map,"width");
         float height = MapUtil.getFloatValue(map,"height");

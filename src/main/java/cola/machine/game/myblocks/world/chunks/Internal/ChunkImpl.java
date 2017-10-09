@@ -1814,7 +1814,7 @@ public class ChunkImpl implements Chunk {
                         ShaderManager.anotherShaderConfig.getVao(),rotateMatrix
                         ,
                         animationBlock.points);
-                GamingState.editEngine.needUpdate=true;
+                //GamingState.editEngine.needUpdate=true;
                 // colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16
                 // +colorGroup.x ,colorGroup.y,chunkPos.z*16
                 // +colorGroup.z,true,true,true,true,true ,true );

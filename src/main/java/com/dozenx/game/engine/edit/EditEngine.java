@@ -31,10 +31,12 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.MathUtil;
 
+import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -53,7 +55,8 @@ import java.util.Map;
  * Created by dozen.zhang on 2017/8/5.
  */
 public class EditEngine {
-
+    //Vao lineVao = new Vao(ShaderManager.anotherShaderConfig);
+    Vao blockVao = null;
     public static BaseBlock nowMoveScaleRotateBlock=null;
     public HashMap<GL_Vector, WeakReference<ColorBlock>> lightBlockHashMap = new HashMap<>();
     public BaseBlock[] blockAry = new BaseBlock[140 * 140 * 140];
@@ -105,6 +108,8 @@ public class EditEngine {
     public GL_Vector startPoint = new GL_Vector();//用来强调记录placePoint  在鼠标按下的一瞬间产生变化
     public GL_Vector endPoint = new GL_Vector();//用来记录touchPoint
 
+    public GL_Vector lastTouchPoint = new GL_Vector();//用来记录touchPoint
+
     public GL_Vector touchStartPoint = new GL_Vector();//用来记录选择的时候开始的位置
     public GL_Vector touchEndPoint = new GL_Vector();//用来记录选择结束的点
 
@@ -115,6 +120,15 @@ public class EditEngine {
 
     public boolean lineNeedUpdate = false;
 
+    public EditEngine(){
+        blockVao = new Vao(ShaderManager.anotherShaderConfig);
+    }
+    public void render(){
+
+        ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig, blockVao);
+
+        ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+    }
     public void update() {
        /* for(int i =0;i<groups.size();i++){
             groups.get(i).update();
@@ -125,14 +139,14 @@ public class EditEngine {
 
             for (int i = -15; i < 15; i++) {
 
-                ShaderUtils.drawLine(new GL_Vector(GamingState.instance.player.getX() + i, 0, GamingState.instance.player.getZ() - 15), new GL_Vector(GamingState.instance.player.getX() + i, 0, GamingState.instance.player.getZ() + 15));
-                ShaderUtils.drawLine(new GL_Vector(GamingState.instance.player.getX() - 15, 0, GamingState.instance.player.getZ() + i), new GL_Vector(GamingState.instance.player.getX() + 15, 0, GamingState.instance.player.getZ() + i));
+                ShaderUtils.drawLine(ShaderManager.lineShaderConfig.getVao(),new GL_Vector(GamingState.instance.player.getX() + i, 0, GamingState.instance.player.getZ() - 15), new GL_Vector(GamingState.instance.player.getX() + i, 0, GamingState.instance.player.getZ() + 15));
+                ShaderUtils.drawLine(ShaderManager.lineShaderConfig.getVao(),new GL_Vector(GamingState.instance.player.getX() - 15, 0, GamingState.instance.player.getZ() + i), new GL_Vector(GamingState.instance.player.getX() + 15, 0, GamingState.instance.player.getZ() + i));
 
             }
             for (int i = 0; i < selectBlockList.size(); i++) {
                 BaseBlock colorBlock = selectBlockList.get(i);
                 //批量删除的时候这里会报错 空指针
-                ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao(), colorBlock.x, colorBlock.y, colorBlock.z, colorBlock.width, colorBlock.height, colorBlock.thick);
+                ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(), colorBlock.x, colorBlock.y, colorBlock.z, colorBlock.width, colorBlock.height, colorBlock.thick);
 
             }
 
@@ -140,47 +154,47 @@ public class EditEngine {
 
 
         if (needUpdate) {
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), 0, 0, 0, new GL_Vector(0.3f, 0.3f, 0.3f), 100, 0, 100, 0.2f);
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, 0, 0, 0, new GL_Vector(0.3f, 0.3f, 0.3f), 100, 0, 100, 0.2f);
 
 
             synchronized (colorBlockList) {
                 for (int i = 0; i < colorBlockList.size(); i++) {
                     BaseBlock colorBlock = colorBlockList.get(i);
                     GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
-                colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), matrx, colorBlock.points);
-                    // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
+                colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, blockVao, matrx, colorBlock.points);
+                    // colorBlock.render(ShaderManager.terrainShaderConfig,blockVao,colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
                 }
 
                 for (int i = 0; i < triangleList.size(); i++) {
                     Triangle triangle = triangleList.get(i);
 
-                    triangle.renderShader(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao());
-                    // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
+                    triangle.renderShader(ShaderManager.terrainShaderConfig, blockVao);
+                    // colorBlock.render(ShaderManager.terrainShaderConfig,blockVao,colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
                 }
             }
             for (int i = 0; i < appendingBlockList.size(); i++) {
                 BaseBlock colorBlock = appendingBlockList.get(i);
                 GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
-                colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, ShaderManager.anotherShaderConfig.getVao(), matrx, colorBlock.points);
-                // colorBlock.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
+                colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, blockVao, matrx, colorBlock.points);
+                // colorBlock.render(ShaderManager.terrainShaderConfig,blockVao,colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
             }
             needUpdate = false;
 
             if (startPoint != null) {
 
-                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), startPoint.x, startPoint.y, startPoint.z, new GL_Vector(1, 0, 0), 0.3f, 0.3f, 0.3f, 1);
+                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, startPoint.x, startPoint.y, startPoint.z, new GL_Vector(1, 0, 0), 0.3f, 0.3f, 0.3f, 1);
 
-                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), endPoint.x, endPoint.y, endPoint.z, new GL_Vector(0, 0, 1), 0.3f, 0.3f, 0.3f, 1);
+                ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, endPoint.x, endPoint.y, endPoint.z, new GL_Vector(0, 0, 1), 0.3f, 0.3f, 0.3f, 1);
 
 
                 //ShaderUtils.drawLine( startPoint,endPoint);
                 //  ShaderUtils.drawLine( startPoint,endPoint);
             }
 
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), curentX, 0, curentZ, new GL_Vector(1, 1, 1), 1, 0.2f, 1, 1f);
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, curentX, 0, curentZ, new GL_Vector(1, 1, 1), 1, 0.2f, 1, 1f);
 
 
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), GamingState.instance.lightPos.x,
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, GamingState.instance.lightPos.x,
                     GamingState.instance.lightPos.y, GamingState.instance.lightPos.z, new GL_Vector(1, 1, 1), 1, 1f, 1, 1f);
 
 
@@ -225,7 +239,7 @@ public class EditEngine {
 
             }
             renderZuobiao();
-            ShaderUtils.freshVao(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao());
+            ShaderUtils.freshVao(ShaderManager.anotherShaderConfig, blockVao);
 
 
         }
@@ -240,19 +254,19 @@ public class EditEngine {
        /* if(Switcher.mouseState==Switcher.faceSelectMode) {
             minX = Math.min(prevFaceX, lastFaceX);
             minZ = Math.min(prevFaceZ, lastFaceZ);
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(), Math.min(prevFaceX, lastFaceX), 0, Math.min(prevFaceZ, lastFaceZ), new GL_Vector(1, 1, 1), Math.max(lastFaceMaxX, prevMaxFaceX) - minX, 0.2f, Math.max(lastFaceMaxZ, prevMaxFaceZ) - minZ, 1f);
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, Math.min(prevFaceX, lastFaceX), 0, Math.min(prevFaceZ, lastFaceZ), new GL_Vector(1, 1, 1), Math.max(lastFaceMaxX, prevMaxFaceX) - minX, 0.2f, Math.max(lastFaceMaxZ, prevMaxFaceZ) - minZ, 1f);
         }*/
         //ShaderManager.lineShaderConfig.getVao().getVertices().rewind();
         //ShaderUtils.freshVao(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
 
 
 /*
-        ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig,blockVao);
 
         ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());*/
 
 
-        // ShaderUtils.finalDraw(ShaderManager.shaderLightingPass, ShaderManager.anotherShaderConfig.getVao());
+        // ShaderUtils.finalDraw(ShaderManager.shaderLightingPass, blockVao);
         //绘制
     }
 
@@ -732,6 +746,15 @@ public class EditEngine {
             LogUtil.println("未选中任何东西");
             return;
         }
+
+        if(getSelectFirstBlock() instanceof  BoneRotateImageBlock){
+            BoneRotateImageBlock boneRotateImageBlock =(BoneRotateImageBlock) getSelectFirstBlock();
+            for(BaseBlock childBlock:boneRotateImageBlock.children){
+                colorBlockList.add(childBlock);
+
+            }
+            return;
+        }
         BaseBlock colorBlock = selectBlockList.get(0);
 
         for (int x = 0; x < colorBlock.width; x++) {
@@ -789,6 +812,7 @@ public class EditEngine {
         Object[] results = this.getMouseChoosedBlock(x, y);
         BaseBlock theNearestBlock = (BaseBlock) results[0];
         GL_Vector touchPoint = (GL_Vector) results[2];
+
         GL_Vector placePoint = (GL_Vector) results[3];
         /*endPoint=touchPoint;
         startPoint =placePoint;*/
@@ -1153,6 +1177,10 @@ public class EditEngine {
         }
     }
 
+    /**
+     * 加载组件
+     * @param file
+     */
 
     public void readComponentFromFile(File file) {
         try {
@@ -1163,14 +1191,16 @@ public class EditEngine {
                 BaseBlock block = null;
                 if ("imageblock".equals(blockType)) {
                     block = ImageBlock.parse((JSONObject) shapeObj);
-
-
                 } else if ("colorblock".equals(blockType)) {
                     block = ColorBlock.parse((JSONObject) shapeObj);
                 } else if ("groupblock".equals(blockType)) {
                     block = GroupBlock.parse((JSONObject) shapeObj);
                 } else if ("animationblock".equals(blockType)) {
                     block = AnimationBlock.parse((JSONObject) shapeObj);
+                } else if ("rotatecolorblock".equals(blockType)) {
+                    block = RotateColorBlock2.parse((JSONObject) shapeObj);
+                }else if ("rotateimageblock".equals(blockType)) {
+                    block = RotateImageBlock.parse((JSONObject) shapeObj);
                 }
                 if (shapeObj.get("id") != null) {
                     block.id = shapeObj.getInteger("id");
@@ -1423,9 +1453,12 @@ public class EditEngine {
         GL_Vector touchPoint = (GL_Vector) results[2];
         GL_Vector placePoint = (GL_Vector) results[3];
 
+
         int face = (int) results[1];
         if (theNearestBlock != null) {
-
+            LogUtil.println("碰到的面是"+touchPoint);
+            LogUtil.println("碰到的面是"+touchPoint.copyClone().sub(new GL_Vector(theNearestBlock.x,theNearestBlock.y,theNearestBlock.z)));
+            lastTouchPoint = touchPoint.copyClone();
             endPoint = touchPoint;
             if (face == Constants.TOP) {
                 endPoint.y -= 1;
@@ -1514,7 +1547,7 @@ public class EditEngine {
 
         if (Switcher.mouseState == Switcher.rotateMode) {
             for(BaseBlock block : selectBlockList){
-                if(block instanceof  RotateBlock){
+                if(block instanceof  RotateBlock ){
                     RotateBlock rotateBlock= (RotateBlock)block;
                     if (nowAxis == 1) {
                         //x
@@ -1529,6 +1562,25 @@ public class EditEngine {
                         //z
                         rotateBlock.rotateZ((y - (Constants.WINDOW_HEIGHT - rotateScreenY)) * 0.01f);
                     }
+                }else if(block instanceof  GroupBlock){
+
+
+                    GroupBlock rotateBlock = (GroupBlock) block;
+                    //groupBlock.rotateX((y - (Constants.WINDOW_HEIGHT - rotateScreenY)) * 0.01f);
+                    if (nowAxis == 1) {
+                        //x
+                        rotateBlock.rotateX((y - (Constants.WINDOW_HEIGHT - rotateScreenY)) * 0.01f);
+                        needUpdate = true;
+                    } else if (nowAxis == 2) {
+                        needUpdate = true;
+                        //y
+                        rotateBlock.rotateY((x - rotateScreenX) * 0.01f);
+                    } else if (nowAxis == 3) {
+                        needUpdate = true;
+                        //z
+                        rotateBlock.rotateZ((y - (Constants.WINDOW_HEIGHT - rotateScreenY)) * 0.01f);
+                    }
+                    needUpdate = true;
                 }
             }
           /*  if (nowMoveScaleRotateBlock!=null) {
@@ -1671,19 +1723,21 @@ public class EditEngine {
 
 
 
+                if (nowAxis == 1 ||nowAxis == 2 || nowAxis == 3 ) {
+                    for (BaseBlock blockOther : selectBlockList) {
+                        if(block==blockOther)continue;
+                        if (blockOther instanceof RotateBlock) {
+                            RotateBlock rotateBlock = (RotateBlock) blockOther;
 
-                for(BaseBlock blockOther : selectBlockList){
-                    if(block instanceof  RotateBlock){
-                        RotateBlock rotateBlock= (RotateBlock)blockOther;
+                            rotateBlock.setCenterX(nowMoveScaleRotateBlock.x - ((BaseBlock) rotateBlock).getX() + block.getCenterX());
 
-                            rotateBlock.setCenterX(nowMoveScaleRotateBlock.x-((BaseBlock)rotateBlock).getX()+block.getCenterX());
-
-                            rotateBlock.setCenterY(nowMoveScaleRotateBlock.y-((BaseBlock)rotateBlock).getY()+block.getCenterY());
-
-
-                            rotateBlock.setCenterZ(nowMoveScaleRotateBlock.z-((BaseBlock)rotateBlock).getZ()+block.getCenterZ());
+                            rotateBlock.setCenterY(nowMoveScaleRotateBlock.y - ((BaseBlock) rotateBlock).getY() + block.getCenterY());
 
 
+                            rotateBlock.setCenterZ(nowMoveScaleRotateBlock.z - ((BaseBlock) rotateBlock).getZ() + block.getCenterZ());
+
+
+                        }
                     }
                 }
             }
@@ -2923,8 +2977,8 @@ public class EditEngine {
     public void addColorBlock(BaseBlock block) {
         if (block != null) {
             colorBlockList.add(block);
-
-            if (block instanceof ColorBlock && ((ColorBlock) block).isLight) {
+            //加载的时候也会调用 但是下面的语句会把颜色搞砸
+            if (block.id==0 && block instanceof ColorBlock && ((ColorBlock) block).isLight) {
                 lightBlockHashMap.put(new GL_Vector((int) block.x, (int) block.y, (int) block.z), new WeakReference<ColorBlock>((ColorBlock) block));
 
             }
@@ -3100,9 +3154,9 @@ public class EditEngine {
                 zuobiaoPoint.y += ((RotateBlock) block).getCenterY();
                 zuobiaoPoint.z += ((RotateBlock) block).getCenterZ();
             }
-            ShaderUtils.drawLine(zuobiaoPoint, new GL_Vector(zuobiaoPoint.x + 3, zuobiaoPoint.y, zuobiaoPoint.z));
-            ShaderUtils.drawLine(zuobiaoPoint, new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y + 3, zuobiaoPoint.z));
-            ShaderUtils.drawLine(zuobiaoPoint, new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y, zuobiaoPoint.z + 3));
+            ShaderUtils.drawLine(ShaderManager.lineShaderConfig.getVao(),zuobiaoPoint, new GL_Vector(zuobiaoPoint.x + 3, zuobiaoPoint.y, zuobiaoPoint.z));
+            ShaderUtils.drawLine(ShaderManager.lineShaderConfig.getVao(),zuobiaoPoint, new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y + 3, zuobiaoPoint.z));
+            ShaderUtils.drawLine(ShaderManager.lineShaderConfig.getVao(),zuobiaoPoint, new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y, zuobiaoPoint.z + 3));
 
             xPoint.x = zuobiaoPoint.x + 3;
             xPoint.y = zuobiaoPoint.y;
@@ -3119,32 +3173,32 @@ public class EditEngine {
             //绘制 x 箭头 y箭头 z箭头
 
             //x 轴 红色可拖动方块
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao,
                     xPoint.x, xPoint.y, xPoint.z, ShaderUtils.RED, 0.2f, 0.2f, 0.2f, 1
             );
-            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, blockVao,
                     new GL_Vector(zuobiaoPoint.x + axisLen, zuobiaoPoint.y, zuobiaoPoint.z),
                     new GL_Vector(zuobiaoPoint.x + axisLen - jianTouSize, zuobiaoPoint.y + jianTouSize, zuobiaoPoint.z),
                     new GL_Vector(zuobiaoPoint.x + axisLen - jianTouSize, zuobiaoPoint.y - jianTouSize, zuobiaoPoint.z),
                     BoxModel.FRONT_DIR, ShaderUtils.RED);
-            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, blockVao,
                     new GL_Vector(zuobiaoPoint.x + axisLen, zuobiaoPoint.y, zuobiaoPoint.z),
 
                     new GL_Vector(zuobiaoPoint.x + axisLen - jianTouSize, zuobiaoPoint.y - jianTouSize, zuobiaoPoint.z),
                     new GL_Vector(zuobiaoPoint.x + axisLen - jianTouSize, zuobiaoPoint.y + jianTouSize, zuobiaoPoint.z),
                     BoxModel.BACK_DIR, ShaderUtils.RED);
             //y 轴 绿色可拖动方块
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao,
                     yPoint.x, yPoint.y, yPoint.z, ShaderUtils.GREEN, 0.2f, 0.2f, 0.2f, 1
             );
 
 
-            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, blockVao,
                     new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y + axisLen, zuobiaoPoint.z),
                     new GL_Vector(zuobiaoPoint.x - 0.3f, zuobiaoPoint.y + axisLen - jianTouSize, zuobiaoPoint.z),
                     new GL_Vector(zuobiaoPoint.x + 0.3f, zuobiaoPoint.y + axisLen - jianTouSize, zuobiaoPoint.z),
                     BoxModel.FRONT_DIR, ShaderUtils.GREEN);
-            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, blockVao,
                     new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y + axisLen, zuobiaoPoint.z),
                     new GL_Vector(zuobiaoPoint.x + 0.3f, zuobiaoPoint.y + axisLen - jianTouSize, zuobiaoPoint.z),
                     new GL_Vector(zuobiaoPoint.x - 0.3f, zuobiaoPoint.y + axisLen - jianTouSize, zuobiaoPoint.z),
@@ -3152,19 +3206,19 @@ public class EditEngine {
                     BoxModel.BACK_DIR, ShaderUtils.GREEN);
 
             //z 轴 蓝色可拖动方块
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao,
                     zPoint.x, zPoint.y, zPoint.z, ShaderUtils.BLUE, 0.2f, 0.2f, 0.2f, 1
             );
 
 
-            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, blockVao,
                     new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y, zuobiaoPoint.z + axisLen),
                     new GL_Vector(zuobiaoPoint.x + jianTouSize, zuobiaoPoint.y, zuobiaoPoint.z + axisLen - jianTouSize),
                     new GL_Vector(zuobiaoPoint.x - jianTouSize, zuobiaoPoint.y, zuobiaoPoint.z + axisLen - jianTouSize),
                     BoxModel.TOP_DIR, ShaderUtils.BLUE);
 
 
-            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, ShaderManager.anotherShaderConfig.getVao(),
+            ShaderUtils.draw3dColorTriangle(ShaderManager.anotherShaderConfig, blockVao,
                     new GL_Vector(zuobiaoPoint.x, zuobiaoPoint.y, zuobiaoPoint.z + axisLen),
 
                     new GL_Vector(zuobiaoPoint.x - jianTouSize, zuobiaoPoint.y, zuobiaoPoint.z + axisLen - jianTouSize),
@@ -3435,4 +3489,120 @@ public class EditEngine {
             block.thick=val;
         }
     }
+
+    public void setName(String text) {
+        getSelectFirstBlock().setName(text);
+    }
+
+    public void getAniationCfgFromAnimationBlock(){
+        StringBuffer sb =new StringBuffer();
+        HashMap<String,StringBuffer> animationStrMap= new HashMap<>();
+        AnimationBlock animationBlock = (AnimationBlock)getSelectFirstBlock();
+        for(BaseBlock block:animationBlock.colorBlockList){
+
+        }
+
+        for(Map.Entry entry:animationBlock.animationMap.entrySet()){
+            String key = (String)entry.getKey();
+            List<BaseBlock> list = (List<BaseBlock> )entry.getValue();//里面每一个list的项目都是帧 groupblock
+            LogUtil.println("开始解析动画:%s",key);
+            for(BaseBlock block:list){
+
+                GroupBlock groupBlock = (GroupBlock)block;
+
+                for(BaseBlock frameBlock: groupBlock.colorBlockList){
+                    String name = frameBlock.getName();
+                    if(StringUtil.isNotEmpty(name)){
+                        StringBuffer sb1 = animationStrMap.get(name);
+                        if(sb1!=null){
+
+                        }else{
+                            sb1=new StringBuffer();
+                            animationStrMap.put(name,sb1);
+                        }
+                        if(frameBlock instanceof  RotateBlock){
+                            RotateBlock rotateBlock = (RotateBlock)frameBlock;
+                            sb1.append(String.format("0%% { transform:rotateX(%ddeg),rotateY(%ddeg),rotateZ(%ddeg);} \n",
+
+                                    (int)(rotateBlock.getRotateX()*180/3.14),
+                                    (int)(rotateBlock.getRotateY()*180/3.14),
+                                    (int)(rotateBlock.getRotateZ()*180/3.14)));
+                        }
+
+//                    @keyframes handkan {
+//                        0% { transform:rotateX(0deg),rotateY(0deg);}
+//                        25% { transform:rotateX(-155deg),rotateY(-90deg); }
+//                        50% { transform:rotateX(95deg),rotateY(0deg); }
+//                        75% { transform:rotateX(-155deg),rotateY(-90deg);}
+//                        100% { transform:rotateX(0deg),rotateY(0deg);}
+//                    }
+                    }
+                }
+
+            }
+
+            //把帧答应出来
+
+            for(Map.Entry<String,StringBuffer> sbEntry:animationStrMap.entrySet()){
+                String blockName = sbEntry.getKey();
+                LogUtil.println("%s动画",blockName);
+                StringBuffer blockAniStr = sbEntry.getValue();
+                LogUtil.println(blockAniStr.toString());
+            }
+        }
+
+    }
+
+    public void connect(){
+        if(selectBlockList.size()>=2){
+            BoneRotateImageBlock firstBlock =(BoneRotateImageBlock)selectBlockList.get(0);
+            BaseBlock secondBlock =selectBlockList.get(1);
+            firstBlock.addChild(secondBlock);
+            //selectBlockList.remove(secondBlock);
+            //colorBlockList.remove(secondBlock);
+        }
+    }
+
+    public void setParentX(float val){
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)this.getSelectFirstBlock();
+        boneRotateImageBlock.parentPosition.x=val;
+    }
+    public void setParentY(float val){
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)this.getSelectFirstBlock();
+        boneRotateImageBlock.parentPosition.y=val;
+    }
+    public void setParentZ(float val){
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)this.getSelectFirstBlock();
+        boneRotateImageBlock.parentPosition.z=val;
+    }
+
+    public void setChildX(float val){
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)this.getSelectFirstBlock();
+        boneRotateImageBlock.childPosition.x=val;
+    }
+    public void setChildY(float val){
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)this.getSelectFirstBlock();
+        boneRotateImageBlock.childPosition.y=val;
+    }
+    public void setChildZ(float val){
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)this.getSelectFirstBlock();
+        boneRotateImageBlock.childPosition.z=val;
+    }
+
+    public void getBoneBlockList(){
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)getSelectFirstBlock();
+
+        List<BoneRotateImageBlock> boneList = new ArrayList<>();
+        fillBoneList(boneRotateImageBlock,boneList);
+    }
+
+    public void fillBoneList(BoneRotateImageBlock boneRotateImageBlock,List<BoneRotateImageBlock> boneList){
+        if(boneRotateImageBlock.children.size()>0){
+           /* for(){
+
+            }*/
+        }
+
+    }
+
 }
