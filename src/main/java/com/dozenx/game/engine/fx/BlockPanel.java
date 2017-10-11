@@ -4,18 +4,26 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.*;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.edit.EditEngine;
+import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.StringUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by dozen.zhang on 2017/8/14.
@@ -572,30 +580,30 @@ public class BlockPanel extends Tab {
         xMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               xTextField.setText( ""+GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), false));
-
+              // xTextField.setText( ""+GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), false));
+                GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), false);
             }
         });
         xadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                xTextField.setText( ""+GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), false));
-
+             //   xTextField.setText( ""+GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), false));
+                GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), false);
             }
         });
 
         yMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                yTextField.setText( ""+ GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), false));
-
+               // yTextField.setText( ""+ GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), false));
+                GamingState.editEngine.adjustHeight(-Float.valueOf(danweiText.getText()), false);
             }
         });
         yadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                yTextField.setText( ""+GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), false));
-
+              //  yTextField.setText( ""+GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), false));
+                GamingState.editEngine.adjustHeight(Float.valueOf(danweiText.getText()), false);
             }
         });
 
@@ -603,30 +611,30 @@ public class BlockPanel extends Tab {
         zMi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                zTextField.setText( ""+GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), false));
-
+               // zTextField.setText( ""+GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), false));
+                GamingState.editEngine.adjustThick(-Float.valueOf(danweiText.getText()), false);
             }
         });
         zadd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                zTextField.setText( ""+GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), false));
-
+                //zTextField.setText( ""+GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), false));
+                GamingState.editEngine.adjustThick(Float.valueOf(danweiText.getText()), false);
             }
         });
 
         widthMiBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                widthTextField.setText( ""+GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), true));
-
+                //widthTextField.setText( ""+GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), true));
+                GamingState.editEngine.adjustWidth(-Float.valueOf(danweiText.getText()), true);
             }
         });
         widthAddBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                widthTextField.setText( ""+GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), true));
-
+               // widthTextField.setText( ""+GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), true));
+                GamingState.editEngine.adjustWidth(Float.valueOf(danweiText.getText()), true);
             }
         });
 
@@ -929,6 +937,50 @@ public class BlockPanel extends Tab {
 //            }
 //        });
 
+        final ListView<String> list = new ListView<String>();
+        final ObservableList<String> items = FXCollections.observableArrayList(
+        );
+        list.setItems(items);//ba
+        selectGrid.add(list,0, 22,3,1);
+Button readBoneBlockBtn =new Button("读取骨节点");
+        selectGrid.add(readBoneBlockBtn,4, 22);
+        final HashMap<String,BaseBlock > blockMap =new HashMap<>();
+        readBoneBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                items.clear();blockMap.clear();
+               List<BaseBlock> blockList = GamingState.editEngine.getBoneBlockList();
+                for(BaseBlock block:blockList){
+                    items.add(block.name);
+                    blockMap.put(block.name,block);
+                }
+            }
+        });
+
+
+        list.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("clicked on " + list.getSelectionModel().getSelectedItem());
+                String name = list.getSelectionModel().getSelectedItem();
+               GamingState.editEngine.selectBone(blockMap.get(name));
+
+            }
+        });
+
+
+
+        Button copyRotateImageBlockAsBoneBtn =new Button("转成骨节点");
+        selectGrid.add(copyRotateImageBlockAsBoneBtn,5, 22);
+
+        readBoneBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+             GamingState.editEngine.changeRotateImageBlockAsBoneRotateImageBlock();
+            }
+        });
+
 
         flowPane.getChildren().add(selectGrid);
 
@@ -943,5 +995,6 @@ public class BlockPanel extends Tab {
 
 
     }
+
 
 }

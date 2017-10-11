@@ -457,11 +457,7 @@ public class ShaderManager {
 
 //        float near_plane = 1.0f, far_plane = 107.5f;
 //        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-        if(Constants.SHADOW_ENABLE){
-            shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(-0.5f, -0.5f,0.5f).normalize())));
-            shadowShaderConfig.use();;
-            glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
-        }
+
 
 
        // GL_Matrix lightViewMatrix =  ShaderManager.getInstance().shadow.lightViewMatrix ;
@@ -488,9 +484,17 @@ public class ShaderManager {
         GL_Matrix model = GL_Matrix.translateMatrix(GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
         glUniformMatrix4(lightShaderConfig.getModelLoc(), false, model.toFloatBuffer());
         OpenglUtils.checkGLError();
-
+        //========================shadow 的shader 里===============================
         //影响阴影渲染里的灯光位置
         glUseProgram(shadowShaderConfig.getProgramId());
+
+
+        if(Constants.SHADOW_ENABLE){
+            shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(-0.5f, -0.5f,0.5f).normalize())));
+            shadowShaderConfig.use();;
+            glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
+        }
+
         //int lightSpaceMatrixLoc = glGetUniformLocation(shadowShaderConfig.getProgramId(), "lightSpaceMatrix");
         //config.setProjLoc(projectionLoc);
         OpenglUtils.checkGLError();
@@ -498,6 +502,8 @@ public class ShaderManager {
         if(Constants.SHADOW_ENABLE) {
             glUniformMatrix4(shadowShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
         }
+
+        //========================================gbuffer geometry ==============================
         OpenglUtils.checkGLError();
         if(Constants.SSAO_ENABLE) {shaderGeometryPass.use();
             shaderGeometryPass.setVec3("lightPos",GamingState.instance.lightPos);

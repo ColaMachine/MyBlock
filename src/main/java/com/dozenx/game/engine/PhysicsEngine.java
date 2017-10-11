@@ -165,6 +165,7 @@ public class PhysicsEngine {
                                 LogUtil.err("err");
                                  block =chunk_corner.getBlock(blockX,
                                         blockY, blockZ);
+                                return false;
                             }
                             if (!block.isPenetrate()){
                                 livingThing.valleyBottom = blockY+1;

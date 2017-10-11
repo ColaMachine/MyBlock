@@ -207,12 +207,12 @@ private int viewPosLoc;
         return shadowLightViewLoc;
     }
 
-    public void setShadowLightViewLoc(int shadowLightViewLoc) {
+    public void setShadowLightViewLoc(int shadowLightViewLoc) {//ShadowLightViewLoc
         this.shadowLightViewLoc = shadowLightViewLoc;
     }
 
     private int lightPosLoc;
-
+    //ShadowLightViewLoc
      private int shadowLightViewLoc;
     public int getLightPosLoc() {
         return lightPosLoc;

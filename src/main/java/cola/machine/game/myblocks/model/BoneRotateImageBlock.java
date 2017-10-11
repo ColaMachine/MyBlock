@@ -247,30 +247,30 @@ public GL_Vector parentPosition = new GL_Vector();
             ShaderUtils.draw3dImage(config, vao,matrix, points[1], points[2], points[6], points[5], dirAry[5], right);
         }
 
-//        for(BaseBlock block:children){
-//            if(block instanceof  BoneRotateImageBlock){
-//                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
-//                //先进行移动
-//                GL_Matrix translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y,boneRotateImageBlock.parentPosition.z);
+        for(BaseBlock block:children){
+            if(block instanceof  BoneRotateImageBlock){
+                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
+                //先进行移动
+                GL_Matrix translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y,boneRotateImageBlock.parentPosition.z);
+
+
+                translateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
+
+                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
+
+             GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
+                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
 //
-//
-//                translateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
-//
-//                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
-//
-//             GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
-//                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
-////
-////            if(this.name.equals("rhand")&& this.rotateX>0){
-//////            LogUtil.println("hello");
-////            }
-//                rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
-//                block.renderShaderInGivexyzwht( config,  vao,  rotateMatrix, boneRotateImageBlock.points);
-//            }else{
-//                block.renderShaderInGivexyzwht( config,  vao,  matrix, block.points);
+//            if(this.name.equals("rhand")&& this.rotateX>0){
+////            LogUtil.println("hello");
 //            }
-//
-//        }
+                rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+                block.renderShaderInGivexyzwht( config,  vao,  rotateMatrix, boneRotateImageBlock.points);
+            }else{
+                block.renderShaderInGivexyzwht( config,  vao,  matrix, block.points);
+            }
+
+        }
     }
     /**
      * 在chunk当中直接使用

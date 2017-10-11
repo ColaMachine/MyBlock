@@ -154,7 +154,7 @@ public class EditEngine {
 
 
         if (needUpdate) {
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, 0, 0, 0, new GL_Vector(0.3f, 0.3f, 0.3f), 100, 0, 100, 0.2f);
+           // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, 0, 0, 0, new GL_Vector(0.3f, 0.3f, 0.3f), 100, 0, 100, 0.2f);
 
 
             synchronized (colorBlockList) {
@@ -1201,6 +1201,8 @@ public class EditEngine {
                     block = RotateColorBlock2.parse((JSONObject) shapeObj);
                 }else if ("rotateimageblock".equals(blockType)) {
                     block = RotateImageBlock.parse((JSONObject) shapeObj);
+                }else if ("bonerotateimageblock".equals(blockType)) {
+                    block = BoneRotateImageBlock.parse((JSONObject) shapeObj);
                 }
                 if (shapeObj.get("id") != null) {
                     block.id = shapeObj.getInteger("id");
@@ -1358,11 +1360,28 @@ public class EditEngine {
                 animationBlock.yoffset = yoffset;
                 animationBlock.zoffset = zoffset;
                 animationBlock.scale(xzoom, yzoom, zzoom);
-            }
+            }else
             if (selectBlockList.get(0) instanceof GroupBlock) {
                 GroupBlock animationBlock = (GroupBlock) selectBlockList.get(0);
 
                 animationBlock.scale(xzoom, yzoom, zzoom);
+            }else{
+        for(BaseBlock block : selectBlockList){
+            block.x=block.x*xzoom;
+            block.y=block.y*yzoom;
+            block.z=block.z*zzoom;
+            block.width=block.width*xzoom;
+            block.height=block.height*yzoom;
+            block.thick=block.thick*zzoom;
+            if(block instanceof  RotateBlock){
+                RotateBlock rotateBlock  = (RotateBlock)block;
+                rotateBlock.setCenterX(rotateBlock.getCenterX()*xzoom);
+                rotateBlock.setCenterY(rotateBlock.getCenterY()*yzoom);
+                rotateBlock.setCenterZ(rotateBlock.getCenterZ()*zzoom);
+            }
+        }
+
+
             }
         }
         lineNeedUpdate = true;
@@ -1457,6 +1476,7 @@ public class EditEngine {
         int face = (int) results[1];
         if (theNearestBlock != null) {
             LogUtil.println("碰到的面是"+touchPoint);
+            LogUtil.println("name:"+theNearestBlock.name);
             LogUtil.println("碰到的面是"+touchPoint.copyClone().sub(new GL_Vector(theNearestBlock.x,theNearestBlock.y,theNearestBlock.z)));
             lastTouchPoint = touchPoint.copyClone();
             endPoint = touchPoint;
@@ -3589,20 +3609,58 @@ public class EditEngine {
         boneRotateImageBlock.childPosition.z=val;
     }
 
-    public void getBoneBlockList(){
+    public List<BaseBlock> getBoneBlockList(){
         BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)getSelectFirstBlock();
 
-        List<BoneRotateImageBlock> boneList = new ArrayList<>();
+        List<BaseBlock> boneList = new ArrayList<>();
         fillBoneList(boneRotateImageBlock,boneList);
+        return boneList;
     }
 
-    public void fillBoneList(BoneRotateImageBlock boneRotateImageBlock,List<BoneRotateImageBlock> boneList){
+    public void fillBoneList(BoneRotateImageBlock boneRotateImageBlock,List<BaseBlock> boneList){
         if(boneRotateImageBlock.children.size()>0){
-           /* for(){
-
-            }*/
+           for(BaseBlock block:boneRotateImageBlock.children){
+               boneList.add(block);
+                if(block instanceof  BoneRotateImageBlock){//如果是boneblock 的话就继续往里面找
+                    fillBoneList((BoneRotateImageBlock)block,boneList);
+                }
+           }
         }
 
     }
 
+    public void selectBoneByName(String name) {
+
+
+    }
+
+    public void selectBone(BaseBlock baseBlock) {
+        selectBlockList.clear();
+        selectBlockList.add(baseBlock);
+    }
+
+    public void changeRotateImageBlockAsBoneRotateImageBlock(){
+        for(BaseBlock block: selectBlockList){
+            if(block instanceof  RotateImageBlock){
+                RotateImageBlock rotateImageBlock = (RotateImageBlock)block;
+                BoneRotateImageBlock boneRotateImageBlock =new BoneRotateImageBlock();
+                boneRotateImageBlock.x=rotateImageBlock.x;
+                boneRotateImageBlock.y=rotateImageBlock.y;
+                boneRotateImageBlock.z=rotateImageBlock.z;
+                boneRotateImageBlock.width=rotateImageBlock.width;
+                boneRotateImageBlock.height=rotateImageBlock.height;
+                boneRotateImageBlock.thick=rotateImageBlock.thick;
+                boneRotateImageBlock.rotateX=rotateImageBlock.rotateX;
+                boneRotateImageBlock.rotateY=rotateImageBlock.rotateY;
+                boneRotateImageBlock.rotateZ=rotateImageBlock.rotateZ;
+                boneRotateImageBlock.front=rotateImageBlock.front;
+                boneRotateImageBlock.back=rotateImageBlock.back;
+                boneRotateImageBlock.left=rotateImageBlock.left;
+                boneRotateImageBlock.right=rotateImageBlock.right;
+                boneRotateImageBlock.top=rotateImageBlock.top;
+                boneRotateImageBlock.bottom=rotateImageBlock.bottom;
+                colorBlockList.add(boneRotateImageBlock);
+            }
+        }
+    }
 }

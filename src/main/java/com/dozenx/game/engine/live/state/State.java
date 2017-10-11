@@ -96,7 +96,7 @@ public class State {
                             }
                             GL_Vector newPosition =  GL_Vector.add(livingThing.getPosition(), GL_Vector.multiply(walkDir,moveDistance ));
                             livingThing.move(newPosition.x,newPosition.y, newPosition.z);
-                            if(walkDir.y==1){
+                            if(walkDir.y==1 ||walkDir.y==-1  ){
                                 livingThing.setDest(null);
                             }
                             //如果长期被拒绝

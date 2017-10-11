@@ -35,15 +35,15 @@ public class BoneBlock extends RotateImageBlock {
     public void setShapeType(int shapeType) {
         this.shapeType = shapeType;
     }
-    ShapeFace frontFace;
-    ShapeFace backFace;
-    ShapeFace topFace;
+//    ShapeFace frontFace;
+//    ShapeFace backFace;
+//    ShapeFace topFace;
     String group;//通过这个属性 能够判别 是哪一个组的 human  wolf
     String parent;//父亲节点是哪个
 
-    ShapeFace bottomFace;//此属性应该被废弃
-    ShapeFace leftFace;//此属性应该被废弃
-    ShapeFace rightFace;//此属性应该被废弃
+//    ShapeFace bottomFace;//此属性应该被废弃
+//    ShapeFace leftFace;//此属性应该被废弃
+//    ShapeFace rightFace;//此属性应该被废弃
     //    String name ;
     int shapeType;
   /*  TextureInfo front;

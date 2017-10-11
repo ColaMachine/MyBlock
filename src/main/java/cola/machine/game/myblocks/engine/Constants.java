@@ -97,7 +97,7 @@ public class Constants {
 
     static final float PIdiv180 = (float)Math.PI/2;
 
-    public static boolean SHADOW_ENABLE=true;
+    public static boolean SHADOW_ENABLE=false;
     public static boolean TRIABLE_ENABLE=false;
     public static boolean HDR_ENABLE=false;
     public static boolean GAOSI_ENABLE=false;
