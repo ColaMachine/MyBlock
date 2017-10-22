@@ -439,7 +439,7 @@ String Symbol[] = new String[]{"□","▓","▽","☆","◎"};
          
     }
       public void start(){
-          initGraph(map, 0, 0, 0, 0);
+          initGraph(map, 0, 0, 0, 0);//初始化map
            printMap();
            
            srcX=1;

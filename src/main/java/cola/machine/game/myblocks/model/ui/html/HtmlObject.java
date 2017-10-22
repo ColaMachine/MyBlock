@@ -4,7 +4,11 @@ import cola.machine.game.myblocks.input.KeyEventReceiver;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.ui.inventory.ItemSlot;
 import com.dozenx.game.engine.edit.view.MouseClickHandler;
+import com.dozenx.game.engine.ui.inventory.view.IconView;
+import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
+import com.dozenx.game.engine.ui.inventory.view.ItemSlotView;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.StringUtil;
@@ -219,7 +223,16 @@ public class HtmlObject implements Cloneable  {
 
     public void setInnerText(String innerText) {
         this.innerText = innerText;
+        //引器宽度变化
 
+        //调整宽度
+
+        if(width<innerText.length()*fontSize){
+            this.width=(int)(innerText.length()*fontSize);
+        }
+        if(height<fontSize){
+            this.height=(int)fontSize;
+        }
     }
     public HtmlObject getWidgetAt(int x, int y) {
         HtmlObject child = getChildAt(x, y);
@@ -1395,40 +1408,75 @@ public class HtmlObject implements Cloneable  {
     }
     protected HtmlObject lastChildMouseOver;
     protected HtmlObject focusChild;
-    boolean setMouseOverChild(HtmlObject child, Event evt) {//这个方法用来设置鼠标经过的主键 什么时候返回true呢 鼠标任然在某个元素上 或者 之前是没有聚焦的 现在有了并且有子元素消费了事件 那么说明有元素响应了 鼠标移入事件
+    boolean setMouseOverChild(HtmlObject child, Event evt) {//这个方法用来设置鼠标经过的主键 什么时候返回true呢 鼠标任然在某个子元素上 或者 之前是没有聚焦的 现在有了并且有子元素消费了事件 那么说明有元素响应了 鼠标移入事件
 //        LogUtil.println(this.id+":setMouseOverChild");
         if (lastChildMouseOver != child) {//如果当前节点的上一个鼠标经过的是空 且询问的节点是非空 或者
+            if(child instanceof IconView && "slot0".equals( child.parentNode.id)){
+               LogUtil.println("触发离开事件123123");
+            }
+            if(child instanceof ItemSlotView && "slot4".equals( child.id)){
+                LogUtil.println("触发离开事件123123");
+            }
             if(child != null) {
-                HtmlObject result = child.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_ENTERED));
+                if(child instanceof IconView){
+                     LogUtil.println("怎么可能iconview 有child");
+                }
+                HtmlObject result = child.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_ENTERED));//这个result 是什么
                 if(result == null) {//child的子元素没有处理掉 child也没有handle掉
                     // this child widget doesn't want mouse events
-                    return false;
+                    //return false;
                 }
             }
+           // LogUtil.println("触发离开事件begin");
             if (lastChildMouseOver != null) {
+                if(lastChildMouseOver instanceof IconView &&"slot0".equals( lastChildMouseOver.parentNode.id)){
+                    LogUtil.println("离开slot0");
+                }
+                if(lastChildMouseOver instanceof IconView &&"slot4".equals( lastChildMouseOver.parentNode.id)){
+                    LogUtil.println("离开slot4");
+                }
                 lastChildMouseOver.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_EXITED));
             }
+            if(child instanceof IconView){
+                //LogUtil.println("触发离开事件");
+            }
+
             lastChildMouseOver = child;
         }
         return true;
     }
-    HtmlObject routeMouseEvent(Event evt) {//这个方法很重要是判断是否鼠标在某个组件的地方
+    HtmlObject routeMouseEvent(Event evt) {//这个方法很重要是判断是否鼠标在某个组件的地方  //该方法会循环子节点 如果子节点在鼠标范围内的话设置为当前节点 调用setMouseOverCHild设置为当前的鼠标经过子节点 并触发子节点的鼠标离开和进入事件
 //        LogUtil.println("routeMouseEvent"+this.id);
         assert !evt.isMouseDragEvent();
         //evt = translateMouseEvent(evt);//x y 进行调整== 转换成相对位置
-        if(childNodes != null) {
+        if(childNodes != null &&  evt.getType() != Event.Type.MOUSE_EXITED) {
             for(int i=childNodes.size(); i-->0 ;) {//对每个子元素进行判定
                 HtmlObject child = childNodes.get(i);
-                if(child.visible && child.isMouseInside(evt)) {
+               // if("slot0".equals(child.id)){
+                   // LogUtil.println("this is slot0");
+               // }
+                if(child.visible && child.isMouseInside(evt)) {//如果子元素课件并且在鼠标范围内的话
+                    if("slot1".equals(child.id)){
+                        LogUtil.println("this is slot0");
+                    }
+                    if("slot4".equals(child.id)){
+                        LogUtil.println("进入slot4");
+                    }
 //                    LogUtil.println(this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());
                     // we send the real event only only if we can transfer the mouse "focus" to this child
-                    if(setMouseOverChild(child, evt)) {// 向子元素摊派 进入离开事件 说明事件被handle 并且返回了 true
+                    if(this instanceof  IconView){
+                        LogUtil.println("测试没有子元素消费");
+                    }
+                    if(this instanceof InventoryPanel){
+                        LogUtil.println("InventoryPanel");
+                    }
+                    if(setMouseOverChild(child, evt)) {// 故名思议是设置当前节点的mouseover child的 如果child不是之前的mouseover child  会引起 mouse enter 和 mouse out 事件向子元素摊派 进入离开事件 说明事件被handle 并且返回了 true  或者还是在哪个子元素上面没有发生变化的时候还是返回true
                         //LogUtil.println("setMouseOverChild 返回了true"+this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());
                         if(evt.getType() == Event.Type.MOUSE_ENTERED ||
                                 evt.getType() == Event.Type.MOUSE_EXITED) {
                             return child;
-                        }
-                        HtmlObject result = child.routeMouseEvent(evt);//如果不是鼠标进入或者离开时间 比如moved事件 向子元素摊派事件本身 如果本身夜奔
+                        }//这里有一个问题 child 不是已经setMouseOverChild过了么 还要执行一遍不累么
+                        HtmlObject result = child.routeMouseEvent(evt);//获得mouseclick对象 如果不是鼠标进入或者离开时间 比如moved事件 向子元素摊派事件本身 如果本身夜奔
                         if(result != null) {
                            // LogUtil.println("result!=null"+this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());
                             // need to check if the focus was transfered to this child or its descendants
@@ -1469,13 +1517,16 @@ public class HtmlObject implements Cloneable  {
             }
         }
         if(evt.getType() != Event.Type.MOUSE_WHEEL) {
-            // no child has mouse over
+            // no child has mouse over 这里不知道性的话不会触发离开事件
+           //setMouseOverChild(null, evt);//这个方法感觉没什么必要啊
+        }
+        if(evt.getType() == Event.Type.MOUSE_EXITED ){
             setMouseOverChild(null, evt);
         }
         if(!isEnabled() && isMouseAction(evt)) {
             return this;
         }
-        if(handleEvent(evt)) {
+        if(handleEvent(evt)) {//看自身需不需要消费鼠标事件
             return this;
         }
         return null;
@@ -1605,17 +1656,40 @@ public class HtmlObject implements Cloneable  {
     public boolean hasClick(){
         return this.onClick!=null;
     }
+
+    MouseClickHandler mouseOver=null;
+    MouseClickHandler mouseOut=null;
     protected boolean handleEvent(Event evt) {
         if(evt.isKeyEvent()) {
             return handleKeyEvent(evt);
         }
-        if(this.hasClick() && evt.getType() == Event.Type.MOUSE_ENTERED){
-            return true;
+        if( evt.getType() == Event.Type.MOUSE_ENTERED){
+            if(this.mouseOver!=null ){
+                mouseOver.evt=evt;
+                mouseOver.run();
+                return true;
+            }else{
+                return false;
+            }
         }
+        if( evt.getType() == Event.Type.MOUSE_EXITED){
+            if(this.mouseOut!=null ){
+                mouseOut.evt=evt;
+                mouseOut.run();
+                return true;
+            }else{
+                return false;
+            }
+        }
+
         if(this.hasClick() && evt.getType() == Event.Type.MOUSE_BTNDOWN){
             onClick.evt= evt;
            onClick.run();
+            return true;
         }
+
+        // eat all mouse events - except moused wheel which was checked above
+
         return false;
     }
     public boolean isEnabled(){
@@ -2040,6 +2114,21 @@ public class HtmlObject implements Cloneable  {
         }
         return right - getInnerX();
     }
+
+    public void addEventListener(String name ,final MouseClickHandler runnable){
+        if("click".equals(name)){
+            onClick= runnable;
+        }
+        if("mouseover".equals(name)){
+           mouseOver =   runnable;
+        }
+        if("mouseout".equals(name)){
+            mouseOut =  runnable;
+        }
+    }
+
+
+
 
 }
 

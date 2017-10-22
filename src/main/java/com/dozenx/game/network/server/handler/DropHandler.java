@@ -31,40 +31,55 @@ public class DropHandler extends GameServerHandler {
 
         DropCmd cmd =(DropCmd) request.getCmd();
 
-        LivingThingBean from = userService.getOnlinePlayerById(cmd.getUserId());
-        if(from!=null){
-            ItemServerBean[] itemAry = bagService.getItemAryUserId(from.getId());
+        if(cmd.getUserId()!=0) {
+            LivingThingBean from = userService.getOnlinePlayerById(cmd.getUserId());
+            if (from != null) {
+                ItemServerBean[] itemAry = bagService.getItemAryUserId(from.getId());
 
-            for(int i=0;i<itemAry.length;i++){
-                if(itemAry[i]!=null && itemAry[i].getId() == cmd.getItemId()){
-                    itemAry[i].setX(from.getX());
-                    itemAry[i].setY(from.getY());
-                    itemAry[i].setZ(from.getZ());
+                for (int i = 0; i < itemAry.length; i++) {
+                    if (itemAry[i] != null && itemAry[i].getId() == cmd.getItemId()) {
+//                        itemAry[i].setX(from.getX());
+//                        itemAry[i].setY(from.getY());
+//                        itemAry[i].setZ(from.getZ());
 
-                    bagService.addWorldItem( itemAry[i]);
-                    cmd.setItemType(itemAry[i].getItemType());
-                    cmd.setNum(itemAry[i].getNum());
-                    //计算丢物品的角度
-                    float bodyAngle = from.getBodyAngle();
-                    GL_Vector bodyDir = GL_Vector.getVectorFromXZAngle(bodyAngle);
-                    GL_Vector postion
-                     =  GL_Vector.add( new GL_Vector(from.getX(),from.getY(),from.getZ()),GL_Vector .multiply(bodyDir,5));
-
-                    cmd.setX(postion.x);
-                    cmd.setY(postion.y);
-                    cmd.setZ(postion.z);
-                    itemAry[i]=null;
-                    broadCast(cmd);//发给别人我丢了什么东西 分发drop时间
-                    BagCmd bagCmd =new BagCmd(from.getId(),bagService.getItemByUserId(from.getId()));
-                    request.getWorker().send(bagCmd.toBytes());
-                    return null;
+                        bagService.addWorldItem(itemAry[i]);
+                        cmd.setItemType(itemAry[i].getItemType());
+                        cmd.setNum(itemAry[i].getNum());
+                        //计算丢物品的角度
+                        float bodyAngle = from.getBodyAngle();
+                        GL_Vector bodyDir = GL_Vector.getVectorFromXZAngle(bodyAngle);
+                        GL_Vector postion
+                                = GL_Vector.add(new GL_Vector(from.getX(), from.getY(), from.getZ()), GL_Vector.multiply(bodyDir, 5));
+                        itemAry[i].setX(postion.x);
+                        itemAry[i].setY(postion.y);
+                        itemAry[i].setZ(postion.z);
+                        itemAry[i].dropTime=cmd.getDropTime();
+                        cmd.setX(postion.x);
+                        cmd.setY(postion.y);
+                        cmd.setZ(postion.z);
+                        itemAry[i] = null;
+                        broadCast(cmd);//发给别人我丢了什么东西 分发drop时间
+                        BagCmd bagCmd = new BagCmd(from.getId(), bagService.getItemByUserId(from.getId()));
+                        request.getWorker().send(bagCmd.toBytes());//重新同步背包数据
+                        return null;
+                    }
                 }
-            }
-            //如果都没有遍历到那么强制更新物品包信息
-            BagCmd bagCmd =new BagCmd(from.getId(),from.getItemBeansList());
-            request.getWorker().send(bagCmd.toBytes());
-            //worldItem add something
+                //如果都没有遍历到那么强制更新物品包信息
+                BagCmd bagCmd = new BagCmd(from.getId(), from.getItemBeansList());
+                request.getWorker().send(bagCmd.toBytes());
+                //worldItem add something
 
+            }
+        }else{
+            ItemServerBean itemServerBean =new ItemServerBean();
+            itemServerBean.setItemType(cmd.getItemType());
+            itemServerBean.setId(cmd.getItemId());
+            itemServerBean.setX(cmd.getX());
+            itemServerBean.setY(cmd.getY());
+            itemServerBean.setZ(cmd.getZ());
+            itemServerBean.dropTime = cmd.getDropTime();
+            bagService.addWorldItem(itemServerBean);
+            broadCast(cmd);//发给别人我丢了什么东西 分发drop时间
         }
 
 

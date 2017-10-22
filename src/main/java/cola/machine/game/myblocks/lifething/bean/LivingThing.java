@@ -230,7 +230,7 @@ public class LivingThing extends LivingThingBean {
             component.name="select";
 
         component.id=getId()*100+99;
-            component.setOffset(new Point3f(0,4,0),new Point3f(0,0,0));
+            component.setOffset(new GL_Vector(0,4,0),new GL_Vector(0,0,0));
             //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
         getModel().getRootComponent().addChild(component);	//changeProperty()
 

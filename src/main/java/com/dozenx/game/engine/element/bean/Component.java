@@ -1,6 +1,9 @@
 package com.dozenx.game.engine.element.bean;
 
 import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
+import cola.machine.game.myblocks.model.RotateBlock;
+import cola.machine.game.myblocks.model.RotateImageBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.item.bean.ItemBean;
@@ -21,21 +24,28 @@ import java.util.List;
  * Created by luying on 16/7/23.
  * 2017-04-07 22:59:08移入当前element 目录 是希望她发挥更大左右 她应该是世界一切物体的本源 有点元素的味道
  */
-public class Component {
+public class Component extends BoneRotateImageBlock {
     public static int body =1;
     public static int hand =2;
     public static int drop =3;
     public static int place=4;
     public static int bag =5;
-    public BaseBlock block ;
+
+//    float width;
+//    float height;
+//
+//
+//    float thick;
+
+
     public int belongTo = 0 ;//private int belongTo = 2; //1 身上 2 手上 3丢弃 4安置 5 背包
     public ItemBean itemBean;
     public  ShapeType shapeType;    //形状类型
-    public Point3f parentLocation =new Point3f();   //父亲节点的位置
+   // public Point3f parentLocation =new Point3f();   //父亲节点的位置
 
-    public Point3f childLocation =new Point3f();    //子节点对应的位置
-     public int id;      //每个元素都有唯一id
-     public  String name;    //适用的名称
+    //public Point3f childLocation =new Point3f();    //子节点对应的位置
+   public int id;      //每个元素都有唯一id
+    // public  String name;    //适用的名称
    /* public TextureInfo front; //如果是盒状的话有四面 其实应该纳入什么模型具体对象中的
     public TextureInfo back;
     public TextureInfo top;
@@ -43,9 +53,9 @@ public class Component {
     public TextureInfo right;
     public TextureInfo bottom;*/
 
-    public float rotateX;
-    public float rotateY;
-    public float rotateZ;
+//    public float rotateX;
+//    public float rotateY;
+//    public float rotateZ;
     public GL_Vector offsetPosition=new GL_Vector(0,0,0);
     public GL_Vector P1;
     public GL_Vector P2;
@@ -56,31 +66,27 @@ public class Component {
     public GL_Vector P7;
     public GL_Vector P8;
    // public List<Connector> connectors =new ArrayList<Connector>();
-   public List<Component> children =new ArrayList<Component>();
+  // public List<Component> children =new ArrayList<Component>();
  /*   public void addConnector(Connector connector){
         connectors.add(connector);
     }*/
- public void setOffset(Point3f parentLocation ,Point3f childLocation ){
-     this.parentLocation = parentLocation;
-     this.childLocation= childLocation;
+ public void setOffset(GL_Vector parentLocation ,GL_Vector childLocation ){
+     this.parentPosition = parentLocation;
+     this.childPosition= childLocation;
  }
-    public void addChild(Component component){
+ /*   public void addChild(Component component){
         children.add(component);
-    }
+    }*/
     public void removeChild(Component component){
         for(int i=children.size()-1;i>=0;i--){
-            Component child =  children.get(i);
+            BaseBlock child =  children.get(i);
             if(child == component){
                 children.remove(i);
             }
 
         }
     }
-    float width;
-    float height;
 
-
-    float thick;
    // int secnum;
    public Component(){
 
@@ -101,7 +107,7 @@ public class Component {
             // component.setItem(itemBean);
             component.rotateX=-30;
 
-            component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+            component.setOffset(shape.parentPosition, shape.childPosition);
             //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
             parentNode.addChild(component);
             //changeProperty();
@@ -111,8 +117,8 @@ public class Component {
     public Component(BoneBlock shape ){
         this(shape.getWidth(),shape.getHeight(),shape.getThick());
         this.name = shape.getName();
-        this.parentLocation =new Point3f(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z());
-        this.childLocation =new Point3f(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z());
+        this.parentPosition =shape.parentPosition;
+        this.childPosition =shape.childPosition;
     this.block = shape;
       /*  this.front= shape.getFront();
         this.back= shape.getBack();
@@ -127,14 +133,14 @@ public class Component {
         this.width=width;
         this.height=height;
         this.thick=thick;
-        this.P1= new GL_Vector(0,0,thick);
-        this.P2= new GL_Vector(width,0,thick);
-        this.P3= new GL_Vector(width,0,0);
-        this.P4= new GL_Vector(0,0,0);
-        this.P5= new GL_Vector(0,height,thick);
-        this.P6= new GL_Vector(width,height,thick);
-        this.P7= new GL_Vector(width,height,0);
-        this.P8= new GL_Vector(0,height,0);
+//        this.P1= new GL_Vector(0,0,thick);
+//        this.P2= new GL_Vector(width,0,thick);
+//        this.P3= new GL_Vector(width,0,0);
+//        this.P4= new GL_Vector(0,0,0);
+//        this.P5= new GL_Vector(0,height,thick);
+//        this.P6= new GL_Vector(width,height,thick);
+//        this.P7= new GL_Vector(width,height,0);
+//        this.P8= new GL_Vector(0,height,0);
 
 
     }
@@ -170,84 +176,84 @@ public class Component {
 
     }
 
-    /**
-     *
-     * @param index
-     * @param matrix
-     * @param vertices
-     * @param texcoords
-     * @param faces
-     * @param normals
-     */
-    public void getVertices(int index,GL_Matrix matrix,List<float[]> vertices,List<float[] > texcoords,List<int[]> faces,List<float[]> normals){
-
-        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentLocation.x, parentLocation.y, parentLocation.z);
-
-        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,0,0);
-        rotateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
-
-        if(rotateZ!=0){
-            //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -rotateZ*3.14f/180));
-        }
-        if(rotateY!=0){
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, -rotateY*3.14f/180, 0));
-        }
-        if(rotateX!=0){
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -rotateX*3.14f/180, 0, 0));
-
-        } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
-        translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
-        rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
-
-
-
-        /*if(this.block.renderShader();front !=null) {
-            this.addVerticesToList(vertices, BoxModel.getFrontVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
-            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
-            this.addNormalsToList(normals, BoxModel.FRONT_DIR, rotateMatrix);
-            this.addTexcoordsToList(texcoords, front);
-        }
-        if(back !=null) {
-            this.addVerticesToList(vertices, BoxModel.getBackVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
-            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
-            this.addNormalsToList(normals, BoxModel.BACK_DIR, rotateMatrix);
-            this.addTexcoordsToList(texcoords, back);
-        }
-        if(left !=null) {
-            this.addVerticesToList(vertices, BoxModel.getLeftVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
-            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
-            this.addNormalsToList(normals, BoxModel.LEFT_DIR, rotateMatrix);
-            this.addTexcoordsToList(texcoords, left);
-        }
-        if(right !=null) {
-            this.addVerticesToList(vertices, BoxModel.getRightVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
-            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
-            this.addNormalsToList(normals, BoxModel.RIGHT_DIR, rotateMatrix);
-            this.addTexcoordsToList(texcoords, right);
-        }
-        if(top !=null) {
-            this.addVerticesToList(vertices, BoxModel.getTopVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
-            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
-            this.addNormalsToList(normals, BoxModel.TOP_DIR, rotateMatrix);
-            this.addTexcoordsToList(texcoords, top);
-        }
-        if(bottom !=null) {
-            this.addVerticesToList(vertices, BoxModel.getBottomVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
-            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
-            this.addNormalsToList(normals, BoxModel.DOWN_DIR, rotateMatrix);
-            this.addTexcoordsToList(texcoords, bottom);
-        }*/
-
-        for(int i=0;i<children.size();i++){
-            children.get(i).getVertices( index,matrix,vertices, texcoords, faces,normals);
-        }
-
-    }
+//    /**
+//     *
+//     * @param index
+//     * @param matrix
+//     * @param vertices
+//     * @param texcoords
+//     * @param faces
+//     * @param normals
+//     */
+//    public void getVertices(int index,GL_Matrix matrix,List<float[]> vertices,List<float[] > texcoords,List<int[]> faces,List<float[]> normals){
+//
+//        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentPosition.x, parentPosition.y, parentPosition.z);
+//
+//        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,0,0);
+//        rotateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
+//
+//        if(rotateZ!=0){
+//            //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
+//            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, -rotateZ*3.14f/180));
+//        }
+//        if(rotateY!=0){
+//            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, -rotateY*3.14f/180, 0));
+//        }
+//        if(rotateX!=0){
+//            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( -rotateX*3.14f/180, 0, 0));
+//
+//        } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
+//        translateMatrix = GL_Matrix.translateMatrix(-childPosition.x, -childPosition.y, -childPosition.z);
+//        rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+//
+//
+//
+//        /*if(this.block.renderShader();front !=null) {
+//            this.addVerticesToList(vertices, BoxModel.getFrontVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+//            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+//            this.addNormalsToList(normals, BoxModel.FRONT_DIR, rotateMatrix);
+//            this.addTexcoordsToList(texcoords, front);
+//        }
+//        if(back !=null) {
+//            this.addVerticesToList(vertices, BoxModel.getBackVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+//            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+//            this.addNormalsToList(normals, BoxModel.BACK_DIR, rotateMatrix);
+//            this.addTexcoordsToList(texcoords, back);
+//        }
+//        if(left !=null) {
+//            this.addVerticesToList(vertices, BoxModel.getLeftVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+//            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+//            this.addNormalsToList(normals, BoxModel.LEFT_DIR, rotateMatrix);
+//            this.addTexcoordsToList(texcoords, left);
+//        }
+//        if(right !=null) {
+//            this.addVerticesToList(vertices, BoxModel.getRightVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+//            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+//            this.addNormalsToList(normals, BoxModel.RIGHT_DIR, rotateMatrix);
+//            this.addTexcoordsToList(texcoords, right);
+//        }
+//        if(top !=null) {
+//            this.addVerticesToList(vertices, BoxModel.getTopVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+//            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+//            this.addNormalsToList(normals, BoxModel.TOP_DIR, rotateMatrix);
+//            this.addTexcoordsToList(texcoords, top);
+//        }
+//        if(bottom !=null) {
+//            this.addVerticesToList(vertices, BoxModel.getBottomVertices(0f, 0f, 0f, width, height, thick), rotateMatrix);
+//            this.addFacesToList(faces, new int[]{index++, index++, index++, index++});
+//            this.addNormalsToList(normals, BoxModel.DOWN_DIR, rotateMatrix);
+//            this.addTexcoordsToList(texcoords, bottom);
+//        }*/
+//
+//        for(int i=0;i<children.size();i++){
+//            children.get(i).getVertices( index,matrix,vertices, texcoords, faces,normals);
+//        }
+//
+//    }
 
     public void build(ShaderConfig config ,  GL_Matrix matrix){
         FloatBufferWrap floatBuffer = config.getVao().getVertices();
-        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentLocation.x, parentLocation.y, parentLocation.z);
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentPosition.x, parentPosition.y, parentPosition.z);
 
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,0,0);
         rotateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
@@ -263,7 +269,7 @@ public class Component {
             rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( rotateX*3.14f/180, 0, 0));
 
         } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
-         translateMatrix = GL_Matrix.translateMatrix(-childLocation.x, -childLocation.y, -childLocation.z);
+         translateMatrix = GL_Matrix.translateMatrix(-childPosition.x, -childPosition.y, -childPosition.z);
 
         if(this.name.equals("rhand")&& this.rotateX>0){
 //            LogUtil.println("hello");
@@ -293,7 +299,8 @@ public class Component {
                 if(this.itemBean.getItemDefinition().getShape()!=null){
                    // this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(), matrix);
                     if(this.itemBean.getItemDefinition().getShape().points!=null){
-                        this.itemBean.getItemDefinition().getShape().renderShaderInGivexyzwht(config,config.getVao(),rotateMatrix,this.itemBean.getItemDefinition().getShape().points);
+                        //this.itemBean.getItemDefinition().getShape().renderShaderInGivexyzwht(config,config.getVao(),rotateMatrix,this.itemBean.getItemDefinition().getShape().points);
+                        this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(),rotateMatrix);
                     }else{
                         this.itemBean.getItemDefinition().getShape().renderShader(config,config.getVao(), rotateMatrix);
                     }
@@ -334,7 +341,7 @@ public class Component {
 
 
        for(int i=0;i<children.size();i++){
-            children.get(i).build(config,rotateMatrix);
+           ((Component)children.get(i)).build(config,rotateMatrix);
         }
 
     }
@@ -517,6 +524,7 @@ public class Component {
     }
     public void setItem(ItemBean itemBean){
     this.itemBean = itemBean;
+        this.block = itemBean.getItemDefinition().getShape();
         this.name= itemBean.getItemDefinition().getName();
         //this.setShape123(itemDefinition.getShape());
        // this.front= itemCfgBean.getIcon();
@@ -544,14 +552,14 @@ public class Component {
         GL11.glVertex3f(p.x,p.y,p.z);
     }
     public Component findChild(String nodeName)  {
-        if(this.name.equals(nodeName))
+        if(this.name!=null && this.name.equals(nodeName))
             return this;
         if(children.size()>0){
             for(int i=0;i<children.size();i++){
                 if(children.get(i).name.equals(nodeName)){
-                    return children.get(i);
+                    return (Component)children.get(i);
                 }else{
-                    Component child = children.get(i).findChild(nodeName);
+                    Component child = ((Component)children.get(i)).findChild(nodeName);
                     if(child!=null){
                         return child;
                     }
@@ -588,50 +596,128 @@ public class Component {
 
     }*/
 
-    public float getWidth() {
-        return width;
-    }
+//    public float getWidth() {
+//        return width;
+//    }
+//
+//    public void setWidth(float width) {
+//        this.width = width;
+//    }
+//
+//    public float getHeight() {
+//        return height;
+//    }
+//
+//    public void setHeight(float height) {
+//        this.height = height;
+//    }
+//
+//    public float getThick() {
+//        return thick;
+//    }
+//
+//    public void setThick(float thick) {
+//        this.thick = thick;
+//    }/*
+//    public TextureInfo getFront(){
+//        return front;
+//    }
+//    public void setFront(TextureInfo texture){
+//        this.front=texture;
+//    }
+//    public void setBack(TextureInfo texture){
+//        this.back=texture;
+//    }
+//    public void setLeft(TextureInfo texture){
+//        this.left=texture;
+//    }
+//
+//    public void setRight(TextureInfo texture){
+//        this.right=texture;
+//    }
+//    public void setTop(TextureInfo texture){
+//        this.top=texture;
+//    }
+//    public void setBottom(TextureInfo texture){
+//        this.bottom=texture;
+//    }*/
+//
+//    @Override
+//    public float rotateX(float value) {
+//         return rotateX+=value;
+//    }
+//
+//    @Override
+//    public float rotateY(float value) {
+//        return rotateY+=value;
+//    }
+//
+//    @Override
+//    public float rotateZ(float value) {
+//        return rotateZ+=value;
+//    }
+//
+//    @Override
+//    public void setRotateX(float value) {
+//        this.rotateX=value;
+//    }
+//
+//    @Override
+//    public void setRotateY(float value) {
+//        rotateY=value;
+//    }
+//
+//    @Override
+//    public void setRotateZ(float value) {
+//        rotateZ=value;
+//    }
+//
+//    @Override
+//    public float getRotateX() {
+//        return rotateX;
+//    }
+//
+//    @Override
+//    public float getRotateY() {
+//        return rotateY;
+//    }
+//
+//    @Override
+//    public float getRotateZ() {
+//        return rotateZ;
+//    }
+//
+//    @Override
+//    public float getCenterX() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public float getCenterY() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public float getCenterZ() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setCenterX(float value) {
+//
+//    }
+//
+//    @Override
+//    public void setCenterY(float value) {
+//
+//    }
+//
+//    @Override
+//    public void setCenterZ(float value) {
+//
+//    }
 
-    public void setWidth(float width) {
-        this.width = width;
+    public Component getChildren(int i){
+        return  (Component) children.get(i);
     }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public float getThick() {
-        return thick;
-    }
-
-    public void setThick(float thick) {
-        this.thick = thick;
-    }/*
-    public TextureInfo getFront(){
-        return front;
-    }
-    public void setFront(TextureInfo texture){
-        this.front=texture;
-    }
-    public void setBack(TextureInfo texture){
-        this.back=texture;
-    }
-    public void setLeft(TextureInfo texture){
-        this.left=texture;
-    }
-
-    public void setRight(TextureInfo texture){
-        this.right=texture;
-    }
-    public void setTop(TextureInfo texture){
-        this.top=texture;
-    }
-    public void setBottom(TextureInfo texture){
-        this.bottom=texture;
-    }*/
-
 }

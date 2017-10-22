@@ -153,6 +153,7 @@ public class ShaderConfig {
         //设置参数长度数组
         setParamLenAry(attris);
         vao=new Vao(this);
+
     }
     int paramTotalLen;
 

@@ -111,7 +111,7 @@ public class ItemManager {
 
     public void update() {
         long now = TimeUtil.getNowMills();
-        if (now - lastCheckTime < 1000) {//减少检查和网络发送
+        if (now - lastCheckTime < 200) {//减少检查和网络发送
             return;
         }
         lastCheckTime = now;

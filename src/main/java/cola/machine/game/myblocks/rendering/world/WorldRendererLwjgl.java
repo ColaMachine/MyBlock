@@ -197,6 +197,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
     // List<Chunk> chunkList =new ArrayList<>();
     public void render() {
         OpenglUtils.checkGLError();
+        this.update();
         // if(true)return;
         this.updateChunksInProximity(false);
         // ShaderManager.terrainShaderConfig.getVao().getVertices().clear();

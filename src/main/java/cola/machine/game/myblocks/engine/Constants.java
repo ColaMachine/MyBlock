@@ -2,7 +2,9 @@ package cola.machine.game.myblocks.engine;
 
 import cola.machine.game.myblocks.naming.Name;
 import com.google.common.base.Charsets;
+import glmodel.GL_Vector;
 
+import javax.vecmath.Vector4f;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -97,12 +99,16 @@ public class Constants {
 
     static final float PIdiv180 = (float)Math.PI/2;
 
-    public static boolean SHADOW_ENABLE=false;
+    public static boolean SHADOW_ENABLE=true;
     public static boolean TRIABLE_ENABLE=false;
     public static boolean HDR_ENABLE=false;
     public static boolean GAOSI_ENABLE=false;
     
-    public static boolean DELAY_ENABLE=false;
+    public static boolean DELAY_ENABLE=true;
 
-    public static boolean SSAO_ENABLE =false;
+    public static boolean SSAO_ENABLE =true;
+
+    public static GL_Vector RED = new GL_Vector(1,0,0);
+
+    public static Vector4f RGBA_WHITE = new Vector4f(1,1,1,1);
 }

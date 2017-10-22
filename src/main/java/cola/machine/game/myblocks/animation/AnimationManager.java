@@ -1,6 +1,8 @@
 package cola.machine.game.myblocks.animation;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
+import cola.machine.game.myblocks.model.RotateImageBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.util.FileUtil;
@@ -47,13 +49,13 @@ public class AnimationManager {
         }
         if(component.children.size()>0){
             for(int i=0;i<component.children.size();i++){
-                clear(component.children.get(i));
+                clear(component.getChildren(i));
             }
         }
 
     }
 
-    public void apply(Component component , String action){
+    public void apply(BoneRotateImageBlock component , String action){
 
 
         Animation animation = domAnimationsMap.get(component.name+":"+action);
@@ -74,7 +76,8 @@ public class AnimationManager {
         }
         if(component.children.size()>0){
             for(int i=0;i<component.children.size();i++){
-                apply(component.children.get(i),action);
+                if(component.children.get(i) instanceof  BoneRotateImageBlock)
+                apply((BoneRotateImageBlock) component.children.get(i),action);
             }
         }
     }
@@ -97,7 +100,7 @@ public class AnimationManager {
                 animators.remove(i);
 
             }else {
-                animator.process(now);
+                animator.process2(now);
             }
 
             //LogUtil.println("画完后:"+animator.component.rotateX);

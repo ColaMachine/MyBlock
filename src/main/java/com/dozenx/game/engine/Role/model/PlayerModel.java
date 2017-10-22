@@ -2,13 +2,17 @@ package com.dozenx.game.engine.Role.model;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.BodyComponent;
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.HandComponent;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.element.bean.Component;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -21,7 +25,6 @@ import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Point3f;
 import javax.vecmath.Vector4f;
 
 /**
@@ -30,7 +33,7 @@ import javax.vecmath.Vector4f;
 public class PlayerModel extends BaseModel   {
 
 
-    float bili =1;
+    float bili =0.5f;
 
     protected  float HAND_HEIGHT=1.5f*bili;
     protected float HAND_WIDTH=0.5f*bili;
@@ -48,49 +51,71 @@ public class PlayerModel extends BaseModel   {
     protected float HEAD_HEIGHT=1f*bili;
     protected float HEAD_WIDTH=1f*bili;
     protected  float HEAD_THICK=1f*bili;
-
+    BoneRotateImageBlock boneRotateImageBlock;
     public PlayerModel(Role role ){
         super(role);
+
+        BaseBlock block ;
+        block = TextureManager.getShape("human_body");
+        BODY_WIDTH = block.width;
+        BODY_HEIGHT = block.height;
+        BODY_THICK = block.thick;
+
+//        rootComponent= (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
+//this.rootComponent = ItemManager.getItemDefinition("bonesteve")
         rootComponent=new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
+//        boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
 
         int id =role.getId();
         rootComponent.id=id*10+EquipPartType.BODY.ordinal();
         rootComponent.name = EquipPartType.BODY.getName();
-        rootComponent.block = TextureManager.getShape("human_body");
+        rootComponent.block = block;
 
-        //rhand
+        //rarm
         Component rArm= new BodyComponent(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        rArm.id=id*10+EquipPartType.RARM.ordinal();
+        rArm.id=id*10+EquipPartType.LARM.ordinal();
 
-        rArm.block = TextureManager.getShape("human_hand");
-        rArm.name=EquipPartType.RARM.getName();
-        rArm.setOffset(new Point3f(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(0,HAND_HEIGHT*3/4,HAND_THICK/2));
+
+        block = TextureManager.getShape("human_hand");
+        HAND_WIDTH = block.width;
+        HAND_HEIGHT = block.height;
+        HAND_THICK = block.thick;
+
+        rArm.block = block;
+        rArm.name=EquipPartType.LARM.getName();
+        rArm.setOffset(new GL_Vector(BODY_WIDTH,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(0,HAND_HEIGHT*3/4,HAND_THICK/2));
         rootComponent.addChild(rArm);
 
         //小手
 
-        //lhand
+        //larm
         Component lArm= new BodyComponent(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
-        lArm.id=id*10+EquipPartType.LARM.ordinal();
+        lArm.id=id*10+EquipPartType.RARM.ordinal();
 
         lArm.block = TextureManager.getShape("human_hand");
-        lArm.name=EquipPartType.LARM.getName();
+        lArm.name=EquipPartType.RARM.getName();
         //rHandComponent.name="rHumanHand";
-        lArm.setOffset(new Point3f(0,BODY_HEIGHT*3/4,BODY_THICK/2),new Point3f(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
+        lArm.setOffset(new GL_Vector(0,BODY_HEIGHT*3/4,BODY_THICK/2),new GL_Vector(HAND_WIDTH,HAND_HEIGHT*3/4,HAND_THICK/2));
         rootComponent.addChild(lArm);
 
         //lleg
+
+
+        block = TextureManager.getShape("human_leg");
+        LEG_WIDTH = block.width;
+        LEG_HEIGHT = block.height;
+        LEG_THICK = block.thick;
+
+
         Component lleg= new BodyComponent(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
 
 
-        lleg.block = TextureManager.getShape("human_leg");
+        lleg.block = block;
 
-        lleg.id=id*10+EquipPartType.LLEG.ordinal();
-        lleg.name= EquipPartType.LLEG.getName();
-        lleg.setOffset(new Point3f(LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
+        lleg.id=id*10+EquipPartType.RLEG.ordinal();
+        lleg.name= EquipPartType.RLEG.getName();
+        lleg.setOffset(new GL_Vector(LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,BODY_THICK/2));
         rootComponent.addChild(lleg);
-
-
 
 
         //rleg
@@ -99,19 +124,28 @@ public class PlayerModel extends BaseModel   {
 
 
         rleg.block = TextureManager.getShape("human_leg");
-        rleg.name= EquipPartType.RLEG.getName();
-        rleg.id=id*10 +EquipPartType.RLEG.ordinal();
-        rleg.setOffset(new Point3f(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new Point3f(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
+        rleg.name= EquipPartType.LLEG.getName();
+        rleg.id=id*10 +EquipPartType.LLEG.ordinal();
+        rleg.setOffset(new GL_Vector(BODY_WIDTH-LEG_WIDTH/2,0,BODY_THICK/2),new GL_Vector(LEG_WIDTH/2,LEG_HEIGHT,LEG_THICK/2));
         rootComponent.addChild(rleg);
 
         //head
 
+        block = TextureManager.getShape("human_head");
+        HEAD_WIDTH = block.width;
+        HEAD_HEIGHT = block.height;
+        HEAD_THICK = block.thick;
+
+
+        block = block;
+
         Component head= new BodyComponent(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
         //head.setEightFace("human_head");
-        head.block = TextureManager.getShape("human_head");
+        head.block = block;
         head.id=id*10+EquipPartType.HEAD.ordinal();
         head.name=EquipPartType.HEAD.getName();
-        head.setOffset(new Point3f(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new Point3f(HEAD_WIDTH/2,0,HEAD_THICK/2));
+
+        head.setOffset(new GL_Vector(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new GL_Vector(HEAD_WIDTH/2,0,HEAD_THICK/2));
         rootComponent.addChild(head);
 
 
@@ -186,14 +220,14 @@ public class PlayerModel extends BaseModel   {
 
     public void addHeadEquip(ItemBean itemCfg)  {
 
-        Component parent = 	rootComponent.findChild("human_head");
+        BoneRotateImageBlock parent = 	rootComponent.findChild("human_head");
         LogUtil.println("添加头盔"+(itemCfg==null ?"空":itemCfg.getId()));
         clearAddChild(parent,Component.body, "helmet", itemCfg);
     }
 
 
     public void addLRShoeEquip(boolean leftFlag ,ItemBean itemCfg)  {
-        Component parent ;
+        BoneRotateImageBlock parent ;
         if(leftFlag){
             parent = rootComponent.findChild(EquipPartType.LLEG.getName());
         }else{
@@ -208,7 +242,7 @@ public class PlayerModel extends BaseModel   {
     }
 
     public void addLRegEquip(boolean leftFlag ,ItemBean itemCfg)  {
-        Component parent ;
+        BoneRotateImageBlock parent ;
         if(leftFlag){
             parent = rootComponent.findChild(EquipPartType.LLEG.getName());
         }else{
@@ -223,13 +257,20 @@ public class PlayerModel extends BaseModel   {
         addLRegEquip(false, itemCfg);
     }
     public void addBodyEquip(ItemBean itemCfg)  {
-        Component parent = 	rootComponent.findChild(EquipPartType.BODY.getName());
+        BoneRotateImageBlock parent = 	rootComponent.findChild(EquipPartType.BODY.getName());
         clearAddChild(parent,Component.body, EquipPartType.ARMOR.getName(), itemCfg);
     }
 
     public void addHandEquip(ItemBean itemBean)  {
+      //  this.rootComponent =(Component) ItemManager.getItemDefinition("bonesteve").getShape();
+
+//       BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
+//
+//        this.rootComponent= boneRotateImageBlock;
+        //    this.itemDefinition= ItemManager.getItemDefinition("bonesteve");
         //Shape shape = itemCfg.getShape();
-        Component parent = 	rootComponent.findChild(EquipPartType.RARM.getName());
+        BoneRotateImageBlock parent = 	rootComponent.findChild(EquipPartType.RARM.getName());
+        parent.children.clear();
         this.addHandChild(parent, EquipPartType.RHAND.getName(),  itemBean);
     }
 
@@ -260,7 +301,7 @@ public class PlayerModel extends BaseModel   {
             rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
             //.getVao().getVertices()
             //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
-            rootComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
+            rootComponent.renderShader(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix);
             //渲染头部名字
             if(StringUtil.isNotEmpty(role.getName())){
 
@@ -323,7 +364,7 @@ public class PlayerModel extends BaseModel   {
                 component.setItem(itemBean);
                 component.name = name;
 
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(component);
                 //changeProperty();
@@ -345,14 +386,14 @@ public class PlayerModel extends BaseModel   {
                 component.setItem(itemBean);
                 component.name = name;
 
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(component);
                 //changeProperty();
             }
         }
     }*/
-    public void addHandChild(Component parent,String name,ItemBean itemBean) {
+    public void addHandChild(BoneRotateImageBlock parent,String name,ItemBean itemBean) {
 
       /*  Component rarm = 	rootComponent.findChild(EquipPartType.RARM.getName());
         rarm.children.clear();;*/
@@ -377,7 +418,7 @@ public class PlayerModel extends BaseModel   {
                 component.setItem( itemBean);
                 component.name = name;
 
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.children.clear();
                 parent.addChild(component);
@@ -401,7 +442,7 @@ public class PlayerModel extends BaseModel   {
                 component.name = name;
                 if(shape instanceof  BoneBlock){
                     BoneBlock boneBlock = (BoneBlock) shape;
-                    component.setOffset(new Point3f(boneBlock.getP_posi_x(), boneBlock.getP_posi_y(), boneBlock.getP_posi_z()), new Point3f(boneBlock.getC_posi_x(), boneBlock.getC_posi_y(), boneBlock.getC_posi_z()));
+                    component.setOffset(new GL_Vector(boneBlock.getP_posi_x(), boneBlock.getP_posi_y(), boneBlock.getP_posi_z()), new GL_Vector(boneBlock.getC_posi_x(), boneBlock.getC_posi_y(), boneBlock.getC_posi_z()));
 
                 }
                  //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
@@ -482,7 +523,7 @@ public class PlayerModel extends BaseModel   {
 
 
     public void addLRShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
-        Component parent ;
+        BoneRotateImageBlock parent ;
         if(leftFlag){
             parent = rootComponent.findChild(EquipPartType.LLEG.getName());
         }else{
@@ -497,7 +538,7 @@ public class PlayerModel extends BaseModel   {
     }
 
     public void addLRegEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
-        Component parent ;
+        BoneRotateImageBlock parent ;
         if(leftFlag){
             parent = rootComponent.findChild(EquipPartType.LLEG.getName());
         }else{
@@ -512,21 +553,21 @@ public class PlayerModel extends BaseModel   {
         addLRegEquip(false, itemCfg);
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
-        Component parent = 	rootComponent.findChild(EquipPartType.BODY.getName());
+        BoneRotateImageBlock parent = 	rootComponent.findChild(EquipPartType.BODY.getName());
         addChild(parent,Component.body, EquipPartType.ARMOR.getName(), itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
-        Component parent = 	rootComponent.findChild(EquipPartType.RARM.getName());
+        BoneRotateImageBlock parent = 	rootComponent.findChild(EquipPartType.RARM.getName());
         this.addHandChild(parent, EquipPartType.RHAND.getName(), itemCfg);
     }
 
-    public void removeChild(Component parent,String name) {
+    public void removeChild(BoneRotateImageBlock parent,String name) {
         if(parent==null){
             LogUtil.err("parent node is null");
         }
-        Component shoe = parent.findChild(name);
+        BoneRotateImageBlock shoe = parent.findChild(name);
         if (shoe == null) {
 
             return;
@@ -538,7 +579,7 @@ public class PlayerModel extends BaseModel   {
 
         }
     }
-    public void addChild(Component parent,int type ,String name,ItemDefinition itemCfg) {
+    public void addChild(BoneRotateImageBlock parent,int type ,String name,ItemDefinition itemCfg) {
         super.clearAddChild(parent,type,name,new ItemBean(itemCfg,1));
        /* if(parent==null){
             LogUtil.err("parent node is null");
@@ -559,7 +600,7 @@ public class PlayerModel extends BaseModel   {
                 component.setItem(itemCfg);
                 component.name = name;
 
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(component);
                 //changeProperty();
@@ -581,7 +622,7 @@ public class PlayerModel extends BaseModel   {
                 component.setItem(itemCfg);
                 component.name = name;
 
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(component);
                 //changeProperty();
@@ -604,11 +645,11 @@ public class PlayerModel extends BaseModel   {
 
         }
     }
-    public void addHandChild(Component parent,String name,ItemDefinition itemCfg) {
+    public void addHandChild(BoneRotateImageBlock parent,String name,ItemDefinition itemCfg) {
         if (parent == null) {
             LogUtil.err("parent node is null");
         }
-        Component shoe = parent.findChild(name);
+        BoneRotateImageBlock shoe = parent.findChild(name);
         if (shoe == null) {
             if (itemCfg == null) {
                 return;
@@ -623,8 +664,8 @@ public class PlayerModel extends BaseModel   {
                 //component.setShape(itemCfg.getShape());
                 component.setItem(itemCfg);
                 component.name = name;
-
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                component.setOffset(shape.parentPosition,component.childPosition);
+                //component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(component);
                 //changeProperty();
@@ -645,8 +686,8 @@ public class PlayerModel extends BaseModel   {
                 // component.setShape(itemCfg.getShape());
                 component.setItem(itemCfg);
                 component.name = name;
-
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+                component.setOffset(shape.parentPosition,component.childPosition);
+                //component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(component);
                 //changeProperty();
@@ -655,7 +696,7 @@ public class PlayerModel extends BaseModel   {
     }
 
     @Override
-    public Component getRootComponent() {
+    public BoneRotateImageBlock getRootComponent() {
         return rootComponent;
     }
 
@@ -668,47 +709,47 @@ public class PlayerModel extends BaseModel   {
     public void build(ShaderConfig config, GL_Matrix rotateMatrix) {
         //this.role.getPosition().x+=0.01;
         //GamingState.cameraChanged.x+=0.01;
-
-        if(Switcher.SHADER_ENABLE){
-
-
-
-            GL_Matrix /*translateMatrix=GL_Matrix.scaleMatrix(1f);*/
-             translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.35f, role.getZ());//-BODY_THICK/2
-            //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-             rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
-      //  LogUtil.println("bodyAngle:"+role.getBodyAngle());
-            rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
-
-            GL_Matrix newtranslateMatrix=GL_Matrix.translateMatrix(-BODY_WIDTH*0.3f/2, 0, -BODY_THICK*0.3f/2);
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.scaleMatrix(0.3f));
-            //.getVao().getVertices()
-            //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
-           // GL_Matrix translateMatrix=GL_Matrix.scaleMatrix(0.5f);
-            rootComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
-            //渲染头部名字
-            if(StringUtil.isNotEmpty(role.getName())){
-
-                //
-                GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 3.5f, role.getZ());
-                float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
-                GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
-
-                rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
-
-                // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
-                rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(-2f, 0,0));
-
-//                ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 24, new Vector4f(1, 1, 1, 1), ShaderManager.livingThingShaderConfig);
-
-
-
-            }
-
-        }else{
-
-        }
+        super.build(config,rotateMatrix);
+//        if(Switcher.SHADER_ENABLE){
+//
+//
+//
+//            GL_Matrix /*translateMatrix=GL_Matrix.scaleMatrix(1f);*/
+//             translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.35f, role.getZ());//-BODY_THICK/2
+//            //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
+//             rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
+//      //  LogUtil.println("bodyAngle:"+role.getBodyAngle());
+//            rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+//
+//            GL_Matrix newtranslateMatrix=GL_Matrix.translateMatrix(-BODY_WIDTH*0.3f/2, 0, -BODY_THICK*0.3f/2);
+//            rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
+//            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.scaleMatrix(0.3f));
+//            //.getVao().getVertices()
+//            //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
+//           // GL_Matrix translateMatrix=GL_Matrix.scaleMatrix(0.5f);
+//            rootComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
+//            //渲染头部名字
+//            if(StringUtil.isNotEmpty(role.getName())){
+//
+//                //
+//                GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 3.5f, role.getZ());
+//                float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
+//                GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
+//
+//                rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
+//
+//                // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
+//                rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(-2f, 0,0));
+//
+////                ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 24, new Vector4f(1, 1, 1, 1), ShaderManager.livingThingShaderConfig);
+//
+//
+//
+//            }
+//
+//        }else{
+//
+//        }
     }
 
     @Override

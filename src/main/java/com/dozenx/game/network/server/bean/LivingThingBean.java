@@ -359,7 +359,7 @@ public class LivingThingBean extends Role {
         //try{
         if(component!=null && component.children!=null)
             for(int i=component.children.size()-1;i>=0;i--){
-                Component child = component.children.get(i);
+                Component child = (Component) component.children.get(i);
                 if(child.itemBean !=null){
                     totalPower +=child.itemBean.itemDefinition.getStrenth();
                     totalAgility+=child.itemBean.itemDefinition.getAgile();
@@ -494,6 +494,7 @@ public class LivingThingBean extends Role {
         }
         this.updateTime =  TimeUtil.getNowMills();
     }
+    GL_Vector collisionReverse = new GL_Vector();
     public void move(float x, float y, float z) {
         this.oldPosition.copy(this.position);
         this.position.set(x, y, z);
@@ -521,15 +522,24 @@ public class LivingThingBean extends Role {
             //在客户端不对他们做碰撞校验
 
         }else{
-            if (CoreRegistry.get(PhysicsEngine.class).collision(this)) {
+            if ((collisionReverse=CoreRegistry.get(PhysicsEngine.class).collision(this))!=null) {
+
+                //取消主干分量
                 //尝试高度太高1
-                this.position.y=(int)Math.floor(this.position.y+1);
-                if(CoreRegistry.get(PhysicsEngine.class).collision(this)){
+//                if(Math.abs(collisionReverse.z) > Math.abs(collisionReverse.x)){
+//                    this.position.z+=collisionReverse.z;
+//                }else{
+//                    this.position.x+=collisionReverse.x;
+//                }
+                position.copy(oldPosition);
+               // this.position.add(collisionReverse);
+             //   this.position.y=(int)Math.floor(this.position.y+1);
+             /*   if(CoreRegistry.get(PhysicsEngine.class).collision(this)){
                     
                     
                     
-                    this.position.copy(oldPosition);
-                    if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞 
+
+                   *//* if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞
                         GL_Vector new_Vectory = new GL_Vector((float)Math.floor(oldPosition.x)+0.5f,(float)Math.floor(oldPosition.y)+0.2f,(float)Math.floor(oldPosition.z)+0.5f);
                         this.position.copy(new_Vectory);
                         if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞 
@@ -541,11 +551,11 @@ public class LivingThingBean extends Role {
                                this.position.copy(new_Vectory);
                            }
                         }
-                    }
-                    this.setBlock(true);
-                    this.setDest(null);
-                }
+                    }*//*
 
+                }*/
+                this.setBlock(true);
+                this.setDest(null);
             }else{
                 this.setBlock(false);
             }

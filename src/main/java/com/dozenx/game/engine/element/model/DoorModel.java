@@ -54,11 +54,11 @@ public class DoorModel implements Model {
         FloatBufferWrap floatBuffer = config.getVao().getVertices();
         if(front!=null) {
             // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
-            ShaderUtils.draw3dImage(P1, P2, P6, P5, translateMatrix, new GL_Vector(0, 0, 1f), front, floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),translateMatrix,P1, P2, P6, P5,  new GL_Vector(0, 0, 1f), front);
         }
         if(back!=null) {
             //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
-            ShaderUtils.draw3dImage(P3,P4,P8,P7,translateMatrix,new GL_Vector(0,0,-1),back,floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),translateMatrix,P3,P4,P8,P7,new GL_Vector(0,0,-1),back);
         }
 
 

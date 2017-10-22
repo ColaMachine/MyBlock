@@ -76,7 +76,11 @@ public class Ball  {
         component.setShape(shape);
         component.setItem();
     }*/
+    public static GL_Matrix dropThindScaleMatrix = GL_Matrix.scaleMatrix(0.5f);
+    public static GL_Matrix animations[] =new GL_Matrix[]{GL_Matrix.translateMatrix(0,0.1f,0),
+            GL_Matrix.translateMatrix(0,0.3f,0),GL_Matrix.translateMatrix(0,0.4f,0),GL_Matrix.translateMatrix(0,0.45f,0),GL_Matrix.translateMatrix(0,0.4f,0),GL_Matrix.translateMatrix(0,0.3f,0),GL_Matrix.translateMatrix(0,0.1f,0)};
     public boolean jinzhi;
+    public int animationIndex =0;
     public int type=2;//2是伤害  1 是掉落物品
     GL_Vector p1 =new GL_Vector(0,0,0);
     GL_Vector p2 =new GL_Vector(1,0,0);
@@ -85,9 +89,11 @@ public class Ball  {
     GL_Vector normal =new GL_Vector(0,0,1);
     float size=0.1f;
     boolean readyDied = false;
+
+    public long lastAnimationTime=0;
     public void update(ShaderConfig shaderConfig ){
         if(died){
-            LogUtil.err("ball already died");
+           // LogUtil.err("ball already died");
             return;
         }
         if(readyDied){
@@ -135,6 +141,15 @@ public class Ball  {
         }else if(type==1){
             //掉落的物品
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
+            translateMatrix=translateMatrix.multiply(translateMatrix,dropThindScaleMatrix);
+            translateMatrix=translateMatrix.multiply(translateMatrix,animations[animationIndex]);
+            if(TimeUtil.getNowMills()-lastAnimationTime>200){
+                animationIndex++;
+                if(animationIndex>=animations.length){
+                    animationIndex=0;
+                }
+                lastAnimationTime = TimeUtil.getNowMills();
+            }
            // itemDefinition.getItemModel().outdoorModel.build(shaderConfig,shaderConfig.getVao(), (int) this.position.x, (int)this.position.y, (int)this.position.z);
            // itemDefinition.getItemModel().outdoorModel.build(shaderConfig,translateMatrix);
 

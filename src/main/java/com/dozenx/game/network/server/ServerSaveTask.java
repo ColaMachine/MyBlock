@@ -53,13 +53,14 @@ public class ServerSaveTask extends TimerTask {
                     if (nowHP > livingThing.HP) {
                         nowHP = livingThing.HP;
                     }
+                ////复活==============
                 if (livingThing.isDied() && now - livingThing.getLastHurtTime() > 10 * 1000) {
                     livingThing.setTarget(null);
                     livingThing.setTargetId(0);
                     livingThing.getExecutor().setCurrentState(new IdleState(livingThing));
                     livingThing.setNowHP(nowHP);
                     RebornCmd rebornCmd = new RebornCmd(livingThing.getId());
-                    serverContext.getMessages().offer(rebornCmd.toBytes());
+                    serverContext.getMessages().offer(rebornCmd.toBytes());//复活
                     livingThing.receive(new RebornCmd(livingThing.getId()));
 
                 }
@@ -87,12 +88,19 @@ public class ServerSaveTask extends TimerTask {
                 bagService.save(livingThing.getId(), bagService.getItemByUserId(livingThing.getId()));
 
             }
+
             for (ItemServerBean itemServerBean : bagService.getWorldItem()) {
-                DropCmd dropCmd = new DropCmd(0, itemServerBean.getId());
+                if(now - itemServerBean.dropTime >60000){
+                    itemServerBean.died=true;
+                    bagService.removeWorldItem(itemServerBean);
+                    continue;
+                }
+                DropCmd dropCmd = new DropCmd(0, itemServerBean.getId(),itemServerBean.getItemType(),itemServerBean.dropTime);
                 dropCmd.setX(itemServerBean.getX());
                 dropCmd.setY(itemServerBean.getY());
                 dropCmd.setZ(itemServerBean.getZ());
                 dropCmd.setItemType(itemServerBean.getItemType());
+
                 serverContext.getMessages().offer(dropCmd.toBytes());
             }
             ;

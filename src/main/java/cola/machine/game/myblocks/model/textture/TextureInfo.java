@@ -11,6 +11,12 @@ import glapp.GLImage;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
+import java.nio.ByteBuffer;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
+
 public class TextureInfo extends RegionArea{
 	public GL_Vector color ;//颜色 与纹理句柄互斥
 	/*public float minX=0;
@@ -32,6 +38,7 @@ public class TextureInfo extends RegionArea{
     int imgWidth ;//整张图片的宽度
     int imgHeight;//整张图片的宽度
     public TextureInfo(float minX,float minY,float maxX,float maxY){
+
 		this.minX=minX;
 		this.minY=minY;
 		this.maxX=maxX;
@@ -250,6 +257,7 @@ public class TextureInfo extends RegionArea{
 
     }
     public TextureInfo(){
+
     }
     public TextureInfo(String imgName){
         GLImage img=TextureManager.getImage(imgName);
@@ -333,5 +341,78 @@ public class TextureInfo extends RegionArea{
         GL11.glTexCoord2f(maxX, minY); GL11.glVertex2i(x + w, y + h);
         GL11.glTexCoord2f(maxX, maxY); GL11.glVertex2i(x + w, y    );
         GL11.glTexCoord2f(minX, maxY); GL11.glVertex2i(x   , y    );
+    }
+    private int width;
+    private int height;
+
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    /**
+     * Sets a parameter of the texture.
+     *
+     * @param name  Name of the parameter
+     * @param value Value to set
+     */
+    public void setParameter(int name, int value) {
+        glTexParameteri(GL_TEXTURE_2D, name, value);
+    }
+    /**
+     * Uploads image data with specified width and height.
+     *
+     * @param width  Width of the image
+     * @param height Height of the image
+     * @param data   Pixel data of the image
+     */
+    public void uploadData(int width, int height, ByteBuffer data) {
+        uploadData(GL_RGBA8, width, height, GL_RGBA, data);
+    }
+
+    /**
+     * Uploads image data with specified internal format, width, height and
+     * image format.
+     *
+     * @param internalFormat Internal format of the image data
+     * @param width          Width of the image
+     * @param height         Height of the image
+     * @param format         Format of the image data
+     * @param data           Pixel data of the image
+     */
+    public void uploadData(int internalFormat, int width, int height, int format, ByteBuffer data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+    }
+
+    /**
+     * Creates a texture with specified width, height and data.
+     *
+     * @param width  Width of the texture
+     * @param height Height of the texture
+     * @param data   Picture Data in RGBA format
+     *
+     * @return Texture from the specified data
+     */
+    public static TextureInfo createTexture(int width, int height, ByteBuffer data) {
+        TextureInfo texture = new TextureInfo();
+        texture. textureHandle = glGenTextures();
+        texture.setWidth(width);
+        texture.setHeight(height);
+
+        texture.bind();
+
+        texture.setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        texture.setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        texture.uploadData(GL_RGBA8, width, height, GL_RGBA, data);
+
+        return texture;
     }
 }

@@ -202,6 +202,9 @@ public class FilePanel extends Tab {
         Label jinshenLabel =new Label("精神");
         final TextField jinshenText = new TextField("精神");
 
+        Label duiDielabel =new Label("堆叠数量");
+        final TextField duiDieText = new TextField("20");
+
         selectGrid.add(mingjieLabel,0, 11);
         selectGrid.add(mingjieText,1, 11);
 
@@ -217,6 +220,8 @@ public class FilePanel extends Tab {
         selectGrid.add(jinshenLabel,0, 13);
         selectGrid.add(jinshenText,1, 13);
 
+        selectGrid.add(duiDielabel,2, 13);
+        selectGrid.add(duiDieText,3, 13);
 
 //        ItemDefinition item = new ItemDefinition();
 //        item.setType(0);
@@ -224,6 +229,8 @@ public class FilePanel extends Tab {
        
         Label label  =new Label("脚本:");
         final TextArea scriptTxt =new TextArea();
+
+
 
 
 
@@ -262,6 +269,7 @@ public class FilePanel extends Tab {
                         map.put("intelli",Integer.valueOf(zhiliText.getText()));
                         map.put("strenth",Integer.valueOf(liliangText.getText()));
                         map.put("tili",Integer.valueOf(tiliText.getText()));
+                        map.put("stack",Integer.valueOf(duiDieText.getText()));
                     }else{
                         firstType = 0;
                     }

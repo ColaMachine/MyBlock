@@ -17,6 +17,15 @@ public class DropCmd extends BaseGameCmd{
     private float y;
     private float z;
     private int num;
+    private long dropTime;
+
+    public long getDropTime() {
+        return dropTime;
+    }
+
+    public void setDropTime(long dropTime) {
+        this.dropTime = dropTime;
+    }
 
     private CmdType cmdType = CmdType.DROP;
 
@@ -24,10 +33,11 @@ public class DropCmd extends BaseGameCmd{
     public DropCmd(byte[] bytes){
         parse(bytes);
     }
-    public DropCmd(int userId, int itemId){
+    public DropCmd(int userId, int itemId,int itemType,long dropTime){//userid =0 说明是世界掉落 不是从背包里扔出去的 itemId 是物品的id 一般是随机数  itemType 是物品类别
         this.userId = userId;
         this.itemId =itemId;
-
+        this.itemType = itemType;
+        this.dropTime =dropTime;
     }
     @Override
     public byte[] toBytes(){
@@ -36,6 +46,7 @@ public class DropCmd extends BaseGameCmd{
                 .put(itemId)
                 .put(itemType==null?0:itemType)
                 .put(x).put(y).put(z).put(num)
+                .put(dropTime)
                .array();
 
     }
@@ -53,7 +64,7 @@ public class DropCmd extends BaseGameCmd{
         this.y=byteBufferWrap.getFloat();
         this.z= byteBufferWrap.getFloat();;
        this.num =  byteBufferWrap.getInt();
-
+        this.dropTime = byteBufferWrap.getLong();
 
     }
     @Override

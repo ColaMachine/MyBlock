@@ -37,7 +37,7 @@ public class Client extends Thread{
     public static Stack<PickCmd> picks=new Stack<>();
     public static Stack<GameCmd> humanStates=new Stack<>();
    // public static Stack<GameCmd> newborns=new Stack<>();
-    public static Map<Integer, GameCallBackTask> taskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
+    public static Map<Integer, GameCallBackTask> SyncTaskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
     public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();
 
     ChatFrame chatFrame;
@@ -89,7 +89,7 @@ public class Client extends Thread{
     public  ResultCmd syncSend(GameCmd cmd ){
         try {
             byte[] oldByteAry = cmd.toBytes();
-            synchronized (this) {
+            //synchronized (this) {//这里需要加锁吗
 
                 GameCallBackTask task = new GameCallBackTask(){
                     @Override
@@ -109,7 +109,7 @@ public class Client extends Thread{
                     }
                 };
                 int threadId = (int)(Math.random()*100000);
-                Client.taskMap.put(threadId, task);
+                Client.SyncTaskMap.put(threadId, task);
 
                 //CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText(),threadId));
                 GetCmd sendCmd = new GetCmd(cmd,threadId);
@@ -121,13 +121,13 @@ public class Client extends Thread{
 
                 synchronized (obj) {
                     LogUtil.println("挂起线程 threadid:"+threadId);
-                    obj.wait(5000); // 未收到响应，使线程等待
+                    obj.wait(5000); // 未收到响应，使线程等待  最多等待多少秒
                 }
                 LogUtil.println("线程恢复");
                 //清除task
-                taskMap.remove(threadId);
+                SyncTaskMap.remove(threadId);
                 return task.getResult();
-            }
+            //}
         } catch (Exception e) {
             this.end=true;
             e.printStackTrace();
@@ -304,7 +304,7 @@ public class Client extends Thread{
                          ResultCmd result = (ResultCmd) cmd;
 
                         if(result.getThreadId()>0){
-                            GameCallBackTask task = taskMap.get(result.getThreadId());
+                            GameCallBackTask task = SyncTaskMap.get(result.getThreadId());
                             if(task!=null){
                                 task .setResult(result);
                                 LogUtil.println("任务开跑");

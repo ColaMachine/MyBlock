@@ -97,8 +97,8 @@ public class CopyDownBlock extends BaseBlock{
 
     }
 
-    @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-
-    }
+//    @Override
+//    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+//
+//    }
 }

@@ -767,6 +767,13 @@ public ShaderManager shaderManager;
 
 
         }
+
+        if(ShaderManager.lineShaderConfig.getVao().changed){
+            ShaderUtils.freshVao(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+            ShaderManager.lineShaderConfig.getVao().changed=false;
+        }
+        ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+
         //OpenglUtils.checkGLError();
         // CoreRegistry.get(NuiManager.class).render();
 

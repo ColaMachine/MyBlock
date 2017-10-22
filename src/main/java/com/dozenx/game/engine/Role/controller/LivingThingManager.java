@@ -454,7 +454,8 @@ public class LivingThingManager {
 
                     livingThing = new Wolf(info.getId(),ItemManager.getItemDefinition(Integer.valueOf(info.species)));
                 }else{
-                    livingThing = new Player(info.getId());
+                    livingThing = new Wolf(info.getId(),ItemManager.getItemDefinition(Integer.valueOf(info.species)));
+                  //  livingThing = new Player(info.getId());
                 }
                 //
                 exsits =false;
@@ -700,7 +701,7 @@ public class LivingThingManager {
             }
         };
         int threadId = (int)(Math.random()*100000);
-        Client.taskMap.put(threadId, task);
+        Client.SyncTaskMap.put(threadId, task);
 
         CoreRegistry.get(Client.class).send(new LoginCmd(userName,pwd,threadId));
     }

@@ -1810,10 +1810,10 @@ public class ChunkImpl implements Chunk {
                 GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir*3.14f/2, 0);
                 rotateMatrix = GL_Matrix.multiply(translateMatrix, rotateMatrix);
                 //animationBlock.reComputePoints();
-                animationBlock.renderShaderInGivexyzwht(config,
+                animationBlock.renderShader(config,
                         ShaderManager.anotherShaderConfig.getVao(),rotateMatrix
-                        ,
-                        animationBlock.points);
+                       );
+                ShaderManager. anotherShaderConfig.getVao().getVertices().rewind();
                 //GamingState.editEngine.needUpdate=true;
                 // colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16
                 // +colorGroup.x ,colorGroup.y,chunkPos.z*16
@@ -1841,10 +1841,9 @@ public class ChunkImpl implements Chunk {
                     GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir*3.14f/2, 0);
                     rotateMatrix = GL_Matrix.multiply(translateMatrix, rotateMatrix);
                     //animationBlock.reComputePoints();
-                    animationBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig,
+                    animationBlock.renderShader(ShaderManager.terrainShaderConfig,
                             ShaderManager.anotherShaderConfig.getVao(),rotateMatrix
-                           ,
-                            animationBlock.points);
+                         );
                     // colorGroup.render(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao(),chunkPos.x*16
                     // +colorGroup.x ,colorGroup.y,chunkPos.z*16
                     // +colorGroup.z,true,true,true,true,true ,true );

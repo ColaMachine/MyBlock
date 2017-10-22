@@ -8,6 +8,7 @@ import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.command.ItemMainType;
+import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.edit.view.GroupBlock;
 import com.dozenx.util.BinaryUtil;
@@ -32,7 +33,7 @@ public class ItemDefinition implements Cloneable{
     private Integer itemType;//物品的具体类型 详见ItemType
     public  ItemModel itemModel = new ItemModel();//模型描述
     public String engine;
-
+    public int stackNum=20;//可堆叠数量
     public String script ;
     public boolean isLive;
     public ItemTypeProperties itemTypeProperties ;//block food wear
@@ -531,27 +532,27 @@ public class ItemDefinition implements Cloneable{
                 shape.id=id;
             }else if(shapeObj instanceof JSONObject){
                 String blockType = (String)((JSONObject) shapeObj).get("blocktype");
-                BaseBlock  block =null;
-                if("imageblock".equals(blockType)){
-                      block = ImageBlock.parse((JSONObject) shapeObj);
-
-
-                }else if("colorblock".equals(blockType)){
-                    block = ColorBlock.parse((JSONObject) shapeObj);
-                }else if("groupblock".equals(blockType)){
-                    block = GroupBlock.parse((JSONObject) shapeObj);
-                }
-                else if("animationblock".equals(blockType)){
-                    block = AnimationBlock.parse((JSONObject) shapeObj);
-                }else if("rotateimageblock".equals(blockType)){
-                    block = RotateImageBlock.parse((JSONObject) shapeObj);
-                }else if("rotatecolorblock".equals(blockType)){
-                    block = RotateColorBlock2.parse((JSONObject) shapeObj);
-                }else if("bonerotateimageblock".equals(blockType)){
-                    block = BoneRotateImageBlock.parse((JSONObject) shapeObj);
-                }else if("boneblock".equals(blockType)){
-                    block = BoneBlock.parse((JSONObject) shapeObj);
-                }
+                BaseBlock  block = EditEngine.parse((JSONObject) shapeObj);
+//                if("imageblock".equals(blockType)){
+//                      block = ImageBlock.parse((JSONObject) shapeObj);
+//
+//
+//                }else if("colorblock".equals(blockType)){
+//                    block = ColorBlock.parse((JSONObject) shapeObj);
+//                }else if("groupblock".equals(blockType)){
+//                    block = GroupBlock.parse((JSONObject) shapeObj);
+//                }
+//                else if("animationblock".equals(blockType)){
+//                    block = AnimationBlock.parse((JSONObject) shapeObj);
+//                }else if("rotateimageblock".equals(blockType)){
+//                    block = RotateImageBlock.parse((JSONObject) shapeObj);
+//                }else if("rotatecolorblock".equals(blockType)){
+//                    block = RotateColorBlock2.parse((JSONObject) shapeObj);
+//                }else if("bonerotateimageblock".equals(blockType)){
+//                    block = BoneRotateImageBlock.parse((JSONObject) shapeObj);
+//                }else if("boneblock".equals(blockType)){
+//                    block = BoneBlock.parse((JSONObject) shapeObj);
+//                }
 
                 block.id =id;
 

@@ -29,13 +29,14 @@ void main()
     discard;
    // color.w=1;
 vec3 norm = normalize(Normal);//faxian guiyi
-vec3 lightDir = normalize(vec3(100,100,100)-FragPos);//guang de xian lu
+//vec3 lightDir = normalize(vec3(100,100,100)-FragPos);//guang de xian lu
+vec3 lightDir = normalize(vec3(-100,-100,-100));
 
 float diff = max(dot(norm, lightDir), 0.0);
 vec3 diffuse = diff * oricolor.xyz;
-float ambientStrength = 0.1f;
+float ambientStrength = 0.5f;
     vec3 ambient = ambientStrength * oricolor.xyz;
-vec3 result = ( ambient+diffuse) * oricolor.xyz;
+vec3 result = ( ambient+diffuse*0.5) * oricolor.xyz;
 color = vec4(result, 1.0f);
 
 

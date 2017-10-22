@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.textture;
 
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.RotateImageBlock;
 import com.alibaba.fastjson.JSONArray;
@@ -27,7 +28,7 @@ import java.util.regex.Pattern;
 /**
  * Created by luying on 16/9/12.
  */
-public class BoneBlock extends RotateImageBlock {
+public class BoneBlock extends BoneRotateImageBlock {
     public int getShapeType() {
         return shapeType;
     }
@@ -55,12 +56,12 @@ public class BoneBlock extends RotateImageBlock {
  /*   float width;
     float height;
     float thick;*/
-    float p_posi_x;
-    float c_posi_y;
-    float c_posi_z;
-    float p_posi_y;
-    float p_posi_z;
-    float c_posi_x;
+//    float p_posi_x;
+//    float c_posi_y;
+//    float c_posi_z;
+//    float p_posi_y;
+//    float p_posi_z;
+//    float c_posi_x;
 
 
 
@@ -129,53 +130,53 @@ public class BoneBlock extends RotateImageBlock {
 //    }
 
 
-    public float getP_posi_x() {
-        return p_posi_x;
-    }
-
-    public void setP_posi_x(float p_posi_x) {
-        this.p_posi_x = p_posi_x;
-    }
-
-    public float getP_posi_y() {
-        return p_posi_y;
-    }
-
-    public void setP_posi_y(float p_posi_y) {
-        this.p_posi_y = p_posi_y;
-    }
-
-    public float getP_posi_z() {
-        return p_posi_z;
-    }
-
-    public void setP_posi_z(float p_posi_z) {
-        this.p_posi_z = p_posi_z;
-    }
-
-    public float getC_posi_x() {
-        return c_posi_x;
-    }
-
-    public void setC_posi_x(float c_posi_x) {
-        this.c_posi_x = c_posi_x;
-    }
-
-    public float getC_posi_y() {
-        return c_posi_y;
-    }
-
-    public void setC_posi_y(float c_posi_y) {
-        this.c_posi_y = c_posi_y;
-    }
-
-    public float getC_posi_z() {
-        return c_posi_z;
-    }
-
-    public void setC_posi_z(float c_posi_z) {
-        this.c_posi_z = c_posi_z;
-    }
+//    public float getP_posi_x() {
+//        return p_posi_x;
+//    }
+//
+//    public void setP_posi_x(float p_posi_x) {
+//        this.p_posi_x = p_posi_x;
+//    }
+//
+//    public float getP_posi_y() {
+//        return p_posi_y;
+//    }
+//
+//    public void setP_posi_y(float p_posi_y) {
+//        this.p_posi_y = p_posi_y;
+//    }
+//
+//    public float getP_posi_z() {
+//        return p_posi_z;
+//    }
+//
+//    public void setP_posi_z(float p_posi_z) {
+//        this.p_posi_z = p_posi_z;
+//    }
+//
+//    public float getC_posi_x() {
+//        return c_posi_x;
+//    }
+//
+//    public void setC_posi_x(float c_posi_x) {
+//        this.c_posi_x = c_posi_x;
+//    }
+//
+//    public float getC_posi_y() {
+//        return c_posi_y;
+//    }
+//
+//    public void setC_posi_y(float c_posi_y) {
+//        this.c_posi_y = c_posi_y;
+//    }
+//
+//    public float getC_posi_z() {
+//        return c_posi_z;
+//    }
+//
+//    public void setC_posi_z(float c_posi_z) {
+//        this.c_posi_z = c_posi_z;
+//    }
 
 
     @Override
@@ -184,29 +185,29 @@ public class BoneBlock extends RotateImageBlock {
 GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
         if(top!=null) {
 
-            ShaderUtils.draw3dImage(points[4], points[5], points[6], points[7],  matrix, dirAry[0], top, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[4], points[5], points[6], points[7],   dirAry[0], top );
         }
 
         if(bottom!=null) {
-            ShaderUtils.draw3dImage(points[3], points[2], points[1], points[0],  matrix, dirAry[1], bottom, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[3], points[2], points[1], points[0], dirAry[1], bottom);
         }
 
         if(front!=null) {
-            ShaderUtils.draw3dImage(points[0], points[1], points[5], points[4],   matrix, dirAry[2], front, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[0], points[1], points[5], points[4],   dirAry[2], front);
 
         }
 
         if(back!=null) {
-            ShaderUtils.draw3dImage( points[2], points[3], points[7], points[6],  matrix, dirAry[3], back, vao.getVertices(), config);
+            ShaderUtils.draw3dImage( config,vao,matrix,points[2], points[3], points[7], points[6],  dirAry[3], back );
 
         }
 
         if(left!=null) {
-            ShaderUtils.draw3dImage(points[3], points[0], points[4], points[7],  matrix, dirAry[4], left, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[3], points[0], points[4], points[7],  dirAry[4], left );
 
         }
         if(right!=null) {
-            ShaderUtils.draw3dImage( points[1], points[2], points[6], points[5],  matrix, dirAry[0], right, vao.getVertices(), config);
+            ShaderUtils.draw3dImage( config,vao,matrix,points[1], points[2], points[6], points[5],  dirAry[0], right );
 
         }
     }
@@ -401,14 +402,14 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
 
     public void copyBoneBlock(BoneBlock boneBlock){
 
-        copyRotateImageBlock(boneBlock);
-        boneBlock.p_posi_x =p_posi_x;
-        boneBlock.c_posi_y =c_posi_y;
-        boneBlock.c_posi_z =c_posi_z;
-
-        boneBlock.p_posi_y =p_posi_y;
-        boneBlock.p_posi_z =p_posi_z;
-        boneBlock.c_posi_x =c_posi_x;
+        copyBoneRotateImageBlock(boneBlock);
+//        boneBlock.p_posi_x =p_posi_x;
+//        boneBlock.c_posi_y =c_posi_y;
+//        boneBlock.c_posi_z =c_posi_z;
+//
+//        boneBlock.p_posi_y =p_posi_y;
+//        boneBlock.p_posi_z =p_posi_z;
+//        boneBlock.c_posi_x =c_posi_x;
         boneBlock.group =group;
         boneBlock.parent = parent;
     }
@@ -447,11 +448,11 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
         LogUtil.println("hello");
     }
 
-    @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-       // LogUtil.println("hello");
-        super.renderShaderInGivexyzwht( config,  vao,  matrix,  childPoints);
-    }
+//    @Override
+//    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+//       // LogUtil.println("hello");
+//        super.renderShaderInGivexyzwht( config,  vao,  matrix,  childPoints);
+//    }
 
     public static BoneBlock parse(JSONObject map) {
 
@@ -585,7 +586,7 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
             String p_posi_yStr = MapUtil.getStringValue(map, "p_posi_y");
             String p_posi_zStr = MapUtil.getStringValue(map, "p_posi_z");
 
-            BoneBlock parentShape = (BoneBlock)TextureManager.getShape(parent);
+            BaseBlock parentShape = TextureManager.getShape(parent);
             if (boneBlock == null) {
                 LogUtil.err("can 't find shape" + parent);
             }
@@ -611,16 +612,16 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
 
                 if(/*shape!=null &&*/ parentShape!=null && StringUtil.isNotEmpty(MapUtil.getStringValue(map, "c_posi_x"))) {
 
-                    boneBlock.setC_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    boneBlock.childPosition.setX(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
                     //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
-                    boneBlock.setC_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    boneBlock.childPosition.setY(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                    boneBlock.setC_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    boneBlock.childPosition.setZ(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
-                    boneBlock.setP_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                    boneBlock.setP_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
-                    boneBlock.setP_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    boneBlock.parentPosition.setX(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    boneBlock.parentPosition.setY(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
+                    boneBlock.parentPosition.setZ(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, parentShape.getWidth(), parentShape.getHeight(), parentShape.getThick()));
 
                 }
             }catch(Exception e){
@@ -641,16 +642,16 @@ GL_Vector[] points = BoxModel.getSmallPoint(x, y, z, width, height, thick);
             boneBlock.setThick(thick);
             try {
 
-                boneBlock.setC_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, 0f, 0f, 0f));
+                boneBlock.childPosition.setX(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_x"), width, height, thick, 0f, 0f, 0f));
 
                 //String c_posi_yStr =  MapUtil.getStringValue(map,"c_posi_y");
-                boneBlock.setC_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, 0f, 0f, 0f));
+                boneBlock.childPosition.setY(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_y"), width, height, thick, 0f, 0f, 0f));
 
-                boneBlock.setC_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, 0f, 0f, 0f));
+                boneBlock.childPosition.setZ(BoneBlock.parsePosition(MapUtil.getStringValue(map, "c_posi_z"), width, height, thick, 0f, 0f, 0f));
 
-                boneBlock.setP_posi_x(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, 0f, 0f, 0f));
-                boneBlock.setP_posi_y(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, 0f, 0f, 0f));
-                boneBlock.setP_posi_z(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, 0f, 0f, 0f));
+                boneBlock.parentPosition.setX(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_x"), width, height, thick, 0f, 0f, 0f));
+                boneBlock.parentPosition.setY(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_y"), width, height, thick, 0f, 0f, 0f));
+                boneBlock.parentPosition.setZ(BoneBlock.parsePosition(MapUtil.getStringValue(map, "p_posi_z"), width, height, thick, 0f, 0f, 0f));
             }catch (Exception e){
                 e.printStackTrace();
             }

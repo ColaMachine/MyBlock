@@ -242,7 +242,18 @@ public class BlockPanel extends Tab {
 
 
 
+        Button genFromTexBtn = new Button("去重");
 
+        ;
+
+        genFromTexBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.genFromTexBtn();
+            }
+        });
+
+        selectGrid.add(genFromTexBtn, 3, 2);
 
       /*  final TextField xInput = new TextField("0");
         xInput.setPrefWidth(110);
@@ -974,7 +985,7 @@ Button readBoneBlockBtn =new Button("读取骨节点");
         Button copyRotateImageBlockAsBoneBtn =new Button("转成骨节点");
         selectGrid.add(copyRotateImageBlockAsBoneBtn,5, 22);
 
-        readBoneBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
+        copyRotateImageBlockAsBoneBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
              GamingState.editEngine.changeRotateImageBlockAsBoneRotateImageBlock();

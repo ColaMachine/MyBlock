@@ -8,19 +8,19 @@ public enum EquipPartType {
     HEAD("human_head"),
     BODY("human_body"),
     ARM("arm"),
-    LARM("larm"),
-    RARM("rarm"),
+    LARM("human_left_hand"),
+    RARM("human_right_hand"),
 
 
     HAND("hand"),
-    RHAND("rhand"),
+    RHAND("human_right_hand_equip"),
     LHAND("lhand"),
 
 
     LEG("human_leg"),
 
-    LLEG("lleg"),
-    RLEG("rleg"),
+    LLEG("human_left_leg"),
+    RLEG("human_right_leg"),
     FOOT("foot"),
 
 

@@ -122,29 +122,29 @@ public class ImageBlock extends BaseBlock{
 
         if(top!=null) {
 
-            ShaderUtils.draw3dImage(points[4], points[5], points[6], points[7],  matrix, dirAry[0], top, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[4], points[5], points[6], points[7],  dirAry[0], top);
         }
 
         if(bottom!=null) {
-            ShaderUtils.draw3dImage(points[3], points[2], points[1], points[0],  matrix, dirAry[1], top, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[3], points[2], points[1], points[0],   dirAry[1], top);
         }
 
         if(front!=null) {
-            ShaderUtils.draw3dImage(points[0], points[1], points[5], points[4],   matrix, dirAry[2], top, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[0], points[1], points[5], points[4],   dirAry[2], top);
 
         }
 
         if(back!=null) {
-            ShaderUtils.draw3dImage( points[2], points[3], points[7], points[6],  matrix, dirAry[3], top, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix, points[2], points[3], points[7], points[6],   dirAry[3], top);
 
         }
 
         if(left!=null) {
-            ShaderUtils.draw3dImage(points[3], points[0], points[4], points[7],  matrix, dirAry[4], top, vao.getVertices(), config);
+            ShaderUtils.draw3dImage(config,vao,matrix,points[3], points[0], points[4], points[7],  dirAry[4], top);
 
         }
         if(right!=null) {
-            ShaderUtils.draw3dImage( points[1], points[2], points[6], points[5],  matrix, dirAry[0], top, vao.getVertices(), ShaderManager.terrainShaderConfig);
+            ShaderUtils.draw3dImage(config,vao,matrix, points[1], points[2], points[6], points[5],   dirAry[0], top);
 
         }
     }
@@ -258,33 +258,33 @@ public class ImageBlock extends BaseBlock{
 
     }
 
-    @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-        GL_Vector[] dirAry = BoxModel.dirAry;
-
-        if(top!=null ) {
-            ShaderUtils.draw3dImage(config, vao,matrix, points[4], points[5], points[6], points[7], dirAry[0], top);
-        }
-
-        if(bottom!=null) {
-            ShaderUtils.draw3dImage(config, vao,matrix, points[3], points[2], points[1], points[0], dirAry[1], bottom);
-        }
-
-        if(front!=null ) {
-            ShaderUtils.draw3dImage(config, vao,matrix,  points[0], points[1], points[5], points[4], dirAry[2], front);
-        }
-
-        if(back!=null ) {
-            ShaderUtils.draw3dImage(config, vao, matrix,  points[2], points[3], points[7], points[6], dirAry[3], back);
-        }
-
-        if(left!=null ) {
-            ShaderUtils.draw3dImage(config, vao,matrix,  points[3], points[0], points[4], points[7], dirAry[4], left);
-        }
-        if(right!=null )  {
-            ShaderUtils.draw3dImage(config, vao,matrix, points[1], points[2], points[6], points[5], dirAry[5], right);
-        }
-    }
+//    @Override
+//    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+//        GL_Vector[] dirAry = BoxModel.dirAry;
+//
+//        if(top!=null ) {
+//            ShaderUtils.draw3dImage(config, vao,matrix, points[4], points[5], points[6], points[7], dirAry[0], top);
+//        }
+//
+//        if(bottom!=null) {
+//            ShaderUtils.draw3dImage(config, vao,matrix, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+//        }
+//
+//        if(front!=null ) {
+//            ShaderUtils.draw3dImage(config, vao,matrix,  points[0], points[1], points[5], points[4], dirAry[2], front);
+//        }
+//
+//        if(back!=null ) {
+//            ShaderUtils.draw3dImage(config, vao, matrix,  points[2], points[3], points[7], points[6], dirAry[3], back);
+//        }
+//
+//        if(left!=null ) {
+//            ShaderUtils.draw3dImage(config, vao,matrix,  points[3], points[0], points[4], points[7], dirAry[4], left);
+//        }
+//        if(right!=null )  {
+//            ShaderUtils.draw3dImage(config, vao,matrix, points[1], points[2], points[6], points[5], dirAry[5], right);
+//        }
+//    }
 
     public String toImageBlockString(){
 

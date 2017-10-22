@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.*;
+import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -24,6 +25,7 @@ import com.dozenx.game.engine.command.SayCmd;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.edit.view.GroupBlock;
 import com.dozenx.game.engine.element.model.BoxModel;
+import com.dozenx.game.engine.element.model.CakeModel;
 import com.dozenx.game.engine.item.action.ItemFactory;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
@@ -127,7 +129,7 @@ public class EditEngine {
 
         ShaderUtils.finalDraw(ShaderManager.terrainShaderConfig, blockVao);
 
-        ShaderUtils.finalDrawLine(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+
     }
     public void update() {
        /* for(int i =0;i<groups.size();i++){
@@ -154,14 +156,14 @@ public class EditEngine {
 
 
         if (needUpdate) {
-           // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, 0, 0, 0, new GL_Vector(0.3f, 0.3f, 0.3f), 100, 0, 100, 0.2f);
+            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig, blockVao, 0, 0, 0, new GL_Vector(0.3f, 0.3f, 0.3f), 100, 0, 100, 0.2f);
 
 
             synchronized (colorBlockList) {
                 for (int i = 0; i < colorBlockList.size(); i++) {
                     BaseBlock colorBlock = colorBlockList.get(i);
                     GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
-                colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, blockVao, matrx, colorBlock.points);
+                colorBlock.renderShader(ShaderManager.terrainShaderConfig, blockVao, matrx);
                     // colorBlock.render(ShaderManager.terrainShaderConfig,blockVao,colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
                 }
 
@@ -175,7 +177,7 @@ public class EditEngine {
             for (int i = 0; i < appendingBlockList.size(); i++) {
                 BaseBlock colorBlock = appendingBlockList.get(i);
                 GL_Matrix matrx = GL_Matrix.translateMatrix(colorBlock.x, colorBlock.y, colorBlock.z);
-                colorBlock.renderShaderInGivexyzwht(ShaderManager.terrainShaderConfig, blockVao, matrx, colorBlock.points);
+                colorBlock.renderShader(ShaderManager.terrainShaderConfig, blockVao, matrx);
                 // colorBlock.render(ShaderManager.terrainShaderConfig,blockVao,colorBlock.x,colorBlock.y,colorBlock.z,true,true,true,true,true,true);
             }
             needUpdate = false;
@@ -239,7 +241,7 @@ public class EditEngine {
 
             }
             renderZuobiao();
-            ShaderUtils.freshVao(ShaderManager.anotherShaderConfig, blockVao);
+
 
 
         }
@@ -247,7 +249,7 @@ public class EditEngine {
 
         if (lineNeedUpdate) {
 
-            ShaderUtils.freshVao(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
+           // ShaderUtils.freshVao(ShaderManager.lineShaderConfig, ShaderManager.lineShaderConfig.getVao());
 
             lineNeedUpdate = false;//原来这个freshvao 是和 上面的绘制写在一起的 后来发现 在绘制groupblock 和animationblock的时候 也产生线段 就把freshvao放在这里了
         }
@@ -268,6 +270,14 @@ public class EditEngine {
 
         // ShaderUtils.finalDraw(ShaderManager.shaderLightingPass, blockVao);
         //绘制
+
+        if(blockVao.changed){
+            ShaderUtils.freshVao(ShaderManager.anotherShaderConfig, blockVao);
+            blockVao.changed=false;
+        }
+        ShaderUtils.finalDraw(ShaderManager.anotherShaderConfig, blockVao);
+
+
     }
 
 
@@ -718,18 +728,18 @@ public class EditEngine {
             for (String s : list) {
                 JSONObject shapeObj = JSON.parseObject(s);
                 String blockType = (String) ((JSONObject) shapeObj).get("blocktype");
-                BaseBlock block = null;
-                if ("imageblock".equals(blockType)) {
-                    block = ImageBlock.parse((JSONObject) shapeObj);
-
-
-                } else if ("colorblock".equals(blockType)) {
-                    block = ColorBlock.parse((JSONObject) shapeObj);
-                } else if ("groupblock".equals(blockType)) {
-                    block = GroupBlock.parse((JSONObject) shapeObj);
-                } else if ("animationblock".equals(blockType)) {
-                    block = AnimationBlock.parse((JSONObject) shapeObj);
-                }
+                BaseBlock block = EditEngine.parse((JSONObject) shapeObj);
+//                if ("imageblock".equals(blockType)) {
+//                    block = ImageBlock.parse((JSONObject) shapeObj);
+//
+//
+//                } else if ("colorblock".equals(blockType)) {
+//                    block = ColorBlock.parse((JSONObject) shapeObj);
+//                } else if ("groupblock".equals(blockType)) {
+//                    block = GroupBlock.parse((JSONObject) shapeObj);
+//                } else if ("animationblock".equals(blockType)) {
+//                    block = AnimationBlock.parse((JSONObject) shapeObj);
+//                }
                 if (shapeObj.get("id") != null) {
                     block.id = shapeObj.getInteger("id");
                 }
@@ -1188,22 +1198,22 @@ public class EditEngine {
             for (String s : list) {
                 JSONObject shapeObj = JSON.parseObject(s);
                 String blockType = (String) ((JSONObject) shapeObj).get("blocktype");
-                BaseBlock block = null;
-                if ("imageblock".equals(blockType)) {
-                    block = ImageBlock.parse((JSONObject) shapeObj);
-                } else if ("colorblock".equals(blockType)) {
-                    block = ColorBlock.parse((JSONObject) shapeObj);
-                } else if ("groupblock".equals(blockType)) {
-                    block = GroupBlock.parse((JSONObject) shapeObj);
-                } else if ("animationblock".equals(blockType)) {
-                    block = AnimationBlock.parse((JSONObject) shapeObj);
-                } else if ("rotatecolorblock".equals(blockType)) {
-                    block = RotateColorBlock2.parse((JSONObject) shapeObj);
-                }else if ("rotateimageblock".equals(blockType)) {
-                    block = RotateImageBlock.parse((JSONObject) shapeObj);
-                }else if ("bonerotateimageblock".equals(blockType)) {
-                    block = BoneRotateImageBlock.parse((JSONObject) shapeObj);
-                }
+                BaseBlock block = EditEngine.parse((JSONObject) shapeObj);
+//                if ("imageblock".equals(blockType)) {
+//                    block = ImageBlock.parse((JSONObject) shapeObj);
+//                } else if ("colorblock".equals(blockType)) {
+//                    block = ColorBlock.parse((JSONObject) shapeObj);
+//                } else if ("groupblock".equals(blockType)) {
+//                    block = GroupBlock.parse((JSONObject) shapeObj);
+//                } else if ("animationblock".equals(blockType)) {
+//                    block = AnimationBlock.parse((JSONObject) shapeObj);
+//                } else if ("rotatecolorblock".equals(blockType)) {
+//                    block = RotateColorBlock2.parse((JSONObject) shapeObj);
+//                }else if ("rotateimageblock".equals(blockType)) {
+//                    block = RotateImageBlock.parse((JSONObject) shapeObj);
+//                }else if ("bonerotateimageblock".equals(blockType)) {
+//                    block = BoneRotateImageBlock.parse((JSONObject) shapeObj);
+//                }
                 if (shapeObj.get("id") != null) {
                     block.id = shapeObj.getInteger("id");
                 }
@@ -2081,7 +2091,7 @@ public class EditEngine {
             sb  .append("baseon:'mantle',");
         }else
 
-
+            sb.append("stack:'").append(MapUtil.getIntValue(param,"stack",1)).append("',");
 
         if(  firstType==2){
             sb  .append("type:'").append("wear").append("',");
@@ -3515,34 +3525,50 @@ public class EditEngine {
     }
 
     public void getAniationCfgFromAnimationBlock(){
-        StringBuffer sb =new StringBuffer();
-        HashMap<String,StringBuffer> animationStrMap= new HashMap<>();
         AnimationBlock animationBlock = (AnimationBlock)getSelectFirstBlock();
-        for(BaseBlock block:animationBlock.colorBlockList){
-
-        }
-
+//        for(BaseBlock block:animationBlock.colorBlockList){
+//
+//        }
+        //遍历不同的动画 key 是动画名称
         for(Map.Entry entry:animationBlock.animationMap.entrySet()){
-            String key = (String)entry.getKey();
-            List<BaseBlock> list = (List<BaseBlock> )entry.getValue();//里面每一个list的项目都是帧 groupblock
-            LogUtil.println("开始解析动画:%s",key);
-            for(BaseBlock block:list){
+
+            StringBuffer sb =new StringBuffer();
+            HashMap<String,StringBuffer> animationStrMap= new HashMap<>();
+
+
+            String animationName = (String)entry.getKey();//拿到了key之后 取出每一帧
+            List<BaseBlock> animationGroupBlockList = (List<BaseBlock> )entry.getValue();//里面每一个list的项目都是帧 groupblock
+            LogUtil.println("开始解析动画:%s",animationName);
+            LogUtil.println("一共有:%d帧数",animationGroupBlockList.size());
+            int frameCount = animationGroupBlockList.size();//总的帧数
+            int nowFrame =0;//当前遍历到的帧数
+            for(BaseBlock block:animationGroupBlockList){
 
                 GroupBlock groupBlock = (GroupBlock)block;
+                List<BaseBlock> colorBlockList = new ArrayList<>();
+                colorBlockList.addAll(groupBlock.colorBlockList);
+                if(groupBlock.colorBlockList.get(0) instanceof  BoneRotateImageBlock){
+                    List<BaseBlock> boneList = new ArrayList<>();
+                    BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)groupBlock.colorBlockList.get(0);
+                    fillBoneList(boneRotateImageBlock,boneList);
+                    colorBlockList.addAll(boneList);
+                }
 
-                for(BaseBlock frameBlock: groupBlock.colorBlockList){
-                    String name = frameBlock.getName();
-                    if(StringUtil.isNotEmpty(name)){
-                        StringBuffer sb1 = animationStrMap.get(name);
-                        if(sb1!=null){
+                for(BaseBlock frameBlock: colorBlockList){
+
+                    String blockName = frameBlock.getName();
+                    if(StringUtil.isNotEmpty(blockName)){
+                        StringBuffer animationStr = animationStrMap.get(blockName);
+                        if(animationStr!=null){
 
                         }else{
-                            sb1=new StringBuffer();
-                            animationStrMap.put(name,sb1);
+                            animationStr=new StringBuffer(String.format("\n@keyframes %s-%s {\n",blockName,animationName));
+                            animationStrMap.put(blockName,animationStr);
                         }
                         if(frameBlock instanceof  RotateBlock){
                             RotateBlock rotateBlock = (RotateBlock)frameBlock;
-                            sb1.append(String.format("0%% { transform:rotateX(%ddeg),rotateY(%ddeg),rotateZ(%ddeg);} \n",
+                            animationStr.append(String.format("%d%% { transform:rotateX(%ddeg),rotateY(%ddeg),rotateZ(%ddeg);} \n",
+                                    (int)(nowFrame*100.0/(frameCount-1)),
 
                                     (int)(rotateBlock.getRotateX()*180/3.14),
                                     (int)(rotateBlock.getRotateY()*180/3.14),
@@ -3558,7 +3584,7 @@ public class EditEngine {
 //                    }
                     }
                 }
-
+                nowFrame++;
             }
 
             //把帧答应出来
@@ -3567,7 +3593,7 @@ public class EditEngine {
                 String blockName = sbEntry.getKey();
                 LogUtil.println("%s动画",blockName);
                 StringBuffer blockAniStr = sbEntry.getValue();
-                LogUtil.println(blockAniStr.toString());
+                LogUtil.println(blockAniStr.toString()+"}");
             }
         }
 
@@ -3577,7 +3603,12 @@ public class EditEngine {
         if(selectBlockList.size()>=2){
             BoneRotateImageBlock firstBlock =(BoneRotateImageBlock)selectBlockList.get(0);
             BaseBlock secondBlock =selectBlockList.get(1);
-            firstBlock.addChild(secondBlock);
+            if(secondBlock instanceof  BoneRotateImageBlock){
+                firstBlock.addChild((BoneRotateImageBlock)secondBlock);
+            }else{
+                firstBlock.block = secondBlock;
+            }
+           // firstBlock.addChild(secondBlock);
             //selectBlockList.remove(secondBlock);
             //colorBlockList.remove(secondBlock);
         }
@@ -3610,10 +3641,21 @@ public class EditEngine {
     }
 
     public List<BaseBlock> getBoneBlockList(){
-        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)getSelectFirstBlock();
-
         List<BaseBlock> boneList = new ArrayList<>();
+       BaseBlock selectBlock =  getSelectFirstBlock();
+        if(selectBlock instanceof GroupBlock){
+            GroupBlock groupBlock = (GroupBlock) selectBlock;
+            if(groupBlock.selectBlockList.size()>0 && groupBlock.selectBlockList.get(0) instanceof BoneRotateImageBlock ){
+                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)groupBlock.selectBlockList.get(0);
+                fillBoneList(boneRotateImageBlock,boneList);
+            }
+
+
+            return boneList;
+        }
+        BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)getSelectFirstBlock();
         fillBoneList(boneRotateImageBlock,boneList);
+
         return boneList;
     }
 
@@ -3635,6 +3677,11 @@ public class EditEngine {
     }
 
     public void selectBone(BaseBlock baseBlock) {
+        if(Switcher.isEditComponent){
+            currentChoosedGroupForEdit.selectBlockList.clear();
+            currentChoosedGroupForEdit.selectBlockList.add(baseBlock);
+            return;
+        }
         selectBlockList.clear();
         selectBlockList.add(baseBlock);
     }
@@ -3659,8 +3706,60 @@ public class EditEngine {
                 boneRotateImageBlock.right=rotateImageBlock.right;
                 boneRotateImageBlock.top=rotateImageBlock.top;
                 boneRotateImageBlock.bottom=rotateImageBlock.bottom;
+                boneRotateImageBlock.centerX=rotateImageBlock.centerX;
+                boneRotateImageBlock.centerY=rotateImageBlock.centerY;
+                boneRotateImageBlock.name = rotateImageBlock.name;
+                boneRotateImageBlock.centerZ=rotateImageBlock.centerZ;
                 colorBlockList.add(boneRotateImageBlock);
             }
         }
+    }
+
+    public static BaseBlock parse(  JSONObject object ){
+        String blockType = (String) object.get("blocktype");
+        if ("imageblock".equals(blockType)) {
+            ImageBlock imageBlock = ImageBlock.parse(object);
+            return imageBlock;
+        } else if ("colorblock".equals(blockType)) {
+            ColorBlock colorBlock = ColorBlock.parse(object);
+            return colorBlock;
+        } else if ("rotatecolorblock".equals(blockType)) {
+            RotateColorBlock2 shape = RotateColorBlock2.parse(object);
+            return shape;
+        } else if ("rotateimageblock".equals(blockType)) {
+            RotateImageBlock shape = RotateImageBlock.parse(object);
+            return shape;
+        } else if ("bonerotateimageblock".equals(blockType)) {
+            BoneRotateImageBlock shape = BoneRotateImageBlock.parse(object);
+            return shape;
+        }else if ("groupblock".equals(blockType)) {
+            GroupBlock shape = GroupBlock.parse(object);
+            return shape;
+        }else if ("animationblock".equals(blockType)) {
+            AnimationBlock shape = AnimationBlock.parse(object);
+            return shape;
+        }else if ("boneblock ".equals(blockType)) {
+            BoneBlock shape = BoneBlock.parse(object);
+            return shape;
+        }else {
+            BoneBlock shape = BoneBlock.parse(object);
+            return shape;
+        }
+
+
+    }
+
+    public void genFromTexBtn() {
+
+        //获得选择的纹理
+        if( this.nowTextureInfo!=null){
+            CakeModel cakeModel =new CakeModel(this.nowTextureInfo);
+            for(int i=0;i<cakeModel.blocks.length;i++){
+                IBlock block = cakeModel.blocks[i];
+                this.colorBlockList.add((ColorBlock)block);
+                this.needUpdate=true;
+            }
+        }
+
     }
 }

@@ -183,25 +183,25 @@ public class BoxModel implements Model {
         FloatBufferWrap floatBuffer = config.getVao().getVertices();
         if(front!=null) {
             // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
-            ShaderUtils.draw3dImage(P1, P2, P6, P5, rotateMatrix, FRONT_DIR, front, floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,P1, P2, P6, P5,  FRONT_DIR, front );
         }
         if(back!=null) {
             //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
-            ShaderUtils.draw3dImage(P3,P4,P8,P7,rotateMatrix,BACK_DIR,back,floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,P3,P4,P8,P7,BACK_DIR,back);
         }
         if(top!=null) {
             //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
-            ShaderUtils.draw3dImage(P5,P6,P7,P8,rotateMatrix,TOP_DIR,top,floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,P5,P6,P7,P8,TOP_DIR,top);
         }
 
         if(bottom!=null) {
-            ShaderUtils.draw3dImage(P4,P3,P2,P1,rotateMatrix,BACK_DIR,bottom,floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,P4,P3,P2,P1,BACK_DIR,bottom);
         }
         if(left!=null) {
-            ShaderUtils.draw3dImage(P2,P3,P7,P6,rotateMatrix,LEFT_DIR,left,floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,P2,P3,P7,P6,LEFT_DIR,left);
         }
         if(right!=null) {
-            ShaderUtils.draw3dImage(P4,P1,P5,P8,rotateMatrix,RIGHT_DIR,right,floatBuffer, config);
+            ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,P4,P1,P5,P8,RIGHT_DIR,right);
         }
     }
 

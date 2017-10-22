@@ -49,9 +49,9 @@ public class IconModel implements Model {
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 
 
-        ShaderUtils.draw3dImage(p2, p1, p4, p3, rotateMatrix, normal, icon, config.getVao().getVertices(), config);
+        ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,p2, p1, p4, p3,  normal, icon);
 
-        ShaderUtils.draw3dImage(p1,p2,p3,p4,rotateMatrix,normal,icon,config.getVao().getVertices(),config);
+        ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,p1,p2,p3,p4,normal,icon);
 
 
     }

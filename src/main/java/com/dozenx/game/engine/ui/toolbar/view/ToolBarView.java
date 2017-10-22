@@ -37,6 +37,9 @@ public class ToolBarView extends SlotPanel {
             LivingThingManager livingThingManager = CoreRegistry.get(LivingThingManager.class);
 
             livingThingManager.addHandEquipStart(this.slot[num-1].getIconView().getItemBean());
+        }else{
+            LivingThingManager livingThingManager = CoreRegistry.get(LivingThingManager.class);
+            livingThingManager.addHandEquipStart(null);
         }
 
         //LogUtil.println("hello");

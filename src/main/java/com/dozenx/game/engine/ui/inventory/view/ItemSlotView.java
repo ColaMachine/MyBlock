@@ -108,6 +108,7 @@ public class ItemSlotView extends HtmlObject {
         this.iconView = iconView;
         this.removeChild();
         this.appendChild(iconView);
+
         if(this.getItemType()>0){
             bagController.loadEquip(this.getItemType(),iconView==null?null:iconView.getItemBean());
         }
@@ -242,8 +243,8 @@ public class ItemSlotView extends HtmlObject {
     
 
     protected boolean handleEvent(Event evt) {
-        if(evt.isMouseEventNoWheel()) {
-          if(dragActive) {
+        if(evt.isMouseEventNoWheel()) {//如果是滚轮事件
+          if(dragActive) {//如果拖动
 
                 if(evt.isMouseDragEnd()) {
                     if(listener != null) {
@@ -258,6 +259,7 @@ public class ItemSlotView extends HtmlObject {
                 } else if(listener != null) {
                     listener.dragging(this, evt);
                 }
+              return true;
             } else if(evt.isMouseDragEvent()) {
                 dragActive = true;
                 getAnimationState().setAnimationState(STATE_DRAG_ACTIVE, true);
@@ -265,7 +267,10 @@ public class ItemSlotView extends HtmlObject {
                     LogUtil.println("dragStarted");
                     listener.dragStarted(this, evt);
                 }
-            }/*
+              return true;
+            }else if(evt.getType()== Event.Type.MOUSE_BTNDOWN) {
+              return true; //dragActive开始 这一步很重要只有返回了true 才会认为是鼠标按下选中的对象
+          }/*
             if(dragActive) {
                 if (evt.getType()==Event.Type.MOUSE_CLICKED) {
                     if (listener != null) {
@@ -287,7 +292,7 @@ public class ItemSlotView extends HtmlObject {
                     listener.dragStarted(this, evt);
                 }
             }*/
-            return true;
+            return false;
         }/*else if(evt.isKeyEvent()){
             logger.info(evt.getKeyChar());
             String name =this.getInputMap().mapEvent(evt);

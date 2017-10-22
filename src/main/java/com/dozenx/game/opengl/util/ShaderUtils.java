@@ -1529,7 +1529,7 @@ try {
     public static void printText(String s, int innerX, int innerY,float z, float fontSize,Vector4f color) {
         int preX=0;
         int preY=0;
-        TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
+        TextureInfo ti =FontUtil.ti;// TextureManager.getTextureInfo("zhongwen");//FontUtil.ti;//
         for(int i=0;i<s.length();i++){
             char ch = s.charAt(i);
             if(ch=='\n'){
@@ -1570,7 +1570,7 @@ try {
         GL_Vector p4 =new GL_Vector(0,fontSize,0);
         GL_Vector normal =new GL_Vector(0,0,fontSize);
 
-        TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
+        TextureInfo ti = FontUtil.ti;//TextureManager.getTextureInfo("zhongwen");
         for(int i=0;i<s.length();i++){
             char ch = s.charAt(i);
             if(ch=='\n'){
@@ -1598,7 +1598,7 @@ try {
                 p2.x+=fontSize;
                 p3.x+=fontSize;
                 p4.x+=fontSize;
-                ShaderUtils.draw3dImage(p1,p2,p3,p4,matrix,normal,ti,shaderConfig.getVao().getVertices(),shaderConfig);
+                ShaderUtils.draw3dImage(shaderConfig,shaderConfig.getVao(),matrix,p1,p2,p3,p4,normal,ti);
 
                // ShaderUtils.draw3dImg(p1,p2,p3,p4,new Image(ti), x,y,z,(int)fontSize,(int)fontSize,color);
                 OpenglUtils.checkGLError();
@@ -1633,7 +1633,7 @@ try {
     public static void printText(String s, int innerX, int innerY,float z, float fontSize,Vector4f color,ShaderConfig  config) {
         int preX=0;
         int preY=0;
-        TextureInfo ti = TextureManager.getTextureInfo("zhongwen");
+        TextureInfo ti = FontUtil.ti;//TextureManager.getTextureInfo("zhongwen");
         for(int i=0;i<s.length();i++){
             char ch = s.charAt(i);
             if(ch=='\n'){
@@ -2087,7 +2087,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
      */
  public static void draw3dImage(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(ti==null){
             LogUtil.err("ti should not be null");
         }
@@ -2124,7 +2124,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dImage(ShaderConfig config,Vao vao ,float x,float y,float z,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,TextureInfo ti){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(ti==null){
             LogUtil.err("ti should not be null");
         }
@@ -2161,7 +2161,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dImage(ShaderConfig config,Vao vao ,float[][] vertices,float[][] texoords,float[][] normal,int[] faces,TextureInfo ti,int x,int y,int z){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(ti==null){
             LogUtil.err("ti should not be null");
         }
@@ -2221,7 +2221,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dImage(ShaderConfig config,Vao vao ,ShapeFace shapeFace ,TextureInfo ti,int x,int y,int z){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(ti==null){
             LogUtil.err("ti should not be null");
         }
@@ -2270,7 +2270,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dImage(ShaderConfig config,Vao vao ,ShapeFace shapeFace ,TextureInfo ti,int x,int y,int z,GL_Matrix matrix){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(ti==null){
             LogUtil.err("ti should not be null");
         }
@@ -2321,31 +2321,34 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
             throw e;
         }
     }
-    public static void draw3dImage(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBufferWrap floatBuffer, ShaderConfig config){
-        //ti= TextureManager.getTextureInfo("mantle");
-        try {
-            int index = ShaderUtils.bindAndGetTextureIndex(config, ti.textureHandle);
-
-            p1 = GL_Matrix.multiply(matrix, p1);
-
-            p2 = GL_Matrix.multiply(matrix, p2);
-            p3 = GL_Matrix.multiply(matrix, p3);
-            p4 = GL_Matrix.multiply(matrix, p4);
-            normal = GL_Matrix.multiply(matrix, normal);
-            floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
-            floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);
-            floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
-            floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);
-            floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
-            floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
-        }catch(Exception e ){
-            e.printStackTrace();
-        }
-    }
+//    public static void draw3dImage(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, TextureInfo ti, FloatBufferWrap floatBuffer, ShaderConfig config){
+//        //ti= TextureManager.getTextureInfo("mantle");
+//        LogUtil.println("这里没有传入vao 应该改成传入vao 然后修改vao的change");
+//
+//        try {
+//            int index = ShaderUtils.bindAndGetTextureIndex(config, ti.textureHandle);
+//
+//            p1 = GL_Matrix.multiply(matrix, p1);
+//
+//            p2 = GL_Matrix.multiply(matrix, p2);
+//            p3 = GL_Matrix.multiply(matrix, p3);
+//            p4 = GL_Matrix.multiply(matrix, p4);
+//            normal = GL_Matrix.multiply(matrix, normal);
+//            floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
+//            floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.minY).put(0).put(index);
+//            floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
+//            floatBuffer.put(p4.x).put(p4.y).put(p4.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.maxY).put(0).put(index);
+//            floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(normal.x).put(normal.y).put(normal.z).put(ti.minX).put(ti.minY).put(0).put(index);
+//            floatBuffer.put(p3.x).put(p3.y).put(p3.z).put(normal.x).put(normal.y).put(normal.z).put(ti.maxX).put(ti.maxY).put(0).put(index);
+//        }catch(Exception e ){
+//            e.printStackTrace();
+//        }
+//    }
 
 
     public static void draw3dImage(ShaderConfig config,Vao vao , GL_Matrix matrix,GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  GL_Vector normal, TextureInfo ti ){
         //ti= TextureManager.getTextureInfo("mantle");
+        vao.changed=true;
         FloatBufferWrap floatBuffer = vao.getVertices();
         try {
             int index = ShaderUtils.bindAndGetTextureIndex(config, ti.textureHandle);
@@ -2369,7 +2372,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dImage(ShaderConfig config,Vao vao ,float[][] vertices,float[][] texoords,float[][] normal,int[] faces,TextureInfo ti,int x,int y,int z,GL_Matrix transMatrix){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(ti==null){
             LogUtil.err("ti should not be null");
         }
@@ -2433,7 +2436,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
 
     public static void draw3dColorBox(ShaderConfig config, Vao vao, GL_Vector[] points, GL_Vector color, float alpha) {
-
+        vao.changed=true;
         FloatBufferWrap veticesBuffer = vao.getVertices();
         int[][] faceAry = BoxModel.facesAry;
         GL_Vector[] dirAry = BoxModel.dirAry;
@@ -2453,6 +2456,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     
     
     public static void draw3dColorBox(ShaderConfig config, Vao vao,GL_Matrix matrix, GL_Vector[] points, GL_Vector color, float alpha) {
+        vao.changed=true;
         GL_Vector[] newPoints = new GL_Vector[8];
         for(int i =0 ;i<8;i++){
             newPoints[i]=GL_Matrix.multiply(matrix,points[i]);
@@ -2486,7 +2490,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
      */
     public static void draw3dColor(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector p4,GL_Vector normal,GL_Vector color){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         try {
             FloatBufferWrap veticesBuffer = vao.getVertices();
            /* if (veticesBuffer.position() > veticesBuffer.limit() -100) {
@@ -2509,7 +2513,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dColorTriangle(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector normal,GL_Vector color){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         try {
             FloatBufferWrap veticesBuffer = vao.getVertices();
 
@@ -2531,7 +2535,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
             ,GL_Vector normal,float rf,float gf,float bf){
 
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         try {
             FloatBufferWrap veticesBuffer = vao.getVertices();
 
@@ -2549,7 +2553,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float width,float height,float thick,float alpha){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(width<0){
             x+=width;width=-width;
         }
@@ -2590,7 +2594,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float width,float height,float thick,float alpha,boolean top,boolean bottom,boolean left ,boolean right,boolean front ,boolean back){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
         if(width<0){
             x+=width;width=-width;
         }
@@ -2637,7 +2641,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector[] points,GL_Vector[] dirAry,float red,float green,float blue,float alpha){
         //ti=TextureManager.getTextureInfo("mantle");
 
-
+        vao.changed=true;
         try {
             FloatBufferWrap veticesBuffer = vao.getVertices();
 
@@ -2667,7 +2671,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
 
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector[] points,GL_Vector[] dirAry,float red,float green,float blue,float alpha,boolean[] faceExistAry){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
 
         try {
             FloatBufferWrap veticesBuffer = vao.getVertices();
@@ -2698,93 +2702,9 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     }
 
 
-
-    public static void draw3dColorBoxLine(Vao vao ,float x,float y,float z ,float width,float height,float thick){
-        //ti=TextureManager.getTextureInfo("mantle");
-
-
-        try {
-            FloatBufferWrap veticesBuffer = vao.getVertices();
-         /*   if (veticesBuffer.position() > veticesBuffer.limit() -100) {
-                LogUtil.println("overflow");
-                vao.expand();
-                veticesBuffer=vao.getVertices();
-            }*/
-          /*  GL_Vector[] dirAry = BoxModel.dirAry;
-            int[][] faceAry = BoxModel.facesAry;
-            GL_Vector[] points = BoxModel.getSmallPoint(x,y,z,width,height,thick);*/
-
-            veticesBuffer.put(x).put(y).put(z);//p1
-            veticesBuffer.put(x+width).put(y).put(z);//p1
-
-            veticesBuffer.put(x+width).put(y).put(z);//p1
-            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
-
-            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
-            veticesBuffer.put(x).put(y).put(z+thick);//p1
-
-            veticesBuffer.put(x).put(y).put(z+thick);//p1
-            veticesBuffer.put(x).put(y).put(z);//p1
-
-
-            veticesBuffer.put(x).put(y+height).put(z);//p1
-            veticesBuffer.put(x+width).put(y+height).put(z);//p1
-
-            veticesBuffer.put(x+width).put(y+height).put(z);//p1
-            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
-
-            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
-            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
-
-            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
-            veticesBuffer.put(x).put(y+height).put(z);//p1
-
-
-
-            veticesBuffer.put(x).put(y+height).put(z);//p1
-            veticesBuffer.put(x).put(y).put(z);//p1
-
-            veticesBuffer.put(x+width).put(y+height).put(z);//p1
-            veticesBuffer.put(x+width).put(y).put(z);//p1
-
-            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
-
-            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
-
-            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
-            veticesBuffer.put(x).put(y).put(z+thick);//p1
-
-
-          /*  veticesBuffer.put(x).put(y+1).put(z);//p1
-            veticesBuffer.put(x+1).put(y+1).put(z);//p1
-            veticesBuffer.put(x+1).put(y+1).put(z+1);//p1
-            veticesBuffer.put(x).put(y+1).put(z+1);//p1*/
-/*
-
-
-
-            for(int i=0;i<6;i++){
-                int[] faceAry2 = faceAry[i];
-
-
-                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z);//p1
-
-                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z);//p1
-
-                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z);//p1
-               veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z);//p1
-
-
-            }*/
-
-        }catch(Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
     public static void draw3dColorBox(ShaderConfig config,Vao vao ,float x,float y,float z ,GL_Vector color,float size,float alpha){
         //ti=TextureManager.getTextureInfo("mantle");
-
+        vao.changed=true;
 
         try {
             FloatBufferWrap veticesBuffer = vao.getVertices();
@@ -2817,9 +2737,11 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     }
 
 
-    public static void draw3dColor(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Matrix matrix, GL_Vector normal, GL_Vector color, FloatBufferWrap floatBuffer,ShaderConfig config){
+    public static void draw3dColorReactWithMatrix(ShaderConfig config, Vao vao, GL_Matrix matrix,GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4, GL_Vector normal, GL_Vector color){
         //ti= TextureManager.getTextureInfo("mantle");
-
+        FloatBufferWrap floatBuffer = vao.getVertices();
+        vao.changed =true;
+       //LogUtil.err("this method has not vao vao changed should be write");
       /*  if(floatBuffer.position()>floatBuffer.limit()-100){
             FloatBuffer  newfloatBuffer=BufferUtils.createFloatBuffer(floatBuffer.limit()+10000);
             newfloatBuffer.put(floatBuffer);
@@ -2844,7 +2766,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     public static void draw3dColorSimple(GL_Vector p1, GL_Vector p2, GL_Vector p3, GL_Vector p4,  GL_Vector normal, GL_Vector color, FloatBufferWrap floatBuffer,ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
 
-
+        LogUtil.println("这里要穿放入vao 修改vao.change");
 
         floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
         floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
@@ -2857,7 +2779,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
   public static void draw3dColorSimpleReverse(GL_Vector p4, GL_Vector p3, GL_Vector p2, GL_Vector p1,  GL_Vector normal, GL_Vector color, FloatBufferWrap floatBuffer,ShaderConfig config){
         //ti= TextureManager.getTextureInfo("mantle");
 
-
+      LogUtil.println("这里要穿放入vao 修改vao.change");
 
         floatBuffer.put(p1.x).put(p1.y).put(p1.z).put(color.x).put(color.y).put(color.z);
         floatBuffer.put(p2.x).put(p2.y).put(p2.z).put(color.x).put(color.y).put(color.z);
@@ -2972,6 +2894,7 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
             glBindBuffer(GL_ARRAY_BUFFER, vao.getVboId());//bind vbo
            // vao.getVertices().rewind();
             vao.getVertices().glBufferData(GL_ARRAY_BUFFER,  GL_STATIC_DRAW);
+            vao.getVertices().rewind();
             //glBufferData(GL_ARRAY_BUFFER, vao.getVertices(), GL_STATIC_DRAW);//put data
 
         }else {
@@ -3000,7 +2923,92 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
     static FloatBufferWrap testVboDotbufferWrap  ;
     static int testVboId;
 
+
+    public static void draw3dColorBoxLine(Vao vao ,float x,float y,float z ,float width,float height,float thick){
+        //ti=TextureManager.getTextureInfo("mantle");
+
+        vao.changed=true;
+        try {
+            FloatBufferWrap veticesBuffer = vao.getVertices();
+         /*   if (veticesBuffer.position() > veticesBuffer.limit() -100) {
+                LogUtil.println("overflow");
+                vao.expand();
+                veticesBuffer=vao.getVertices();
+            }*/
+          /*  GL_Vector[] dirAry = BoxModel.dirAry;
+            int[][] faceAry = BoxModel.facesAry;
+            GL_Vector[] points = BoxModel.getSmallPoint(x,y,z,width,height,thick);*/
+
+            veticesBuffer.put(x).put(y).put(z);//p1
+            veticesBuffer.put(x+width).put(y).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y).put(z);//p1
+            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
+
+            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
+            veticesBuffer.put(x).put(y).put(z+thick);//p1
+
+            veticesBuffer.put(x).put(y).put(z+thick);//p1
+            veticesBuffer.put(x).put(y).put(z);//p1
+
+
+            veticesBuffer.put(x).put(y+height).put(z);//p1
+            veticesBuffer.put(x+width).put(y+height).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z);//p1
+            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
+            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
+
+            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
+            veticesBuffer.put(x).put(y+height).put(z);//p1
+
+
+
+            veticesBuffer.put(x).put(y+height).put(z);//p1
+            veticesBuffer.put(x).put(y).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z);//p1
+            veticesBuffer.put(x+width).put(y).put(z);//p1
+
+            veticesBuffer.put(x+width).put(y+height).put(z+thick);//p1
+
+            veticesBuffer.put(x+width).put(y).put(z+thick);//p1
+
+            veticesBuffer.put(x).put(y+height).put(z+thick);//p1
+            veticesBuffer.put(x).put(y).put(z+thick);//p1
+
+
+          /*  veticesBuffer.put(x).put(y+1).put(z);//p1
+            veticesBuffer.put(x+1).put(y+1).put(z);//p1
+            veticesBuffer.put(x+1).put(y+1).put(z+1);//p1
+            veticesBuffer.put(x).put(y+1).put(z+1);//p1*/
+/*
+
+
+
+            for(int i=0;i<6;i++){
+                int[] faceAry2 = faceAry[i];
+
+
+                veticesBuffer.put(points[faceAry2[0]].x).put(points[faceAry2[0]].y).put(points[faceAry2[0]].z);//p1
+
+                veticesBuffer.put(points[faceAry2[1]].x).put(points[faceAry2[1]].y).put(points[faceAry2[1]].z);//p1
+
+                veticesBuffer.put(points[faceAry2[2]].x).put(points[faceAry2[2]].y).put(points[faceAry2[2]].z);//p1
+               veticesBuffer.put(points[faceAry2[3]].x).put(points[faceAry2[3]].y).put(points[faceAry2[3]].z);//p1
+
+
+            }*/
+
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
     public static void drawLine(Vao vao ,GL_Vector startPoint,GL_Vector endPoint){
+        vao.changed=true;
         vao.getVertices().put(startPoint.x).put(startPoint.y).put(startPoint.z);
         vao.getVertices().put(endPoint.x).put(endPoint.y).put(endPoint.z);
     }

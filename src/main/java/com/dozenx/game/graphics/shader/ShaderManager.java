@@ -1408,6 +1408,6 @@ public class ShaderManager {
     }
 
     public void render() {
-
+LogUtil.println("hello");
     }
 }

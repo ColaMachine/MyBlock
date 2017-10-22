@@ -32,6 +32,8 @@ package com.dozenx.game.engine.ui.inventory.view;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import com.dozenx.game.engine.ui.inventory.control.BagController;
 import core.log.LogUtil;
 import de.matthiasmann.twl.Event;
 
@@ -82,6 +84,7 @@ public class SlotPanel extends HtmlObject {
         for(int i=0 ; i<slot.length ; i++) {
             slot[i] = new ItemSlotView(Constants.SLOT_TYPE_COMMON,i);
             slot[i].setListener(listener);//所有的slot都绑定了一个listener
+            slot[i].id="slot"+i;
             appendChild(slot[i]);
         }
 
@@ -180,15 +183,19 @@ public class SlotPanel extends HtmlObject {
                 //这个逻辑服务器也要执行一遍
                 if(dropItem==null){//拖过去
                     dropSlot.setIconView(dragItem);
+                    dragItem.setNum(dragItem.getNum());
                     dragSlot.setIconView(null);
 
                 }else
                 if(dropItem.getItem().equals(dragItem.getItem())){//堆叠
-                    dropItem.setNum(dropItem.getNum()+dragItem.getNum());
+                    dropItem.setNum(dropItem.getNum()+dragItem.getNum());//这里没有发送服务器啊
+                    CoreRegistry.get(BagController.class).changePosition(dragItem.getItemBean(),dropItem.getItemBean().getPosition());
                     dragSlot.setIconView(null);
                 }else{//交换
                     dropSlot.setIconView(dragItem);
                     dragSlot.setIconView(dropItem);
+
+                    CoreRegistry.get(BagController.class).changePosition(dragItem.getItemBean(),dragItem.getItemBean().getPosition());
 
                 }
                 //背包数据同步

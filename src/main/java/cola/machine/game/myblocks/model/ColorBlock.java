@@ -191,28 +191,31 @@ public class ColorBlock extends BaseBlock{
         FloatBufferWrap floatBuffer = vao.getVertices();
         GL_Vector color = new GL_Vector(this.rf(),this.gf(),this.bf());
 
-        if(zh) {
+      //  if(zh) {
             // ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P1,P2,P6,P5,new GL_Vector(0,0,1f),front);
-            ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
-        }
-        if(zl) {
-            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
-            ShaderUtils.draw3dColor(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),color,floatBuffer, config);
-        }
-        if(yh) {
-            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
-            ShaderUtils.draw3dColor(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),color,floatBuffer, config);
-        }
+        //    ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
 
-        if(yl) {
-            ShaderUtils.draw3dColor(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),color,floatBuffer, config);
-        }
-        if(xl) {
-            ShaderUtils.draw3dColor(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),color,floatBuffer, config);
-        }
-        if(xh) {
-            ShaderUtils.draw3dColor(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),color,floatBuffer, config);
-        }
+          //,zh,zl,yh,yl,xh,xl
+            ShaderUtils.draw3dColorBox(config, vao, rotateMatrix ,points,new GL_Vector(rf, gf, bf),this.opacity);
+       // }
+//        if(zl) {
+//            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P3,P4,P8,P7,new GL_Vector(0,0,-1f),front);
+//            ShaderUtils.draw3dColor(P3,P4,P8,P7,rotateMatrix,new GL_Vector(0,0,-1),color,floatBuffer, config);
+//        }
+//        if(yh) {
+//            //ShaderUtils.drawImage(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),P5,P6,P7,P8,new GL_Vector(0,1,0f),front);
+//            ShaderUtils.draw3dColor(P5,P6,P7,P8,rotateMatrix,new GL_Vector(0,1,0),color,floatBuffer, config);
+//        }
+//
+//        if(yl) {
+//            ShaderUtils.draw3dColor(P4,P3,P2,P1,rotateMatrix,new GL_Vector(0,-1,0),color,floatBuffer, config);
+//        }
+//        if(xl) {
+//            ShaderUtils.draw3dColor(P2,P3,P7,P6,rotateMatrix,new GL_Vector(-1,0,0f),color,floatBuffer, config);
+//        }
+//        if(xh) {
+//            ShaderUtils.draw3dColor(P4,P1,P5,P8,rotateMatrix,new GL_Vector(1,0,0),color,floatBuffer, config);
+//        }
 
     }
 
@@ -270,12 +273,12 @@ public class ColorBlock extends BaseBlock{
 
     }
 
-    @Override  //生物的动画
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-        
-        
-        ShaderUtils.draw3dColorBox(config, vao, matrix ,childPoints,new GL_Vector(rf, gf, bf),this.opacity);
-    }
+//    @Override  //生物的动画
+//    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+//
+//
+//        ShaderUtils.draw3dColorBox(config, vao, matrix ,childPoints,new GL_Vector(rf, gf, bf),this.opacity);
+//    }
 
     /**
      * 在chunk当中直接使用

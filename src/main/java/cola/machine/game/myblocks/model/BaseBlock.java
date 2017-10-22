@@ -28,7 +28,7 @@ import java.util.List;
  * 方块实体 如果你想找的是方块说明 那么应该找 blockDefinition
  */
 public abstract class BaseBlock extends AABB implements IBlock {
-
+    public int blood =5;
     boolean delete =false;
     //是否是透明
     boolean alpha =false;
@@ -614,7 +614,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
  */
     public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao,float parentX,float parentY,float parentZ, float childX,float childY,float childZ,float width,float height,float thick,boolean top, boolean bottom, boolean left, boolean right, boolean front, boolean back);
     /**
-     * 一种支持旋转的折中方案 但是需要先计算几个点的位置 再editEngine 中渲染
+     * 一种支持旋转的折中方案 但是需要先计算几个点的位置 再editEngine 中渲染 childPoints参数几乎不用了
      * @param config
      * @param vao
      * @param matrix是父亲的旋转逻辑
@@ -622,7 +622,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
      * @author 张智威  
      * @date 2017年8月31日 下午6:08:34
      */
-    public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints);
+    //public abstract void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints);
 
    public  String toBaseBlockString(){
        StringBuffer buffer = new StringBuffer();

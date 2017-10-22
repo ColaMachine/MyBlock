@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.physic;
 
 import cola.machine.game.myblocks.math.Vector3i;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Chunk;
@@ -142,7 +143,7 @@ public class BulletPhysics  {
                 arr.targetPoint = new GL_Vector(offsetX,
                         MathUtil.floor(nowY),
                         offsetZ);
-                arr.targetBlock= targetBlock;
+                arr.targetBlock= (BaseBlock)targetBlock;
     			//退回来 如果是增加放置一个block的话
 
     			//BlockManager blockManager = CoreRegistry.get(BlockManager.class);//创建新的方块

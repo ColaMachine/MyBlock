@@ -1,10 +1,15 @@
 package com.dozenx.game.font;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.util.UUIDUtil;
 import core.log.LogUtil;
+import org.lwjgl.system.MemoryUtil;
+
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,14 +17,14 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by luying on 16/12/24.
@@ -40,8 +45,266 @@ public class FontUtil {
 
         }catch(Exception e ){
             e.printStackTrace();
-            return new Font("宋体", Font.PLAIN, (int)fontSize);
+            return new Font("方正", Font.PLAIN, (int)fontSize);
         }
+    }
+    /**
+     * Creates a font texture from specified AWT font.
+     *
+     * @param font      The AWT font
+     * @param antiAlias Wheter the font should be antialiased or not
+     *
+     * @return Font texture
+     */
+    Map<Character,Glyph> glyphs =new HashMap<>();
+    private int fontHeight;
+    private TextureInfo createFontTexture(java.awt.Font font, boolean antiAlias) {
+        /* Loop through the characters to get charWidth and charHeight */
+        int imageWidth = 0;
+        int imageHeight = 0;
+
+        /* Start at char #32, because ASCII 0 to 31 are just control codes */
+        for (int i = 32; i < 256; i++) {
+            if (i == 127) {
+                /* ASCII 127 is the DEL control code, so we can skip it */
+                continue;
+            }
+            char c = (char) i;
+            BufferedImage ch = createCharImage(font, c, antiAlias);
+            if (ch == null) {
+                /* If char image is null that font does not contain the char */
+                continue;
+            }
+
+            imageWidth += ch.getWidth();
+            imageHeight = Math.max(imageHeight, ch.getHeight());
+        }
+
+        fontHeight = imageHeight;
+
+        /* Image for the texture */
+        BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
+
+        int x = 0;
+
+        /* Create image for the standard chars, again we omit ASCII 0 to 31
+         * because they are just control codes */
+        for (int i = 32; i < 256; i++) {
+            if (i == 127) {
+                /* ASCII 127 is the DEL control code, so we can skip it */
+                continue;
+            }
+            char c = (char) i;
+            BufferedImage charImage = createCharImage(font, c, antiAlias);
+            if (charImage == null) {
+                /* If char image is null that font does not contain the char */
+                continue;
+            }
+
+            int charWidth = charImage.getWidth();
+            int charHeight = charImage.getHeight();
+
+            /* Create glyph and draw char on image */
+            Glyph ch = new Glyph(charWidth, charHeight, x, image.getHeight() - charHeight, 0f);
+            g.drawImage(charImage, x, 0, null);
+            x += ch.width;
+            glyphs.put(c, ch);
+        }
+
+        /* Flip image Horizontal to get the origin to bottom left */
+        AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
+        transform.translate(0, -image.getHeight());
+        AffineTransformOp operation = new AffineTransformOp(transform,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        image = operation.filter(image, null);
+
+        /* Get charWidth and charHeight of image */
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        /* Get pixel data of image */
+        int[] pixels = new int[width * height];
+        image.getRGB(0, 0, width, height, pixels, 0, width);
+
+        /* Put pixel data into a ByteBuffer */
+        ByteBuffer buffer = ByteBuffer.allocate(width * height * 4);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                /* Pixel as RGBA: 0xAARRGGBB */
+                int pixel = pixels[i * width + j];
+                /* Red component 0xAARRGGBB >> 16 = 0x0000AARR */
+                buffer.put((byte) ((pixel >> 16) & 0xFF));
+                /* Green component 0xAARRGGBB >> 8 = 0x00AARRGG */
+                buffer.put((byte) ((pixel >> 8) & 0xFF));
+                /* Blue component 0xAARRGGBB >> 0 = 0xAARRGGBB */
+                buffer.put((byte) (pixel & 0xFF));
+                /* Alpha component 0xAARRGGBB >> 24 = 0x000000AA */
+                buffer.put((byte) ((pixel >> 24) & 0xFF));
+            }
+        }
+        /* Do not forget to flip the buffer! */
+        buffer.flip();
+
+        /* Create texture */
+        //silvertiger.tutorial.lwjgl.graphic.Texture
+        TextureInfo fontTexture = TextureInfo.createTexture(width, height, buffer);
+       // MemoryUtil.memFree(buffer);
+        return fontTexture;
+    }
+    private TextureInfo createFontTexture(java.awt.Font font, boolean antiAlias,List<Character> list) {
+        /* Loop through the characters to get charWidth and charHeight */
+        int imageWidth = 0;
+        int imageHeight = 0;
+
+        /* Start at char #32, because ASCII 0 to 31 are just control codes */
+        for (int i = 0; i < list.size(); i++) {
+
+            char c = list.get(i);
+            BufferedImage ch = createCharImage(font, c, antiAlias);
+            if (ch == null) {
+                /* If char image is null that font does not contain the char */
+                continue;
+            }
+
+            imageWidth += ch.getWidth();
+            imageHeight = Math.max(imageHeight, ch.getHeight());
+        }
+
+        fontHeight = imageHeight;
+
+        /* Image for the texture */
+        BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
+
+        int x = 0;
+
+        /* Create image for the standard chars, again we omit ASCII 0 to 31
+         * because they are just control codes */
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 127) {
+                /* ASCII 127 is the DEL control code, so we can skip it */
+                continue;
+            }
+            char c = list.get(i);
+            BufferedImage charImage = createCharImage(font, c, antiAlias);
+            if (charImage == null) {
+                /* If char image is null that font does not contain the char */
+                continue;
+            }
+
+            int charWidth = charImage.getWidth();
+            int charHeight = charImage.getHeight();
+
+            /* Create glyph and draw char on image */
+            Glyph ch = new Glyph(charWidth, charHeight, x, image.getHeight() - charHeight, 0f);
+            g.drawImage(charImage, x, 0, null);
+            x += ch.width;
+            glyphs.put(c, ch);
+        }
+
+        FileOutputStream fos =null;
+        try{
+            fos =new FileOutputStream(PathManager.getInstance().getHomePath().resolve("hello.png").toFile());
+            ImageIO.write(image,"png",fos);
+            fos.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        /* Flip image Horizontal to get the origin to bottom left */
+        AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
+        transform.translate(0, -image.getHeight());
+        AffineTransformOp operation = new AffineTransformOp(transform,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+    /* BufferedImage image2 = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        image2.setData(image.getData());*/
+//        BufferedImage dstImage = new BufferedImage(image.getWidth(), image.getHeight(),
+//                BufferedImage.TYPE_INT_ARGB);
+//
+//        dstImage.getGraphics().drawImage(
+//                image, 0, 0, image.getWidth(), image.getHeight(), null);
+        image = operation.filter(image, null);
+
+        /* Get charWidth and charHeight of image */
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        /* Get pixel data of image */
+        int[] pixels = new int[width * height];
+        image.getRGB(0, 0, width, height, pixels, 0, width);
+
+
+
+
+        /* Put pixel data into a ByteBuffer */
+        ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                /* Pixel as RGBA: 0xAARRGGBB */
+                int pixel = pixels[i * width + j];
+                /* Red component 0xAARRGGBB >> 16 = 0x0000AARR */
+                buffer.put((byte) ((pixel >> 16) & 0xFF));
+                /* Green component 0xAARRGGBB >> 8 = 0x00AARRGG */
+                buffer.put((byte) ((pixel >> 8) & 0xFF));
+                /* Blue component 0xAARRGGBB >> 0 = 0xAARRGGBB */
+                buffer.put((byte) (pixel & 0xFF));
+                /* Alpha component 0xAARRGGBB >> 24 = 0x000000AA */
+                buffer.put((byte) ((pixel >> 24) & 0xFF));
+            }
+        }
+        /* Do not forget to flip the buffer! */
+        buffer.flip();
+
+        /* Create texture */
+        //silvertiger.tutorial.lwjgl.graphic.Texture
+        TextureInfo fontTexture = TextureInfo.createTexture(width, height, buffer);
+        fontTexture.setImgHeight(height);
+        fontTexture.setImgWidth(width);
+//        MemoryUtil.memFree(buffer);
+        return fontTexture;
+    }
+
+    /**
+     * Creates a char image from specified AWT font and char.
+     *
+     * @param font      The AWT font
+     * @param c         The char
+     * @param antiAlias Wheter the char should be antialiased or not
+     *
+     * @return Char image
+     */
+    private BufferedImage createCharImage(java.awt.Font font, char c, boolean antiAlias) {
+        /* Creating temporary image to extract character size */
+        BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
+        if (antiAlias) {
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+        g.setFont(font);
+        FontMetrics metrics = g.getFontMetrics();
+        g.dispose();
+
+        /* Get char charWidth and charHeight */
+        int charWidth = metrics.charWidth(c);
+        int charHeight = metrics.getHeight();
+
+        /* Check if charWidth is 0 */
+        if (charWidth == 0) {
+            return null;
+        }
+
+        /* Create image for holding the char */
+        image = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
+        g = image.createGraphics();
+        if (antiAlias) {
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+        g.setFont(font);
+        g.setPaint(java.awt.Color.WHITE);
+        g.drawString(String.valueOf(c), 0, metrics.getAscent());
+        g.dispose();
+        return image;
     }
     public static void ttf(){
         float fontSize =24;
@@ -137,7 +400,7 @@ public class FontUtil {
     }
     private static Random random = new Random();
     private static Font getFont(int fontSize){
-        return new Font("宋体",Font.PLAIN,fontSize);
+        return new Font("幼圆",Font.PLAIN,fontSize);
     }
     private static int rotate_value=5;//摇摆幅度
     private static void drawString(Graphics2D  g,char car,int i) {
@@ -206,6 +469,8 @@ public class FontUtil {
         ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
         //return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",str,result};
     }
+
+
     public static void drawAllCharacterInOneJpg(List<Character> list){
         int fontSize =30;
        // int color =0x123566;
@@ -219,6 +484,8 @@ public class FontUtil {
         int charSize =(int)fontSize;//(int ) (padding*2+fontSize);
         int imgWidth=charSize*colNum;
         int imgHeight = rowNum* charSize;
+
+
         BufferedImage image =new BufferedImage(imgWidth,imgHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         //Font font =loadFont(fontPath,fontSize);
@@ -272,7 +539,7 @@ public class FontUtil {
                 break;
             }
 
-            ttf3jpg(car, g, x_offset, y_offset,stringAscent,fontSize);
+            ttf2jpg(car, g, x_offset, y_offset,stringAscent);
             sb.append(car).append(" ").append(x_offset).append(" ").append(y_offset).append(" ").append(charSize).append(" ").append(charSize).append("\r\n");
             i++;
            /* if(i==10){
@@ -296,20 +563,38 @@ public class FontUtil {
         }
 
     }
+
+public static TextureInfo ti ;
+    public static Map<Character,Glyph> drawAllCharacterInOneJpg1(List<Character> list){
+      FontUtil fontUtil =new FontUtil();
+       TextureInfo ti =  fontUtil.createFontTexture(getFont(16),true,list);
+        TextureManager.textureInfoMap.put("zhongwen",ti);//.getTextureInfo("zhongwen");
+        FontUtil.ti = ti;
+//StringBuffer sb =new StringBuffer();
+//        for(Character  car : list){
+//
+//          Glyph glyph = fontUtil.glyphs.get(car);
+//
+//            sb.append(car).append(" ").append(glyph.x).append(" ").append(glyph.y).append(" ").append(24).append(" ").append(24).append("\r\n");
+//
+//
+//        }
+//        try {
+//           // LogUtil.println(PathManager.getInstance().getInstallPath().resolve("wordLocation.txt").toString());
+//            FileUtil.writeFile(PathManager.getInstance().getInstallPath().resolve("wordLocation.txt").toFile(), sb.toString());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+     return fontUtil.glyphs;
+
+    }
     public static void ttf2jpg(char car , Graphics g,int x,int y,int fontHeight){
        // System.out.println("x:"+x+" y:"+y);
-       // g.translate(x,y);
-        //g.translate(13 * i + _x, 16 + _y);
-        //g.drawString(car + "啊", x, y);
-        //g.translate(-x,-y);
-       AttributedString ats = new AttributedString(car+"");
-        ats.addAttribute(TextAttribute.FONT, getFont(fontHeight), 0, 1);
-        ats.addAttribute(TextAttribute.KERNING,0);
-        AttributedCharacterIterator iter = ats.getIterator();
 
+        g.setColor(Color.WHITE);
+        g.drawString(String.valueOf(car), x, y+fontHeight);
 
-
-            g.drawString(iter, x, y+fontHeight);
 
 
 
@@ -321,7 +606,7 @@ public class FontUtil {
 
 //shadowGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         FontRenderContext frc = g2.getFontRenderContext();
-        TextLayout tl = new TextLayout(car+"", new Font("宋体", Font.PLAIN,fontSize), frc);
+        TextLayout tl = new TextLayout(car+"",getFont(fontSize), frc);
         Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, y+28));
         g2.setColor(Color.WHITE);
         g2.draw(sha);
@@ -359,12 +644,13 @@ public class FontUtil {
         try {
             List<Character> list = new ArrayList<Character>();
             List<String> lists = FileUtil.readFile2List(PathManager.getInstance().getInstallPath().resolve("normalcn").toString());
+            //读取所有文字
             int count =0 ;
             for (String line : lists) {
                 if (!StringUtil.isBlank(line)) {
                     String[] ary = line.split(" ");
                     for(int i=0;i<ary.length;i++){
-                        list.add(Character.valueOf(ary[i].trim().charAt(0)));
+                        list.add(Character.valueOf(ary[i].trim().charAt(0)));//按行读取文字 然后进行空格分割 放入list
                         //System.out.println(ary[i]);
                     }
 
@@ -380,7 +666,46 @@ public class FontUtil {
 
     }
 
-    public static HashMap<Character,Glyph> zhongwenMap = readGlyph();
+    public static Map<Character,Glyph> zhongwenMap= readGlyph();
+    /**
+     * the cn char map the location in the png texture
+     * @return
+     */
+    public static Map<Character,Glyph> readAdvanceGlyph(){
+
+
+        try {
+            //先读取所有字符
+//            List<Character> list = new ArrayList<Character>();
+//            List<String> lists = FileUtil.readFile2List(PathManager.getInstance().getInstallPath().resolve("normalcn").toString());
+//            //读取所有文字
+//            int count =0 ;
+//            for (String line : lists) {
+//                if (!StringUtil.isBlank(line)) {
+//                    String[] ary = line.split(" ");
+//                    for(int i=0;i<ary.length;i++){
+//                        list.add(Character.valueOf(ary[i].trim().charAt(0)));//按行读取文字 然后进行空格分割 放入list
+//                        //System.out.println(ary[i]);
+//                    }
+//
+//                }
+//            }
+            List<Character> list = new ArrayList<Character>();
+           String s = "用户名密码登录:1234567890asdfghjklzxcvbm,./';[]";
+            for(int i=0;i<s.length();i++){
+                list.add(Character.valueOf(s.charAt(i)));//按行读取文字 然后进行空格分割 放入list
+                //System.out.println(ary[i]);
+            }
+            //再绘制所有文字
+            return drawAllCharacterInOneJpg1(list);
+        }catch(Exception e){
+            e.printStackTrace();
+
+        }
+
+        return null;
+
+    }
     /**
      * the cn char map the location in the png texture
      * @return
@@ -398,6 +723,7 @@ public class FontUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        FontUtil.ti=TextureManager.getTextureInfo("zhongwen");
         return map;
     }
 

@@ -9,6 +9,8 @@ public class ItemServerBean {
     float x;
     float y;
     float z;
+    public boolean died =false;//要被系统回收了
+    public long dropTime =0;//什么时候掉落在地上的 超过一定时间会被系统回收的
 
     public float getX() {
         return x;

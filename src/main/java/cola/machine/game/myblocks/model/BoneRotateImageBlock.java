@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -20,7 +21,8 @@ import java.util.List;
 public class BoneRotateImageBlock extends RotateImageBlock{
 public GL_Vector parentPosition = new GL_Vector();
     public GL_Vector childPosition=new GL_Vector();
-    public List<BaseBlock > children =new ArrayList<>();
+   public  BaseBlock block =null;
+    public List<BoneRotateImageBlock > children =new ArrayList<>();
     public BoneRotateImageBlock(){
 
     }
@@ -85,13 +87,16 @@ public GL_Vector parentPosition = new GL_Vector();
         super.copyRotateImageBlock(block);
         block.parentPosition=this.parentPosition.copyClone();
         block.childPosition=this.childPosition.copyClone();
-        for(BaseBlock childBlock :children){
+        for(BoneRotateImageBlock childBlock :children){
             block.children.add(childBlock.copy());
         }
     }
 
    
     public float rotateX(float value){
+        if(value>1){
+            LogUtil.println("hello");
+        }
         this.rotateX+=value*0.1;reComputePoints();
         return this.rotateX;
     }
@@ -104,6 +109,29 @@ public GL_Vector parentPosition = new GL_Vector();
         this.rotateZ+=value*0.1;
         reComputePoints();
         return this.rotateZ;
+    }
+
+    public BoneRotateImageBlock findChild(String nodeName)  {
+        if(this.name.equals(nodeName))
+            return this;
+        if(children.size()>0){
+            for(int i=0;i<children.size();i++){
+                if(children.get(i).name.equals(nodeName)){
+                    return children.get(i);
+                }else{
+                    BoneRotateImageBlock child = (children.get(i)).findChild(nodeName);
+                    if(child!=null){
+                        return child;
+                    }
+
+                }
+
+
+            }
+        }
+
+        return null;
+
     }
 
     @Override
@@ -126,44 +154,44 @@ public GL_Vector parentPosition = new GL_Vector();
         points= BoxModel.getSmallPoint(0,0,0,width,height,thick);
 
 
-
-        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(x+centerX ,y+centerY ,z+centerZ);
-        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(rotateX,rotateY,rotateZ);
-
-        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
-        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-centerX ,-centerY ,-centerZ));
-        for(int i=0;i<points.length;i++){
-            points[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
-        }
-
-
-        for (BaseBlock block : children) {
-            if (block instanceof BoneRotateImageBlock) {
-                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
-                //先进行移动
-                 translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y, boneRotateImageBlock.parentPosition.z);
-
-
-                translateMatrix = GL_Matrix.multiply(rotateMatrix, translateMatrix);
-
-                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
-
-                 rotateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
-                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
 //
-//            if(this.name.equals("rhand")&& this.rotateX>0){
-////            LogUtil.println("hello");
+//        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(x+centerX ,y+centerY ,z+centerZ);
+//        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(rotateX,rotateY,rotateZ);
+//
+//        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+//        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-centerX ,-centerY ,-centerZ));
+//        for(int i=0;i<points.length;i++){
+//            points[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
+//        }
+
+//
+//        for (BaseBlock block : children) {
+//            if (block instanceof BoneRotateImageBlock) {
+//                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
+//                //先进行移动
+//                 translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y, boneRotateImageBlock.parentPosition.z);
+//
+//
+//                translateMatrix = GL_Matrix.multiply(rotateMatrix, translateMatrix);
+//
+//                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
+//
+//                 rotateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
+//                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
+////
+////            if(this.name.equals("rhand")&& this.rotateX>0){
+//////            LogUtil.println("hello");
+////            }
+//                rotateMatrix = GL_Matrix.multiply(rotateMatrix, translateMatrix);
+//                block.reComputePoints(rotateMatrix);
+//            } else {
+//                block.reComputePoints(rotateMatrix);
 //            }
-                rotateMatrix = GL_Matrix.multiply(rotateMatrix, translateMatrix);
-                block.reComputePoints(rotateMatrix);
-            } else {
-                block.reComputePoints(rotateMatrix);
-            }
-        }
+//        }
     }
     @Override
     public void reComputePointsInGroup(){
-        points= BoxModel.getSmallPoint(x,y,z,width,height,thick);
+        points= BoxModel.getSmallPoint(0,0,0,width,height,thick);
         //要走到 不加x y z 会出现中心点无效的问题
        /* GL_Matrix translateMatrix = GL_Matrix.translateMatrix(x+centerX ,y+centerY ,z+centerZ);
 
@@ -180,37 +208,37 @@ public GL_Vector parentPosition = new GL_Vector();
     public  void reComputePoints(GL_Matrix matrix) {
         this.points = BoxModel.getSmallPoint(0, 0, 0, width, height, thick);
 
-
-        for (int i = 0; i < points.length; i++) {
-            points[i] = matrix.multiply(matrix, points[i]);
-
-        }
-        this.x=points[0].x;
-        this.y=points[0].y;
-        this.z=points[0].z;
-        for (BaseBlock block : children) {
-            if (block instanceof BoneRotateImageBlock) {
-                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
-                //先进行移动
-                GL_Matrix translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y, boneRotateImageBlock.parentPosition.z);
-
-
-                translateMatrix = GL_Matrix.multiply(matrix, translateMatrix);
-
-                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
-
-                GL_Matrix rotateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
-                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
 //
-//            if(this.name.equals("rhand")&& this.rotateX>0){
-////            LogUtil.println("hello");
+//        for (int i = 0; i < points.length; i++) {
+//            points[i] = matrix.multiply(matrix, points[i]);
+//
+//        }
+//        this.x=points[0].x;
+//        this.y=points[0].y;
+//        this.z=points[0].z;
+//        for (BaseBlock block : children) {
+//            if (block instanceof BoneRotateImageBlock) {
+//                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
+//                //先进行移动
+//                GL_Matrix translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y, boneRotateImageBlock.parentPosition.z);
+//
+//
+//                translateMatrix = GL_Matrix.multiply(matrix, translateMatrix);
+//
+//                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
+//
+//                GL_Matrix rotateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
+//                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
+////
+////            if(this.name.equals("rhand")&& this.rotateX>0){
+//////            LogUtil.println("hello");
+////            }
+//                rotateMatrix = GL_Matrix.multiply(rotateMatrix, translateMatrix);
+//                block.reComputePoints(rotateMatrix);
+//            } else {
+//                block.reComputePoints(matrix);
 //            }
-                rotateMatrix = GL_Matrix.multiply(rotateMatrix, translateMatrix);
-                block.reComputePoints(rotateMatrix);
-            } else {
-                block.reComputePoints(matrix);
-            }
-        }
+//        }
     }
     /**
      * 长长使用再在group中
@@ -221,57 +249,118 @@ public GL_Vector parentPosition = new GL_Vector();
         LogUtil.println("hello");
     }
     @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+    public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix){
         GL_Vector[] dirAry = BoxModel.dirAry;
-        matrix=GL_Matrix.translateMatrix(0,0,0);
-        if(top!=null ) {
-            ShaderUtils.draw3dImage(config, vao, matrix, points[4], points[5], points[6], points[7], dirAry[0], top);
-        }
 
-        if(bottom!=null) {
-            ShaderUtils.draw3dImage(config, vao,matrix, points[3], points[2], points[1], points[0], dirAry[1], bottom);
-        }
+        matrix.multiply(matrix,GL_Matrix.translateMatrix(x,y,z));
 
-        if(front!=null ) {
-            ShaderUtils.draw3dImage(config, vao,matrix,  points[0], points[1], points[5], points[4], dirAry[2], front);
-        }
-
-        if(back!=null ) {
-            ShaderUtils.draw3dImage(config, vao, matrix,  points[2], points[3], points[7], points[6], dirAry[3], back);
-        }
-
-        if(left!=null ) {
-            ShaderUtils.draw3dImage(config, vao,matrix,  points[3], points[0], points[4], points[7], dirAry[4], left);
-        }
-        if(right!=null )  {
-            ShaderUtils.draw3dImage(config, vao,matrix, points[1], points[2], points[6], points[5], dirAry[5], right);
-        }
-
-        for(BaseBlock block:children){
-            if(block instanceof  BoneRotateImageBlock){
-                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
-                //先进行移动
-                GL_Matrix translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y,boneRotateImageBlock.parentPosition.z);
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentPosition.x, parentPosition.y,parentPosition.z);
 
 
-                translateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
+        translateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
 
-                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
+        //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
 
-             GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
-                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
+        GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( rotateX, rotateY, rotateZ));
+        translateMatrix = GL_Matrix.translateMatrix(-childPosition.x, -childPosition.y, -childPosition.z);
 //
 //            if(this.name.equals("rhand")&& this.rotateX>0){
 ////            LogUtil.println("hello");
 //            }
-                rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
-                block.renderShaderInGivexyzwht( config,  vao,  rotateMatrix, boneRotateImageBlock.points);
+        rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+
+        if(top!=null ) {
+            ShaderUtils.draw3dImage(config, vao, rotateMatrix, points[4], points[5], points[6], points[7], dirAry[0], top);
+        }
+
+        if(bottom!=null) {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+        }
+
+        if(front!=null ) {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix,  points[0], points[1], points[5], points[4], dirAry[2], front);
+        }
+
+        if(back!=null ) {
+            ShaderUtils.draw3dImage(config, vao, rotateMatrix,  points[2], points[3], points[7], points[6], dirAry[3], back);
+        }
+
+        if(left!=null ) {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix,  points[3], points[0], points[4], points[7], dirAry[4], left);
+        }
+        if(right!=null )  {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix, points[1], points[2], points[6], points[5], dirAry[5], right);
+        }
+        if(block!=null){
+            block.renderShader(config,vao,rotateMatrix);
+        }
+        for(BaseBlock block:children){
+            if(block instanceof  BoneRotateImageBlock){
+                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
+                //先进行移动
+
+                //boneRotateImageBlock.reComputePoints(rotateMatrix);
+                block.renderShader( config,  vao,  rotateMatrix);
             }else{
-                block.renderShaderInGivexyzwht( config,  vao,  matrix, block.points);
+                block.renderShader( config,  vao,  matrix);
             }
 
         }
     }
+//    @Override
+//    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+//        GL_Vector[] dirAry = BoxModel.dirAry;
+//
+//        matrix.multiply(matrix,GL_Matrix.translateMatrix(x,y,z));
+//        if(top!=null ) {
+//            ShaderUtils.draw3dImage(config, vao, matrix, points[4], points[5], points[6], points[7], dirAry[0], top);
+//        }
+//
+//        if(bottom!=null) {
+//            ShaderUtils.draw3dImage(config, vao,matrix, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+//        }
+//
+//        if(front!=null ) {
+//            ShaderUtils.draw3dImage(config, vao,matrix,  points[0], points[1], points[5], points[4], dirAry[2], front);
+//        }
+//
+//        if(back!=null ) {
+//            ShaderUtils.draw3dImage(config, vao, matrix,  points[2], points[3], points[7], points[6], dirAry[3], back);
+//        }
+//
+//        if(left!=null ) {
+//            ShaderUtils.draw3dImage(config, vao,matrix,  points[3], points[0], points[4], points[7], dirAry[4], left);
+//        }
+//        if(right!=null )  {
+//            ShaderUtils.draw3dImage(config, vao,matrix, points[1], points[2], points[6], points[5], dirAry[5], right);
+//        }
+//
+//        for(BaseBlock block:children){
+//            if(block instanceof  BoneRotateImageBlock){
+//                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
+//                //先进行移动
+//                GL_Matrix translateMatrix = GL_Matrix.translateMatrix(boneRotateImageBlock.parentPosition.x, boneRotateImageBlock.parentPosition.y,boneRotateImageBlock.parentPosition.z);
+//
+//
+//                translateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
+//
+//                //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
+//
+//             GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( boneRotateImageBlock.rotateX, boneRotateImageBlock.rotateY, boneRotateImageBlock.rotateZ));
+//                translateMatrix = GL_Matrix.translateMatrix(-boneRotateImageBlock.childPosition.x, -boneRotateImageBlock.childPosition.y, -boneRotateImageBlock.childPosition.z);
+////
+////            if(this.name.equals("rhand")&& this.rotateX>0){
+//////            LogUtil.println("hello");
+////            }
+//                rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+//                boneRotateImageBlock.reComputePoints(rotateMatrix);
+//                block.renderShader( config,  vao,  rotateMatrix);
+//            }else{
+//                block.renderShader( config,  vao,  matrix);
+//            }
+//
+//        }
+//    }
     /**
      * 在chunk当中直接使用
      * @param config
@@ -363,30 +452,46 @@ public GL_Vector parentPosition = new GL_Vector();
         if (ary != null) {
             for (int i = 0; i < ary.size(); i++) {
                 JSONObject object = (JSONObject) ary.get(i);
-
-                String blockType = (String) object.get("blocktype");
-                if ("imageblock".equals(blockType)) {
-                    ImageBlock imageBlock = ImageBlock.parse(object);
-                    block.addChild(imageBlock);
-                } else if ("colorblock".equals(blockType)) {
-                    ColorBlock colorBlock = ColorBlock.parse(object);
-                    block.addChild(colorBlock);
-                } else if ("rotatecolorblock".equals(blockType)) {
-                    RotateColorBlock2 shape = RotateColorBlock2.parse(object);
-                    block.addChild(shape);
-                } else if ("rotateimageblock".equals(blockType)) {
-                    RotateImageBlock shape = RotateImageBlock.parse(object);
-                    block.addChild(shape);
-                }else if ("bonerotateimageblock".equals(blockType)) {
-                    BoneRotateImageBlock shape = BoneRotateImageBlock.parse(object);
-                    block.addChild(shape);
+               BaseBlock childBlock =  EditEngine.parse(object);
+                if(childBlock instanceof  BoneRotateImageBlock){
+                    block.addChild((BoneRotateImageBlock)childBlock );
+                }else{
+                    block.block = childBlock;
                 }
+
+//                String blockType = (String) object.get("blocktype");
+//                if ("imageblock".equals(blockType)) {
+//                    ImageBlock imageBlock = ImageBlock.parse(object);
+//                    block.addChild(imageBlock);
+//                } else if ("colorblock".equals(blockType)) {
+//                    ColorBlock colorBlock = ColorBlock.parse(object);
+//                    block.addChild(colorBlock);
+//                } else if ("rotatecolorblock".equals(blockType)) {
+//                    RotateColorBlock2 shape = RotateColorBlock2.parse(object);
+//                    block.addChild(shape);
+//                } else if ("rotateimageblock".equals(blockType)) {
+//                    RotateImageBlock shape = RotateImageBlock.parse(object);
+//                    block.addChild(shape);
+//                }else if ("bonerotateimageblock".equals(blockType)) {
+//                    BoneRotateImageBlock shape = BoneRotateImageBlock.parse(object);
+//                    block.addChild(shape);
+//                }
 
 
             }
         }
 
 
+    }
+
+    public void removeChild(BoneRotateImageBlock component){
+        for(int i=children.size()-1;i>=0;i--){
+            BaseBlock child =  children.get(i);
+            if(child == component){
+                children.remove(i);
+            }
+
+        }
     }
 
     public String toString(){
@@ -421,7 +526,7 @@ public GL_Vector parentPosition = new GL_Vector();
         buffer .append("],");
 return buffer.toString();
     }
-    public void addChild(BaseBlock block){
+    public void addChild(BoneRotateImageBlock block){
         this.children.add(block);
     }
 

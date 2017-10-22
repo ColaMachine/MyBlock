@@ -3,6 +3,7 @@ package com.dozenx.game.engine.Role.bean;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.model.PlayerModel;
@@ -125,7 +126,7 @@ public class Player extends LivingThing {
     }
 
 
-    public void StrafeRight(float Distance) { if(isDied())return;
+    public void moveRight(float Distance) { if(isDied())return;
         if (Math.abs(Distance) > 0.02) {
 
             this.changeAnimationState("walkerLeft");
@@ -137,7 +138,7 @@ public class Player extends LivingThing {
         //}
     }
 
-    public void MoveForward(float Distance) {
+    public void moveForward(float Distance) {
         if(isDied())return;
         // System.out.printf("%f %f %f
 //        LogUtil.println("MoveForward");							// \r\n",ViewDir.x,ViewDir.y,ViewDir.z);
@@ -189,7 +190,7 @@ public class Player extends LivingThing {
 
 
     public void addShoeEquip(boolean leftFlag ,ItemBean itemCfg)  {
-        Component parent ;
+        BoneRotateImageBlock parent ;
         if(leftFlag){
             parent = getModel().rootComponent.findChild("human_l_b_leg");
         }else{
@@ -199,12 +200,12 @@ public class Player extends LivingThing {
         getModel().addChild(parent,Component.body,"shoe",itemCfg);
     }
     public void addHeadEquip(ItemBean itemCfg)  {
-        Component parent = 	getModel().rootComponent.findChild("human_head");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_head");
         getModel().addChild(parent,Component.body, "helmet",itemCfg);
     }
 
     public void clearHeadEquip(){
-        Component parent = 	getModel().rootComponent.findChild("human_head");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_head");
         parent.children.remove(0);
     }
     public void addShoeEquip(ItemBean itemCfg)  {
@@ -216,37 +217,37 @@ public class Player extends LivingThing {
         clearShoeEquip(false);
     }
     public void addLegEquip(ItemBean itemCfg)  {
-        Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_l_b_leg");
         getModel().addChild(parent,Component.body, "pants", itemCfg);
     }
 
     public void clearLegEquip()  {
-        Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_l_b_leg");
         getModel().removeChild(parent, "pants");
     }
     public void addBodyEquip(ItemBean itemCfg)  {
-        Component parent = 	getModel().rootComponent.findChild("human_body");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_body");
         getModel().addChild(parent,Component.body, "armor", itemCfg);
     }
     public void clearBodyEquip()  {
-        Component parent = 	getModel().rootComponent.findChild("human_body");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_body");
         getModel().removeChild(parent, "armor");
     }
 
     public void addHandEquip(ItemBean itemCfg)  {
         //Shape shape = itemCfg.getShape();
-        Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("rhuman_hand");
         getModel().addChild(parent,Component.hand, "weapon", itemCfg);
     }
     public void clearHandEquip()  {
         //Shape shape = itemCfg.getShape();
-        Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("rhuman_hand");
         getModel().removeChild(parent, "weapon");
     }
 
 
     public void addShoeEquip(boolean leftFlag ,ItemDefinition itemCfg)  {
-        Component parent ;
+        BoneRotateImageBlock parent ;
         if(leftFlag){
             parent = getModel().rootComponent.findChild("human_l_b_leg");
         }else{
@@ -259,7 +260,7 @@ public class Player extends LivingThing {
         return (PlayerModel)this.getExecutor().getModel();
     }
     public void clearShoeEquip(boolean leftFlag)  {
-        Component parent ;
+        BoneRotateImageBlock parent ;
         if(leftFlag){
             parent = getModel().rootComponent.findChild("human_l_b_leg");
         }else{
@@ -269,7 +270,7 @@ public class Player extends LivingThing {
         getModel().removeChild(parent,"shoe");
     }
     public void addHeadEquip(ItemDefinition itemCfg)  {
-        Component parent = 	getModel().rootComponent.findChild("human_head");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_head");
         getModel().addChild(parent,Component.body, "helmet", itemCfg);
     }
     public void addShoeEquip(ItemDefinition itemCfg)  {
@@ -277,17 +278,17 @@ public class Player extends LivingThing {
         addShoeEquip(false, itemCfg);
     }
     public void addLegEquip(ItemDefinition itemCfg)  {
-        Component parent = 	getModel().rootComponent.findChild("human_l_b_leg");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_l_b_leg");
         getModel().addChild(parent,Component.body, "pants", itemCfg);
     }
     public void addBodyEquip(ItemDefinition itemCfg)  {
-        Component parent = 	getModel().rootComponent.findChild("human_body");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("human_body");
         getModel().addChild(parent,Component.body, "armor", itemCfg);
     }
 
     public void addHandEquip(ItemDefinition itemCfg)  {
         //Shape shape = itemCfg.getShape();
-        Component parent = 	getModel().rootComponent.findChild("rhuman_hand");
+        BoneRotateImageBlock parent = 	getModel().rootComponent.findChild("rhuman_hand");
         getModel().addChild(parent,Component.hand, "weapon", itemCfg);
     }
 

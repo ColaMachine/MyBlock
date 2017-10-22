@@ -34,7 +34,7 @@ public class CakeModel implements Model {
         this.icon = ti;
         this.init();
     }
-    IBlock[] blocks;
+    public IBlock[] blocks;
     public static HashMap<String,IBlock[]> map =new HashMap<>();
     TextureInfo icon;
 

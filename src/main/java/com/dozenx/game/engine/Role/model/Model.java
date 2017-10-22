@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.Role.model;
 
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.Vao;
@@ -29,7 +30,7 @@ public interface  Model {
     //public Component bodyComponent = new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 
 
-    public Component getRootComponent();
+    public BoneRotateImageBlock getRootComponent();
 
 /*
 

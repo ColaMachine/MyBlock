@@ -52,24 +52,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
-      <library name="lwjgl_util-2.9.1.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/lwjgl_util-2.9.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library name="lwjgl-2.9.1.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/lwjgl-2.9.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
       <library name="platform-3.5.2.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/platform-3.5.2.jar!/" />
@@ -213,6 +195,23 @@
     <orderEntry type="library" name="Maven: org.ow2.asm:asm-util:4.0" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.asm:asm-analysis:4.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-jsr223:2.1.6" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/lwjgl.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/lwjgl-stb.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
-

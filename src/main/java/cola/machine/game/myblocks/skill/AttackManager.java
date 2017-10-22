@@ -3,6 +3,7 @@ package cola.machine.game.myblocks.skill;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -26,7 +27,7 @@ public class AttackManager {
     public static List<Ball> list =new ArrayList<>();
 
     public static List<Ball> drawThings =new ArrayList<>();
-    public static ColorBlock selectThing =null;
+    public static BaseBlock selectThing =null;
 
     public static List<Ball> diedList =new ArrayList<>();
     Vector4f color =new Vector4f(1,0,0,1);
@@ -41,8 +42,9 @@ public class AttackManager {
     public  void update(){
         ShaderManager.anotherShaderConfig.getVao().getVertices().rewind();
         if(selectThing!=null){
-            ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,new GL_Vector(0,0,0),selectThing.width,selectThing.height,selectThing.thick,0.5f);
-
+          //  ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,new GL_Vector(0,0,0),selectThing.width,selectThing.height,selectThing.thick,0.5f);
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,selectThing.width,selectThing.height,selectThing.thick);
+            GamingState.editEngine.lineNeedUpdate=true;
         }
 
         for(int i=diedList.size()-1;i>=0;i--) {

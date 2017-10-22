@@ -205,6 +205,22 @@ public class ByteBufferWrap
 
 
     }
+    public long getLong(){
+        long length = buffer.getLong();;
+
+
+        return  length;
+
+
+    }
+    public ByteBufferWrap put(long val){
+    buffer.put(ByteUtil.getBytes(val));;
+
+
+        position+=4;
+        return this;
+
+    }
     public byte[] getByteAry(int length){
         byte[] bytes = new byte[length];
         for(int i = 0;i<length;i++){

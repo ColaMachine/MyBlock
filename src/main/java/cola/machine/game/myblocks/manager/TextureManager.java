@@ -13,6 +13,7 @@ import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.edit.view.GroupBlock;
 import com.dozenx.game.engine.element.bean.Component;
@@ -460,8 +461,9 @@ public class TextureManager {
                 for (int i = 0; i < list.size(); i++) {
 
                     JSONObject map = (JSONObject)list.get(i);
-
-                    String blockType =(String) map.get("blocktype");
+                    BaseBlock block = EditEngine.parse(map);
+                    this.shapeMap.put(block.getName(), block);
+                   /* String blockType =(String) map.get("blocktype");
                     if("imageblock".equals(blockType)){
                         ImageBlock shape = ImageBlock.parse(map);
                         this.shapeMap.put(shape.getName(), shape);
@@ -480,7 +482,7 @@ public class TextureManager {
                     }else{
                         BoneBlock shape = BoneBlock.parse(map);
                         this.shapeMap.put(shape.getName(), shape);
-                    }
+                    }*/
 
 
 

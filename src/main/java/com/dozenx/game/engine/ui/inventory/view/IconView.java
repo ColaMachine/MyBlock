@@ -29,8 +29,11 @@
  */
 package com.dozenx.game.engine.ui.inventory.view;
 
+import cola.machine.game.myblocks.model.ui.html.Div;
+import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.model.ui.html.HtmlObject;
 import cola.machine.game.myblocks.model.ui.html.Image;
+import com.dozenx.game.engine.edit.view.MouseClickHandler;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import core.log.LogUtil;
@@ -85,6 +88,7 @@ public class IconView extends HtmlObject {
 
     public IconView(ItemBean itemBean) {
         this.itemBean = itemBean;
+        this.innerText=itemBean.getNum()+"";
         this.setBorderColor(new Vector4f(1,1,1,1));
         this.setBorderWidth(1);
         this.setWidth(40);
@@ -102,9 +106,38 @@ public class IconView extends HtmlObject {
             assert icon2!=null;
         }*/
         this.itemDefinition = itemBean.getItemDefinition();
+        this.childNodes.clear();
+
+     final   Div div = new Div();
+
+        div.setVisible(false);
+        div.setWidth(50);
+        //div.setHeight(50);
+        div.setFontSize(20);
+        div.setInnerText( itemBean.getItemDefinition().getName());
+        div.setBackgroundColor(new Vector4f(1,1,1,1));
+        this.appendChild(div);
+      //  this.title ="+\"x\"+itemBean.getItemDefinition().getName()";
         if(itemDefinition==  null) {
             assert this.itemDefinition!=null;
         }
+        this.addEventListener("mouseover", new MouseClickHandler() {
+            @Override
+            public void run() {
+               // LogUtil.println("show"+parentNode.id);
+                LogUtil.println("show"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
+                div.setVisible(true);
+                Document.needUpdate=true;
+            }
+        });
+        this.addEventListener("mouseout", new MouseClickHandler() {
+            @Override
+            public void run() {
+                LogUtil.println("hide"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
+                div.setVisible(false);
+                Document.needUpdate=true;
+            }
+        });
     }
     /*public IconView(SkillDefinition skillDefinition) {
         this.skillDefinition=skillDefinition;
@@ -127,6 +160,8 @@ public class IconView extends HtmlObject {
     }
     public void  setNum(int num){
         this.itemBean.setNum(num);
+        this.innerText=num+"";
+        Document.needUpdate=true;
     }
     public String getItem() {
         return itemBean.getItemDefinition().getName();
@@ -215,4 +250,5 @@ public class IconView extends HtmlObject {
  /*   public void setIcons(ParameterMap icons) {
         this.icons = icons;
     }*/
+
 }

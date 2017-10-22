@@ -13,6 +13,7 @@ import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.LoginCmd;
 import com.dozenx.game.engine.command.PlayerSynCmd;
+import com.dozenx.game.font.Glyph;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
@@ -25,6 +26,10 @@ import org.lwjgl.input.Mouse;
 
 import javax.vecmath.Vector4f;
 
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class StartMenuState implements GameState {
@@ -36,7 +41,18 @@ public class StartMenuState implements GameState {
 
     EditField userName ;
     EditField pwd ;
+    private Map<Character, Glyph> glyphs = new HashMap<>();
     public void init(GameEngine engine) {  OpenglUtils.checkGLError();
+//        if (i == 127) {
+//            continue;
+//        }
+//        char c = (char) i;
+//        BufferedImage charImage = createCharImage(font, c, antiAlias);
+//
+//        int charWidth = charImage.getWidth();
+//        int charHeight = charImage.getHeight();
+
+
         Client client = new Client();
         client.start();
         CoreRegistry.put(Client.class, client);
@@ -350,6 +366,8 @@ if(!Switcher.SHADER_ENABLE) {
                             Constants.USER_ID=cmd.getPlayerStatus().getId();
                             Constants.userName = userName.getText();
 
+                            //进行加载
+
                             //创建Human
                            Player player = new Player(cmd.getPlayerStatus().getId());
                             player.setInfo(cmd.getPlayerStatus() );//要等所有的东西都除湿玩了才能运作
@@ -385,7 +403,7 @@ if(!Switcher.SHADER_ENABLE) {
                }
            };
            int threadId = (int)(Math.random()*100000);
-           Client.taskMap.put(threadId, task);
+           Client.SyncTaskMap.put(threadId, task);
 
            CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText(),threadId));
 

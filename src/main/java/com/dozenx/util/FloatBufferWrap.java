@@ -5,6 +5,7 @@ package com.dozenx.util;
  */
 
 import com.dozenx.game.opengl.util.OpenglUtils;
+import core.log.LogUtil;
 import org.lwjgl.opengl.GL15;
 
 import java.nio.ByteBuffer;
@@ -59,7 +60,11 @@ public class FloatBufferWrap
         if(buffer.position()==buffer.capacity()){
 
             listPosition++;
+            if(listPosition>10000){
+                LogUtil.err("may explot memory");
+            }
             if(buffers.size()<listPosition+1){
+
                 buffer = ByteBuffer.allocateDirect(size).order(ByteOrder.nativeOrder()).asFloatBuffer();
                 buffers.add(buffer);
             }else{
@@ -100,6 +105,9 @@ try {
 
     }
     public void rewind(){
+        if(this.listPosition>10000){
+            LogUtil.err(this.listPosition+"");
+        }
         this.limit = position;
         this.position =0;
         this.listLimit = listPosition;

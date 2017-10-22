@@ -6,6 +6,7 @@ import com.dozenx.util.FloatBufferWrap;
  * Created by luying on 16/11/28.
  */
 public class Vao {
+    public boolean changed=false;
     ShaderConfig config ;
     public Vao( ShaderConfig config){
         this.config = config;

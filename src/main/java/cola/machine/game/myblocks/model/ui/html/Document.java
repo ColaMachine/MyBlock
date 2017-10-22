@@ -173,7 +173,7 @@ public class Document extends HtmlObject {
             }
 
         }
-
+        //如果有鼠标移动===========================
         if(mouseX != mouseLastX || mouseY != mouseLastY) {//鼠标有移动
             mouseLastX = mouseX;
             mouseLastY = mouseY;
@@ -208,8 +208,8 @@ public class Document extends HtmlObject {
                 }
             }
         }
-
-        if(buttonMask != 0 && pressed != wasPressed) {
+        //有按键发生=========================================================
+        if(buttonMask != 0 && pressed != wasPressed) {//有按键发生
             if(pressed) {
                 if(dragButton < 0) {
                     mouseDownX = mouseX;
@@ -268,7 +268,7 @@ public class Document extends HtmlObject {
                 }
             }
         }
-
+        //如果有拖动===========================================
         if(event.isMouseDragEnd()) {
             if(dragActive) {
                 dragActive = false;
@@ -301,7 +301,7 @@ public class Document extends HtmlObject {
 
        // renderer.setMousePosition(event.mouseX, event.mouseY);
 
-        if(target != null) {
+        if(target != null) {//TODO什么时候是不为空的edit field
             if(!target.isDisabled() || !isMouseAction(event)) {
                 target.handleEvent(event);
             }

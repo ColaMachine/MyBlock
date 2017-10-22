@@ -69,9 +69,9 @@ public class TextBall {
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 
 
-            ShaderUtils.draw3dImage(p2,p1,p4,p3,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
+            ShaderUtils.draw3dImage(shaderConfig,shaderConfig.getVao(),rotateMatrix,p1,p4,p3,p2,normal,itemDefinition.getItemModel().getIcon());
 
-            ShaderUtils.draw3dImage(p1,p2,p3,p4,rotateMatrix,normal,itemDefinition.getItemModel().getIcon(),shaderConfig.getVao().getVertices(),shaderConfig);
+            ShaderUtils.draw3dImage(shaderConfig,shaderConfig.getVao(),rotateMatrix,p1,p2,p3,p4,normal,itemDefinition.getItemModel().getIcon());
 
 
 

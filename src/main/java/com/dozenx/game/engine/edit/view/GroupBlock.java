@@ -8,6 +8,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
@@ -652,24 +653,28 @@ public class GroupBlock extends BaseBlock {
         if (ary != null) {
             for (int i = 0; i < ary.size(); i++) {
                 JSONObject object = (JSONObject) ary.get(i);
-
-                String blockType = (String) object.get("blocktype");
-                if ("imageblock".equals(blockType)) {
-                    ImageBlock imageBlock = ImageBlock.parse(object);
-                    group.addChild(imageBlock);
-                } else if ("colorblock".equals(blockType)) {
-                    ColorBlock colorBlock = ColorBlock.parse(object);
-                    group.addChild(colorBlock);
-                } else if ("rotatecolorblock".equals(blockType)) {
-                    RotateColorBlock2 shape = RotateColorBlock2.parse(object);
-                    group.addChild(shape);
-                } else if ("rotateimageblock".equals(blockType)) {
-                    RotateImageBlock shape = RotateImageBlock.parse(object);
-                    group.addChild(shape);
-                } /*else if ("groupblock".equals(blockType)) {
-                    GroupBlock shape = GroupBlock.parse(object);
-                    group.addChild(shape);
-                }*/
+                group.addChild( EditEngine.parse(object));
+//
+//                String blockType = (String) object.get("blocktype");
+//                if ("imageblock".equals(blockType)) {
+//                    ImageBlock imageBlock = ImageBlock.parse(object);
+//                    group.addChild(imageBlock);
+//                } else if ("colorblock".equals(blockType)) {
+//                    ColorBlock colorBlock = ColorBlock.parse(object);
+//                    group.addChild(colorBlock);
+//                } else if ("rotatecolorblock".equals(blockType)) {
+//                    RotateColorBlock2 shape = RotateColorBlock2.parse(object);
+//                    group.addChild(shape);
+//                } else if ("rotateimageblock".equals(blockType)) {
+//                    RotateImageBlock shape = RotateImageBlock.parse(object);
+//                    group.addChild(shape);
+//                } else if ("bonerotateimageblock".equals(blockType)) {
+//                    BoneRotateImageBlock shape = BoneRotateImageBlock.parse(object);
+//                    group.addChild(shape);
+//                }  /*else if ("groupblock".equals(blockType)) {
+//                    GroupBlock shape = GroupBlock.parse(object);
+//                    group.addChild(shape);
+//                }*/
 
             }
         }
@@ -766,7 +771,7 @@ public class GroupBlock extends BaseBlock {
 //                // childPoints[i] = GL_Matrix.multiply(childPoints[i],matrix);
 //                childPoints[k] = GL_Matrix.multiply(matrix, childPoints[k]);
 //            }
-            block.renderShaderInGivexyzwht(config, vao, matrix, childPoints);
+            block.renderShader(config, vao, matrix);
 
             // ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,
             // ShaderManager.anotherShaderConfig.getVao(),info[0],info[1],info[2],new
@@ -820,7 +825,7 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
             // colorBlock.update();
             float[] info = this.getChildBlockPosition(block, x, y, z);
             //block.reComputePoints();
-            block.renderShaderInGivexyzwht(config, vao,matrix, block.points);
+            block.renderShader(config, vao,matrix);
 
 
         }
@@ -833,25 +838,25 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
 
     }
 
-    @Override
-    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
-        for (int i = 0; i < selectBlockList.size(); i++) {
-            BaseBlock colorBlock = selectBlockList.get(i);
-            float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
-            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),
-                    info[0], info[1], info[2], info[3], info[4], info[5]);
-        }
-
-        for (int i = 0; i < colorBlockList.size(); i++) {
-            BaseBlock block = colorBlockList.get(i);
-            // colorBlock.update();
-            float[] info = this.getChildBlockPosition(block, x, y, z);
-            
-            block.renderShaderInGivexyzwht(config, vao,matrix, block.points);
-
-
-        }
-    }
+//    @Override
+//    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
+//        for (int i = 0; i < selectBlockList.size(); i++) {
+//            BaseBlock colorBlock = selectBlockList.get(i);
+//            float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
+//            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),
+//                    info[0], info[1], info[2], info[3], info[4], info[5]);
+//        }
+//
+//        for (int i = 0; i < colorBlockList.size(); i++) {
+//            BaseBlock block = colorBlockList.get(i);
+//            // colorBlock.update();
+//            float[] info = this.getChildBlockPosition(block, x, y, z);
+//
+//            block.renderShaderInGivexyzwht(config, vao,matrix, block.points);
+//
+//
+//        }
+//    }
 
     public void reComputePoints() {
         this.points = BoxModel.getSmallPoint(0, 0, 0, width, height, thick);

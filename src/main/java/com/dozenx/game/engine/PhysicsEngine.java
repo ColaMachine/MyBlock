@@ -9,6 +9,7 @@ import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.util.MathUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
+import glmodel.GL_Vector;
 
 /**
  * Created by luying on 17/7/8.
@@ -185,13 +186,20 @@ public class PhysicsEngine {
         //if all block checked is air then needjudgecrash is false
         return false;
     }
-    public boolean collision(LivingThingBean livingThing){//位置发生改变之后 当要发生位移的时候可以事先调用此方法 用来判断是否可以移动
+
+    /**
+     * 2017年10月16日12:15:43 进行碰撞后的反弹设置
+     * @param livingThing
+     * @return
+     */
+    public GL_Vector collision(LivingThingBean livingThing){//位置发生改变之后 当要发生位移的时候可以事先调用此方法 用来判断是否可以移动
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
         
         if(plr_world_pos_y<0){
-            return true;
+
+            return new GL_Vector(0,1,0);
         }
         if(GamingState.player == null){
             int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt( plr_world_pos_x);
@@ -207,9 +215,11 @@ public class PhysicsEngine {
             
 
             if (k > 0) {
-                return true;
+                return new GL_Vector(plr_world_pos_x%1-0.5f,plr_world_pos_y%1-0.5f,plr_world_pos_z%1-0.5f);
+               // return true;
             }else{
-                return false;
+                return null;
+                //return false;
             }
             
         }
@@ -227,7 +237,7 @@ public class PhysicsEngine {
 
                 if (chunk_corner == null) {
                     // LogUtil.err("may be the chunk_corner haven't been initialized the chunk_corner can't be null please debug it");
-                    return false;
+                    return null;
                 }
 
                 for (int offset_y = 0; offset_y <1.5; offset_y += 1.3) {
@@ -243,7 +253,7 @@ public class PhysicsEngine {
 
                     if (k > 0) {
                         if(GamingState.player==null){
-                            return true;
+                            return new GL_Vector((offset_x+plr_world_pos_x)%1-0.5f,(offset_y+plr_world_pos_y)%1-0.5f,(offset_z+plr_world_pos_z)%1-0.5f);
                         }
                         IBlock block =chunk_corner.getBlock(blockX,
                                 blockY, blockZ);
@@ -251,8 +261,8 @@ public class PhysicsEngine {
                             continue;
                         }
                         if (!block.isPenetrate()){
-
-                            return true;
+                            return new GL_Vector((offset_x+plr_world_pos_x)%1-0.5f,(offset_y+plr_world_pos_y)%1-0.5f,(offset_z+plr_world_pos_z)%1-0.5f);
+                           // return true;
 
 
                         }
@@ -262,7 +272,7 @@ public class PhysicsEngine {
             }
         }
         //if all block checked is air then needjdegecrash is false
-        return false;
+        return null;
 
     }
 

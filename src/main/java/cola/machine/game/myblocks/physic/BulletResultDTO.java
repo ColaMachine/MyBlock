@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.physic;
 
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import glmodel.GL_Vector;
 
@@ -9,7 +10,7 @@ import glmodel.GL_Vector;
 public class BulletResultDTO {
     public GL_Vector targetPoint;
     public GL_Vector placePoint;
-    public IBlock targetBlock;
+    public BaseBlock targetBlock;
     public int targetChunX;
     public int targetChunZ;
 }

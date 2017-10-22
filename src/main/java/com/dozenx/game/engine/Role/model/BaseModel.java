@@ -1,7 +1,9 @@
 package com.dozenx.game.engine.Role.model;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.WearComponent;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -29,22 +31,32 @@ public class BaseModel implements Model   {
         this.role = role;
     }
     public ItemDefinition itemDefinition;
-    public Component rootComponent = new Component();
+    public BoneRotateImageBlock rootComponent = new BoneRotateImageBlock();
     Role role ;
 
 
-    public void clearAddChild(Component parent,int type ,String name,ItemBean itemBean) {
+    public void clearAddChild(BoneRotateImageBlock parent,int type ,String name,ItemBean itemBean) {
         if(parent==null){
             LogUtil.err("parent node is null");
         }
        // parent.children.clear();
         //一个很明确的是问题是如果body添加了一个装备 name 是不能清除所有子节点的
-        Component shoe = parent.findChild(name);
+        if(parent == null){
+            LogUtil.err("parent not found ");
+        }
+        BoneRotateImageBlock shoe = parent.findChild(name);
+
         if (shoe == null) {
             if (itemBean == null||itemBean.itemDefinition == null) {
                 return;
             } else {
-                parent.children.clear();
+               // parent.children.clear();//这里会把body的子元素都清理掉的
+                for(BoneRotateImageBlock block: parent.children){
+                    if(block.getName().equals(name)){
+                        block.removeChild(block);
+                        break;
+                    }
+                }
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parent.addChild(addItemToComponent(name,type ,itemBean));
                 //changeProperty();
@@ -53,20 +65,32 @@ public class BaseModel implements Model   {
 
             if (itemBean == null||itemBean.itemDefinition == null) {
                 //删除shoe节点
-                parent.children.clear();
+                for(BoneRotateImageBlock block: parent.children){
+                    if(block.getName().equals(name)){
+                        block.removeChild(block);
+                        break;
+                    }
+                }
+
             } else {
-                parent.children.clear();
+                for(BoneRotateImageBlock block: parent.children){
+                    if(block.getName().equals(name)){
+                        block.removeChild(block);
+                        break;
+                    }
+                }
+              //  parent.children.clear();
 
                 parent.addChild(addItemToComponent(name,type,itemBean));
                 //changeProperty();
             }
         }
     }
-    public void addChild(Component parent,int type ,String name,ItemBean itemBean) {
+    public void addChild(BoneRotateImageBlock parent,int type ,String name,ItemBean itemBean) {
         if(parent==null){
             LogUtil.err("parent node is null");
         }
-        Component shoe = parent.findChild(name);
+        BoneRotateImageBlock shoe = parent.findChild(name);
         if (shoe == null) {
             if (itemBean == null||itemBean.itemDefinition == null) {
                 return;
@@ -96,7 +120,7 @@ public class BaseModel implements Model   {
             LogUtil.err("load shape from itemDefinition:" + baseBlock.getName() + "failed");
 
         }
-        rootComponent.belongTo = type;
+       // rootComponent.belongTo = type;
 
         Component component = new WearComponent(baseBlock.getWidth(), baseBlock.getHeight(), baseBlock.getThick());
 
@@ -108,7 +132,7 @@ public class BaseModel implements Model   {
         component.name =name;// itemBean.getItemDefinition().getName();
         if(baseBlock instanceof  BoneBlock){
             BoneBlock boneBlock = (BoneBlock) baseBlock;
-            component.setOffset(new Point3f(boneBlock.getP_posi_x(), boneBlock.getP_posi_y(), boneBlock.getP_posi_z()), new Point3f(boneBlock.getC_posi_x(), boneBlock.getC_posi_y(), boneBlock.getC_posi_z()));
+            component.setOffset(boneBlock.parentPosition, boneBlock.childPosition);
 
         }
 
@@ -117,12 +141,12 @@ public class BaseModel implements Model   {
 
 
 
-    public void addChild(Component parent,BoneBlock shape) {
+    public void addChild(BoneRotateImageBlock parent,BoneBlock shape) {
         String parentName = shape.getParent();
         if(parent==null){
             LogUtil.err("parent node is null");
         }
-        Component parentNode = parent.findChild(parentName);
+        BoneRotateImageBlock parentNode = parent.findChild(parentName);
         if (parentNode == null) {
             return;
         } else {
@@ -132,8 +156,8 @@ public class BaseModel implements Model   {
                 // component.setShape(itemCfg.getShape());
                // component.setItem(itemBean);
 
-
-                component.setOffset(new Point3f(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new Point3f(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
+            component.setOffset(shape.parentPosition, shape.childPosition);
+                //component.setOffset(new GL_Vector(shape.getP_posi_x(), shape.getP_posi_y(), shape.getP_posi_z()), new GL_Vector(shape.getC_posi_x(), shape.getC_posi_y(), shape.getC_posi_z()));
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
                 parentNode.addChild(component);
                 //changeProperty();
@@ -142,7 +166,7 @@ public class BaseModel implements Model   {
     }
 
     @Override
-    public Component getRootComponent() {
+    public BoneRotateImageBlock getRootComponent() {
         return rootComponent;
     }
 
@@ -173,7 +197,7 @@ public class BaseModel implements Model   {
                  /*   this.itemDefinition.getShape().render(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),
                             role.getX(),role.getY(),role.getZ(),true,true,true,true,true,true);*/
                 }else
-                rootComponent.build(ShaderManager.livingThingShaderConfig,rotateMatrix);
+                rootComponent.renderShader(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix);
                 //渲染头部名字
                 if(StringUtil.isNotEmpty(role.getName())){
 
@@ -187,12 +211,12 @@ public class BaseModel implements Model   {
                     // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
                     rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(0, 0,0));
 
-                    ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 12, new Vector4f(1, 1, 1, 1), ShaderManager.livingThingShaderConfig);
+                    ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 12, Constants.RGBA_WHITE, ShaderManager.livingThingShaderConfig);
                    // ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
-                    ShaderUtils.draw3dColor(
-                            
+                    ShaderUtils.draw3dColorReactWithMatrix(
+                            ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix1,
                              new GL_Vector(0,-0.25f,0), new GL_Vector(this.role.nowHP*3f/300,-0.25f,0),
-                            new GL_Vector(this.role.nowHP*3f/300,0,0), new GL_Vector(0,0,0),rotateMatrix1, new GL_Vector(0,0,1),  new GL_Vector(1,0,0),ShaderManager.livingThingShaderConfig.getVao().getVertices(),ShaderManager.livingThingShaderConfig);
+                            new GL_Vector(this.role.nowHP*3f/300,0,0), new GL_Vector(0,0,0), new GL_Vector(0,0,1),  Constants.RED);
 
 
                 }

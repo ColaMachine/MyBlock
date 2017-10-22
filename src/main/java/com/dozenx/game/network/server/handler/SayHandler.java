@@ -5,6 +5,7 @@ import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.ResultCmd;
 import com.dozenx.game.engine.command.SayCmd;
 import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
 import com.dozenx.game.network.server.bean.GameServerRequest;
 import com.dozenx.game.network.server.bean.GameServerResponse;
@@ -55,6 +56,12 @@ public class SayHandler extends GameServerHandler {
                 }
             }
         }*/
+        if(cmd.getMsg().startsWith("/bag")){
+            String[] arr = cmd.getMsg().split(" ");
+            BagCmd bagCmd    =new BagCmd(Integer.valueOf(arr[1]),bagService.getItemByUserId(Integer.valueOf(arr[1])));
+            byte[] bagBytes=bagCmd.toBytes();
+            request.getWorker().send(bagBytes);
+        }
         if(cmd.getMsg().startsWith("/fly")){
             // create wolf x y z
             String[] arr = cmd.getMsg().split(" ");
@@ -135,28 +142,48 @@ public class SayHandler extends GameServerHandler {
                 String name = arr[1];
                 String item = arr[2];
                 String num = arr[3];
+                if(StringUtil.isBlank(arr[2])|| StringUtil.isBlank(arr[1]) || StringUtil.isBlank(arr[3])){
+                    LogUtil.println("参数错误");
+                    return null;
+                }
+                ItemDefinition itemDefinition = ItemManager.getItemDefinition(arr[2]);
+                if(itemDefinition==null|| itemDefinition.id==0){
+                    LogUtil.println("查无此物");
+                    return null;
+                }
+
                 LivingThingBean livingThingBean = userService.getAllPlayerByName(name);
-                if(livingThingBean!=null){
-                    ItemServerBean[] beans = bagService.getItemAryUserId(livingThingBean.getId());
-                    for(int i=0;i<beans.length;i++){
-                        if(beans[i]==null){
-                            beans[i]=new ItemServerBean();
-                            beans[i].setPosition(i);
-                            beans[i].setId((int)(Math.random()*1000));
-                            if(StringUtil.isNumeric(arr[2])){
-                                beans[i].setItemType(Integer.valueOf(arr[2]));
-                            }else{
-                                beans[i].setItemType(ItemManager.getItemDefinition(arr[2]).id);
-                            }
-
-                            beans[i].setNum(Integer.valueOf(arr[3]));
-                            BagCmd bagCmd =new BagCmd(livingThingBean.getId(),bagService.getItemByUserId(livingThingBean.getId()));
-
-                            request.getWorker().send(bagCmd.toBytes());
-                            break;
+                if(livingThingBean==null) {
+                    LogUtil.println("查无此人");
+                    return null;
+                }
+                ItemServerBean[] beans = bagService.getItemAryUserId(livingThingBean.getId());
+                for(int i=0;i<beans.length;i++){
+                    if(beans[i]==null ){
+                        beans[i]=new ItemServerBean();
+                        beans[i].setPosition(i);
+                        beans[i].setId((int)(Math.random()*1000));
+                        if(StringUtil.isNumeric(arr[2])){
+                            beans[i].setItemType(Integer.valueOf(arr[2]));
+                        }else{
+                            beans[i].setItemType(ItemManager.getItemDefinition(arr[2]).id);
                         }
+
+                        beans[i].setNum(Integer.valueOf(arr[3]));
+                        BagCmd bagCmd =new BagCmd(livingThingBean.getId(),bagService.getItemByUserId(livingThingBean.getId()));
+
+                        request.getWorker().send(bagCmd.toBytes());
+                        break;
+                        //如果当前物品能被堆叠 并且堆叠数目不超过总体限制的话 那么ok的
+                    }else if( itemDefinition.stackNum>1 && beans[i].getItemType() == itemDefinition.id &&( beans[i].getNum()+Integer.valueOf(arr[3]))<itemDefinition.stackNum){
+                        beans[i].setNum(beans[i].getNum()+Integer.valueOf(arr[3]));
+                        BagCmd bagCmd =new BagCmd(livingThingBean.getId(),bagService.getItemByUserId(livingThingBean.getId()));
+
+                        request.getWorker().send(bagCmd.toBytes());
+                        break;
                     }
                 }
+
             }
         }else{
             broadCast(request.getCmd());
