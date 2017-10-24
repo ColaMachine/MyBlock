@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.item.bean;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.*;
@@ -11,6 +12,7 @@ import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.edit.view.GroupBlock;
+import com.dozenx.game.engine.item.action.ItemFactory;
 import com.dozenx.util.BinaryUtil;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
@@ -35,12 +37,16 @@ public class ItemDefinition implements Cloneable{
     public String engine;
     public int stackNum=20;//可堆叠数量
     public String script ;
+
+    boolean isFar;
+    public int shootBallId;
+    public ItemDefinition shootBallItem;
     public boolean isLive;
     public ItemTypeProperties itemTypeProperties ;//block food wear
     String name;//英文名称
 
     ItemMainType type;//大类
-
+    String icon ;
     //TODO del
     String remark;//中文描述
     /**武器属性**/
@@ -485,7 +491,77 @@ public class ItemDefinition implements Cloneable{
 
     }
 
-
+//    public String toString(){
+//
+//        if(firstType==1) {
+//            selectBlock.live = true;
+//        }
+//        if (selectBlock == null) {
+//            return;
+//        }
+//
+//        if (isLight && selectBlock instanceof ColorBlock) {
+//            ((ColorBlock) selectBlock).isLight = true;
+//        }
+//        //获取现在设定的id
+//        StringBuffer sb = new StringBuffer();
+//        selectBlock.setName(name);
+//        //  TextureManager.putShape(selectBlock);
+//
+//        ItemFactory itemFactory = new ItemFactory();
+//        selectBlock.penetration = isPenetrate;
+//
+//        sb.append("{id:").append(id).append(",")
+//                .append("name:'").append(name).append("',")
+//
+//                .append("icon:'").append(this.icon).append("',")
+//                .append("remark:'").append(name).append("',")
+//                .append("script:'").append(script.replaceAll("\"", "\\\\\"").replaceAll("'", "\\\\\'").replaceAll("\r\n", "")).append("',");
+//        if(  firstType==1){
+//            sb  .append("live:").append("true,");
+//            sb .append("type:'").append("block").append("',");
+//            sb  .append("baseon:'mantle',");
+//        }else
+//
+//            sb.append("stack:'").append(MapUtil.getIntValue(param,"stack",1)).append("',");
+//
+//        if(  firstType==2){//是装备
+//
+//            sb  .append("type:'").append("wear").append("',");
+//            sb  .append("spirit:").append(MapUtil.getIntValue(param,"spirit",0)).append(",");
+//            sb  .append("agile:").append(MapUtil.getIntValue(param,"agile",0)).append(",");
+//            sb  .append("intelli:").append(MapUtil.getIntValue(param,"intelli",0)).append(",");
+//            sb  .append("strenth:").append(MapUtil.getIntValue(param,"strenth",0)).append(",");
+//            sb  .append("tili:").append(MapUtil.getIntValue(param,"tili",0)).append(",");
+//            if(secondType== Constants.WEAR_POSI_HEAD){
+//                sb  .append("position:'").append("head").append("',");
+//                sb  .append("baseon:'fur_helmet',");
+//            }else if(secondType==Constants.WEAR_POSI_BODY){
+//                sb  .append("position:'").append("body").append("',");
+//                sb  .append("baseon:'fur_armor',");
+//            }else if(secondType==Constants.WEAR_POSI_LEG){
+//                sb  .append("position:'").append("leg").append("',");
+//                sb  .append("baseon:'fur_pants',");
+//            }else if(secondType==Constants.WEAR_POSI_HAND){
+//                sb  .append("position:'").append("hand").append("',");
+//                sb  .append("baseon:'wood_sword',");
+//
+//                //如果是远程武器的画//如果是武器的画
+//                boolean isFar = MapUtil.getBooleanValue(param,"isFar",false);
+//                sb  .append("isFar:"+isFar+",");
+//                String ballId= MapUtil.getStringValue(param,"shootBallId");
+//                sb  .append("shootBallId:"+ballId+",");
+//            }
+//        }else{
+//            sb .append("type:'").append("block").append("',");
+//            sb  .append("baseon:'mantle',");
+//        }
+//
+//        sb.append("remark:'").append(name).append("',")
+//                .append("shape:").append(selectBlock.toString()).append(",")
+//                .append("}");
+//
+//    }
     public void receive(Map map ){
         String type = MapUtil.getStringValue(map, "type");
         String name = MapUtil.getStringValue(map,"name");
@@ -494,6 +570,10 @@ public class ItemDefinition implements Cloneable{
         String icon =MapUtil.getStringValue(map,"icon");//获取icon图片
         String engine = MapUtil.getStringValue(map,"engine");
         String script  = MapUtil.getStringValue(map,"script");
+        boolean isFar = MapUtil.getBooleanValue(map,"isFar",false);
+        Integer shootBallId = MapUtil.getIntValue(map,"shootBallId",0);
+        this.isFar = isFar;
+        this.shootBallId = shootBallId;
         if(StringUtil.isNotEmpty(script)){
             LogUtil.println(script);
             this.script = script;

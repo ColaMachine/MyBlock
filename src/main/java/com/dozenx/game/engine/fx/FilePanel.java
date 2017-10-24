@@ -222,6 +222,23 @@ public class FilePanel extends Tab {
 
         selectGrid.add(duiDielabel,2, 13);
         selectGrid.add(duiDieText,3, 13);
+        //=================是否是远程武器
+        final CheckBox isFarWeaponCB = new CheckBox();
+
+        isFarWeaponCB.setText("是否是远程武器");
+
+        selectGrid.add(isFarWeaponCB, 4, 13);
+
+        //==============
+
+        final TextField theShootBall = new TextField();
+
+        theShootBall.setText("射出的物体id");
+
+        selectGrid.add(theShootBall, 5, 13);
+
+
+
 
 //        ItemDefinition item = new ItemDefinition();
 //        item.setType(0);
@@ -262,6 +279,12 @@ public class FilePanel extends Tab {
                         }else if(kuziCb.isSelected()){
                             secondType=Constants.WEAR_POSI_LEG;
 
+                        }
+
+                        if(isFarWeaponCB.isSelected()){
+                            map.put("isFar",true);//是否是远程武器
+                            String shootBallValue=  theShootBall.getText();
+                            map.put("shootBallId",Integer.valueOf(shootBallValue));//射出的小球id
                         }
 
                         map.put("spirit",Integer.valueOf(jinshenText.getText()));

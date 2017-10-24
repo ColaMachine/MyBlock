@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
@@ -261,18 +262,18 @@ public class GLCamera {
 		view.fillFloatBuffer(cameraViewBuffer);
 
 		glUseProgram(GamingState.instance.shaderManager.terrainShaderConfig.getProgramId());
-
+        OpenglUtils.checkGLError();
 
 		//赋值查看的角度
 		glUniformMatrix4(GamingState.instance.shaderManager.terrainShaderConfig.getViewLoc(),  false,cameraViewBuffer);
 		org.lwjgl.opengl.Util.checkGLError();
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
-
+        OpenglUtils.checkGLError();
 		//赋值查看的位置
 		glUniform3f(GamingState.instance.shaderManager.terrainShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
 		org.lwjgl.opengl.Util.checkGLError();
 
-
+        OpenglUtils.checkGLError();
 		glUseProgram(GamingState.instance.shaderManager.livingThingShaderConfig.getProgramId());
 
 
@@ -281,15 +282,14 @@ public class GLCamera {
 		org.lwjgl.opengl.Util.checkGLError();
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
 
-
+        OpenglUtils.checkGLError();
 		//glUniform3f(GamingState.instance.shaderManager.livingThingShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
 		//org.lwjgl.opengl.Util.checkGLError();
 
 
 		glUseProgram(GamingState.instance.shaderManager.lightShaderConfig.getProgramId());
-		org.lwjgl.opengl.Util.checkGLError();
 		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
-
+        OpenglUtils.checkGLError();
 
 
 		//lightViewLoc= glGetUniformLocation(LightProgramId,"view");
@@ -298,37 +298,29 @@ public class GLCamera {
 
 		glUniformMatrix4(GamingState.instance.shaderManager.lightShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
 
-		org.lwjgl.opengl.Util.checkGLError();
-
+        OpenglUtils.checkGLError();
 		glUseProgram(GamingState.instance.shaderManager.skyShaderConfig.getProgramId());
-		org.lwjgl.opengl.Util.checkGLError();
 
 		glUniformMatrix4(GamingState.instance.shaderManager.skyShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
 
-		org.lwjgl.opengl.Util.checkGLError();
-
+        OpenglUtils.checkGLError();
 		//another
 
 		glUseProgram(GamingState.instance.shaderManager.anotherShaderConfig.getProgramId());
-		org.lwjgl.opengl.Util.checkGLError();
-
+        OpenglUtils.checkGLError();
 		glUniformMatrix4(GamingState.instance.shaderManager.anotherShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
-
-		org.lwjgl.opengl.Util.checkGLError();
+        OpenglUtils.checkGLError();
 
 
 
 		glUseProgram(GamingState.instance.shaderManager.dropItemShaderConfig.getProgramId());
-		org.lwjgl.opengl.Util.checkGLError();
-
+        OpenglUtils.checkGLError();
 		glUniformMatrix4(GamingState.instance.shaderManager.dropItemShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
 
-		org.lwjgl.opengl.Util.checkGLError();
 		glUseProgram(GamingState.instance.shaderManager.lineShaderConfig.getProgramId());
 		glUniformMatrix4(GamingState.instance.shaderManager.lineShaderConfig.getViewLoc(),  false,view.toFloatBuffer() );
-		org.lwjgl.opengl.Util.checkGLError();
 
-
+        OpenglUtils.checkGLError();
 		if(Constants.DELAY_ENABLE){
 
 			glUseProgram(GamingState.instance.shaderManager.shaderGeometryPass.getProgramId());
@@ -338,10 +330,16 @@ public class GLCamera {
 			glUniformMatrix4(GamingState.instance.shaderManager.shaderGeometryPass.getViewLoc(),  false,cameraViewBuffer);
 			org.lwjgl.opengl.Util.checkGLError();
 
-			glUseProgram(GamingState.instance.shaderManager.shaderLightingPass.getProgramId());
+
+            OpenglUtils.checkGLError();
             if(Constants.SSAO_ENABLE) {
 
-				glUniform3f(GamingState.instance.shaderManager.shaderGeometryPass.getViewPosLoc(),  Position.x,Position.y,Position.z);
+                if(Constants.SHADOW_ENABLE){            OpenglUtils.checkGLError();
+                    glUseProgram(GamingState.instance.shaderManager.shaderGeometryPass.getProgramId());
+                    glUniform3f(GamingState.instance.shaderManager.shaderGeometryPass.getViewPosLoc(),  Position.x,Position.y,Position.z);
+                    OpenglUtils.checkGLError();
+                }
+
 //                GL_Matrix vieDirw =
 //                        GL_Matrix.LookAt(new GL_Vector(0, 0, 0), ViewDir);
 //                GL_Vector lightPositionView = view.multiply(vieDirw, new GL_Vector(0.1f, 0.5f, 1).normalize());
@@ -349,7 +347,7 @@ public class GLCamera {
             }
 			//glUniform3f(GamingState.instance.shaderManager.shaderLightingPass.getViewPosLoc(),  Position.x,Position.y,Position.z);
 			//org.lwjgl.opengl.Util.checkGLError();
-
+            OpenglUtils.checkGLError();
 
 		}
 	}

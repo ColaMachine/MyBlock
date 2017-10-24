@@ -24,6 +24,15 @@ public class Ball  {
    public  long lastSynTime;
     public  long lastPickTime;
     int id;
+    GL_Vector position;
+
+
+    Long startTime;
+    long lastTime;
+    Component component;
+    ItemDefinition itemDefinition;
+    ChunkProvider chunkProvider  = CoreRegistry.get(ChunkProvider.class);
+
 
     public int getId() {
         return id;
@@ -33,8 +42,7 @@ public class Ball  {
         this.id = id;
     }
 
-    LivingThingBean from ;
-    GL_Vector position;
+
 
     public GL_Vector getPosition() {
         return position;
@@ -44,18 +52,7 @@ public class Ball  {
         this.position = position;
     }
 
-    GL_Vector direction;
-    float sumDistance=0;
-    int distance=16;
-    boolean died=false;
-    int width;
-    float speed;
-    int height;
-    Long startTime;
-    long lastTime;
-    Component component;
-    ItemDefinition itemDefinition;
-    ChunkProvider chunkProvider  = CoreRegistry.get(ChunkProvider.class);
+
     public Ball(int id ,GL_Vector position , GL_Vector direction, float speed, Integer itemType, LivingThingBean from){
         this.id=id;
         this.from = from;
@@ -79,15 +76,15 @@ public class Ball  {
     public static GL_Matrix dropThindScaleMatrix = GL_Matrix.scaleMatrix(0.5f);
     public static GL_Matrix animations[] =new GL_Matrix[]{GL_Matrix.translateMatrix(0,0.1f,0),
             GL_Matrix.translateMatrix(0,0.3f,0),GL_Matrix.translateMatrix(0,0.4f,0),GL_Matrix.translateMatrix(0,0.45f,0),GL_Matrix.translateMatrix(0,0.4f,0),GL_Matrix.translateMatrix(0,0.3f,0),GL_Matrix.translateMatrix(0,0.1f,0)};
-    public boolean jinzhi;
+    //public boolean jinzhi;
     public int animationIndex =0;
     public int type=2;//2是伤害  1 是掉落物品
-    GL_Vector p1 =new GL_Vector(0,0,0);
-    GL_Vector p2 =new GL_Vector(1,0,0);
-    GL_Vector p3 =new GL_Vector(1,1,0);
-    GL_Vector p4 =new GL_Vector(0,1,0);
-    GL_Vector normal =new GL_Vector(0,0,1);
-    float size=0.1f;
+//    GL_Vector p1 =new GL_Vector(0,0,0);
+//    GL_Vector p2 =new GL_Vector(1,0,0);
+//    GL_Vector p3 =new GL_Vector(1,1,0);
+//    GL_Vector p4 =new GL_Vector(0,1,0);
+//    GL_Vector normal =new GL_Vector(0,0,1);
+    //float size=0.1f;
     boolean readyDied = false;
 
     public long lastAnimationTime=0;

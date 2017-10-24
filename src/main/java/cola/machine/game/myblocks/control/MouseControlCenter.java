@@ -11,7 +11,9 @@ import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.physic.BulletResultDTO;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.skill.AttackBall;
 import cola.machine.game.myblocks.skill.AttackManager;
+import cola.machine.game.myblocks.skill.Ball;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
@@ -451,7 +453,18 @@ public class MouseControlCenter {
                 //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
 
             }
+            //获取主武器属性
             try {
+                //这里最好优化到用户对象了里 每次都取太浪费性能了
+                ItemDefinition itemDefinition  = ItemManager.getItemDefinition(player.getMainWeapon());
+                if(itemDefinition.isFar()){//如果是远程的装备的话
+                    if(itemDefinition.shootBallId>0){//射出攻击球
+                        Ball ball =new AttackBall(itemDefinition);
+                        ball.fly(player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getWalkDir());
+
+                    }
+
+                }
                 if(player.getMainWeapon()!=null){
                     CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
                 }

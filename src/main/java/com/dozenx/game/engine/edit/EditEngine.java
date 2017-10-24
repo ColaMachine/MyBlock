@@ -2093,7 +2093,8 @@ public class EditEngine {
 
             sb.append("stack:'").append(MapUtil.getIntValue(param,"stack",1)).append("',");
 
-        if(  firstType==2){
+        if(  firstType==2){//是装备
+
             sb  .append("type:'").append("wear").append("',");
             sb  .append("spirit:").append(MapUtil.getIntValue(param,"spirit",0)).append(",");
             sb  .append("agile:").append(MapUtil.getIntValue(param,"agile",0)).append(",");
@@ -2112,6 +2113,12 @@ public class EditEngine {
             }else if(secondType==Constants.WEAR_POSI_HAND){
                 sb  .append("position:'").append("hand").append("',");
                 sb  .append("baseon:'wood_sword',");
+
+                //如果是远程武器的画//如果是武器的画
+                boolean isFar = MapUtil.getBooleanValue(param,"isFar",false);
+                sb  .append("isFar:"+isFar+",");
+                String ballId= MapUtil.getStringValue(param,"shootBallId");
+                sb  .append("shootBallId:"+ballId+",");
             }
         }else{
             sb .append("type:'").append("block").append("',");

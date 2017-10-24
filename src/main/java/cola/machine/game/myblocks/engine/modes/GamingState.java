@@ -540,7 +540,7 @@ public ShaderManager shaderManager;
 //        LogUtil.println("帧率"+frameCount*1000/(nowTime-lastTime));
         attackManager.update();OpenglUtils.checkGLError();
         try {
-            animationManager.update();
+            animationManager.update();OpenglUtils.checkGLError();
         } catch (Exception e) {
             e.printStackTrace();
         }OpenglUtils.checkGLError();
@@ -548,7 +548,7 @@ public ShaderManager shaderManager;
 
            // if (Math.random() > 0.5) {
         livingThingManager.update();// 我觉得不需要每一帧都更新 200 ms 更新一次是不是更好
-
+        OpenglUtils.checkGLError();
             if (!Switcher.IS_GOD) {
                 //dcc.check(human);
                 //livingThingManager.CrashCheck(dcc);
@@ -565,23 +565,24 @@ public ShaderManager shaderManager;
                         camera.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);
                     } else {*/
 
-                        camera.viewDir(player.viewDir);
+                        camera.viewDir(player.viewDir);OpenglUtils.checkGLError();
                   //  }
 //                    LogUtil.println("hello");
                     camera.changeCallBack();
+                    OpenglUtils.checkGLError();
 
-                    GamingState.cameraChanged=false;
+                    GamingState.cameraChanged=false;OpenglUtils.checkGLError();
                 }
                 if(GamingState.lightPosChanged){
                     //camera.changeCallBack();
 
-                    shaderManager.lightPosChangeListener();
+                    shaderManager.lightPosChangeListener();OpenglUtils.checkGLError();
                     GamingState.cameraChanged=false;
                 }
 
 
             }
-
+        OpenglUtils.checkGLError();
          document.update();OpenglUtils.checkGLError();
         itemManager.update();
        /* try {

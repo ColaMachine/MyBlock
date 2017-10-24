@@ -99,14 +99,14 @@ public class Constants {
 
     static final float PIdiv180 = (float)Math.PI/2;
 
-    public static boolean SHADOW_ENABLE=true;
+    public static boolean SHADOW_ENABLE=false;
     public static boolean TRIABLE_ENABLE=false;
     public static boolean HDR_ENABLE=false;
     public static boolean GAOSI_ENABLE=false;
     
-    public static boolean DELAY_ENABLE=true;
+    public static boolean DELAY_ENABLE=false;
 
-    public static boolean SSAO_ENABLE =true;
+    public static boolean SSAO_ENABLE =false;
 
     public static GL_Vector RED = new GL_Vector(1,0,0);
 

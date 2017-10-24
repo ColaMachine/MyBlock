@@ -385,7 +385,7 @@ public class Document extends HtmlObject {
             document.setHeight(Constants.WINDOW_HEIGHT);
             document.body.setWidth(Constants.WINDOW_WIDTH);
             document.body.setHeight(Constants.WINDOW_HEIGHT);
-
+          OpenglUtils.checkGLError();
             super.resize();
             super.update();
             super.recursivelySetGUI(document);
@@ -401,7 +401,7 @@ public class Document extends HtmlObject {
             //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
 
             // this.setPerspective();
-            document.render();
+            document.render();OpenglUtils.checkGLError();
             //div.shaderRender();   OpenglUtils.checkGLError();
             // div2.shaderRender();   OpenglUtils.checkGLError();
             //div3.shaderRender();   OpenglUtils.checkGLError();
