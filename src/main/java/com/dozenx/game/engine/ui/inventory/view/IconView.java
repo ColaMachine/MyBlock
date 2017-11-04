@@ -125,7 +125,7 @@ public class IconView extends HtmlObject {
             @Override
             public void run() {
                // LogUtil.println("show"+parentNode.id);
-                LogUtil.println("show"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
+//                LogUtil.println("show"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
                 div.setVisible(true);
                 Document.needUpdate=true;
             }
@@ -133,7 +133,7 @@ public class IconView extends HtmlObject {
         this.addEventListener("mouseout", new MouseClickHandler() {
             @Override
             public void run() {
-                LogUtil.println("hide"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
+            //    LogUtil.println("hide"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
                 div.setVisible(false);
                 Document.needUpdate=true;
             }

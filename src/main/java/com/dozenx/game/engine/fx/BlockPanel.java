@@ -242,7 +242,7 @@ public class BlockPanel extends Tab {
 
 
 
-        Button genFromTexBtn = new Button("去重");
+        Button genFromTexBtn = new Button("从纹理提取");
 
         ;
 
@@ -254,6 +254,21 @@ public class BlockPanel extends Tab {
         });
 
         selectGrid.add(genFromTexBtn, 3, 2);
+
+
+
+        Button changColorBlockToRotateBlockBtn = new Button("color转成旋转");
+
+        ;
+
+        changColorBlockToRotateBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GamingState.editEngine.changColorBlockToRotateBlock();
+            }
+        });
+
+        selectGrid.add(changColorBlockToRotateBlockBtn, 3, 3);
 
       /*  final TextField xInput = new TextField("0");
         xInput.setPrefWidth(110);

@@ -8,6 +8,7 @@ import com.dozenx.game.engine.command.ItemType;
 import core.log.LogUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 public class ByteUtil
@@ -19,6 +20,13 @@ public class ByteUtil
     }
     public static ByteBufferWrap createBuffer(){
         return new ByteBufferWrap();
+    }
+    public static SimpleByteBufferWrap createSimpleBuffer(int capacity){
+        return  new SimpleByteBufferWrap(capacity,false);
+    }
+
+    public static SimpleByteBufferWrap createSimpleBuffer(byte[] bytes){
+        return  new SimpleByteBufferWrap(bytes);
     }
     public static ByteBufferWrap createBuffer(byte[] bytes){
         return new ByteBufferWrap(bytes);

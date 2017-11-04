@@ -1412,14 +1412,14 @@ public class HtmlObject implements Cloneable  {
 //        LogUtil.println(this.id+":setMouseOverChild");
         if (lastChildMouseOver != child) {//如果当前节点的上一个鼠标经过的是空 且询问的节点是非空 或者
             if(child instanceof IconView && "slot0".equals( child.parentNode.id)){
-               LogUtil.println("触发离开事件123123");
+             //  LogUtil.println("触发离开事件123123");
             }
             if(child instanceof ItemSlotView && "slot4".equals( child.id)){
-                LogUtil.println("触发离开事件123123");
+             //   LogUtil.println("触发离开事件123123");
             }
             if(child != null) {
                 if(child instanceof IconView){
-                     LogUtil.println("怎么可能iconview 有child");
+                    // LogUtil.println("怎么可能iconview 有child");
                 }
                 HtmlObject result = child.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_ENTERED));//这个result 是什么
                 if(result == null) {//child的子元素没有处理掉 child也没有handle掉
@@ -1430,10 +1430,10 @@ public class HtmlObject implements Cloneable  {
            // LogUtil.println("触发离开事件begin");
             if (lastChildMouseOver != null) {
                 if(lastChildMouseOver instanceof IconView &&"slot0".equals( lastChildMouseOver.parentNode.id)){
-                    LogUtil.println("离开slot0");
+                   // LogUtil.println("离开slot0");
                 }
                 if(lastChildMouseOver instanceof IconView &&"slot4".equals( lastChildMouseOver.parentNode.id)){
-                    LogUtil.println("离开slot4");
+                  //  LogUtil.println("离开slot4");
                 }
                 lastChildMouseOver.routeMouseEvent(evt.createSubEvent(Event.Type.MOUSE_EXITED));
             }
@@ -1457,18 +1457,18 @@ public class HtmlObject implements Cloneable  {
                // }
                 if(child.visible && child.isMouseInside(evt)) {//如果子元素课件并且在鼠标范围内的话
                     if("slot1".equals(child.id)){
-                        LogUtil.println("this is slot0");
+                     //   LogUtil.println("this is slot0");
                     }
                     if("slot4".equals(child.id)){
-                        LogUtil.println("进入slot4");
+                     //   LogUtil.println("进入slot4");
                     }
 //                    LogUtil.println(this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());
                     // we send the real event only only if we can transfer the mouse "focus" to this child
                     if(this instanceof  IconView){
-                        LogUtil.println("测试没有子元素消费");
+                      //  LogUtil.println("测试没有子元素消费");
                     }
                     if(this instanceof InventoryPanel){
-                        LogUtil.println("InventoryPanel");
+                        //LogUtil.println("InventoryPanel");
                     }
                     if(setMouseOverChild(child, evt)) {// 故名思议是设置当前节点的mouseover child的 如果child不是之前的mouseover child  会引起 mouse enter 和 mouse out 事件向子元素摊派 进入离开事件 说明事件被handle 并且返回了 true  或者还是在哪个子元素上面没有发生变化的时候还是返回true
                         //LogUtil.println("setMouseOverChild 返回了true"+this.id+"x:"+evt.mouseX+"y:"+evt.mouseY +"在"+child.id+"["+child.posX+","+child.posY+"]里 type"+evt.getType());

@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.skill.AttackBall;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
 import cola.machine.game.myblocks.skill.TimeString;
@@ -242,7 +243,6 @@ public class State {
            // this.livingThing.jump();
             this.livingThing.changeState( new JumpState(this.livingThing,jumpCmd));
         }else
-
         if(gameCmd instanceof AttackCmd){
 
             Long notTime = TimeUtil.getNowMills();
@@ -279,7 +279,7 @@ public class State {
                 //livingThing.getExecutor().getModel().
             }else if(cmd.getAttackType()== AttackType.ARROW){
 
-                AttackManager.add(new Ball(1,new GL_Vector(livingThing.getPosition().x,livingThing.getPosition().y+0.5f,livingThing.getPosition().z),
+                AttackManager.addAttack(new AttackBall(1,new GL_Vector(livingThing.getPosition().x,livingThing.getPosition().y+0.5f,livingThing.getPosition().z),
                         livingThing.getWalkDir().copyClone(), 5.1f,ItemType.arrow.id,livingThing
                 ));
                 this.livingThing.changeState( new ShootState(this.livingThing));
@@ -310,6 +310,10 @@ public class State {
 
             }*/
 
+            }else
+            if(gameCmd instanceof BeAttackCmd) {
+                BeAttackCmd beAttackCmd = (BeAttackCmd) gameCmd;
+                this.receive(new JumpCmd(livingThing.getPosition(),beAttackCmd.direction,livingThing.getId(),1f));
             }
         }
     public void preCheck(){

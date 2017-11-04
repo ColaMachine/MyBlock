@@ -457,10 +457,10 @@ public class MouseControlCenter {
             try {
                 //这里最好优化到用户对象了里 每次都取太浪费性能了
                 ItemDefinition itemDefinition  = ItemManager.getItemDefinition(player.getMainWeapon());
-                if(itemDefinition.isFar()){//如果是远程的装备的话
+                if(itemDefinition!=null && itemDefinition.isFar){//如果是远程的装备的话
                     if(itemDefinition.shootBallId>0){//射出攻击球
-                        Ball ball =new AttackBall(itemDefinition);
-                        ball.fly(player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getWalkDir());
+                        AttackBall ball =new AttackBall((int)(Math.random()*10000),player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getViewDir().copyClone(),1,itemDefinition.shootBallId,player);
+                        AttackManager.addAttack(ball);
 
                     }
 

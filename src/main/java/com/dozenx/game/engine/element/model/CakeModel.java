@@ -43,11 +43,12 @@ public class CakeModel implements Model {
             return;
         }
 
-        this.blocks =  map.get(this.icon.name);
+        this.blocks =  map.get(this.icon.name);//如果有值了 直接提取
         if(blocks!=null){
             return;
         }
-        map.put(this.icon.name,blocks);
+        //否则的话通过图片提取
+
         int height=  this.icon.img
                 .h;
         int width=  this.icon.img

@@ -296,8 +296,8 @@ public class ChunkImpl implements Chunk {
                     // 得到对象
                     IBlock block = blockManager.getBlock(blockId);
                     // 复制对象
-                    BaseBlock baseBlock = ((BaseBlock) block).copy();
-                    baseBlock.reComputePoints();
+                   BaseBlock baseBlock = ((BaseBlock) block);//.copy();
+                  //  baseBlock.reComputePoints();容易发生堆溢出
                     // 判断对象
                     if (baseBlock instanceof AnimationBlock) {
                         AnimationBlock group = ((AnimationBlock) baseBlock);
@@ -338,9 +338,9 @@ public class ChunkImpl implements Chunk {
                         if(((ColorBlock) baseBlock).isLight){//如果是灯光就加入到灯光秀里
                             GamingState.editEngine.lightBlockHashMap.put(new GL_Vector(this.chunkPos.x*ChunkConstants.SIZE_X+x,y,this.chunkPos.z*ChunkConstants.SIZE_Z+z),new WeakReference<ColorBlock>((ColorBlock)baseBlock));
                         }
-                        blockMap.put(blockData.getIndex(x, y, z), baseBlock);
+                       // blockMap.put(blockData.getIndex(x, y, z), baseBlock);//容易发生堆栈溢出
                     } else{
-                        blockMap.put(blockData.getIndex(x, y, z), baseBlock);
+                       // blockMap.put(blockData.getIndex(x, y, z), baseBlock);//容易发生堆栈溢出
                     }
                 }
                 // if(blockId > 0)
@@ -1319,7 +1319,8 @@ public class ChunkImpl implements Chunk {
 
         // boolean flat = true;
         // blockDefManager.getBlockById()+
-        BaseBlock nowBlock = (BaseBlock) blockMap.get(blockData.getIndex(x, y, z));
+
+        BaseBlock nowBlock =(BaseBlock)this.getBlock(x, y, z);//= (BaseBlock) blockMap.get(blockData.getIndex(x, y, z));
 
         // ItemDefinition itemDefinition =
         // ItemManager.getItemDefinition(this.currentBlockType);

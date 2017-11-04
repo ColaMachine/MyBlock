@@ -3766,7 +3766,37 @@ public class EditEngine {
                 this.colorBlockList.add((ColorBlock)block);
                 this.needUpdate=true;
             }
+            cakeModel.blocks=null;
         }
 
+    }
+
+    public void changColorBlockToRotateBlock(){
+        for(int i=0;i<selectBlockList.size();i++){
+
+            BaseBlock block = selectBlockList.get(i);
+            if(block instanceof  ColorBlock){
+               ColorBlock  colorBlock =(ColorBlock ) block;
+                RotateColorBlock2 rotateColorBlock2  = new RotateColorBlock2();
+                rotateColorBlock2.x=colorBlock.x;
+                rotateColorBlock2.y=colorBlock.y;
+                rotateColorBlock2.z=colorBlock.z;
+
+                rotateColorBlock2.width=colorBlock.width;
+                rotateColorBlock2.height=colorBlock.height;
+                rotateColorBlock2.thick=colorBlock.thick;
+
+                rotateColorBlock2.rf=colorBlock.rf;
+                rotateColorBlock2.bf=colorBlock.bf;
+                rotateColorBlock2.gf=colorBlock.gf;
+                rotateColorBlock2.opacity=colorBlock.opacity;
+                colorBlockList.remove(colorBlock);
+                colorBlockList.add(rotateColorBlock2);
+
+
+            }
+            needUpdate=true;
+
+        }
     }
 }

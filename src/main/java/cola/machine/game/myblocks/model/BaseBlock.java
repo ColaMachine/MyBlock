@@ -62,7 +62,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public boolean xl=true;
     public boolean xh=true;
 
-    public GL_Vector[] points = BoxModel.getPoint(0,0,0);
+    public GL_Vector[] points =BoxModel.getPoint(0,0,0);//容易发生堆溢出
     ItemDefinition itemDefinition;
     
     public BaseBlock(){

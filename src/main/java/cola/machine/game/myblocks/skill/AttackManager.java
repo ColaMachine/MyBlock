@@ -6,6 +6,7 @@ import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
+import com.dozenx.game.engine.command.BeAttackCmd;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -24,47 +25,54 @@ public class AttackManager {
         this.livingThingManager =livingThingManager;
     }
     private LivingThingManager livingThingManager;
-    public static List<Ball> list =new ArrayList<>();
-
+    public static List<DropBall> dropList =new ArrayList<>();
+    public static List<AttackBall> attackList =new ArrayList<>();
     public static List<Ball> drawThings =new ArrayList<>();
     public static BaseBlock selectThing =null;
 
     public static List<Ball> diedList =new ArrayList<>();
     Vector4f color =new Vector4f(1,0,0,1);
     public static Queue<TimeString> texts= new LinkedList<TimeString>();
-    public static void add(Ball ball){
-        list.add(ball);
+    public static void addDrop(DropBall ball){
+        dropList.add(ball);
+    }
+
+    public static void addAttack(AttackBall ball){
+        attackList.add(ball);
     }
     public static void addText(TimeString timeString){
         texts.offer(timeString);
     }
     GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
     public  void update(){
+
+        //
         ShaderManager.anotherShaderConfig.getVao().getVertices().rewind();
         if(selectThing!=null){
           //  ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,new GL_Vector(0,0,0),selectThing.width,selectThing.height,selectThing.thick,0.5f);
             ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,selectThing.width,selectThing.height,selectThing.thick);
             GamingState.editEngine.lineNeedUpdate=true;
         }
-
-        for(int i=diedList.size()-1;i>=0;i--) {
+        //attackball 先在空中飞行 碰到物体后 转入dropthing当中 比如箭飞行过去 然后碰到人就表示射中了 会粘在人的身体上 射到了方块上 会粘在方块上
+         for(int i=diedList.size()-1;i>=0;i--) {
             Ball ball = diedList.get(i);
             if(ball.died) {
-                list.remove(ball);
+                //atta.remove(ball);
                 diedList.remove(i);
             }else{
                 ball.update(ShaderManager.anotherShaderConfig);
             }
 
         }
-        for(int i=list.size()-1;i>=0;i--){
-            Ball ball = list.get(i);
+        for(int i=attackList.size()-1;i>=0;i--){
+            Ball ball = attackList.get(i);
             GL_Vector vector = ball.position;
             for(int j=livingThingManager.livingThings.size()-1;j>=0;j--){
                 LivingThing livingThing = livingThingManager.livingThings.get(j);
                 //LogUtil.println(LivingThingManager.livingThings.get(j).position.length(vector)+"");
                 if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<1){
                     livingThingManager.livingThings.get(j).beAttack(10);
+                    livingThingManager.livingThings.get(j).receive(new BeAttackCmd(ball.from.getId(),ball.itemDefinition,livingThing.getId(),ball.direction));
                     ball.readyDied=true;
                     //stexts.offer(new TimeString(5+""));
                     //Vector2f xy = OpenglUtils.wordPositionToXY(projection,livingThing.getPosition(),GamingState.instance.camera.Position,GamingState.instance.camera.getViewDir());
@@ -83,7 +91,7 @@ public class AttackManager {
 
             if(ball.readyDied){
                 ;
-                diedList.add(list.remove(i));
+                diedList.add(attackList.remove(i));
             }
         }
         ShaderManager.uifloatShaderConfig.getVao().getVertices().rewind();
@@ -137,8 +145,8 @@ public class AttackManager {
 
     }*/
     public  void render(){
-        for(int i=list.size()-1;i>=0;i--){
-            Ball ball = list.get(i);
+        for(int i=attackList.size()-1;i>=0;i--){
+            Ball ball = attackList.get(i);
             ball.render();
         }
         ShaderUtils.freshVao(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());

@@ -124,7 +124,7 @@ public class ImageUtil {
                 if(red!=0){
                     blue = originalImage.getColorModel().getBlue(data);
                     green = originalImage.getColorModel().getGreen(data);
-                    heights[i-minX][j-minY]=new Color(red,blue,green);
+                    heights[i-minX][j-minY]=new Color(red,green,blue);
                 }
             }
 

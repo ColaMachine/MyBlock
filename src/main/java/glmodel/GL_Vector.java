@@ -457,6 +457,13 @@ public class GL_Vector
 		b.normalize();
 		return (float)((Math.atan2(a.x*b.z-b.x*a.z, a.x*b.x+a.z*b.z) + Math.PI) * GLApp.PIUNDER180);
 	}
+
+	public static float angleXZ2(GL_Vector a, GL_Vector b)
+	{
+		a.normalize();
+		b.normalize();
+		return (float)((Math.atan2(a.x*b.z-b.x*a.z, a.x*b.x+a.z*b.z) + Math.PI) );
+	}
 	
 	/**
 	 *  returns the angle between 2 vectors on the XY plane.

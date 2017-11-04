@@ -18,6 +18,8 @@ public class StorageManagerInternal implements StorageManager{
         BlockManager blockManager =CoreRegistry.get(BlockManager.class);
 
         //CoreRegistry.get(Client.class).send();
+
+        //一旦涉及到网络的都有必要改成异步的
         LogUtil.println("客户端加载chunk:" + chunkPos.x + "," + chunkPos.z + "");
         ResultCmd resultCmd =  CoreRegistry.get(Client.class).syncSend(new ChunkRequestCmd(chunkPos));
         if(resultCmd!=null){

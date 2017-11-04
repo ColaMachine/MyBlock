@@ -34,6 +34,19 @@ public class Ball  {
     ChunkProvider chunkProvider  = CoreRegistry.get(ChunkProvider.class);
 
 
+
+    GL_Vector direction;
+    float sumDistance=0;
+    int distance=16;
+    boolean died=false;
+    int width;
+    float speed;
+    int height;
+
+    LivingThingBean from ;
+    float size=0.1f;
+
+
     public int getId() {
         return id;
     }
@@ -84,7 +97,7 @@ public class Ball  {
 //    GL_Vector p3 =new GL_Vector(1,1,0);
 //    GL_Vector p4 =new GL_Vector(0,1,0);
 //    GL_Vector normal =new GL_Vector(0,0,1);
-    //float size=0.1f;
+
     boolean readyDied = false;
 
     public long lastAnimationTime=0;

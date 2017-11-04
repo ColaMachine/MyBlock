@@ -38,7 +38,7 @@ public class ItemDefinition implements Cloneable{
     public int stackNum=20;//可堆叠数量
     public String script ;
 
-    boolean isFar;
+    public boolean isFar;
     public int shootBallId;
     public ItemDefinition shootBallItem;
     public boolean isLive;

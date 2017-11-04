@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.live.state;
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.skill.AttackBall;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
 import com.dozenx.game.engine.command.GameCmd;
@@ -62,9 +63,9 @@ public class ShootState extends IdleState {
                 currentState = 4;
                 //livingThing.bodyComponent.findChild("weapon").itemDefinition = TextureManager.getItemDefinition(ItemType.arch);
                 if(livingThing.getTarget()!=null) {
-                    Ball ball = new Ball(0, this.livingThing.position.copyClone(), GL_Vector.sub(this.livingThing.getTarget().position,
+                    AttackBall ball = new AttackBall(0, this.livingThing.position.copyClone(), GL_Vector.sub(this.livingThing.getTarget().position,
                             this.livingThing.position), 10, ItemType.arrow.id, livingThing);
-                    AttackManager.add(ball);
+                    AttackManager.addAttack(ball);
                 }
                 shooted = true;
 
