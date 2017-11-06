@@ -32,16 +32,16 @@ import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class StartMenuState implements GameState {
+public class LoginState implements GameState {
    //Bag bag;
-    public static String catchThing;
+    //public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
-    GUI gui;
+    //GUI gui;
     Document document =new Document();
 
     EditField userName ;
     EditField pwd ;
-    private Map<Character, Glyph> glyphs = new HashMap<>();
+    //private Map<Character, Glyph> glyphs = new HashMap<>();
     public void init(GameEngine engine) {  OpenglUtils.checkGLError();
 //        if (i == 127) {
 //            continue;
@@ -207,24 +207,24 @@ public class StartMenuState implements GameState {
         //div.setBackgroundColor(new Vector4f(1,1f,1f,1));
 
 
-        try {
-
-
-            LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
-            renderer.setUseSWMouseCursors(true);   OpenglUtils.checkGLError();
-
-            //ChatDemo chat = new ChatDemo();
-            //GameUIDemo gameUI = new GameUIDemo();
-            LoginDemo loginDemo = new LoginDemo();
-            gui = new GUI(loginDemo, renderer);
-if(!Switcher.SHADER_ENABLE) {
-    ThemeManager theme = ThemeManager.createThemeManager(
-            LoginDemo.class.getResource("login.xml"), renderer);
-    gui.applyTheme(theme);
-}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }   OpenglUtils.checkGLError();
+//        try {
+//
+//
+//            LWJGLRenderer renderer = new LWJGLRenderer();//调用lwjgl能力
+//            renderer.setUseSWMouseCursors(true);   OpenglUtils.checkGLError();
+//
+//            //ChatDemo chat = new ChatDemo();
+//            //GameUIDemo gameUI = new GameUIDemo();
+//            LoginDemo loginDemo = new LoginDemo();
+//            gui = new GUI(loginDemo, renderer);
+//if(!Switcher.SHADER_ENABLE) {
+//    ThemeManager theme = ThemeManager.createThemeManager(
+//            LoginDemo.class.getResource("login.xml"), renderer);
+//    gui.applyTheme(theme);
+//}
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }   OpenglUtils.checkGLError();
 
         //ShaderUtils.twoDColorBuffer.rewind();   OpenglUtils.checkGLError();
         document.needUpdate=true;
@@ -271,7 +271,7 @@ if(!Switcher.SHADER_ENABLE) {
         if (Mouse.isCreated()) {
             while (Mouse.next()) {
                 document.handleMouse(
-                        Mouse.getEventX(), gui.getHeight() - Mouse.getEventY() - 1,
+                        Mouse.getEventX(), Constants.WINDOW_HEIGHT - Mouse.getEventY() - 1,
                         Mouse.getEventButton(), Mouse.getEventButtonState());
 
             }

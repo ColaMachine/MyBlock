@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.Role.model;
 
+import cola.machine.game.myblocks.animation.Animation;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
@@ -11,6 +12,7 @@ import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.EquipPartType;
+import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
@@ -21,6 +23,7 @@ import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
+import de.matthiasmann.twl.theme.AnimatedImage;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
@@ -262,11 +265,14 @@ public class PlayerModel extends BaseModel   {
     }
 
     public void addHandEquip(ItemBean itemBean)  {
-      //  this.rootComponent =(Component) ItemManager.getItemDefinition("bonesteve").getShape();
+//        BaseBlock block = ItemManager.getItemDefinition("bonesteve").getShape();
+//        if(block instanceof AnimationBlock){
+//            AnimationBlock animationBlock = (AnimationBlock)block;
+//            this.rootComponent =(BoneRotateImageBlock)animationBlock.colorBlockList.get(0);
+//        }
+      //this.rootComponent =(Component) ItemManager.getItemDefinition("bonesteve").getShape();
 
-//       BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
-//
-//        this.rootComponent= boneRotateImageBlock;
+
         //    this.itemDefinition= ItemManager.getItemDefinition("bonesteve");
         //Shape shape = itemCfg.getShape();
         BoneRotateImageBlock parent = 	rootComponent.findChild(EquipPartType.RARM.getName());

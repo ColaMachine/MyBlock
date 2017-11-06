@@ -11,7 +11,7 @@ import com.dozenx.game.engine.ui.inventory.BoxService.BoxClientService;
 import java.util.List;
 
 /**
- * 容器
+ * 容器 箱子
  * container like box
  * Created by luying on 16/7/3.
  */

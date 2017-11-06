@@ -39,7 +39,10 @@ public class ShaderUtils {
     public static final GL_Vector GREEN = new GL_Vector(0,1,0) ;
     public static final GL_Vector WHITE = new GL_Vector(0,0,0) ;
     public static final GL_Vector BLACK = new GL_Vector(1,1,1) ;
-
+    public static final Vector4f  RGBA_WHITE = new Vector4f(1,1,1,1) ;
+    public static final Vector4f  RGBA_RED = new Vector4f(1,0,0,1) ;
+    public static final Vector4f  RGBA_GREEN = new Vector4f(0,1,0,1) ;
+    public static final Vector4f  RGBA_BLUE = new Vector4f(0,0,1,1) ;
    /*public static void initShader(ShaderConfig shaderConfig){
 
         try {
@@ -1473,6 +1476,34 @@ try {
 
     public static void draw2dColor(Vector4f color, int posX, int posY,float z, int width, int height) {
         Vao vao =ShaderManager.uiShaderConfig.getVao();
+        float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
+        float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
+        float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
+        float _width =( (float)width)/Constants.WINDOW_WIDTH*2;
+        GL_Vector p1 = new GL_Vector(left,top-_height,z);
+        GL_Vector p2 = new GL_Vector(left+_width,top-_height,z);
+        GL_Vector p3 = new GL_Vector(left+_width,top,z);
+        GL_Vector p4 = new GL_Vector(left,top,z);
+        if(color==null){
+            LogUtil.err("color can't be null");
+        }
+      /*  if(vao.getVertices().position() >= vao.getVertices().capacity()-60 ){
+            FloatBuffer buffer = vao.getVertices();
+            FloatBuffer newBuffer = BufferUtils.createFloatBuffer(vao.getVertices().capacity()+10000);
+            newBuffer.put(buffer);
+            vao.setVertices(BufferUtils.createFloatBuffer(vao.getVertices().capacity()+10000));
+        }*/
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(0).put(0).put(-1).put(color.x).put(color.y).put(color.z).put(color.w);
+    }
+
+
+    public static void draw2dColor(Vao vao,Vector4f color, int posX, int posY,float z, int width, int height) {
+
         float left =( (float)posX)/Constants.WINDOW_WIDTH*2-1f;
         float top=(Constants.WINDOW_HEIGHT- ( (float)posY))/Constants.WINDOW_HEIGHT*2-1f;
         float _height = ( (float)height)/Constants.WINDOW_HEIGHT*2;
