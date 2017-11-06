@@ -254,5 +254,28 @@ public class BaseModel implements Model   {
     @Override
     public void build(ShaderConfig config, Vao vao, int x, int y, int z) {
 
+       // <vector x=0.91580325 y=-0.052335985 z=0.3982027><vector x=2.8404973 y=2.209344 z=17.636257>(281.3048, 478.55573)
+
+
+
+    }
+
+    public static void main(String[] args){
+        //首先从人物的位置推算出镜头的位置
+        GL_Vector playerPos = new GL_Vector(6.54415f,1,19.13263f);
+        GL_Vector cameraPosition =new GL_Vector();
+        GL_Vector viewDir = new GL_Vector(0.41993842f,-0.112420924f,0.9005629f);
+        Switcher.CAMERA_2_PLAYER=5;
+        GL_Vector camera_pos = GL_Vector.add(playerPos,
+                GL_Vector.multiply(viewDir, (-1 * Switcher.CAMERA_2_PLAYER)));
+        camera_pos.y+=1;
+
+        //ViewDir = {glmodel.GL_Vector@4412}"<vector x=0.1894041 y=-0.12108784 z=0.9744043>"
+         GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+
+        Vector2f screenXY= OpenglUtils.wordPositionToXY(projection,playerPos,camera_pos,viewDir);
+        screenXY.x*=600;
+        screenXY.y*=600;
+System.out.print(screenXY);
     }
 }

@@ -114,7 +114,7 @@ public class GLCamera {
 	 * Move camera position in the given direction
 	 */
 	public void viewDir(GL_Vector direction) {
-		ViewDir = direction;
+		ViewDir = direction.copyClone();
 		RightVector	= GL_Vector.crossProduct(ViewDir, UpVector);
 	}
 	

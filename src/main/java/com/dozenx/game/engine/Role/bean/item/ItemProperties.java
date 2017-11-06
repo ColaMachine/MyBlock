@@ -26,7 +26,7 @@ public class ItemProperties extends SkillProperties {
         List<ItemServerBean> itemServerBeanList =new ArrayList<ItemServerBean>();
         for(ItemBean itemBean:itemBeans){
             ItemServerBean itemServerBean =ItemUtil.toItemServerBean(itemBean);
-            if(itemServerBean!=null){
+            if(itemServerBean!=null && itemServerBean.getPosition()<35){
                 itemServerBeanList.add(itemServerBean);
             }
         }

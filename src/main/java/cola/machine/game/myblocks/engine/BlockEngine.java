@@ -177,11 +177,11 @@ public class BlockEngine implements GameEngine{
              nowTime = TimeUtil.getNowMills();
            // if(nowTime-lastTime > 100){
                 //lastTime = nowTime;
-                currentState.update(totalDelta);//statemainmenu
+
           //  }
 
             for (EngineSubsystem subsystem : getSubsystems()) {
-                subsystem.preUpdate(currentState, delta);
+                subsystem.preUpdate(currentState, delta);//处理了输入
             }
              /*System.currentTimeMillis();;
             LogUtil.println("preUpdate"+(nowTime-startTime));
@@ -192,7 +192,7 @@ public class BlockEngine implements GameEngine{
                 LogUtil.println(e.getMessage());
                 throw e;
             }*/
-
+            currentState.update(totalDelta);//statemainmenu //处理了镜头
 
             for (EngineSubsystem subsystem : subsystems) {
                 subsystem.postUpdate(currentState, delta);

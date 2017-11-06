@@ -731,6 +731,7 @@ public class MouseControlCenter {
      * @param y
      */
     public void mouseLeftUp(int x, int y) {
+        attackManager.selectThing=null;
         mouseLeftPressed=false;
         if(Switcher.edit){
            // GamingState.selectDiv.setVisible(false);
