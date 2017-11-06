@@ -774,15 +774,15 @@ public class MouseControlCenter {
         
         //选中xz平面
         
-        GL_Vector from = GamingState.instance.camera.Position;
-        GL_Vector viewDir =  OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,y);
-
-        float weizhi = -from.y/viewDir.y;
-       int  curentX=(int)(from.x+weizhi*viewDir.x);
-        int curentZ= (int)(from.z+weizhi*viewDir.z);
-        if(!Switcher.edit){
-            GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
-        }
+//        GL_Vector from = GamingState.instance.camera.Position;
+//        GL_Vector viewDir =  OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,y);
+//
+//        float weizhi = -from.y/viewDir.y;
+//       int  curentX=(int)(from.x+weizhi*viewDir.x);
+//        int curentZ= (int)(from.z+weizhi*viewDir.z);
+//        if(!Switcher.edit){
+//            GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
+//        }
 
         
     }

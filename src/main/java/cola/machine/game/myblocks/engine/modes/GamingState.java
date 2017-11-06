@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Div;
 import cola.machine.game.myblocks.model.ui.html.Document;
@@ -577,7 +578,7 @@ public ShaderManager shaderManager;
                     //camera.changeCallBack();
 
                     shaderManager.lightPosChangeListener();OpenglUtils.checkGLError();
-                    GamingState.cameraChanged=false;
+                    GamingState.lightPosChanged=false;
                 }
 
 
@@ -887,6 +888,10 @@ public ShaderManager shaderManager;
         CoreRegistry.put(ItemManager.class,itemManager);
         try {
             itemManager.loadItem();
+
+            BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
+//
+            player.getModel().rootComponent= boneRotateImageBlock;
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.err(e);

@@ -12,15 +12,20 @@ import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
+import glapp.GLCam;
+import glapp.GLCamera;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+import sun.rmi.runtime.Log;
 
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 
 /**
@@ -201,8 +206,19 @@ public class BaseModel implements Model   {
                 //渲染头部名字
                 if(StringUtil.isNotEmpty(role.getName())){
 
+                    Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,role.getPosition(),GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
                     //
-                    GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 3.5f, role.getZ());
+                    screenXY.x *= Constants.WINDOW_WIDTH;
+                    screenXY.y *= Constants.WINDOW_HEIGHT;
+                    //LogUtil.println(screenXY.toString());
+                    GLCamera  cam = GamingState.getInstance().camera;
+                    if(screenXY.x<299 || screenXY.x>310){
+
+
+                        LogUtil.println(cam.getViewDir().toString() + cam.Position.toString()+screenXY.toString());
+                    }
+                    ShaderUtils.draw2dColor(ShaderManager.uifloatShaderConfig.getVao(),ShaderUtils.RGBA_RED,(int)screenXY.x,(int)screenXY.y,0,11,11);
+                    GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 2.2f, role.getZ());
                     float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
                     GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 

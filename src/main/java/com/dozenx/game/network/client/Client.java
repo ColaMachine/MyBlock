@@ -2,7 +2,7 @@ package com.dozenx.game.network.client;
 
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.engine.modes.StartMenuState;
+import cola.machine.game.myblocks.engine.modes.LoginState;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.command.*;
@@ -201,7 +201,7 @@ public class Client extends Thread{
             int n1=0;
             while(true){//不断读取数据 然后压入到messages里 由界面端显示出stack
                 //String str = br.readLine();
-                if(BlockEngine.engine.getState() instanceof StartMenuState){
+                if(BlockEngine.engine.getState() instanceof LoginState){
                     Thread.sleep( 1000);
                     continue;
                 }
