@@ -339,10 +339,15 @@ public ShaderManager shaderManager;
        // if(/*!document.hasFocusChild()*/document.getFocusKeyWidget()==null)//如果没有键盘粘纸的控件那么就放过
             mouseControlCenter.handleNavKeys(delta);
         //}
+        if(mouseControlCenter.mouseLeftPressed){
+            mouseControlCenter.mouseLeftDowning(cursorX,cursorY);
+        }
         if (Mouse.isCreated()) {
+
             mouseControlCenter.mouseMove(cursorX, cursorY);
             while (Mouse.next()) {
                 //ui系统接收鼠标事件
+
                 if(document.handleMouse(
                         Mouse.getEventX(), Constants.WINDOW_HEIGHT - Mouse.getEventY() - 1,
                         Mouse.getEventButton(), Mouse.getEventButtonState())){
@@ -364,10 +369,15 @@ public ShaderManager shaderManager;
                 //LogUtil.println("Mouse.getEventButton()"+Mouse.getEventButton());
 
 
+                if(mouseControlCenter.mouseLeftPressed){
+                    mouseControlCenter.mouseLeftDowning(cursorX,cursorY);
+                }
+
                 if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
                     //非ui接收鼠标左键
                     mouseControlCenter.mouseLeftDown(cursorX, cursorY);
                  TextureInfo info =new TextureInfo();
+
                    
 //                    info.textureHandle=shaderManager.bloom.colorBuffers[1];//shaderManager.bloom.pingpongBuffer[1];//.colorBuffers[1];//shaderManager.bloom.colorBuffers[1];//////hdrTextureHandler;//hdrTextureHandler地图渲染后的缓冲帧 渲染hdr原图  再远然
 
@@ -882,7 +892,8 @@ public ShaderManager shaderManager;
 
 
          itemManager =new ItemManager();
-        attackManager =new AttackManager(livingThingManager);
+        bulletPhysics = new BulletPhysics(/*blockRepository*/);
+        attackManager =new AttackManager(bulletPhysics,livingThingManager);
 
         CoreRegistry.put(ItemManager.class,itemManager);
         try {
@@ -910,11 +921,11 @@ public ShaderManager shaderManager;
 
     public void initEvent() {
         //dcc.blockRepository = blockRepository;
-        bulletPhysics = new BulletPhysics(/*blockRepository*/);
 
-        mouseControlCenter = new MouseControlCenter(player, camera, this,CoreRegistry.get(Client.class));
-        CoreRegistry.put(MouseControlCenter.class, mouseControlCenter);
-        mouseControlCenter.bulletPhysics = bulletPhysics;
+
+        mouseControlCenter = new MouseControlCenter(player, camera, this,CoreRegistry.get(Client.class),attackManager,bulletPhysics);
+
+       // mouseControlCenter.bulletPhysics = bulletPhysics;
     }
 
     public void initSelf() {

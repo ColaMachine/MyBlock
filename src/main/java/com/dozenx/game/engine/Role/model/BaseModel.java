@@ -202,7 +202,11 @@ public class BaseModel implements Model   {
                 if(StringUtil.isNotEmpty(role.getName())){
 
                     //
-                    GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 3.5f, role.getZ());
+                    GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 2.1f, role.getZ());
+
+                    //
+                    translateMatrix1=translateMatrix1.multiply(translateMatrix1,GL_Matrix.translateMatrix(role.getRightVector().x*-0.5f, role.getRightVector().y*-0.5f, role.getRightVector().z*-0.5f));
+
                     float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
                     GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 
@@ -215,7 +219,7 @@ public class BaseModel implements Model   {
                    // ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
                     ShaderUtils.draw3dColorReactWithMatrix(
                             ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix1,
-                             new GL_Vector(0,-0.25f,0), new GL_Vector(this.role.nowHP*3f/300,-0.25f,0),
+                             new GL_Vector(0,-0.2f,0), new GL_Vector(this.role.nowHP*3f/300,-0.2f,0),
                             new GL_Vector(this.role.nowHP*3f/300,0,0), new GL_Vector(0,0,0), new GL_Vector(0,0,1),  Constants.RED);
 
 

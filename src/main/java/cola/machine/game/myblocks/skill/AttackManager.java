@@ -3,14 +3,26 @@ package cola.machine.game.myblocks.skill;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
+import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.physic.BulletPhysics;
+import cola.machine.game.myblocks.physic.BulletResultDTO;
+import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.BeAttackCmd;
+import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.command.DropCmd;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.MathUtil;
+import com.dozenx.util.RandomUtil;
 import com.dozenx.util.TimeUtil;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -21,8 +33,11 @@ import java.util.*;
  * Created by luying on 16/9/25.
  */
 public class AttackManager {
-    public AttackManager(LivingThingManager livingThingManager){
+    public BulletPhysics bulletPhysics;
+    public AttackManager(BulletPhysics bulletPhysics,LivingThingManager livingThingManager){
         this.livingThingManager =livingThingManager;
+        this.bulletPhysics = bulletPhysics;
+        CoreRegistry.put(AttackManager.class, this);
     }
     private LivingThingManager livingThingManager;
     public static List<DropBall> dropList =new ArrayList<>();
@@ -156,6 +171,66 @@ public class AttackManager {
 //        ShaderUtils.tempfinalDraw(ShaderManager.terrainShaderConfig,ShaderManager.anotherShaderConfig.getVao());
         ShaderUtils.finalDraw(ShaderManager.uifloatShaderConfig,ShaderManager.uifloatShaderConfig.getVao());
 
+    }
+    public long lastAttackTime;
+    long now;
+    public void attack(Player player){
+         now = TimeUtil.getNowMills();
+        if(now-lastAttackTime>500){
+            lastAttackTime= now;
+        }else{
+            return;
+        }
+        //选中一个colorblock 作为当前的block
+        ChunkProvider localChunkProvider = CoreRegistry
+                .get(ChunkProvider.class);
+        boolean delete = true;
+        //获取当前的block item
+        //
+        BulletResultDTO arr  = bulletPhysics.rayTrace(player.viewPosition , player.getViewDir(),104, "soil", delete);//从当前的头上面开始沿着方向选取一个目标
+
+        if(arr!=null && arr.targetBlock!=null){//如果选到了目标
+            //  if(arr.targetBlock instanceof ColorBlock){
+            //  ((ColorBlock) arr.targetBlock).green =1 ;
+
+            int blockX = arr.targetChunX*16+(int)arr.targetPoint.x;//blockX
+            int blockY = (int)arr.targetPoint.y;
+            int blockZ = arr.targetChunZ*16+(int)arr.targetPoint.z;
+            if(selectThing!=null &&blockX  == selectThing.x && blockY == selectThing.y && blockZ == arr.targetChunZ*16+(int)arr.targetPoint.z){//还是老的目标了
+                selectThing.blood--;
+                if(selectThing.blood<=0){
+                    //扔到地上
+
+                    ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(arr.targetChunX, 0, arr.targetChunZ));
+                    cmd.cx = MathUtil.getOffesetChunk( selectThing.x);
+                    cmd.cy = (int) selectThing.y;
+                    cmd.cz = MathUtil.getOffesetChunk( selectThing.z);
+
+                    if (cmd.cy < 0) {
+                        LogUtil.err("y can't be <0 ");
+                    }
+                    cmd.type = 2;
+                    //blockType 应该和IteType类型联系起来
+                    cmd.blockType = 0;
+
+                    CoreRegistry.get(Client.class).send(cmd);
+
+
+                    DropCmd dropCmd = new DropCmd(0, RandomUtil.getRandom(5),selectThing.id,now);
+                    dropCmd.setX(selectThing.x);
+                    dropCmd.setY(selectThing.y);
+                    dropCmd.setZ(selectThing.z);
+                    CoreRegistry.get(Client.class).send(dropCmd );
+                }
+            }else {//选择到了新的目标
+                selectThing = arr.targetBlock;//new ColorBlock(arr.targetChunX*16+(int)arr.targetPoint.x,(int)arr.targetPoint.y,arr.targetChunZ*16+(int)arr.targetPoint.z);
+                selectThing.x = arr.targetChunX * 16 + (int) arr.targetPoint.x;
+                selectThing.y = (int) arr.targetPoint.y;
+                selectThing.z = arr.targetChunZ * 16 + (int) arr.targetPoint.z;
+            }
+            LogUtil.println(arr.targetPoint+"");
+            //  }
+        }
     }
 
 }

@@ -17,7 +17,7 @@ import glmodel.GL_Vector;
 import org.lwjgl.Sys;
 
 public class Player extends LivingThing {
-
+    public  GL_Vector viewPosition =new GL_Vector();
     public Player(int id) {
         super(id);
         this.idleAnimation=new String[]{"wag_tail","sniffer"};
@@ -83,6 +83,10 @@ public class Player extends LivingThing {
 		/*float distance = GL_Vector.length(GL_Vector.sub(oldPosition,position));
         if(distance>0.02){*/
         super.move(x,y,z);
+
+        viewPosition.x=position.x;
+        viewPosition.y=position.y+1;
+        viewPosition.z=position.z+1;
         //this.oldPosition.copy(this.position);
 
       // if(TimeUtil.getNowMills()-lastMoveTime>200) {
