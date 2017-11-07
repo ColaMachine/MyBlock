@@ -35,7 +35,7 @@ public class BagChangeHandler extends GameServerHandler {
              boxItemBeans = bagService.getItemAryUserId(boxId);
             if ( boxItemBeans == null){
                 boxItemBeans = new ItemServerBean[20];
-                serverContext.itemArrayMap.put(boxId, boxItemBeans);
+                serverContext.userId2ItemArrayMap.put(boxId, boxItemBeans);
             }
         }
        // ItemServerBean clientItemBean  = cmd.getItemBean();

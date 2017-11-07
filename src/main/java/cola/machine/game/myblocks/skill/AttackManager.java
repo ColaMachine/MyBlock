@@ -187,7 +187,7 @@ public class AttackManager {
         boolean delete = true;
         //获取当前的block item
         //
-        BulletResultDTO arr  = bulletPhysics.rayTrace(player.viewPosition , player.getViewDir(),104, "soil", delete);//从当前的头上面开始沿着方向选取一个目标
+        BulletResultDTO arr  = bulletPhysics.rayTrace(player.viewPosition , player.getViewDir(),3, "soil", delete);//从当前的头上面开始沿着方向选取一个目标
 
         if(arr!=null && arr.targetBlock!=null){//如果选到了目标
             //  if(arr.targetBlock instanceof ColorBlock){

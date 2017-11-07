@@ -47,7 +47,7 @@ public class BoxChangeHandler extends GameServerHandler {
 
        {
             itemBeans =new ItemServerBean[20];
-                    serverContext.itemArrayMap.put(boxId, itemBeans);
+                    serverContext.userId2ItemArrayMap.put(boxId, itemBeans);
         }
 
         //=========return the list data;

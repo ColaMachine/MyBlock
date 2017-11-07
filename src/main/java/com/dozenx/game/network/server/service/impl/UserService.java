@@ -125,7 +125,7 @@ public class UserService extends GameServerService {
         ItemServerBean[] itemServerBeenAry =new ItemServerBean[25];
         itemServerBeenAry[0]=item;
 
-        serverContext.itemArrayMap.put(info.getId(),itemServerBeenAry);
+        serverContext.userId2ItemArrayMap.put(info.getId(),itemServerBeenAry);
 
 
         LivingThingBean playerBean=new LivingThingBean(info.getId());

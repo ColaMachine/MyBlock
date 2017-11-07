@@ -84,9 +84,7 @@ public class Player extends LivingThing {
         if(distance>0.02){*/
         super.move(x,y,z);
 
-        viewPosition.x=position.x;
-        viewPosition.y=position.y+1;
-        viewPosition.z=position.z+1;
+
         //this.oldPosition.copy(this.position);
 
       // if(TimeUtil.getNowMills()-lastMoveTime>200) {

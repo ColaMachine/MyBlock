@@ -114,7 +114,7 @@ public class IconView extends HtmlObject {
         div.setWidth(50);
         //div.setHeight(50);
         div.setFontSize(20);
-        div.setInnerText( itemBean.getItemDefinition().getName());
+        div.setInnerText( itemBean.getItemDefinition().getName()+"*"+itemBean.getNum());
         div.setBackgroundColor(new Vector4f(1,1,1,1));
         this.appendChild(div);
       //  this.title ="+\"x\"+itemBean.getItemDefinition().getName()";
@@ -125,15 +125,16 @@ public class IconView extends HtmlObject {
             @Override
             public void run() {
                // LogUtil.println("show"+parentNode.id);
-//                LogUtil.println("show"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
+                //                LogUtil.println("show"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
                 div.setVisible(true);
+                //div.setInnerText(itemBean.getItemDefinition().getName()+"*"+itemBean.getNum());
                 Document.needUpdate=true;
             }
         });
         this.addEventListener("mouseout", new MouseClickHandler() {
             @Override
             public void run() {
-            //    LogUtil.println("hide"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
+                //    LogUtil.println("hide"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
                 div.setVisible(false);
                 Document.needUpdate=true;
             }

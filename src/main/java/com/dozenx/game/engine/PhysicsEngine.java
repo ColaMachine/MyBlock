@@ -126,10 +126,13 @@ public class PhysicsEngine {
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
+        //
+        float width = livingThing.getExecutor().getModel().getRootComponent().width;
+        float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
+        float height = livingThing.getExecutor().getModel().getRootComponent().height;
+        for (float offset_x= -width/2f; offset_x <width/2f; offset_x+=width/3f) {
 
-        for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {
-
-            for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//厚度的大小
+            for (float offset_z = -thick/2f; offset_z <thick/2f; offset_z+=thick/3f) {//厚度的大小
                 Chunk chunk_corner = null;
                 int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_world_pos_x);
                 int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_world_pos_z);
@@ -223,10 +226,12 @@ public class PhysicsEngine {
             }
             
         }
+        float width = livingThing.getExecutor().getModel().getRootComponent().width;
+        float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
+        float height = livingThing.getExecutor().getModel().getRootComponent().height;
+        for (float offset_x= -width/2; offset_x <width/2; offset_x+=width/3f) {
 
-        for (float offset_x= -0.3f; offset_x < 0.4; offset_x+=0.3) {//这个人的碰撞宽度
-
-            for (float offset_z = -0.3f; offset_z < 0.4; offset_z+=0.3) {//这个人的碰撞体积厚度
+            for (float offset_z = -thick/2; offset_z <thick/2; offset_z+=thick/3f) {//厚度的大小
                 Chunk chunk_corner = null;
                 int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_world_pos_x);
                 int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_world_pos_z);
@@ -240,7 +245,7 @@ public class PhysicsEngine {
                     return null;
                 }
 
-                for (int offset_y = 0; offset_y <1.5; offset_y += 1.3) {
+                for (float offset_y = 0; offset_y <height; offset_y += height/3f) {
 
                     //get chunk from near
 //                    int chunk_x= MathUtil.getNearOdd(x);

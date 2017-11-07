@@ -270,7 +270,7 @@ public class PlayerModel extends BaseModel   {
 //            AnimationBlock animationBlock = (AnimationBlock)block;
 //            this.rootComponent =(BoneRotateImageBlock)animationBlock.colorBlockList.get(0);
 //        }
-      //this.rootComponent =(Component) ItemManager.getItemDefinition("bonesteve").getShape();
+      this.rootComponent =(BoneRotateImageBlock) ItemManager.getItemDefinition("newplayer").getShape();
 
 
         //    this.itemDefinition= ItemManager.getItemDefinition("bonesteve");

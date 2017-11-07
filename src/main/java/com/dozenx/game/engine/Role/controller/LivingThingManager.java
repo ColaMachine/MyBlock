@@ -156,7 +156,7 @@ public class LivingThingManager {
 /*
         for(LivingThing livingThing:livingThings){
             if(Switcher.SHADER_ENABLE){
-                //livingThing.renderShader();
+                //lgivingThing.renderShader();
             }else{
                 livingThing.getModel().build(ShaderManager.livingThingShaderConfig,new GL_Matrix());
             }

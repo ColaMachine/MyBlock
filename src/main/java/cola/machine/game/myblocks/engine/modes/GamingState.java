@@ -568,9 +568,19 @@ public ShaderManager shaderManager;
 
            // }
                 if(GamingState.cameraChanged){
-                    GL_Vector camera_pos = GL_Vector.add(player.position,
-                            GL_Vector.multiply(player.viewDir,  (-1 * Switcher.CAMERA_2_PLAYER)));
-                   camera.MoveTo(camera_pos.x, camera_pos.y+1, camera_pos.z);
+
+
+//                    GL_Vector camera_pos = GL_Vector.add(player.position,
+//                            GL_Vector.multiply(player.viewDir,  (-1 * Switcher.CAMERA_2_PLAYER)));
+
+
+                    player.viewPosition.x=player.position.x;
+                    player.viewPosition.y=player.position.y+1;
+                    player. viewPosition.z=player.position.z;
+
+                    GL_Vector camera_pos = GL_Vector.add(player.viewPosition,
+                           GL_Vector.multiply(player.viewDir,  (-1 * Switcher.CAMERA_2_PLAYER)));
+                   camera.MoveTo(camera_pos.x, camera_pos.y, camera_pos.z);
                   /*  if (Switcher.CAMERA_MODEL == 2) {
                         // camera1.ViewDir.reverse();
                         camera.ViewDir = new GL_Vector(player.viewDir.x * -1, player.viewDir.y * -1, player.viewDir.z * -1);

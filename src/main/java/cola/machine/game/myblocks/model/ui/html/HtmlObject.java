@@ -664,6 +664,7 @@ public class HtmlObject implements Cloneable  {
         if(this.innerText!=null && innerText.length()>0){
             //GL11.glColor4f(1, 1, 1, 1);
             ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.001f,this.getFontSize(),this.getColor());
+            //ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.0008f,this.getFontSize()+1,ShaderUtils.RGBA_BLUE);
             OpenglUtils.checkGLError();
 
             //GLApp.print((int)minX,(int)minY,this.innerText);

@@ -185,17 +185,19 @@ public class BaseModel implements Model   {
 
 
 
-
-                GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.75f, role.getZ());//-BODY_THICK/2
+                GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() , role.getZ());//-BODY_THICK/2
+                //GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX()-role.getExecutor().getModel().getRootComponent().width/2, role.getY() + 0.75f, role.getZ()-role.getExecutor().getModel().getRootComponent().thick/2);//-BODY_THICK/2
                 //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
                 rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
 
                 rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 
-               // GL_Matrix newtranslateMatrix=GL_Matrix.translateMatrix(-rootComponent.getWidth()/2, rootComponent.getHeight()/2, -rootComponent.getThick()/2);
+                //rotateMatrix=rotateMatrixGL_Matrix.translateMatrix(-rootComponent.getWidth()/2, rootComponent.getHeight()/2, -rootComponent.getThick()/2);
                 //rotateMatrix=GL_Matrix.multiply(rotateMatrix,newtranslateMatrix);
                 //.getVao().getVertices()
                 //  ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
+                rotateMatrix=rotateMatrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-rootComponent.getWidth()/2, 0, -rootComponent.getThick()/2));
+
                 if(this.itemDefinition!=null){
                    this.itemDefinition.getShape().renderShader(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix);
 
@@ -203,10 +205,17 @@ public class BaseModel implements Model   {
                             role.getX(),role.getY(),role.getZ(),true,true,true,true,true,true);*/
                 }else
                 rootComponent.renderShader(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix);
+
+
+                //渲染头部血条
+                Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,role.getPosition().copyClone().add(new GL_Vector(0,rootComponent.height+1.f,0)),GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
+                screenXY.x *= Constants.WINDOW_WIDTH;
+                screenXY.y *= Constants.WINDOW_HEIGHT;
+                ShaderUtils.draw2dColor(ShaderManager.uifloatShaderConfig.getVao(),ShaderUtils.RGBA_RED,(int)screenXY.x-50,(int)screenXY.y,0,111,11);
+                ShaderUtils.printText(role.getName(),(int)screenXY.x,(int)screenXY.y-25,0,22,ShaderUtils.RGBA_WHITE,ShaderManager.uifloatShaderConfig);
                 //渲染头部名字
                 if(StringUtil.isNotEmpty(role.getName())){
 
-                    Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,role.getPosition(),GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
                     //
 
                     GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 2.1f, role.getZ());
@@ -215,16 +224,14 @@ public class BaseModel implements Model   {
                     translateMatrix1=translateMatrix1.multiply(translateMatrix1,GL_Matrix.translateMatrix(role.getRightVector().x*-0.5f, role.getRightVector().y*-0.5f, role.getRightVector().z*-0.5f));
 
 
-                    screenXY.x *= Constants.WINDOW_WIDTH;
-                    screenXY.y *= Constants.WINDOW_HEIGHT;
                     //LogUtil.println(screenXY.toString());
                     GLCamera  cam = GamingState.getInstance().camera;
-                    if(screenXY.x<299 || screenXY.x>310){
+//                    if(screenXY.x<299 || screenXY.x>310){
+//
+//
+//                        LogUtil.println(cam.getViewDir().toString() + cam.Position.toString()+screenXY.toString());
+//                    }
 
-
-                        LogUtil.println(cam.getViewDir().toString() + cam.Position.toString()+screenXY.toString());
-                    }
-                    ShaderUtils.draw2dColor(ShaderManager.uifloatShaderConfig.getVao(),ShaderUtils.RGBA_RED,(int)screenXY.x,(int)screenXY.y,0,11,11);
 
                     float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
                     GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
