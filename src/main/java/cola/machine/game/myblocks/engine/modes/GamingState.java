@@ -910,7 +910,7 @@ public ShaderManager shaderManager;
         try {
             itemManager.loadItem();
 
-            BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
+            BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("newplayer").getShape();
 //
             player.getModel().rootComponent= boneRotateImageBlock;
         } catch (Exception e) {
