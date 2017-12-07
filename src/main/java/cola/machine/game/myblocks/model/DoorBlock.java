@@ -14,7 +14,7 @@ import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-public class DoorBlock extends DirectionBlock {
+public class DoorBlock extends DirectionFourBlock {
 
     public DoorBlock(String name ,int id,boolean isAlpha){
         super(name,id,isAlpha);
@@ -26,13 +26,7 @@ public class DoorBlock extends DirectionBlock {
 
 
 
-       int open= value16_12;
 
-        if(open == 1){
-            penetration =true;
-        }else{
-            penetration=false;
-        }
 
     }
     //画出四个面

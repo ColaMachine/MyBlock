@@ -1138,8 +1138,8 @@ public class MouseControlCenter {
 //                attackManager.selectThing=null;
 //                return;
 //            }
-            GL_Vector to = GL_Vector.add(camera.Position,
-                    GL_Vector.multiply(camera.getViewDir(), 100));
+           // GL_Vector to = GL_Vector.add(camera.Position,
+                 //   GL_Vector.multiply(camera.getViewDir(), 100));
 
        /* GamingState.instance.lightPos.x= to.x;
         GamingState.instance.lightPos.y= to.y;

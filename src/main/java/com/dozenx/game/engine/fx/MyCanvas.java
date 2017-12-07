@@ -53,7 +53,7 @@ public class MyCanvas extends Canvas {
                         mouseStartY = (int) e.getY();
                     }
                 });
-        draw(gc);
+        //draw(gc);
     }
 
     public void drawImage(File file) {

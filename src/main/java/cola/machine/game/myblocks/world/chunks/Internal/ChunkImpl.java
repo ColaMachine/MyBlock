@@ -26,6 +26,7 @@ import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.element.model.BoxModel;
+import com.dozenx.game.engine.item.BlockUtil;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -123,12 +124,21 @@ public class ChunkImpl implements Chunk {
         return null;
     }
 
+    /**
+     * 获取指定位置的
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
     @Override
     public IBlock getBlock(int x, int y, int z) {
         // VIP Auto-generated method stub
         // return null;
        
-        int blockValue = blockData.get(x, y, z);
+        int blockValue = BlockUtil.getRealBlockId(blockData.get(x, y, z));
+
+
         if(GamingState.player==null){
             
         }
@@ -139,7 +149,9 @@ public class ChunkImpl implements Chunk {
                                                                  // blockValue);
         if (block == null) {
             block = blockManager.getBlock(blockValue);
-
+            if(block == null){
+                LogUtil.err("the block is not in blockManager 这个方块没有在blockmanaager中登记过:"+blockValue);
+            }
         }
         if (block != null && blockValue == ItemType.copy_down.id) {
             block = blockMap.get(blockData.getIndex(x, y - 1, z));
@@ -1321,7 +1333,9 @@ public class ChunkImpl implements Chunk {
         // blockDefManager.getBlockById()+
 
         BaseBlock nowBlock =(BaseBlock)this.getBlock(x, y, z);//= (BaseBlock) blockMap.get(blockData.getIndex(x, y, z));
-
+        if(nowBlock == null ){
+            LogUtil.err("this block is null ");
+        }
         // ItemDefinition itemDefinition =
         // ItemManager.getItemDefinition(this.currentBlockType);
         // if (/*ti==null||*/ itemDefinition.getShape() == null ||
@@ -1336,6 +1350,7 @@ public class ChunkImpl implements Chunk {
                 return;
             }
         }
+
         nowBlock.render(ShaderManager.terrainShaderConfig, vao, worldx, y, worldz, top, bottom, left, right, front,
                 back);
 

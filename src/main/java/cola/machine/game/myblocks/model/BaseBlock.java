@@ -371,13 +371,14 @@ public abstract class BaseBlock extends AABB implements IBlock {
     }
     @Override
     public boolean beuse(){
+
+        if(this.itemDefinition == null){
+            this.itemDefinition =   ItemManager.getItemDefinition(this.id);
+        }
         if(this.itemDefinition!=null ){
+
             return itemDefinition .beUsed(this);
-        }else{
-            this.itemDefinition =  ItemManager.getItemDefinition(this.id);
-            if(itemDefinition!=null){
-                return itemDefinition .beUsed(this);
-            }
+
         }
         
        return false;

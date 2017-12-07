@@ -19,7 +19,7 @@ import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-public class BoxBlock extends DirectionBlock {
+public class BoxBlock extends DirectionFourBlock {
 
     public BoxBlock(String name , int id, boolean isAlpha){
         super(name,id,isAlpha);
