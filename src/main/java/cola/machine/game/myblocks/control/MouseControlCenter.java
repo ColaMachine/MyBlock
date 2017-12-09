@@ -911,6 +911,11 @@ public class MouseControlCenter {
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
+    /**
+     * 鼠标右键拖动
+     * @param x
+     * @param y
+     */
     private void mouseRightDrag(int x, int y) {
 
         //视角移动
@@ -937,6 +942,7 @@ public class MouseControlCenter {
             // �ƶ���ͷ
         }
     }
+    //鼠标左键拖动\]
 
     private void mouseLeftDrag(int x, int y) {
         if(!Switcher.edit) {

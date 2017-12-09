@@ -292,3 +292,46 @@ http://blog.csdn.net/zoharwolf/article/details/50216839
 玩家的制作
 目前的
 
+2017-11-11 10:17:00
+
+
+WoodDoor:{
+    model:"WoodDoor",
+    data:{
+        id:0,
+
+        opend:false,
+        face:'east',
+
+    },
+    shape:'WoodDoor',
+    clear:function(){
+
+    }
+    beplaced:function(this.model,position,touchPoint,face,topOrDown,nearby){
+        this.face=face;
+        //把方块上部设置为
+    },
+    beused:function(this.model){
+        this.opend=!this.opend;
+        if(this.model){
+            this.shape="wood_door_east";
+        }
+    },
+    setId:function(id){
+        this.face= (this.id>>8) & 3;//0011
+
+        this.opened= this.id>>10&1;
+        this.id=id&255;
+    },
+
+    blockgetId:function(){
+        var statId = (this.opened<<10)& (this.face<<8)&this.id;
+        return statId;
+    },
+}
+
+2017-11-30 21:32:31
+了解了门是怎么样被存放的上半部分
+
+doorblock   15-12 11 0下半块 1 上半块 10开还是关 8-9 方向 0,1,2,3东南西北 0~7 方块id
