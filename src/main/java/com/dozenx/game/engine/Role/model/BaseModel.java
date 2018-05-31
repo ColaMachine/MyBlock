@@ -22,6 +22,7 @@ import glapp.GLCam;
 import glapp.GLCamera;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+import glmodel.GL_Vertex;
 import sun.rmi.runtime.Log;
 
 import javax.vecmath.Point3f;
@@ -207,46 +208,70 @@ public class BaseModel implements Model   {
                 rootComponent.renderShader(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix);
 
 
+
+                //计算头顶到镜头的距离 进行计算
+                //宽高要等比缩放
+                float distance =Math.abs( GL_Vector.length(GL_Vector.sub(role.getPosition(),GamingState.getInstance().camera.Position)));
+                //距离越大值越小 线性函数
                 //渲染头部血条
-                Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,role.getPosition().copyClone().add(new GL_Vector(0,rootComponent.height+1.f,0)),GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
-                screenXY.x *= Constants.WINDOW_WIDTH;
-                screenXY.y *= Constants.WINDOW_HEIGHT;
-                ShaderUtils.draw2dColor(ShaderManager.uifloatShaderConfig.getVao(),ShaderUtils.RGBA_RED,(int)screenXY.x-50,(int)screenXY.y,0,111,11);
-                ShaderUtils.printText(role.getName(),(int)screenXY.x,(int)screenXY.y-25,0,22,ShaderUtils.RGBA_WHITE,ShaderManager.uifloatShaderConfig);
-                //渲染头部名字
+                if(distance<50){//111 : 11
+                    float width = 50-distance;
+                    float height = 2*width/111*21;
+                    Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,role.getPosition().copyClone().add(new GL_Vector(0,rootComponent.height,0)),GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
+                    screenXY.x *= Constants.WINDOW_WIDTH;
+                    screenXY.y *= Constants.WINDOW_HEIGHT;
+                    float bili = this.role.nowHP/this.role.getHP();
+                    ShaderUtils.draw2dColor(ShaderManager.uifloatShaderConfig.getVao(),ShaderUtils.RGBA_GREEN,(int)screenXY.x-(int)width,(int)screenXY.y,0,(int)width*2,(int)height);
+
+                    ShaderUtils.draw2dColor(ShaderManager.uifloatShaderConfig.getVao(),ShaderUtils.RGBA_RED,(int)screenXY.x-(int)width,(int)screenXY.y,-0.1f,(int)(bili*width*2),(int)height);
+                    ShaderUtils.printText(role.getName(),(int)screenXY.x,(int)screenXY.y-25,0,22,ShaderUtils.RGBA_WHITE,ShaderManager.uifloatShaderConfig);
+
+                }
+               //渲染头部名字
                 if(StringUtil.isNotEmpty(role.getName())){
 
                     //
 
-                    GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 2.1f, role.getZ());
+                    GL_Matrix humanHeadTranslateMatrix= GL_Matrix.translateMatrix(role.getX(), role.getY() + 2.1f, role.getZ());
 
-                    //
-                    translateMatrix1=translateMatrix1.multiply(translateMatrix1,GL_Matrix.translateMatrix(role.getRightVector().x*-0.5f, role.getRightVector().y*-0.5f, role.getRightVector().z*-0.5f));
+                    //向视平面左移动一段距离以方便求得文字开始的地方
+                    humanHeadTranslateMatrix=GL_Matrix.multiply(humanHeadTranslateMatrix,GL_Matrix.translateMatrix(role.getRightVector().x*-0.5f, role.getRightVector().y*-0.5f, role.getRightVector().z*-0.5f));
 
 
-                    //LogUtil.println(screenXY.toString());
-                    GLCamera  cam = GamingState.getInstance().camera;
-//                    if(screenXY.x<299 || screenXY.x>310){
+//                    //LogUtil.println(screenXY.toString());
+//                    GLCamera  cam = GamingState.getInstance().camera;
+////                    if(screenXY.x<299 || screenXY.x>310){
+////
+////
+////                        LogUtil.println(cam.getViewDir().toString() + cam.Position.toString()+screenXY.toString());
+////                    }
+//                    //头的偏向角度
+//                   float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
+//
+//                    //开始计算俯仰角度
+//
+//                    //xy平面的方向旋转
+//                   // float angle = GL_Vector.angle(GL_Vector.zDir,GamingState.player.getViewDir());
+//                    //计算垂直向量
+//                    GL_Vector axis =GL_Vector.crossProduct(GL_Vector.zDir,GamingState.player.getViewDir());
+//                    //旋转向量
+//                    GL_Matrix luodelide = GL_Matrix.RotationMatrix(angle,axis);
+//
+//                    GL_Matrix xyRotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
+//                    //
+//                    xyRotateMatrix=GL_Matrix.multiply(humanHeadTranslateMatrix,xyRotateMatrix);
+//
+//                    // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
+//                   // xyRotateMatrix=GL_Matrix.multiply(xyRotateMatrix,GL_Matrix.translateMatrix(0, 0,0));
 //
 //
-//                        LogUtil.println(cam.getViewDir().toString() + cam.Position.toString()+screenXY.toString());
-//                    }
-
-
-                    float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
-                    GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
-
-                    rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
-
-                    // rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);
-                    rotateMatrix1=GL_Matrix.multiply(rotateMatrix1,GL_Matrix.translateMatrix(0, 0,0));
-
-                    ShaderUtils.draw3dText(role.getName(), rotateMatrix1, 12, Constants.RGBA_WHITE, ShaderManager.livingThingShaderConfig);
-                   // ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
-                    ShaderUtils.draw3dColorReactWithMatrix(
-                            ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),rotateMatrix1,
-                             new GL_Vector(0,-0.2f,0), new GL_Vector(this.role.nowHP*3f/300,-0.2f,0),
-                            new GL_Vector(this.role.nowHP*3f/300,0,0), new GL_Vector(0,0,0), new GL_Vector(0,0,1),  Constants.RED);
+//                    //还差一步 需要计算俯仰角的旋转
+//                    ShaderUtils.draw3dText(role.getName(), xyRotateMatrix, 12, Constants.RGBA_WHITE, ShaderManager.livingThingShaderConfig);
+//                   // ShaderUtils.draw3dColor(P1,P2,P6,P5,rotateMatrix,new GL_Vector(0,0,1f),color,floatBuffer, config);
+//                    ShaderUtils.draw3dColorReactWithMatrix(
+//                            ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao(),xyRotateMatrix,
+//                             new GL_Vector(0,-0.2f,0), new GL_Vector(this.role.nowHP*3f/300,-0.2f,0),
+//                            new GL_Vector(this.role.nowHP*3f/300,0,0), new GL_Vector(0,0,0), new GL_Vector(0,0,1),  Constants.RED);
 
 
                 }

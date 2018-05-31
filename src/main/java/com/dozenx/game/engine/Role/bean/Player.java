@@ -4,9 +4,14 @@ import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
+import cola.machine.game.myblocks.model.IBlock;
+import cola.machine.game.myblocks.physic.BulletPhysics;
+import cola.machine.game.myblocks.physic.BulletResultDTO;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.Role.model.PlayerModel;
+import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
@@ -318,5 +323,159 @@ public class Player extends LivingThing {
         model.addShoeEquip(new ItemBean(ItemManager.getItemDefinition(info.getFootEquip()), 1));
         //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
 
+    }
+
+    public void attack(){
+
+    }
+
+    public void use(BulletPhysics bulletPhysics){
+        //这逻辑是什么鬼?===============================================
+
+
+
+        //获取客户端的方块管理器
+        ChunkProvider localChunkProvider = CoreRegistry
+                .get(ChunkProvider.class);
+        boolean delete = false;
+        //获取当前的block item
+        ItemDefinition  handItemDefintion = ItemManager.getItemDefinition(getHandEquip());
+        //如果当前手上有拿block 就是放置的动作 如果没有 就是拆方块的节奏
+        //准备命令
+        if(handItemDefintion!=null && handItemDefintion.getType() == ItemMainType.BLOCK  ){
+            delete=false;
+        }else {
+            delete=true;
+
+        }
+
+
+        //获取选中的方块
+        BulletResultDTO arr
+                = bulletPhysics.rayTrace(new GL_Vector(viewPosition.x, viewPosition.y, viewPosition.z), viewDir,
+                20, "soil", delete);
+
+
+        //如果选到了方块
+        if(arr!=null){
+            GL_Vector targetPoint =arr.targetPoint;
+            GL_Vector  placePoint= arr.placePoint;
+
+            //打印点
+            //获得朝向
+            //判断选择的方块是不是门之类的
+            //Integer blockType = ((Block)arr[2]).getId();
+            IBlock targetBlock = arr.targetBlock;
+            if(arr.targetBlock!=null ) {
+                Integer blockType = targetBlock.getId();
+                //获得靠近还是靠远
+                //LogUtil.println("x:"+targetPoint.x%1 + "y:"+targetPoint.y%1+"z:"+targetPoint.z%1);
+                //这却的途径是什么
+
+                //如果物体是可以被使用的
+                //Block targetBlock =
+                //===========先判断对象方块能不能被使用==========================
+                if (targetBlock.beuse()) {//如果是有状态的block
+                   /* //通过一个通用的方式获得点击的面在哪里
+                    int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);
+                    int chunkZ = MathUtil.getBelongChunkInt(targetPoint.z);
+                    //   TreeBlock treeBlock =new TreeBlock(hitPoint);
+                    //treeBlock.startPosition=hitPoint;
+                    //  treeBlock.generator();
+                    int blockX = MathUtil.floor(targetPoint.x) - chunkX * 16;
+                    int blockY = MathUtil.floor(targetPoint.y);
+                    int blockZ = MathUtil.floor(targetPoint.z) - chunkZ * 16;
+                    ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+                    cmd.cx = blockX;
+                    cmd.cz = blockZ;
+                    cmd.cy = blockY;
+                    cmd.type = 1;
+
+
+                    int realBlockType = ByteUtil.get8_0Value(blockType);
+
+                    if(realBlockType==ItemType.wood_door.ordinal()){
+                        //判断当前是开还是关
+                        int state = ByteUtil.get16_12Value(blockType);
+                        if(state == 0 ){
+                            //是关
+                            blockType = 1<<12| blockType;
+                        }else{
+                            blockType = ByteUtil.HEX_0_1_1_1 & blockType;
+                        }
+                        cmd.blockType= blockType;
+                        CoreRegistry.get(Client.class).send(cmd);
+                        return;
+                    }*/
+                    return;
+                }
+            }
+
+            //=================开始使用手上物体 说明对象物体不能被使用============
+
+            if(handItemDefintion==null){
+                return;
+            }
+
+            // int condition = BlockUtil.getIndex(placePoint, camera.getViewDir());
+            handItemDefintion.use(placePoint,handItemDefintion.getItemType(),viewDir);
+
+            //有各种itemDefintion的定义
+            //开始放置物品
+            //其实我就是想知道点击的是哪一个面上 点击的面上
+            //得出当前人手上拿的是不是方块
+               /* int chunkX = MathUtil.getBelongChunkInt(placePoint.x);
+                int chunkZ = MathUtil.getBelongChunkInt(placePoint.z);
+            //   TreeBlock treeBlock =new TreeBlock(hitPoint);
+                //treeBlock.startPosition=hitPoint;
+
+                      //  treeBlock.generator();
+                int blockX = MathUtil.floor(placePoint.x) - chunkX * 16;
+                int blockY = MathUtil.floor(placePoint.y);
+                int blockZ = MathUtil.floor(placePoint.z) - chunkZ * 16;
+                ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+                cmd.cx = blockX;
+                cmd.cz = blockZ;
+                cmd.cy = blockY;
+                cmd.type = 1;
+                cmd.blockType = handItem.getItemType().ordinal();
+
+
+
+                if(cmd.cy<0){
+                    LogUtil.err("y can't be <0 ");
+                }
+
+                //blockType 应该和IteType类型联系起来
+
+                if(cmd.blockType==ItemType.wood_door.ordinal()){
+                    int condition = BlockUtil.getIndex(placePoint,camera.getViewDir());
+                    cmd.blockType  = condition<<8|cmd.blockType;
+                    *//*if(pianyiX<0.1 ){//把一个方块分为 12345678 8个格子 算出它再哪个格子
+                        //说明是向左的方向
+                        if(block==1 ||  block==4||block==5 ||  block==8){
+                            condition=Constants.LEFT;
+                        }else{
+                            condition=Constants.RIGHT;
+                        }
+                    }else if(pianyiX>0.9){
+                        if(block==1 ||  block==4||block==5 ||  block==8){
+                            condition=Constants.LEFT;
+                        }else{
+                            condition=Constants.RIGHT;
+                        }
+                        //说明是向右的方向
+                    }else if(pianyiY<0.1 ){
+                        //说明是向上的方向
+                    }else if(pianyiY>0.9){
+                        //说明是向下的方向
+                    }else if(pianyiZ<0.1 ){
+                        //说明是向前的方向
+                    }else if(pianyiZ>0.9){
+                        //说明是向后的方向
+                    }*//*
+                }
+                CoreRegistry.get(Client.class).send(cmd);*/
+        }
     }
 }

@@ -70,9 +70,9 @@ public class ShaderManager {
             //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert",new int[]{3,3,3,1});
             terrainShaderConfig = new ShaderConfig("terrain", "chapt16/multilightwithshadow.frag", "chapt16/multilightwithshadow.vert", new int[]{3, 3, 3, 1});
         } else {
-            // terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert",new int[]{3,3,3,1});
+             terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert",new int[]{3,3,3,1});
 
-            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/multilight.frag", "chapt16/multilight.vert", new int[]{3, 3, 3, 1});
+            //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/multilight.frag", "chapt16/multilight.vert", new int[]{3, 3, 3, 1});
             //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxangle.frag", "chapt16/boxangle.vert");
         }
     }

@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.switcher;
 
 public class Switcher {
+    public static  float CAMERA_HEIGHT=1.7f;
 	public static  boolean IS_GOD = false;
 	public static boolean  PRINT_SWITCH=true;
     public static int CAMERA_2_PLAYER=100;
@@ -21,7 +22,7 @@ public class Switcher {
 
     public static boolean SHADER_ENABLE=true;
 
-    public static boolean edit =true;
+    public static boolean edit =false;
 
     public static boolean size =true;
 

@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.Vector3i;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ui.html.Document;
@@ -1144,8 +1145,8 @@ public class MouseControlCenter {
 //                attackManager.selectThing=null;
 //                return;
 //            }
-            GL_Vector to = GL_Vector.add(camera.Position,
-                    GL_Vector.multiply(camera.getViewDir(), 100));
+           // GL_Vector to = GL_Vector.add(camera.Position,
+                 //   GL_Vector.multiply(camera.getViewDir(), 100));
 
        /* GamingState.instance.lightPos.x= to.x;
         GamingState.instance.lightPos.y= to.y;
@@ -1190,6 +1191,12 @@ public class MouseControlCenter {
 
                     //如果物体是可以被使用的
                     //Block targetBlock =
+                    BaseBlock block = (BaseBlock) targetBlock;
+                    block.chunkX=arr.targetChunX;
+                    block.chunkZ=arr.targetChunZ;
+                    block.x=MathUtil.floor(targetPoint.x);
+                    block.y=MathUtil.floor(targetPoint.y);
+                    block.z=MathUtil.floor(targetPoint.z);
                     if (targetBlock.beuse()) {//如果是有状态的block
                    /* //通过一个通用的方式获得点击的面在哪里
                     int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);

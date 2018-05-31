@@ -298,6 +298,7 @@ public class ItemDefinition implements Cloneable{
     public void place(){
 
     }
+    //在被放置的状态下 被使用了
     public boolean beUsed(BaseBlock block){
         try{
         if(StringUtil.isNotEmpty(script)){
@@ -487,6 +488,9 @@ public class ItemDefinition implements Cloneable{
         return itemDef;
     }
 
+    public void beDestroyed(BaseBlock block,int chunkX,int chunkY,int chunkZ,int x,int y,int z){
+
+    }
     public void use(GL_Vector placePoint,Integer itemType,GL_Vector viewDir){
 
     }
@@ -563,8 +567,12 @@ public class ItemDefinition implements Cloneable{
 //
 //    }
     public void receive(Map map ){
+
         String type = MapUtil.getStringValue(map, "type");
         String name = MapUtil.getStringValue(map,"name");
+        if(name.equals("stone")){
+LogUtil.err("123");
+        }
         String category = MapUtil.getStringValue(map,"category");
         String baseOn = MapUtil.getStringValue(map,"baseon");
         String icon =MapUtil.getStringValue(map,"icon");//获取icon图片
@@ -610,6 +618,7 @@ public class ItemDefinition implements Cloneable{
                     TextureManager.getShape(shapeStr);
                 }
                 shape.id=id;
+                TextureManager.idShapeMap.put(id,shape);
             }else if(shapeObj instanceof JSONObject){
                 String blockType = (String)((JSONObject) shapeObj).get("blocktype");
                 BaseBlock  block = EditEngine.parse((JSONObject) shapeObj);

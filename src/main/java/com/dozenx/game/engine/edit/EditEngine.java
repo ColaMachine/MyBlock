@@ -3793,10 +3793,8 @@ public class EditEngine {
                 colorBlockList.remove(colorBlock);
                 colorBlockList.add(rotateColorBlock2);
 
-
             }
             needUpdate=true;
-
         }
     }
 }

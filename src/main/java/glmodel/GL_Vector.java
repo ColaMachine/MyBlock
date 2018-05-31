@@ -15,6 +15,8 @@ import java.nio.FloatBuffer;
  */
 public class GL_Vector
 {
+	//z方向的向量
+	public static final GL_Vector zDir = new GL_Vector( 0,0,1);
 	@JSONField(name="x")
 	public float x=0;
 	@JSONField(name="y")
@@ -333,7 +335,7 @@ public class GL_Vector
 	
 	/**
 	 * Return the cross product of the two vectors, as a new vector.  The returned vector is 
-	 * perpendicular to the plane created by a and b.
+	 * perpendicular to the plane created by a and b. 计算向量 a和b的垂直向量
 	 */
 	public static GL_Vector crossProduct(GL_Vector a, GL_Vector b)
 	{

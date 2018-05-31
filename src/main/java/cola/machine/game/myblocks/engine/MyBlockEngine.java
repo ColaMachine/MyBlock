@@ -26,6 +26,7 @@ import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
+import cola.machine.game.myblocks.world.chunks.RemoteChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.engine.Role.bean.Player;
@@ -359,8 +360,17 @@ public class MyBlockEngine extends GLApp {
             worldGenerator.initialize();
             worldGenerator.setWorldSeed("123123123");
             GeneratingChunkProvider chunkProvider = new LocalChunkProvider(storageManager, worldGenerator);
+
+
             //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
             CoreRegistry.put(ChunkProvider.class, chunkProvider);
+
+            RemoteChunkProvider remoteChunkProvider = new RemoteChunkProvider(storageManager, worldGenerator);
+
+
+            //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
+            CoreRegistry.put(RemoteChunkProvider.class, remoteChunkProvider);
+
             WorldProvider WorldProvider = new WorldProviderWrapper();
 
             WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, player);

@@ -143,7 +143,10 @@ public class LivingThingManager {
             ShaderUtils.draw3dColorBox(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao(), position.x, position.y+1,position.z, new GL_Vector(1,0,0), 0.5f, 0.5f, 0.5f, 1);
         }
         //player update
-        this.player.render();//心更新
+        if(Switcher.CAMERA_2_PLAYER>2){
+            this.player.render();//心更新
+        }
+
         if (Switcher.SHADER_ENABLE) {
             ShaderUtils.freshVao(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());
             //ShaderManager.CreateLivingVAO(ShaderManager.livingThingShaderConfig, ShaderManager.livingThingShaderConfig.getVao());

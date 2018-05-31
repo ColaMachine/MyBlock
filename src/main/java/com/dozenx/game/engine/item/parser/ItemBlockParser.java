@@ -8,7 +8,9 @@ import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.bean.ItemBlockProperties;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,6 +31,11 @@ public class ItemBlockParser {
         if (map.get("hardness") != null) {
             blockProperties.hardness = (int) map.get("hardness");
         }
+
+        String script = (String)map.get("script");
+//        if(StringUtil.isNotEmpty(script)){
+//            parseScript(script);
+//        }
         item.itemTypeProperties = blockProperties;
         item.setType(ItemMainType.BLOCK);
         
@@ -55,6 +62,30 @@ public class ItemBlockParser {
             item.setShape(colorBlock);
         }
       //  return null;
+    }
+
+    public void parseScript(String script){
+        HashMap<String,String> conditions=new HashMap<String,String>();
+
+        //
+        // top:{1:model(''),2:model('')}
+        // face:rot(1,1,1 90azw3xd45yuiopoiuyre3*$(face))
+        // open:rot(0,0,0 90);
+        //解析的时候
+
+
+        //模型计算的时候 我们拿到了 基础的模型
+        int i=0;
+        int length =script.length();
+        int index =0;
+        String lastPattern ="";
+        while(index<length){
+            index++;
+            if(script.charAt(index )=='i'&& script.charAt(index )=='f'){
+                //找寻后面的()里的条件
+                lastPattern="if";
+            }
+        }
     }
     public void renderHand(){
 

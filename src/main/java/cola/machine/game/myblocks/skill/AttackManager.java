@@ -15,6 +15,8 @@ import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.BeAttackCmd;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.DropCmd;
+import com.dozenx.game.engine.item.action.ItemManager;
+import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.OpenglUtils;
@@ -105,7 +107,6 @@ public class AttackManager {
 
 
             if(ball.readyDied){
-                ;
                 diedList.add(attackList.remove(i));
             }
         }
@@ -199,7 +200,10 @@ public class AttackManager {
             if(selectThing!=null &&blockX  == selectThing.x && blockY == selectThing.y && blockZ == arr.targetChunZ*16+(int)arr.targetPoint.z){//还是老的目标了
                 selectThing.blood--;
                 if(selectThing.blood<=0){
-                    //扔到地上
+
+                    ItemDefinition definition = ItemManager.getItemDefinition(selectThing.id);
+                    definition.beDestroyed(selectThing,arr.targetChunX,0,arr.targetChunZ,blockX,blockY,blockZ);
+                    //先删除方块再扔到地上
 
                     ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(arr.targetChunX, 0, arr.targetChunZ));
                     cmd.cx = MathUtil.getOffesetChunk( selectThing.x);
@@ -215,7 +219,7 @@ public class AttackManager {
 
                     CoreRegistry.get(Client.class).send(cmd);
 
-
+                    //删除方块
                     DropCmd dropCmd = new DropCmd(0, RandomUtil.getRandom(5),selectThing.id,now);
                     dropCmd.setX(selectThing.x);
                     dropCmd.setY(selectThing.y);

@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.world.block.internal;
 
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import com.dozenx.game.engine.item.action.ItemManager;
@@ -93,8 +95,10 @@ public class BlockManagerImpl extends BlockManager {
            // block.setValue(id);
             return block;
         }else*/
-        ItemDefinition itemDefinition = ItemManager.getItemDefinition(id);
-        return itemDefinition==null?null:itemDefinition.getShape();
+        BaseBlock block = TextureManager.idShapeMap.get(id);
+        return block;
+        //ItemDefinition itemDefinition = ItemManager.getItemDefinition(id);
+       // return itemDefinition==null?null:itemDefinition.getShape();
     }
 	/*@Override
 	public Block getBlock(int oldValue) {

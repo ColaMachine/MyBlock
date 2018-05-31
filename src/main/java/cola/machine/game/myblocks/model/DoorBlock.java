@@ -15,13 +15,20 @@ import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-public class DoorBlock extends DirectionBlock {
+public class DoorBlock extends DirectionFourBlock {
 
     public DoorBlock(String name ,int id,boolean isAlpha){
         super(name,id,isAlpha);
     }
     int isTop;
     int open;
+    int face;
+    public void setValue(int face,int open,int isTop){
+        //super();
+        this.isTop =isTop;
+        this.open=open;
+        this.face = face;
+    }
     @Override
     public void setValue(int value) {
         super.setValue(value);
@@ -30,11 +37,6 @@ public class DoorBlock extends DirectionBlock {
           isTop = value>>10 &1;
          open= value >> 9&1;
 
-        if(open == 1){
-            penetration =true;
-        }else{
-            penetration=false;
-        }
 
 
     }

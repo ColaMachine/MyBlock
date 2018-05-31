@@ -5,6 +5,7 @@ import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.StringUtil;
 
+import core.log.LogUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -67,7 +68,12 @@ public class ItemPanel extends Tab {
 
 
             Integer id = (Integer) it.next();
-            items.add(id+"_"+ItemManager.getItemDefinition(id).getName());
+
+            ItemDefinition itemDefinition = ItemManager.getItemDefinition(id);
+            if(itemDefinition == null ){
+                LogUtil.err("can't find item ");
+            }
+            items.add(id + "_" + ItemManager.getItemDefinition(id).getName());
 
 
         }

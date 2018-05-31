@@ -29,6 +29,7 @@ import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.Internal.GeneratingChunkProvider;
 import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
+import cola.machine.game.myblocks.world.chunks.RemoteChunkProvider;
 import cola.machine.game.myblocks.world.generator.WorldGenerators.PerlinWorldGenerator;
 import cola.machine.game.myblocks.world.internal.WorldProviderWrapper;
 import com.dozenx.game.engine.PhysicsEngine;
@@ -239,13 +240,13 @@ public class GamingState implements GameState {
             SynchronTask task = new SynchronTask();
             task.start();
            // MainFrame.main(new String[]{});
-            Thread thread = new Thread(){
-                public void run(){
-                    MainFrame main =new MainFrame();
-                    main.main(new String []{});
-                }
-            };
-            thread.start();
+           // Thread thread = new Thread(){
+                //public void run(){
+                    //MainFrame main =new MainFrame();
+                    //main.main(new String []{});
+                //}
+            //};
+           // thread.start();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -575,7 +576,7 @@ public ShaderManager shaderManager;
 
 
                     player.viewPosition.x=player.position.x;
-                    player.viewPosition.y=player.position.y+1;
+                    player.viewPosition.y=player.position.y+Switcher.CAMERA_HEIGHT;
                     player. viewPosition.z=player.position.z;
 
                     GL_Vector camera_pos = GL_Vector.add(player.viewPosition,
@@ -968,9 +969,18 @@ public ShaderManager shaderManager;
             worldGenerator.initialize();
             worldGenerator.setWorldSeed("123123123");
             GeneratingChunkProvider chunkProvider = new LocalChunkProvider(storageManager, worldGenerator);
+            CoreRegistry.put(ChunkProvider.class, chunkProvider);
             PhysicsEngine physicsEngine =new PhysicsEngine();
             //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
-            CoreRegistry.put(ChunkProvider.class, chunkProvider);
+
+
+
+            RemoteChunkProvider remoteChunkProvider = new RemoteChunkProvider(storageManager, worldGenerator);
+
+
+            //chunkProvider.createOrLoadChunk(new Vector3i(1,1,1));
+            CoreRegistry.put(RemoteChunkProvider.class, remoteChunkProvider);
+
             WorldProvider WorldProvider = new WorldProviderWrapper();
 
             WorldRendererLwjgl worldRenderer = new WorldRendererLwjgl(WorldProvider, chunkProvider, new LocalPlayerSystem(), null, player);

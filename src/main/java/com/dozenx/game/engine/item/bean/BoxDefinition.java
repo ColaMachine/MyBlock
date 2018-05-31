@@ -2,8 +2,8 @@ package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import com.dozenx.game.engine.command.BlockUtil;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.item.BlockUtil;
 import com.dozenx.game.engine.item.parser.ItemBoxParser;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.MathUtil;
@@ -48,7 +48,7 @@ public class BoxDefinition extends  BlockDefinition{
       //blockType 应该和IteType类型联系起来
 
    //if(cmd.blockType== ItemType.wood_door.ordinal()){
-          int condition = BlockUtil.getIndex(placePoint, viewDir);
+          int condition = BlockUtil.getFaceDir(placePoint, viewDir);
           cmd.blockType  = condition<<8|cmd.blockType;
 
           CoreRegistry.get(Client.class).send(cmd);

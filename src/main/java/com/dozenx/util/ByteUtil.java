@@ -68,6 +68,16 @@ public class ByteUtil
         return bytes;
     }
 
+    /**
+     * the first pos is 0 and then 1 2 3 ...
+     * @param value
+     * @param pos
+     * @return
+     */
+    public static int  getBit(int value ,int pos){
+        return (value>>(pos-1)) & 1;
+    }
+
     public static byte[] getBytes(byte[]... byteArrys)
     {
         int sum=0;
@@ -241,6 +251,8 @@ public class ByteUtil
 
     public static void main(String[] args)
     {
+
+        System.out.println(4<<8 | 17);
         System.out.println(ByteUtil.toBinaryStr(5419));
         System.out.println(ByteUtil.toBinaryStr(102));
         System.out.println(ByteUtil.toBinaryStr(43));
@@ -373,6 +385,15 @@ System.out.println(ByteUtil.get8_0Value(555));
     public static int get12_8Value(int value ){
         return (value & HEX_0_1_0_0 )>>8&HEX_0_0_0_1;
     }
+    public static int get9_8Value(int value ){//取第89位 右移8位 并上 0011
+        return (value & HEX_0_1_0_0 )>>8&BIT_0011;
+    }
+
+    public static int get10Value(int value ){//取第89位 右移8位 并上 0011
+        return (value & HEX_0_1_0_0 )>>8&BIT_0011;
+    }
+
+
     public static int get8_4Value(int value ){
         return (value & HEX_0_0_1_0 )>>4&HEX_0_0_0_1;
     }
@@ -387,11 +408,17 @@ System.out.println(ByteUtil.get8_0Value(555));
     }
 
     public static String toBinaryStr(int num) {
-        char[] chs = new char[Integer.SIZE];
+        char[] chs = new char[Integer.SIZE+4];
+        StringBuilder sb =new StringBuilder();
         for(int i = 0; i < Integer.SIZE; i++) {
             chs[Integer.SIZE - 1 - i] = (char)(((num >> i) & 1) + '0');
+            sb.append((char)(((num >> i) & 1) + '0'));
+            if((i+1)%8==0){
+                sb.append(" ");
+            }
         }
-        return new String(chs);
+       // return new String(chs);
+        return sb.reverse().toString();
     }
     public static String toHex(int i){
         return Integer.toHexString(i);
@@ -557,10 +584,15 @@ System.out.println(ByteUtil.get8_0Value(555));
     // 0000 1111 0000 0000
     // 0000 0000 1111 0000
     //0000 0000 0000 1111
+
+    public final static short BIT_0011 = 3;
+    public final static short BIT_0100 = 4;
+
+
     public final static short HEX_1_0_0_0 =(short) (15<<12);
     public final static short HEX_0_1_0_0 = 15<<8;
     public final static short HEX_0_0_1_0 = 15<<4;
-    public final static short HEX_0_0_0_1 = 15<<0;
+    public final static short HEX_0_0_0_1 = 15;
     public final static short HEX_0_0_1_1 = 255;
     public final static short HEX_0_1_1_1 = HEX_0_0_1_1 | HEX_0_1_0_0;
     public final static short HEX_1_1_0_0 = (short)(255<<8);

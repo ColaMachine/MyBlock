@@ -292,17 +292,43 @@ http://blog.csdn.net/zoharwolf/article/details/50216839
 玩家的制作
 目前的
 
+<<<<<<< HEAD
 2017-11-11 10:17:00
 
 
 WoodDoor:{
     model:"WoodDoor",
+
     data:{
-        id:0,
 
-        opend:false,
-        face:'east',
 
+        opened:0,//0 关1开
+        face:'0',//东西南北
+        top:0,//下方
+        modelName:"",
+
+    },
+    compute:{
+        id:function(){
+            return id | (direction<<8)  | (top <<10) | (open <<11)  ;
+        },
+        model:function(){
+            this. modelName ="wood_door_part1";//模型的名称
+
+
+            if(top==1){
+               this. modelName ="wood_door_part2";//模型的名称
+            }
+            this.model =  getModel(this. modelName);
+            if(open==1){
+                rotate+=" rot(0,0,1,90)"
+            }
+            if(face>0){
+
+                rotate+=" rot(0.5,0.5,1,"+90*face+")";
+            }
+
+        }
     },
     shape:'WoodDoor',
     clear:function(){
@@ -325,7 +351,8 @@ WoodDoor:{
         this.id=id&255;
     },
 
-    blockgetId:function(){
+    getId
+    :function(){
         var statId = (this.opened<<10)& (this.face<<8)&this.id;
         return statId;
     },
@@ -335,3 +362,54 @@ WoodDoor:{
 了解了门是怎么样被存放的上半部分
 
 doorblock   15-12 11 0下半块 1 上半块 10开还是关 8-9 方向 0,1,2,3东南西北 0~7 方块id
+
+怎么写配置文件呢
+type:imageblock
+height width thick
+上下左右前后各是什么图片
+state: if face >0 1 then{
+    rotate with (1,1,1) +90 degree
+}
+if(open){
+    rotate +=90;
+}
+if(top){
+    isTop =true;
+}
+=======
+2017年12月4日19:02:05 去掉难看的血条
+2017年12月4日22:52:13 制作门的模型
+>>>>>>> 5b398d41e7d94f93e3919b75d649ea92d6372c09
+
+通过一种可描述的信息 文本的 简单明了的
+产生信息可以生成一一对应的稳定模型 还有状态的数字和id 对应 一个模型可以被渲染
+可是模型与交互呢 怎么产生交互
+
+希望建立 配置型 属性 + 描述性  解析==> 描述性配置==> id与 模型   (最好能描述到交互)
+可以找到.data属性 里面是所有的基础属性
+
+再找.compute 里面是所有的计算属性 计算属性里是一个串 脚本语句,通过这个脚本语句 里面每个key都是计算属性的key名称 value 是一个能根据当前所有属性计算得到值 数字活字符串的 描述语句 脚本
+
+
+model 是根据compute 里的计算值和属性值 对基础shape 加以变形组装后产生的模型
+
+如果都是js脚本的话 那么转换语句就麻烦了
+所以不用js因为转换涉及到java 语言
+直接转成json更方便点 想怎么转就怎么转
+所以model 该怎么写
+model baseModel:基础model
+      transform:变形 if(x>1){rot()};
+
+
+
+if(open){
+    model= model.∂rotate(0,0,0,0,0,1,90);
+}
+if(face >0) {
+   model= model.rotate(0.5,0.5,0,0,0,1,90*face);
+}
+
+2018-05-27 15:17:30
+增加判断放置的时候两边要有方块 前后要通畅  要确定 轴在哪里
+
+增加判断 如果被摧毁会触发什么事件
