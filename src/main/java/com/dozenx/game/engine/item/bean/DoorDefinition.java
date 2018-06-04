@@ -372,10 +372,10 @@ public class DoorDefinition extends BlockDefinition {
         if(top==0){//it's bottom block
             //删除上面的 delete up one
 
-            remoteChunkProvider.setBlock(chunkX,chunkY,chunkZ,x,y+1,z,0);
+            remoteChunkProvider.setBlock(chunkX,chunkY,chunkZ,MathUtil.getOffesetChunk(x),y+1,MathUtil.getOffesetChunk(z),0);
         }else{
 
-            remoteChunkProvider.setBlock(chunkX,chunkY,chunkZ,x,y-1,z,0);
+            remoteChunkProvider.setBlock(chunkX,chunkY,chunkZ,MathUtil.getOffesetChunk(x),y-1,MathUtil.getOffesetChunk(z),0);
             //remoteChunkProvider.setBlock();
         }
     }

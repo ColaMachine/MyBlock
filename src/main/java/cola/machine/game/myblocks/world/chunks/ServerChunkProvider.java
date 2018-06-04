@@ -177,6 +177,15 @@ public class ServerChunkProvider extends LocalChunkProvider {
 
     }
 
+    @Override
+    public void save() {
+        Iterator<Map.Entry<Vector2i,ChunkImpl >> it = nearCache.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Vector2i,ChunkImpl > entry = it.next();
+            entry.getValue().save();
+        }
+    }
+
 
 
 }

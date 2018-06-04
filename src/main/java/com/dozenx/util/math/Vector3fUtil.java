@@ -78,4 +78,17 @@ public final class Vector3fUtil {
         out.z = Math.max(a.z, b.z);
         return out;
     }
+
+    public static float  distance(Vector3f a, Vector3f b){
+        return (float)(Math.sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)+(a.z-b.z)*(a.z-b.z)));
+    }
+
+    public static float  distance(float ax,float ay,float az,float bx,float by,float bz){
+        return (float)(Math.sqrt((ax-bx)*(ax-bx) + (ay-by)*(ay-by)+(az-bz)*(az-bz)));
+    }
+    public static float length(float xi,float yi,float zi){
+
+          return (float )Math.sqrt(xi*xi+yi*yi + zi * zi);
+
+    }
 }

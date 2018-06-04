@@ -8,7 +8,7 @@ public class Switcher {
     public static boolean MOUSE_AUTO_CENTER=false;
     public static boolean MOUSE_CANCELBUBLE=false;
     public static int CAMERA_MODEL=1;
-
+    public static boolean SERVER_WALK=false;
     public static int gameState=0;//0菜单 1游戏 2暂停 -1 退出
 
     public static int yangjiao_d=89;

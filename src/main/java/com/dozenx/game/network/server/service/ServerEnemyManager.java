@@ -52,7 +52,7 @@ public class ServerEnemyManager implements Runnable {
             try {
 
 
-                enemyServerLoop();
+               // enemyServerLoop();
                 synEnemyPos();  //每隔200ms同步变化的位置给用户
                 //this.findThing();
                 // this.doSomeThing();
@@ -133,6 +133,7 @@ public class ServerEnemyManager implements Runnable {
                     //}
 
                 enemy.getExecutor().getCurrentState().update();
+
                 CoreRegistry.get(PhysicsEngine.class).checkIsDrop(enemy);
                CoreRegistry.get(PhysicsEngine.class).gravitation(enemy);
             }

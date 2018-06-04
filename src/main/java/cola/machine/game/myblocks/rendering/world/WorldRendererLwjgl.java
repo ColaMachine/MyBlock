@@ -140,11 +140,11 @@ public class WorldRendererLwjgl implements WorldRenderer {
             // 如果这是一个大于1*1*1体积的block
             LogUtil.println("worldRenderLwjgl"+cmd.cx+":"+cmd.cy+":"+cmd.cz);
             chunk.setBlock(cmd.cx, cmd.cy, cmd.cz, cmd.blockType);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             chunk.setBlockStatus(cmd.cx, cmd.cy, cmd.cz, cmd.dir);
           /*  BaseBlock block = (BaseBlock) chunk.getBlock(cmd.cx, cmd.cy, cmd.cz);
             if (block != null && block instanceof ColorGroup) {

@@ -214,9 +214,9 @@ public class MouseControlCenter {
         }
 
 
-
-        if(TimeUtil.getNowMills() - lastkeyPressTime >200){
-             key = -1;
+        if(Switcher.SERVER_WALK) {
+            if (TimeUtil.getNowMills() - lastkeyPressTime > 200) {
+                key = -1;
           /*  if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
                 player.move();
             }
@@ -229,78 +229,92 @@ public class MouseControlCenter {
             if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
                 key= WalkCmd.FORWARD_RIGHT;
             }*/
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                key= WalkCmd.FORWARD_LEFT;
-            }else
-            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                key= WalkCmd.FORWARD_RIGHT;
-            }else{
-                key= WalkCmd.FORWARD;
+                if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+                    if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                        key = WalkCmd.FORWARD_LEFT;
+                    } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                        key = WalkCmd.FORWARD_RIGHT;
+                    } else {
+                        key = WalkCmd.FORWARD;
+                    }
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+                    if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                        key = WalkCmd.BACK_LEFT;
+                    } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                        key = WalkCmd.BACK_RIGHT;
+                    } else {
+                        key = WalkCmd.BACK;
+                    }
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                    key = WalkCmd.LEFT;
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                    key = WalkCmd.RIGHT;
+                } else {
+                    key = WalkCmd.STOP;
+                }
+
+                if ((key != 0 && TimeUtil.getNowMills() - lastkeyPressTime > 500) || key != lastKey || player.isDirChanged()) {
+                    lastKey = key;
+                    player.setDirChanged(false);
+                    //walkCmd.dir = key;
+                    //player.receive(walkCmd);
+
+                    GL_Vector from = player.position;
+                    GL_Vector walkDir = player.walkDir.normalize().copyClone();
+                    GL_Vector right = player.getRightVector().copyClone();
+                    GL_Vector to = null;
+                    if (key == WalkCmd.FORWARD) {
+
+                        to = from.copyClone().add(walkDir.mult(player.speed));
+                    } else if (key == WalkCmd.BACK) {
+                        to = from.copyClone().add(walkDir.mult(-player.speed));
+                    } else if (key == WalkCmd.LEFT) {
+                        to = from.copyClone().add(right.mult(-player.speed));
+                    } else if (key == WalkCmd.RIGHT) {
+                        to = from.copyClone().add(right.mult(player.speed));
+                    } else if (key == WalkCmd.FORWARD_LEFT) {
+                        to = from.copyClone().add(walkDir.mult(7.5f).add(right.mult(-7.5f)));
+                    } else if (key == WalkCmd.FORWARD_RIGHT) {
+                        to = from.copyClone().add(walkDir.mult(7.5f).add(right.mult(7.5f)));
+                    } else if (key == WalkCmd.BACK_LEFT) {
+                        to = from.copyClone().add(walkDir.mult(-7.5f).add(right.mult(-7.5f)));
+                    } else if (key == WalkCmd.BACK_RIGHT) {
+                        to = from.copyClone().add(walkDir.mult(-7.5f).add(right.mult(7.5f)));
+                    } else if (key == WalkCmd.STOP) {
+                        to = from;
+                    }
+                    // LogUtil.println("from:"+from);
+                    //LogUtil.println("to:"+to);
+                    WalkCmd2 walkCmd = new WalkCmd2(from, to, player.getId());
+                    walkCmd.bodyAngle = player.getBodyAngle();
+                    if (key == WalkCmd.STOP) {
+                        //return ;
+                        walkCmd.stop = true;
+                    }
+                    //client.send(walkCmd);
+                    player.receive(walkCmd);
+                    lastkeyPressTime = TimeUtil.getNowMills();
+
+                }
+
             }
-        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                key= WalkCmd.BACK_LEFT;
-            }else
-            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                key= WalkCmd.BACK_RIGHT;
-            }else{
-                key= WalkCmd.BACK;
-            }
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            key= WalkCmd.LEFT;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            key= WalkCmd.RIGHT;
         }else{
-            key= WalkCmd.STOP;
-        }
-
-        if((key!=0 && TimeUtil.getNowMills() - lastkeyPressTime>500 )|| key!=lastKey  || player.isDirChanged()){
-            lastKey= key;
-            player.setDirChanged(false);
-            //walkCmd.dir = key;
-            //player.receive(walkCmd);
-
-            GL_Vector from = player.position;
-            GL_Vector walkDir = player.walkDir.normalize().copyClone();
-            GL_Vector right = player.getRightVector().copyClone();
-            GL_Vector to = null;
-            if(key==WalkCmd.FORWARD){
-
-                to=from.copyClone().add(walkDir.mult(player.speed));
-            }else if(key==WalkCmd.BACK){
-                to=from.copyClone().add(walkDir.mult(-player.speed));
-            }else if(key==WalkCmd.LEFT){
-                to=from.copyClone().add(right.mult(-player.speed));
-            }else if(key==WalkCmd.RIGHT){
-                to=from.copyClone().add(right.mult(player.speed));
-            }else if(key==WalkCmd.FORWARD_LEFT){
-                to=from.copyClone().add(walkDir.mult(7.5f).add(right.mult(-7.5f)));
-            }else if(key==WalkCmd.FORWARD_RIGHT){
-                to=from.copyClone().add(walkDir.mult(7.5f).add(right.mult(7.5f)));
-            }else if(key==WalkCmd.BACK_LEFT){
-                to=from.copyClone().add(walkDir.mult(-7.5f).add(right.mult(-7.5f)));
-            }else if(key==WalkCmd.BACK_RIGHT){
-                to=from.copyClone().add(walkDir.mult(-7.5f).add(right.mult(7.5f)));
-            }else if(key == WalkCmd.STOP){
-                to=from;
+            if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+                player.moveForward(1*seconds*player.speed/3);//.move(1);
             }
-           // LogUtil.println("from:"+from);
-            //LogUtil.println("to:"+to);
-            WalkCmd2 walkCmd =new WalkCmd2(from,to,player.getId());
-            walkCmd.bodyAngle = player.getBodyAngle();
-            if(key == WalkCmd.STOP){
-                //return ;
-                walkCmd.stop =true;
+            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                player.moveRight(-1*seconds*player.speed/4);
+                //key= WalkCmd.FORWARD_LEFT;
             }
-            //client.send(walkCmd);
-            player.receive(walkCmd);
-            lastkeyPressTime=TimeUtil.getNowMills();
-
+            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                player.moveRight(1*seconds*player.speed/4);
+                //key= WalkCmd.FORWARD_RIGHT;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+                player.moveForward(-1*seconds*player.speed/6);//.move(1);
+               // key= WalkCmd.FORWARD_RIGHT;
+            }
         }
-
-        }
-
 
 
 

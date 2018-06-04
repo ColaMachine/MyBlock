@@ -53,7 +53,7 @@ public class ChunkHandler extends GameServerHandler {
                 // return new ResultCmd( chunkCmd.toBytes());
                 return new ResultCmd(0, chunkCmd.toBytes(), 0);
             } else if (cmd.type == 1 || cmd.type == 2) {// 增加方块 或者 删除方块
-                LogUtil.println("服务器加载chunk:" + cmd.x + "," + cmd.z + "" + "cmd.cx" + cmd.cx + "cmd.cz" + cmd.cz + "blockid" + cmd.blockType);
+                LogUtil.println("chun设置 chunk:" + cmd.x + "," + cmd.z + "" + "cx" + cmd.cx +"cy"+cmd.cy+ "cz" + cmd.cz + "blockid" + cmd.blockType);
                 chunk.setBlock(cmd.cx, cmd.cy, cmd.cz, cmd.blockType);
                 if(cmd.dir>0){
                /* BaseBlock baseBlock = (BaseBlock)chunk.getBlock(cmd.cx, cmd.cy, cmd.cz);

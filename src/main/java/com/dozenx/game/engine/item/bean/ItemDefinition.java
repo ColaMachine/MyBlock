@@ -571,7 +571,7 @@ public class ItemDefinition implements Cloneable{
         String type = MapUtil.getStringValue(map, "type");
         String name = MapUtil.getStringValue(map,"name");
         if(name.equals("stone")){
-LogUtil.err("123");
+            LogUtil.err("123");
         }
         String category = MapUtil.getStringValue(map,"category");
         String baseOn = MapUtil.getStringValue(map,"baseon");
