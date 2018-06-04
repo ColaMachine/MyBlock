@@ -15,6 +15,9 @@
  */
 package cola.machine.game.myblocks.registry;
 
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import cola.machine.game.myblocks.world.chunks.LocalChunkProvider;
+import cola.machine.game.myblocks.world.chunks.RemoteChunkProvider;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -90,6 +93,14 @@ public final class CoreRegistry {
 
     public static <T> void remove(Class<T> type) {
         store.remove(type);
+    }
+
+    public static void main(String args[]){
+        CoreRegistry.put(ChunkProvider.class ,new LocalChunkProvider());
+
+        CoreRegistry.put(RemoteChunkProvider.class,new RemoteChunkProvider());
+        ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
+        System.out.println(chunkProvider);
     }
 
 }

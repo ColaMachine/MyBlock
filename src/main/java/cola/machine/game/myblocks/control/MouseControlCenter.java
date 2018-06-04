@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.Vector3i;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ui.html.Document;
@@ -911,6 +912,11 @@ public class MouseControlCenter {
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
+    /**
+     * 鼠标右键拖动
+     * @param x
+     * @param y
+     */
     private void mouseRightDrag(int x, int y) {
 
         //视角移动
@@ -937,6 +943,7 @@ public class MouseControlCenter {
             // �ƶ���ͷ
         }
     }
+    //鼠标左键拖动\]
 
     private void mouseLeftDrag(int x, int y) {
         if(!Switcher.edit) {
@@ -1184,6 +1191,12 @@ public class MouseControlCenter {
 
                     //如果物体是可以被使用的
                     //Block targetBlock =
+                    BaseBlock block = (BaseBlock) targetBlock;
+                    block.chunkX=arr.targetChunX;
+                    block.chunkZ=arr.targetChunZ;
+                    block.x=MathUtil.floor(targetPoint.x);
+                    block.y=MathUtil.floor(targetPoint.y);
+                    block.z=MathUtil.floor(targetPoint.z);
                     if (targetBlock.beuse()) {//如果是有状态的block
                    /* //通过一个通用的方式获得点击的面在哪里
                     int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);

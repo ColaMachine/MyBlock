@@ -48,6 +48,9 @@ public class BulletPhysics  {
         int worldX,worldY,worldZ ,preWorldX,preWorldY,preWorldZ;
         int offsetX ,offsetZ ,preOffsetX,preOffsetZ;
        // int preBlockIndex =0; every time push a little
+        preX = from.x;
+        preY = from.y;
+        preZ = from.z;
     	for(float x=0.1f;x<distance;x+=0.1){//一点一点推进 看撞到了哪个物体 every time add a little
     		 nowX = from.x+x*to.x;
              nowY = from.y+x*to.y;
@@ -98,7 +101,7 @@ public class BulletPhysics  {
     		//ȥ����Ƿ���һ������֮��
     		//ChunkImpl chunk = localChunkProvider.getChunk(new Vector3i(MathUtil.floor((float)_x/16),0,MathUtil.floor((float)_z/16)));
             if(preChunkIndex==null){
-                bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
+                 bianliChunk = localChunkProvider.getChunk(new Vector3i(chunkX,0,chunkZ));//因为拉远距离了之后 会导致相机的位置其实是在很远的位置 改为只其实还没有chunk加载 所以最好是从任务的头顶开始出发
                 preChunkIndex = chunkIndex;
             }
 

@@ -33,19 +33,19 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
 
     private static final Logger logger = LoggerFactory.getLogger(LocalChunkProvider.class);
 
-    private ConcurrentMap<Vector2i, Chunk> nearCache = Maps.newConcurrentMap();//旁边缓存
+    protected ConcurrentMap<Vector2i, Chunk> nearCache = Maps.newConcurrentMap();//旁边缓存
 
-    private StorageManager storageManager;//保存系统
+    protected StorageManager storageManager;//保存系统
 
     private final Set<Vector3i> preparingChunks = Sets.newSetFromMap(Maps.<Vector3i, Boolean>newConcurrentMap());
-    private WorldGenerator generator;//世界生成机制
-    private BlockManager blockManager;
+    protected WorldGenerator generator;//世界生成机制
+    protected BlockManager blockManager;
 
     public LocalChunkProvider(StorageManager storageManager, WorldGenerator generator) {
         blockManager = CoreRegistry.get(BlockManager.class);
         this.storageManager = storageManager;
         this.generator = generator;
-        CoreRegistry.put(ChunkProvider.class,this);
+       // CoreRegistry.put(ChunkProvider.class,this);
     }
 
     public LocalChunkProvider() {
@@ -66,7 +66,7 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
                 LogUtil.err("block data may be null");
             }
             Path chunkPath =
-                    PathManager.getInstance().getInstallPath().resolve("saves").resolve(fileName);
+                    PathManager.getInstance().getInstallPath().resolve("saves/block").resolve(fileName);
             if (Files.isRegularFile(chunkPath)) {//从本地读取 或者生成
 
                 //ChunkImpl chunkImpl=new ChunkImpl(chunkPos);
@@ -255,6 +255,11 @@ public class LocalChunkProvider implements ChunkProvider, GeneratingChunkProvide
     else{return null;
 
         }
+    }
+
+    @Override
+    public void setBlock(int chunkX, int chunkY, int chunkZ, int blockX, int blockY, int blockZ, int stateId) {
+
     }
 
 }

@@ -28,6 +28,7 @@ import java.util.List;
  * 方块实体 如果你想找的是方块说明 那么应该找 blockDefinition
  */
 public abstract class BaseBlock extends AABB implements IBlock {
+
     public int blood =5;
     boolean delete =false;
     //是否是透明
@@ -41,6 +42,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
     //
     public int dir;
     public int id=0;
+    public int stateId =0;
     public ChunkImpl chunk;
 
     public int light = 0 ;
@@ -52,6 +54,7 @@ public abstract class BaseBlock extends AABB implements IBlock {
     public float thick=1;
     public int chunkX=0;
     public int chunkY=0;
+    public int chunkZ=0;
 
 
     public String name;

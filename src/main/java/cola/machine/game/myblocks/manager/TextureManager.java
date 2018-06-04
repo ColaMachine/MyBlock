@@ -20,6 +20,7 @@ import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.util.FileUtil;
+import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import de.matthiasmann.twl.renderer.Texture;
@@ -29,6 +30,8 @@ import glapp.GLImage;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -41,6 +44,8 @@ import java.util.List;
  * Created by luying on 14-8-28.
  */
 public class TextureManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(TextureManager.class);
     Path installPath;
     public static HashMap<String, GLImage> imageMap = new HashMap<String, GLImage>();
     public static HashMap<String ,List<BoneBlock>> shapeGroups =new HashMap<>();
@@ -49,6 +54,8 @@ public class TextureManager {
 /*    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
     public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();*/
     public static HashMap<String, BaseBlock> shapeMap = new HashMap<String, BaseBlock>();
+    //stateid to block
+    public static HashMap<Integer, BaseBlock> idShapeMap = new HashMap<Integer, BaseBlock>();
 
     public HashMap<String, ImageInfo> ImageInfoMap = new HashMap<>();
 
@@ -460,9 +467,17 @@ public class TextureManager {
                 }
                 for (int i = 0; i < list.size(); i++) {
 
-                    JSONObject map = (JSONObject)list.get(i);
+                    JSONObject map = (JSONObject) list.get(i);
                     BaseBlock block = EditEngine.parse(map);
+                    if (block.getName().startsWith("wood_door")){
+                        block.reComputePoints();
+                        LogUtil.println("wood_door");
+                    }
                     this.shapeMap.put(block.getName(), block);
+                    logger.debug(MapUtil.getStringValue(map,"name"));
+                    if(MapUtil.getStringValue(map,"name").equals("wood_door_down")||  MapUtil.getStringValue(map,"name").equals("wood_door_up")|| "wood_door_up".equals(block.getName())  ||  "wood_door_down".equals(block.getName())){
+                       LogUtil.err("wood_door_up");
+                    }
                    /* String blockType =(String) map.get("blocktype");
                     if("imageblock".equals(blockType)){
                         ImageBlock shape = ImageBlock.parse(map);
@@ -519,7 +534,17 @@ public class TextureManager {
         return shapeMap.get(name);
     }
     public static void putShape(BaseBlock block ){
+        if(block.getId()==13){
+            LogUtil.println("hello]");
+        }
+        if(block.getName().startsWith("wood_door")){
+            LogUtil.println("hello]");
+        }
         shapeMap.put(block.getName(),block);
+        idShapeMap.put(block.getId(),block);
+    }
+    public static void putIdShapeMap(Integer id,BaseBlock block){
+        idShapeMap.put(id,block);
     }
 //    public static BoneBlock createDoorShape(){
 //        float minX=0;

@@ -68,6 +68,16 @@ public class ByteUtil
         return bytes;
     }
 
+    /**
+     * the first pos is 0 and then 1 2 3 ...
+     * @param value
+     * @param pos
+     * @return
+     */
+    public static int  getBit(int value ,int pos){
+        return (value>>(pos-1)) & 1;
+    }
+
     public static byte[] getBytes(byte[]... byteArrys)
     {
         int sum=0;
@@ -402,11 +412,17 @@ System.out.println(ByteUtil.get8_0Value(555));
     }
 
     public static String toBinaryStr(int num) {
-        char[] chs = new char[Integer.SIZE];
+        char[] chs = new char[Integer.SIZE+4];
+        StringBuilder sb =new StringBuilder();
         for(int i = 0; i < Integer.SIZE; i++) {
             chs[Integer.SIZE - 1 - i] = (char)(((num >> i) & 1) + '0');
+            sb.append((char)(((num >> i) & 1) + '0'));
+            if((i+1)%8==0){
+                sb.append(" ");
+            }
         }
-        return new String(chs);
+       // return new String(chs);
+        return sb.reverse().toString();
     }
     public static String toHex(int i){
         return Integer.toHexString(i);

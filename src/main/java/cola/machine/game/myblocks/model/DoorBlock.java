@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
@@ -19,12 +20,30 @@ public class DoorBlock extends DirectionFourBlock {
     public DoorBlock(String name ,int id,boolean isAlpha){
         super(name,id,isAlpha);
     }
-
+    int isTop;
+    int open;
+    int face;
+    public void setValue(int face,int open,int isTop){
+        //super();
+        this.isTop =isTop;
+        this.open=open;
+        this.face = face;
+    }
     @Override
     public void setValue(int value) {
         super.setValue(value);
 
 
+          isTop = value>>10 &1;
+         open= value >> 9&1;
+
+
+
+    }
+
+    public int getValue(){
+
+          return   isTop<<11| open <<10 |dir<<8| ItemType.wood_door.id;
 
 
 
@@ -34,7 +53,7 @@ public class DoorBlock extends DirectionFourBlock {
     public void renderShader(Vao vao,ShapeFace shapeFace,TextureInfo ti,int x,int y,int z){
         //获取condition
         //itemDefinition.getShape().getTopFace();
-
+//1111 1111 1111 1111  1111 1 物品开关 1上下方向 11 物品4个方向  1111 1111 物品id
         int degree = 0;
         if (dir == Constants.BACK) {
             ShaderUtils.draw3dImage(ShaderManager.terrainShaderConfig, vao, shapeFace.getVertices(), shapeFace.getTexcoords(), shapeFace.getNormals(),
@@ -50,7 +69,7 @@ public class DoorBlock extends DirectionFourBlock {
             } else if (dir == Constants.RIGHT) {
                 degree = 90;
             }
-            if (this.isPenetrate()) {
+            if (this.open==1) {
                 degree += 90;
             }
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
@@ -85,6 +104,7 @@ public class DoorBlock extends DirectionFourBlock {
         cmd.cz = (int)this.getZ();
         cmd.cy = (int)this.getY();
         cmd.type = 1;
+        this.open =Math.abs( this.open -1)  ;
         this.penetration =! penetration;
         chunk.getBlock(cmd.cx,cmd.cy+1,cmd.cz).setPenetrate(this.penetration);
         /*if(open==0){

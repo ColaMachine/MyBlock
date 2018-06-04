@@ -162,7 +162,9 @@ public class Ball  {
             }
            // itemDefinition.getItemModel().outdoorModel.build(shaderConfig,shaderConfig.getVao(), (int) this.position.x, (int)this.position.y, (int)this.position.z);
            // itemDefinition.getItemModel().outdoorModel.build(shaderConfig,translateMatrix);
-
+            if(itemDefinition == null ){
+                LogUtil.err("can't find "+itemDefinition.id);
+            }
             itemDefinition.getShape().renderShader(shaderConfig,shaderConfig.getVao(),translateMatrix);
 //            float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
 //            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);

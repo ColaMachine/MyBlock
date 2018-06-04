@@ -189,7 +189,7 @@ public class BagController {
 
         int destPosition = position;
         int fromPosition = itemBean.getPosition();
-        int fromIndex = fromPosition>35?fromPosition-35:fromPosition;
+        int fromIndex = fromPosition>35?fromPosition-35:fromPosition;//如果是超过35的说明是箱子
         int destIndex = destPosition>35?destPosition-35:destPosition;
         ItemBean[] itemFromBeans = this.getItemBeanList(fromPosition);
         ItemBean[] itemDestBeans = this.getItemBeanList(destPosition);
@@ -227,7 +227,7 @@ public class BagController {
         if(resultCmd!=null &&resultCmd.getResult()==0 ){
             LogUtil.println("执行成功了");
         }else{
-            LogUtil.err(resultCmd.toString());
+            LogUtil.err("resultCmd is null or faild");//resultCmd.toString());
         }
     }
 }

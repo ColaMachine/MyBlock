@@ -1,8 +1,11 @@
 package com.dozenx.game.engine.item;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.model.BaseBlock;
 import com.dozenx.game.engine.command.ItemType;
+import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.util.ByteUtil;
+import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 /**
@@ -95,6 +98,20 @@ public class BlockUtil {
             return blockValue& ByteUtil.HEX_0_0_1_1;
         }
         return blockValue;
+    }
+
+    public static void rotateYWithCenter(BaseBlock block,float centerX,float centerY,float centerZ,float degree){
+        GL_Vector[] points=block.points;
+        //要走到 不加x y z 会出现中心点无效的问题
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
+
+        GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,degree,0);
+
+        rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+        rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-centerX ,-centerY ,-centerZ));
+        for(int i=0;i<points.length;i++){
+            points[i]=rotateMatrix.multiply(rotateMatrix ,points[i]);
+        }
     }
 
 

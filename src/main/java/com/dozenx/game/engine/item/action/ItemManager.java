@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.skill.Ball;
 import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.PickCmd;
+import com.dozenx.game.engine.item.bean.DoorDefinition;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
@@ -195,6 +196,13 @@ public class ItemManager {
                         HashMap map = textureCfgBeanList.get(i);
 
                         ItemDefinition itemDef = itemFactory.parse(map);
+
+                        if(itemDef.getName().equals("wood_door_up")){
+                            LogUtil.println("wood_door_up");
+                        }
+                        if(itemDef.getName().equals("wood_door_down")){
+                            LogUtil.println("wood_door_down");
+                        }
                         // ItemDefinition itemDef = new ItemDefinition();
 
 
@@ -212,6 +220,7 @@ public class ItemManager {
 
                 }
             }
+            //this.loadDiyItem();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -219,7 +228,12 @@ public class ItemManager {
         }
 
     }
-
+    //加载复杂类物品定义
+    public static void loadDiyItem(){
+        DoorDefinition definition = new DoorDefinition();
+        definition.init();
+        putItemDefinition("wood_block",new DoorDefinition());
+    }
     public static void putItemDefinition(String name, ItemDefinition item) {
         itemDefinitionMap.put(name, item);
         try {

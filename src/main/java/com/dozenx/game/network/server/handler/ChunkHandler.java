@@ -42,7 +42,7 @@ public class ChunkHandler extends GameServerHandler {
             broadCast(cmd);
         }else {
             ChunkRequestCmd cmd = (ChunkRequestCmd) request.getCmd();
-
+            LogUtil.println("chunkHandler",cmd.cx+":"+cmd.cy+":"+cmd.cz);
             Chunk chunk = chunkProvider.getChunk(cmd.getX(), 0, cmd.getZ());
             // TeraArray ary = chunk .getBlockData();
 
