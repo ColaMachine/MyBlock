@@ -1,15 +1,21 @@
 package cola.machine.game.myblocks.world.block.internal;
 
+import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.DoorBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.block.BlockManager;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+
+import java.util.HashMap;
 
 public class BlockManagerImpl extends BlockManager {
     /**name to block **/
 	//private HashMap<String,IBlock> blockInfoNameMap=new HashMap();
     /**id to block **/
-   //private HashMap<Integer,IBlock> blockInfoIdMap=new HashMap();
+
+    private HashMap<Integer,BaseBlock> blockInfoIdMap=new HashMap();
 
     /**
      * 加载所有的block
@@ -77,6 +83,7 @@ public class BlockManagerImpl extends BlockManager {
         }
 */
 
+        blockInfoIdMap.put(ItemType.wood_door.id,new DoorBlock("doorblock",ItemType.wood_door.id,false));
         //遍历所有的方块落入到
 
 	}
