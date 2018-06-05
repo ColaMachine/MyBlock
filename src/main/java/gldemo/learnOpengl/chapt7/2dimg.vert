@@ -11,6 +11,8 @@ out vec4 ourcolor;
 void main()
 {
 gl_Position = vec4(position, 1.0f);
+gl_Position.z=gl_Position.z/0.9-0.9;
+
 ourTextureIndex=textureIndex;
 TexCoord = texCoord;
 ourcolor=inColor;

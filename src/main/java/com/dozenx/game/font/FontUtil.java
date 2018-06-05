@@ -45,7 +45,7 @@ public class FontUtil {
 
         }catch(Exception e ){
             e.printStackTrace();
-            return new Font("方正", Font.PLAIN, (int)fontSize);
+            return new Font("微软雅黑", Font.BOLD , (int)fontSize);
         }
     }
     /**
@@ -76,8 +76,8 @@ public class FontUtil {
                 continue;
             }
 
-            imageWidth += ch.getWidth();
-            imageHeight = Math.max(imageHeight, ch.getHeight());
+            imageWidth += ch.getWidth()+4;
+            imageHeight = Math.max(imageHeight, ch.getHeight()+4);
         }
 
         fontHeight = imageHeight;
@@ -301,7 +301,7 @@ public class FontUtil {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
         g.setFont(font);
-        g.setPaint(java.awt.Color.WHITE);
+        g.setPaint(java.awt.Color.BLACK);
         g.drawString(String.valueOf(c), 0, metrics.getAscent());
         g.dispose();
         return image;
@@ -400,7 +400,7 @@ public class FontUtil {
     }
     private static Random random = new Random();
     private static Font getFont(int fontSize){
-        return new Font("幼圆",Font.PLAIN,fontSize);
+        return new Font("微软雅黑",Font.PLAIN ,fontSize);
     }
     private static int rotate_value=5;//摇摆幅度
     private static void drawString(Graphics2D  g,char car,int i) {
@@ -429,7 +429,7 @@ public class FontUtil {
         BufferedImage image = new BufferedImage(80,26,BufferedImage.TYPE_INT_BGR);
         Graphics2D  g = (Graphics2D )image.getGraphics();//产生Image对象的Graphics对象,改对象可以在图像上进行各种绘制操作
         g.fillRect(0, 0, 80, 26);
-        g.setFont(new Font("Times New Roman",Font.CENTER_BASELINE,18));
+        g.setFont(new Font("Times New Roman",Font.BOLD ,18));
         g.setColor(new Color(50,50,50));
         //绘制干扰线
 
@@ -475,20 +475,26 @@ public class FontUtil {
         int fontSize =30;
        // int color =0x123566;
         int count =list.size();
+        int paddingTop=2;
+        int paddingLeft =2;
+        int paddingRight=3;
+        int paddingBottom=5;
         String out = new File("").getAbsolutePath();
         //out+"/fontawesome-webfont.ttf";//
         String name ="zhongwen.png";
        // int padding =2;
         int colNum=24;
         int rowNum=count / colNum;
-        int charSize =(int)fontSize;//(int ) (padding*2+fontSize);
-        int imgWidth=charSize*colNum;
-        int imgHeight = rowNum* charSize;
+        int charWidth =paddingLeft+paddingRight+fontSize;
+        int charHeight=paddingTop+paddingRight+fontSize;
+        int imgWidth=charWidth*colNum;
+        int imgHeight = rowNum* (charHeight+3);
 
 
         BufferedImage image =new BufferedImage(imgWidth,imgHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         //Font font =loadFont(fontPath,fontSize);
+        Font font = getFont(fontSize);
         g.setFont(getFont(fontSize));
 
         //g.setFont(new Font("Times New Roman",Font.ROMAN_BASELINE,18));
@@ -498,7 +504,7 @@ public class FontUtil {
 
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, image.getWidth(), image.getHeight());
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         //g.drawString("啊",x,y);
         // ImageUtil.compressForFix("/Users/luying/Documents/workspace/calendar/src/main/webapp/static/img/a0.jpg");
         //Iterator it = glyphMap.entrySet().iterator();
@@ -529,18 +535,18 @@ public class FontUtil {
             int stringDecent = fm.getDescent();//下降
            // int stringWidth = stringWidth/2;
 
-            int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;
+            //int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;
 
-            x_offset= i%colNum*fontSize;
-            y_offset= i /colNum*fontSize;
-            Glyph glyph= new Glyph((int)x_offset,(int)y_offset,stringWidth,stringHeight);
+            x_offset= i%colNum*charWidth;
+            y_offset= i /colNum*(charHeight);
+            Glyph glyph= new Glyph((int)x_offset,(int)y_offset,charWidth,charHeight);
             glyphMap.put(car,glyph);
             if(i /colNum>=rowNum){
                 break;
             }
 
             ttf2jpg(car, g, x_offset, y_offset,stringAscent);
-            sb.append(car).append(" ").append(x_offset).append(" ").append(y_offset).append(" ").append(charSize).append(" ").append(charSize).append("\r\n");
+            sb.append(car).append(" ").append(x_offset+1).append(" ").append(y_offset+1).append(" ").append(charWidth-1).append(" ").append(charHeight-1).append("\r\n");
             i++;
            /* if(i==10){
                 break;
@@ -592,7 +598,7 @@ public static TextureInfo ti ;
     public static void ttf2jpg(char car , Graphics g,int x,int y,int fontHeight){
        // System.out.println("x:"+x+" y:"+y);
 
-        g.setColor(Color.WHITE);
+      //  g.setColor(Color.BLACK);
         g.drawString(String.valueOf(car), x, y+fontHeight);
 
 

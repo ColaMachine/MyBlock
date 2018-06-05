@@ -14,6 +14,7 @@ import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.bean.Wolf;
 import com.dozenx.game.engine.Role.model.PlayerModel;
+import com.dozenx.game.engine.Role.model.WolfModel;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
@@ -409,7 +410,11 @@ public class LivingThingManager {
             //y原来是直接绑定到itemDefinition 现在要对应到有id的items里的物品
             //ItemBean itemBean = livingThing.getItemById(cmd.getItemId());
            // ItemType itemType =
-            if(livingThing!=null  /*&& itemBean!=null*/ ){
+            if(livingThing.getModel() instanceof  WolfModel){
+                //说明是错误的了
+                livingThing.getExecutor().setModel(new PlayerModel(livingThing));
+            }
+            if(livingThing!=null && livingThing.getModel() instanceof PlayerModel /*&& itemBean!=null*/ ){
                 if(cmd.getPart()== EquipPartType.BODY){
                     livingThing.setBodyEquip(cmd.getItemType());
                     ((PlayerModel)livingThing.getModel()).addBodyEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
@@ -450,6 +455,7 @@ public class LivingThingManager {
             boolean exsits =true;
             if(livingThing==null ) {
                 ItemManager.getItemDefinition(info.getName());
+                LogUtil.println("添加新物种"+info.species);
                 if(info.species==1){;
                     livingThing = new Wolf(info.getId());
 
