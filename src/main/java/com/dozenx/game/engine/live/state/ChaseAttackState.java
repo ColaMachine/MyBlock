@@ -49,7 +49,7 @@ public class ChaseAttackState extends State {
     //任何命令都应该是一次性的不应该保存任何内部状态,或者状态的
     public void receive(GameCmd gameCmd){//11
         if(gameCmd .getCmdType()== CmdType.DIED){
-            this.livingThing.changeState( new DiedState(this.livingThing));
+            this.livingThing.changeState( new DiedState(this.livingThing,gameCmd));
         }
     }
     long lastMoveTime ;

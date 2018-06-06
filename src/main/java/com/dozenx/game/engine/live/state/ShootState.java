@@ -16,7 +16,7 @@ import glmodel.GL_Vector;
  */
 public class ShootState extends IdleState {
     public ShootState(LivingThingBean livingThing){
-        super(livingThing);
+        super(livingThing,null);
         this.livingThing = livingThing;
         startTime= TimeUtil.getNowMills();
         if(CoreRegistry.get(BagController.class).has("arrow")){
@@ -73,7 +73,7 @@ public class ShootState extends IdleState {
         }
 
         if (now - startTime > 1 * 1000) {
-            this.livingThing.changeState(new IdleState(this.livingThing));
+            this.livingThing.changeState(new IdleState(this.livingThing,null));
 
         }
 

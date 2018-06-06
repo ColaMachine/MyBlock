@@ -332,6 +332,11 @@ public class LivingThingManager {
 
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
+            if(livingThing.getTarget()!=null){
+//                if(chaseCanAttack(livingThing,200)<2){
+//                    livingThing.getTarget().beAttack(10);
+//                }
+            }
             if((/*livingThing.died || */livingThing.nowHP<=0)&& nowTime - livingThing.getLastHurtTime()> 10000 ){
               // this.livingThingsMap.remove(livingThing.getId());
                 //livingThings.remove(i);

@@ -16,8 +16,10 @@ public class JumpState extends State {
     long startTime;
     float speed;
     GL_Vector dir;
-    public JumpState(LivingThingBean livingThing, JumpCmd jumpCmd){
+    public JumpState(LivingThingBean livingThing,GameCmd gameCmd){
         super(livingThing);
+        JumpCmd jumpCmd =  (JumpCmd)gameCmd;
+
         this.speed =jumpCmd.speed;
         this.dir= new GL_Vector(jumpCmd.dirX,jumpCmd.dirY,jumpCmd.dirZ).normalize();
 
@@ -56,7 +58,7 @@ public class JumpState extends State {
         long nowTime = TimeUtil.getNowMills();
 
         if(this.livingThing.isStable()){
-            this.livingThing.changeState(new IdleState(livingThing));
+            this.livingThing.changeState(new IdleState(livingThing,null));
         }else
         if (nowTime - lastMoveTime >200) {
             //this.position.y+=1;
@@ -72,7 +74,7 @@ public class JumpState extends State {
        // livingThing.setPosition(G);
         if(nowTime - startTime >3000){
 
-            this.livingThing.changeState(new IdleState(this.livingThing));
+            this.livingThing.changeState(new IdleState(this.livingThing,null));
         }
     }
 }

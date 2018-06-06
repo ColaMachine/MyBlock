@@ -11,14 +11,18 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ *
+ * 这个状态从被攻击开始 到 落地结束 被攻击的物体退后并飞起一段距离 期间可以 攻击别人 但是不能移动 然后又回到原来的状态
  * Created by luying on 17/2/7.
  */
-public class WalkState extends State {
+public class BeAttackState extends State {
 
 
-    public WalkState(LivingThingBean livingThing, int dir ){
+    public BeAttackState(LivingThingBean livingThing, GameCmd gameCmd){
         //if the lvingthing is player than syn the data to server  form the data to walkcmd2
         super(livingThing);
+
+        int dir=1;
         if(from== null || to == null){
             LogUtil.err("from and to can't be null ");
         }
@@ -27,7 +31,7 @@ public class WalkState extends State {
 
     }
 
-    public WalkState(LivingThingBean livingThing, GL_Vector from ,GL_Vector to ){
+    public BeAttackState(LivingThingBean livingThing, GL_Vector from, GL_Vector to){
 
         super(livingThing);
         if(from== null || to == null){

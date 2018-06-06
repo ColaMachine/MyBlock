@@ -465,6 +465,7 @@ public class MouseControlCenter {
             }
             if(livingThing!=null) {
                 player.setTarget(livingThing);
+                livingThing.beAttack(1);
                 CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
 
                 //后退
@@ -1015,6 +1016,7 @@ public class MouseControlCenter {
     public void keyDown(int keycode) {
         long now =TimeUtil.getNowMills();
         if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
+            player.attack();
            /* if(player.getTarget()!=null){
                 CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, player.getTarget().getId()));
             }else*/{

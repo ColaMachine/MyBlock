@@ -11,7 +11,7 @@ import com.dozenx.game.network.server.bean.LivingThingBean;
 public class DiedState extends State {
     //private LivingThing livingThing;
 
-    public DiedState(LivingThingBean livingThing){
+    public DiedState(LivingThingBean livingThing,GameCmd gameCmd){
 
         super(livingThing);
         this.livingThing.nowHP=0;
@@ -26,10 +26,10 @@ public class DiedState extends State {
     public void receive(GameCmd gameCmd){//11
         //可以接收复活指令
         if(livingThing.nowHP>0){
-            this.livingThing.changeState( new IdleState(this.livingThing));
+            this.livingThing.changeState( new IdleState(this.livingThing,gameCmd));
         }
         if(gameCmd.getCmdType() == CmdType.REBORN){
-            this.livingThing.changeState( new IdleState(this.livingThing));
+            this.livingThing.changeState( new IdleState(this.livingThing,gameCmd));
         }else
             return;
     }
