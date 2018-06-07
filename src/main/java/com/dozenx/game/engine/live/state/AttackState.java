@@ -10,8 +10,8 @@ import com.dozenx.util.TimeUtil;
  * Created by luying on 17/2/7.
  */
 public class AttackState extends IdleState {
-    public AttackState(LivingThingBean livingThing){
-        super(livingThing);
+    public AttackState(LivingThingBean livingThing,GameCmd gameCmd){
+        super(livingThing,gameCmd);
         this.livingThing = livingThing;
         startTime= TimeUtil.getNowMills();
         if(CoreRegistry.get(BagController.class).has("arrow")){
@@ -27,7 +27,10 @@ public class AttackState extends IdleState {
     boolean shooted=false;
     public int currentState =0;
     public void update(){
-
+        if(TimeUtil.getNowMills()-lastTime >1000){
+            livingThing.changeState(new IdleState(livingThing,null));
+        }
+        //过3秒 就结束
 
     }
     public void dispose(){

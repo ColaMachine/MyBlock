@@ -57,7 +57,7 @@ public class ServerSaveTask extends TimerTask {
                 if (livingThing.isDied() && now - livingThing.getLastHurtTime() > 10 * 1000) {
                     livingThing.setTarget(null);
                     livingThing.setTargetId(0);
-                    livingThing.getExecutor().setCurrentState(new IdleState(livingThing));
+                    livingThing.getExecutor().setCurrentState(new IdleState(livingThing,null));
                     livingThing.setNowHP(nowHP);
                     RebornCmd rebornCmd = new RebornCmd(livingThing.getId());
                     serverContext.getMessages().offer(rebornCmd.toBytes());//复活

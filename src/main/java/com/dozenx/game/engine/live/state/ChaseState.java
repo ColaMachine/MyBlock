@@ -12,9 +12,11 @@ import com.dozenx.util.TimeUtil;
 public class ChaseState extends State {
     //private LivingThing livingThing;
     long startTime;
-    public ChaseState(LivingThingBean livingThing,ChaseCmd chaseCmd){
+    public ChaseState(LivingThingBean livingThing,GameCmd gameCmd){
 
         super(livingThing);
+
+        ChaseCmd chaseCmd = (ChaseCmd) gameCmd;
         //livingThing.setTargetId(chaseCmd.getTargetId());
         //livingThing.setTarget(livingThingMa);
         lastMoveTime = startTime = TimeUtil.getNowMills();

@@ -44,7 +44,7 @@ public class IdleState extends State{
 
     }
 
-    public IdleState(LivingThingBean livingThing){
+    public IdleState(LivingThingBean livingThing,GameCmd gameCmd){
         this.livingThing = livingThing;
     }
     public void receive(GameCmd gameCmd){

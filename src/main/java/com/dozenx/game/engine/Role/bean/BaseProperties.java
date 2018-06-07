@@ -70,7 +70,7 @@ public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
     public GL_Vector walkDir =new GL_Vector() ;
     public  GL_Vector viewDir =new GL_Vector() ;
 
-    public int species=0;
+    public int species=0;//0 human 1 wolf
     protected String name;
     protected String pwd;
     private float bodyAngle;

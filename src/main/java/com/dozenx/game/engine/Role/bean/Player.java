@@ -8,6 +8,9 @@ import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.physic.BulletPhysics;
 import cola.machine.game.myblocks.physic.BulletResultDTO;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.skill.AttackBall;
+import cola.machine.game.myblocks.skill.AttackManager;
+import cola.machine.game.myblocks.skill.Ball;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.Role.model.PlayerModel;
@@ -18,6 +21,7 @@ import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.bean.PlayerStatus;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 import org.lwjgl.Sys;
 
@@ -326,7 +330,11 @@ public class Player extends LivingThing {
     }
 
     public void attack(){
+        LogUtil.println("player 攻击");
 
+        AttackBall ball =new AttackBall(5,this.getPosition().copyClone(),this.getViewDir().copyClone(),5,2,this);
+
+        AttackManager.addAttack(ball);
     }
 
     public void use(BulletPhysics bulletPhysics){

@@ -52,7 +52,7 @@ public class LivingThingBean extends Role {
         this.setId(id);//(int)(Math.random()*1000000);
 
         this.setExecutor(new Executor(this));
-        this.getExecutor().setCurrentState(new IdleState(this));
+        this.getExecutor().setCurrentState(new IdleState(this,null));
 
 
         this.walkDir=new  GL_Vector(1,0,0);
@@ -615,6 +615,7 @@ public class LivingThingBean extends Role {
             manager.apply(getModel().bodyComponent,"died");*/
 
         }
+
     }
 
     //IdleState currentState ;
