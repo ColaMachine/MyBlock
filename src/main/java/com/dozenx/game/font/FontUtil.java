@@ -495,6 +495,7 @@ public class FontUtil {
         Graphics2D g = image.createGraphics();
         //Font font =loadFont(fontPath,fontSize);
         Font font = getFont(fontSize);
+       // font.get
         g.setFont(getFont(fontSize));
 
         //g.setFont(new Font("Times New Roman",Font.ROMAN_BASELINE,18));

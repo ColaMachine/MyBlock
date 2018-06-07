@@ -53,6 +53,9 @@ public class LivingThingManager {
     Component bendComponent;
     Wolf wolf =null;
 
+    /**
+     * 检查用户是否掉落
+     */
     public void checkPlayerDrop(){
         if(player.isStable()) {
             CoreRegistry.get(PhysicsEngine.class).checkIsDrop(player);
@@ -60,6 +63,10 @@ public class LivingThingManager {
         //remove the died one
 
     }
+
+    /**
+     * 把死亡的对象从队列中移除
+     */
     public void removeAllDiedOne(){
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
@@ -69,6 +76,10 @@ public class LivingThingManager {
             }
         }
     }
+
+    /**
+     * 构造函数
+     */
     public LivingThingManager(){
 
        /*  wolf =new Wolf(999);
@@ -102,10 +113,21 @@ public class LivingThingManager {
     public void setPlayer(LivingThing livingThing){
         this.player=livingThing;
     }
+
+    /**
+     * 添加活物
+     * @param livingThing
+     */
     public void add(LivingThing livingThing){
-        livingThings.add(livingThing);
-        livingThingsMap.put(livingThing.getId(),livingThing);
+        livingThings.add(livingThing);//添加到队列中
+        livingThingsMap.put(livingThing.getId(),livingThing);//并添加到map中
     }
+
+    /**
+     * 通过id获取对象
+     * @param id
+     * @return
+     */
     public LivingThing getLivingThingById(int id){
         if(player.getId() == id){
             return player;
