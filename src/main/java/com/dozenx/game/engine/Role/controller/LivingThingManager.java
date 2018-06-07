@@ -6,9 +6,12 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.chunks.Chunk;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.bean.Role;
@@ -20,6 +23,8 @@ import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
+import com.dozenx.game.engine.live.state.IdleState;
+import com.dozenx.game.engine.live.state.WalkState;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -27,8 +32,11 @@ import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
+import com.dozenx.game.network.server.service.AStar;
+import com.dozenx.game.network.server.service.CloseSet;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.MathUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -329,19 +337,21 @@ public class LivingThingManager {
             return;
         }*/
 
-
-        for(int i=livingThings.size()-1;i>=0;i--){
-            LivingThing  livingThing = livingThings.get(i);
-            if(livingThing.getTarget()!=null){
-//                if(chaseCanAttack(livingThing,200)<2){
-//                    livingThing.getTarget().beAttack(10);
+        enemyClientLoop();
+//        for(int i=livingThings.size()-1;i>=0;i--){
+//            LivingThing  livingThing = livingThings.get(i);
+//            if(livingThing.getTarget()!=null){
+//                //livingThing.attack();
+//                if(chaseCanAttack(livingThing,200)<5){
+//                    livingThing.attack();
+//                    //livingThing.getTarget().beAttack(10);
 //                }
-            }
-            if((/*livingThing.died || */livingThing.nowHP<=0)&& nowTime - livingThing.getLastHurtTime()> 10000 ){
-              // this.livingThingsMap.remove(livingThing.getId());
-                //livingThings.remove(i);
-            }
-        }
+//            }
+//            if((/*livingThing.died || */livingThing.nowHP<=0)&& nowTime - livingThing.getLastHurtTime()> 10000 ){
+//              // this.livingThingsMap.remove(livingThing.getId());
+//                //livingThings.remove(i);
+//            }
+//        }
       /*  long nowTime = System.currentTimeMillis();
         if(nowTime-lastUpdateTime >5000){lastUpdateTime=nowTime;
             for(LivingThing livingThing:livingThings){
@@ -840,6 +850,285 @@ public class LivingThingManager {
         }
         return distance;
 
+
+    }
+
+
+
+
+    //怪物逻辑
+    public void enemyClientLoop() {
+        for (LivingThingBean enemy : livingThings) {
+            if (!enemy.isDied()) {//如果自身是有效单位 没有死
+
+                if (enemy.getTargetId() > 0) {//并且是有目标
+                    if (checkEnemyTarget(enemy))//释放无用target 补全缺少target
+                    {//追击或者攻击
+                        moveOrAttack(enemy);
+                    }
+
+
+                } else {//暂时没有目标
+                    //if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
+                    //找寻目标
+
+                    //
+
+                    findTarget(enemy);
+                }
+                //怪物
+//                    if(enemy.getTarget() != null && enemy.getDest()==null && enemy.getFinalDest()!=null){
+//                        if( enemy.isBlock() ){//如果立马取消掉dest
+//                            if (enemy.routes.size() == 0&&enemy.routes == null || enemy.routes.size() == 0) {
+//
+//                                AStar astar =new  AStar();
+//                               // astar.map
+//                                this.pathRoute2(enemy.getPosition(), enemy.getFinalDest(), enemy);
+//                                enemy.setFinalDest(null);
+//                            }else{
+//
+//
+//                            }
+//                        }else {
+//                            //如果当前有pathroute的结果
+//                            if(enemy.getDest()==null){
+//                                enemy.setDest(enemy.getFinalDest());
+//                            }
+//
+//                        }
+//                        //如果长时间由于卡住过不去 就动用path寻路
+//                      /*  if (enemy.routes == null || enemy.routes.size() == 0) {
+//                            this.pathRoute(enemy.getPosition(), enemy.getFinalDest(), enemy);
+//                            enemy.setFinalDest(null);
+//                        }else{
+//
+//
+//                        }*/
+//                    }
+                //}
+
+                enemy.getExecutor().getCurrentState().update();
+
+                CoreRegistry.get(PhysicsEngine.class).checkIsDrop(enemy);
+                CoreRegistry.get(PhysicsEngine.class).gravitation(enemy);
+            }
+        }
+        for (LivingThingBean player : livingThings) {
+            if (!player.isDied()) {//如果自身是有效单位
+
+                /*if(enemy.getTargetId() > 0){//并且是有目标
+                    if(checkEnemyTarget(enemy))//释放无用target 补全缺少target
+                    {
+                        moveOrAttack(enemy);
+                    }
+                    //追击或者攻击
+
+                }else{//暂时没有目标
+                    if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
+                        //找寻目标
+
+                        //findTarget(enemy);
+                    }
+                }*/
+                //player.getExecutor().getCurrentState().update();
+
+            }
+        }
+    }
+
+
+    public boolean checkEnemyTarget(LivingThingBean livingThingBean) {
+
+        if (player == null) { //如果没有目标
+            livingThingBean.setTargetId(0);
+            livingThingBean.setTarget(null);
+            return false;
+        } else if (GL_Vector.length(GL_Vector.sub(livingThingBean.getPosition(), player.getPosition())) > 100) {//如果距离太远了 就失去目标
+            if (TimeUtil.getNowMills() - livingThingBean.getLastHurtTime() > 10 * 1000) {//如果上次伤害还没超过多少时间
+
+                livingThingBean.setTargetId(0);
+                livingThingBean.setTarget(null);
+            }
+            livingThingBean.setTarget(player);
+            //enemy.setTarget(player);
+            return false;
+        } else {
+            livingThingBean.setTarget(player);
+            return true;
+        }
+
+    }
+
+
+    /**
+     * move or attack
+     *
+     * @param enemy
+     */
+    public void moveOrAttack(LivingThingBean enemy) {
+
+
+        GL_Vector direction = GL_Vector.sub(enemy.getTarget().getPosition(), enemy.getPosition());
+        //enemy.setWalkDir(direction);
+
+        float length = GL_Vector.length(direction);
+        if (length < 2) {
+            if(TimeUtil.getNowMills()-enemy.getLastAttackTime()>1000){
+                AttackCmd attackCmd = new AttackCmd(enemy.getId(), AttackType.KAN, enemy.getTargetId());
+                //TODO serverContext.broadCast(attackCmd.toBytes());
+                // //
+                enemy.getExecutor().receive(attackCmd);
+                enemy.setLastAttackTime(TimeUtil.getNowMills());
+            }
+
+
+            //开始攻击
+                  /* enemy.
+                    attack(enemy,enemy.getTarget());*/
+            //livingThing.nextPosition=null;
+        } else if(length<50){
+            // this.getAnimationManager().apply(livingThing.bodyComponent,"walkerFoward");
+                   /*GL_Vector newPosition = GL_Vector.add(enemy.getPosition(),GL_Vector.multiply(direction.normalize(),1*1));
+                    enemy .setPosition(newPosition);
+                   serverContext.broadCast(new PosCmd(enemy.getInfo()).toBytes());
+
+*/                      //这段代码会导致一个问题 怪物到了目的地后才会再计算下一个目的地
+            //每隔一段时间就修正怪物的walkstate
+
+            if(enemy.getDest()==null && enemy.getFinalDest()==null){
+                LivingThingBean player = this.getLivingThingById(enemy.getTargetId());
+                if (player != null) {
+                    //移动到制定位置设置目标
+
+                    //可达性分析
+
+
+                    enemy.setFinalDest(player.getPosition());
+                    // enemy.setDest(player.getPosition());
+                    //
+                    // enemy.setBodyAngle( GL_Vector.getAnagleFromXZVectory(direction));
+                }
+
+
+            }else{
+                if( enemy.isBlock() ){//如果立马取消掉dest
+                    if (enemy.routes.size() == 0&&enemy.routes == null || enemy.routes.size() == 0) {
+
+                        //AStar astar =new  AStar();
+                        // astar.map
+                        this.pathRoute2(enemy.getPosition(), enemy.getFinalDest(), enemy);
+                        enemy.setBlock(false);
+                        //enemy.setFinalDest(null);
+                    }else{
+
+
+                    }
+                }else {
+                    //如果当前有pathroute的结果
+                    if(enemy.getDest()==null && enemy.routes.size()==0){
+                        enemy.setDest(enemy.getFinalDest());
+                    }else{
+                        //行走吧
+                        if(!(enemy.getExecutor().getCurrentState() instanceof WalkState)){//就是说还没开始追击
+
+                            if(player!= null) {
+
+                                WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
+                                //TODO serverContext.broadCast(walkCmd2.toBytes()); 这里不再用walkcmd2去同步怪物的移动了
+                                enemy.getExecutor().receive(walkCmd2);
+
+
+                               /*ChaseCmd chaseCmd = new ChaseCmd(enemy.getId(), enemy.getTargetId());
+                               serverContext.broadCast(chaseCmd.toBytes());
+                               enemy.getExecutor().receive(chaseCmd);*/
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+        }else{
+            enemy.setTarget(null);
+            enemy.setDest(null);
+            enemy.setFinalDest(null);
+        }
+
+    }
+
+    public void  pathRoute2(GL_Vector from, GL_Vector to, LivingThingBean livingThingBean) {
+        int xDistance = (int) (to.x - from.x);//caculate the x distance
+        int zDistance = (int) (to.z - from.z);//caculate the z distance
+        int width =40;
+        int height=40;
+        int map[][] =new int[width][height];
+        int srcX = (int)from.x;
+        int srcZ= (int)from.z;
+        int dstX = (int )to.x;
+        int dstZ =(int )to.z;
+        int minX = srcX-10;
+        int minZ = srcZ-10;
+        ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
+        for(int x =0;x<width;x++){
+            for(int z =0;z<height;z++){
+                int offsetX = MathUtil.getOffesetChunk(x + srcX - 10);
+                int offsetZ = MathUtil.getOffesetChunk(z+srcZ-10);
+                Chunk chunk = chunkProvider.getChunk(MathUtil.getBelongChunkInt(x), 0, MathUtil.getBelongChunkInt(z));
+                IBlock block = chunk.getBlock(offsetX, 1, offsetZ);
+
+
+                if (block == null || block.getId() == 0 || block.isPenetrate()) { //说明这边的block也是空的 it's empt
+
+                }else{
+                    map[x][z]=1;
+                }
+
+
+
+            }
+        }
+
+
+
+        AStar astar =new AStar();
+        astar.map=map;
+        List<GL_Vector> routeList = new ArrayList<>();
+        CloseSet p = astar.start(srcX-minX, srcZ-minZ, dstX-minX, dstZ-minZ);
+        int step =0;
+        if(p!=null){
+            while (p.from!=null)
+            {routeList.add(new GL_Vector(p.cur.x+minX,1,p.cur.y+minZ));
+
+                System.out.printf("（%d，%d）→\n", p.cur.x+minX,p.cur.y+minZ);
+                p = p.from;
+                step++;
+            }
+
+            livingThingBean.routes.add(new GL_Vector((int)livingThingBean.getPosition().x+0.5f,(int)livingThingBean.getPosition().y,(int)livingThingBean.getPosition().z+0.5f));
+            livingThingBean.routes.addAll(routeList);
+
+            livingThingBean.setFinalDest(null);
+            GL_Vector point = routeList.get(0);
+
+            livingThingBean.setDest(point);
+        }
+    }
+
+
+    public void findTarget(LivingThingBean enemy) {
+
+        for (LivingThingBean player : livingThings) {
+
+            if (player != null)
+                if (GL_Vector.length(GL_Vector.sub(enemy.getPosition(), player.getPosition())) < 5) {
+                    enemy.setTarget(player);
+                    //enemy.setTarget(player);
+                }
+
+        }
 
     }
 }

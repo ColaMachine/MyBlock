@@ -3,9 +3,12 @@ package com.dozenx.game.engine.Role.bean;
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import cola.machine.game.myblocks.skill.AttackBall;
+import cola.machine.game.myblocks.skill.AttackManager;
 import com.dozenx.game.engine.Role.model.BaseModel;
 import com.dozenx.game.engine.Role.model.WolfModel;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 import org.lwjgl.Sys;
 
@@ -43,6 +46,14 @@ public class Wolf extends LivingThing {
         super.move(x,y,z);
 
 
+    }
+
+    public void attack(){
+        LogUtil.println("player 攻击");
+
+        AttackBall ball =new AttackBall(5,this.getPosition().copyClone(),this.getViewDir().copyClone(),5,2,this);
+
+        AttackManager.addAttack(ball);//这里发现一个问题是 宠物发起的攻击会砸死自己
     }
 
     //public boolean needJudgeCrash=false;

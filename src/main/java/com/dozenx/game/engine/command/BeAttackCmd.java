@@ -39,7 +39,7 @@ public class BeAttackCmd extends BaseGameCmd{
         this.cmdType = cmdType;
     }
 
-    private CmdType cmdType = CmdType.ATTACK;
+    private CmdType cmdType = CmdType.BEATTACK;
     private int attackValue ;
 
     public int getAttackValue() {

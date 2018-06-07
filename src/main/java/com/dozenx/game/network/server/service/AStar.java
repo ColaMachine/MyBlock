@@ -12,7 +12,7 @@ package com.dozenx.game.network.server.service;
 public class AStar {
   
 
-int map[][] = {
+public int map[][] = {
         {0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1},
         {0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1},
         {0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,1},
