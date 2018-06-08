@@ -22,6 +22,7 @@ public enum CmdType {
     GET(GetCmd.class,GetHandler.class),//9
     PICK(PickCmd.class,PickHandler.class),//10
     ATTACK(AttackCmd.class,AttackHandler.class),//1
+    BEATTACK(BeAttackCmd.class,AttackHandler.class),//1
     DROP(DropCmd.class,DropHandler.class),//12
     //GROUP(),//13
     CHUNKREQUEST(ChunkRequestCmd.class,ChunkHandler.class),//14
