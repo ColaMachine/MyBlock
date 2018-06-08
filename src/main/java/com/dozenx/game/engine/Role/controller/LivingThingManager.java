@@ -358,7 +358,7 @@ public class LivingThingManager {
             LogUtil.println("当前状态不对");
             return;
         }*/
-
+        //我希望这个接口没200秒才被调用一次
         enemyClientLoop();
 //        for(int i=livingThings.size()-1;i>=0;i--){
 //            LivingThing  livingThing = livingThings.get(i);
@@ -881,80 +881,7 @@ public class LivingThingManager {
     //怪物逻辑
     public void enemyClientLoop() {
         for (LivingThingBean enemy : livingThings) {
-            if (!enemy.isDied()) {//如果自身是有效单位 没有死
-
-                if (enemy.getTargetId() > 0) {//并且是有目标
-                    if (checkEnemyTarget(enemy))//释放无用target 补全缺少target
-                    {//追击或者攻击
-                        moveOrAttack(enemy);
-                    }
-
-
-                } else {//暂时没有目标
-                    //if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
-                    //找寻目标
-
-                    //
-
-                    findTarget(enemy);
-                }
-                //怪物
-//                    if(enemy.getTarget() != null && enemy.getDest()==null && enemy.getFinalDest()!=null){
-//                        if( enemy.isBlock() ){//如果立马取消掉dest
-//                            if (enemy.routes.size() == 0&&enemy.routes == null || enemy.routes.size() == 0) {
-//
-//                                AStar astar =new  AStar();
-//                               // astar.map
-//                                this.pathRoute2(enemy.getPosition(), enemy.getFinalDest(), enemy);
-//                                enemy.setFinalDest(null);
-//                            }else{
-//
-//
-//                            }
-//                        }else {
-//                            //如果当前有pathroute的结果
-//                            if(enemy.getDest()==null){
-//                                enemy.setDest(enemy.getFinalDest());
-//                            }
-//
-//                        }
-//                        //如果长时间由于卡住过不去 就动用path寻路
-//                      /*  if (enemy.routes == null || enemy.routes.size() == 0) {
-//                            this.pathRoute(enemy.getPosition(), enemy.getFinalDest(), enemy);
-//                            enemy.setFinalDest(null);
-//                        }else{
-//
-//
-//                        }*/
-//                    }
-                //}
-
-                enemy.getExecutor().getCurrentState().update();
-
-                CoreRegistry.get(PhysicsEngine.class).checkIsDrop(enemy);
-                CoreRegistry.get(PhysicsEngine.class).gravitation(enemy);
-            }
-        }
-        for (LivingThingBean player : livingThings) {
-            if (!player.isDied()) {//如果自身是有效单位
-
-                /*if(enemy.getTargetId() > 0){//并且是有目标
-                    if(checkEnemyTarget(enemy))//释放无用target 补全缺少target
-                    {
-                        moveOrAttack(enemy);
-                    }
-                    //追击或者攻击
-
-                }else{//暂时没有目标
-                    if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
-                        //找寻目标
-
-                        //findTarget(enemy);
-                    }
-                }*/
-                //player.getExecutor().getCurrentState().update();
-
-            }
+            enemy.doSomeThing(this );
         }
     }
 
@@ -993,14 +920,20 @@ public class LivingThingManager {
         GL_Vector direction = GL_Vector.sub(enemy.getTarget().getPosition(), enemy.getPosition());
         //enemy.setWalkDir(direction);
 
-        float length = GL_Vector.length(direction);
-        if (length < 2) {
-            if(TimeUtil.getNowMills()-enemy.getLastAttackTime()>1000){
-                AttackCmd attackCmd = new AttackCmd(enemy.getId(), AttackType.KAN, enemy.getTargetId());
-                //TODO serverContext.broadCast(attackCmd.toBytes());
-                // //
-                enemy.getExecutor().receive(attackCmd);
+        float length = GL_Vector.length(direction);//判断距离
+        if (length < 2) {//如果小于攻击距离
+            //enemy.attemptAttack();
+            if(TimeUtil.getNowMills()-enemy.getLastAttackTime()>1000){//如果攻击间隔已经够了
+
+                enemy.brainAttack();//控制行动 不要控制其他 以对象的方式进行操控是最好的
                 enemy.setLastAttackTime(TimeUtil.getNowMills());
+
+
+//                AttackCmd attackCmd = new AttackCmd(enemy.getId(), AttackType.KAN, enemy.getTargetId());
+//                //TODO serverContext.broadCast(attackCmd.toBytes());
+//                // //
+//                enemy.getExecutor().receive(attackCmd);
+//                enemy.setLastAttackTime(TimeUtil.getNowMills());
             }
 
 

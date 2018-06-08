@@ -5,10 +5,9 @@ import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
-import core.log.LogUtil;
-
 import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.bean.Role;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.excutor.Executor;
 import com.dozenx.game.engine.command.GameCmd;
 import com.dozenx.game.engine.command.PlayerSynCmd;
@@ -20,6 +19,7 @@ import com.dozenx.game.engine.live.state.State;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.util.ByteUtil;
 import com.dozenx.util.TimeUtil;
+import core.log.LogUtil;
 import glmodel.GL_Vector;
 
 import java.util.ArrayList;
@@ -203,6 +203,53 @@ public class LivingThingBean extends Role {
                 }
 
             }*/
+
+    }
+    public boolean checkEnemyTarget(LivingThingBean livingThingBean) {
+        Role target = this.getTarget();
+        if (target == null|| target.isDied()) { //如果没有目标
+            livingThingBean.setTargetId(0);
+            livingThingBean.setTarget(null);
+            return false;
+        } else if (GL_Vector.length(GL_Vector.sub(livingThingBean.getPosition(), target.getPosition())) > 100) {//如果距离太远了 就失去目标
+            if (TimeUtil.getNowMills() - livingThingBean.getLastHurtTime() > 10 * 1000) {//如果上次伤害还没超过多少时间
+
+                livingThingBean.setTargetId(0);//失去目标
+                livingThingBean.setTarget(null);
+            }
+            livingThingBean.setTarget(target);
+            //enemy.setTarget(player);
+            return false;
+        } else {
+            livingThingBean.setTarget(target);
+            return true;
+        }
+
+    }
+    public void doSomeThing(LivingThingManager livingThingManager){
+        //如果是普通生物
+        if (!isDied()) {//如果自身是有效单位 没有死
+
+            if (getTargetId() > 0) {//并且是有目标
+                if (checkEnemyTarget(this))//释放无用target 补全缺少target
+                {//追击或者攻击
+                    livingThingManager.moveOrAttack(this);
+                }
+            } else {//暂时没有目标
+                //if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
+                //找寻目标
+
+                //希望没1000执行一次
+                livingThingManager.findTarget(this);
+            }
+
+            getExecutor().getCurrentState().update();
+
+            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
+            CoreRegistry.get(PhysicsEngine.class).gravitation(this);
+        }
+        this.getExecutor().getCurrentState().update();
+
 
     }
 
@@ -477,9 +524,6 @@ public class LivingThingBean extends Role {
 
     /**
      * 所有生物公用的移动方式
-     * @param x
-     * @param y
-     * @param z
      */
     /*
     public boolean   checkDest(){
@@ -661,6 +705,19 @@ public class LivingThingBean extends Role {
     }
     }
     AnimationManager animationManager =null;
+
+    public void BrainWalk(){
+
+    }
+    public void MotiWalk(){
+
+    }
+    public void BrainAttack(){
+
+    }
+    public void MotiAttack(){
+
+    }
     public void attack(){
 
 /*
