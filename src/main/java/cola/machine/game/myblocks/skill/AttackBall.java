@@ -21,10 +21,10 @@ import org.lwjgl.opengl.GL11;
  */
 public class AttackBall extends  Ball{
     public GL_Vector startPosition;
+    private int species = 0;
 
-
-    public AttackBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from) {
-        super(id, position, direction, speed, itemType, from);
+    public AttackBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from,int species) {
+        super(id, position, direction, speed, itemType, from,species);
         this.startPosition= position.copyClone();
         this.speed=3;
     }

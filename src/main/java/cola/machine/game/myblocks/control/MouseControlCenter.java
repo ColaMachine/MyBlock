@@ -478,7 +478,7 @@ public class MouseControlCenter {
                 ItemDefinition itemDefinition  = ItemManager.getItemDefinition(player.getMainWeapon());
                 if(itemDefinition!=null && itemDefinition.isFar){//如果是远程的装备的话
                     if(itemDefinition.shootBallId>0){//射出攻击球
-                        AttackBall ball =new AttackBall((int)(Math.random()*10000),player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getViewDir().copyClone(),1,itemDefinition.shootBallId,player);
+                        AttackBall ball =new AttackBall((int)(Math.random()*10000),player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getViewDir().copyClone(),1,itemDefinition.shootBallId,player,0);
                         attackManager.addAttack(ball);
 
                     }

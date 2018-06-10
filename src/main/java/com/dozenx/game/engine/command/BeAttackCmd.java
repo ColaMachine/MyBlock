@@ -59,8 +59,7 @@ public class BeAttackCmd extends BaseGameCmd{
     public BeAttackCmd(int sourceId, ItemDefinition itemDefinition, int  targetId, GL_Vector direction){
         this.userId = sourceId;
         this.itemDefinition=itemDefinition;
-
-            this.targetId = targetId;
+        this.targetId = targetId;
         this.direction= direction;
 
     }

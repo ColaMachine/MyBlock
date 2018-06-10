@@ -11,16 +11,16 @@ import glmodel.GL_Vector;
 /**
  * Created by luying on 16/9/25.
  */
-public class LinedAttackBall extends  Ball{
+public class LinedAttackBall extends  AttackBall{
     public GL_Vector startPosition;
 
 
-    public LinedAttackBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from) {
-        super(id, position, direction, speed, itemType, from);
+    public LinedAttackBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from,int spieces) {
+        super(id, position, direction, speed, itemType, from,spieces);
         this.startPosition= position.copyClone();
         this.speed=3;
     }
-   // GL_Vector newDirection =new GL_Vector();
+    GL_Vector newDirection =new GL_Vector();
     public void update(ShaderConfig shaderConfig ){
         if(died){
             // LogUtil.err("ball already died");
@@ -52,7 +52,9 @@ public class LinedAttackBall extends  Ball{
             this.position.add(this.startPosition);
 
         }
-
+        newDirection .x=direction.x*speed;
+        newDirection.z= direction.z*speed;
+       // newDirection.y= direction.y*speed-0.6f*nowTime/1000;
         if(sumDistance>distance){
             this.readyDied=true;
              this.died=true;
@@ -69,9 +71,21 @@ public class LinedAttackBall extends  Ball{
             this.readyDied=true;
         }
 
+        float angle=GL_Vector.angleXZ2(new GL_Vector(newDirection.x,0,newDirection.z) , new GL_Vector(0,0,-1));
+        float angleY= GL_Vector.updownAngle(newDirection);
+
+//          LogUtil.println("angle:"+angle+"angleY:"+angleY+" y:"+newDirection.y);
+//-(float)(45*3.14/180)
+
+
+
         {
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
-            this.itemDefinition.getShape().renderShader(shaderConfig, shaderConfig.getVao(),translateMatrix);
+
+            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(angleY,angle,0);
+
+            rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
+            this.itemDefinition.getShape().renderShader(shaderConfig, shaderConfig.getVao(),rotateMatrix);
         }
 
     }

@@ -332,7 +332,7 @@ public class Player extends LivingThing {
     public void attack(){
         LogUtil.println("player 攻击");
 
-        AttackBall ball =new AttackBall(5,this.getPosition().copyClone(),this.getViewDir().copyClone(),5,2,this);
+        AttackBall ball =new AttackBall(5,this.getPosition().copyClone(),this.getViewDir().copyClone(),5,2,this,0);
 
         AttackManager.addAttack(ball);
     }

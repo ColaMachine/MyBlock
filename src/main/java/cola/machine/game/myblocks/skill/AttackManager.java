@@ -84,10 +84,17 @@ public class AttackManager {
         for(int i=attackList.size()-1;i>=0;i--){
             Ball ball = attackList.get(i);
             GL_Vector vector = ball.position;
+
+            if(ball.species!= livingThingManager.player.species && ball.from!= livingThingManager.player&& GL_Vector.length(new GL_Vector(vector,livingThingManager.player.getPosition()))<1){
+                livingThingManager.player.beAttack(1);
+                livingThingManager.player.receive(new BeAttackCmd(ball.from.getId(),ball.itemDefinition,livingThingManager.player.getId(),ball.direction));
+                ball.readyDied=true;
+
+            }else
             for(int j=livingThingManager.livingThings.size()-1;j>=0;j--){
                 LivingThing livingThing = livingThingManager.livingThings.get(j);
                 //LogUtil.println(LivingThingManager.livingThings.get(j).position.length(vector)+"");
-                if(ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<1){
+                if(ball.species!= livingThing.species && ball.from!= livingThing&& GL_Vector.length(new GL_Vector(vector,livingThing.getPosition()))<1){
                     livingThingManager.livingThings.get(j).beAttack(10);
                     livingThingManager.livingThings.get(j).receive(new BeAttackCmd(ball.from.getId(),ball.itemDefinition,livingThing.getId(),ball.direction));
                     ball.readyDied=true;

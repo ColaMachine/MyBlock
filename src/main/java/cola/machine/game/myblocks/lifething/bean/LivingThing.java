@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
@@ -245,7 +247,12 @@ public class LivingThing extends LivingThingBean {
 
 
     }
+    public void preUpdate(LivingThingManager livingThingManager){
+        this.doSomeThing(livingThingManager);
 
+
+        // this.currentState.update();
+    }
     public void update(){
         super.update();
 

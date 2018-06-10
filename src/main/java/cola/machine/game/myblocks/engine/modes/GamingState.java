@@ -239,18 +239,19 @@ public class GamingState implements GameState {
             client500msTask.start();
             SynchronTask task = new SynchronTask();
             task.start();
-           // MainFrame.main(new String[]{});
-           // Thread thread = new Thread(){
-                //public void run(){
-                    //MainFrame main =new MainFrame();
-                    //main.main(new String []{});
-                //}
-            //};
-           // thread.start();
+           //MainFrame.main(new String[]{});
+           Thread thread = new Thread(){
+                public void run(){
+                    MainFrame main =new MainFrame();
+                    main.main(new String []{});
+                }
+            };
+           thread.start();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        LogUtil.println("GamingState 加载完毕");
 
     }Div shadowDiv;
     public static Div selectDiv;

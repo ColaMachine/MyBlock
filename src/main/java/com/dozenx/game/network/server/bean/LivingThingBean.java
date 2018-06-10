@@ -240,15 +240,15 @@ public class LivingThingBean extends Role {
                 //找寻目标
 
                 //希望没1000执行一次
-                livingThingManager.findTarget(this);
+                livingThingManager.findGoodTarget(this);
             }
 
-            getExecutor().getCurrentState().update();
+            //getExecutor().getCurrentState().update();
 
             CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
             CoreRegistry.get(PhysicsEngine.class).gravitation(this);
         }
-        this.getExecutor().getCurrentState().update();
+        //this.getExecutor().getCurrentState().update();
 
 
     }

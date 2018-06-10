@@ -23,6 +23,8 @@ import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemServerBean;
+import com.dozenx.game.engine.live.state.ChaseAttackState;
+import com.dozenx.game.engine.live.state.ChaseState;
 import com.dozenx.game.engine.live.state.IdleState;
 import com.dozenx.game.engine.live.state.WalkState;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
@@ -359,7 +361,7 @@ public class LivingThingManager {
             return;
         }*/
         //我希望这个接口没200秒才被调用一次
-        enemyClientLoop();
+
 //        for(int i=livingThings.size()-1;i>=0;i--){
 //            LivingThing  livingThing = livingThings.get(i);
 //            if(livingThing.getTarget()!=null){
@@ -663,9 +665,17 @@ public class LivingThingManager {
         //if(GamingState.livingThingChanged ) {
 
         //}
+
+        //enemyClientLoop();
+
+        for (LivingThingBean enemy : livingThings) {
+            enemy.doSomeThing(this );
+        }
         this.player.update();
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
+
+            livingThing.preUpdate(this);
             livingThing.update();
         }
 
@@ -863,6 +873,7 @@ public class LivingThingManager {
             GL_Vector walkDir  = distanceVector.normalize();
             GL_Vector walkDistance= GL_Vector.multiplyWithoutY(walkDir,
                     1f* (interval)/1000);
+            livingThing.setWalkDir(walkDir);
             livingThing.setBodyAngle(GL_Vector.getAnagleFromXZVectory(walkDir));
             if(GL_Vector.length(walkDistance)<distance){
                 livingThing.move(GL_Vector.add(livingThing.position, walkDistance));
@@ -925,10 +936,10 @@ public class LivingThingManager {
             //enemy.attemptAttack();
             if(TimeUtil.getNowMills()-enemy.getLastAttackTime()>1000){//如果攻击间隔已经够了
 
-                enemy.brainAttack();//控制行动 不要控制其他 以对象的方式进行操控是最好的
-                enemy.setLastAttackTime(TimeUtil.getNowMills());
+                //enemy.brainAttack();//控制行动 不要控制其他 以对象的方式进行操控是最好的
+              //  enemy.setLastAttackTime(TimeUtil.getNowMills());
 
-
+enemy.attack();
 //                AttackCmd attackCmd = new AttackCmd(enemy.getId(), AttackType.KAN, enemy.getTargetId());
 //                //TODO serverContext.broadCast(attackCmd.toBytes());
 //                // //
@@ -984,13 +995,13 @@ public class LivingThingManager {
                         enemy.setDest(enemy.getFinalDest());
                     }else{
                         //行走吧
-                        if(!(enemy.getExecutor().getCurrentState() instanceof WalkState)){//就是说还没开始追击
+                        if(!(enemy.getExecutor().getCurrentState() instanceof ChaseState)){//就是说还没开始追击
 
                             if(player!= null) {
-
-                                WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
+ChaseCmd chaseCmd =new ChaseCmd(enemy.getId(),enemy.getTargetId());
+                                //WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
                                 //TODO serverContext.broadCast(walkCmd2.toBytes()); 这里不再用walkcmd2去同步怪物的移动了
-                                enemy.getExecutor().receive(walkCmd2);
+                                enemy.getExecutor().receive(chaseCmd);
 
 
                                /*ChaseCmd chaseCmd = new ChaseCmd(enemy.getId(), enemy.getTargetId());
@@ -1077,9 +1088,38 @@ public class LivingThingManager {
 
         for (LivingThingBean player : livingThings) {
 
-            if (player != null)
+            if (player != null&& player.species==0 )
                 if (GL_Vector.length(GL_Vector.sub(enemy.getPosition(), player.getPosition())) < 5) {
                     enemy.setTarget(player);
+                    //enemy.setTarget(player);
+                }
+
+        }
+
+    }
+    public void findGoodTarget(LivingThingBean enemy) {
+        if (GL_Vector.length(GL_Vector.sub(enemy.getPosition(), player.getPosition())) < 5) {
+            enemy.setTarget(player);
+            //enemy.setTarget(player);
+        }
+        for (LivingThingBean good : livingThings) {
+
+            if (good != null&& good.species==0 )
+                if (GL_Vector.length(GL_Vector.sub(enemy.getPosition(), good.getPosition())) < 5) {
+                    enemy.setTarget(good);
+                    //enemy.setTarget(player);
+                }
+
+        }
+
+    }
+    public void findBadTarget(LivingThingBean goodOne) {
+
+        for (LivingThingBean bad : livingThings) {
+
+            if (bad != null&& bad.species==1 )
+                if (GL_Vector.length(GL_Vector.sub(bad.getPosition(), goodOne.getPosition())) < 5) {
+                    goodOne.setTarget(bad);
                     //enemy.setTarget(player);
                 }
 

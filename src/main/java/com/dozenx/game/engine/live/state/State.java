@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.skill.AttackBall;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.Ball;
 import cola.machine.game.myblocks.skill.TimeString;
+import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -84,14 +85,24 @@ public class State {
         }else if( type== CmdType.ATTACK){
             AttackCmd attackCmd = (AttackCmd) gameCmd;
             if(attackCmd.getTargetId()==livingThing.getId()){
-                return new BeAttackState(this.livingThing,attackCmd);
+                LogUtil.println("如果当前userId和targetId是一样的话怎么会接受到攻击事件呢,应该收到的是beattackcmd");
+                //return new BeAttackState(this.livingThing, attackCmd..getUserId(),attackCmd);
+                return null;
             }else{
                 return new AttackState(this.livingThing,attackCmd);
             }
 
 
+        }else if( type== CmdType.BEATTACK){
+            BeAttackCmd beAttackCmd = (BeAttackCmd) gameCmd;
+
+                LogUtil.println("如果当前userId和targetId是一样的话怎么会接受到攻击事件呢,应该收到的是beattackcmd");
+                return new BeAttackState(this.livingThing, beAttackCmd.direction);
         }else if(type==CmdType.CHASE){
             return new ChaseState(this.livingThing,gameCmd);
+        }else if(type==CmdType.WALK2){
+            WalkCmd2 walkCmd2 = (WalkCmd2) gameCmd;
+            return new WalkState(this.livingThing,walkCmd2.from,walkCmd2.to);
         }else{
             return new IdleState(this.livingThing,gameCmd);
         }
