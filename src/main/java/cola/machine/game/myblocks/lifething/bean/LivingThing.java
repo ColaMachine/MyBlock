@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
@@ -12,6 +13,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import com.dozenx.util.TimeUtil;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -298,8 +300,16 @@ public class LivingThing extends LivingThingBean {
 
 
     public void attack(){
+       // int damage =  AttackManager.computeDamage(this, this.getTarget());
+        //LogUtil.println("player 攻击");
+       // this.getTarget().beAttack(damage);
+        if(this.getTarget()!=null){
+            AttackManager.addAttackEvent(this,this.getTarget());
+        }
 
-
+        this.changeAnimationState("attack");
+        //AttackManager.addAttack(ball);//这里发现一个问题是 宠物发起的攻击会砸死自己
+        this.setLastAttackTime(TimeUtil.getNowMills());
        /* CoreRegistry.get(AnimationManager.class)
                 .apply(getModel().bodyComponent,"kan");*/
     }

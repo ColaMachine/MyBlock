@@ -27,6 +27,8 @@ import de.matthiasmann.twl.renderer.Texture;
 import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import glapp.GLApp;
 import glapp.GLImage;
+import glmodel.GLModel;
+import glmodel.GLModelContainer;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.Util;
@@ -68,6 +70,7 @@ public class TextureManager {
             loadImage();
             loadTexture();
             loadShape();
+            loadObj();
             //loadItem();
         } catch (Exception e) {
             e.printStackTrace();
@@ -510,6 +513,27 @@ public class TextureManager {
         }
 
     }
+
+
+    public static HashMap<String,GLModelContainer> objMap =new HashMap<>();
+
+    public void loadObj() throws Exception {
+
+        /*try {
+
+            GLModelContainer gLModelContainer =new GLModelContainer("human_walk",5);
+
+            objMap.put("human_walk",gLModelContainer);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to load config", e);
+        }*/
+
+    }
+
+
+
+
 
 
     public static TextureInfo getTextureInfo(String name) {

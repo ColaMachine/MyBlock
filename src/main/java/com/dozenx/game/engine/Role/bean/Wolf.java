@@ -1,20 +1,28 @@
 package com.dozenx.game.engine.Role.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.skill.AttackBall;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.skill.LinedAttackBall;
+import cola.machine.game.myblocks.skill.TimeString;
 import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.model.BaseModel;
 import com.dozenx.game.engine.Role.model.WolfModel;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.live.state.AttackState;
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 import org.lwjgl.Sys;
+
+import javax.vecmath.Vector2f;
 
 public class Wolf extends LivingThing {
 
@@ -53,13 +61,20 @@ public class Wolf extends LivingThing {
     }
 
     public void attack(){
-
-        LogUtil.println("player 攻击");
-
-        AttackBall ball =new LinedAttackBall(5,this.getPosition().copyClone(),this.getWalkDir().copyClone(),5,2,this,1);
-
-        AttackManager.addAttack(ball);//这里发现一个问题是 宠物发起的攻击会砸死自己
-        this.setLastAttackTime(TimeUtil.getNowMills());
+    super.attack();
+//        LogUtil.println("player 攻击");
+//        this.getTarget().beAttack(1);
+//
+////        Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,this.getTarget().getPosition().copyClone().add(new GL_Vector(0,this.getExecutor().getModel().getRootComponent().height,0)), GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
+////        screenXY.x *= Constants.WINDOW_WIDTH;
+////        screenXY.y *= Constants.WINDOW_HEIGHT;
+////        AttackManager.addText(new TimeString("-1", screenXY.x,screenXY.y));
+////        //AttackBall ball =new LinedAttackBall(5,this.getPosition().copyClone(),this.getWalkDir().copyClone(),5,2,this,1);
+////        //this.changeState(new AttackState(this));
+//        AttackManager.addAttackEvent(this,this.getTarget());
+//        this.changeAnimationState("attack");
+//        //AttackManager.addAttack(ball);//这里发现一个问题是 宠物发起的攻击会砸死自己
+//        this.setLastAttackTime(TimeUtil.getNowMills());
     }
 
     //public boolean needJudgeCrash=false;

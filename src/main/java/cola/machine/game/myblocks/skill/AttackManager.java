@@ -11,6 +11,7 @@ import cola.machine.game.myblocks.physic.BulletResultDTO;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.Role.bean.Player;
+import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.BeAttackCmd;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
@@ -19,6 +20,7 @@ import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
+import com.dozenx.game.network.server.bean.LivingThingBean;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.MathUtil;
@@ -28,6 +30,7 @@ import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 import java.util.*;
 
@@ -244,6 +247,27 @@ public class AttackManager {
             LogUtil.println(arr.targetPoint+"");
             //  }
         }
+    }
+
+    public static int computeDamage(Role source,Role target){
+        int gongji = source.getTotalPower();
+        int fangyu = target.getTotalAgility();
+        double percent = fangyu*0.06/(fangyu*0.06+1);
+        int damage = (int)(gongji*(1-percent));
+        return damage;
+    }
+
+    public static void addAttackEvent(Role source,Role target){
+        int damage =  AttackManager.computeDamage(source,target);
+
+        Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,target.getPosition().copyClone().add(new GL_Vector(0,target.getExecutor().getModel().getRootComponent().height,0)), GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
+        screenXY.x *= Constants.WINDOW_WIDTH;
+        screenXY.y *= Constants.WINDOW_HEIGHT;
+
+        addText(new TimeString("-"+damage,screenXY.x,screenXY.y));
+        target.beAttack(damage);
+
+
     }
 
 }

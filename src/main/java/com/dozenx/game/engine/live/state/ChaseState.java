@@ -1,5 +1,7 @@
 package com.dozenx.game.engine.live.state;
 
+import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.ChaseCmd;
 import com.dozenx.game.engine.command.GameCmd;
@@ -66,11 +68,15 @@ public class ChaseState extends State {
         preCheck();
         diedProcessor();
         noTargetProcessor();
+
         long nowTime = TimeUtil.getNowMills();
         if (nowTime - lastMoveTime >100) {
+
+            CoreRegistry.get(AnimationManager.class).apply( livingThing.getModel().getRootComponent(), "walkerFoward");
             //Player player= CoreRegistry.get(Player.class);
             //AnimationManager manager = CoreRegistry.get(AnimationManager.class);
             //manager.apply(getModel().bodyComponent, "walkerFoward");
+
             try {
                LivingThingManager.chaseCanAttack(livingThing,nowTime-lastMoveTime);
                // GL_Vector walkDir = GL_Vector.sub(livingThing.getTarget().getPosition(), livingThing.getPosition()).normalize();

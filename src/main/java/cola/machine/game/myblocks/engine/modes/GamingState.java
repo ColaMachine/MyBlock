@@ -60,6 +60,7 @@ import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
 import glapp.GLApp;
 import glapp.GLCamera;
+import glmodel.GLModel;
 import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -651,7 +652,7 @@ public ShaderManager shaderManager;
 
 
         }
-        
+
 
         //ShaderUtils.testDrawVbo();
         //LogUtil.println(TimeUtil.getNowMills()+"'");

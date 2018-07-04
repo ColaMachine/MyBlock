@@ -41,6 +41,8 @@ import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.MathUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
+import glmodel.GLModel;
+import glmodel.GLModelContainer;
 import glmodel.GL_Vector;
 
 import javax.vecmath.Vector3f;
@@ -86,12 +88,15 @@ public class LivingThingManager {
             }
         }
     }
+    GLModelContainer GLModelContainer = null;
 
     /**
      * 构造函数
      */
     public LivingThingManager(){
 
+        gl_model =  new GLModel("models/boat/colorfulblock.obj");
+         GLModelContainer = new GLModelContainer("humanblock-bone2-walk",60,5);
        /*  wolf =new Wolf(999);
         wolf.position=new GL_Vector(-1,3,-1);
         add(wolf);*/
@@ -144,7 +149,7 @@ public class LivingThingManager {
         }
         return livingThingsMap.get(id);
     }
-
+    GLModel gl_model ;
 
     public void render(){
         //glUseProgram(ShaderManager.livingThingShaderConfig.getProgramId());
@@ -155,8 +160,11 @@ public class LivingThingManager {
         //TODO targetId 已经设置好了 但是target还是为空的
         ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
 
+       // gl_model.renderShader();
 
+        GLModelContainer.next();
 
+        GLModelContainer.glModels[GLModelContainer.index].renderShader();
         //livingthing update
         for (LivingThing livingThing : livingThings) {
            // this.getLivingThingById();
@@ -668,9 +676,9 @@ public class LivingThingManager {
 
         //enemyClientLoop();
 
-        for (LivingThingBean enemy : livingThings) {
-            enemy.doSomeThing(this );
-        }
+//        for (LivingThingBean enemy : livingThings) {
+//            enemy.doSomeThing(this );
+//        }
         this.player.update();
         for(int i=livingThings.size()-1;i>=0;i--){
             LivingThing  livingThing = livingThings.get(i);
@@ -864,6 +872,9 @@ public class LivingThingManager {
     }
 
     public static float chaseCanAttack(LivingThingBean livingThing,long interval){
+        if(livingThing.getTarget()==null){//如果目标死亡的话 会触发
+            return 100;
+        }
         if(livingThing.getTarget().getPosition() == livingThing.getPosition()){
             LogUtil.err("this cant't be same target's position and his position");
         }

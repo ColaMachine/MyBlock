@@ -465,8 +465,9 @@ public class MouseControlCenter {
             }
             if(livingThing!=null) {
                 player.setTarget(livingThing);
-                livingThing.beAttack(1);
-                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
+                player.attack();
+//                livingThing.beAttack(1);
+//                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
 
                 //后退
                 //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));

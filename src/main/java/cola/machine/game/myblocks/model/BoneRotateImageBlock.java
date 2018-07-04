@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model;
 
 
+import cola.machine.game.myblocks.animation.Transform;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.edit.EditEngine;
@@ -19,6 +20,7 @@ import java.util.List;
 
 
 public class BoneRotateImageBlock extends RotateImageBlock{
+    public Transform transform =new Transform();
 public GL_Vector parentPosition = new GL_Vector();
     public GL_Vector childPosition=new GL_Vector();
    public  BaseBlock block =null;
@@ -254,20 +256,95 @@ public GL_Vector parentPosition = new GL_Vector();
 
         matrix.multiply(matrix,GL_Matrix.translateMatrix(x,y,z));
 
-        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentPosition.x, parentPosition.y,parentPosition.z);
-
+//        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentPosition.x-childPosition.x, parentPosition.y-childPosition.y
+//                ,parentPosition.z -childPosition.z);
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(parentPosition.x, parentPosition.y
+                ,parentPosition.z );
 
         translateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
 
         //GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix(0,0,0));
 
-        GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( rotateX, rotateY, rotateZ));
-        translateMatrix = GL_Matrix.translateMatrix(-childPosition.x, -childPosition.y, -childPosition.z);
+        GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( rotateX+transform.rotateX,
+                rotateY+transform.rotateY, rotateZ+transform.rotateZ));
+        translateMatrix = GL_Matrix.translateMatrix(-childPosition.x-transform.translateX,
+                -childPosition.y-transform.translateY, -childPosition.z-transform.translateZ);
 //
+
 //            if(this.name.equals("rhand")&& this.rotateX>0){
 ////            LogUtil.println("hello");
 //            }
         rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+      //  rotateMatrix= GL_Matrix.multiply(GL_Matrix.scaleMatrix(transform.scaleX,transform.scaleY,transform.scaleZ),rotateMatrix);
+        rotateMatrix= GL_Matrix.multiply(rotateMatrix,GL_Matrix.scaleMatrix(transform.scaleX,transform.scaleY,transform.scaleZ));
+        if(transform.scaleX<0.5){
+            LogUtil.println(transform.scaleX+"");
+        }
+        if(top!=null ) {
+            ShaderUtils.draw3dImage(config, vao, rotateMatrix, points[4], points[5], points[6], points[7], dirAry[0], top);
+        }
+
+        if(bottom!=null) {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix, points[3], points[2], points[1], points[0], dirAry[1], bottom);
+        }
+
+        if(front!=null ) {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix,  points[0], points[1], points[5], points[4], dirAry[2], front);
+        }
+
+        if(back!=null ) {
+            ShaderUtils.draw3dImage(config, vao, rotateMatrix,  points[2], points[3], points[7], points[6], dirAry[3], back);
+        }
+
+        if(left!=null ) {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix,  points[3], points[0], points[4], points[7], dirAry[4], left);
+        }
+        if(right!=null )  {
+            ShaderUtils.draw3dImage(config, vao,rotateMatrix, points[1], points[2], points[6], points[5], dirAry[5], right);
+        }
+        if(block!=null){
+            block.renderShader(config,vao,rotateMatrix);
+        }
+        for(BaseBlock block:children){
+            if(block instanceof  BoneRotateImageBlock){
+                BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock) block;
+                //先进行移动
+
+                //boneRotateImageBlock.reComputePoints(rotateMatrix);
+                block.renderShader( config,  vao,  rotateMatrix);
+            }else{
+                block.renderShader( config,  vao,  matrix);
+            }
+
+        }
+    }
+
+    public void renderShader2(ShaderConfig config, Vao vao, GL_Matrix matrix){
+        GL_Vector[] dirAry = BoxModel.dirAry;
+
+        matrix.multiply(matrix,GL_Matrix.translateMatrix(x,y,z));
+        float newX= parentPosition.x-childPosition.x+transform.translateX;
+        float newY= parentPosition.y-childPosition.y+transform.translateY;
+        float newZ= parentPosition.z-childPosition.z+transform.translateZ;
+        float newRotateX= rotateX+transform.rotateX;
+        float newRotateY = rotateY+transform.rotateY;
+        float newRotateZ = rotateZ+transform.rotateZ;
+
+
+        GL_Matrix translateMatrix = GL_Matrix.translateMatrix(newX, newY,newZ);
+
+
+        translateMatrix= GL_Matrix.multiply(matrix,translateMatrix);
+
+
+        GL_Matrix rotateMatrix =GL_Matrix.multiply(translateMatrix,GL_Matrix.rotateMatrix( newRotateX, newRotateY, newRotateZ));
+
+
+        rotateMatrix= GL_Matrix.multiply(rotateMatrix,translateMatrix);
+
+        if(transform.scaleX!=null){
+            rotateMatrix= GL_Matrix.multiply(GL_Matrix.scaleMatrix(transform.scaleX,transform.scaleY,transform.scaleZ),translateMatrix);
+        }
 
         if(top!=null ) {
             ShaderUtils.draw3dImage(config, vao, rotateMatrix, points[4], points[5], points[6], points[7], dirAry[0], top);
