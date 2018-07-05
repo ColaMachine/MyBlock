@@ -925,7 +925,7 @@ public class LivingThingManager {
             //enemy.attemptAttack();
             if(TimeUtil.getNowMills()-enemy.getLastAttackTime()>1000){//如果攻击间隔已经够了
 
-                enemy.brainAttack();//控制行动 不要控制其他 以对象的方式进行操控是最好的
+              //  enemy.brainAttack();//控制行动 不要控制其他 以对象的方式进行操控是最好的
                 enemy.setLastAttackTime(TimeUtil.getNowMills());
 
 
