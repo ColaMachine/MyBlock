@@ -251,6 +251,10 @@ public class ByteUtil
 
     public static void main(String[] args)
     {
+        char a= 0x48;
+        char b = 0xea;
+        System.out.println("toHex"+toBinaryStr(1>>8));
+        System.out.println("toHex"+toBinaryStr(1<<8));
         int shuzhi = 00123456;
         System.out.println(00123456>>16);
         System.out.println(00123456<<16>>16);
@@ -300,11 +304,11 @@ System.out.println(ByteUtil.get8_0Value(555));
 
         byte[] bytes = hexStr2Bytes("B8F6");
         //10830
-        Integer a= Integer.parseInt("4e2a",16);
+        Integer a1= Integer.parseInt("4e2a",16);
         System.out.println("00000001 转int:"+binaryStr2int("00000001"));
         try {
-            byte[] byteary = "个".getBytes("gbk");//-72 -10
-            System.out.println("个的gbk 16进制表示:"+Integer.toHexString(byteary[0]) +""+Integer.toHexString(byteary[1]) );
+            byte[] byteAry = "个".getBytes("gbk");//-72 -10
+            System.out.println("个的gbk 16进制表示:"+Integer.toHexString(byteAry[0]) +""+Integer.toHexString(byteAry[1]) );
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

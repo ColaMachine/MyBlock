@@ -111,6 +111,9 @@ public class PathManager {
     }
 
     public void useDefaultHomePath() throws IOException {
+
+        //这段暂时注释掉 本来的目的是判断 用户的游戏存档放哪里的 因为 windows 的可能要放在用户目录下
+        //先暂时无脑的存放在 游戏文件夹下
        /* switch (LWJGLUtil.getPlatform()) {
             case LWJGLUtil.PLATFORM_LINUX:
                 homePath = Paths.get(System.getProperty("user.home")).resolve(LINUX_HOME_SUBPATH);

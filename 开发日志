@@ -435,3 +435,8 @@ name state 代表的是整个身体 包括大脑呢 还是 只是肢体层面
 
 brain update 决定了决策 下发命令 state 发生改变
 然后不动的state 又能带来不同的brain决策
+
+2018-07-04 15:10:59 将动画 按帧导出 obj 然后在游戏中串联起来 展示
+
+role及以上存放的是基础属性 不可变部分
+livingThingBean及以下是可变部分

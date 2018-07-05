@@ -25,7 +25,7 @@ public class Ball  {
     public  long lastPickTime;
     int id;
     GL_Vector position;
-
+    int species;//阵营 这个球 不会对自己人产生伤害
 
     Long startTime;
     long lastTime;
@@ -66,12 +66,13 @@ public class Ball  {
     }
 
 
-    public Ball(int id ,GL_Vector position , GL_Vector direction, float speed, Integer itemType, LivingThingBean from){
+    public Ball(int id ,GL_Vector position , GL_Vector direction, float speed, Integer itemType, LivingThingBean from,int species){
         this.id=id;
         this.from = from;
         component= new Component(1,1,1);
         startTime= TimeUtil.getNowMills();
         this.speed = speed;
+        this.species =species;
         this.position =position;
         this.direction=direction;
         itemDefinition = ItemManager.getItemDefinition(itemType);

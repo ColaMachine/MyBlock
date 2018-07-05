@@ -14,7 +14,7 @@ public class BlockManagerImpl extends BlockManager {
     /**name to block **/
 	//private HashMap<String,IBlock> blockInfoNameMap=new HashMap();
     /**id to block **/
-
+    private HashMap<Integer ,Float[]> blockAryMap =new HashMap<>();//所有的block的id 和对应的 渲染数据
     private HashMap<Integer,BaseBlock> blockInfoIdMap=new HashMap();
 
     /**

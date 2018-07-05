@@ -22,10 +22,12 @@ import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 主要操作用户的行为 计算 跳 跑
  * Created by luying on 16/9/16.
  */
 public class LivingThingBean extends Role {
@@ -43,6 +45,61 @@ public class LivingThingBean extends Role {
     public float s = 0;
     //public float nextZ = 0;
    // public int limit = 0;
+    // Role target;
+    int targetId;
+
+    public int getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
+    }
+
+    private boolean dirChanged;
+
+    private GL_Vector dest;//小目标 先到达 小目标 再往finalDest移动
+    private GL_Vector finalDest;//最终的目标
+    private WeakReference<LivingThingBean> target;
+    public LivingThingBean getTarget(){
+        if(target==null)return null;
+
+        return target.get()!=null ? target.get() :null;
+    }
+    public void setTarget(LivingThingBean target){
+        if(target==null){
+            this.target=null;
+            this.targetId = 0;
+        }else {
+            this.target = new WeakReference<LivingThingBean>(target);
+            this.targetId = target.getId();
+        }
+    }
+    public GL_Vector getDest() {
+        return dest;
+    }
+
+    public GL_Vector getFinalDest(){
+        return finalDest;
+    }
+
+    public void setFinalDest(GL_Vector finalDest){
+        this.finalDest = finalDest;
+    }
+
+
+
+    public void setDest(GL_Vector dest) {
+        this.dest = dest;
+    }
+
+    public boolean isDirChanged() {
+        return dirChanged;
+    }
+
+    public void setDirChanged(boolean dirChanged) {
+        this.dirChanged = dirChanged;
+    }
 
     public LivingThingBean(int id){
 
@@ -206,7 +263,7 @@ public class LivingThingBean extends Role {
 
     }
     public boolean checkEnemyTarget(LivingThingBean livingThingBean) {
-        Role target = this.getTarget();
+        LivingThingBean target = this.getTarget();
         if (target == null|| target.isDied()) { //如果没有目标
             livingThingBean.setTargetId(0);
             livingThingBean.setTarget(null);
@@ -240,15 +297,15 @@ public class LivingThingBean extends Role {
                 //找寻目标
 
                 //希望没1000执行一次
-                livingThingManager.findTarget(this);
+                livingThingManager.findGoodTarget(this);
             }
 
-            getExecutor().getCurrentState().update();
+            //getExecutor().getCurrentState().update();
 
             CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
             CoreRegistry.get(PhysicsEngine.class).gravitation(this);
         }
-        this.getExecutor().getCurrentState().update();
+        //this.getExecutor().getCurrentState().update();
 
 
     }
@@ -392,7 +449,7 @@ public class LivingThingBean extends Role {
         this.setStable(false);
         this.v=0f;
         jumpStartY = (int) this.position.y;
-        lastTime = TimeUtil.getNowMills();
+        //lastTime = TimeUtil.getNowMills();
 
     }
     //public boolean died=false;
@@ -422,12 +479,12 @@ public class LivingThingBean extends Role {
     }
     public void flip(int y) {
         valleyBottom = y;
-        limit = 0;
+        //limit = 0;
     }
 
-    public void reset() {
-        valleyBottom = limit = 0;
-    }
+//    public void reset() {
+//       valleyBottom = limit = 0;
+//    }
 
 
    // public float RotatedX, RotatedY, RotatedZ;

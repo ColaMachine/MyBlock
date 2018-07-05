@@ -11,12 +11,12 @@ import glmodel.GL_Vector;
 /**
  * Created by luying on 16/9/25.
  */
-public class AttackUpDirGravBoomBall extends  Ball{
+public class AttackUpDirGravBoomBall extends  AttackBall{
     public GL_Vector startPosition;
 
 
     public AttackUpDirGravBoomBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from) {
-        super(id, position, direction, speed, itemType, from);
+        super(id, position, direction, speed, itemType, from,from.species);
         this.startPosition= position.copyClone();
         this.speed=3;
     }

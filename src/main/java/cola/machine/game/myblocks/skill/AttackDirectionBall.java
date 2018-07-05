@@ -11,12 +11,12 @@ import glmodel.GL_Vector;
 /**
  * Created by luying on 16/9/25.
  */
-public class AttackDirectionBall extends  Ball{
+public class AttackDirectionBall extends  AttackBall{
     public GL_Vector startPosition;
 
 
-    public AttackDirectionBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from) {
-        super(id, position, direction, speed, itemType, from);
+    public AttackDirectionBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from,int species) {
+        super(id, position, direction, speed, itemType, from,species);
         this.startPosition= position.copyClone();
         this.speed=3;
     }

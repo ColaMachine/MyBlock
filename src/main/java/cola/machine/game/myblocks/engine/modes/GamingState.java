@@ -60,6 +60,7 @@ import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
 import glapp.GLApp;
 import glapp.GLCamera;
+import glmodel.GLModel;
 import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -239,18 +240,19 @@ public class GamingState implements GameState {
             client500msTask.start();
             SynchronTask task = new SynchronTask();
             task.start();
-           // MainFrame.main(new String[]{});
-           // Thread thread = new Thread(){
-                //public void run(){
-                    //MainFrame main =new MainFrame();
-                    //main.main(new String []{});
-                //}
-            //};
-           // thread.start();
+           //MainFrame.main(new String[]{});
+           Thread thread = new Thread(){
+                public void run(){
+                    MainFrame main =new MainFrame();
+                    main.main(new String []{});
+                }
+            };
+           thread.start();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        LogUtil.println("GamingState 加载完毕");
 
     }Div shadowDiv;
     public static Div selectDiv;
@@ -650,7 +652,7 @@ public ShaderManager shaderManager;
 
 
         }
-        
+
 
         //ShaderUtils.testDrawVbo();
         //LogUtil.println(TimeUtil.getNowMills()+"'");

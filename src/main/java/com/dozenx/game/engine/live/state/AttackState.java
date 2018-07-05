@@ -19,7 +19,7 @@ public class AttackState extends IdleState {
         }
         //state 不应该直接操作 animationmanager 那放在哪里好呢 ,放在changeanimationcallback里?
 
-        livingThing.changeAnimationState("shoot");
+        livingThing.changeAnimationState("kan");
 
     }
     protected LivingThingBean livingThing;

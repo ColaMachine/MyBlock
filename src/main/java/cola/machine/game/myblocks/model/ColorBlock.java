@@ -495,4 +495,8 @@ public class ColorBlock extends BaseBlock{
 
 
     }
+
+    public static void main(String args[]){
+
+    }
 }

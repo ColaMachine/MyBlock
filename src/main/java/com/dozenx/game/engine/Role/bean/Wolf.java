@@ -1,18 +1,28 @@
 package com.dozenx.game.engine.Role.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
+import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.skill.AttackBall;
 import cola.machine.game.myblocks.skill.AttackManager;
+import cola.machine.game.myblocks.skill.LinedAttackBall;
+import cola.machine.game.myblocks.skill.TimeString;
 import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.Role.model.BaseModel;
 import com.dozenx.game.engine.Role.model.WolfModel;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.live.state.AttackState;
+import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.OpenglUtils;
+import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 import org.lwjgl.Sys;
+
+import javax.vecmath.Vector2f;
 
 public class Wolf extends LivingThing {
 
@@ -51,12 +61,20 @@ public class Wolf extends LivingThing {
     }
 
     public void attack(){
-
-        LogUtil.println("player 攻击");
-
-        AttackBall ball =new AttackBall(5,this.getPosition().copyClone(),this.getViewDir().copyClone(),5,2,this);
-
-        AttackManager.addAttack(ball);//这里发现一个问题是 宠物发起的攻击会砸死自己
+    super.attack();
+//        LogUtil.println("player 攻击");
+//        this.getTarget().beAttack(1);
+//
+////        Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,this.getTarget().getPosition().copyClone().add(new GL_Vector(0,this.getExecutor().getModel().getRootComponent().height,0)), GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
+////        screenXY.x *= Constants.WINDOW_WIDTH;
+////        screenXY.y *= Constants.WINDOW_HEIGHT;
+////        AttackManager.addText(new TimeString("-1", screenXY.x,screenXY.y));
+////        //AttackBall ball =new LinedAttackBall(5,this.getPosition().copyClone(),this.getWalkDir().copyClone(),5,2,this,1);
+////        //this.changeState(new AttackState(this));
+//        AttackManager.addAttackEvent(this,this.getTarget());
+//        this.changeAnimationState("attack");
+//        //AttackManager.addAttack(ball);//这里发现一个问题是 宠物发起的攻击会砸死自己
+//        this.setLastAttackTime(TimeUtil.getNowMills());
     }
 
     //public boolean needJudgeCrash=false;
@@ -127,32 +145,32 @@ public class Wolf extends LivingThing {
         //找到下一个节点
     }
 
-
-
-    public void doSomeThing(LivingThingManager livingThingManager){
-        //如果是普通生物
-        if (!isDied()) {//如果自身是有效单位 没有死
-
-            if (getTargetId() > 0) {//并且是有目标
-                if (checkEnemyTarget(this))//释放无用target 补全缺少target
-                {//追击或者攻击
-                    livingThingManager.moveOrAttack(this);
-                }
-            } else {//暂时没有目标
-                //if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
-                //找寻目标
-
-                //希望没1000执行一次
-                livingThingManager.findTarget(this);
-            }
-
-
-
-            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
-            CoreRegistry.get(PhysicsEngine.class).gravitation(this);
-        }
-        this.getExecutor().getCurrentState().update();
-
-
-    }
+//
+//
+//    public void doSomeThing(LivingThingManager livingThingManager){
+//        //如果是普通生物
+//        if (!isDied()) {//如果自身是有效单位 没有死
+//
+//            if (getTargetId() > 0) {//并且是有目标
+//                if (checkEnemyTarget(this))//释放无用target 补全缺少target
+//                {//追击或者攻击
+//                    livingThingManager.moveOrAttack(this);
+//                }
+//            } else {//暂时没有目标
+//                //if(enemy.getExecutor().getCurrentState() instanceof  IdleState){
+//                //找寻目标
+//
+//                //希望没1000执行一次
+//                livingThingManager.findTarget(this);
+//            }
+//
+//
+//
+//            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
+//            CoreRegistry.get(PhysicsEngine.class).gravitation(this);
+//        }
+//        //this.getExecutor().getCurrentState().update();
+//
+//
+//    }
 }

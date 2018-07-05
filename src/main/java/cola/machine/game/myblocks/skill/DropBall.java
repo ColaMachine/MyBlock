@@ -11,7 +11,7 @@ public class DropBall extends  Ball{
 
 
     public DropBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from) {
-        super(id, position, direction, speed, itemType, from);
+        super(id, position, direction, speed, itemType, from,0);
     }
 
     public void update(){

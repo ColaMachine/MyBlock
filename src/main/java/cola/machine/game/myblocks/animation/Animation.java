@@ -1,5 +1,8 @@
 package cola.machine.game.myblocks.animation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by colamachine on 16_7_27.
  */
@@ -16,6 +19,7 @@ public class Animation {
     String animation_direction;
     Integer animation_iteration_count;
     KeyFrames keyFrames;
+    List<Transform> transformsPer200ms = new ArrayList<>();
     public void setKeyFrames( KeyFrames keyFrames){
         this.keyFrames =   keyFrames;
     }

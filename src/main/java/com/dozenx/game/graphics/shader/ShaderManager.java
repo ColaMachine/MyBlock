@@ -88,7 +88,7 @@ public class ShaderManager {
     //攻击物体
     public static ShaderConfig attackShaderConfig = new ShaderConfig("attack", "chapt7/2dimg.frag", "chapt7/2dimg.vert", new int[]{3, 3, 1, 4});
     //生物
-    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "chapt7/3dimg.frag", "chapt7/3dimg.vert", new int[]{3, 3, 3, 1});
+    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "chapt16/box.frag", "chapt16/box.vert", new int[]{3, 3, 3, 1});
     //扔在地上的东关系
     public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "chapt7/3dimg.frag", "chapt7/3dimg.vert", new int[]{3, 3, 3, 1});
 

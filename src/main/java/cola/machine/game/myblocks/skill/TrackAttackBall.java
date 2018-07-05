@@ -15,8 +15,8 @@ public class TrackAttackBall extends  Ball{
     public GL_Vector startPosition;
 
 
-    public TrackAttackBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from) {
-        super(id, position, direction, speed, itemType, from);
+    public TrackAttackBall(int id, GL_Vector position, GL_Vector direction, float speed, Integer itemType, LivingThingBean from,int species) {
+        super(id, position, direction, speed, itemType, from,species);
         this.startPosition= position.copyClone();
         this.speed=3;
     }

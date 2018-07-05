@@ -301,7 +301,7 @@ public class FontUtil {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
         g.setFont(font);
-        g.setPaint(java.awt.Color.BLACK);
+        g.setPaint(Color.WHITE);
         g.drawString(String.valueOf(c), 0, metrics.getAscent());
         g.dispose();
         return image;
@@ -372,7 +372,7 @@ public class FontUtil {
         int y = image.getHeight()/2 + (stringAscent-stringDecent)/2;
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, image.getWidth(), image.getHeight());
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.drawString(text,x,y);
         // ImageUtil.compressForFix("/Users/luying/Documents/workspace/calendar/src/main/webapp/static/img/a0.jpg");
 
@@ -505,7 +505,7 @@ public class FontUtil {
 
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, image.getWidth(), image.getHeight());
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         //g.drawString("啊",x,y);
         // ImageUtil.compressForFix("/Users/luying/Documents/workspace/calendar/src/main/webapp/static/img/a0.jpg");
         //Iterator it = glyphMap.entrySet().iterator();
@@ -526,7 +526,7 @@ public class FontUtil {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         g.setStroke(new BasicStroke(2f));
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
 
         for(Character  car : list){
 

@@ -465,8 +465,9 @@ public class MouseControlCenter {
             }
             if(livingThing!=null) {
                 player.setTarget(livingThing);
-                livingThing.beAttack(1);
-                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
+                player.attack();
+//                livingThing.beAttack(1);
+//                CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch.id ?AttackType.ARROW:AttackType.KAN, livingThing.getId()));
 
                 //后退
                 //CoreRegistry.get(Client.class).send(new JumpCmd(livingThing.getPosition(),player.walkDir,livingThing.getId(),1f));
@@ -478,7 +479,7 @@ public class MouseControlCenter {
                 ItemDefinition itemDefinition  = ItemManager.getItemDefinition(player.getMainWeapon());
                 if(itemDefinition!=null && itemDefinition.isFar){//如果是远程的装备的话
                     if(itemDefinition.shootBallId>0){//射出攻击球
-                        AttackBall ball =new AttackBall((int)(Math.random()*10000),player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getViewDir().copyClone(),1,itemDefinition.shootBallId,player);
+                        AttackBall ball =new AttackBall((int)(Math.random()*10000),player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getViewDir().copyClone(),1,itemDefinition.shootBallId,player,0);
                         attackManager.addAttack(ball);
 
                     }

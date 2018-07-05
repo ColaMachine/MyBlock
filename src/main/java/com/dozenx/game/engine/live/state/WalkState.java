@@ -71,7 +71,7 @@ public class WalkState extends State {
         this.startTime = TimeUtil.getNowMills();
 
 
-        walkDir = GL_Vector.sub(livingThing.getPosition(),from);
+        walkDir = GL_Vector.sub(to,livingThing.getPosition());
 
         this.distance = GL_Vector.length(walkDir);
 

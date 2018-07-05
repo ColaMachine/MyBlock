@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Image;
+import cola.machine.game.myblocks.rendering.assets.texture.Texture;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.font.FontUtil;
@@ -2542,6 +2543,44 @@ GL_Vector tt=GL_Matrix.multiply(ortho,new GL_Vector(-10,-10,10));
         }
     }
 
+    public static float normalX;
+    public static float normalY;
+    public static float normalZ;
+
+    public static float colorX;
+    public static float colorZ;
+    public static float colorY;
+    public static int colorOrImage=0;
+    public static ShaderConfig shaderConfig = null;
+    public static Vao vao =null;
+    public static FloatBufferWrap veticesBuffer;
+    public static void glUse(ShaderConfig config ,Vao vao ){
+        shaderConfig = config;
+        vao = vao;
+        veticesBuffer=vao.getVertices();
+    }
+    public static void glColor(float x,float y,float z){
+        colorX=x;
+        colorY=y;
+        colorZ=z;
+        colorOrImage = 0;
+    }
+    public static void bindTexture(TextureInfo textureInfo){
+
+    }
+    public static void glNormal3f(float x,float y,float z){
+        normalX= x;
+        normalY=y;
+        normalZ=z;
+    }
+    public static void glVertex3f(float x,float y,float z){
+
+        veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(colorX).put(colorY).put(colorZ).put(-1);//p1
+    }
+    public static void glVertex3f(float x,float y,float z,float normalX,float normalY,float normalZ,float colorX,float colorY,float colorZ){
+
+        veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(colorX).put(colorY).put(colorZ).put(-1);//p1
+    }
     public static void draw3dColorTriangle(ShaderConfig config,Vao vao ,GL_Vector p1,GL_Vector p2,GL_Vector p3,GL_Vector normal,GL_Vector color){
         //ti=TextureManager.getTextureInfo("mantle");
         vao.changed=true;

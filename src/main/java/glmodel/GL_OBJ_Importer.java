@@ -140,12 +140,16 @@ public class GL_OBJ_Importer {
         // put texture coords into triangle
         if (txtrs.size() > 0) { // if texture coords were loaded
             float[] uvw;
-            uvw = (float[]) txtrs.get(face.textureIDs[v1]); // txtr coord for vert 1
-            t.uvw1 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
-            uvw = (float[]) txtrs.get(face.textureIDs[v2]); // txtr coord for vert 2
-            t.uvw2 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
-            uvw = (float[]) txtrs.get(face.textureIDs[v3]); // txtr coord for vert 3
-            t.uvw3 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
+            if(face.textureIDs[v1]>=0){
+                uvw = (float[]) txtrs.get(face.textureIDs[v1]); // txtr coord for vert 1
+                t.uvw1 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
+                uvw = (float[]) txtrs.get(face.textureIDs[v2]); // txtr coord for vert 2
+                t.uvw2 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
+                uvw = (float[]) txtrs.get(face.textureIDs[v3]); // txtr coord for vert 3
+                t.uvw3 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
+            }
+
+
         }
 
         // put normals into triangle (NOTE: normalID can be -1!!! could barf here!!!)

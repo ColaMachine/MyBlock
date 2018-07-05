@@ -35,7 +35,7 @@ public class JumpState extends State {
             this.livingThing.v = 10.2f;
          //   this.livingThing.position.y+=12;
             this.livingThing.jumpStartY = (int) this.livingThing.position.y;
-            this.livingThing.lastTime = TimeUtil.getNowMills();
+           // this.livingThing.lastTime = TimeUtil.getNowMills();
             //lastTime = Sys.getTime();
             this.livingThing.flip((int)this.livingThing.position.y);
             this.livingThing.setStable( false);

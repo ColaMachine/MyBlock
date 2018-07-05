@@ -108,15 +108,15 @@ public class IconView extends HtmlObject {
         this.itemDefinition = itemBean.getItemDefinition();
         this.childNodes.clear();
 
-     final   Div div = new Div();
+     final   Div itemDescribeDiv = new Div();
 
-        div.setVisible(false);
-        div.setWidth(50);
+        itemDescribeDiv.setVisible(false);
+        itemDescribeDiv.setWidth(50);
         //div.setHeight(50);
-        div.setFontSize(20);
-        div.setInnerText( itemBean.getItemDefinition().getName()+"*"+itemBean.getNum());
-        div.setBackgroundColor(new Vector4f(1,1,1,1));
-        this.appendChild(div);
+        itemDescribeDiv.setFontSize(10);
+        itemDescribeDiv.setInnerText( itemBean.getItemDefinition().getName()+"*"+itemBean.getNum());
+        itemDescribeDiv.setBackgroundColor(new Vector4f(1,1,1,1));
+        this.appendChild(itemDescribeDiv);
       //  this.title ="+\"x\"+itemBean.getItemDefinition().getName()";
         if(itemDefinition==  null) {
             assert this.itemDefinition!=null;
@@ -126,7 +126,7 @@ public class IconView extends HtmlObject {
             public void run() {
                // LogUtil.println("show"+parentNode.id);
                 //                LogUtil.println("show"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
-                div.setVisible(true);
+                itemDescribeDiv.setVisible(true);
                 //div.setInnerText(itemBean.getItemDefinition().getName()+"*"+itemBean.getNum());
                 Document.needUpdate=true;
             }
@@ -135,7 +135,7 @@ public class IconView extends HtmlObject {
             @Override
             public void run() {
                 //    LogUtil.println("hide"+parentNode.id +"parentNode.x:"+parentNode.getMinX()+"parentNode.y:"+parentNode.getMinY()+"+evt.x:"+this.evt.getMouseX()+"y:"+evt.getMouseY());
-                div.setVisible(false);
+                itemDescribeDiv.setVisible(false);
                 Document.needUpdate=true;
             }
         });
