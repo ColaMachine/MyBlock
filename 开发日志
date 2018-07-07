@@ -401,13 +401,35 @@ model baseModel:基础model
       transform:变形 if(x>1){rot()};
 
 
+if(isTop(point)){
+    top=true;
+}
+if(isDown(point)){
+    top=false;
+}
+if(dir ='west'){
+    dir =west;
+}else
+if(dor ='east'){
+    dir =east;
+}else
+ if(dir ='north'){
+     dir =north;
+ }else
+ if(dir ='south'){
+      dir =south;
+  }
+  baseModel=getModel("starDown") + getModel("startUp");
 
-if(open){
-    model= model.∂rotate(0,0,0,0,0,1,90);
+  if(top) {
+     baseModel=getModel("starDown").addY(0.5)+getModel("startUp").addY(-0.5);
+  }
+if(dir>0){
+    model= baseModel.rotate(0.5,0.5,0,0,0,1,90*face);
+
 }
-if(face >0) {
-   model= model.rotate(0.5,0.5,0,0,0,1,90*face);
-}
+
+
 
 2018-05-27 15:17:30
 增加判断放置的时候两边要有方块 前后要通畅  要确定 轴在哪里

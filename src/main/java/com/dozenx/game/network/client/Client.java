@@ -45,6 +45,8 @@ public class Client extends Thread{
          chatFrame =  CoreRegistry.get(ChatFrame.class );
     }
     Socket socket = null;
+
+    private final Object lock = new Object();
    // BufferedReader br = null;
     //PrintWriter pw = null;
 
@@ -85,7 +87,6 @@ public class Client extends Thread{
         // }
     }
 
-    private final Object obj = new Object();
     public  ResultCmd syncSend(GameCmd cmd ){
         try {
             byte[] oldByteAry = cmd.toBytes();
@@ -103,8 +104,8 @@ public class Client extends Thread{
                             return;
                         }*/
                         LogUtil.println("进入恢复任务");
-                        synchronized (obj) {LogUtil.println("通知线程恢复");
-                            obj.notifyAll(); // 收到响应，唤醒线程
+                        synchronized (lock) {LogUtil.println("通知线程恢复");
+                            lock.notifyAll(); // 收到响应，唤醒线程
                         }
                     }
                 };
@@ -119,9 +120,9 @@ public class Client extends Thread{
                 outputStream.write(data);//需要加锁
                 outputStream.write(Constants.end);
 
-                synchronized (obj) {
+                synchronized (lock) {
                     LogUtil.println("挂起线程 threadid:"+threadId);
-                    obj.wait(5000); // 未收到响应，使线程等待  最多等待多少秒
+                    lock.wait(5000); // 未收到响应，使线程等待  最多等待多少秒
                 }
                 LogUtil.println("线程恢复");
                 //清除task

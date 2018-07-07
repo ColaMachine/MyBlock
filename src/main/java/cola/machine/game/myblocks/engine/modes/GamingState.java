@@ -40,6 +40,7 @@ import com.dozenx.game.engine.fx.MainFrame;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.ui.ButtonBar.view.ButtonBarView;
 import com.dozenx.game.engine.ui.chat.view.ChatPanel;
+import com.dozenx.game.engine.ui.died.view.DiedPanel;
 import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.control.BagController;
 import com.dozenx.game.engine.ui.inventory.control.BoxController;
@@ -218,6 +219,8 @@ public class GamingState implements GameState {
             document.body.appendChild(enemyHeadPanel);
 
 
+            DiedPanel diedPanel =new DiedPanel();
+            document.body.appendChild(diedPanel);
              selectDiv =new Div();
             selectDiv.setVisible(false);
             selectDiv.setPosition(HtmlObject.POSITION_ABSOLUTE);
@@ -361,6 +364,9 @@ public ShaderManager shaderManager;
                         continue;
                     }
 
+                }
+                if(player.isDied()){
+                    continue;
                 }
                 int wheelDelta = Mouse.getEventDWheel();
                 if (wheelDelta != 0) {

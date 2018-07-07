@@ -252,7 +252,7 @@ public class GLModel {
              //   GL11.glTexCoord2f(t.uvw1.x, t.uvw1.y);
 
 
-
+				ShaderUtils.glTexCoord2f(t.uvw1.x, t.uvw1.y);
                 ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
                 ShaderUtils.glVertex3f( (float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z);
 

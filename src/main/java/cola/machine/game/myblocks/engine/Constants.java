@@ -111,4 +111,7 @@ public class Constants {
     public static GL_Vector RED = new GL_Vector(1,0,0);
 
     public static Vector4f RGBA_WHITE = new Vector4f(1,1,1,1);
+    public static Vector4f RGBA_RED = new Vector4f(1,0,0,1);
+    public static Vector4f RGBA_GRAY = new Vector4f(0.6f,0.57f,0.57f,0.5f);
+    public static Vector4f RGBA_GRAY_TRANSPARENT = new Vector4f(0,0,0,0.5f);
 }

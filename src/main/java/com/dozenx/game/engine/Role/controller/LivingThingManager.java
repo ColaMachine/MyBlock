@@ -166,7 +166,7 @@ public class LivingThingManager {
 
         GLModelContainer.next();
 
-        GLModelContainer.glModels[GLModelContainer.index].renderShader();
+        //GLModelContainer.glModels[GLModelContainer.index].renderShader();
         //livingthing update
         for (LivingThing livingThing : livingThings) {
             // this.getLivingThingById();
@@ -1036,7 +1036,7 @@ public class LivingThingManager {
 
                             if (player != null) {
                                 ChaseCmd chaseCmd = new ChaseCmd(enemy.getId(), enemy.getTargetId());
-                                WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
+                                //WalkCmd2 walkCmd2 = new WalkCmd2(enemy.getPosition(), player.getPosition(), enemy.getId());
                                 //TODO serverContext.broadCast(walkCmd2.toBytes()); 这里不再用walkcmd2去同步怪物的移动了
                                 enemy.getExecutor().receive(chaseCmd);
 

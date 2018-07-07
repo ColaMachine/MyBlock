@@ -18,6 +18,7 @@ import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.DropCmd;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.ui.died.view.DiedPanel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.server.bean.LivingThingBean;
@@ -266,7 +267,9 @@ public class AttackManager {
 
         addText(new TimeString("-"+damage,screenXY.x,screenXY.y));
         target.beAttack(damage);
-
+        if(target.isDied() && target.getId() == GamingState.player.getId()){
+            CoreRegistry.get(DiedPanel.class).setVisible(true);
+        }
         source.changeAnimationState("attack");
         //AttackManager.addAttack(ball);//这里发现一个问题是 宠物发起的攻击会砸死自己
         source.setLastAttackTime(TimeUtil.getNowMills());

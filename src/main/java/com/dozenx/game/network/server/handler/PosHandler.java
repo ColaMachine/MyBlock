@@ -35,8 +35,8 @@ public class PosHandler extends GameServerHandler {
 
         //TODO
         livingThingBean.setBodyAngle(posCmd.getBodyAngle());
-        livingThingBean.setHeadAngle(posCmd.getBodyAngle());
-        livingThingBean.setHeadAngle2(posCmd.getBodyAngle());
+        livingThingBean.setHeadAngle(posCmd.getBodyAngle());//左右角度
+        livingThingBean.setHeadAngle2(posCmd.getBodyAngle());//上下角度
 
         broadCast(request.getCmd());
         //更新其他附近人的此人的装备属性
