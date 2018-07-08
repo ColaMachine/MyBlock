@@ -2589,8 +2589,12 @@ try {
     }
 
     public static void glVertex3f(float x, float y, float z) {
-
-        veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(colorX).put(colorY).put(colorZ).put(-1);//p1
+        if(isImageNotColor){
+            veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(texCoordX).put(texCoordY).put(0).put(nowTextureId);//p1
+        }else{
+            veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(colorX).put(colorY).put(colorZ).put(-1);//p1
+        }
+       // veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(colorX).put(colorY).put(colorZ).put(-1);//p1
     }
 
     public static void glVertex3f(float x, float y, float z, float normalX, float normalY, float normalZ, float colorX, float colorY, float colorZ) {

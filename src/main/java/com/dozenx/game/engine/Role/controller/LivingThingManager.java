@@ -93,8 +93,8 @@ public class LivingThingManager {
      */
     public LivingThingManager() {
 
-        gl_model = new GLModel("models/boat/colorfulblock.obj");
-        GLModelContainer = new GLModelContainer("humanblock-bone2-walk", 60, 5);
+        gl_model = new GLModel("config/obj/humanblock-bone2-walk.obj");
+    //    GLModelContainer = new GLModelContainer("humanblock-bone2-walk", 60, 5);
        /*  wolf =new Wolf(999);
         wolf.position=new GL_Vector(-1,3,-1);
         add(wolf);*/
@@ -162,9 +162,9 @@ public class LivingThingManager {
         //TODO targetId 已经设置好了 但是target还是为空的
         ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
 
-        // gl_model.renderShader();
+         gl_model.renderShader();
 
-        GLModelContainer.next();
+        //GLModelContainer.next();
 
         //GLModelContainer.glModels[GLModelContainer.index].renderShader();
         //livingthing update

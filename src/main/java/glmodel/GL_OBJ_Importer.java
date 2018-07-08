@@ -1,5 +1,7 @@
 package glmodel;
 
+import core.log.LogUtil;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -74,7 +76,7 @@ public class GL_OBJ_Importer {
         for (int g = 0; g < objData.numGroups(); g++) {
             int triCount=0;
             faces = objData.getGroupFaces(g);
-            for (int i = 0; i < faces.size(); i++) {
+            for (int i = 0; i < faces.size(); i++) {//face 数组 6位置 textureIds 都为-1
                 Face face = (Face) faces.get(i);
                 // put verts, normals, texture coords into triangle(s)
                 if (face.vertexIDs.length == 3) {
@@ -127,7 +129,7 @@ public class GL_OBJ_Importer {
      * @param v3
      * @return
      */
-    public GL_Triangle addTriangle(GL_Mesh obj, int groupNum, int triNum, Face face,
+    public GL_Triangle addTriangle(GL_Mesh obj, int groupNum, int triNum, Face face,//face 的 textureIds 数组可能都为01
                                    ArrayList txtrs, ArrayList norms,
                                    int v1, int v2, int v3, int mtlID) {
         // An OBJ face may have many vertices (can be a polygon).
@@ -140,14 +142,16 @@ public class GL_OBJ_Importer {
         // put texture coords into triangle
         if (txtrs.size() > 0) { // if texture coords were loaded
             float[] uvw;
-            if(face.textureIDs[v1]>=0){
+           if(face.textureIDs[v1]>=0){
                 uvw = (float[]) txtrs.get(face.textureIDs[v1]); // txtr coord for vert 1
                 t.uvw1 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
                 uvw = (float[]) txtrs.get(face.textureIDs[v2]); // txtr coord for vert 2
                 t.uvw2 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
                 uvw = (float[]) txtrs.get(face.textureIDs[v3]); // txtr coord for vert 3
                 t.uvw3 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
-            }
+            }else{
+               LogUtil.println("error in parse mtl");
+           }
 
 
         }

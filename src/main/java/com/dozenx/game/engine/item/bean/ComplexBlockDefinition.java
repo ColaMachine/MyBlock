@@ -48,21 +48,21 @@ public class ComplexBlockDefinition extends BlockDefinition {
 
         super.receive(map);
         ItemDoorParser.parse(this, map);
-        String condition = MapUtil.getStringValue(map,"condition");
-        int index = 0 ;
-        boolean whenStart =false;
-        while(index<condition.length()){
-            if(condition.indexOf(index )=='w' && condition.indexOf(index +1)=='h'&& condition.indexOf(index +2)=='e' && condition.indexOf(index +3)=='n'  && condition.indexOf(index +3)=='(' ){
-                index+=5;
-                whenStart=true;
-            }else{
-                whenStart=false;
-            }
-            if(whenStart){
-                if( )
-            }
-
-        }
+//        String condition = MapUtil.getStringValue(map,"condition");
+//        int index = 0 ;
+//        boolean whenStart =false;
+//        while(index<condition.length()){
+//            if(condition.indexOf(index )=='w' && condition.indexOf(index +1)=='h'&& condition.indexOf(index +2)=='e' && condition.indexOf(index +3)=='n'  && condition.indexOf(index +3)=='(' ){
+//                index+=5;
+//                whenStart=true;
+//            }else{
+//                whenStart=false;
+//            }
+//            if(whenStart){
+//                if( )
+//            }
+//
+//        }
         init();
         // this.setShape(TextureManager.getShape("wood_door"));
     }
@@ -132,9 +132,9 @@ public class ComplexBlockDefinition extends BlockDefinition {
         int face = 0;
         int top = 0;
         int open = 0;
-        BaseBlock[] block =new ImageBlock[2];
-        block[0] = TextureManager.getShape("stars_down");
-        block[1] = TextureManager.getShape("stars_up");
+        BaseBlock block =new ImageBlock();
+       // block[0] = TextureManager.getShape("stars_down");
+       // block[1] = TextureManager.getShape("stars_up");
         if (block == null) {
             logger.error("wood_door_up block is null");//可能是server的启动
             return;
