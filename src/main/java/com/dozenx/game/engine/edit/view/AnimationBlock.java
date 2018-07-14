@@ -177,10 +177,6 @@ public class AnimationBlock extends GroupBlock {
 
     }
 
-    @Override
-    public IBlock clone() {
-        return null;
-    }
 
     public AnimationBlock() {
 
@@ -470,7 +466,7 @@ public class AnimationBlock extends GroupBlock {
 
         GL_Matrix matrix = GL_Matrix.multiply(
                 GL_Matrix.multiply(GL_Matrix.translateMatrix(x + width / 2, y, z + thick / 2),
-                        GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0)),
+                        GL_Matrix.rotateMatrix(0, this.dir * Constants.PI90, 0)),
                 GL_Matrix.translateMatrix(-width / 2, 0, -thick / 2));
         if (animations.size() > 0) {
             if (play) {// 正常播放
@@ -591,7 +587,7 @@ public class AnimationBlock extends GroupBlock {
 
           /*      GL_Matrix rotateMatrix = GL_Matrix.multiply(
                         GL_Matrix.translateMatrix(xoffset + 1f / 2, yoffset, zoffset + 1f / 2),*/
-                GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0));
+                GL_Matrix.rotateMatrix(0, this.dir * Constants.PI90, 0));
         //rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 / xzoom, 1 / yzoom, 1 / zzoom));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 , 1 , 1 ));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-1f / 2, 0, -1f / 2));

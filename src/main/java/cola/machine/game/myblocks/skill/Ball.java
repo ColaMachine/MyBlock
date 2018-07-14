@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.skill;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -186,7 +187,7 @@ public class Ball  {
             float angle=GL_Vector.angleXZ(this.direction , new GL_Vector(0,0,-1));
             float angleY= GL_Vector.updownAngle(direction);
 
-            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(angleY-(float)(45*3.14/180),angle*3.14f/180,0);
+            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(angleY-(float)(45* Constants.PI1),angle* Constants.PI1,0);
 
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 

@@ -4,9 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.lifething.bean.LivingThing;
-import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.ColorBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.physic.BulletPhysics;
@@ -14,9 +12,7 @@ import cola.machine.game.myblocks.physic.BulletResultDTO;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.skill.AttackBall;
 import cola.machine.game.myblocks.skill.AttackManager;
-import cola.machine.game.myblocks.skill.Ball;
 import cola.machine.game.myblocks.switcher.Switcher;
-import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
@@ -27,9 +23,7 @@ import com.dozenx.game.engine.ui.head.view.HeadPanel;
 import com.dozenx.game.engine.ui.inventory.view.BoxPanel;
 import com.dozenx.game.engine.ui.toolbar.view.ToolBarView;
 import com.dozenx.game.network.client.Client;
-import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.util.MathUtil;
-import com.dozenx.util.RandomUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glapp.GLApp;
@@ -39,8 +33,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MouseControlCenter {
     public Player player;//当前玩家对象
@@ -56,27 +48,28 @@ public class MouseControlCenter {
     public float prevMouseY = 0;//之前鼠标点击的位置
     public boolean canDetectMove = true;
     public BulletPhysics bulletPhysics; //物理引擎
-    int DRAG_DIST=0;
+    int DRAG_DIST = 0;
     public GameState gameState;
-    final Client client ;
-    public boolean mouseRightPressed=false;//用来判断是否按着
-    public boolean mouseLeftPressed=false;
-    AttackManager attackManager ;
-    private long lastkeyPressTime =0;
+    final Client client;
+    public boolean mouseRightPressed = false;//用来判断是否按着
+    public boolean mouseLeftPressed = false;
+    AttackManager attackManager;
+    private long lastkeyPressTime = 0;
     /**
      * Add last mouse motion to the line, only if left mouse button is down.
      */
     Point mousepoint;//用于镜头对准
-    public MouseControlCenter(Player player, GLCamera camera,GameState gameState,Client client,AttackManager attackManager,BulletPhysics bulletPhysics ) {
-        this(player,  camera,client) ;
-        this.attackManager =attackManager;
-        this.gameState=gameState;
+
+    public MouseControlCenter(Player player, GLCamera camera, GameState gameState, Client client, AttackManager attackManager, BulletPhysics bulletPhysics) {
+        this(player, camera, client);
+        this.attackManager = attackManager;
+        this.gameState = gameState;
         this.bulletPhysics = bulletPhysics;
 
         CoreRegistry.put(MouseControlCenter.class, this);
     }
 
-    private MouseControlCenter(Player player, GLCamera camera,Client client) {
+    private MouseControlCenter(Player player, GLCamera camera, Client client) {
         this.client = client;
         //this.engine = engine;
         this.player = player;
@@ -94,8 +87,10 @@ public class MouseControlCenter {
 
         }
     }
+
     public int lastKey = 0;
     int key;
+
     public void handleNavKeys(float seconds) {
         //dosn't need cooling
         // w a s d space
@@ -103,7 +98,7 @@ public class MouseControlCenter {
         //这个方法里处理需要重复按键的实情
         //let put the key in a group that need cooling
         //LogUtil.println(seconds+"");
-        if( Switcher.isChat){
+        if (Switcher.isChat) {
             return;
         }
 
@@ -114,107 +109,106 @@ public class MouseControlCenter {
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             //livingThingManager.chooseObject(null);
             // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
-        }   if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-            if(Switcher.edit){
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustWidth(1,true);
-                }else{
-                    GamingState.editEngine.adjustWidth(1,false);
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+            if (Switcher.edit) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                    GamingState.editEngine.adjustWidth(1, true);
+                } else {
+                    GamingState.editEngine.adjustWidth(1, false);
                 }
 
-            }else
-            if(attackManager.selectThing!=null){
-                attackManager.selectThing.width-=1;
+            } else if (attackManager.selectThing != null) {
+                attackManager.selectThing.width -= 1;
             }
             // human.headRotate(-human.camSpeedXZ * seconds*100,0 );
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            if(Switcher.edit){
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustWidth(-1,true);
-                }else{
-                    GamingState.editEngine.adjustWidth(-1,false);
+            if (Switcher.edit) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                    GamingState.editEngine.adjustWidth(-1, true);
+                } else {
+                    GamingState.editEngine.adjustWidth(-1, false);
                 }
 
-            }else
-            if(attackManager.selectThing!=null){
-                attackManager.selectThing.width+=1;
+            } else if (attackManager.selectThing != null) {
+                attackManager.selectThing.width += 1;
             }
             //human.headRotate(human.camSpeedXZ * seconds*100,0 );
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             // human.headRotate(0, -human.camSpeedXZ * seconds*100);
-            if(Switcher.edit){
+            if (Switcher.edit) {
 
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustThick(1,true);
-                }else{
-                    GamingState.editEngine.adjustThick(1,false);
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                    GamingState.editEngine.adjustThick(1, true);
+                } else {
+                    GamingState.editEngine.adjustThick(1, false);
                 }
 
-            }else
-            if(attackManager.selectThing!=null){
-                attackManager.selectThing.thick+=1;
+            } else if (attackManager.selectThing != null) {
+                attackManager.selectThing.thick += 1;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            if(Switcher.edit){
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustThick(-1,true);
-                }else{
-                    GamingState.editEngine.adjustThick(-1,false);
+            if (Switcher.edit) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                    GamingState.editEngine.adjustThick(-1, true);
+                } else {
+                    GamingState.editEngine.adjustThick(-1, false);
                 }
 
-            }else
-            if(attackManager.selectThing!=null){
-                attackManager.selectThing.thick-=1;
+            } else if (attackManager.selectThing != null) {
+                attackManager.selectThing.thick -= 1;
             }
             //human.headRotate(0, human.camSpeedXZ * seconds*100);
-        }  else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
-            if(Switcher.edit){
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustHeight(-1,true);
-                }else{
-                    GamingState.editEngine.adjustHeight(-1,false);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+            if (Switcher.edit) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                    GamingState.editEngine.adjustHeight(-1, true);
+                } else {
+                    GamingState.editEngine.adjustHeight(-1, false);
                 }
 
-            }else
-            if(attackManager.selectThing!=null){
-                attackManager.selectThing.height-=1;return;
-            }else {
+            } else if (attackManager.selectThing != null) {
+                attackManager.selectThing.height -= 1;
+                return;
+            } else {
                 Switcher.CAMERA_2_PLAYER++;
                 if (Switcher.CAMERA_2_PLAYER > 200) {
                     Switcher.CAMERA_2_PLAYER = 200;
                 }
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-            if(Switcher.edit){
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.adjustHeight(1,true);
-                }else{
-                    GamingState.editEngine.adjustHeight(1,false);
+            if (Switcher.edit) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                    GamingState.editEngine.adjustHeight(1, true);
+                } else {
+                    GamingState.editEngine.adjustHeight(1, false);
                 }
 
 
-            }else
-            if(attackManager.selectThing!=null){
-                attackManager.selectThing.height+=1;return;
-            }else {
+            } else if (attackManager.selectThing != null) {
+                attackManager.selectThing.height += 1;
+                return;
+            } else {
                 Switcher.CAMERA_2_PLAYER--;
                 if (Switcher.CAMERA_2_PLAYER < 0) {
                     Switcher.CAMERA_2_PLAYER = 0;
                 }
             }
-        } if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            player.bodyRotate(Constants.camSpeedR * seconds,0);
-        }   if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+            player.bodyRotate(Constants.camSpeedR * seconds, 0);
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             // Turn right
 
-            player.bodyRotate( -Constants.camSpeedR * seconds,0);
+            player.bodyRotate(-Constants.camSpeedR * seconds, 0);
         }
 
 
-        if(Switcher.SERVER_WALK) {
+        if (Switcher.SERVER_WALK) {
             if (TimeUtil.getNowMills() - lastkeyPressTime > 200) {
                 key = -1;
           /*  if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
@@ -298,31 +292,30 @@ public class MouseControlCenter {
                 }
 
             }
-        }else{
+        } else {
             if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-                player.moveForward(1*seconds*player.speed/3);//.move(1);
+                player.moveForward(1 * seconds * player.speed / 3);//.move(1);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                player.moveRight(-1*seconds*player.speed/4);
+                player.moveRight(-1 * seconds * player.speed / 4);
                 //key= WalkCmd.FORWARD_LEFT;
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                player.moveRight(1*seconds*player.speed/4);
+                player.moveRight(1 * seconds * player.speed / 4);
                 //key= WalkCmd.FORWARD_RIGHT;
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-                player.moveForward(-1*seconds*player.speed/6);//.move(1);
-               // key= WalkCmd.FORWARD_RIGHT;
+                player.moveForward(-1 * seconds * player.speed / 6);//.move(1);
+                // key= WalkCmd.FORWARD_RIGHT;
             }
         }
 
 
-
-
-       if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-            if(Switcher.edit){
-                player.position.y-=1;  GamingState.setCameraChanged(true);
-            }else {
+        if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+            if (Switcher.edit) {
+                player.position.y -= 1;
+                GamingState.setCameraChanged(true);
+            } else {
                 player.position.y = player.position.y - 3 * seconds;
                 player.move(player.position);
             }
@@ -331,10 +324,10 @@ public class MouseControlCenter {
             player.move(player.position);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            if(Switcher.edit){
-                player.position.y+=1;
+            if (Switcher.edit) {
+                player.position.y += 1;
                 GamingState.setCameraChanged(true);
-            }else {
+            } else {
                 double timenow = GLApp.getTimeInSeconds();
 
                 if ((timenow - preKeyTime) < 1) {
@@ -448,22 +441,21 @@ public class MouseControlCenter {
 //        prevMouseY = 0;
 //
 //    }
-
     private void mouseLClick(int x, int y) {
 
 
-        long now =TimeUtil.getNowMills();
-        if(now-player.getLastAttackTime()>1000){
+        long now = TimeUtil.getNowMills();
+        if (now - player.getLastAttackTime() > 1000) {
             LivingThing livingThing = null;
             //如果当前目标距离人物小于多少的距离
-            if(player.getTarget()!=null){
-                if(player.getPosition().copyClone().sub(player.getTarget().getPosition()).length()<2){
-                    livingThing = (LivingThing)player.getTarget();
+            if (player.getTarget() != null) {
+                if (player.getPosition().copyClone().sub(player.getTarget().getPosition()).length() < 2) {
+                    livingThing = (LivingThing) player.getTarget();
                 }
-            }else{
+            } else {
                 livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
             }
-            if(livingThing!=null) {
+            if (livingThing != null) {
                 player.setTarget(livingThing);
                 player.attack();
 //                livingThing.beAttack(1);
@@ -476,37 +468,37 @@ public class MouseControlCenter {
             //获取主武器属性
             try {
                 //这里最好优化到用户对象了里 每次都取太浪费性能了
-                ItemDefinition itemDefinition  = ItemManager.getItemDefinition(player.getMainWeapon());
-                if(itemDefinition!=null && itemDefinition.isFar){//如果是远程的装备的话
-                    if(itemDefinition.shootBallId>0){//射出攻击球
-                        AttackBall ball =new AttackBall((int)(Math.random()*10000),player.getPosition().copyClone().add(new GL_Vector(0,1.5f,0)),player.getViewDir().copyClone(),1,itemDefinition.shootBallId,player,0);
+                ItemDefinition itemDefinition = ItemManager.getItemDefinition(player.getMainWeapon());
+                if (itemDefinition != null && itemDefinition.isFar) {//如果是远程的装备的话
+                    if (itemDefinition.shootBallId > 0) {//射出攻击球
+                        AttackBall ball = new AttackBall((int) (Math.random() * 10000), player.getPosition().copyClone().add(new GL_Vector(0, 1.5f, 0)), player.getViewDir().copyClone(), 1, itemDefinition.shootBallId, player, 0);
                         attackManager.addAttack(ball);
 
                     }
 
                 }
-                if(player.getMainWeapon()!=null){
+                if (player.getMainWeapon() != null) {
                     CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
                 }
 
-            }catch(Exception e){
-               e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
         startX = x;
-        startY =Constants.WINDOW_HEIGHT- y ;
-        if(Switcher.edit){
+        startY = Constants.WINDOW_HEIGHT - y;
+        if (Switcher.edit) {
             GamingState.editEngine.prevX = x;
             GamingState.editEngine.prevY = y;
-            GamingState.editEngine.mouseClick(x,y);
+            GamingState.editEngine.mouseClick(x, y);
 
-            if(Switcher.mouseState ==Switcher.boxSelectMode){
+            if (Switcher.mouseState == Switcher.boxSelectMode) {
 
 
-            GamingState.selectDiv.setVisible(true);
-            GamingState.selectDiv.setLeft(x);
-            GamingState.selectDiv.setTop((int)startY);
+                GamingState.selectDiv.setVisible(true);
+                GamingState.selectDiv.setLeft(x);
+                GamingState.selectDiv.setTop((int) startY);
 
             }
         }
@@ -550,17 +542,16 @@ public class MouseControlCenter {
 //        GL_Vector hitPoint = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x,player.getPosition().y+2,player.getPosition().z), viewDir,
 //                20, "soil", true);
         // camera.getviewDir().add();
-        LivingThing livingThing = livingThingManager.chooseObject(x, Constants.WINDOW_HEIGHT-y);
-        
-        if(livingThing !=null ){
+        LivingThing livingThing = livingThingManager.chooseObject(x, Constants.WINDOW_HEIGHT - y);
+
+        if (livingThing != null) {
             player.setTarget(livingThing);
-            Document.needUpdate=true;
-            LogUtil.println(livingThing.getId()+"");
+            Document.needUpdate = true;
+            LogUtil.println(livingThing.getId() + "");
             CoreRegistry.get(HeadPanel.class).bind(livingThing).show();
         }
-      //  livingThingManager.chooseObject(camera.Position, camera.getViewDir());
-        
-    
+        //  livingThingManager.chooseObject(camera.Position, camera.getViewDir());
+
 
 //        //选中一个colorblock 作为当前的block
 //        ChunkProvider localChunkProvider = CoreRegistry
@@ -709,12 +700,11 @@ public class MouseControlCenter {
 //                                                                     */
 //        mouseLeftPressed=true;
 //    }
-    public void handleMouseWheel(int times){
-        Switcher.CAMERA_2_PLAYER+=times;
+    public void handleMouseWheel(int times) {
+        Switcher.CAMERA_2_PLAYER += times;
         if (Switcher.CAMERA_2_PLAYER < 0) {
             Switcher.CAMERA_2_PLAYER = 0;
-        }else
-        if (Switcher.CAMERA_2_PLAYER > 500) {
+        } else if (Switcher.CAMERA_2_PLAYER > 500) {
             Switcher.CAMERA_2_PLAYER = 500;
         }
         GamingState.setCameraChanged(true);
@@ -723,17 +713,18 @@ public class MouseControlCenter {
 
     /**
      * gaming state 调用
+     *
      * @param x
      * @param y
      */
     public void mouseLeftDown(int x, int y) {
-        prevMouseX=x;
-        prevMouseY=y;
+        prevMouseX = x;
+        prevMouseY = y;
         mouseLClick(x, y);
         /*if(Switcher.edit){
             GamingState.editEngine.mouseClick(x, y);
         }*/
-        mouseLeftPressed=true;
+        mouseLeftPressed = true;
 //        LogUtil.println("mouseLeftDown");
     }
 
@@ -742,44 +733,45 @@ public class MouseControlCenter {
         //LogUtil.println("持续按键中");
         attackManager.attack(player);
     }
+
     /**
      * gaming state 调用
+     *
      * @param x
      * @param y
      */
     public void mouseLeftUp(int x, int y) {
-        attackManager.selectThing=null;
-        mouseLeftPressed=false;
-        if(Switcher.edit){
-           // GamingState.selectDiv.setVisible(false);
+       // attackManager.selectThing = null;
+        mouseLeftPressed = false;
+        if (Switcher.edit) {
+            // GamingState.selectDiv.setVisible(false);
          /*   GamingState.editEngine.selectObject(GamingState.selectDiv.getLeft(),GamingState.selectDiv.getTop(),
                     GamingState.selectDiv.getLeft()+ GamingState.selectDiv.getWidth(),GamingState.selectDiv.getTop()+GamingState.selectDiv.getHeight());
 */
 
 
-                GamingState.editEngine.mouseUp(x,y);
+            GamingState.editEngine.mouseUp(x, y);
 
 
-            if(Switcher.mouseState == Switcher.boxSelectMode){
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-                    GamingState.editEngine.selectMany(   prevMouseX,
-                            Constants. WINDOW_HEIGHT-prevMouseY,
-                            x,Constants.WINDOW_HEIGHT-y,false);
-                }else
-                GamingState.editEngine.selectMany(   prevMouseX,
-                        Constants. WINDOW_HEIGHT-prevMouseY,
-                        x,Constants.WINDOW_HEIGHT-y,true);
+            if (Switcher.mouseState == Switcher.boxSelectMode) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                    GamingState.editEngine.selectMany(prevMouseX,
+                            Constants.WINDOW_HEIGHT - prevMouseY,
+                            x, Constants.WINDOW_HEIGHT - y, false);
+                } else
+                    GamingState.editEngine.selectMany(prevMouseX,
+                            Constants.WINDOW_HEIGHT - prevMouseY,
+                            x, Constants.WINDOW_HEIGHT - y, true);
 
-            }else if(Switcher.mouseState  == Switcher.shootMode){
+            } else if (Switcher.mouseState == Switcher.shootMode) {
              /*   GamingState.editEngine.shootBlock(prevMouseX,
                         Constants. WINDOW_HEIGHT-prevMouseY);*/
-            }else if(Switcher.mouseState  == Switcher.brushMode){
-                    GamingState.editEngine.brushBlock(prevMouseX,
-                    Constants. WINDOW_HEIGHT-prevMouseY);
-            }
-            else if(Switcher.mouseState  == Switcher.textureMode){
+            } else if (Switcher.mouseState == Switcher.brushMode) {
+                GamingState.editEngine.brushBlock(prevMouseX,
+                        Constants.WINDOW_HEIGHT - prevMouseY);
+            } else if (Switcher.mouseState == Switcher.textureMode) {
                 GamingState.editEngine.brushImageOnBlock(prevMouseX,
-                        Constants. WINDOW_HEIGHT-prevMouseY);
+                        Constants.WINDOW_HEIGHT - prevMouseY);
             }
 
             //如果都没选中 开启单选模式
@@ -788,18 +780,20 @@ public class MouseControlCenter {
             }*/
         }
     }
+
     /**
      * gaming state 调用
+     *
      * @param x
      * @param y
      */
     public void mouseRightDown(int x, int y) {
-        mouseRightPressed=true;
-        prevMouseX=x;
-        prevMouseY=y;
-        
+        mouseRightPressed = true;
+        prevMouseX = x;
+        prevMouseY = y;
+
         //选中xz平面
-        
+
 //        GL_Vector from = GamingState.instance.camera.Position;
 //        GL_Vector viewDir =  OpenglUtils.getLookAtDirectionInvert(GamingState.instance.camera.getViewDir().copyClone(),x,y);
 //
@@ -810,34 +804,38 @@ public class MouseControlCenter {
 //            GamingState.instance.player.setDest(new GL_Vector(curentX,0.1f,curentZ));
 //        }
 
-        
+
     }
+
     /**
      * gaming state 调用
+     *
      * @param x
      * @param y
      */
     public void mouseRightUp(int x, int y) {
-        mouseRightPressed=false;
+        mouseRightPressed = false;
     }
 
     /**
      * gaming state 先调用 每次都更新
+     *
      * @param x
      * @param y
      */
     public void mouseMove(int x, int y) {
-        if(Switcher.edit){
-           GamingState.editEngine.mouseMove(x,y);
+        if (Switcher.edit) {
+            GamingState.editEngine.mouseMove(x, y);
         }
-        if(mouseRightPressed){
-            this.mouseRightDrag(x,y);
+        if (mouseRightPressed) {
+            this.mouseRightDrag(x, y);
+
            /* camera.viewDir.x= human.viewDir.x;
             camera.viewDir.y= human.viewDir.y;
             camera.viewDir.z= human.viewDir.z;*/
         }
-        if(mouseLeftPressed){
-            this.mouseLeftDrag(x,y);
+        if (mouseLeftPressed) {
+            this.mouseLeftDrag(x, y);
         }
 
         // add mouse motion to line if left button is down, and mouse has moved
@@ -930,6 +928,7 @@ public class MouseControlCenter {
      */
     /**
      * 鼠标右键拖动
+     *
      * @param x
      * @param y
      */
@@ -943,7 +942,7 @@ public class MouseControlCenter {
             // add a segment to the line
             // /System.out.println("����ת��");
             // System.out.println(x-prevMouseX);
-            player.bodyRotate( -(x - prevMouseX)/2,(y - prevMouseY)/2);
+            player.bodyRotate(-(x - prevMouseX) / 2, (y - prevMouseY) / 2);
             // System.out.printf("y distance: %d \r\n",(y-prevMouseY));
             //human.RotateX(-(y - prevMouseY) / 5);
             camera.fenli = false;
@@ -951,18 +950,20 @@ public class MouseControlCenter {
             // save mouse positionf
             prevMouseX = x;
             prevMouseY = y;
-            camera.ViewDir.x= player.viewDir.x;
-            camera.ViewDir.y= player.viewDir.y;
-            camera.ViewDir.z= player.viewDir.z;
+            camera.ViewDir.x = player.viewDir.x;
+            camera.ViewDir.y = player.viewDir.y;
+            camera.ViewDir.z = player.viewDir.z;
             GamingState.setCameraChanged(true);
-           // camera.changeCallBack();
+
+            attackManager.currentChooseObj(player);
+            // camera.changeCallBack();
             // �ƶ���ͷ
         }
     }
     //鼠标左键拖动\]
 
     private void mouseLeftDrag(int x, int y) {
-        if(!Switcher.edit) {
+        if (!Switcher.edit) {
 
             if (Math.abs(x - prevMouseX) > DRAG_DIST ||
                     Math.abs(y - prevMouseY) > DRAG_DIST) {
@@ -989,52 +990,54 @@ public class MouseControlCenter {
                 //camera.changeCallBack();
                 // �ƶ���ͷ
             }
-        }else{
-            GamingState.editEngine.mouseDrag(x,Constants.WINDOW_HEIGHT-y);
+        } else {
+            GamingState.editEngine.mouseDrag(x, Constants.WINDOW_HEIGHT - y);
             //拖出一个矩形
-            if(Switcher.mouseState == Switcher.boxSelectMode) {
+            if (Switcher.mouseState == Switcher.boxSelectMode) {
                 y = Constants.WINDOW_HEIGHT - y;
                 GamingState.selectDiv.setWidth(x - (int) startX);
                 GamingState.selectDiv.setHeight(y - (int) startY);
-                Document.needUpdate =true;
-            }else if(Switcher.mouseState == Switcher.faceSelectMode){
-              //  GamingState.editEngine.faceSelect(x,y);
-                GamingState.editEngine.mouseMove(x,y);
+                Document.needUpdate = true;
+            } else if (Switcher.mouseState == Switcher.faceSelectMode) {
+                //  GamingState.editEngine.faceSelect(x,y);
+                GamingState.editEngine.mouseMove(x, y);
             }
-          //  LogUtil.println("nowX:"+x+"startX"+startX);
-           // LogUtil.println("nowY:"+y+"starty"+startY);
-
+            //  LogUtil.println("nowX:"+x+"startX"+startX);
+            // LogUtil.println("nowY:"+y+"starty"+startY);
 
 
         }
     }
+
     float startX;
     float startY;
+
     /*
      不响应连续按键
      gaming state
      */
     public void keyDown(int keycode) {
-        long now =TimeUtil.getNowMills();
-        if (Keyboard.isKeyDown( Keyboard.KEY_G)) {
+        long now = TimeUtil.getNowMills();
+        if (Keyboard.isKeyDown(Keyboard.KEY_G)) {
             player.attack();
            /* if(player.getTarget()!=null){
                 CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(),player.getMainWeapon()== ItemType.arch ?AttackType.ARROW:AttackType.KAN, player.getTarget().getId()));
-            }else*/{
+            }else*/
+            {
                 //选取当前人面前的目标
-                if(now-player.getLastAttackTime()>1000){
+                if (now - player.getLastAttackTime() > 1000) {
                     LivingThing livingThing = null;
                     //如果当前目标距离人物小于多少的距离
-                    if(player.getTarget()!=null){
-                        if(player.getPosition().copyClone().sub(player.getTarget().getPosition()).length()<2){
-                            livingThing = (LivingThing)player.getTarget();
+                    if (player.getTarget() != null) {
+                        if (player.getPosition().copyClone().sub(player.getTarget().getPosition()).length() < 2) {
+                            livingThing = (LivingThing) player.getTarget();
                         }
-                    }else{
+                    } else {
                         livingThing = livingThingManager.chooseObject(player.getPosition(), player.getWalkDir());
                     }
-                    if(livingThing!=null) {
+                    if (livingThing != null) {
                         player.setTarget(livingThing);
-                        if(player.getMainWeapon()!=null) {
+                        if (player.getMainWeapon() != null) {
                             CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, livingThing.getId()));
                         }
                         //后退
@@ -1042,19 +1045,19 @@ public class MouseControlCenter {
 
                     }
                     try {
-                        if(player.getMainWeapon()!=null) {
+                        if (player.getMainWeapon() != null) {
                             CoreRegistry.get(Client.class).send(new AttackCmd(player.getId(), player.getMainWeapon() == ItemType.arch.id ? AttackType.ARROW : AttackType.KAN, 0));
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-               }
+            }
 
-            if(player.getMainWeapon()==null ) {
+            if (player.getMainWeapon() == null) {
                 //TODO 如果使用了武器 比如射箭 就不用再消除方块了
-                GL_Vector to = GL_Vector.add(camera.Position,
-                        GL_Vector.multiply(camera.getViewDir(), 100));
+//                GL_Vector to = GL_Vector.add(camera.Position,
+//                        GL_Vector.multiply(camera.getViewDir(), 100));
 
        /* GamingState.instance.lightPos.x= to.x;
         GamingState.instance.lightPos.y= to.y;
@@ -1064,71 +1067,72 @@ public class MouseControlCenter {
                 //this.engine.mouseEnd = to;
                 //获取客户端的方块管理器
                 //TODO 消除方块 的距离太远了 改成了4
-                ChunkProvider localChunkProvider = CoreRegistry
-                        .get(ChunkProvider.class);
-                boolean delete = true;
-                //获取当前的block item
-                //
-                BulletResultDTO arr = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
-                        4, "soil", delete);
-
-
-                if (arr != null) {
-
-                    GL_Vector hitPoint = arr.targetPoint;
-                    //打印点
-                    //获得朝向
-
-                    //获得靠近还是靠远
-                    if (hitPoint == null) {
-                        return;
-                    }
-                    LogUtil.println("x:" + hitPoint.x % 1 + "y:" + hitPoint.y % 1 + "z:" + hitPoint.z % 1);
-
-           /*     if(arr.targetBlock.getId()>ItemType.wood_door.ordinal()){
-                    arr.targetBlock.beAttack();
-                    return ;
-                }*/
-                    //获得上一层还是下一层
-
-                    //其实我就是想知道点击的是哪一个面上 点击的面上
-                    //得出当前人手上拿的是不是方块
-                    int chunkX = arr.targetChunX;
-                    int chunkZ = arr.targetChunZ;
-                    //   TreeBlock treeBlock =new TreeBlock(hitPoint);
-                    //treeBlock.startPosition=hitPoint;
-                    //  treeBlock.generator();
-
-                    // int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
-                    // int blockY = MathUtil.floor(hitPoint.y);
-                    // int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
-                    ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-                    cmd.cx = (int) hitPoint.x;
-                    cmd.cy = (int) hitPoint.y;
-                    cmd.cz = (int) hitPoint.z;
-
-                    if (cmd.cy < 0) {
-                        LogUtil.err("y can't be <0 ");
-                    }
-                    cmd.type = delete ? 2 : 1;
-                    //blockType 应该和IteType类型联系起来
-                    cmd.blockType = 0;
-
-                    CoreRegistry.get(Client.class).send(cmd);
-                }
+                attackManager.attack(player);
+//                ChunkProvider localChunkProvider = CoreRegistry
+//                        .get(ChunkProvider.class);
+//                boolean delete = true;
+//                //获取当前的block item
+//                //
+//                BulletResultDTO arr = bulletPhysics.rayTrace2(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+//                        4, "soil", delete);
+//
+//
+//                if (arr != null) {
+//
+//                    GL_Vector hitPoint = arr.absoluteTargetPoint;
+//                    //打印点
+//                    //获得朝向
+//
+//                    //获得靠近还是靠远
+//                    if (hitPoint == null) {
+//                        return;
+//                    }
+//                    LogUtil.println("x:" + hitPoint.x % 1 + "y:" + hitPoint.y % 1 + "z:" + hitPoint.z % 1);
+//
+//           /*     if(arr.targetBlock.getId()>ItemType.wood_door.ordinal()){
+//                    arr.targetBlock.beAttack();
+//                    return ;
+//                }*/
+//                    //获得上一层还是下一层
+//
+//                    //其实我就是想知道点击的是哪一个面上 点击的面上
+//                    //得出当前人手上拿的是不是方块
+//                    int chunkX = arr.targetChunX;
+//                    int chunkZ = arr.targetChunZ;
+//                    //   TreeBlock treeBlock =new TreeBlock(hitPoint);
+//                    //treeBlock.startPosition=hitPoint;
+//                    //  treeBlock.generator();
+//
+//                    // int blockX = MathUtil.floor(hitPoint.x) - chunkX * 16;
+//                    // int blockY = MathUtil.floor(hitPoint.y);
+//                    // int blockZ = MathUtil.floor(hitPoint.z) - chunkZ * 16;
+//                    ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
+//                    cmd.cx = (int) hitPoint.x;
+//                    cmd.cy = (int) hitPoint.y;
+//                    cmd.cz = (int) hitPoint.z;
+//
+//                    if (cmd.cy < 0) {
+//                        LogUtil.err("y can't be <0 ");
+//                    }
+//                    cmd.type = delete ? 2 : 1;
+//                    //blockType 应该和IteType类型联系起来
+//                    cmd.blockType = 0;
+//
+//                    CoreRegistry.get(Client.class).send(cmd);
+//                }
             }
 
-           // Client.messages.push(new AttackCmd(AttackType.ARROW));
+            // Client.messages.push(new AttackCmd(AttackType.ARROW));
             //player.receive(new AttackCmd(AttackType.ARROW));
         }
-        if(Keyboard.isKeyDown( Keyboard.KEY_H)){
+        if (Keyboard.isKeyDown(Keyboard.KEY_H)) {
 //            camera.setPosition(player.getPosition());
 //            camera.setViewDir(player.getViewDir());
-            Switcher.CAMERA_2_PLAYER=0;
+            Switcher.CAMERA_2_PLAYER = 0;
             GamingState.setCameraChanged(true);
         }
 
-        if (Keyboard.isKeyDown( Keyboard.KEY_V)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
             //这逻辑是什么鬼?===============================================
 //            if(attackManager.selectThing!=null){
 //                 ChunkProvider chunkProvider = CoreRegistry.get(ChunkProvider.class);
@@ -1162,8 +1166,8 @@ public class MouseControlCenter {
 //                attackManager.selectThing=null;
 //                return;
 //            }
-           // GL_Vector to = GL_Vector.add(camera.Position,
-                 //   GL_Vector.multiply(camera.getViewDir(), 100));
+            // GL_Vector to = GL_Vector.add(camera.Position,
+            //   GL_Vector.multiply(camera.getViewDir(), 100));
 
        /* GamingState.instance.lightPos.x= to.x;
         GamingState.instance.lightPos.y= to.y;
@@ -1176,31 +1180,30 @@ public class MouseControlCenter {
                     .get(ChunkProvider.class);
             boolean delete = false;
             //获取当前的block item
-            ItemDefinition  handItem = ItemManager.getItemDefinition(player.getHandEquip());
+            ItemDefinition handItem = ItemManager.getItemDefinition(player.getHandEquip());
             //如果当前手上有拿block 就是放置的动作 如果没有 就是拆方块的节奏
-            if(handItem!=null && handItem.getType() == ItemMainType.BLOCK  ){
-                delete=false;
-            }else {
-                delete=true;
+            if (handItem != null && handItem.getType() == ItemMainType.BLOCK) {
+                delete = false;
+            } else {
+                delete = true;
 
             }
 
             BulletResultDTO arr
-             = bulletPhysics.rayTrace(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
-                    20, "soil", delete);
+                    = bulletPhysics.rayTrace2(new GL_Vector(player.getPosition().x, player.getPosition().y + 2, player.getPosition().z), camera.getViewDir(),
+                    5, "soil", delete);
 
 
-
-            if(arr!=null){
-                GL_Vector targetPoint =arr.targetPoint;
-                GL_Vector  placePoint= arr.placePoint;
+            if (arr != null) {
+//                GL_Vector relativeTargetPoint = arr.relativeTargetPoint;
+//                GL_Vector absolutePlacePoint = arr.absolutePlacePoint;
 
                 //打印点
                 //获得朝向
                 //判断选择的方块是不是门之类的
                 //Integer blockType = ((Block)arr[2]).getId();
                 IBlock targetBlock = arr.targetBlock;
-                if(arr.targetBlock!=null ) {
+                if (arr.targetBlock != null) {
                     Integer blockType = targetBlock.getId();
                     //获得靠近还是靠远
                     //LogUtil.println("x:"+targetPoint.x%1 + "y:"+targetPoint.y%1+"z:"+targetPoint.z%1);
@@ -1209,11 +1212,11 @@ public class MouseControlCenter {
                     //如果物体是可以被使用的
                     //Block targetBlock =
                     BaseBlock block = (BaseBlock) targetBlock;
-                    block.chunkX=arr.targetChunX;
-                    block.chunkZ=arr.targetChunZ;
-                    block.x=MathUtil.floor(targetPoint.x);
-                    block.y=MathUtil.floor(targetPoint.y);
-                    block.z=MathUtil.floor(targetPoint.z);
+//                    block.chunkX = arr.targetChunX;
+//                    block.chunkZ = arr.targetChunZ;
+//                    block.x = MathUtil.floor(arr.relativeTargetPoint.x);
+//                    block.y = MathUtil.floor(arr.relativeTargetPoint.y);
+//                    block.z = MathUtil.floor(arr.relativeTargetPoint.z);
                     if (targetBlock.beuse()) {//如果是有状态的block
                    /* //通过一个通用的方式获得点击的面在哪里
                     int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);
@@ -1250,12 +1253,12 @@ public class MouseControlCenter {
                     }
                 }
                 //获得上一层还是下一层
-                if(handItem==null){
+                if (handItem == null) {
                     return;
                 }
 
-               // int condition = BlockUtil.getIndex(placePoint, camera.getViewDir());
-                handItem.use(placePoint,handItem.getItemType(),camera.getViewDir());
+                // int condition = BlockUtil.getIndex(placePoint, camera.getViewDir());
+                handItem.use(arr.absolutePlacePoint, handItem.getItemType(), camera.getViewDir());
                 //开始放置物品
                 //其实我就是想知道点击的是哪一个面上 点击的面上
                 //得出当前人手上拿的是不是方块
@@ -1312,10 +1315,9 @@ public class MouseControlCenter {
                 }
                 CoreRegistry.get(Client.class).send(cmd);*/
             }
-        }else
-        if (Keyboard.isKeyDown( Keyboard.KEY_T)) {
-            if(player.getItemBeans()[24]!=null){
-                CoreRegistry.get(Client.class).send(new DropCmd(player.getId(),player.getItemBeans()[24].getId(),player.getItemBeans()[24].getItemDefinition().getItemType(),now));
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
+            if (player.getItemBeans()[24] != null) {
+                CoreRegistry.get(Client.class).send(new DropCmd(player.getId(), player.getItemBeans()[24].getId(), player.getItemBeans()[24].getItemDefinition().getItemType(), now));
             }
 
 
@@ -1351,16 +1353,16 @@ public class MouseControlCenter {
                                                 CoreRegistry.get(ToolBar.class).keyDown(9);
                                             }*/
 
-        if (Keyboard.isKeyDown( Keyboard.KEY_F3)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
             Switcher.PRINT_SWITCH = !Switcher.PRINT_SWITCH;
         } else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
             // CoreRegistry.get(Bag.class).changeShow();
-        } else if (Keyboard.isKeyDown( Keyboard.KEY_P)) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
           /*  Switcher.CAMERA_2_PLAYER++;
             if (Switcher.CAMERA_2_PLAYER > 10) {
                 Switcher.CAMERA_2_PLAYER = 10;
             }*/
-        } else if (Keyboard.isKeyDown( Keyboard.KEY_O)) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
            /* Switcher.CAMERA_2_PLAYER--;
             if (Switcher.CAMERA_2_PLAYER < 0) {
                 Switcher.CAMERA_2_PLAYER = 0;
@@ -1372,7 +1374,7 @@ public class MouseControlCenter {
             // CoreRegistry.get(PauseMenu.class).show();
             livingThingManager.chooseObject(null);
             CoreRegistry.get(BoxPanel.class).setVisible(false);
-            Switcher.isChat=false;
+            Switcher.isChat = false;
         } else if (Keyboard.isKeyDown(Keyboard.KEY_F5)) {
             Switcher.CAMERA_MODEL++;
             if (Switcher.CAMERA_MODEL > 2) {
@@ -1387,21 +1389,21 @@ public class MouseControlCenter {
         int seconds = 100;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-           // human.headRotate(0, -human.camSpeedXZ * seconds);
+            // human.headRotate(0, -human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-           // human.headRotate(human.camSpeedXZ * seconds, 0);
+            // human.headRotate(human.camSpeedXZ * seconds, 0);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-           // human.bodyRotate(0, human.camSpeedR * seconds);
+            // human.bodyRotate(0, human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_E)) {// Turn right
-          //  System.out.println("key_e");
-         //   human.bodyRotate(0, -human.camSpeedR * seconds);
+            //  System.out.println("key_e");
+            //   human.bodyRotate(0, -human.camSpeedR * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             //human.StrafeRight(-human.camSpeedXZ * seconds);
             //LogUtil.println("walk left");
         } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) { // Pan right
             //human.StrafeRight(human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) { // tilt down
-           // human.MoveForward(-human.camSpeedXZ * seconds);
+            // human.MoveForward(-human.camSpeedXZ * seconds);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_W)) { // tilt up
 
             //human.MoveForward(human.camSpeedXZ * seconds);
@@ -1411,32 +1413,29 @@ public class MouseControlCenter {
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
             player.position.y = player.position.y + 3 * seconds;
             player.move(player.position);
-        }
-        else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
             // CoreRegistry.get(ToolBar.class).keyDown(1);
             LogUtil.println(player.position.toString());
-        }
-        else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
             CoreRegistry.get(ToolBarView.class).keyDown(1);
-        }   else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(2);
-    }
-    else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(3);
-    } else if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(4);
-    } else if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(5);
-    } else if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(6);
-    } else if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(7);
-    } else if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(8);
-    }
-    if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
-        CoreRegistry.get(ToolBarView.class).keyDown(9);
-    }
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(2);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(3);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(4);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_5)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(5);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_6)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(6);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_7)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(7);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(8);
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+            CoreRegistry.get(ToolBarView.class).keyDown(9);
+        }
         /*else if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
             CoreRegistry.get(ToolBar.class).keyDown(1);
       else if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {

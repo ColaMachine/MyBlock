@@ -1,5 +1,6 @@
 package gldemo.learnOpengl.chapt10;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import gldemo.learnOpengl.FatherLeanr;
 import glmodel.GL_Matrix;
@@ -39,7 +40,7 @@ public class LearnOpengl10 extends FatherLeanr{
                 -0.5f*multi, -0.5f*multi,z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
                 -0.5f*multi, 0.5f*multi, z, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Top Left
         };
-        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
+        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45* Constants.PIdiv180),0,0);
 
         GL_Matrix view=
         GL_Matrix.LookAt(new GL_Vector(0, 0, 3), new GL_Vector(0, 0f, -1));

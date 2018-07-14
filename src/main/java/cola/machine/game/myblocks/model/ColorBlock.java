@@ -402,12 +402,6 @@ public class ColorBlock extends BaseBlock{
     }
 
 
-    @Override
-    public IBlock clone(){
-        return new ColorBlock(x,y,z);
-    }
-
-
 
 
 

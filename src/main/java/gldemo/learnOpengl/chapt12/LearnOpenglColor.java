@@ -1,5 +1,6 @@
 package gldemo.learnOpengl.chapt12;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.utilities.concurrency.LWJGLHelper;
 import gldemo.learnOpengl.FatherLeanr;
@@ -146,7 +147,7 @@ public class LearnOpenglColor extends FatherLeanr{
         };
 
 
-        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45*3.14/180.0),0,0);
+        GL_Matrix model= GL_Matrix.rotateMatrix((float)(45* Constants.PI1),0,0);
 
         GL_Matrix view= GL_Matrix.translateMatrix(0,0,-3);
         GL_Matrix projection= GL_Matrix.perspective3(45,600/600,1f,1000.0f);

@@ -48,7 +48,11 @@ public class DoorDefinition extends BlockDefinition {
     public DoorDefinition() {
         this.id = ItemType.wood_door.id;
         this.getItemModel();
-        this.setShape(TextureManager.getShape("wood_door_up"));
+        BaseBlock block = TextureManager.getShape("wood_door_up");
+        if(block!=null){//服务器端是null
+            block.special=true;
+        }
+        this.setShape(block);
     }
 
     /**
@@ -136,21 +140,49 @@ public class DoorDefinition extends BlockDefinition {
 
                         blockTemp.setPenetrate(true);
                         //
-                        BlockUtil.rotateYWithCenter(blockTemp, 0f, 0f, 0f, 3.14f / 2);
+                        BlockUtil.rotateYWithCenter(blockTemp, 0f, 0f, 0f, Constants.PI90);
+
                     }
-                    BlockUtil.rotateYWithCenter(blockTemp, 0.5f, 0.5f, 0.5f, 3.14f * face / 2);
+                    BlockUtil.rotateYWithCenter(blockTemp, 0.5f, 0.5f, 0.5f,Constants.PI90 * face);
                     int stateId = BlockParseUtil.getValue(face, ItemType.wood_door.id, top, open);
                     blockTemp.id = ItemType.wood_door.id;
                     blockTemp.stateId = stateId;
 
+
+                    GL_Vector[] minMaxPoints= BlockUtil.getMinMaxPoint(blockTemp.points);
+                    blockTemp.x= minMaxPoints[0].x;
+                    blockTemp.y= minMaxPoints[0].y;
+                    blockTemp.z= minMaxPoints[0].z;
+
+                    blockTemp.special=true;
+                    blockTemp.height= minMaxPoints[1].x-blockTemp.x;
+                    blockTemp.width= minMaxPoints[1].y-blockTemp.y;
+                    blockTemp.thick= minMaxPoints[1].z-blockTemp.z;
+
+                    blockTemp.minX= minMaxPoints[0].x;
+                    blockTemp.minY= minMaxPoints[0].y;
+                    blockTemp.minZ= minMaxPoints[0].z;
+
+                    blockTemp.maxX= minMaxPoints[1].x;
+                    blockTemp.maxY= minMaxPoints[1].y;
+                    blockTemp.maxZ= minMaxPoints[1].z;
+
+                    if(stateId==2065){
+                        LogUtil.println("2065");
+                    }
                     idShapeMap.put(stateId, blockTemp);//id shape Map 进行映射
                     TextureManager.putIdShapeMap(stateId, blockTemp);
 
                 }
-
             }
         }
 
+        BaseBlock block1 = TextureManager.idShapeMap.get(2065);
+        if(block1.points[0].x==0){
+            LogUtil.println("errr");
+        }else{
+            LogUtil.println("right");
+        }
     }
 
     public boolean beUsed(BaseBlock block) {
@@ -272,26 +304,26 @@ public class DoorDefinition extends BlockDefinition {
         IBlock z01Block =localChunkProvider.getBlockAt(MathUtil.floor(placePoint.x),MathUtil.floor(placePoint.y+1),MathUtil.floor(placePoint.z-1));
         IBlock z10Block =localChunkProvider.getBlockAt(MathUtil.floor(placePoint.x),MathUtil.floor(placePoint.y),MathUtil.floor(placePoint.z+1));
         IBlock z11Block =localChunkProvider.getBlockAt(MathUtil.floor(placePoint.x),MathUtil.floor(placePoint.y+1),MathUtil.floor(placePoint.z+1));
-        boolean xPosible=false;
-        boolean zPosible=false;
-        if(x00Block==null ||x01Block==null ||x10Block==null ||  x11Block==null||x00Block.getId()==0 || x01Block.getId()==0
-                ||x10Block.getId()==0 || x11Block.getId()==0){//如果x侧的左右两边没有满足两格高的枪毙 block为空的化 就不能在这一侧建立门了
-            xPosible=false;
-        }else{
-            //检查y侧 是否方通的
-
-//            if(z00Block.getId()!=0 && z01Block.getId()!=0 || ){
+        boolean xPosible=true;
+        boolean zPosible=true;
+//        if(x00Block==null ||x01Block==null ||x10Block==null ||  x11Block==null||x00Block.getId()==0 || x01Block.getId()==0
+//                ||x10Block.getId()==0 || x11Block.getId()==0){//如果x侧的左右两边没有满足两格高的枪毙 block为空的化 就不能在这一侧建立门了
+//            xPosible=false;
+//        }else{
+//            //检查y侧 是否方通的
 //
-//            }
-            xPosible=true;
-        }
-
-        if(z00Block==null ||z01Block==null ||z10Block==null ||  z11Block==null||z00Block.getId()==0 || z01Block.getId()==0
-                ||z10Block.getId()==0 || z11Block.getId()==0){//如果x侧的block为空的化 就不能在这一侧建立门了
-            zPosible=false;
-        }else{
-            zPosible=true;
-        }
+////            if(z00Block.getId()!=0 && z01Block.getId()!=0 || ){
+////
+////            }
+//            xPosible=true;
+//        }
+//
+//        if(z00Block==null ||z01Block==null ||z10Block==null ||  z11Block==null||z00Block.getId()==0 || z01Block.getId()==0
+//                ||z10Block.getId()==0 || z11Block.getId()==0){//如果x侧的block为空的化 就不能在这一侧建立门了
+//            zPosible=false;
+//        }else{
+//            zPosible=true;
+//        }
         //z- position
 
         //z+ postion

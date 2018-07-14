@@ -3,6 +3,22 @@ package com.dozenx.util;
 
 public class MathUtil {
 
+    /**
+     * 测试两个立方体在空间上是否相交
+     * @param x1
+     * @param y1
+     * @param z1
+     * @param width1
+     * @param height1
+     * @param thick1
+     * @param x2
+     * @param y2
+     * @param z2
+     * @param width2
+     * @param height2
+     * @param thick2
+     * @return
+     */
     public static  boolean testCubeXiangjiao(float x1,float y1,float z1,float width1 ,float height1,float thick1 ,float x2,float y2,float z2,float width2,float height2,float thick2){
 
         if(testJuxinXiangjiao(x1,y1,width1,height1,x2,y2,width2,height2) && testJuxinXiangjiao(x1,z1,width1,thick1,x2,z2,width2,thick2)){
@@ -13,17 +29,39 @@ public class MathUtil {
 
     }
 
+    public static  boolean testCubeXiangjiao2(float x1,float y1,float z1,float width1 ,float height1,float thick1 ,float x2,float y2,float z2,float width2,float height2,float thick2){
+
+        if(testJuxinXiangjiao(x1,y1,width1,height1,x2,y2,width2,height2) && testJuxinXiangjiao(x1,z1,width1,thick1,x2,z2,width2,thick2)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    /**
+     * 相交返回true  不相交返回false
+     * @param x1
+     * @param y1
+     * @param width1
+     * @param height1
+     * @param x2
+     * @param y2
+     * @param width2
+     * @param height2
+     * @return
+     */
     public static boolean  testJuxinXiangjiao(float x1,float y1,float width1,float height1,float x2,float y2,float width2,float height2){
-        float minX =Math.max(x1,x2);
-        float minY =Math.max(y1,y2);
+        float minX =Math.min(x1,x2);
+        float minY =Math.min(y1,y2);
 
         float maxX = Math.min(x1+width1,x2+width2);
         float maxY = Math.min(y1+height1,y2+height2);
 
-        if(minX>maxX || minY>maxY){
-            return false;
-        }else{
+        if(maxX-minX<width1+width2  && maxY-minY<height1+height2){
             return true;
+        }else{
+            return false;
         }
     }
     public static int getNearOdd(float num) {//����
@@ -98,17 +136,22 @@ public class MathUtil {
         return g;
     }
 
-    public static int getChunkX(float x) {
-        return (int) (x / 16);
-    }
-
-    public static int getChunkY(float y) {
-        return (int) (y / 16);
-    }
-
-    public static int getChunkZ(float z) {
-        return (int) (z / 16);
-    }
+    /**
+     * 获取
+     * @param x
+     * @return
+     */
+//    public static int getChunkX(float x) {
+//        return (int) (x / 16);
+//    }
+//
+//    public static int getChunkY(float y) {
+//        return (int) (y / 16);
+//    }
+//
+//    public static int getChunkZ(float z) {
+//        return (int) (z / 16);
+//    }
 
 
     public static double[] result(double x, double y) {

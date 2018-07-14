@@ -73,6 +73,9 @@ public class AttackManager {
           //  ShaderUtils.draw3dColorBox(ShaderManager.anotherShaderConfig,ShaderManager.anotherShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,new GL_Vector(0,0,0),selectThing.width,selectThing.height,selectThing.thick,0.5f);
             ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),selectThing.x,selectThing.y,selectThing.z,selectThing.width,selectThing.height,selectThing.thick);
             GamingState.editEngine.lineNeedUpdate=true;
+        }else{
+            ShaderUtils.draw3dColorBoxLine(ShaderManager.lineShaderConfig.getVao(),0,0,0,0,0,0);
+            GamingState.editEngine.lineNeedUpdate=true;
         }
         //attackball 先在空中飞行 碰到物体后 转入dropthing当中 比如箭飞行过去 然后碰到人就表示射中了 会粘在人的身体上 射到了方块上 会粘在方块上
          for(int i=diedList.size()-1;i>=0;i--) {
@@ -199,7 +202,7 @@ public class AttackManager {
         boolean delete = true;
         //获取当前的block item
         //
-        BulletResultDTO arr  = bulletPhysics.rayTrace(player.viewPosition , player.getViewDir(),4, "soil", delete);//从当前的头上面开始沿着方向选取一个目标
+        BulletResultDTO arr  = bulletPhysics.rayTrace2(player.viewPosition , player.getViewDir(),4, "soil", delete);//从当前的头上面开始沿着方向选取一个目标
 
         if(arr!=null && arr.targetBlock!=null){//如果选到了目标
             //  if(arr.targetBlock instanceof ColorBlock){
@@ -207,15 +210,16 @@ public class AttackManager {
 
 
 
-            int blockX = arr.targetChunX*16+(int)arr.targetPoint.x;//blockX
-            int blockY = (int)arr.targetPoint.y;
-            int blockZ = arr.targetChunZ*16+(int)arr.targetPoint.z;
-            if(selectThing!=null &&blockX  == selectThing.x && blockY == selectThing.y && blockZ == arr.targetChunZ*16+(int)arr.targetPoint.z){//还是老的目标了
+
+            int blockWorldX  = (int)Math.floor( arr.absoluteTargetPoint.x);
+            int blockWorldY  = (int) Math.floor(arr.absoluteTargetPoint.y);
+            int blockWorldZ  =  (int)Math.floor( arr.absoluteTargetPoint.z);
+            if(selectThing!=null &&blockWorldX  == selectThing.x && blockWorldY == selectThing.y && blockWorldZ ==selectThing.z){//还是老的目标了
                 selectThing.blood--;
                 if(selectThing.blood<=0){
 
                     ItemDefinition definition = ItemManager.getItemDefinition(selectThing.id);
-                    definition.beDestroyed(selectThing,arr.targetChunX,0,arr.targetChunZ,blockX,blockY,blockZ);
+                    definition.beDestroyed(selectThing,arr.targetChunX,0,arr.targetChunZ,blockWorldX,blockWorldY,blockWorldZ);
                     //先删除方块再扔到地上
 
                     ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(arr.targetChunX, 0, arr.targetChunZ));
@@ -241,15 +245,39 @@ public class AttackManager {
                 }
             }else {//选择到了新的目标
                 selectThing = arr.targetBlock;//new ColorBlock(arr.targetChunX*16+(int)arr.targetPoint.x,(int)arr.targetPoint.y,arr.targetChunZ*16+(int)arr.targetPoint.z);
-                selectThing.x = arr.targetChunX * 16 + (int) arr.targetPoint.x;
-                selectThing.y = (int) arr.targetPoint.y;
-                selectThing.z = arr.targetChunZ * 16 + (int) arr.targetPoint.z;
+                selectThing.x = blockWorldX;
+                selectThing.y = blockWorldY;
+                selectThing.z =  blockWorldZ;
             }
-            LogUtil.println(arr.targetPoint+"");
+            //LogUtil.println(arr.targetPoint+"");
             //  }
         }
     }
 
+    public void currentChooseObj(Player player){
+        now = TimeUtil.getNowMills();
+        if(now-lastAttackTime>500){
+            lastAttackTime= now;
+        }else{
+            return;
+        }
+        //选中一个colorblock 作为当前的block
+        ChunkProvider localChunkProvider = CoreRegistry
+                .get(ChunkProvider.class);
+        boolean delete = true;
+        //获取当前的block item
+        //
+        BulletResultDTO arr  = bulletPhysics.rayTrace2(player.viewPosition , player.getViewDir(),4, "soil", delete);//从当前的头上面开始沿着方向选取一个目标
+
+        if(arr!=null && arr.targetBlock!=null) {//如果选到了目标
+            selectThing = arr.targetBlock;//new ColorBlock(arr.targetChunX*16+(int)arr.targetPoint.x,(int)arr.targetPoint.y,arr.targetChunZ*16+(int)arr.targetPoint.z);
+            selectThing.x =  (int)Math.floor(arr.absoluteTargetPoint.x);
+            selectThing.y =  (int)Math.floor( arr.absoluteTargetPoint.y);
+            selectThing.z = (int) Math.floor( arr.absoluteTargetPoint.z);
+        }else{
+            selectThing=null;
+        }
+    }
     public static int computeDamage(Role source,Role target){
         int gongji = source.getTotalPower();
         int fangyu = target.getTotalAgility();

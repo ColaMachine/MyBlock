@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model;
 
 
+import cola.machine.game.myblocks.engine.Constants;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
@@ -175,7 +176,7 @@ public class RotateColorBlock2 extends ColorBlock implements RotateBlock{
         //必须按照x y z 增量旋转
         GL_Matrix translateMatrix = GL_Matrix.translateMatrix(x+centerX ,y+centerY ,z+centerZ);
         // GL_Matrix translateMatrix = GL_Matrix.translateMatrix(centerX ,centerY ,centerZ);
-         rotateMatrix = GL_Matrix.rotateMatrix(3.14f,0,0);
+         rotateMatrix = GL_Matrix.rotateMatrix(Constants.PI,0,0);
         GL_Vector[] points2=new GL_Vector[8];
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
         rotateMatrix =GL_Matrix.multiply(rotateMatrix,GL_Matrix.translateMatrix(-x-centerX ,-y-centerY ,-z-centerZ));

@@ -392,8 +392,5 @@ public class ImageBlock extends BaseBlock{
 
 
     }
-    @Override
-    public IBlock clone() {
-        return null;
-    }
+
 }

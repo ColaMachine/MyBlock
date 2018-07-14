@@ -11,6 +11,7 @@ import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.PickCmd;
 import com.dozenx.game.engine.item.bean.DoorDefinition;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.item.bean.StairDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
@@ -230,9 +231,14 @@ public class ItemManager {
     }
     //加载复杂类物品定义
     public static void loadDiyItem(){
-        DoorDefinition definition = new DoorDefinition();
-        definition.init();
-        putItemDefinition("wood_block",new DoorDefinition());
+//        DoorDefinition definition = new DoorDefinition();
+//        definition.init();
+//        putItemDefinition("wood_block",definition);
+//
+//
+//        StairDefinition stairDefinition = new StairDefinition();
+//        stairDefinition.init();
+//        putItemDefinition("wood_block",stairDefinition);
     }
     public static void putItemDefinition(String name, ItemDefinition item) {
         itemDefinitionMap.put(name, item);

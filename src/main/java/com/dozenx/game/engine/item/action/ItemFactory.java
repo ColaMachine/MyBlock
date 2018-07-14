@@ -60,6 +60,9 @@ public class ItemFactory {
             }else
             if(engine .equals("door")){
                 itemDef = new DoorDefinition();
+            }else
+            if(engine .equals("stair")){
+                itemDef = new StairDefinition();
             }else if(engine .equals("box")){
                 itemDef = new BoxDefinition();
             }else

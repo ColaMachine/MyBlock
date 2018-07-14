@@ -1827,7 +1827,7 @@ public class ChunkImpl implements Chunk {
                 AnimationBlock animationBlock = (AnimationBlock) this.animationBlock.get(i);
                 GL_Matrix translateMatrix  = GL_Matrix.translateMatrix(chunkPos.x * 16 + animationBlock.x, animationBlock.y,
                         chunkPos.z * 16 + animationBlock.z);
-                GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir*3.14f/2, 0);
+                GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir* Constants.PI90, 0);
                 rotateMatrix = GL_Matrix.multiply(translateMatrix, rotateMatrix);
                 //animationBlock.reComputePoints();
                 animationBlock.renderShader(config,
@@ -1858,7 +1858,7 @@ public class ChunkImpl implements Chunk {
                     AnimationBlock animationBlock = (AnimationBlock) this.animationBlock.get(i);
                     GL_Matrix translateMatrix  = GL_Matrix.translateMatrix(chunkPos.x * 16 + animationBlock.x, animationBlock.y,
                             chunkPos.z * 16 + animationBlock.z);
-                    GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir*3.14f/2, 0);
+                    GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-animationBlock.dir* Constants.PI90, 0);
                     rotateMatrix = GL_Matrix.multiply(translateMatrix, rotateMatrix);
                     //animationBlock.reComputePoints();
                     animationBlock.renderShader(ShaderManager.terrainShaderConfig,
@@ -2011,7 +2011,7 @@ public class ChunkImpl implements Chunk {
          * GL_Matrix.multiply(GL_Matrix.translateMatrix(0.5f, 0, 0.5f),vector);
          */
         GL_Matrix translateMatrix = GL_Matrix.multiply(GL_Matrix.translateMatrix(0.5f, 0, 0.5f),
-                GL_Matrix.rotateMatrix(0, 90 * 3.14f / 180, 0));
+                GL_Matrix.rotateMatrix(0, 90 *  Constants.PI1, 0));
         translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
         GL_Vector vector = new GL_Vector(0, 0, 0);
         vector = GL_Matrix.multiply(translateMatrix, vector);

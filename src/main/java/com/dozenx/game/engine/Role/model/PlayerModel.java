@@ -1,6 +1,7 @@
 package com.dozenx.game.engine.Role.model;
 
 import cola.machine.game.myblocks.animation.Animation;
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
@@ -299,7 +300,7 @@ public class PlayerModel extends BaseModel   {
 
             GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() + 0.75f, role.getZ());//-BODY_THICK/2
             //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
+            GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+ Constants.PI90/**3.14f/180*/,0);
 
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
             rotateMatrix.scaleSelf(0.1f,0.1f,0.1f);
@@ -313,7 +314,7 @@ public class PlayerModel extends BaseModel   {
 
                 //
                 GL_Matrix translateMatrix1 = GL_Matrix.translateMatrix(role.getX(), role.getY() + 3.5f, role.getZ());
-                float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
+                float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()- Constants.PI90;
                 GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 
                 rotateMatrix1=GL_Matrix.multiply(translateMatrix1,rotateMatrix1);

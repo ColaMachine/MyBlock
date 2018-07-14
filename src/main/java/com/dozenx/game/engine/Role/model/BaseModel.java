@@ -189,7 +189,7 @@ public class BaseModel implements Model   {
                 GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX(), role.getY() , role.getZ());//-BODY_THICK/2
                 //GL_Matrix translateMatrix=GL_Matrix.translateMatrix(role.getX()-role.getExecutor().getModel().getRootComponent().width/2, role.getY() + 0.75f, role.getZ()-role.getExecutor().getModel().getRootComponent().thick/2);//-BODY_THICK/2
                 //float angle=GL_Vector.angleXZ(this.WalkDir , new GL_Vector(0,0,-1));
-                rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+3.14f/2/**3.14f/180*/,0);
+                rotateMatrix = GL_Matrix.rotateMatrix(0,-role.getBodyAngle()+Constants.PI90/**3.14f/180*/,0);
 
                 rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
 

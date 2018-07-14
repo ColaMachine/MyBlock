@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.Role.bean;
 
+import cola.machine.game.myblocks.model.AABB.SimpleAABB;
 import com.dozenx.game.network.server.bean.PlayerStatus;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -7,7 +8,7 @@ import glmodel.GL_Vector;
 /**
  * Created by luying on 17/3/5.
  */
-public class BaseProperties extends cola.machine.game.myblocks.model.AABB.AABB{
+public class BaseProperties extends SimpleAABB {
 
     public void getInfo(PlayerStatus info) {
 

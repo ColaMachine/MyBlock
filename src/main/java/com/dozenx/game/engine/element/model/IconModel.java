@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.element.model;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;
@@ -43,7 +44,7 @@ public class IconModel implements Model {
 
     public void build(ShaderConfig config ,GL_Matrix translateMatrix){
         //GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
-        float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
+        float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()- Constants.PI90;
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);

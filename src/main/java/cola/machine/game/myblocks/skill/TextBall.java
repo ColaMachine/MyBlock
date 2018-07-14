@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.skill;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.element.bean.Component;
@@ -63,7 +64,7 @@ public class TextBall {
 
 
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
-            float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()-3.14f/2;
+            float angle = /*(float)(Math.PI)+*/-GamingState.player.getHeadAngle()- Constants.PI90;
             GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 
             rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);

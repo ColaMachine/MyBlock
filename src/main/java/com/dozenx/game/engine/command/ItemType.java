@@ -25,7 +25,7 @@ public enum ItemType {
     gold_pick,arch1,raw_beef,cooked_beef,iron_stick,wood_axe(34),stone_axe,
     iron_axe,diamond_axe,gold_axe,arch2,wood_hoe(35),stone_hoe,iron_hoe,
     diamond_hoe,gold_hoe,arch3,
-    grit,soil(12),stone(13)
+    grit,soil(12),stone(13),wood_stair(40),wood_half(41)
 
 
     ,wood(3),glass(4),sand(11),mantle(1),water(10),tree_wood(14,"tree_wood","木头"),tree_leaf(15,"tree_leaf","树叶"),

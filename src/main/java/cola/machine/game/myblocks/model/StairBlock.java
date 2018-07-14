@@ -15,9 +15,9 @@ import com.dozenx.game.opengl.util.Vao;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-public class DoorBlock extends DirectionFourBlock {
+public class StairBlock extends DirectionFourBlock {
 
-    public DoorBlock(String name, int id, boolean isAlpha) {
+    public StairBlock(String name, int id, boolean isAlpha) {
         super(name, id, isAlpha);
     }
 
@@ -37,7 +37,6 @@ public class DoorBlock extends DirectionFourBlock {
         super.setValue(value);
         isTop = value >> 10 & 1;
         open = value >> 9 & 1;
-
     }
 
     public int getValue() {
@@ -72,7 +71,7 @@ public class DoorBlock extends DirectionFourBlock {
                 degree += 90;
             }
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
-            translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree *  Constants.PIdiv180, 0));
+            translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree * Constants.PI1, 0));
 
 
             translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));
@@ -135,7 +134,7 @@ public class DoorBlock extends DirectionFourBlock {
 
     @Override
     public IBlock clone() {
-        DoorBlock block = new DoorBlock(this.getName(), this.getId(), this.getAlpha());
+        StairBlock block = new StairBlock(this.getName(), this.getId(), this.getAlpha());
         block.itemDefinition = itemDefinition;
         return block;
     }

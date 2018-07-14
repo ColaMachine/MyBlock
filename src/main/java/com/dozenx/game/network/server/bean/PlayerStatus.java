@@ -1,9 +1,11 @@
 package com.dozenx.game.network.server.bean;
 
+import cola.machine.game.myblocks.model.AABB.SimpleAABB;
+
 /**
  * Created by dozen.zhang on 2017/2/16.
  */
-public class PlayerStatus  extends cola.machine.game.myblocks.model.AABB.AABB {
+public class PlayerStatus  extends SimpleAABB {
     protected float x;
     protected float y;
     protected float z;

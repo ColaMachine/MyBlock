@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.element.model;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;
 import com.dozenx.game.engine.element.bean.Component;
@@ -49,7 +50,7 @@ public class XModel implements Model {
 
     public void build(ShaderConfig config ,GL_Matrix translateMatrix){
         //GL_Matrix translateMatrix = GL_Matrix.translateMatrix(this.position.x, this.position.y, this.position.z);
-        float angle = /*(float)(Math.PI)+*/3.14f/2;
+        float angle = /*(float)(Math.PI)+*/Constants.PI90;
         GL_Matrix rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);
@@ -59,7 +60,7 @@ public class XModel implements Model {
 
         ShaderUtils.draw3dImage(config,config.getVao(),rotateMatrix,p1,p2,p3,p4,normal,icon);
 
-         angle = /*(float)(Math.PI)+*/-3.14f/2;
+         angle = /*(float)(Math.PI)+*/-Constants.PI90;
          rotateMatrix = GL_Matrix.rotateMatrix(0,angle/**3.14f/180,0*/,0);
 
         rotateMatrix=GL_Matrix.multiply(translateMatrix,rotateMatrix);

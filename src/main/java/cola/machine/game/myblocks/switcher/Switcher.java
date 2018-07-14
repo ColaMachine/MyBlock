@@ -1,5 +1,7 @@
 package cola.machine.game.myblocks.switcher;
 
+import cola.machine.game.myblocks.engine.Constants;
+
 public class Switcher {
     public static  float CAMERA_HEIGHT=1.7f;
 	public static  boolean IS_GOD = false;
@@ -14,9 +16,9 @@ public class Switcher {
     public static int yangjiao_d=89;
     public static int fujiao_d=-89;
     public static boolean  test=true;
-    public static float YANGJIAO=yangjiao_d/180f*3.14f;
+    public static float YANGJIAO=yangjiao_d/180f* Constants.PI;
 
-    public static float FUJIAO=fujiao_d/180f *3.14f;
+    public static float FUJIAO=fujiao_d/180f * Constants.PI;
 
     public static boolean isChat =false;
 

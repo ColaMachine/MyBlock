@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model;
 
 
+import cola.machine.game.myblocks.engine.Constants;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
@@ -153,7 +154,7 @@ public class RotateImageBlock extends ImageBlock implements RotateBlock{
     public  void reComputePoints(GL_Matrix rotateMatrix){
         this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
 
-        GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0);
+        GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,this.dir* Constants.PI90,0);
         for(int i=0;i<points.length;i++){
             points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
 

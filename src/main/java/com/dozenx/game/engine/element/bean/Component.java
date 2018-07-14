@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.element.bean;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.RotateBlock;
@@ -260,13 +261,13 @@ public class Component extends BoneRotateImageBlock {
 
         if(rotateZ!=0){
             //rotateMatrix= GL_Matrix.rotateMatrix( 0, 0, rotateZ);
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, rotateZ*3.14f/180));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, 0, rotateZ* Constants.PI1));
         }
         if(rotateY!=0){
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, rotateY*3.14f/180, 0));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( 0, rotateY*Constants.PI1, 0));
         }
         if(rotateX!=0){
-            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( rotateX*3.14f/180, 0, 0));
+            rotateMatrix=GL_Matrix.multiply(rotateMatrix,GL_Matrix.rotateMatrix( rotateX*Constants.PI1, 0, 0));
 
         } //GL11.glTranslatef(-childLocation.x, -childLocation.y, -childLocation.z);
          translateMatrix = GL_Matrix.translateMatrix(-childPosition.x, -childPosition.y, -childPosition.z);

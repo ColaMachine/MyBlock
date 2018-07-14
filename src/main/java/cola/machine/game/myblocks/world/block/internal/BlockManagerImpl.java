@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.action.ItemManager;
+import core.log.LogUtil;
 
 import java.util.HashMap;
 
@@ -100,6 +101,9 @@ public class BlockManagerImpl extends BlockManager {
            // block.setValue(id);
             return block;
         }else*/
+        if(id==2065){
+            LogUtil.println(123+"");
+        }
         BaseBlock block = TextureManager.idShapeMap.get(id);
         return block;
         //ItemDefinition itemDefinition = ItemManager.getItemDefinition(id);

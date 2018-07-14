@@ -1,5 +1,6 @@
 package glmodel;
 
+import cola.machine.game.myblocks.engine.Constants;
 import org.lwjgl.BufferUtils;
 
 import javax.vecmath.Point4f;
@@ -605,7 +606,7 @@ public class GL_Matrix
      * 透视投影
      */
     public static GL_Matrix perspective(float fov, float aspect,float zn,float zf )
-    {fov=(float)(3.14*fov/180);
+    {fov=(float)( Constants.PI1*fov);
         GL_Matrix m = new GL_Matrix();
        m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
         m.m11=(float)(1/(Math.tan(fov*0.5f)));
@@ -649,7 +650,7 @@ public class GL_Matrix
 	public static GL_Matrix perspective3(float fov, float aspect,float zn,float zf )
 	{
 
-        fov=(float)(3.1415926*fov/180);
+        fov=(float)( Constants.PI1*fov);
 		GL_Matrix m = new GL_Matrix();
 		m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
 		m.m11=(float)(1/(Math.tan(fov*0.5f)));
@@ -666,7 +667,7 @@ public class GL_Matrix
 		 float zNear = zn;
 		 float zFar = zf;
 		 float zRange = zn - zf;
-		double radi= 3.14*(fov / 2.0)/180;
+		double radi=  Constants.PI1*(fov / 2.0);
 		 float tanHalfFOV =(float)( Math.tan((float)radi));
 
 		m.m00 = 1.0f / (tanHalfFOV * ar);
@@ -696,7 +697,7 @@ public class GL_Matrix
         float zNear = zn;
         float zFar = zf;
         float zRange = zn - zf;
-        double radi= 3.14*(fov / 2.0)/180;
+        double radi=  Constants.PI1*(fov / 2.0);
         float tanHalfFOV =(float)( Math.tan((float)radi));
 
         m.m00 = 1.0f / (tanHalfFOV * ar);

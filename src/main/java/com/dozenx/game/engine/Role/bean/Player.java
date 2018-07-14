@@ -122,14 +122,14 @@ public class Player extends LivingThing {
     }
 
     //public boolean needJudgeCrash=false;
-    public void move(GL_Vector vector) {
-        float x = vector.x;
-        float y = vector.y;
-        float z = vector.z;
-        this.move(x, y, z);
-
-
-    }
+//    public void move(GL_Vector vector) {
+//        float x = vector.x;
+//        float y = vector.y;
+//        float z = vector.z;
+//        this.move(x, y, z);
+//
+//
+//    }
 
     public void moveOld() {
         this.position = oldPosition;
@@ -364,14 +364,14 @@ public class Player extends LivingThing {
 
         //获取选中的方块
         BulletResultDTO arr
-                = bulletPhysics.rayTrace(new GL_Vector(viewPosition.x, viewPosition.y, viewPosition.z), viewDir,
+                = bulletPhysics.rayTrace2(new GL_Vector(viewPosition.x, viewPosition.y, viewPosition.z), viewDir,
                 20, "soil", delete);
 
 
         //如果选到了方块
         if(arr!=null){
-            GL_Vector targetPoint =arr.targetPoint;
-            GL_Vector  placePoint= arr.placePoint;
+            GL_Vector targetPoint =arr.relativeTargetPoint;
+            GL_Vector  placePoint= arr.absolutePlacePoint;
 
             //打印点
             //获得朝向

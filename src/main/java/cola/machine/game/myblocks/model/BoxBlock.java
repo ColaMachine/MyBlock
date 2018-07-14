@@ -64,7 +64,7 @@ public class BoxBlock extends DirectionFourBlock {
                 degree += 90;
             }
             GL_Matrix translateMatrix = GL_Matrix.translateMatrix(0.5f, 0, 0.5f);
-            translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree * 3.14f / 180, 0));
+            translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.rotateMatrix(0, -degree * Constants.PIdiv180, 0));
 
 
             translateMatrix = GL_Matrix.multiply(translateMatrix, GL_Matrix.translateMatrix(-0.5f, 0, -0.5f));

@@ -400,6 +400,18 @@ model 是根据compute 里的计算值和属性值 对基础shape 加以变形�
 model baseModel:基础model
       transform:变形 if(x>1){rot()};
 
+init:{
+baseModel:["startDown","startUp"],
+rotate:[[0.5,0.5,0,0,1,0,90*${face}],[0.5,0.5,0,0,0,1,90*${top}]],
+
+
+}
+function init(){
+    baseModel=model("stairDown","stairUp");
+    baseModel.rotate(0.5,0.5,0,0,1,0,90*face);
+    baseModel.rotate(0.5,0.5,0,0,0,1,90);
+}
+
 
 if(isTop(point)){
     top=true;
@@ -462,3 +474,6 @@ brain update 决定了决策 下发命令 state 发生改变
 
 role及以上存放的是基础属性 不可变部分
 livingThingBean及以下是可变部分
+
+2018年7月11日16:13:34 优化了选取问题
+选取的问题还是在的

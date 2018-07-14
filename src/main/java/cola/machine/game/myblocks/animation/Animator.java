@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.animation;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import com.dozenx.game.engine.element.bean.Component;
 import core.log.LogUtil;
@@ -397,15 +398,15 @@ public class Animator {
                     }
                     if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
                             if(frames[slot].transform.rotateX!=null) {
-                                component.rotateX = frames[slot].transform.rotateX/180f*3.14f;
+                                component.rotateX = frames[slot].transform.rotateX*Constants.PIdiv180;
                             }
                             //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
                             //System.out.println("component.rotateX:" + component.rotateX);
                         if(frames[slot].transform.rotateY!=null) {
-                            component.rotateY = frames[slot].transform.rotateY/180f*3.14f;
+                            component.rotateY = frames[slot].transform.rotateY*Constants.PIdiv180;
                         }
                         if(frames[slot].transform.rotateZ!=null) {
-                            component.rotateZ = frames[slot].transform.rotateZ/180f*3.14f;
+                            component.rotateZ = frames[slot].transform.rotateZ*Constants.PIdiv180;
                         }
                         lastTime = nowTime;
                     } else {//超过制定时间了
@@ -427,15 +428,15 @@ public class Animator {
                     if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
 
                         if(frames[slot].transform.rotateX!=null) {
-                            component.rotateX = frames[slot].transform.rotateX/180f*3.14f;
+                            component.rotateX = frames[slot].transform.rotateX*Constants.PIdiv180;
                         }
                         //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
                         //System.out.println("component.rotateX:" + component.rotateX);
                         if(frames[slot].transform.rotateY!=null) {
-                            component.rotateY = frames[slot].transform.rotateY/180f*3.14f;
+                            component.rotateY = frames[slot].transform.rotateY*Constants.PIdiv180;
                         }
                         if(frames[slot].transform.rotateZ!=null) {
-                            component.rotateZ = frames[slot].transform.rotateZ/180f*3.14f;
+                            component.rotateZ = frames[slot].transform.rotateZ*Constants.PIdiv180;
                         }
 //                            component.rotateX += rotateX_speed * (nowTime - lastTime);
 //

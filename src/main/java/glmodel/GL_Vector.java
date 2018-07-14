@@ -1,5 +1,6 @@
 package glmodel;
 
+import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
@@ -502,7 +503,7 @@ public class GL_Vector
 		A.z=B.z;
 	}
     public static GL_Vector rotateWithZ(GL_Vector  A, float degree){
-        degree= degree/180*3.1415926f;
+        degree= degree* Constants.PI1;
         return new GL_Vector((float)(A.x*Math.cos(degree)-A.y*Math.sin(degree)),(float)(A.x*Math.sin(degree)+A.y*Math.cos(degree)),A.z);
     }
 

@@ -1147,7 +1147,7 @@ public class AnimationBlock2 extends BaseBlock {
             boolean left, boolean right, boolean front, boolean back) {
 //GL_Matrix matrix =GL_Matrix.translateMatrix(x, y, z);
 
-GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(x+width/2,y,z+thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
+GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(x+width/2,y,z+thick/2),GL_Matrix.rotateMatrix(0,this.dir*Constants.PI90,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
         if (animations.size() > 0) {
             if (play) {// 正常播放
                 if (TimeUtil.getNowMills() - lastAnimationTime > 100) {//这里的需求是动画按照正常流转 运行到最后一帧的时候保持最后一帧的状态 并且不动了 等待下一次动画的唤起
@@ -1262,7 +1262,7 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
 
         GL_Matrix rotateMatrix = GL_Matrix.multiply(
                 GL_Matrix.translateMatrix(xoffset + 1f/ 2, yoffset, zoffset + 1f/ 2),
-                GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0));
+                GL_Matrix.rotateMatrix(0, this.dir * Constants.PI90, 0));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 / xzoom, 1 / yzoom, 1 / zzoom));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-1f/ 2, 0, -1f/ 2));
 

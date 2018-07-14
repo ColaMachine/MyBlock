@@ -162,7 +162,7 @@ public class LivingThingManager {
         //TODO targetId 已经设置好了 但是target还是为空的
         ShaderManager.livingThingShaderConfig.getVao().getVertices().rewind();
 
-         gl_model.renderShader();
+         //gl_model.renderShader();
 
         //GLModelContainer.next();
 
@@ -680,6 +680,12 @@ public class LivingThingManager {
 //        for (LivingThingBean enemy : livingThings) {
 //            enemy.doSomeThing(this );
 //        }
+
+     /*   CoreRegistry.get(PhysicsEngine.class).collision(this.player);*/
+      /*  CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this.player);
+        CoreRegistry.get(PhysicsEngine.class).gravitation(this.player);*/
+
+       // this.player.preUpdate(this);
         this.player.update();
         for (int i = livingThings.size() - 1; i >= 0; i--) {
             LivingThing livingThing = livingThings.get(i);

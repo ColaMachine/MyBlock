@@ -8,6 +8,7 @@ public interface IBlock {
     public void setChunk(ChunkImpl chunk);
 
     public boolean isPenetrate();
+    public boolean isSpecial();
     public void setPenetrate(boolean penetrate);
     public ChunkImpl getChunk();
 
@@ -41,7 +42,7 @@ public interface IBlock {
     public boolean use();
     public boolean beuse();
 
-    public IBlock clone();
+    public IBlock copy();
 
     public void beAttack();
 

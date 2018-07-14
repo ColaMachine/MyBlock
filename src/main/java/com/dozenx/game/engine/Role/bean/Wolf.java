@@ -78,14 +78,14 @@ public class Wolf extends LivingThing {
     }
 
     //public boolean needJudgeCrash=false;
-    public void move(GL_Vector vector) {
-//        float x = vector.x;
-//        float y = vector.y;
-//        float z = vector.z;
-        this.move(vector.x, vector.y, vector.z);
-
-
-    }
+//    public void move(GL_Vector vector) {
+////        float x = vector.x;
+////        float y = vector.y;
+////        float z = vector.z;
+//        this.move(vector.x, vector.y, vector.z);
+//
+//
+//    }
 
     public void moveOld() {
         this.position = oldPosition;

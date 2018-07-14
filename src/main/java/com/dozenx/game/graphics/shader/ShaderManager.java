@@ -599,7 +599,7 @@ public class ShaderManager {
 
         int modelLoc = glGetUniformLocation(programId, "model");
         if (modelLoc >= 0) {
-            GL_Matrix model = GL_Matrix.rotateMatrix((float) (0 * 3.14 / 180.0), 0, 0);
+            GL_Matrix model = GL_Matrix.rotateMatrix((float) (0 *  Constants.PI1), 0, 0);
             config.setModelLoc(modelLoc);
             OpenglUtils.checkGLError();
             glUniformMatrix4(modelLoc, false, model.toFloatBuffer());

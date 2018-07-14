@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.engine.subsystem.DisplayDevice;
 import cola.machine.game.myblocks.engine.subsystem.RenderingSubsystemFactory;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import core.log.LogUtil;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
@@ -124,9 +125,10 @@ public class LwjglGraphics extends BaseLwjglSubsystem{
 
     private void initOpenGL() {
         checkOpenGL();
-        int widh =Display.getWidth();
+        int width =Display.getWidth();
         int height = Display.getHeight();
-        glViewport(0, 0, Display.getWidth(), Display.getHeight());
+        LogUtil.println("屏幕宽度"+width+"高度"+height);
+        glViewport(0, 0,width,height);
         initOpenGLParams();
         /*AssetManager assetManager = CoreRegistry.get(AssetManager.class);
         assetManager.setAssetFactory(AssetType.FONT, new AssetFactory<FontData, Font>() {

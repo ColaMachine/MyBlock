@@ -3577,9 +3577,9 @@ public class EditEngine {
                             animationStr.append(String.format("%d%% { transform:rotateX(%ddeg),rotateY(%ddeg),rotateZ(%ddeg);} \n",
                                     (int)(nowFrame*100.0/(frameCount-1)),
 
-                                    (int)(rotateBlock.getRotateX()*180/3.14),
-                                    (int)(rotateBlock.getRotateY()*180/3.14),
-                                    (int)(rotateBlock.getRotateZ()*180/3.14)));
+                                    (int)(rotateBlock.getRotateX()/Constants.PI1),
+                                    (int)(rotateBlock.getRotateY()/Constants.PI1),
+                                    (int)(rotateBlock.getRotateZ()/Constants.PI1)));
                         }
 
 //                    @keyframes handkan {

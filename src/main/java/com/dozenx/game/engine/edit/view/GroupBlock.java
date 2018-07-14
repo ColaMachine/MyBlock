@@ -4,6 +4,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.model.*;
+import cola.machine.game.myblocks.model.AABB.SimpleAABB;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -16,6 +17,7 @@ import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.MapUtil;
+import com.dozenx.util.MathUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
@@ -598,10 +600,6 @@ public class GroupBlock extends BaseBlock {
 
     }
 
-    @Override
-    public IBlock clone() {
-        return null;
-    }
 
     public GroupBlock() {
 
@@ -812,7 +810,7 @@ public class GroupBlock extends BaseBlock {
             boolean left, boolean right, boolean front, boolean back) {
 //GL_Matrix matrix =GL_Matrix.translateMatrix(x, y, z);
 
-GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(x+width/2,y,z+thick/2),GL_Matrix.rotateMatrix(0,this.dir*3.14f/2,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
+GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatrix(x+width/2,y,z+thick/2),GL_Matrix.rotateMatrix(0,this.dir*Constants.PI90,0)),GL_Matrix.translateMatrix(-width/2,0,-thick/2) );
         for (int i = 0; i < selectBlockList.size(); i++) {
             BaseBlock colorBlock = selectBlockList.get(i);
             float[] info = this.getChildBlockPosition(colorBlock, x, y, z);
@@ -837,7 +835,19 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
             boolean left, boolean right, boolean front, boolean back) {
 
     }
+    public  void reComputePoints(GL_Matrix rotateMatrix){
+        this.points = BoxModel.getSmallPoint(x,y,z,width,height,thick);
 
+        GL_Matrix rotateMatrix1 = GL_Matrix.rotateMatrix(0,this.dir*Constants.PI90,0);
+        for(int i=0;i<points.length;i++){
+            points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
+
+        }
+
+        for(BaseBlock block:colorBlockList){
+            block.reComputePoints(rotateMatrix);
+        }
+    }
 //    @Override
 //    public void renderShaderInGivexyzwht(ShaderConfig config, Vao vao, GL_Matrix matrix, GL_Vector[] childPoints) {
 //        for (int i = 0; i < selectBlockList.size(); i++) {
@@ -863,7 +873,7 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
 
         GL_Matrix rotateMatrix = GL_Matrix.multiply(
                 GL_Matrix.translateMatrix(1f/ 2, 0, 1f/ 2),
-                GL_Matrix.rotateMatrix(0, this.dir * 3.14f / 2, 0));
+                GL_Matrix.rotateMatrix(0, this.dir * Constants.PI90, 0));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.scaleMatrix(1 , 1 , 1 ));
         rotateMatrix = GL_Matrix.multiply(rotateMatrix, GL_Matrix.translateMatrix(-1f/ 2, 0, -1f/ 2));
 
@@ -935,5 +945,14 @@ GL_Matrix matrix = GL_Matrix.multiply(GL_Matrix.multiply(GL_Matrix.translateMatr
         }
         
         this.reComputePoints();
+    }
+
+    public boolean collision(SimpleAABB a) {
+        for(BaseBlock block : colorBlockList){
+            if(block.overlaps(a)){
+                return true;
+            }
+        }
+        return false;
     }
 }

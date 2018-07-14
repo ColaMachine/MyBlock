@@ -96,9 +96,10 @@ public class Constants {
     public static float camSpeedR = 15; // degrees per second
     public static float camSpeedXZ = 4.4f; // units per second
     public static float camSpeedY = 0.1f; // units per second
-
-    static final float PIdiv180 = (float)Math.PI/2;
-
+    public  static final float PI1 = (float)Math.PI/180;
+   public  static final float PIdiv180 = (float)Math.PI/180;
+    public  static final float PI90 = (float)Math.PI/2;
+    public  static final float PI = (float)Math.PI;
     public static boolean SHADOW_ENABLE=false;
     public static boolean TRIABLE_ENABLE=false;
     public static boolean HDR_ENABLE=false;

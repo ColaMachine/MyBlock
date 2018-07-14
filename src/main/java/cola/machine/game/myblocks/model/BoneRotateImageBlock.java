@@ -207,9 +207,12 @@ public GL_Vector parentPosition = new GL_Vector();
 
     }
 
-    public  void reComputePoints(GL_Matrix matrix) {
-        this.points = BoxModel.getSmallPoint(0, 0, 0, width, height, thick);
-
+//    public  void reComputePoints(GL_Matrix rotateMatrix) {
+//        this.points = BoxModel.getSmallPoint(0, 0, 0, width, height, thick);
+//        for(int i=0;i<points.length;i++){
+//            points[i] = rotateMatrix.multiply(rotateMatrix,points[i]);
+//
+//        }
 //
 //        for (int i = 0; i < points.length; i++) {
 //            points[i] = matrix.multiply(matrix, points[i]);
@@ -241,7 +244,7 @@ public GL_Vector parentPosition = new GL_Vector();
 //                block.reComputePoints(matrix);
 //            }
 //        }
-    }
+   // }
     /**
      * 长长使用再在group中
 

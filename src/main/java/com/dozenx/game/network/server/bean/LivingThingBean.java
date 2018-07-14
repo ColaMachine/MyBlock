@@ -2,6 +2,7 @@ package com.dozenx.game.network.server.bean;
 
 import cola.machine.game.myblocks.animation.AnimationManager;
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.AABB.SimpleAABB;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
@@ -31,6 +32,12 @@ import java.util.List;
  * Created by luying on 16/9/16.
  */
 public class LivingThingBean extends Role {
+    final SimpleAABB aabb =new SimpleAABB();
+
+    public SimpleAABB getAABB(){
+        return aabb;
+    }
+
     public String[] idleAnimation = new String[0];
     public float jumpSpeed = 9.5f;
     public long jumpTime; // use for gravities
@@ -302,8 +309,7 @@ public class LivingThingBean extends Role {
 
             //getExecutor().getCurrentState().update();
 
-            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
-            CoreRegistry.get(PhysicsEngine.class).gravitation(this);
+
         }
         //this.getExecutor().getCurrentState().update();
 
@@ -587,13 +593,29 @@ public class LivingThingBean extends Role {
 
        return CoreRegistry.get(CrashCheck.class).check(this.position) ;
     }*/
-    public void move(GL_Vector newPosition) {
+
+    final public void move(GL_Vector newPosition) {
+
         this.oldPosition.copy(this.position);
         this.position.set(newPosition.x, newPosition.y, newPosition.z);
         if(newPosition.y<0){
             LogUtil.println("1");
         }
+        if( CoreRegistry.get(PhysicsEngine.class).collision(this)!=null){
+            this.position.copy(this.oldPosition);
+            ;
+        }
         this.updateTime =  TimeUtil.getNowMills();
+        this.moveEnd();
+    }
+    final public void moveEnd(){
+        this.aabb.minX = this.position.x-0.5f;
+        this.aabb.minY = this.position.y;
+        this.aabb.minZ = this.position.z-0.5f;
+
+        this.aabb.maxX = this.position.x+0.5f;
+        this.aabb.maxY = this.position.y+1.7f;
+        this.aabb.maxZ = this.position.z+0.5f;
     }
     GL_Vector collisionReverse = new GL_Vector();
     public void move(float x, float y, float z) {

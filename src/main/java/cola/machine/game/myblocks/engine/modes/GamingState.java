@@ -7,6 +7,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Div;
@@ -210,6 +211,7 @@ public class GamingState implements GameState {
             document.body.appendChild(crossDiv);
 
             HeadPanel playerHeadPanel =new HeadPanel();
+            playerHeadPanel.setVisible(false);
             document.body.appendChild(playerHeadPanel);
             playerHeadPanel.bind(player);
             HeadPanel enemyHeadPanel =new HeadPanel();
@@ -642,7 +644,7 @@ public ShaderManager shaderManager;
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor( 0.4648f, 0.734375f,0.96484375f,1);
-
+       // glClearColor( 0,0,0,0);
         if(!Constants.SSAO_ENABLE) {
        glEnable(GL_BLEND);
        glEnable(GL_DEPTH_TEST);
@@ -658,7 +660,12 @@ public ShaderManager shaderManager;
 
 
         }
-
+        BaseBlock block = TextureManager.idShapeMap.get(2065);
+        if(block.points[0].x==0){
+            LogUtil.println("errr");
+        }else{
+            LogUtil.println("right");
+        }
 
         //ShaderUtils.testDrawVbo();
         //LogUtil.println(TimeUtil.getNowMills()+"'");

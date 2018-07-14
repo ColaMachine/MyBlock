@@ -1,6 +1,8 @@
 package com.dozenx.game.engine;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.model.AABB.SimpleAABB;
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Chunk;
@@ -120,19 +122,24 @@ public class PhysicsEngine {
     }
     //
 
-    int blockX,blockY,blockZ;
+
     public boolean hasSomeThingUnderFoot(LivingThingBean livingThing){
+        int blockX,blockY,blockZ;
         boolean isswim=false;
+
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
+        SimpleAABB aabb =new SimpleAABB();
+        aabb.setAABB(plr_world_pos_x-0.5f,plr_world_pos_y,plr_world_pos_z-0.5f,plr_world_pos_x-0.5f+1,plr_world_pos_y+1.7f,plr_world_pos_z-0.5f+1);
+
         //
         float width = livingThing.getExecutor().getModel().getRootComponent().width;
         float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
         float height = livingThing.getExecutor().getModel().getRootComponent().height;
-        for (float offset_x= -width/2f; offset_x <width/2f; offset_x+=width/3f) {
+        for (float offset_x= -width/2f; offset_x <width/2f; offset_x+=1) {
 
-            for (float offset_z = -thick/2f; offset_z <thick/2f; offset_z+=thick/3f) {//厚度的大小
+            for (float offset_z = -thick/2f; offset_z <thick/2f; offset_z+=1) {//厚度的大小
                 Chunk chunk_corner = null;
                 int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_world_pos_x);
                 int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_world_pos_z);
@@ -171,6 +178,11 @@ public class PhysicsEngine {
                                         blockY, blockZ);
                                 return false;
                             }
+                            if(block.isSpecial()){
+                                BaseBlock thisBlock =(BaseBlock) block;
+                                return thisBlock.overlaps(aabb);
+
+                            }else
                             if (!block.isPenetrate()){
                                 livingThing.valleyBottom = blockY+1;
                                 return true;
@@ -196,10 +208,13 @@ public class PhysicsEngine {
      * @return
      */
     public GL_Vector collision(LivingThingBean livingThing){//位置发生改变之后 当要发生位移的时候可以事先调用此方法 用来判断是否可以移动
+        int blockX,blockY,blockZ;
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
-        
+        SimpleAABB aabb =livingThing.getAABB();
+
+     //   aabb.setAABB(plr_world_pos_x-0.5f,plr_world_pos_y,plr_world_pos_z-0.5f,plr_world_pos_x-0.5f+1,plr_world_pos_y+1.7f,plr_world_pos_z-0.5f+1);
         if(plr_world_pos_y<0){
 
             return new GL_Vector(0,1,0);
@@ -209,9 +224,9 @@ public class PhysicsEngine {
             int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(plr_world_pos_z);
             Chunk chunk_corner  = chunkProvider.getChunk(temp_chunk_pos_x_16,0,temp_chunk_pos_z_16);
             
-            int blockX = MathUtil.getOffesetChunk(plr_world_pos_x);
-            int blockY = (int) (plr_world_pos_y);
-            int blockZ = MathUtil.getOffesetChunk(plr_world_pos_z);
+             blockX = MathUtil.getOffesetChunk(plr_world_pos_x);
+             blockY = (int) (plr_world_pos_y);
+             blockZ = MathUtil.getOffesetChunk(plr_world_pos_z);
             int k = chunk_corner.getBlockData(blockX,
                     blockY, blockZ
             );
@@ -229,49 +244,71 @@ public class PhysicsEngine {
         float width = livingThing.getExecutor().getModel().getRootComponent().width;
         float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
         float height = livingThing.getExecutor().getModel().getRootComponent().height;
-        for (float offset_x= -width/2; offset_x <width/2; offset_x+=width/3f) {
+        for(int x= (int)Math.floor(livingThing.minX) ; x<=livingThing.maxX;x++){
+            for(int z= (int)Math.floor(livingThing.minZ) ; z<=livingThing.maxZ;z++){
 
-            for (float offset_z = -thick/2; offset_z <thick/2; offset_z+=thick/3f) {//厚度的大小
                 Chunk chunk_corner = null;
-                int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_world_pos_x);
-                int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_world_pos_z);
+                int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(x);
+                int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(z);
 
 
                 chunk_corner = chunkProvider.getChunk(temp_chunk_pos_x_16,0,temp_chunk_pos_z_16);
-
-
                 if (chunk_corner == null) {
                     // LogUtil.err("may be the chunk_corner haven't been initialized the chunk_corner can't be null please debug it");
                     return null;
                 }
+                for(int y= (int)Math.floor(livingThing.minY) ; y<=livingThing.maxY;y++){
 
-                for (float offset_y = 0; offset_y <height; offset_y += height/3f) {
 
-                    //get chunk from near
+                        //get chunk from near
 //                    int chunk_x= MathUtil.getNearOdd(x);
-                    blockX = MathUtil.getOffesetChunk(offset_x+plr_world_pos_x);
-                    blockY = (int) (offset_y+plr_world_pos_y);
-                    blockZ = MathUtil.getOffesetChunk(offset_z+plr_world_pos_z);
-                    int k = chunk_corner.getBlockData(blockX,
-                            blockY, blockZ
-                    );
+                        blockX = MathUtil.getOffesetChunk(x);
+                        blockY =y;
+                        blockZ = MathUtil.getOffesetChunk(z);
+                        int k = chunk_corner.getBlockData(blockX,
+                                blockY, blockZ
+                        );
 
-                    if (k > 0) {
-                        if(GamingState.player==null){
-                            return new GL_Vector((offset_x+plr_world_pos_x)%1-0.5f,(offset_y+plr_world_pos_y)%1-0.5f,(offset_z+plr_world_pos_z)%1-0.5f);
-                        }
-                        IBlock block =chunk_corner.getBlock(blockX,
-                                blockY, blockZ);
-                        if(block == null ){
-                            continue;
-                        }
-                        if (!block.isPenetrate()){
-                            return new GL_Vector((offset_x+plr_world_pos_x)%1-0.5f,(offset_y+plr_world_pos_y)%1-0.5f,(offset_z+plr_world_pos_z)%1-0.5f);
-                           // return true;
+                        if (k > 0) {
+
+                            //用户当前的矩形 物体的block
+
+                            if(GamingState.player==null){
+                                return new GL_Vector(x,y,z);
+                            }
+                            BaseBlock block =(BaseBlock)chunk_corner.getBlock(blockX,
+                                    blockY, blockZ);
+
+                            if(block == null ){
+                                continue;
+                            }if(block.isSpecial()){
+                                SimpleAABB blockAABB=new SimpleAABB();
+                                blockAABB.setAABB(x+block.minX,y+block.minY,z+block.minZ
+                                        ,x+block.maxX,y+block.maxY,z+block.maxZ
+                                );
+                                if(blockAABB.overlaps(aabb)){
+                                    return new GL_Vector(x,y,z);
+
+                                }
+                          /*if(  MathUtil.testCubeXiangjiao(plr_world_pos_x-0.5f,plr_world_pos_y,plr_world_pos_z-0.5f,1,2,1,
+                                    (float) Math.floor(offset_x+plr_world_pos_x)+block.getX(),
+                                    (float) Math.floor(offset_y+plr_world_pos_y)+block.getY(),
+                                    (float) Math.floor(offset_z+plr_world_pos_z)+block.getZ(),
+                                    block.getWidth(),
+                                    block.getHeight(),
+                                    block.getThick()
+                                    ))*/
+
+                            }else
+                            if (!block.isPenetrate()){
+
+                                return new GL_Vector(x,y,z);
+                                // return true;
 
 
+                            }
                         }
-                    }
+
 
                 }
             }
