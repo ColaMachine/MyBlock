@@ -133,6 +133,7 @@ public class ChunkImpl implements Chunk {
      */
     @Override
     public IBlock getBlock(int x, int y, int z) {
+        if(y<0)return null;
         // VIP Auto-generated method stub
         // return null;
         int blockId = blockData.get(x, y, z);

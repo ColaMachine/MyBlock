@@ -13,6 +13,8 @@ public class SimpleAABB {
         this.maxZ = maxZ;
     }
 
+
+
     public float minX, minY, minZ, maxX, maxY, maxZ;
 
     public boolean overlaps(SimpleAABB aabb2) {

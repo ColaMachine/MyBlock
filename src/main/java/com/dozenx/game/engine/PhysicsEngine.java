@@ -76,7 +76,7 @@ public class PhysicsEngine {
 //			int y = MathUtil.getNearOdd(human.Position.y);
 //			int z = MathUtil.getNearOdd(human.Position.z );
             //========= in  this y he will be stand firm
-            if(this.hasSomeThingUnderFoot(livingThing)){
+               if(this.hasSomeThingUnderFoot(livingThing)){
                 //System.out.println("�ǵ�����"+y);
                 //System.out.println("��ǰ�����y:"+human.Position.y+"��⵽����:"+y);
                 livingThing.valleyBottom=(int)livingThing.position.y;
@@ -130,19 +130,17 @@ public class PhysicsEngine {
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
-        SimpleAABB aabb =new SimpleAABB();
-        aabb.setAABB(plr_world_pos_x-0.5f,plr_world_pos_y,plr_world_pos_z-0.5f,plr_world_pos_x-0.5f+1,plr_world_pos_y+1.7f,plr_world_pos_z-0.5f+1);
 
         //
         float width = livingThing.getExecutor().getModel().getRootComponent().width;
         float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
         float height = livingThing.getExecutor().getModel().getRootComponent().height;
-        for (float offset_x= -width/2f; offset_x <width/2f; offset_x+=1) {
+        for(int offset_x= (int)Math.floor(livingThing.minX)-1 ; offset_x<=livingThing.maxX+1;offset_x++){
+            for(int offset_z= (int)Math.floor(livingThing.minZ) -1; offset_z<=livingThing.maxZ+1;offset_z++){
 
-            for (float offset_z = -thick/2f; offset_z <thick/2f; offset_z+=1) {//厚度的大小
                 Chunk chunk_corner = null;
-                int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x + plr_world_pos_x);
-                int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z+plr_world_pos_z);
+                int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x );
+                int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(offset_z);
 
                  chunk_corner = chunkProvider.getChunk(temp_chunk_pos_x_16,0,temp_chunk_pos_z_16);
 
@@ -155,9 +153,9 @@ public class PhysicsEngine {
 
                     //get chunk from near
 //                    int chunk_x= MathUtil.getNearOdd(x);
-                    blockX = MathUtil.getOffesetChunk(offset_x+plr_world_pos_x);
-                    blockY = (int) (offset_y+plr_world_pos_y);
-                    blockZ = MathUtil.getOffesetChunk(offset_z+plr_world_pos_z);
+                    blockX = MathUtil.getOffesetChunk(offset_x);
+                    blockY = (int) Math.floor(offset_y+plr_world_pos_y);
+                    blockZ = MathUtil.getOffesetChunk(offset_z);
                     try {
                         if(blockY<0){
                             return true;
@@ -180,7 +178,10 @@ public class PhysicsEngine {
                             }
                             if(block.isSpecial()){
                                 BaseBlock thisBlock =(BaseBlock) block;
-                                return thisBlock.overlaps(aabb);
+                                if(thisBlock.overlaps(livingThing)){
+                                    return true;
+                                }
+                                //return ;
 
                             }else
                             if (!block.isPenetrate()){
@@ -212,7 +213,7 @@ public class PhysicsEngine {
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
-        SimpleAABB aabb =livingThing.getAABB();
+        //SimpleAABB aabb =livingThing.getAABB();
 
      //   aabb.setAABB(plr_world_pos_x-0.5f,plr_world_pos_y,plr_world_pos_z-0.5f,plr_world_pos_x-0.5f+1,plr_world_pos_y+1.7f,plr_world_pos_z-0.5f+1);
         if(plr_world_pos_y<0){
@@ -244,8 +245,8 @@ public class PhysicsEngine {
         float width = livingThing.getExecutor().getModel().getRootComponent().width;
         float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
         float height = livingThing.getExecutor().getModel().getRootComponent().height;
-        for(int x= (int)Math.floor(livingThing.minX) ; x<=livingThing.maxX;x++){
-            for(int z= (int)Math.floor(livingThing.minZ) ; z<=livingThing.maxZ;z++){
+        for(int x= (int)Math.floor(livingThing.minX)-1 ; x<=livingThing.maxX+1;x++){
+            for(int z= (int)Math.floor(livingThing.minZ) -1; z<=livingThing.maxZ+1;z++){
 
                 Chunk chunk_corner = null;
                 int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(x);
@@ -270,6 +271,7 @@ public class PhysicsEngine {
                         );
 
                         if (k > 0) {
+                        //    LogUtil.println("有方块");
 
                             //用户当前的矩形 物体的block
 
@@ -286,8 +288,12 @@ public class PhysicsEngine {
                                 blockAABB.setAABB(x+block.minX,y+block.minY,z+block.minZ
                                         ,x+block.maxX,y+block.maxY,z+block.maxZ
                                 );
-                                if(blockAABB.overlaps(aabb)){
-                                    return new GL_Vector(x,y,z);
+                                if(blockAABB.overlaps(livingThing)){
+
+
+                                    return new GL_Vector(  ( livingThing.maxX+livingThing.minX) /2 - (blockAABB.maxX + blockAABB.minX)/2,
+                                            ( livingThing.maxY+livingThing.minY) /2 -        (blockAABB.maxY + blockAABB.minY)/2,
+                                            ( livingThing.maxZ+livingThing.minZ) /2 -     (blockAABB.maxZ + blockAABB.minZ)/2);
 
                                 }
                           /*if(  MathUtil.testCubeXiangjiao(plr_world_pos_x-0.5f,plr_world_pos_y,plr_world_pos_z-0.5f,1,2,1,
@@ -301,8 +307,19 @@ public class PhysicsEngine {
 
                             }else
                             if (!block.isPenetrate()){
+                                SimpleAABB blockAABB=new SimpleAABB();
+                                blockAABB.setAABB(x,y,z
+                                        ,x+1,y+1,z+1
+                                );
+                                if(blockAABB.overlaps(livingThing)){
 
-                                return new GL_Vector(x,y,z);
+
+                                    return new GL_Vector(  ( livingThing.maxX+livingThing.minX) /2 - (blockAABB.maxX + blockAABB.minX)/2,
+                                            ( livingThing.maxY+livingThing.minY) /2 -        (blockAABB.maxY + blockAABB.minY)/2,
+                                            ( livingThing.maxZ+livingThing.minZ) /2 -     (blockAABB.maxZ + blockAABB.minZ)/2);
+
+                                }
+                               // return new GL_Vector(x,y,z);
                                 // return true;
 
 
@@ -311,6 +328,61 @@ public class PhysicsEngine {
 
 
                 }
+//                {
+//                    int y = (int) Math.floor(livingThing.minY) - 1;
+//                    blockX = MathUtil.getOffesetChunk(x);
+//                    blockY =y;
+//                    blockZ = MathUtil.getOffesetChunk(z);
+//                    int k = chunk_corner.getBlockData(blockX,
+//                            blockY, blockZ
+//                    );
+//
+//                    if (k > 0) {
+//                        //    LogUtil.println("有方块");
+//
+//                        //用户当前的矩形 物体的block
+//
+//                        if(GamingState.player==null){
+//                            return new GL_Vector(x,y,z);
+//                        }
+//                        BaseBlock block =(BaseBlock)chunk_corner.getBlock(blockX,
+//                                blockY, blockZ);
+//
+//                        if(block == null ){
+//                            continue;
+//                        }if(block.isSpecial()){
+//                            SimpleAABB blockAABB=new SimpleAABB();
+//                            blockAABB.setAABB(x+block.minX,y+block.minY,z+block.minZ
+//                                    ,x+block.maxX,y+block.maxY,z+block.maxZ
+//                            );
+//                            if(blockAABB.overlaps(livingThing)){
+//
+//
+//                               livingThing.setStable(true);
+//
+//                            }
+//
+//
+//                        }else
+//                        if (!block.isPenetrate()){
+//                            SimpleAABB blockAABB=new SimpleAABB();
+//                            blockAABB.setAABB(x,y,z
+//                                    ,x+1,y+1,z+1
+//                            );
+//                            if(blockAABB.overlaps(livingThing)){
+//
+//
+//
+//                                livingThing.setStable(true);
+//                            }
+//                            // return new GL_Vector(x,y,z);
+//                            // return true;
+//
+//
+//                        }
+//                    }
+//                }
+
             }
         }
         //if all block checked is air then needjdegecrash is false

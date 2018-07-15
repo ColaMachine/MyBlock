@@ -660,12 +660,12 @@ public ShaderManager shaderManager;
 
 
         }
-        BaseBlock block = TextureManager.idShapeMap.get(2065);
+        /*BaseBlock block = TextureManager.idShapeMap.get(2065);
         if(block.points[0].x==0){
             LogUtil.println("errr");
         }else{
             LogUtil.println("right");
-        }
+        }*/
 
         //ShaderUtils.testDrawVbo();
         //LogUtil.println(TimeUtil.getNowMills()+"'");

@@ -32,11 +32,11 @@ import java.util.List;
  * Created by luying on 16/9/16.
  */
 public class LivingThingBean extends Role {
-    final SimpleAABB aabb =new SimpleAABB();
+    //final SimpleAABB aabb =new SimpleAABB();
 
-    public SimpleAABB getAABB(){
-        return aabb;
-    }
+//   // public SimpleAABB getAABB(){
+//        return aabb;
+//    }
 
     public String[] idleAnimation = new String[0];
     public float jumpSpeed = 9.5f;
@@ -594,28 +594,49 @@ public class LivingThingBean extends Role {
        return CoreRegistry.get(CrashCheck.class).check(this.position) ;
     }*/
 
-    final public void move(GL_Vector newPosition) {
+     public void move(GL_Vector newPosition) {
 
         this.oldPosition.copy(this.position);
         this.position.set(newPosition.x, newPosition.y, newPosition.z);
         if(newPosition.y<0){
             LogUtil.println("1");
-        }
-        if( CoreRegistry.get(PhysicsEngine.class).collision(this)!=null){
+        }moveEnd();
+        GL_Vector vector=null;
+        if( ( vector= CoreRegistry.get(PhysicsEngine.class).collision(this))!=null){
             this.position.copy(this.oldPosition);
-            ;
+            //this.position.add(vector.normalize().mult(0.1f));
+            moveEnd();
+            if( (vector= CoreRegistry.get(PhysicsEngine.class).collision(this))!=null){
+                LogUtil.println("still  block ");
+            }
+
+            this.setBlock(true);
+            this.setDest(null);
+
+
+        }else{
+            this.setBlock(false);
+            this.moveEnd();
+            this.updateTime =  TimeUtil.getNowMills();
+
+            this.lastMoveTime =TimeUtil.getNowMills();
         }
-        this.updateTime =  TimeUtil.getNowMills();
-        this.moveEnd();
+
+
+
+
+
+
+
     }
     final public void moveEnd(){
-        this.aabb.minX = this.position.x-0.5f;
-        this.aabb.minY = this.position.y;
-        this.aabb.minZ = this.position.z-0.5f;
+        this.minX = this.position.x-0.35f;
+        this.minY = this.position.y;
+        this.minZ = this.position.z-0.35f;
 
-        this.aabb.maxX = this.position.x+0.5f;
-        this.aabb.maxY = this.position.y+1.7f;
-        this.aabb.maxZ = this.position.z+0.5f;
+        this.maxX = this.position.x+0.35f;
+        this.maxY = this.position.y+1.7f;
+        this.maxZ = this.position.z+0.35f;
     }
     GL_Vector collisionReverse = new GL_Vector();
     public void move(float x, float y, float z) {
@@ -700,6 +721,7 @@ public class LivingThingBean extends Role {
         //this.dropControl();
         if(!Switcher.edit) {
             CoreRegistry.get(PhysicsEngine.class).gravitation(this);
+
         }
        // this.getModel().build();
         this.getExecutor().getCurrentState().update();

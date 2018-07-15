@@ -88,10 +88,10 @@ public class Player extends LivingThing {
     }*/
 
 
-    public void move(float x, float y, float z) {
+    public void move(GL_Vector newPosition) {
 		/*float distance = GL_Vector.length(GL_Vector.sub(oldPosition,position));
         if(distance>0.02){*/
-        super.move(x,y,z);
+        super.move(newPosition);
 
 
         //this.oldPosition.copy(this.position);

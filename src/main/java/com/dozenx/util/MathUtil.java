@@ -55,8 +55,8 @@ public class MathUtil {
         float minX =Math.min(x1,x2);
         float minY =Math.min(y1,y2);
 
-        float maxX = Math.min(x1+width1,x2+width2);
-        float maxY = Math.min(y1+height1,y2+height2);
+        float maxX = Math.max(x1+width1,x2+width2);
+        float maxY = Math.max(y1+height1,y2+height2);
 
         if(maxX-minX<width1+width2  && maxY-minY<height1+height2){
             return true;

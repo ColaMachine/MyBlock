@@ -72,14 +72,14 @@ public class DoorDefinition extends BlockDefinition {
      * @param value
      * @return
      */
-    public DoorBlockBean parse(int value) {
-        int face = BlockParseUtil.getDirection(value); //朝向 0~7位是id 8~9 两位是朝向 00东 南 西 北10位是open 状态位 0 是关 1是开 11 是上下(门用不到)
-        int open = BlockParseUtil.isOpen(value);//是否是打开
-        int isTop = BlockParseUtil.isTop(value); //是否是上面部分
-        DoorBlockBean doorBlockBean = new DoorBlockBean(face, open, isTop);
-        return doorBlockBean;
-
-    }
+//    public DoorBlockBean parse(int value) {
+//        int face = BlockParseUtil.getDirection(value); //朝向 0~7位是id 8~9 两位是朝向 00东 南 西 北10位是open 状态位 0 是关 1是开 11 是上下(门用不到)
+//        int open = BlockParseUtil.isOpen(value);//是否是打开
+//        int isTop = BlockParseUtil.isTop(value); //是否是上面部分
+//        DoorBlockBean doorBlockBean = new DoorBlockBean(face, open, isTop);
+//        return doorBlockBean;
+//
+//    }
 
     /**
      * state id value 2 baseBlock

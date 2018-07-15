@@ -209,7 +209,9 @@ public class BulletPhysics {
 
     public static IBlock process(float nowX, float nowY, float nowZ, ChunkProvider chunkProvider) {
         int chunkX, chunkZ, offsetX, offsetZ, worldX, worldY, worldZ;
-
+        if(nowY<0){
+            return null;
+        }
 
         Chunk chunk;
 
@@ -263,9 +265,13 @@ public class BulletPhysics {
                 if (thisDistance < minDistance) {
                     //判断这里是否有方块
                     //判断有没有和方块交接
+
                     nowX = x;
                     nowY = thisDistance * direction.y + from.y;
                     nowZ = thisDistance * direction.z + from.z;
+                 if(nowY<0){
+                     continue;
+                 }
                     IBlock block = process(nowX, nowY, nowZ, localChunkProvider);
 
                     if (block != null) {
@@ -310,7 +316,9 @@ public class BulletPhysics {
                     nowX = thisDistance * direction.x + from.x;
                     nowY = y;
                     nowZ = thisDistance * direction.z + from.z;
-
+                    if(nowY<0){
+                        continue;
+                    }
                     IBlock block = process(nowX, nowY, nowZ, localChunkProvider);
 
                     if (block != null) {
@@ -357,7 +365,9 @@ public class BulletPhysics {
                     nowX = thisDistance * direction.x + from.x;
                     nowY = thisDistance * direction.y + from.y;
                     nowZ = z;
-
+                    if(nowY<0){
+                        continue;
+                    }
                     IBlock block = process(nowX, nowY, nowZ, localChunkProvider);
 
                     if (block != null) {

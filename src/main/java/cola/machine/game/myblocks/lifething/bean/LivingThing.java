@@ -1,9 +1,11 @@
 package cola.machine.game.myblocks.lifething.bean;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
+import com.dozenx.game.engine.PhysicsEngine;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.game.engine.item.action.ItemManager;
@@ -257,8 +259,8 @@ public class LivingThing extends LivingThingBean {
     }
     public void update(){
         super.update();
-
-
+//        CoreRegistry.get(PhysicsEngine.class).checkIsDrop(this);
+//        CoreRegistry.get(PhysicsEngine.class).gravitation(this);
        // this.currentState.update();
     }
     public void render(){
