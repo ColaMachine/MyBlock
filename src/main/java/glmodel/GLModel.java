@@ -91,6 +91,10 @@ public class GLModel {
 			GL11.glCallList(displayListID);
 		}
 	}
+
+    public void renderShader(float x,float y,float z) {
+        renderShader(mesh);
+    }
     public void renderShader() {
             renderShader(mesh);
     }

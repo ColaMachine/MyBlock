@@ -1,9 +1,12 @@
 package com.dozenx.game.engine.item;
 
+import cola.machine.game.myblocks.block.BlockParseUtil;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.ByteUtil;
+import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
@@ -171,5 +174,88 @@ public class BlockUtil {
 
         }
         return new GL_Vector[]{minPoint, maxPoint};
+    }
+
+    public static void main(String args[]){
+        int id =1042;
+        System.out.println(BlockUtil.getRealBlockId(id));
+
+        System.out.println(BlockParseUtil.isOpen(id));
+        System.out.println(BlockParseUtil.getDirection(id));
+        System.out.println(BlockParseUtil.isTop(id));
+
+
+
+        int face = 0;
+        int top = 0;//决定是了是右边还是左边 也有可能是单个的 取决于
+        int open = 0;
+        BaseBlock block = null;//this.getShape();
+//        if (block == null) {
+//            //logger.error("wood_door_up block is null");//可能是server的启动
+//            return;
+//        }
+//        for (top = 0; top < 2; top++) {
+//            if (top == 1) {
+//                block = TextureManager.getShape("wood_door_up");
+//            }
+        for (face = 0; face < 4; face++) {
+            for (open = 0; open < 2; open++) {
+                if(face == 2){
+                    LogUtil.println("box +face 2");
+                }
+
+                if (open == 1) {
+                    block= TextureManager.getShape("box_open");
+
+
+                }else{
+                    block=TextureManager.getShape("box");
+                }
+                if(block == null ){
+                    LogUtil.println("block is null");
+                }
+                BaseBlock blockTemp = block.copy();
+                blockTemp.reComputePoints();
+                BlockUtil.rotateYWithCenter(blockTemp, 0.5f, 0.5f, 0.5f,Constants.PI90 * face);
+                int stateId = BlockParseUtil.getValue(face, ItemType.box.id, top, open);
+                blockTemp.id = ItemType.box.id;
+                blockTemp.stateId = stateId;
+                if(stateId == 530){
+                    LogUtil.println("box +stateId"+stateId);
+                }
+
+
+//                    GL_Vector[] minMaxPoints= BlockUtil.getMinMaxPoint(blockTemp.points);
+//                    blockTemp.x= minMaxPoints[0].x;
+//                    blockTemp.y= minMaxPoints[0].y;
+//                    blockTemp.z= minMaxPoints[0].z;
+//
+//                    blockTemp.special=true;
+//                    blockTemp.height= minMaxPoints[1].x-blockTemp.x;
+//                    blockTemp.width= minMaxPoints[1].y-blockTemp.y;
+//                    blockTemp.thick= minMaxPoints[1].z-blockTemp.z;
+//
+//                    blockTemp.minX= minMaxPoints[0].x;
+//                    blockTemp.minY= minMaxPoints[0].y;
+//                    blockTemp.minZ= minMaxPoints[0].z;
+//
+//                    blockTemp.maxX= minMaxPoints[1].x;
+//                    blockTemp.maxY= minMaxPoints[1].y;
+//                    blockTemp.maxZ= minMaxPoints[1].z;
+
+
+                //idShapeMap.put(stateId, blockTemp);//id shape Map 进行映射
+                TextureManager.putIdShapeMap(stateId, blockTemp);
+
+            }
+            //}
+        }
+
+        BaseBlock block1 = TextureManager.idShapeMap.get(2065);
+        if(block1.points[0].x==0){
+            LogUtil.println("errr");
+        }else{
+            LogUtil.println("right");
+        }
     }
 }

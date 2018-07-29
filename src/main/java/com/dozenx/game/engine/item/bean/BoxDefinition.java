@@ -2,6 +2,7 @@ package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.block.BlockParseUtil;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.BaseBlock;
@@ -30,7 +31,10 @@ public class BoxDefinition extends  BlockDefinition {
     public void receive(Map map) {
         super.receive(map);
         ItemBoxParser.parse(this, map);
-        this.stateBlock();
+        if(GamingState.instance.player != null ){
+            this.stateBlock();
+        }
+
     }
 
     /**
@@ -52,7 +56,9 @@ public class BoxDefinition extends  BlockDefinition {
 //            }
             for (face = 0; face < 4; face++) {
                 for (open = 0; open < 2; open++) {
-
+                    if(face == 2){
+                        LogUtil.println("box +face 2");
+                    }
 
                     if (open == 1) {
                         block=TextureManager.getShape("box_open");
@@ -61,13 +67,18 @@ public class BoxDefinition extends  BlockDefinition {
                     }else{
                         block=TextureManager.getShape("box");
                     }
-
+                    if(block == null ){
+                        LogUtil.println("block is null");
+                    }
                     BaseBlock blockTemp = block.copy();
                     blockTemp.reComputePoints();
                     BlockUtil.rotateYWithCenter(blockTemp, 0.5f, 0.5f, 0.5f,Constants.PI90 * face);
-                    int stateId = BlockParseUtil.getValue(face, ItemType.wood_door.id, top, open);
+                    int stateId = BlockParseUtil.getValue(face, ItemType.box.id, top, open);
                     blockTemp.id = ItemType.box.id;
                     blockTemp.stateId = stateId;
+                    if(stateId == 530){
+                        LogUtil.println("box +stateId"+stateId);
+                    }
 
 
 //                    GL_Vector[] minMaxPoints= BlockUtil.getMinMaxPoint(blockTemp.points);

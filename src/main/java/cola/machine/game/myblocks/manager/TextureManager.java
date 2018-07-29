@@ -53,6 +53,8 @@ public class TextureManager {
     public static HashMap<String ,List<BoneBlock>> shapeGroups =new HashMap<>();
     public static HashMap<String, TextureInfo> textureInfoMap = new HashMap<String, TextureInfo>();
     public static HashMap<String, Texture> textureMap = new HashMap<String, Texture>();
+
+    public static HashMap<String, GLModel> objMap = new HashMap<String, GLModel>();
 /*    public static HashMap<String, ItemDefinition> itemDefinitionMap = new HashMap<String, ItemDefinition>();
     public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();*/
     public static HashMap<String, BaseBlock> shapeMap = new HashMap<String, BaseBlock>();
@@ -69,8 +71,8 @@ public class TextureManager {
             Util.checkGLError();
             loadImage();
             loadTexture();
-            loadShape();
             loadObj();
+            loadShape();
             //loadItem();
         } catch (Exception e) {
             e.printStackTrace();
@@ -515,25 +517,58 @@ public class TextureManager {
     }
 
 
-    public static HashMap<String,GLModelContainer> objMap =new HashMap<>();
+    public static HashMap<String,GLModelContainer> objsMap =new HashMap<>();
 
     public void loadObj() throws Exception {
 
-        /*try {
 
-            GLModelContainer gLModelContainer =new GLModelContainer("human_walk",5);
+        try {
+            List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/obj").toString());
+            for(File file : fileList) {
+                if(!file.getName().endsWith(".obj"))
+                    continue;
+                String json = FileUtil.readFile2Str(file);
+                JSONArray list;
+                try {   //LogUtil.println(json.substring(3616,3699));
+                    list = //JSON.parseArray(json, HashMap.class);
+                            JSON.parseArray(json);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    LogUtil.err("load "+file.toPath()+" error ");
+                    return ;
+                }
+                Path objDir = PathManager.getInstance().getHomePath().resolve("config/obj");
+                for (int i = 0; i < list.size(); i++) {
 
-            objMap.put("human_walk",gLModelContainer);
+                    JSONObject map = (JSONObject) list.get(i);
+                    String objFileName =objDir.resolve( MapUtil.getStringValue(map,"file")).toString();
+                    String name = MapUtil.getStringValue(map,"name");
+
+                    GLModel glModel =new GLModel(objFileName );
+                    //GLModelContainer gLModelContainer =new GLModelContainer(objDir.resolve(objFileName).toString(),5,5);
+
+                    objMap.put(name,glModel);
+
+
+                    logger.debug("load obj:"+file);
+
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to load config", e);
-        }*/
+        }
+
+
 
     }
 
 
 
-
+    public static GLModel getObj(String name){//
+        GLModel glModel =  objMap.get(name);
+        return glModel;
+    }
 
 
     public static TextureInfo getTextureInfo(String name) {
