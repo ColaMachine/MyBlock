@@ -79,25 +79,11 @@ public class BoxDefinition extends  BlockDefinition {
                     if(stateId == 530){
                         LogUtil.println("box +stateId"+stateId);
                     }
+                    if(stateId == 1024){
+                        LogUtil.println("box +stateId"+stateId);
+                    }
 
-
-//                    GL_Vector[] minMaxPoints= BlockUtil.getMinMaxPoint(blockTemp.points);
-//                    blockTemp.x= minMaxPoints[0].x;
-//                    blockTemp.y= minMaxPoints[0].y;
-//                    blockTemp.z= minMaxPoints[0].z;
-//
-//                    blockTemp.special=true;
-//                    blockTemp.height= minMaxPoints[1].x-blockTemp.x;
-//                    blockTemp.width= minMaxPoints[1].y-blockTemp.y;
-//                    blockTemp.thick= minMaxPoints[1].z-blockTemp.z;
-//
-//                    blockTemp.minX= minMaxPoints[0].x;
-//                    blockTemp.minY= minMaxPoints[0].y;
-//                    blockTemp.minZ= minMaxPoints[0].z;
-//
-//                    blockTemp.maxX= minMaxPoints[1].x;
-//                    blockTemp.maxY= minMaxPoints[1].y;
-//                    blockTemp.maxZ= minMaxPoints[1].z;
+//                    GL_Vec.maxZ= minMaxPoints[1].z;
 
 
                     //idShapeMap.put(stateId, blockTemp);//id shape Map 进行映射
@@ -107,7 +93,7 @@ public class BoxDefinition extends  BlockDefinition {
             //}
         }
 
-        BaseBlock block1 = TextureManager.idShapeMap.get(2065);
+        BaseBlock block1 = TextureManager.stateIdShapeMap.get(2065);
         if(block1.points[0].x==0){
             LogUtil.println("errr");
         }else{
@@ -141,7 +127,9 @@ public class BoxDefinition extends  BlockDefinition {
 
         //if(cmd.blockType== ItemType.wood_door.ordinal()){
         int condition = BlockUtil.getFaceDir(placePoint, viewDir);
-        cmd.blockType = condition << 8 | cmd.blockType;
+        //cmd.blockType = condition << 8 | cmd.blockType;
+
+        cmd.blockType = BlockParseUtil.getValue(condition, ItemType.box.id, 0, 0);
 
         CoreRegistry.get(Client.class).send(cmd);
 

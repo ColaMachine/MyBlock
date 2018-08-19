@@ -104,7 +104,7 @@ public class BlockManagerImpl extends BlockManager {
         if(id==2065){
             LogUtil.println(123+"");
         }
-        BaseBlock block = TextureManager.idShapeMap.get(id);
+        BaseBlock block = TextureManager.stateIdShapeMap.get(id);
         return block;
         //ItemDefinition itemDefinition = ItemManager.getItemDefinition(id);
        // return itemDefinition==null?null:itemDefinition.getShape();

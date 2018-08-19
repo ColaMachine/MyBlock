@@ -618,7 +618,7 @@ public class ItemDefinition implements Cloneable{
                     TextureManager.getShape(shapeStr);
                 }
                 shape.id=id;
-                TextureManager.idShapeMap.put(id,shape);
+                TextureManager.stateIdShapeMap.put(id,shape);
             }else if(shapeObj instanceof JSONObject){
                 String blockType = (String)((JSONObject) shapeObj).get("blocktype");
                 BaseBlock  block = EditEngine.parse((JSONObject) shapeObj);

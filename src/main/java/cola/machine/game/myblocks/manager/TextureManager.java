@@ -59,7 +59,7 @@ public class TextureManager {
     public static HashMap<ItemType, ItemDefinition> itemType2ItemDefinitionMap = new HashMap<ItemType, ItemDefinition>();*/
     public static HashMap<String, BaseBlock> shapeMap = new HashMap<String, BaseBlock>();
     //stateid to block
-    public static HashMap<Integer, BaseBlock> idShapeMap = new HashMap<Integer, BaseBlock>();
+    public static HashMap<Integer, BaseBlock> stateIdShapeMap = new HashMap<Integer, BaseBlock>();
 
     public HashMap<String, ImageInfo> ImageInfoMap = new HashMap<>();
 
@@ -525,7 +525,7 @@ public class TextureManager {
         try {
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/obj").toString());
             for(File file : fileList) {
-                if(!file.getName().endsWith(".obj"))
+                if(!file.getName().endsWith(".cfg"))
                     continue;
                 String json = FileUtil.readFile2Str(file);
                 JSONArray list;
@@ -600,10 +600,10 @@ public class TextureManager {
             LogUtil.println("hello]");
         }
         shapeMap.put(block.getName(),block);
-        idShapeMap.put(block.getId(),block);
+        stateIdShapeMap.put(block.getId(),block);
     }
     public static void putIdShapeMap(Integer id,BaseBlock block){
-        idShapeMap.put(id,block);
+        stateIdShapeMap.put(id,block);
     }
 //    public static BoneBlock createDoorShape(){
 //        float minX=0;

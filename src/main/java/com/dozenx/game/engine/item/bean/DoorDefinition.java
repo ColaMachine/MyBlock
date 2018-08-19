@@ -177,7 +177,7 @@ public class DoorDefinition extends BlockDefinition {
             }
         }
 
-        BaseBlock block1 = TextureManager.idShapeMap.get(2065);
+        BaseBlock block1 = TextureManager.stateIdShapeMap.get(2065);
         if(block1.points[0].x==0){
             LogUtil.println("errr");
         }else{

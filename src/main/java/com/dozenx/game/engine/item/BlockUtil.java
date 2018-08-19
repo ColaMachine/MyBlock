@@ -200,58 +200,15 @@ public class BlockUtil {
 //            }
         for (face = 0; face < 4; face++) {
             for (open = 0; open < 2; open++) {
-                if(face == 2){
-                    LogUtil.println("box +face 2");
-                }
 
-                if (open == 1) {
-                    block= TextureManager.getShape("box_open");
-
-
-                }else{
-                    block=TextureManager.getShape("box");
-                }
-                if(block == null ){
-                    LogUtil.println("block is null");
-                }
-                BaseBlock blockTemp = block.copy();
-                blockTemp.reComputePoints();
-                BlockUtil.rotateYWithCenter(blockTemp, 0.5f, 0.5f, 0.5f,Constants.PI90 * face);
                 int stateId = BlockParseUtil.getValue(face, ItemType.box.id, top, open);
-                blockTemp.id = ItemType.box.id;
-                blockTemp.stateId = stateId;
-                if(stateId == 530){
-                    LogUtil.println("box +stateId"+stateId);
-                }
 
-
-//                    GL_Vector[] minMaxPoints= BlockUtil.getMinMaxPoint(blockTemp.points);
-//                    blockTemp.x= minMaxPoints[0].x;
-//                    blockTemp.y= minMaxPoints[0].y;
-//                    blockTemp.z= minMaxPoints[0].z;
-//
-//                    blockTemp.special=true;
-//                    blockTemp.height= minMaxPoints[1].x-blockTemp.x;
-//                    blockTemp.width= minMaxPoints[1].y-blockTemp.y;
-//                    blockTemp.thick= minMaxPoints[1].z-blockTemp.z;
-//
-//                    blockTemp.minX= minMaxPoints[0].x;
-//                    blockTemp.minY= minMaxPoints[0].y;
-//                    blockTemp.minZ= minMaxPoints[0].z;
-//
-//                    blockTemp.maxX= minMaxPoints[1].x;
-//                    blockTemp.maxY= minMaxPoints[1].y;
-//                    blockTemp.maxZ= minMaxPoints[1].z;
-
-
-                //idShapeMap.put(stateId, blockTemp);//id shape Map 进行映射
-                TextureManager.putIdShapeMap(stateId, blockTemp);
-
+                System.out.println(stateId);
             }
             //}
         }
 
-        BaseBlock block1 = TextureManager.idShapeMap.get(2065);
+        BaseBlock block1 = TextureManager.stateIdShapeMap.get(2065);
         if(block1.points[0].x==0){
             LogUtil.println("errr");
         }else{
