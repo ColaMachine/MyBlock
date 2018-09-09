@@ -200,7 +200,7 @@ public class DoorDefinition extends BlockDefinition {
             int chunkX = block.chunkX;//.getChunk().getChunkWorldPosX();//.chunkX;
             int chunkZ = block.chunkZ;//getChunk().getChunkWorldPosZ();
             ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-            cmd.cx = (int) block.getX();
+            cmd.cx = (int) block.getX(); 
             cmd.cz = (int) block.getZ();
             cmd.cy = (int) block.getY();
             cmd.type = 1;

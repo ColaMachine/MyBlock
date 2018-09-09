@@ -54,7 +54,7 @@ public class BoxDefinition extends  BlockDefinition {
 //            if (top == 1) {
 //                block = TextureManager.getShape("wood_door_up");
 //            }
-            for (face = 0; face < 4; face++) {
+            for (face = 0; face < 4; face++) {//0 1 2 3
                 for (open = 0; open < 2; open++) {
                     if(face == 2){
                         LogUtil.println("box +face 2");
@@ -65,7 +65,7 @@ public class BoxDefinition extends  BlockDefinition {
 
 
                     }else{
-                        block=TextureManager.getShape("box");
+                        block=TextureManager.getShape("box_close");
                     }
                     if(block == null ){
                         LogUtil.println("block is null");
@@ -101,11 +101,13 @@ public class BoxDefinition extends  BlockDefinition {
         }
     }
     public void use(GL_Vector placePoint, Integer itemType, GL_Vector viewDir) {
+
+      //  stateBlock();
         //检查上方是否有物体
         int chunkX = MathUtil.getBelongChunkInt(placePoint.x);
         int chunkZ = MathUtil.getBelongChunkInt(placePoint.z);
         //   TreeBlock treeBlock =new TreeBlock(hitPoint);
-        //treeBlock.startPosition=hitPoint;
+        //treeBlock.startPosition=hitPoint;wood
 
         //  treeBlock.generator();
         int blockX = MathUtil.floor(placePoint.x) - chunkX * 16;
@@ -128,9 +130,11 @@ public class BoxDefinition extends  BlockDefinition {
         //if(cmd.blockType== ItemType.wood_door.ordinal()){
         int condition = BlockUtil.getFaceDir(placePoint, viewDir);
         //cmd.blockType = condition << 8 | cmd.blockType;
-
+        LogUtil.println("放置新的元素 place new item stateId:"+cmd.blockType);
         cmd.blockType = BlockParseUtil.getValue(condition, ItemType.box.id, 0, 0);
-
+        if(cmd.blockType==1042){
+            LogUtil.println("hello");
+        }
         CoreRegistry.get(Client.class).send(cmd);
 
 
@@ -138,7 +142,7 @@ public class BoxDefinition extends  BlockDefinition {
     }
 
     public boolean beUsed(BaseBlock block) {
-
+        //stateBlock();
         try {
             //通过一个通用的方式获得点击的面在哪里
             //  int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);

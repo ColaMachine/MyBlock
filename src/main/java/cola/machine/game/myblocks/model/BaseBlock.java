@@ -22,6 +22,7 @@ import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix;
 
 import java.util.List;
 
@@ -645,9 +646,17 @@ public abstract class BaseBlock extends SimpleAABB implements IBlock {
         reComputePoints();
         return this.z;
     }
-
+//
+//    /**
+//     * 郑重的世界渲染
+//     * @param x  变化后加上 x y z
+//     * @param y
+//     * @param z
+//     * @param translateMatrix
+//     */
+   // public abstract void renderInWorld(int x,int y,int z, Matrix translateMatrix);
     /**
-     * 最简单的渲染 因为不能支持旋转面临被替换的风险
+     * 最简单的渲染 因为不能支持旋转面临被替换的风险  世界范围渲染
      *
      * @param config
      * @param vao

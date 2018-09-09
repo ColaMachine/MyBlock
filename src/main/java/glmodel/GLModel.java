@@ -2,7 +2,9 @@ package glmodel;
 
 import cola.machine.game.myblocks.manager.TextureManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.Vao;
 import org.lwjgl.opengl.GL11;
 
 /** 
@@ -24,11 +26,18 @@ public class GLModel {
 
     // !!!! this will be null. NEED to check this in OBJ_Reader and check renderGroups() (BROKEN!!!)
     public GLMaterial[] groupMaterials;  // holds material for each face group (1 group to 1 material)
+    public GLModel (){
 
+    }
 	public GLModel(String filename) {
 		// load OBJ file
 		mesh = loadMesh(filename);
 	}
+    public GLModel copyClone(){
+        GLModel glModel =  new GLModel();
+        glModel.mesh=this.mesh.makeClone();
+        return glModel;
+    }
 
 	/**
 	 * read the given .obj file into a GL_Mesh object
@@ -94,6 +103,10 @@ public class GLModel {
 
     public void renderShader(float x,float y,float z) {
         renderShader(mesh);
+    }
+
+    public void renderShader(ShaderConfig config, Vao vao, float x,float y,float z) {
+        renderShader(config,vao,x,y,z,mesh);
     }
     public void renderShader() {
             renderShader(mesh);
@@ -229,6 +242,49 @@ public class GLModel {
         }
     }
 
+    public void renderShader (ShaderConfig config,Vao vao,float x,float y,float z,GL_Mesh m)
+    {
+        GLMaterial[] materials = m.materials;   // loaded from the .mtl file
+        GLMaterial mtl;
+        GL_Triangle t;
+        int currMtl = -1;
+        int i = 0;
+
+        // draw all triangles in object
+        ShaderUtils.glUse(config,vao);
+        // ShaderUtils.glColor(1,1,1);//先暂时设定她的颜色值是黑色的
+        for (i=0; i < m.triangles.length; ) {
+
+            t = m.triangles[i];
+
+            // activate new material and texture
+            currMtl = t.materialID;
+            mtl = (materials != null && materials.length>0 && currMtl >= 0)? materials[currMtl] : defaultMtl;
+//            mtl.apply();
+            if(mtl!=null){
+                // ShaderUtils. glColor(mtl.diffuse.get(0),mtl.diffuse.get(1),mtl.diffuse.get(2));
+                ShaderUtils.bindTexture(TextureManager.getTextureInfo("human_body_front"));
+            }
+
+            for ( ; i < m.triangles.length && (t=m.triangles[i])!=null && currMtl == t.materialID; i++) {
+                //   GL11.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+
+
+                ShaderUtils.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+                ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
+                ShaderUtils.glVertex3f( x+t.p1.pos.x,  y+t.p1.pos.y, z+t.p1.pos.z);
+
+                ShaderUtils.glTexCoord2f(t.uvw2.x, t.uvw2.y);
+                ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
+                ShaderUtils.glVertex3f( x+t.p2.pos.x, y+t.p2.pos.y, z+t.p2.pos.z);
+
+                ShaderUtils.glTexCoord2f(t.uvw3.x, t.uvw3.y);
+                ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
+                ShaderUtils.glVertex3f( x+t.p3.pos.x, y+t.p3.pos.y, z+t.p3.pos.z);
+            }
+
+        }
+    }
 
     public void renderShader (GL_Mesh m)
     {

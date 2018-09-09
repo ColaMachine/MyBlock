@@ -69,4 +69,13 @@ public class CmdUtil {
         }
 
     }
+    public static GameCmd getCmd(byte[] bytes) {
+
+        Class cls = CmdType.idToClassMap.get(cmdTypeVal);
+
+        if (cls == null) {
+            LogUtil.err("can't recognize the cmd");
+            return null;
+        }
+    }
 }

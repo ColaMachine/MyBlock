@@ -473,6 +473,9 @@ public class TextureManager {
                 for (int i = 0; i < list.size(); i++) {
 
                     JSONObject map = (JSONObject) list.get(i);
+                    if(MapUtil.getStringValue(map,"name").equals("box_open")||  MapUtil.getStringValue(map,"name").equals("box_close")){
+                        LogUtil.err("box_open");
+                    }
                     BaseBlock block = EditEngine.parse(map);
                     if (block.getName().startsWith("wood_door")){
                         block.reComputePoints();
@@ -483,6 +486,7 @@ public class TextureManager {
                     if(MapUtil.getStringValue(map,"name").equals("wood_door_down")||  MapUtil.getStringValue(map,"name").equals("wood_door_up")|| "wood_door_up".equals(block.getName())  ||  "wood_door_down".equals(block.getName())){
                        LogUtil.err("wood_door_up");
                     }
+
                    /* String blockType =(String) map.get("blocktype");
                     if("imageblock".equals(blockType)){
                         ImageBlock shape = ImageBlock.parse(map);
@@ -543,7 +547,9 @@ public class TextureManager {
                     JSONObject map = (JSONObject) list.get(i);
                     String objFileName =objDir.resolve( MapUtil.getStringValue(map,"file")).toString();
                     String name = MapUtil.getStringValue(map,"name");
-
+                    if(name.equals("box_open")||name.equals("box_close")){
+                        LogUtil.println("box_open");
+                    }
                     GLModel glModel =new GLModel(objFileName );
                     //GLModelContainer gLModelContainer =new GLModelContainer(objDir.resolve(objFileName).toString(),5,5);
 
