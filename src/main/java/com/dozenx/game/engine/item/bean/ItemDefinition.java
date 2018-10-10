@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.model.textture.BoneBlock;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.command.ItemMainType;
+import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.edit.view.GroupBlock;
@@ -30,9 +31,20 @@ public class ItemDefinition implements Cloneable{
    /* Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
-    public int id;
+    public int itemTypeId;
+    public ItemType itemType;
+
+    public int getItemTypeId() {
+        return itemTypeId;
+    }
+
+    public void setItemTypeId(int itemTypeId) {
+        this.itemTypeId = itemTypeId;
+    }
+
     public boolean live=false;
-    private Integer itemType;//物品的具体类型 详见ItemType
+   // private Integer itemType;//物品的具体类型 详见ItemType
+    //public ItemType itemTypeOri;
     public  ItemModel itemModel = new ItemModel();//模型描述
     public String engine;
     public int stackNum=20;//可堆叠数量
@@ -376,13 +388,13 @@ public class ItemDefinition implements Cloneable{
         this.itemModel = itemModel;
     }
 
-    public Integer getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(Integer itemType) {
-        this.itemType = itemType;
-    }
+//    public Integer getItemType() {
+//        return itemType;
+//    }
+//
+//    public void setItemType(Integer itemType) {
+//        this.itemType = itemType;
+//    }
 
 
     public BaseBlock getShape() {
@@ -587,7 +599,11 @@ public class ItemDefinition implements Cloneable{
             this.script = script;
         }
         Integer id = (int)map.get("id");
-        this.id =id;
+        this.itemTypeId =id;
+        this.itemType = ItemType.getItemTypeById(id);
+        if(this.itemType==null){
+            LogUtil.err("it 's null");
+        }
         if(StringUtil.isNotEmpty(name)){
             this.name =name;
 

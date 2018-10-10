@@ -67,7 +67,7 @@ public class EquipCmd extends   BaseGameCmd{
     public EquipCmd(Role live, EquipPartType pos, ItemBean itemBean){
        // this.livingThing =live;
         if(itemBean!=null){
-            this.itemType = itemBean.getItemDefinition().getItemType();
+            this.itemType = itemBean.getItemDefinition().getItemTypeId();
             this.itemId=itemBean.getId();
         }else{
 

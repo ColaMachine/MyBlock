@@ -212,7 +212,7 @@ public class BagController {
             itemDestBeans[destIndex]= itemBean;itemBean.setPosition(destPosition);
             itemFromBeans[fromIndex]= null;
         }else
-        if(destBean.getItemDefinition().getItemType()== itemBean .getItemDefinition().getItemType()){//堆叠
+        if(destBean.getItemDefinition().getItemTypeId()== itemBean .getItemDefinition().getItemTypeId()){//堆叠
             destBean.setNum(destBean.getNum()+itemBean.getNum());
             itemFromBeans[fromIndex]= null;
         }else{//交换

@@ -7,6 +7,7 @@ import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.bean.ItemBlockProperties;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.util.MapUtil;
 
 import java.util.Map;
 
@@ -21,23 +22,25 @@ public class ItemBoxParser {
 
 
         if (GamingState.player != null) {//区分服务器版本和客户端版本
-            String shapeName = (String) map.get("shape");
-                        /*if(icon.equals("fur_helmet")){
-                            LogUtil.println("123");
-                        }*/
-            item.getItemModel().setIcon(item.itemModel.getIcon());
-            BaseBlock shape = TextureManager.getShape(shapeName);
-            if (shape == null) {//如果没有shape 说明还没有用到该物体 还没有定义shape
-                item.getItemModel().init();
-            } else {
-                item.setShape(shape);
-                item.itemModel.wearModel = null;
-                item.itemModel.handModel = new BoxModel(item.getShape());
-                item.itemModel.outdoorModel = new BoxModel(item.getShape());
 
-                item.itemModel.placeModel = new BoxModel(item.getShape());
-            }
-            item.setType(ItemMainType.BLOCK);
+            //ItemDefinition已经解析好了 不需要再对shape 进行解析
+//            String shapeName = MapUtil.getStringValue(map,"shape");
+//                        /*if(icon.equals("fur_helmet")){
+//                            LogUtil.println("123");
+//                        }*/
+//            item.getItemModel().setIcon(item.itemModel.getIcon());
+//            BaseBlock shape = TextureManager.getShape(shapeName);
+//            if (shape == null) {//如果没有shape 说明还没有用到该物体 还没有定义shape
+//                item.getItemModel().init();
+//            } else {
+//                item.setShape(shape);
+//                item.itemModel.wearModel = null;
+//                item.itemModel.handModel = new BoxModel(item.getShape());
+//                item.itemModel.outdoorModel = new BoxModel(item.getShape());
+//
+//                item.itemModel.placeModel = new BoxModel(item.getShape());
+//            }
+//            item.setType(ItemMainType.BLOCK);
         }
        // return null;
     }

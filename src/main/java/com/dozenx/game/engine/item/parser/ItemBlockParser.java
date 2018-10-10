@@ -58,7 +58,7 @@ public class ItemBlockParser {
             }
         }else{
             ColorBlock colorBlock =new ColorBlock();
-            colorBlock.id = item.id;
+            colorBlock.id = item.itemTypeId;
             item.setShape(colorBlock);
         }
       //  return null;

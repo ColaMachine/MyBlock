@@ -430,7 +430,7 @@ public class Player extends LivingThing {
             }
 
             // int condition = BlockUtil.getIndex(placePoint, camera.getViewDir());
-            handItemDefintion.use(placePoint,handItemDefintion.getItemType(),viewDir);
+            handItemDefintion.use(placePoint,handItemDefintion.getItemTypeId(),viewDir);
 
             //有各种itemDefintion的定义
             //开始放置物品

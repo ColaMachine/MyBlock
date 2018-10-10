@@ -46,7 +46,7 @@ public class DoorDefinition extends BlockDefinition {
     public HashMap<Integer, BaseBlock> idShapeMap = new HashMap<>();
 
     public DoorDefinition() {
-        this.id = ItemType.wood_door.id;
+        this.itemTypeId = ItemType.wood_door.id;
         this.getItemModel();
         BaseBlock block = TextureManager.getShape("wood_door_up");
         if(block!=null){//服务器端是null

@@ -154,7 +154,12 @@ public class ItemManager {
         ShaderUtils.freshVao(ShaderManager.dropItemShaderConfig, ShaderManager.dropItemShaderConfig.getVao());
     }
 
-    public void loadItem() throws Exception {
+    /**
+     * 加载这个物体的定义 这个物体可能是 生物 也可能是普通方块 也可能是 食物 装备 等等 所有 游戏里的组成元素都是一个定义
+     * 可能来自 itemType中已经有的基本物体 也可能来自 item 文件夹里的.cfg配置出来的物体 还有item/newitem 也就是 制作工具里制作出来的东西
+     * @throws Exception
+     */
+    public void loadItemDefinition() throws Exception {
 
         try {
             //先按照itemtype enum加载数据 这里是偷懒了 不想都写item.cfg
@@ -184,13 +189,13 @@ public class ItemManager {
             ItemFactory itemFactory =new ItemFactory();
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
             for (File file : fileList) {//遍历配置文件
-
-                if(file.getName().startsWith("95")){
+                LogUtil.println("开始解析"+file.getName());
+                if(file.getName().startsWith("box")){
                     LogUtil.println("steve");
                 }
                 String json = FileUtil.readFile2Str(file);
 
-                if(json.trim().startsWith("[")) {
+                if(json.trim().startsWith("[")) {//说ing是一个数组
                     List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
 
                     for (int i = 0; i < textureCfgBeanList.size(); i++) {
@@ -198,7 +203,7 @@ public class ItemManager {
 
                         ItemDefinition itemDef = itemFactory.parse(map);
 
-                        if(itemDef.getName().equals("wood_door_up")){
+                        if(itemDef.getName().equals("box_image")){
                             LogUtil.println("wood_door_up");
                         }
                         if(itemDef.getName().equals("wood_door_down")){
@@ -211,7 +216,7 @@ public class ItemManager {
 
 
                     }
-                }else{
+                }else{//只有一个单体
                     HashMap map = JSON.parseObject(json, HashMap.class);
                     ItemDefinition itemDef = itemFactory.parse(map);
                     // ItemDefinition itemDef = new ItemDefinition();
@@ -243,14 +248,14 @@ public class ItemManager {
     public static void putItemDefinition(String name, ItemDefinition item) {
         itemDefinitionMap.put(name, item);
         try {
-            item.setItemType(item.id);
+            item.setItemTypeId(item.itemTypeId);
         } catch (Exception e) {
             LogUtil.err(name);
         }
-        if(item.id==0){
+        if(item.itemTypeId==0){
             LogUtil.println("item.id should not be 0s");
         }
-        itemType2ItemDefinitionMap.put(/*ItemType.valueOf(name).ordinal()*/item.id, item);
+        itemType2ItemDefinitionMap.put(/*ItemType.valueOf(name).ordinal()*/item.itemTypeId, item);
         if (name.equals("wood_axe")) {
             LogUtil.println("fur_helmet");
         }

@@ -37,7 +37,7 @@ public class ComplexBlockDefinition extends BlockDefinition {
     public HashMap<Integer, BaseBlock> idShapeMap = new HashMap<>();
 
     public ComplexBlockDefinition() {
-        this.id = ItemType.wood_door.id;
+        this.itemTypeId = ItemType.wood_door.id;
         this.getItemModel();
         this.setShape(TextureManager.getShape("wood_door_up"));
     }

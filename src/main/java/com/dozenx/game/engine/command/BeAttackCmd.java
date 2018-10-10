@@ -67,7 +67,7 @@ public class BeAttackCmd extends BaseGameCmd{
     public byte[] toBytes(){
         return ByteUtil.createSimpleBuffer(125).put(cmdType.getType())
                 .put(userId)
-                .put(itemDefinition.id)
+                .put(itemDefinition.itemTypeId)
                 .put(targetId)
                 .put(attackValue)
                 .put(direction.x)

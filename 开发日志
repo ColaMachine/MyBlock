@@ -530,4 +530,19 @@ objblock 增加动画化 能够渲染出怪物的行动等
 
 增加铁轨 增加火车的功能
 
+2018-10-08 23:22:21
+如过发现游戏中的Itemdefinition 不是自己想要的itemDefinition的画请检查 engine 和baseon  都为box才能调用到boxDefintion的beUse
 
+2018-10-09 22:31:19 boxDefinition 其实已经和id 绑定了 因为 BoxDefinition里有itemType.box.id的引用 所以box的id 必须是和ItemType.box是一样的 至于
+ shape 是什么样子的 你可以自由的发挥  ,但是这个系统当初设计的时候 只有 item的设计 没有shape的设计 最后的存储都是以item 的形式进行存储的
+ 所以我是不是要把他设计成shape形式的 要不item 就以 item 结尾  shape 就以.shape 结尾吧
+ beused 里有大量的
+ItemType的设计显得不那么必要 既然 有物品能被制作器设计出来 就表示我们不能事先定义好所有的物体
+
+搜索了下代码 ItemTYpe被用到了生成一些既定的物体上 如空气 土壤 水 用来在生成地形的时候非常好用 应该保留
+那么从侧面来说 是boxDefinition 的先前的设定上有误了 box 是不能代表一类物体的 她只能代表
+
+强烈建议 所以的 item 以item 结尾进行保存
+然后所有的 设计出来的item  shape 和item 部分分开保存 这样就可以穿插 修改 互补了最后让手写的cfg 和 设计的东西互相可以融合再一起 不分彼此
+
+   block=TextureManager.getShape("box_open");//由于这个是box_open 而在配置里这个是一个objblock 引起的

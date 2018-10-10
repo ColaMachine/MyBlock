@@ -59,22 +59,22 @@ public class EquipProperties extends ItemProperties{
 
     public void getInfo(PlayerStatus info){
         if(getHeadEquip()!=null){
-            info.setHeadEquip(getHeadEquip().getItemDefinition().getItemType());
+            info.setHeadEquip(getHeadEquip().getItemDefinition().getItemTypeId());
         }
         if(getBodyEquip()!=null){
-            info.setBodyEquip(getBodyEquip().getItemDefinition().getItemType());
+            info.setBodyEquip(getBodyEquip().getItemDefinition().getItemTypeId());
         }
 
         if(getHandEquip()!=null){
-            info.setHandEquip(getHandEquip().getItemDefinition().getItemType());
+            info.setHandEquip(getHandEquip().getItemDefinition().getItemTypeId());
         }
 
         if(getLegEquip()!=null){
-            info.setLegEquip(getLegEquip().getItemDefinition().getItemType());
+            info.setLegEquip(getLegEquip().getItemDefinition().getItemTypeId());
         }
 
         if(getFootEquip()!=null){
-            info.setFootEquip(getFootEquip().getItemDefinition().getItemType());
+            info.setFootEquip(getFootEquip().getItemDefinition().getItemTypeId());
         }
 
     }

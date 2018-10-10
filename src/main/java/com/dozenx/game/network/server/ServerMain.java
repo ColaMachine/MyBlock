@@ -76,7 +76,7 @@ public class ServerMain {
         CoreRegistry.put(ItemManager.class,itemManager);
         PhysicsEngine physicsEngine =new PhysicsEngine();
         try {
-            itemManager.loadItem();
+            itemManager.loadItemDefinition();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.err(e);

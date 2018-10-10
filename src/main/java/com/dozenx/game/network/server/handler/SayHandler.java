@@ -145,7 +145,7 @@ public class SayHandler extends GameServerHandler {
                     return null;
                 }
                 ItemDefinition itemDefinition = ItemManager.getItemDefinition(arr[2]);
-                if (itemDefinition == null || itemDefinition.id == 0) {
+                if (itemDefinition == null || itemDefinition.itemTypeId == 0) {
                     LogUtil.println("查无此物");
                     return null;
                 }
@@ -164,7 +164,7 @@ public class SayHandler extends GameServerHandler {
                         if (StringUtil.isNumeric(arr[2])) {
                             beans[i].setItemType(Integer.valueOf(arr[2]));
                         } else {
-                            beans[i].setItemType(ItemManager.getItemDefinition(arr[2]).id);
+                            beans[i].setItemType(ItemManager.getItemDefinition(arr[2]).itemTypeId);
                         }
 
                         beans[i].setNum(Integer.valueOf(arr[3]));
@@ -173,7 +173,7 @@ public class SayHandler extends GameServerHandler {
                         request.getWorker().send(bagCmd.toBytes());
                         break;
                         //如果当前物品能被堆叠 并且堆叠数目不超过总体限制的话 那么ok的
-                    } else if (itemDefinition.stackNum > 1 && beans[i].getItemType() == itemDefinition.id && (beans[i].getNum() + Integer.valueOf(arr[3])) < itemDefinition.stackNum) {
+                    } else if (itemDefinition.stackNum > 1 && beans[i].getItemType() == itemDefinition.itemTypeId && (beans[i].getNum() + Integer.valueOf(arr[3])) < itemDefinition.stackNum) {
                         beans[i].setNum(beans[i].getNum() + Integer.valueOf(arr[3]));
                         BagCmd bagCmd = new BagCmd(livingThingBean.getId(), bagService.getItemByUserId(livingThingBean.getId()));
 

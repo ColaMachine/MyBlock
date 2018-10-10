@@ -924,7 +924,7 @@ public ShaderManager shaderManager;
 
         CoreRegistry.put(ItemManager.class,itemManager);
         try {
-            itemManager.loadItem();
+            itemManager.loadItemDefinition();
 
             BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("newplayer").getShape();
 //

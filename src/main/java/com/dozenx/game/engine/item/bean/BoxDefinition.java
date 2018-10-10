@@ -61,7 +61,7 @@ public class BoxDefinition extends  BlockDefinition {
                     }
 
                     if (open == 1) {
-                        block=TextureManager.getShape("box_open");
+                        block=TextureManager.getShape("box_open");//由于这个是box_open 而在配置里这个是一个objblock
 
 
                     }else{
@@ -73,8 +73,8 @@ public class BoxDefinition extends  BlockDefinition {
                     BaseBlock blockTemp = block.copy();
                     blockTemp.reComputePoints();
                     BlockUtil.rotateYWithCenter(blockTemp, 0.5f, 0.5f, 0.5f,Constants.PI90 * face);
-                    int stateId = BlockParseUtil.getValue(face, ItemType.box.id, top, open);
-                    blockTemp.id = ItemType.box.id;
+                    int stateId = BlockParseUtil.getValue(face, this.itemTypeId, top, open);
+                    blockTemp.id = itemTypeId;
                     blockTemp.stateId = stateId;
                     if(stateId == 530){
                         LogUtil.println("box +stateId"+stateId);
@@ -131,7 +131,7 @@ public class BoxDefinition extends  BlockDefinition {
         int condition = BlockUtil.getFaceDir(placePoint, viewDir);
         //cmd.blockType = condition << 8 | cmd.blockType;
         LogUtil.println("放置新的元素 place new item stateId:"+cmd.blockType);
-        cmd.blockType = BlockParseUtil.getValue(condition, ItemType.box.id, 0, 0);
+        cmd.blockType = BlockParseUtil.getValue(condition, itemTypeId, 0, 0);
         if(cmd.blockType==1042){
             LogUtil.println("hello");
         }
@@ -173,7 +173,7 @@ public class BoxDefinition extends  BlockDefinition {
                 open = 0;
             }
 
-            int newStateId = BlockParseUtil.getValue(face, ItemType.box.id, top, open);
+            int newStateId = BlockParseUtil.getValue(face, itemTypeId, top, open);
             cmd.blockType = newStateId;
        /* int realBlockType = ByteUtil.get8_0Value(blockType);
 

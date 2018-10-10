@@ -32,7 +32,7 @@ public class ItemUtil {
 
         ItemServerBean  itemServerBean=new ItemServerBean();
         itemServerBean.setId(itemBean.getId());
-        itemServerBean.setItemType(itemBean.getItemDefinition().getItemType());
+        itemServerBean.setItemType(itemBean.getItemDefinition().getItemTypeId());
         itemServerBean.setNum(itemBean.getNum());
         itemServerBean.setPosition(itemBean.getPosition());
         return itemServerBean;

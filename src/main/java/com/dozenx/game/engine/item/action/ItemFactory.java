@@ -45,9 +45,9 @@ public class ItemFactory {
         if(StringUtil.isNotEmpty(baseOn)){
             //copy 一份定义过来
             ItemDefinition  parentDef = ItemManager.getItemDefinition(baseOn);
-            itemDef = parentDef.clone();
+            itemDef = parentDef.clone();//继承
             //type= itemDef.getType().toString().toLowerCase();
-            itemDef.receive(map);
+            itemDef.receive(map);//如果是一个新的方块的画就有问题 如果是一个box 方块 那么她必须要继承box
 
             //解析position
 
@@ -123,7 +123,7 @@ public class ItemFactory {
                     if(StringUtil.isNotEmpty(spiritStr)){
                         item.setSpirit(spirit);
                     }*/
-        itemDef.id = id;
+        itemDef.itemTypeId = id;
     return itemDef;
 
     }
