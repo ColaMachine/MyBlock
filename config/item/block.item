@@ -162,6 +162,7 @@
         engine:"box",
         remark:"箱子",
         shape:"box",
+        shapeOpen:"box",
     },
 
     //{

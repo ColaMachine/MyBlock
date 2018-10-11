@@ -16,6 +16,7 @@ import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
+import com.dozenx.util.MapUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
@@ -193,6 +194,9 @@ public class ItemManager {
                 if(file.getName().startsWith("box")){
                     LogUtil.println("steve");
                 }
+                if(!file.getName().endsWith("item")){
+                    continue;
+                }
                 String json = FileUtil.readFile2Str(file);
 
                 if(json.trim().startsWith("[")) {//说ing是一个数组
@@ -261,5 +265,61 @@ public class ItemManager {
         }
     }
 
+
+    public static void main(String args[]){
+        try{
+        ItemFactory itemFactory =new ItemFactory();
+        List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item/newItem").toString());
+        for (File file : fileList) {//遍历配置文件
+            LogUtil.println("开始解析"+file.getName());
+            if(file.getName().startsWith("box")){
+                LogUtil.println("steve");
+            }
+            if(!file.getName().endsWith(".block")){
+                continue;
+            }
+            String json = FileUtil.readFile2Str(file);
+
+            if(json.trim().startsWith("[")) {//说ing是一个数组
+                List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
+
+                for (int i = 0; i < textureCfgBeanList.size(); i++) {
+                    HashMap map = textureCfgBeanList.get(i);
+
+                    ItemDefinition itemDef = itemFactory.parse(map);
+
+                    if(itemDef.getName().equals("box_image")){
+                        LogUtil.println("wood_door_up");
+                    }
+                    if(itemDef.getName().equals("wood_door_down")){
+                        LogUtil.println("wood_door_down");
+                    }
+                    // ItemDefinition itemDef = new ItemDefinition();
+
+
+
+
+
+                }
+            }else{//只有一个单体
+                HashMap map = JSON.parseObject(json, HashMap.class);
+                String shapeString = MapUtil.getStringValue(map,"shape");
+                map.put("shape",MapUtil.getStringValue(map,"name"));
+                //重新保存
+
+                String newItemStr= JSON.toJSONString(map);
+                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve(MapUtil.getStringValue(map,"name")+".item").toFile(),newItemStr);
+                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve("shape/"+MapUtil.getStringValue(map,"name")+".shape").toFile(),shapeString);
+
+            }
+        }
+        //this.loadDiyItem();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+
+    }
+
+    }
 
 }

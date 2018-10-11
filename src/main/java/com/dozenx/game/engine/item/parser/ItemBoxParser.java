@@ -5,6 +5,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.BaseBlock;
 import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.BoxModel;
+import com.dozenx.game.engine.item.bean.BoxDefinition;
 import com.dozenx.game.engine.item.bean.ItemBlockProperties;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.MapUtil;
@@ -15,14 +16,15 @@ import java.util.Map;
  * Created by dozen.zhang on 2017/5/9.
  */
 public class ItemBoxParser {
-    public static void parse(ItemDefinition item,Map map){
+    public static void parse(BoxDefinition item,Map map){
         ItemBlockProperties blockProperties = (ItemBlockProperties)item.itemTypeProperties;
 
 
 
 
         if (GamingState.player != null) {//区分服务器版本和客户端版本
-
+            String shapeOpen = MapUtil.getStringValue(map, "shapeOpen");
+            item.shapeOpen = TextureManager.getShape(shapeOpen);
             //ItemDefinition已经解析好了 不需要再对shape 进行解析
 //            String shapeName = MapUtil.getStringValue(map,"shape");
 //                        /*if(icon.equals("fur_helmet")){

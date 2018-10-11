@@ -633,6 +633,9 @@ public class ItemDefinition implements Cloneable{
                     LogUtil.err("can't found "+ shapeStr);
                     TextureManager.getShape(shapeStr);
                 }
+                if(shape==null){
+                    LogUtil.err("shape not find :"+ name);
+                }
                 shape.id=id;
                 TextureManager.stateIdShapeMap.put(id,shape);
             }else if(shapeObj instanceof JSONObject){

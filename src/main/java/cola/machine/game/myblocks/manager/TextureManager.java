@@ -307,7 +307,9 @@ public class TextureManager {
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/texture").toString());
             for(File file : fileList){
                 String json = FileUtil.readFile2Str(file);
-
+            if(!file.getName().endsWith(".tex")){
+                continue;
+            }
             List<TextureCfgBean> textureCfgBeanList = JSON.parseArray(json, TextureCfgBean.class);
             for (int i = 0; i < textureCfgBeanList.size(); i++) {
                 TextureCfgBean textureCfgBean = textureCfgBeanList.get(i);
@@ -456,36 +458,43 @@ public class TextureManager {
 
 
     public void loadShape() throws Exception {
-
+        LogUtil.println("begin load shape");
         try {
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/shape").toString());
             for(File file : fileList) {
+              if(file.getName().startsWith("66")){
+                  LogUtil.println(file.getName());
+              }
                 String json = FileUtil.readFile2Str(file);
-                JSONArray list;
-                try {   //LogUtil.println(json.substring(3616,3699));
-                  list = //JSON.parseArray(json, HashMap.class);
-                    JSON.parseArray(json);
-                }catch (Exception e){
-                    e.printStackTrace();
-                    LogUtil.err("load "+file.toPath()+" error ");
-                    return ;
-                }
-                for (int i = 0; i < list.size(); i++) {
 
-                    JSONObject map = (JSONObject) list.get(i);
-                    if(MapUtil.getStringValue(map,"name").equals("box_open")||  MapUtil.getStringValue(map,"name").equals("box_close")){
-                        LogUtil.err("box_open");
+                if(json.trim().startsWith("[")) {//说ing是一个数组
+                    JSONArray list;
+
+
+                    try {   //LogUtil.println(json.substring(3616,3699));
+                        list = //JSON.parseArray(json, HashMap.class);
+                                JSON.parseArray(json);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtil.err("load " + file.toPath() + " error ");
+                        return;
                     }
-                    BaseBlock block = EditEngine.parse(map);
-                    if (block.getName().startsWith("wood_door")){
-                        block.reComputePoints();
-                        LogUtil.println("wood_door");
-                    }
-                    this.shapeMap.put(block.getName(), block);
-                    logger.debug(MapUtil.getStringValue(map,"name"));
-                    if(MapUtil.getStringValue(map,"name").equals("wood_door_down")||  MapUtil.getStringValue(map,"name").equals("wood_door_up")|| "wood_door_up".equals(block.getName())  ||  "wood_door_down".equals(block.getName())){
-                       LogUtil.err("wood_door_up");
-                    }
+                    for (int i = 0; i < list.size(); i++) {
+
+                        JSONObject map = (JSONObject) list.get(i);
+                        if (MapUtil.getStringValue(map, "name").equals("box_open") || MapUtil.getStringValue(map, "name").equals("box_close")) {
+                            LogUtil.err("box_open");
+                        }
+                        BaseBlock block = EditEngine.parse(map);
+                        if (block.getName().startsWith("wood_door")) {
+                            block.reComputePoints();
+                            LogUtil.println("wood_door");
+                        }
+                        this.shapeMap.put(block.getName(), block);
+                        logger.debug(MapUtil.getStringValue(map, "name"));
+                        if (MapUtil.getStringValue(map, "name").equals("wood_door_down") || MapUtil.getStringValue(map, "name").equals("wood_door_up") || "wood_door_up".equals(block.getName()) || "wood_door_down".equals(block.getName())) {
+                            LogUtil.err("wood_door_up");
+                        }
 
                    /* String blockType =(String) map.get("blocktype");
                     if("imageblock".equals(blockType)){
@@ -509,8 +518,22 @@ public class TextureManager {
                     }*/
 
 
-
-
+                    }
+                }else{
+                    JSONObject map = (JSONObject) JSON.parseObject(json);
+                    if (MapUtil.getStringValue(map, "name").equals("box_open") || MapUtil.getStringValue(map, "name").equals("box_close")) {
+                        LogUtil.err("box_open");
+                    }
+                    BaseBlock block = EditEngine.parse(map);
+                    if (block.getName().startsWith("wood_door")) {
+                        block.reComputePoints();
+                        LogUtil.println("wood_door");
+                    }
+                    this.shapeMap.put(block.getName(), block);
+                    logger.debug(MapUtil.getStringValue(map, "name"));
+                    if (MapUtil.getStringValue(map, "name").equals("wood_door_down") || MapUtil.getStringValue(map, "name").equals("wood_door_up") || "wood_door_up".equals(block.getName()) || "wood_door_down".equals(block.getName())) {
+                        LogUtil.err("wood_door_up");
+                    }
                 }
             }
         } catch (Exception e) {

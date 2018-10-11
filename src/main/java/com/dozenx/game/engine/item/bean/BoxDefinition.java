@@ -27,7 +27,7 @@ import java.util.Map;
  * item 模板存放在
  */
 public class BoxDefinition extends  BlockDefinition {
-
+    public BaseBlock shapeOpen;
     public void receive(Map map) {
         super.receive(map);
         ItemBoxParser.parse(this, map);
@@ -61,11 +61,14 @@ public class BoxDefinition extends  BlockDefinition {
                     }
 
                     if (open == 1) {
-                        block=TextureManager.getShape("box_open");//由于这个是box_open 而在配置里这个是一个objblock
-
+                        block=shapeOpen;//TextureManager.getShape("box_open");//由于这个是box_open 而在配置里这个是一个objblock
+                        if(shapeOpen == null){
+                            block=shape;
+                        }
 
                     }else{
-                        block=TextureManager.getShape("box_close");
+                        block=shape;//TextureManager.getShape("box_close");
+
                     }
                     if(block == null ){
                         LogUtil.println("block is null");
