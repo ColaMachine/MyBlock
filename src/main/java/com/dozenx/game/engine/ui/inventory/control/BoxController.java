@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.ui.inventory.control;
 
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.BoxBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.Role.bean.Player;
@@ -48,7 +49,7 @@ public class BoxController {
         boxClientService.putIn(currentBox,slotIndex,itemBean);
     }*/
     private Integer nowBoxX,nowBoxY,nowBoxZ;
-    BoxBlock currentBox;
+    BaseBlock currentBox;
 
     /**
      * 返回人物现在选定的箱子的物体列表
@@ -76,15 +77,15 @@ public class BoxController {
      * @param boxBlock
      * @return
      */
-    public ItemBean[] openBox( BoxBlock boxBlock){
+    public ItemBean[] openBox( BaseBlock boxBlock,int chunkX,int chunkZ,int cx,int cy,int cz){
         //=========记录当前box==========
         nowBoxX=boxBlock.getX();
         nowBoxY=boxBlock.getY();
         nowBoxZ =boxBlock.getZ();
         currentBox = boxBlock;
         //========修改当前box属性=========
-        boxBlock.open=1;
-        List<ItemServerBean> itemBeanList = boxClientService.openAndGetItemBeanList(boxBlock);
+       // boxBlock.open=1;
+        List<ItemServerBean> itemBeanList = boxClientService.openAndGetItemBeanList(boxBlock,chunkX, chunkZ, cx, cy, cz);
 
         for(int i=0,length=itemBeans.length;i<length;i++){
             itemBeans[i]=null;

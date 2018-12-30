@@ -263,7 +263,7 @@ public class StairDefinition extends BlockDefinition {
         //blockType 应该和IteType类型联系起来
 
 
-        int faceDir = BlockUtil.getFaceDir(placePoint, viewDir);//获取当前的方向
+        int faceDir = BlockUtil.getFaceDir4Door(placePoint, viewDir);//获取当前的方向
 
         if (faceDir == Constants.BACK) {
             faceDir = 0;

@@ -462,7 +462,7 @@ public class TextureManager {
         try {
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/shape").toString());
             for(File file : fileList) {
-              if(file.getName().startsWith("66")){
+              if(file.getName().startsWith("player")){
                   LogUtil.println(file.getName());
               }
                 String json = FileUtil.readFile2Str(file);
@@ -486,10 +486,15 @@ public class TextureManager {
                             LogUtil.err("box_open");
                         }
                         BaseBlock block = EditEngine.parse(map);
+                        if(StringUtil.isBlank(block.getName())){
+                            LogUtil.err("123");
+                        }
+
                         if (block.getName().startsWith("wood_door")) {
                             block.reComputePoints();
                             LogUtil.println("wood_door");
                         }
+
                         this.shapeMap.put(block.getName(), block);
                         logger.debug(MapUtil.getStringValue(map, "name"));
                         if (MapUtil.getStringValue(map, "name").equals("wood_door_down") || MapUtil.getStringValue(map, "name").equals("wood_door_up") || "wood_door_up".equals(block.getName()) || "wood_door_down".equals(block.getName())) {
@@ -528,6 +533,17 @@ public class TextureManager {
                     if (block.getName().startsWith("wood_door")) {
                         block.reComputePoints();
                         LogUtil.println("wood_door");
+                    }
+
+                    String fileName = file.getName().replace(".shape","");
+                    if(fileName.equals("wood_sword1")){
+                        LogUtil.println("wood_sword1");
+                    }
+
+
+                    if(!fileName.equals(block.getName())){
+                        LogUtil.err(file.getName()+"block.getName"+block.getName());
+                        block.setName(fileName);
                     }
                     this.shapeMap.put(block.getName(), block);
                     logger.debug(MapUtil.getStringValue(map, "name"));

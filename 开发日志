@@ -546,3 +546,14 @@ ItemType的设计显得不那么必要 既然 有物品能被制作器设计出�
 然后所有的 设计出来的item  shape 和item 部分分开保存 这样就可以穿插 修改 互补了最后让手写的cfg 和 设计的东西互相可以融合再一起 不分彼此
 
    block=TextureManager.getShape("box_open");//由于这个是box_open 而在配置里这个是一个objblock 引起的
+
+   自定义的box 可能是imageblock  所以定义个boxblock 会出现
+
+   2018-10-13 16:09:01
+   现在又没有目标了
+
+  2018-10-16 22:13:00
+
+ 随便来点
+
+ 物品说明

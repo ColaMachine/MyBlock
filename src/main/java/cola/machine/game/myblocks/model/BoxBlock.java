@@ -88,7 +88,7 @@ public class BoxBlock extends DirectionFourBlock {
          this.open=1;
 
         //修改方块的状态为开并拿会物品列表
-        ItemBean[] list = CoreRegistry.get(BoxController.class).openBox(this);
+        ItemBean[] list = CoreRegistry.get(BoxController.class).openBox(this,this.chunkX,this.chunkZ,this.getX(),this.getY(),this.getZ());
 
         CoreRegistry.get(BoxPanel.class).reload(list);
         Document.needUpdate =true;

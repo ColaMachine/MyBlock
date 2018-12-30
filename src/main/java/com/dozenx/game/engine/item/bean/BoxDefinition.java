@@ -10,6 +10,7 @@ import cola.machine.game.myblocks.model.BoxBlock;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.BlockUtil;
@@ -96,12 +97,12 @@ public class BoxDefinition extends  BlockDefinition {
             //}
         }
 
-        BaseBlock block1 = TextureManager.stateIdShapeMap.get(2065);
-        if(block1.points[0].x==0){
-            LogUtil.println("errr");
-        }else{
-            LogUtil.println("right");
-        }
+//        BaseBlock block1 = TextureManager.stateIdShapeMap.get(2065);
+//        if(block1.points[0].x==0){
+//            LogUtil.println("errr");
+//        }else{
+//            LogUtil.println("right");
+//        }
     }
     public void use(GL_Vector placePoint, Integer itemType, GL_Vector viewDir) {
 
@@ -131,7 +132,7 @@ public class BoxDefinition extends  BlockDefinition {
         //blockType 应该和IteType类型联系起来
 
         //if(cmd.blockType== ItemType.wood_door.ordinal()){
-        int condition = BlockUtil.getFaceDir(placePoint, viewDir);
+        int condition = BlockUtil.getFaceDirSimple(placePoint, viewDir);
         //cmd.blockType = condition << 8 | cmd.blockType;
         LogUtil.println("放置新的元素 place new item stateId:"+cmd.blockType);
         cmd.blockType = BlockParseUtil.getValue(condition, itemTypeId, 0, 0);
@@ -199,7 +200,12 @@ public class BoxDefinition extends  BlockDefinition {
             //block.open = 1;
 
             //修改方块的状态为开并拿会物品列表
-            ItemBean[] list = CoreRegistry.get(BoxController.class).openBox((BoxBlock)block);
+
+            if(block.chunk==null){
+                block.chunk =new ChunkImpl(chunkX,0,chunkZ);
+                block.set(cmd.cx,cmd.cy,cmd.cz);
+            }
+            ItemBean[] list = CoreRegistry.get(BoxController.class).openBox(block,chunkX,chunkZ,cmd.cx,cmd.cy,cmd.cz);
 
             CoreRegistry.get(BoxPanel.class).reload(list);
             Document.needUpdate = true;

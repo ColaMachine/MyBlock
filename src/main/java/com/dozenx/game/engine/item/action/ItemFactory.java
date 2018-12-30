@@ -45,6 +45,9 @@ public class ItemFactory {
         if(StringUtil.isNotEmpty(baseOn)){
             //copy 一份定义过来
             ItemDefinition  parentDef = ItemManager.getItemDefinition(baseOn);
+            if(parentDef==null){
+                LogUtil.err(baseOn+"is null ");//说明顺序在她后面
+            }
             itemDef = parentDef.clone();//继承
             //type= itemDef.getType().toString().toLowerCase();
             itemDef.receive(map);//如果是一个新的方块的画就有问题 如果是一个box 方块 那么她必须要继承box

@@ -11,17 +11,20 @@ import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.command.PickCmd;
 import com.dozenx.game.engine.item.bean.DoorDefinition;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
+import com.dozenx.game.engine.item.bean.ItemFoodProperties;
 import com.dozenx.game.engine.item.bean.StairDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.MapUtil;
+import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -197,38 +200,8 @@ public class ItemManager {
                 if(!file.getName().endsWith("item")){
                     continue;
                 }
-                String json = FileUtil.readFile2Str(file);
 
-                if(json.trim().startsWith("[")) {//说ing是一个数组
-                    List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
-
-                    for (int i = 0; i < textureCfgBeanList.size(); i++) {
-                        HashMap map = textureCfgBeanList.get(i);
-
-                        ItemDefinition itemDef = itemFactory.parse(map);
-
-                        if(itemDef.getName().equals("box_image")){
-                            LogUtil.println("wood_door_up");
-                        }
-                        if(itemDef.getName().equals("wood_door_down")){
-                            LogUtil.println("wood_door_down");
-                        }
-                        // ItemDefinition itemDef = new ItemDefinition();
-
-
-                        this.putItemDefinition(itemDef.getName(), itemDef);
-
-
-                    }
-                }else{//只有一个单体
-                    HashMap map = JSON.parseObject(json, HashMap.class);
-                    ItemDefinition itemDef = itemFactory.parse(map);
-                    // ItemDefinition itemDef = new ItemDefinition();
-
-
-                    this.putItemDefinition(itemDef.getName(), itemDef);
-
-                }
+                loadItemFromFile(file, itemFactory);
             }
             //this.loadDiyItem();
 
@@ -237,6 +210,58 @@ public class ItemManager {
             throw new Exception("Failed to load config", e);
         }
 
+    }
+    public void loadSingleItemFromMap(HashMap map , ItemFactory itemFactory) throws Exception {
+        String baseOn = MapUtil.getStringValue(map,"baseon");
+        if(StringUtil.isNotEmpty(baseOn) && null ==ItemManager.getItemDefinition(baseOn)){
+
+            File file = PathManager.getInstance().getHomePath().resolve("config/item/newItem/" ).resolve(baseOn+".item").toFile();
+            if(!file.exists()) {
+
+                file = PathManager.getInstance().getHomePath().resolve("config/item/" ).resolve(baseOn+".item").toFile();
+            }
+            loadItemFromFile(file,itemFactory);//递归容易引起堆栈错误
+
+            if(ItemManager.getItemDefinition(baseOn) ==null){//如果还是空d
+
+                    throw new Exception("can't find the baseOn item :" + baseOn);
+                }
+        }
+
+        ItemDefinition itemDef = itemFactory.parse(map);
+
+
+
+        if(itemDef.getName().equals("box_image")){
+            LogUtil.println("wood_door_up");
+        }
+        if(itemDef.getName().equals("wood_door_down")){
+            LogUtil.println("wood_door_down");
+        }
+        // ItemDefinition itemDef = new ItemDefinition();
+
+
+        putItemDefinition(itemDef.getName(), itemDef);
+    }
+    public  void loadItemFromFile(File file ,ItemFactory itemFactory) throws Exception {
+
+        String json = FileUtil.readFile2Str(file);
+
+        if(json.trim().startsWith("[")) {//说ing是一个数组
+            List<HashMap> textureCfgBeanList = JSON.parseArray(json, HashMap.class);
+
+            for (int i = 0; i < textureCfgBeanList.size(); i++) {
+                HashMap map = textureCfgBeanList.get(i);
+
+
+                loadSingleItemFromMap(map, itemFactory);
+
+            }
+        }else{//只有一个单体
+            HashMap map = JSON.parseObject(json, HashMap.class);
+
+            loadSingleItemFromMap(map, itemFactory);
+        }
     }
     //加载复杂类物品定义
     public static void loadDiyItem(){
@@ -269,10 +294,10 @@ public class ItemManager {
     public static void main(String args[]){
         try{
         ItemFactory itemFactory =new ItemFactory();
-        List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item/newItem").toString());
+        List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/itembak").toString());
         for (File file : fileList) {//遍历配置文件
             LogUtil.println("开始解析"+file.getName());
-            if(file.getName().startsWith("box")){
+            if(file.getName().startsWith("103")){
                 LogUtil.println("steve");
             }
             if(!file.getName().endsWith(".block")){
@@ -286,14 +311,19 @@ public class ItemManager {
                 for (int i = 0; i < textureCfgBeanList.size(); i++) {
                     HashMap map = textureCfgBeanList.get(i);
 
-                    ItemDefinition itemDef = itemFactory.parse(map);
 
-                    if(itemDef.getName().equals("box_image")){
-                        LogUtil.println("wood_door_up");
-                    }
-                    if(itemDef.getName().equals("wood_door_down")){
-                        LogUtil.println("wood_door_down");
-                    }
+                    String newItemStr= JSON.toJSONString(map);
+                    FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item").resolve(MapUtil.getStringValue(map,"name")+".item").toFile(),newItemStr);
+
+//
+//                    ItemDefinition itemDef = itemFactory.parse(map);
+//
+//                    if(itemDef.getName().equals("box_image")){
+//                        LogUtil.println("wood_door_up");
+//                    }
+//                    if(itemDef.getName().equals("wood_door_down")){
+//                        LogUtil.println("wood_door_down");
+//                    }
                     // ItemDefinition itemDef = new ItemDefinition();
 
 
@@ -308,8 +338,8 @@ public class ItemManager {
                 //重新保存
 
                 String newItemStr= JSON.toJSONString(map);
-                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve(MapUtil.getStringValue(map,"name")+".item").toFile(),newItemStr);
-                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve("shape/"+MapUtil.getStringValue(map,"name")+".shape").toFile(),shapeString);
+               // FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/item/newItem").resolve(MapUtil.getStringValue(map,"name")+".item").toFile(),newItemStr);
+                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("config/shape").resolve("shape/"+MapUtil.getStringValue(map,"name")+".shape").toFile(),shapeString);
 
             }
         }
