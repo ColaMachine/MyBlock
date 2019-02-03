@@ -25,9 +25,9 @@ public class GL_OBJ_Importer {
 	public GL_OBJ_Importer() {
 	}
 
-    public GL_Mesh load(String filename) {
+    public GL_Mesh load(String filename) {//进入的方法 step1
         System.out.println("GL_OBJ_Importer.import(): Load object from OBJ " + filename);
-        reader = new GL_OBJ_Reader(filename);
+        reader = new GL_OBJ_Reader(filename);//开始读取文件 并整理成格式对象 step2
         System.out.println("GL_OBJ_Importer.importFromStream(): model has " + reader.faces.size() + " faces and " + reader.vertices.size() + " vertices.  Mtl file is " + reader.materialLibeName);
         return makeMeshObject(reader);
     }
@@ -150,6 +150,7 @@ public class GL_OBJ_Importer {
                 uvw = (float[]) txtrs.get(face.textureIDs[v3]); // txtr coord for vert 3
                 t.uvw3 = new GL_Vector(uvw[0], uvw[1], uvw[2]);
             }else{
+               //发生这个原因可能是 只是赋值了材质 但是没有赋值 贴图导致的 所以只需要在blender 吧所有的材质删除掉就可以了
                LogUtil.println("error in parse mtl");
            }
 

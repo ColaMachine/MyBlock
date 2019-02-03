@@ -662,6 +662,10 @@ public class HtmlObject implements Cloneable  {
         }
 
         if(this.innerText!=null && innerText.length()>0){
+            //如果文字超出了父组件的宽度 隐藏掉多余的文字 或者换行
+//            if(){
+//
+//            }
             //GL11.glColor4f(1, 1, 1, 1);
             ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.001f,this.getFontSize(),this.getColor());
             //ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.0008f,this.getFontSize()+1,ShaderUtils.RGBA_BLUE);

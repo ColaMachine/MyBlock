@@ -63,7 +63,7 @@ public class ServerMain {
         serverContext. registerHandler(CmdType.CHUNKREQUEST,new ChunkHandler(serverContext));*/
         for(CmdType cmd :CmdType.values()){
             try {
-               if(cmd.gameHandlerClass!=null) {
+               if(cmd.gameHandlerClass!=null) {//一个cmd 类型 管理一个handler 实例 实现singletone 模式
                    Constructor c = cmd.gameHandlerClass.getConstructor(ServerContext.class);
                    serverContext.registerHandler(cmd, (GameServerHandler) c.newInstance(serverContext));
                }

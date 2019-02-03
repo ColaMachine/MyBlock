@@ -55,7 +55,7 @@ public class GL_OBJ_Reader {
 
 
     public GL_OBJ_Reader(String objfilename) {  // Construct from file name
-        loadobject(objfilename);
+        loadobject(objfilename);  //step1 读取文件
     }
 
 
@@ -64,7 +64,7 @@ public class GL_OBJ_Reader {
     }
 
 
-    public void loadobject(String objfilename) {  // load from String filename
+    public void loadobject(String objfilename) {  // load from String filename step1
         if (objfilename != null && objfilename.length() > 0) {
             // Separate leading path from filename (we'll load material libe from same folder)
             String[] pathParts = GLApp.getPathAndFile(objfilename);
@@ -72,7 +72,7 @@ public class GL_OBJ_Reader {
             filename = pathParts[1];
             // Load it
             try {
-                loadobject(GLApp.getInputStream(objfilename));
+                loadobject(GLApp.getInputStream(objfilename));//step2
             }
             catch (Exception e) {
                 System.out.println("GL_OBJ_Reader.loadobject(): Failed to read file: " + objfilename + " " + e);
@@ -84,7 +84,7 @@ public class GL_OBJ_Reader {
     public void loadobject(InputStream in) {  // load from inputStream
         if (in != null) {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            loadobject(br);
+            loadobject(br);//step3
         }
     }
 
@@ -104,9 +104,9 @@ public class GL_OBJ_Reader {
         int materialID = -1;  // -1 means no material found
 
         // make a default group to start (to hold faces not in any group)
-        Group group = new Group("default");
+        Group group = new Group("default");//step4 创建group
         groups.add(group);
-
+        Group childGroup =null;
 		try {
 			while ((line = br.readLine()) != null) {
 				// remove extra whitespace
@@ -134,7 +134,7 @@ public class GL_OBJ_Reader {
 						group.faces.add(f);     // add to current group
 						group.numTriangles += f.numTriangles(); // track number of triangles in group
 					}
-                    else if (line.startsWith("g ")) {
+                    else if (line.startsWith("g ")||line.startsWith("o ")) {
                         // Group line looks like: g someGroupName
                         String groupname = (line.length()>1)? line.substring(2).trim() : "";
                         // "select" the given group
@@ -165,6 +165,9 @@ public class GL_OBJ_Reader {
                         }
                         // load material library
                         materialLib = new GLMaterialLib(filepath + materialLibeName);
+                    } else{
+
+                        System.out.println("un parseable line:"+line);
                     }
 				}
 			}

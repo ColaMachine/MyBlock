@@ -8,6 +8,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Holds a mesh object containing triangles and vertices.  Verts and Triangles
@@ -54,6 +55,8 @@ public class GL_Mesh
         GL_Triangle[][] groupFaces = new GL_Triangle[1][];
         String[] groupNames = new String[] {"default"};
         String[] groupMaterialNames = new String[] {null};
+	float[][] slots =new float[12][6];
+	HashMap<String,Float[]> slotsMap =new HashMap<String,Float[]>();
         int currentGroup = 0;
 
         // temporary buffer used by projectVerts()
@@ -647,6 +650,7 @@ public class GL_Mesh
             groupFaces = new GL_Triangle[num][];
             groupNames = new String[num];
             groupMaterialNames = new String[num];
+
         }
 
         /**
@@ -662,6 +666,10 @@ public class GL_Mesh
             groupNames[groupNum] = name;
             groupMaterialNames[groupNum] = materialName;
             currentGroup = groupNum;
+
+			if(name.indexOf("slot")>0){
+
+			}
         }
 
         /**

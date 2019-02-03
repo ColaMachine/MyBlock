@@ -1,13 +1,26 @@
 package cola.machine.game.myblocks.model.ui.html;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.paths.PathManager;
+import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.textture.TextureInfo;
+import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.TimeUtil;
 import de.matthiasmann.twl.Event;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,30 +31,158 @@ public class Document extends HtmlObject {
     public void setHeight(int height) {
         this.height = height;
     }
-    private static Document document= new Document();
-    public static boolean needUpdate=true;
-    public Document(){
+
+    private static Document document = new Document();
+    public static boolean needUpdate = true;
+
+    public Document() {
         this.setId("document");
         body.setId("body");
-        body.canAcceptKeyboardFocus=true;
+        body.canAcceptKeyboardFocus = true;
         this.appendChild(body);
-        this.canAcceptKeyboardFocus=true;
+        this.canAcceptKeyboardFocus = true;
+        parseIndexHtml();
     }
-    public static Document getInstance(){
+
+    public void parseIndexHtml() {
+        File file = PathManager.getInstance().getHomePath().resolve("html/index.html").toFile();
+        if (file.exists()) {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            //创建一个DocumentBuilder的对象
+            try {
+                //创建DocumentBuilder对象
+                DocumentBuilder db = dbf.newDocumentBuilder();
+                //通过DocumentBuilder对象的parser方法加载books.xml文件到当前项目下
+                org.w3c.dom.Document document = db.parse(file);
+                //获取所有book节点的集合
+                NodeList bookList = document.getElementsByTagName("body");
+
+                for (int i = 0; i < bookList.getLength(); i++) {
+                    Node node = bookList.item(i);
+                    HtmlObject childNode = parseNode(node);
+                    body.appendChild(childNode);
+                }
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public HtmlObject parseNode(Node node) {
+        HtmlObject htmlObject = new HtmlObject();
+        if (node.getNodeName().equals("#Text")) {
+            return null;
+        }
+        NamedNodeMap attrs = node.getAttributes();
+//        System.out.println("第 " + (i + 1) + "本书共有" + attrs.getLength() + "个属性");
+        //遍历book的属性
+
+        if (attrs != null)
+            for (int j = 0; j < attrs.getLength(); j++) {
+                //通过item(index)方法获取book节点的某一个属性
+                Node attr = attrs.item(j);
+                //获取属性名
+                System.out.print("属性名：" + attr.getNodeName());
+                //获取属性值
+                System.out.println("--属性值" + attr.getNodeValue());
+
+                if (attr.getNodeName().equals("style")) {
+                    String styleValue = attr.getNodeValue();
+                    String styleValueAry[] = styleValue.split(";");
+                    for (int styleIndex = 0; styleIndex < styleValueAry.length; styleIndex++) {
+                        String keyValueAry[] = styleValueAry[styleIndex].split(":");
+                        parseNodeKeyValue(htmlObject, keyValueAry[0], keyValueAry[1]);
+
+                    }
+                    htmlObject.setWidth(Integer.valueOf(attr.getNodeValue()));
+                }
+
+            }
+
+        //查找子节点
+        NodeList nodeList = node.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            if (node.getNodeName().equals("#Text")) {
+                continue;
+            }
+            htmlObject.appendChild(parseNode(nodeList.item(i)));
+        }
+
+        return htmlObject;
+//
+//        if(node.getNodeName().equals("div")){
+////            Div div =new Div();
+//            //width
+//            String style = node.getAttributes("style");
+//            Node attr = attrs.item(j);
+//            //获取属性名
+//            System.out.print("属性名：" + attr.getNodeName());
+//            //获取属性值
+//            System.out.println("--属性值" + attr.getNodeValue());
+//            //height
+//            //
+//        }
+    }
+
+    /**
+     * 设置节点属性
+     *
+     * @param htmlObject
+     * @param key
+     * @param value
+     */
+    public void parseNodeKeyValue(HtmlObject htmlObject, String key, String value) {
+        if (key.equals("width")) {
+            htmlObject.setWidth(Integer.valueOf(value));
+        } else if (key.equals("height")) {
+            htmlObject.setHeight(Integer.valueOf(value));
+        } else if (key.equals("margin-top")) {
+            htmlObject.setMarginTop(Short.valueOf(value));
+        } else if (key.equals("margin-left")) {
+            htmlObject.setMarginLeft(Short.valueOf(value));
+        } else if (key.equals("margin-bottom")) {
+            htmlObject.setMarginBottom(Short.valueOf(value));
+        } else if (key.equals("margin-right")) {
+            htmlObject.setMarginRight(Short.valueOf(value));
+        } else if (key.equals("padding-top")) {
+            htmlObject.setPaddingTop(Short.valueOf(value));
+        } else if (key.equals("padding-left")) {
+            htmlObject.setPaddingLeft(Short.valueOf(value));
+        } else if (key.equals("padding-bottom")) {
+            htmlObject.setPaddingBottom(Short.valueOf(value));
+        } else if (key.equals("padding-right")) {
+            htmlObject.setPaddingRight(Short.valueOf(value));
+        } else if (key.equals("background-image")) {
+
+            TextureManager textureManager = CoreRegistry.get(TextureManager.class);
+
+            textureManager.putImage(value, value);
+            htmlObject.setBackgroundImage(new Image(new TextureInfo(value)));
+
+        }
+    }
+
+    public static Document getInstance() {
 
         return document;
     }
-	public static HashMap variables=new HashMap();
+
+    public static HashMap variables = new HashMap();
     private long mouseEventTime;//鼠标事件时间
-    public  boolean hasInvalidLayouts=false;
-	/*public static List<HtmlObject> elements =new ArrayList<HtmlObject>();
-	//public static void appendChild(HtmlObject htmlObject){
-		elements.add(htmlObject);
+    public boolean hasInvalidLayouts = false;
+
+    /*public static List<HtmlObject> elements =new ArrayList<HtmlObject>();
+    //public static void appendChild(HtmlObject htmlObject){
+        elements.add(htmlObject);
+    }*/
+    /*public void removeChild(HtmlObject htmlObject){
+        elements.remove(htmlObject);
 	}*/
-	/*public void removeChild(HtmlObject htmlObject){
-		elements.remove(htmlObject);
-	}*/
-	/*public static HtmlObject getElementById(String id){
+    /*public static HtmlObject getElementById(String id){
 
 
 		for(HtmlObject htmlObject : elements){
@@ -59,36 +200,38 @@ public class Document extends HtmlObject {
 		}
 		return null;
 	}*/
-	public static  Object var(String name){
-		return variables.get(name);
-	}
-	public static void var(String name,Object value){
-		 variables.put(name, value);
-	}
-    private Event event=new Event();
-   /* public final boolean handleKey(int keyCode, char keyChar, boolean pressed) {
-        event.keyCode = keyCode;
-        event.keyChar = keyChar;
-        event.keyRepeated = false;
+    public static Object var(String name) {
+        return variables.get(name);
+    }
 
-        keyEventTime = curTime;
-        if(event.keyCode != Event.KEY_NONE || event.keyChar != Event.CHAR_NONE) {
-            event.setModifiers(pressed);
+    public static void var(String name, Object value) {
+        variables.put(name, value);
+    }
 
-            if(pressed) {
-                keyRepeatDelay = KEYREPEAT_INITIAL_DELAY;
-                return sendKeyEvent(Event.Type.KEY_PRESSED);
-            } else {
-                keyRepeatDelay = NO_REPEAT;
-                return sendKeyEvent(Event.Type.KEY_RELEASED);
-            }
-        } else {
-            keyRepeatDelay = NO_REPEAT;
-        }
+    private Event event = new Event();
+    /* public final boolean handleKey(int keyCode, char keyChar, boolean pressed) {
+         event.keyCode = keyCode;
+         event.keyChar = keyChar;
+         event.keyRepeated = false;
 
-        return false;
-    }*/
-   private long tooltipEventTime;
+         keyEventTime = curTime;
+         if(event.keyCode != Event.KEY_NONE || event.keyChar != Event.CHAR_NONE) {
+             event.setModifiers(pressed);
+
+             if(pressed) {
+                 keyRepeatDelay = KEYREPEAT_INITIAL_DELAY;
+                 return sendKeyEvent(Event.Type.KEY_PRESSED);
+             } else {
+                 keyRepeatDelay = NO_REPEAT;
+                 return sendKeyEvent(Event.Type.KEY_RELEASED);
+             }
+         } else {
+             keyRepeatDelay = NO_REPEAT;
+         }
+
+         return false;
+     }*/
+    private long tooltipEventTime;
     private long curTime;
     private int mouseDownX;
     private int mouseDownY;
@@ -101,12 +244,12 @@ public class Document extends HtmlObject {
     private int mouseLastY;
     private int mouseClickedX;
     private int mouseClickedY;
+
     public final boolean handleMouse(int mouseX, int mouseY, int button, boolean pressed) {
-        curTime= TimeUtil.getNowMills();
+        curTime = TimeUtil.getNowMills();
         mouseEventTime = curTime;
         tooltipEventTime = curTime;
         event.mouseButton = button;
-
 
 
         // only the previously pressed mouse button
@@ -127,12 +270,12 @@ public class Document extends HtmlObject {
         event.setModifier(buttonMask, pressed);
         boolean wasPressed = (prevButtonState & buttonMask) != 0;
 
-        if(buttonMask != 0) {
-          //  renderer.setMouseButton(button, pressed);
+        if (buttonMask != 0) {
+            //  renderer.setMouseButton(button, pressed);
         }
 
         // don't send new mouse coords when still in drag area
-        if(dragActive || prevButtonState == 0) {
+        if (dragActive || prevButtonState == 0) {
             event.mouseX = mouseX;//记录 实时的鼠标位置
             event.mouseY = mouseY;
         } else {
@@ -157,29 +300,29 @@ public class Document extends HtmlObject {
             }
         }*/
 
-        if(!dragActive) {//没有拖动 响应自身的
-            if(!isInside(mouseX, mouseY)) {//如果不在范围内
+        if (!dragActive) {//没有拖动 响应自身的
+            if (!isInside(mouseX, mouseY)) {//如果不在范围内
                 pressed = false;
                 mouseClickCount = 0;
-                if(wasInside) {//如果之前是在范围内的 那么就是离开的动作
+                if (wasInside) {//如果之前是在范围内的 那么就是离开的动作
                     sendMouseEvent(Event.Type.MOUSE_EXITED, null);//发送鼠标事件离开
                     wasInside = false;
                 }
-            } else if(!wasInside) {//如果现在在范围内 而且之前不在范围内
+            } else if (!wasInside) {//如果现在在范围内 而且之前不在范围内
                 wasInside = true;
-                if(sendMouseEvent(Event.Type.MOUSE_ENTERED, null) != null) {//进入事件发送
+                if (sendMouseEvent(Event.Type.MOUSE_ENTERED, null) != null) {//进入事件发送
                     handled = true;
                 }
             }
 
         }
         //如果有鼠标移动===========================
-        if(mouseX != mouseLastX || mouseY != mouseLastY) {//鼠标有移动
+        if (mouseX != mouseLastX || mouseY != mouseLastY) {//鼠标有移动
             mouseLastX = mouseX;
             mouseLastY = mouseY;
 
-            if(prevButtonState != 0 && !dragActive) {
-                if(Math.abs(mouseX - mouseDownX) > DRAG_DIST ||
+            if (prevButtonState != 0 && !dragActive) {
+                if (Math.abs(mouseX - mouseDownX) > DRAG_DIST ||
                         Math.abs(mouseY - mouseDownY) > DRAG_DIST) {
                     dragActive = true;
                     mouseClickCount = 0;
@@ -192,38 +335,39 @@ public class Document extends HtmlObject {
                 }
             }
 
-            if(dragActive) {
+            if (dragActive) {
                 /*if(boundDragPopup != null) {
                     // a bound drag is converted to a mouse move
                     assert getTopPane() == boundDragPopup;
                     sendMouseEvent(Event.Type.MOUSE_MOVED, null);
-                } else */if(lastMouseDownWidget != null) {
+                } else */
+                if (lastMouseDownWidget != null) {
                     // send MOUSE_DRAGGED only to the widget which received the MOUSE_BTNDOWN
                     sendMouseEvent(Event.Type.MOUSE_DRAGGED, lastMouseDownWidget);
                 }
-            } else if(prevButtonState == 0) {
-                if(sendMouseEvent(Event.Type.MOUSE_MOVED, null) != null) {
+            } else if (prevButtonState == 0) {
+                if (sendMouseEvent(Event.Type.MOUSE_MOVED, null) != null) {
                     handled = true;
                     return handled;
                 }
             }
         }
         //有按键发生=========================================================
-        if(buttonMask != 0 && pressed != wasPressed) {//有按键发生
-            if(pressed) {
-                if(dragButton < 0) {
+        if (buttonMask != 0 && pressed != wasPressed) {//有按键发生
+            if (pressed) {
+                if (dragButton < 0) {
                     mouseDownX = mouseX;
                     mouseDownY = mouseY;
                     dragButton = button;
                     lastMouseDownWidget = sendMouseEvent(Event.Type.MOUSE_BTNDOWN, null);
-                } else if(lastMouseDownWidget != null /*&& boundDragPopup == null*/) {
+                } else if (lastMouseDownWidget != null /*&& boundDragPopup == null*/) {
                     // if another button is pressed while one button is already
                     // pressed then route the second button to the widget which
                     // received the first press
                     // but only when no bound drag is active
                     sendMouseEvent(Event.Type.MOUSE_BTNDOWN, lastMouseDownWidget);
                 }
-            } else if(dragButton >= 0 && (/*boundDragPopup == null ||*/ event.isMouseDragEnd())) {
+            } else if (dragButton >= 0 && (/*boundDragPopup == null ||*/ event.isMouseDragEnd())) {
                 // only send the last MOUSE_BTNUP event when a bound drag is active
                /* if(boundDragPopup != null) {
                     if(button == dragButton) {
@@ -231,19 +375,19 @@ public class Document extends HtmlObject {
                         sendMouseEvent(Event.Type.MOUSE_BTNUP, getWidgetUnderMouse());
                     }
                 }*/
-                if(lastMouseDownWidget != null) {
+                if (lastMouseDownWidget != null) {
                     // send MOUSE_BTNUP only to the widget which received the MOUSE_BTNDOWN
                     sendMouseEvent(Event.Type.MOUSE_BTNUP, lastMouseDownWidget);
                 }
             }
 
-            if(lastMouseDownWidget != null) {
+            if (lastMouseDownWidget != null) {
                 handled = true;
             }
 
-            if(button == Event.MOUSE_LBUTTON && !popupEventOccured) {
-                if(!pressed && !dragActive) {
-                    if(mouseClickCount == 0 ||
+            if (button == Event.MOUSE_LBUTTON && !popupEventOccured) {
+                if (!pressed && !dragActive) {
+                    if (mouseClickCount == 0 ||
                             curTime - mouseClickedTime > DBLCLICK_TIME ||
                             lastMouseClickWidget != lastMouseDownWidget) {
                         mouseClickedX = mouseX;
@@ -252,14 +396,14 @@ public class Document extends HtmlObject {
                         mouseClickCount = 0;
                         mouseClickedTime = curTime;
                     }
-                    if(Math.abs(mouseX - mouseClickedX) < DRAG_DIST &&
+                    if (Math.abs(mouseX - mouseClickedX) < DRAG_DIST &&
                             Math.abs(mouseY - mouseClickedY) < DRAG_DIST) {
                         // ensure same click target as first
                         event.mouseX = mouseClickedX;
                         event.mouseY = mouseClickedY;
                         event.mouseClickCount = ++mouseClickCount;
                         mouseClickedTime = curTime;
-                        if(lastMouseClickWidget != null) {
+                        if (lastMouseClickWidget != null) {
                             sendMouseEvent(Event.Type.MOUSE_CLICKED, lastMouseClickWidget);
                         }
                     } else {
@@ -269,13 +413,13 @@ public class Document extends HtmlObject {
             }
         }
         //如果有拖动===========================================
-        if(event.isMouseDragEnd()) {
-            if(dragActive) {
+        if (event.isMouseDragEnd()) {
+            if (dragActive) {
                 dragActive = false;
                 sendMouseEvent(Event.Type.MOUSE_MOVED, null);
             }
             dragButton = -1;
-            if(boundDragCallback != null) {
+            if (boundDragCallback != null) {
                 try {
                     boundDragCallback.run();
                 } catch (Exception ex) {
@@ -283,15 +427,17 @@ public class Document extends HtmlObject {
                             "Exception in bound drag callback", ex);
                 } finally {
                     boundDragCallback = null;
-                   // boundDragPopup = null;
+                    // boundDragPopup = null;
                 }
             }
         }
 
         return handled;
     }
+
     private Runnable boundDragCallback;
     private boolean popupEventOccured;
+
     //private InfoWindow activeInfoWindow;
     private HtmlObject sendMouseEvent(Event.Type type, HtmlObject target) {
         assert type.isMouseEvent;
@@ -299,42 +445,48 @@ public class Document extends HtmlObject {
         event.type = type;
         event.dragEvent = dragActive;// && (boundDragPopup == null);
 
-       // renderer.setMousePosition(event.mouseX, event.mouseY);
+        // renderer.setMousePosition(event.mouseX, event.mouseY);
 
-        if(target != null) {//TODO什么时候是不为空的edit field
-            if(!target.isDisabled() || !isMouseAction(event)) {
+        if (target != null) {//TODO什么时候是不为空的edit field
+            if (!target.isDisabled() || !isMouseAction(event)) {
                 target.handleEvent(event);
             }
             return target;
         } else {
-            assert !dragActive ;//|| boundDragPopup != null;
+            assert !dragActive;//|| boundDragPopup != null;
             HtmlObject widget = null;
            /* if(activeInfoWindow != null) {//找激活窗口
                 if(activeInfoWindow.isMouseInside(event) && setMouseOverChild(activeInfoWindow, event)) {
                     widget = activeInfoWindow;
                 }
             }*/
-            if(widget == null) {//如国没有toppane的话 就是找根节点
-                widget = this.childNodes.get(this.childNodes.size()-1);//getTopPane();
+            if (widget == null) {//如国没有toppane的话 就是找根节点
+                widget = this.childNodes.get(this.childNodes.size() - 1);//getTopPane();
                 setMouseOverChild(widget, event);//确定哪个元素是mouseoverchild 响应一下entered 和exied事件
             }
             return widget.routeMouseEvent(event);
         }
     }
+
     private HtmlObject focusKeyWidget;
-    public HtmlObject getFocusKeyWidget(){
+
+    public HtmlObject getFocusKeyWidget() {
         return focusKeyWidget;
     }
+
     public void setFocusKeyWidget(HtmlObject widget) {
-        if(focusKeyWidget == null && isFocusKey()) {
+        if (focusKeyWidget == null && isFocusKey()) {
             focusKeyWidget = widget;
         }
     }
+
     private static final int FOCUS_KEY = Event.KEY_TAB;
+
     boolean isFocusKey() {
         return event.keyCode == FOCUS_KEY &&
-                ((event.modifier & (Event.MODIFIER_CTRL|Event.MODIFIER_META|Event.MODIFIER_ALT)) == 0);
+                ((event.modifier & (Event.MODIFIER_CTRL | Event.MODIFIER_META | Event.MODIFIER_ALT)) == 0);
     }
+
     private long mouseClickedTime;
     private HtmlObject lastMouseDownWidget;
     private HtmlObject lastMouseClickWidget;
@@ -343,16 +495,17 @@ public class Document extends HtmlObject {
     private static final int KEYREPEAT_INITIAL_DELAY = 250; // ms
     private static final int NO_REPEAT = 0;
     private int keyRepeatDelay;
+
     public final boolean handleKey(int keyCode, char keyChar, boolean pressed) {
         event.keyCode = keyCode;
         event.keyChar = keyChar;
         event.keyRepeated = false;
 
         keyEventTime = curTime;
-        if(event.keyCode != Event.KEY_NONE || event.keyChar != Event.CHAR_NONE) {
+        if (event.keyCode != Event.KEY_NONE || event.keyChar != Event.CHAR_NONE) {
             event.setModifiers(pressed);
 
-            if(pressed) {
+            if (pressed) {
                 keyRepeatDelay = KEYREPEAT_INITIAL_DELAY;
                 return sendKeyEvent(Event.Type.KEY_PRESSED);
             } else {
@@ -365,35 +518,37 @@ public class Document extends HtmlObject {
 
         return false;
     }
-    @Override
-    public void render(){
-        if(Switcher.SHADER_ENABLE) {
-            ShaderUtils.finalDraw(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao());//2DImage
 
-        }else{
+    @Override
+    public void render() {
+        if (Switcher.SHADER_ENABLE) {
+            ShaderUtils.finalDraw(ShaderManager.uiShaderConfig, ShaderManager.uiShaderConfig.getVao());//2DImage
+
+        } else {
             super.render();
         }
     }
-    @Override
-    public  void update(){
-        super.check();
-      if( Document.needUpdate){
 
-        ShaderManager.uiShaderConfig.getVao().getVertices().clear();//每次重新刷新都要把之前的数据清空
+    @Override
+    public void update() {
+        super.check();
+        if (Document.needUpdate) {
+
+            ShaderManager.uiShaderConfig.getVao().getVertices().clear();//每次重新刷新都要把之前的数据清空
 
             document.setWidth(Constants.WINDOW_WIDTH);
             document.setHeight(Constants.WINDOW_HEIGHT);
             document.body.setWidth(Constants.WINDOW_WIDTH);
             document.body.setHeight(Constants.WINDOW_HEIGHT);
-          OpenglUtils.checkGLError();
+            OpenglUtils.checkGLError();
             super.resize();
             super.update();
             super.recursivelySetGUI(document);
-            if(Switcher.SHADER_ENABLE) {
+            if (Switcher.SHADER_ENABLE) {
                 ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
                 super.buildVao();
-               // ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
-                ShaderUtils.freshVao(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao());
+                // ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
+                ShaderUtils.freshVao(ShaderManager.uiShaderConfig, ShaderManager.uiShaderConfig.getVao());
                 OpenglUtils.checkGLError();
             }
 
@@ -401,7 +556,8 @@ public class Document extends HtmlObject {
             //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
 
             // this.setPerspective();
-            document.render();OpenglUtils.checkGLError();
+            document.render();
+            OpenglUtils.checkGLError();
             //div.shaderRender();   OpenglUtils.checkGLError();
             // div2.shaderRender();   OpenglUtils.checkGLError();
             //div3.shaderRender();   OpenglUtils.checkGLError();
@@ -409,17 +565,19 @@ public class Document extends HtmlObject {
 
             //  ShaderUtils.update2dColorVao();   OpenglUtils.checkGLError();
 
-            Document.needUpdate=false;
-      }
+            Document.needUpdate = false;
+        }
 
     }
-    public boolean hasFocusChild(){
-        if(this.body.focusChild!=null){
+
+    public boolean hasFocusChild() {
+        if (this.body.focusChild != null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
     private boolean sendKeyEvent(Event.Type type) {
         assert type.isKeyEvent;
         popupEventOccured = false;
@@ -427,7 +585,7 @@ public class Document extends HtmlObject {
         event.type = type;
         event.dragEvent = false;
         boolean handled = getTopPane().handleEvent(event);
-        if(!handled && focusKeyWidget != null) {
+        if (!handled && focusKeyWidget != null) {
             focusKeyWidget.handleFocusKeyEvent(event);
             handled = true;
         }
@@ -440,6 +598,7 @@ public class Document extends HtmlObject {
         // don't use potential overwritten methods
         return super.getChildNodes().get(0);//因为最后一个是tooltip 而倒数第二个是一个widget
     }
+
     private long keyEventTime;
 
     @Override
@@ -450,8 +609,8 @@ public class Document extends HtmlObject {
 
     @Override
     protected boolean requestKeyboardFocus(HtmlObject child) {
-        if(child != null) {
-            if(child != getTopPane()) {
+        if (child != null) {
+            if (child != getTopPane()) {
                 return false;
             }
         }
