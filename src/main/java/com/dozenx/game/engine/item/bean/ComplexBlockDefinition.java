@@ -37,7 +37,7 @@ public class ComplexBlockDefinition extends BlockDefinition {
     public HashMap<Integer, BaseBlock> idShapeMap = new HashMap<>();
 
     public ComplexBlockDefinition() {
-        this.id = ItemType.wood_door.id;
+        this.itemTypeId = ItemType.wood_door.id;
         this.getItemModel();
         this.setShape(TextureManager.getShape("wood_door_up"));
     }
@@ -358,7 +358,7 @@ public class ComplexBlockDefinition extends BlockDefinition {
         //blockType 应该和IteType类型联系起来
 
         if (cmd.blockType == ItemType.wood_door.id) {
-            int faceDir = BlockUtil.getFaceDir(placePoint, viewDir);//获取当前的方向
+            int faceDir = BlockUtil.getFaceDirSimple(placePoint, viewDir);//获取当前的方向
 
             if (faceDir == Constants.BACK) {
                 faceDir = 0;

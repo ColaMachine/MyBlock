@@ -4,6 +4,9 @@ import com.dozenx.game.network.server.handler.*;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by dozen.zhang on 2017/2/13.
  */
@@ -46,14 +49,27 @@ public enum CmdType {
 
 
     }*/
-     CmdType(Class< ? extends BaseGameCmd> cmd,Class<? extends  GameServerHandler> handler){
+    public static Map<Integer ,Class< ? extends BaseGameCmd>> idToClassMap =new HashMap<>();
+
+
+    static{//遍历 放入
+
+        for(CmdType cmdType:CmdType.values()){
+            idToClassMap.put(cmdType.ordinal(),cmdType.cmdClass);
+        }
+
+
+    }
+
+
+    CmdType(Class< ? extends BaseGameCmd> cmd,Class<? extends  GameServerHandler> cmdClass){
         this.cmdClass = cmd;
-         this.gameHandlerClass = handler;
+         this.gameHandlerClass = cmdClass;
     }
     public Class cmdClass;
     public Class gameHandlerClass;
-    CmdType(Class< ? extends BaseGameCmd> cmd){
-
+    CmdType(Class< ? extends BaseGameCmd> cmdClass){
+        this.cmdClass = cmdClass;
     }
     public int getType(){
         return this.ordinal();

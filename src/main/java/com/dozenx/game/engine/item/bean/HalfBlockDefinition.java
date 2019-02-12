@@ -30,7 +30,7 @@ public class HalfBlockDefinition extends BlockDefinition {
     public HashMap<Integer, BaseBlock> idShapeMap = new HashMap<>();
 
     public HalfBlockDefinition() {
-        this.id = ItemType.wood_door.id;
+        this.itemTypeId = ItemType.wood_door.id;
         this.getItemModel();
 
     }

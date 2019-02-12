@@ -507,3 +507,53 @@ obj 带插槽
 用1042 代表一个盒子 暂时用 人物obj模型去替代 去演示
 但是目前碰到一个问题 blockmanager 里面并没有1042的记录
 这是为什么呢 难道是box 的里面没有这条记录吗
+
+被解析成了boneBlock了
+
+所以最后所有的block 在游戏渲染的时候都要被
+
+2018-08-25 22:31:45
+已将obj转成内置objblock 在游戏中显示
+所以现在应该能够显示箱子这类东西了 只要再blender 中绘制出来就可以了
+
+2018-09-03 23:04:04
+本来想些一个 所有的block 最终的渲染产物 统一放到rawblock 里的 但是现在发现 普通的正方体block 再渲染的时候还要判断 某个面是否要渲染的画
+还得一个个面判断过去 就先暂停了这个想法 解决的方法就是 在里面再加判断
+
+2018-09-03 23:07:03
+现在可以做的内容再整理下
+
+3d寻路算法
+objblock 增加槽点 使他能够支持主人公的 装备渲染
+
+objblock 增加动画化 能够渲染出怪物的行动等
+
+增加铁轨 增加火车的功能
+
+2018-10-08 23:22:21
+如过发现游戏中的Itemdefinition 不是自己想要的itemDefinition的画请检查 engine 和baseon  都为box才能调用到boxDefintion的beUse
+
+2018-10-09 22:31:19 boxDefinition 其实已经和id 绑定了 因为 BoxDefinition里有itemType.box.id的引用 所以box的id 必须是和ItemType.box是一样的 至于
+ shape 是什么样子的 你可以自由的发挥  ,但是这个系统当初设计的时候 只有 item的设计 没有shape的设计 最后的存储都是以item 的形式进行存储的
+ 所以我是不是要把他设计成shape形式的 要不item 就以 item 结尾  shape 就以.shape 结尾吧
+ beused 里有大量的
+ItemType的设计显得不那么必要 既然 有物品能被制作器设计出来 就表示我们不能事先定义好所有的物体
+
+搜索了下代码 ItemTYpe被用到了生成一些既定的物体上 如空气 土壤 水 用来在生成地形的时候非常好用 应该保留
+那么从侧面来说 是boxDefinition 的先前的设定上有误了 box 是不能代表一类物体的 她只能代表
+
+强烈建议 所以的 item 以item 结尾进行保存
+然后所有的 设计出来的item  shape 和item 部分分开保存 这样就可以穿插 修改 互补了最后让手写的cfg 和 设计的东西互相可以融合再一起 不分彼此
+
+   block=TextureManager.getShape("box_open");//由于这个是box_open 而在配置里这个是一个objblock 引起的
+
+   自定义的box 可能是imageblock  所以定义个boxblock 会出现
+
+   2018-10-13 16:09:01
+   现在又没有目标了
+
+  2018-10-16 22:13:00
+
+ 随便来点
+
+ 物品说明

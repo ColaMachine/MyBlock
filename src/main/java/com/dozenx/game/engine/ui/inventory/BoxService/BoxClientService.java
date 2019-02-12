@@ -1,5 +1,6 @@
 package com.dozenx.game.engine.ui.inventory.BoxService;
 
+import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.BoxBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.BoxItemsReqCmd;
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public class BoxClientService {
 
-    public List<ItemServerBean> openAndGetItemBeanList(BoxBlock boxBlock){
+    public List<ItemServerBean> openAndGetItemBeanList(BaseBlock boxBlock1,int chunkX,int chunkZ,int cx,int cy,int cz){
 
         //========创建 create bloxOpenCmd ======
-        int chunkX =boxBlock.chunk.chunkPos.x;
-        int chunkZ=boxBlock.chunk.chunkPos.z;
-        BoxOpenCmd cmd = new BoxOpenCmd(chunkX, chunkZ,boxBlock.getX(),boxBlock.getY(),boxBlock.getZ(),1);
+//        int chunkX =boxBlock.chunk.chunkPos.x;
+//        int chunkZ=boxBlock.chunk.chunkPos.z;
+        BoxOpenCmd cmd = new BoxOpenCmd(chunkX, chunkZ,cx,cy,cz,1);
 
 
        // int newId=  (boxBlock.open<<12| boxBlock.dir<<8 )| boxBlock.id;

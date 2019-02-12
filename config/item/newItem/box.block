@@ -1,1 +1,0 @@
-{id:47,name:'box_image',type:'block',remark:'box_image',live:'false',remark:'box_image',shape:{name:'box_image',blocktype:'imageblock',width:1.0,height:1.0,thick:1.0,x:3,y:0,z:4,front:'box_side',back:'box_side',bottom:'',top:'box_top',left:'box_front',right:'box_side',},baseon:'mantle'}

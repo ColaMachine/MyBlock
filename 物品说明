@@ -2,3 +2,14 @@
 itemDefinition 有很多中类型 一类是wear 一类是 block 一类是 food 一类是handkit 一类是other
 
 结合texture shape 构成
+# 物品的定义
+
+## 配置文件
+## 图形界面制作
+
+# 物品的加载
+
+ItemManager 负责加载物品定义 loadItemDefinition
+
+ItemManager在图片
+

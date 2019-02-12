@@ -36,10 +36,44 @@ public class BlockUtil {
         return false;
     }
 
-    public static int getFaceDir(GL_Vector placePoint, GL_Vector viewDir) {
-        float pianyiX = placePoint.x % 1;
+
+    public static int getFaceDirSimple(GL_Vector placePoint, GL_Vector viewDir) {
+
+
+        int dir = 0;
+        if (Math.abs(viewDir.x) > Math.abs(viewDir.z)) {
+            if (viewDir.x<0) {
+                dir = Constants.LEFT;
+            } else {
+                dir = Constants.RIGHT;
+            }
+        } else {
+            if (viewDir.z<0) {
+                dir = Constants.FRONT;
+            } else {
+                dir = Constants.BACK;
+            }
+        }
+        return dir;
+        // cmd.blockType  = condition<<8|cmd.blockType;
+    }
+
+    //射线和物体相交的点
+    public static int getFaceDir4Door(GL_Vector placePoint, GL_Vector viewDir) {
+        float pianyiX = placePoint.x % 1;//求小数点后部分 而且必须是正整数
+
+        if(pianyiX<0){
+            pianyiX+=1;//
+        }
         float pianyiY = placePoint.y % 1;
+        if(pianyiY<0){
+            pianyiY+=1;
+        }
         float pianyiZ = placePoint.z % 1;
+
+        if(pianyiZ<0){
+            pianyiZ+=1;
+        }
         int block = 0;
         if (pianyiX < 0.5) {
             if (pianyiY < 0.5) {
@@ -177,6 +211,10 @@ public class BlockUtil {
     }
 
     public static void main(String args[]){
+
+        float a =-1.7f;
+        System.out.println(a%1);
+
         int id =1042;
         System.out.println(BlockUtil.getRealBlockId(id));
 

@@ -1258,7 +1258,7 @@ public class MouseControlCenter {
                 }
 
                 // int condition = BlockUtil.getIndex(placePoint, camera.getViewDir());
-                handItem.use(arr.absolutePlacePoint, handItem.getItemType(), camera.getViewDir());
+                handItem.use(arr.absolutePlacePoint, handItem.getItemTypeId(), camera.getViewDir());
                 //开始放置物品
                 //其实我就是想知道点击的是哪一个面上 点击的面上
                 //得出当前人手上拿的是不是方块
@@ -1317,7 +1317,7 @@ public class MouseControlCenter {
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
             if (player.getItemBeans()[24] != null) {
-                CoreRegistry.get(Client.class).send(new DropCmd(player.getId(), player.getItemBeans()[24].getId(), player.getItemBeans()[24].getItemDefinition().getItemType(), now));
+                CoreRegistry.get(Client.class).send(new DropCmd(player.getId(), player.getItemBeans()[24].getId(), player.getItemBeans()[24].getItemDefinition().getItemTypeId(), now));
             }
 
 

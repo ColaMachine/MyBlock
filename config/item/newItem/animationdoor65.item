@@ -1,0 +1,1 @@
+{"baseon":"mantle","id":65,"live":"false","name":"animationdoor65","remark":"animationdoor65","script":"if(!penetrate){return \"{state:'open',penetrate:true}\";} else {  return \"{state:'close',penetrate:false}\";}","shape":"animationdoor65","type":"block"}

@@ -21,7 +21,7 @@ public class BlockDefinition extends  ItemDefinition {
     boolean isDoor;
 
     public void receive(Map map ){
-        super.receive(map);
+        super.receive(map);//blockDefinition ==>
         ItemBlockParser.parse(this, map);
     }
 

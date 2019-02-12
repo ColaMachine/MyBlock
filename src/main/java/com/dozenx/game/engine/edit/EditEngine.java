@@ -3748,6 +3748,9 @@ public class EditEngine {
         }else if ("boneblock ".equals(blockType)) {
             BoneBlock shape = BoneBlock.parse(object);
             return shape;
+        }else if ("objblock".equals(blockType)) {
+            ObjBlock shape = ObjBlock.parse(object);
+            return shape;
         }else {
             BoneBlock shape = BoneBlock.parse(object);
             return shape;

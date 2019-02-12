@@ -10,6 +10,7 @@ import cola.machine.game.myblocks.model.BoxBlock;
 import cola.machine.game.myblocks.model.ui.html.Document;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.switcher.Switcher;
+import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.item.BlockUtil;
@@ -27,7 +28,7 @@ import java.util.Map;
  * item 模板存放在
  */
 public class BoxDefinition extends  BlockDefinition {
-
+    public BaseBlock shapeOpen;
     public void receive(Map map) {
         super.receive(map);
         ItemBoxParser.parse(this, map);
@@ -54,18 +55,21 @@ public class BoxDefinition extends  BlockDefinition {
 //            if (top == 1) {
 //                block = TextureManager.getShape("wood_door_up");
 //            }
-            for (face = 0; face < 4; face++) {
+            for (face = 0; face < 4; face++) {//0 1 2 3
                 for (open = 0; open < 2; open++) {
                     if(face == 2){
                         LogUtil.println("box +face 2");
                     }
 
                     if (open == 1) {
-                        block=TextureManager.getShape("box_open");
-
+                        block=shapeOpen;//TextureManager.getShape("box_open");//由于这个是box_open 而在配置里这个是一个objblock
+                        if(shapeOpen == null){
+                            block=shape;
+                        }
 
                     }else{
-                        block=TextureManager.getShape("box");
+                        block=shape;//TextureManager.getShape("box_close");
+
                     }
                     if(block == null ){
                         LogUtil.println("block is null");
@@ -73,8 +77,8 @@ public class BoxDefinition extends  BlockDefinition {
                     BaseBlock blockTemp = block.copy();
                     blockTemp.reComputePoints();
                     BlockUtil.rotateYWithCenter(blockTemp, 0.5f, 0.5f, 0.5f,Constants.PI90 * face);
-                    int stateId = BlockParseUtil.getValue(face, ItemType.box.id, top, open);
-                    blockTemp.id = ItemType.box.id;
+                    int stateId = BlockParseUtil.getValue(face, this.itemTypeId, top, open);
+                    blockTemp.id = itemTypeId;
                     blockTemp.stateId = stateId;
                     if(stateId == 530){
                         LogUtil.println("box +stateId"+stateId);
@@ -93,19 +97,21 @@ public class BoxDefinition extends  BlockDefinition {
             //}
         }
 
-        BaseBlock block1 = TextureManager.stateIdShapeMap.get(2065);
-        if(block1.points[0].x==0){
-            LogUtil.println("errr");
-        }else{
-            LogUtil.println("right");
-        }
+//        BaseBlock block1 = TextureManager.stateIdShapeMap.get(2065);
+//        if(block1.points[0].x==0){
+//            LogUtil.println("errr");
+//        }else{
+//            LogUtil.println("right");
+//        }
     }
     public void use(GL_Vector placePoint, Integer itemType, GL_Vector viewDir) {
+
+      //  stateBlock();
         //检查上方是否有物体
         int chunkX = MathUtil.getBelongChunkInt(placePoint.x);
         int chunkZ = MathUtil.getBelongChunkInt(placePoint.z);
         //   TreeBlock treeBlock =new TreeBlock(hitPoint);
-        //treeBlock.startPosition=hitPoint;
+        //treeBlock.startPosition=hitPoint;wood
 
         //  treeBlock.generator();
         int blockX = MathUtil.floor(placePoint.x) - chunkX * 16;
@@ -126,11 +132,13 @@ public class BoxDefinition extends  BlockDefinition {
         //blockType 应该和IteType类型联系起来
 
         //if(cmd.blockType== ItemType.wood_door.ordinal()){
-        int condition = BlockUtil.getFaceDir(placePoint, viewDir);
+        int condition = BlockUtil.getFaceDirSimple(placePoint, viewDir);
         //cmd.blockType = condition << 8 | cmd.blockType;
-
-        cmd.blockType = BlockParseUtil.getValue(condition, ItemType.box.id, 0, 0);
-
+        LogUtil.println("放置新的元素 place new item stateId:"+cmd.blockType);
+        cmd.blockType = BlockParseUtil.getValue(condition, itemTypeId, 0, 0);
+        if(cmd.blockType==1042){
+            LogUtil.println("hello");
+        }
         CoreRegistry.get(Client.class).send(cmd);
 
 
@@ -138,7 +146,7 @@ public class BoxDefinition extends  BlockDefinition {
     }
 
     public boolean beUsed(BaseBlock block) {
-
+        //stateBlock();
         try {
             //通过一个通用的方式获得点击的面在哪里
             //  int chunkX = MathUtil.getBelongChunkInt(targetPoint.x);
@@ -169,7 +177,7 @@ public class BoxDefinition extends  BlockDefinition {
                 open = 0;
             }
 
-            int newStateId = BlockParseUtil.getValue(face, ItemType.box.id, top, open);
+            int newStateId = BlockParseUtil.getValue(face, itemTypeId, top, open);
             cmd.blockType = newStateId;
        /* int realBlockType = ByteUtil.get8_0Value(blockType);
 
@@ -192,7 +200,12 @@ public class BoxDefinition extends  BlockDefinition {
             //block.open = 1;
 
             //修改方块的状态为开并拿会物品列表
-            ItemBean[] list = CoreRegistry.get(BoxController.class).openBox((BoxBlock)block);
+
+            if(block.chunk==null){
+                block.chunk =new ChunkImpl(chunkX,0,chunkZ);
+                block.set(cmd.cx,cmd.cy,cmd.cz);
+            }
+            ItemBean[] list = CoreRegistry.get(BoxController.class).openBox(block,chunkX,chunkZ,cmd.cx,cmd.cy,cmd.cz);
 
             CoreRegistry.get(BoxPanel.class).reload(list);
             Document.needUpdate = true;

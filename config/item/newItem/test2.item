@@ -1,0 +1,1 @@
+{"baseon":"mantle","id":59,"live":"false","name":"test2","remark":"test2","script":"if(!penetrate){return \"{state:'open',penetrate:true}\";} else {  return \"{state:'close',penetrate:false}\";}","shape":"test2","type":"block"}

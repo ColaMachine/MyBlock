@@ -2597,6 +2597,15 @@ try {
        // veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(colorX).put(colorY).put(colorZ).put(-1);//p1
     }
 
+    public static Float[] getFloats(float x, float y, float z) {
+        if(isImageNotColor){
+            return new Float[]{x,y,z,normalX,normalY,normalZ,texCoordX,texCoordY,0f,nowTextureId*1.0f};
+        }else{
+            return new Float[]{x,y,z,normalX,normalY,normalZ,colorX,colorY,colorZ,-1.0f};
+        }
+        // veticesBuffer.put(x).put(y).put(z).put(normalX).put(normalY).put(normalZ).put(colorX).put(colorY).put(colorZ).put(-1);//p1
+    }
+
     public static void glVertex3f(float x, float y, float z, float normalX, float normalY, float normalZ, float colorX, float colorY, float colorZ) {
 
 
@@ -3008,7 +3017,6 @@ try {
 
 
     /**
-     * @param attri createVbo(int[]{3});
      *              Float
      */
     public static void testVboCreate() {

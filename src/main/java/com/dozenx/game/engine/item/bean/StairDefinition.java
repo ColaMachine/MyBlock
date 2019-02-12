@@ -30,7 +30,7 @@ public class StairDefinition extends BlockDefinition {
     public HashMap<Integer, BaseBlock> idShapeMap = new HashMap<>();
 
     public StairDefinition() {
-        this.id = ItemType.wood_door.id;
+        this.itemTypeId = ItemType.wood_door.id;
         this.getItemModel();
 
     }
@@ -263,7 +263,7 @@ public class StairDefinition extends BlockDefinition {
         //blockType 应该和IteType类型联系起来
 
 
-        int faceDir = BlockUtil.getFaceDir(placePoint, viewDir);//获取当前的方向
+        int faceDir = BlockUtil.getFaceDir4Door(placePoint, viewDir);//获取当前的方向
 
         if (faceDir == Constants.BACK) {
             faceDir = 0;

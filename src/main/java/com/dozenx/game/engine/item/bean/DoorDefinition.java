@@ -46,7 +46,7 @@ public class DoorDefinition extends BlockDefinition {
     public HashMap<Integer, BaseBlock> idShapeMap = new HashMap<>();
 
     public DoorDefinition() {
-        this.id = ItemType.wood_door.id;
+        this.itemTypeId = ItemType.wood_door.id;
         this.getItemModel();
         BaseBlock block = TextureManager.getShape("wood_door_up");
         if(block!=null){//服务器端是null
@@ -200,7 +200,7 @@ public class DoorDefinition extends BlockDefinition {
             int chunkX = block.chunkX;//.getChunk().getChunkWorldPosX();//.chunkX;
             int chunkZ = block.chunkZ;//getChunk().getChunkWorldPosZ();
             ChunkRequestCmd cmd = new ChunkRequestCmd(new Vector3i(chunkX, 0, chunkZ));
-            cmd.cx = (int) block.getX();
+            cmd.cx = (int) block.getX(); 
             cmd.cz = (int) block.getZ();
             cmd.cy = (int) block.getY();
             cmd.type = 1;
@@ -334,7 +334,7 @@ public class DoorDefinition extends BlockDefinition {
         //blockType 应该和IteType类型联系起来
 
         if (cmd.blockType == ItemType.wood_door.id) {
-            int faceDir = BlockUtil.getFaceDir(placePoint, viewDir);//获取当前的方向
+            int faceDir = BlockUtil.getFaceDir4Door(placePoint, viewDir);//获取当前的方向
 
             if(faceDir== Constants.BACK){
                 faceDir=0;
