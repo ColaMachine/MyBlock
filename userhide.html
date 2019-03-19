@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="theme-color" content="#fff">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!--可以使用添加到主屏按钮将网站添加到主屏幕上-->
+    <link rel="apple-touch-icon" href="/img/t.png?v=20190211">
+    <!-- 用于在浏览器显示图标-->
+    <link rel="icon" href="/favicon.ico" mce_href="favicon.ico"
+          type="image/x-icon">
+    <!-- 链接到一个指定 Web 应用程序“安装”证书的 JSON 文件-->
+    <link rel="manifest" href="https://m.ithome.com/json/manifest.json?v=20190214" type="application/manifest+json">
+    <meta name="description"
+          content="一些描述">
+    <!--RSS 阅读订阅-->
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/rss/">
+    <link rel="stylesheet" type="text/css"
+          href="/staticfileunite/common_swiper.min|common_news-list.min|common_comment.min|common_user-menu.min|index.min.css?v=20190214">
+
+
+    <link rel="stylesheet" href="/js/layer/theme/default/layer.css?v=3.1.1" id="layuicss-layer">
+</head>
+<body>
+
+
+<div class="user-menu hide" role="region" style="display: block;">
+    <div class="user-menu-sdk-mask"></div>
+    <div class="user-menu-box hide" style="display: block; right: 0px;">
+        <div class="um">
+            <div class="user-head" data-login-type="">
+                <div class="head-img"><img alt="头像" src="/m/images/user/noavatar.png"
+                                           onerror="this.src='/m/images/user/noavatar.png'"
+                                           width="65" height="65"></div>
+                <div class="user-info"><span class="user-nick" role="button">dozenx</span>
+
+                    <p><span>Lv.0</span>&nbsp;&nbsp;&nbsp;<span>ID:1706319</span></p></div>
+            </div>
+            <a role="button" href="/search/index.htm">
+                <div class="user-search"><span class="user-search-tig">搜索关键词</span></div>
+            </a>
+
+            <div class="user-content" onselectstart="return false" role="menu">
+                <a href="/user/usercomment" class="user-focus">
+                <div class="user-column my-comment"><span role="button">我的评论</span></div>
+            </a><a href="/wap/user/usertie">
+                <div class="user-column my-tie"><span role="button">我的帖子</span></div>
+            </a><a href="/user/usercollect">
+                <div class="user-column my-collect"><span role="button">我的收藏</span></div>
+            </a>
+
+                <div class="user-column share-to-fr"><span role="button">分享给好友</span></div>
+                <div class="user-column user-set"><span role="button">账户设置</span></div>
+                <div class="user-column user-feed-back"><span role="button">意见反馈</span></div>
+                <div class="user-column user-logout hide" style="display: block;"><span role="button">退出登录</span></div>
+            </div>
+            <div class="user-page-type"><span class="page-type-box"><span class="t-screen active"
+                                                                          role="button">博客版</span>丨<span class="speedy"
+                                                                                                         role="button">极速版</span>丨<span
+                    class="pc" role="button">电脑版</span></span></div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    html {
+        color: #333;
+        font-size: 2.666667vw;
+        margin: 0 auto;
+    }
+
+
+    a, blockquote, body, code, dd, div, dl, dt, em, fieldset, form, h1, h2, h3, h4, h5, h6, iframe, img, input, label, li, object, ol, p, q, small, span, strong, table, tbody, td, th, tr, ul {
+          margin: 0;
+          padding: 0;
+          border: 0;
+      }
+
+
+    .user-menu {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 640px;
+        margin: 0 auto;
+        overflow: hidden;
+        z-index: 70;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .user-menu .user-menu-sdk-mask {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 123%;
+        background-color: rgba(0,0,0,.8);
+        cursor: pointer;
+        z-index: 78;
+    }
+
+    .user-menu .user-menu-box {
+        background: #fff;
+        position: absolute;
+        top: 0;
+        right: -80%;
+        width: 80%;
+        height: 100%;
+        z-index: 100;
+        overflow: auto;
+    }
+
+    .user-menu .user-menu-box .um {
+        padding: 1.5rem;
+        z-index: 101;
+    }
+
+
+    .user-menu .user-head {
+        cursor: pointer;
+    }
+
+    .user-menu .user-head .head-img {
+        display: inline-block;
+        margin: 0 1.5rem 1rem 0;
+    }
+
+    .user-menu .user-head .head-img img {
+        border-radius: 50%;
+        width: 6.5rem;
+        height: 6.5rem;
+        vertical-align: middle;
+    }
+
+    .user-menu .user-head .user-info {
+        border-radius: .3rem;
+        display: inline-block;
+        vertical-align: middle;
+        width: calc(100% - 9rem);
+        width: -moz-calc(100% - 8rem);
+    }
+
+    .user-menu .user-head .user-info .user-nick {
+        font-size: 1.7rem;
+        color: #333;
+        line-height: 2.7rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .user-menu .user-head .user-info p {
+        font-size: 1.2rem;
+        color: #aaa;
+    }
+
+
+
+
+    /**搜索部分 **/
+    .user-menu .user-search {
+        width: 100%;
+        height: 3rem;
+        border-radius: 3rem;
+        background-color: #f3f4f5;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .user-menu .user-search .user-search-tig {
+        font-size: 1.4rem;
+        color: #969696;
+        line-height: 3rem;
+        display: inline-block;
+        padding-left: 2.7rem;
+        height: 3rem;
+        background: url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5…3zm-25 0a11 11 0 1 1 11 11 11 11 0 0 1-11-11z' fill='%23666'/%3E%3C/svg%3E) left center no-repeat;
+        background-size: 2.3rem 2.3rem;
+    }
+
+    .user-menu .user-content .user-column {
+        font-size: 1.6rem;
+        color: #333;
+        width: 100%;
+        cursor: pointer;
+    }
+
+
+    .user-menu .user-content .user-column.my-comment:before {
+        background: url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5….63 0 0 0-5.6-3.7 17.87 17.87 0 0 0-6.77-1.3z' fill='%23666'/%3E%3C/svg%3E) no-repeat center;
+    }
+    .user-menu .user-content .user-column:before {
+        content: "";
+        margin-right: 1.5rem;
+        display: inline-block;
+        width: 2.4rem;
+        height: 2.4rem;
+        line-height: 5.5rem;
+        background-position: 2.4rem;
+        vertical-align: middle;
+    }
+
+
+    .user-menu .user-content .user-column span {
+        display: inline-block;
+        vertical-align: middle;
+        height: 5.5rem;
+        line-height: 5.5rem;
+        border-bottom: .05rem solid #eee;
+        width: -moz-calc(100% - 4.7rem);
+        width: calc(100% - 4.7rem);
+    }
+
+
+    </style>
+</body>
+</html>

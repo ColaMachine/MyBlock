@@ -37,7 +37,7 @@ public class LoginState implements GameState {
     //public static String catchThing;
     //LearnOpenglColor learnOpenglColor;
     //GUI gui;
-    Document document =new Document();
+    Document document =null;//需要再TextManager image 后面初始化
 
     EditField userName ;
     EditField pwd ;
@@ -58,7 +58,7 @@ public class LoginState implements GameState {
         CoreRegistry.put(Client.class, client);
 
         TextureManager textureManager =new TextureManager();
-
+        document = new Document();
         ShaderManager manager =  ShaderManager.getInstance();
         manager.init();
        // manager.createProgram(manager.uiShaderConfig);
@@ -113,6 +113,7 @@ public class LoginState implements GameState {
             @Override
             public void run() {
                 emulateLogin();
+
                // LogUtil.println("nihao");
             }
         });

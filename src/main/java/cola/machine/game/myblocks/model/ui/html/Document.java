@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.model.ui.html;
 
+import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
@@ -9,6 +10,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
 import de.matthiasmann.twl.Event;
 import org.w3c.dom.NamedNodeMap;
@@ -16,6 +18,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.vecmath.Vector4f;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,25 +29,53 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Document extends HtmlObject {
-    public HtmlObject body = new HtmlObject();
+    public HtmlObject body = null;
 
     public void setHeight(int height) {
         this.height = height;
     }
 
-    private static Document document = new Document();
+    private  static Document document =null;
     public static boolean needUpdate = true;
 
     public Document() {
         this.setId("document");
         body.setId("body");
         body.canAcceptKeyboardFocus = true;
+        body = new HtmlObject();
         this.appendChild(body);
+
+        Button button =new Button();
+        button .setColor(new Vector4f(0,0,0,1));
+        button.innerText="刷新";
+        button.setFontSize(34);
+        button.textAlign="center";
+        //button.setTextAlign("center");
+        button.setWidth(100);
+        button.setPaddingTop((short)15);
+        button.setHeight(50);
+        //  button.setBackgroundImage(new Image(TextureManager.getTextureInfo("gridimage")));
+        button.setTop(25);
+        button.setBorderWidth(2);
+        //button.setBorderColor(new Vector4f(1,0,0,1));
+        button.setBackgroundImage(new Image(TextureManager.getTextureInfo("button")));
+        button.addCallback(new Runnable() {
+            @Override
+            public void run() {
+
+                document.parseIndexHtml();
+                // LogUtil.println("nihao");
+            }
+        });
+        this.appendChild(button);
+
+
         this.canAcceptKeyboardFocus = true;
-        parseIndexHtml();
+
     }
 
     public void parseIndexHtml() {
+        body.removeAllChild();
         File file = PathManager.getInstance().getHomePath().resolve("html/index.html").toFile();
         if (file.exists()) {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -55,12 +86,15 @@ public class Document extends HtmlObject {
                 //通过DocumentBuilder对象的parser方法加载books.xml文件到当前项目下
                 org.w3c.dom.Document document = db.parse(file);
                 //获取所有book节点的集合
-                NodeList bookList = document.getElementsByTagName("body");
-
+                NodeList bodyList = document.getElementsByTagName("body");
+                NodeList bookList=bodyList.item(0).getChildNodes();
                 for (int i = 0; i < bookList.getLength(); i++) {
                     Node node = bookList.item(i);
                     HtmlObject childNode = parseNode(node);
-                    body.appendChild(childNode);
+
+                    if(childNode!=null) {
+                        body.appendChild(childNode);
+                    }
                 }
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
@@ -70,11 +104,12 @@ public class Document extends HtmlObject {
                 e.printStackTrace();
             }
         }
+        document.needUpdate=true;
     }
 
     public HtmlObject parseNode(Node node) {
         HtmlObject htmlObject = new HtmlObject();
-        if (node.getNodeName().equals("#Text")) {
+        if (node.getNodeName().equals("#Text") || node instanceof com.sun.org.apache.xerces.internal.dom.DeferredTextImpl) {
             return null;
         }
         NamedNodeMap attrs = node.getAttributes();
@@ -98,7 +133,8 @@ public class Document extends HtmlObject {
                         parseNodeKeyValue(htmlObject, keyValueAry[0], keyValueAry[1]);
 
                     }
-                    htmlObject.setWidth(Integer.valueOf(attr.getNodeValue()));
+                    //String attrVal = attr.getNodeValue();
+                    //htmlObject.setWidth(Integer.valueOf(attrVal));
                 }
 
             }
@@ -162,6 +198,25 @@ public class Document extends HtmlObject {
 
             textureManager.putImage(value, value);
             htmlObject.setBackgroundImage(new Image(new TextureInfo(value)));
+
+        }else if (key.equals("border-color")) {
+            if(value.equals("red")){
+                htmlObject.setBorderColor(Constants.RGBA_RED);
+            }/*else if(value.equals("blue")){
+                htmlObject.setBorderColor(Constants.RGBA_BLUE);
+            }*/else if(value.startsWith("rgba")){
+                int start = value.indexOf("(");
+                int end =value.indexOf(")");
+                String rgabValue = value.substring(start+1,end);
+                String rgbaAry[]= rgabValue.split(",");
+                htmlObject.setBorderColor(new Vector4f(Float.valueOf(rgbaAry[0])/256,Float.valueOf(rgbaAry[1])/256,Float.valueOf(rgbaAry[2])/256,Float.valueOf(rgbaAry[3])));
+
+            }
+
+
+        }else if (key.equals("border-width")) {
+            value = value.replace("px","");
+            htmlObject.setBorderWidth(Integer.valueOf(value));
 
         }
     }
@@ -536,14 +591,14 @@ public class Document extends HtmlObject {
 
             ShaderManager.uiShaderConfig.getVao().getVertices().clear();//每次重新刷新都要把之前的数据清空
 
-            document.setWidth(Constants.WINDOW_WIDTH);
-            document.setHeight(Constants.WINDOW_HEIGHT);
-            document.body.setWidth(Constants.WINDOW_WIDTH);
-            document.body.setHeight(Constants.WINDOW_HEIGHT);
+            this.setWidth(Constants.WINDOW_WIDTH);
+            this.setHeight(Constants.WINDOW_HEIGHT);
+            this.body.setWidth(Constants.WINDOW_WIDTH);
+            this.body.setHeight(Constants.WINDOW_HEIGHT);
             OpenglUtils.checkGLError();
             super.resize();
             super.update();
-            super.recursivelySetGUI(document);
+            super.recursivelySetGUI(this);
             if (Switcher.SHADER_ENABLE) {
                 ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
                 super.buildVao();
@@ -556,7 +611,7 @@ public class Document extends HtmlObject {
             //ShaderManager.uiShaderConfig.getVao().getVertices().clear();   OpenglUtils.checkGLError();
 
             // this.setPerspective();
-            document.render();
+            this.render();
             OpenglUtils.checkGLError();
             //div.shaderRender();   OpenglUtils.checkGLError();
             // div2.shaderRender();   OpenglUtils.checkGLError();
