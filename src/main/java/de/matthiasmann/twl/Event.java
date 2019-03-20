@@ -126,9 +126,9 @@ public final class Event {
     public static final int MODIFIER_RSHIFT = 8;
     public static final int MODIFIER_RMETA = 16;
     public static final int MODIFIER_RCTRL = 32;
-    public static final int MODIFIER_LBUTTON = 64;
-    public static final int MODIFIER_RBUTTON = 128;
-    public static final int MODIFIER_MBUTTON = 256;
+    public static final int MODIFIER_LBUTTON = 64;// 1000000
+    public static final int MODIFIER_RBUTTON = 128;//10000000
+    public static final int MODIFIER_MBUTTON = 256;//100000000
     public static final int MODIFIER_LALT = 512;
     public static final int MODIFIER_RALT = 1024;
 
@@ -324,7 +324,7 @@ public final class Event {
     public boolean keyRepeated;
     public char keyChar;
     public int keyCode;
-    public int modifier;
+    public int modifier;//几个按键按下的状态 每一位都代表一个键按下的状态
     private Event subEvent;
 
     public Event() {
@@ -513,8 +513,8 @@ public final class Event {
         return e;
     }
     
-   public  void setModifier(int mask, boolean pressed) {
-        if(pressed) {
+   public  void setModifier(int mask, boolean pressed) {//这个mask 是Lbutton mbutton rbutton中的一个值
+        if(pressed) { //假如001 代表左键按下   那么这个事件触发后  modifier 是001 然后 左键又被抬起了  modifier & = ~mask 就是  001 & 110 就为0  那么modifer 的状态又复位到了000
             modifier |= mask;
         } else {
             modifier &= ~mask;

@@ -24,6 +24,7 @@ import de.matthiasmann.twl.theme.ThemeManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import javax.print.Doc;
 import javax.vecmath.Vector4f;
 
 import java.awt.image.BufferedImage;
@@ -58,7 +59,7 @@ public class LoginState implements GameState {
         CoreRegistry.put(Client.class, client);
 
         TextureManager textureManager =new TextureManager();
-        document = new Document();
+        document = Document.getInstance();
         ShaderManager manager =  ShaderManager.getInstance();
         manager.init();
        // manager.createProgram(manager.uiShaderConfig);

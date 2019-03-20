@@ -12,6 +12,7 @@ import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
+import core.log.LogUtil;
 import de.matthiasmann.twl.Event;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -38,44 +39,12 @@ public class Document extends HtmlObject {
     private  static Document document =null;
     public static boolean needUpdate = true;
 
-    public Document() {
-        this.setId("document");
-        body.setId("body");
-        body.canAcceptKeyboardFocus = true;
-        body = new HtmlObject();
-        this.appendChild(body);
-
-        Button button =new Button();
-        button .setColor(new Vector4f(0,0,0,1));
-        button.innerText="刷新";
-        button.setFontSize(34);
-        button.textAlign="center";
-        //button.setTextAlign("center");
-        button.setWidth(100);
-        button.setPaddingTop((short)15);
-        button.setHeight(50);
-        //  button.setBackgroundImage(new Image(TextureManager.getTextureInfo("gridimage")));
-        button.setTop(25);
-        button.setBorderWidth(2);
-        //button.setBorderColor(new Vector4f(1,0,0,1));
-        button.setBackgroundImage(new Image(TextureManager.getTextureInfo("button")));
-        button.addCallback(new Runnable() {
-            @Override
-            public void run() {
-
-                document.parseIndexHtml();
-                // LogUtil.println("nihao");
-            }
-        });
-        this.appendChild(button);
-
-
-        this.canAcceptKeyboardFocus = true;
+    private Document() {
 
     }
 
     public void parseIndexHtml() {
-        body.removeAllChild();
+        body.getElementById("root").removeAllChild();
         File file = PathManager.getInstance().getHomePath().resolve("html/index.html").toFile();
         if (file.exists()) {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -93,7 +62,7 @@ public class Document extends HtmlObject {
                     HtmlObject childNode = parseNode(node);
 
                     if(childNode!=null) {
-                        body.appendChild(childNode);
+                        body.getElementById("root").appendChild(childNode);
                     }
                 }
             } catch (ParserConfigurationException e) {
@@ -110,7 +79,14 @@ public class Document extends HtmlObject {
     public HtmlObject parseNode(Node node) {
         HtmlObject htmlObject = new HtmlObject();
         if (node.getNodeName().equals("#Text") || node instanceof com.sun.org.apache.xerces.internal.dom.DeferredTextImpl) {
-            return null;
+
+            HtmlObject textNode =new HtmlObject();
+            textNode.innerText=node.getTextContent();
+            textNode.setColor(Constants.RGBA_GRAY);
+            textNode.setBorderColor(Constants.RGBA_RED);
+            textNode.setWidth(50);
+            textNode.setHeight(50);
+            return textNode;
         }
         NamedNodeMap attrs = node.getAttributes();
 //        System.out.println("第 " + (i + 1) + "本书共有" + attrs.getLength() + "个属性");
@@ -142,10 +118,12 @@ public class Document extends HtmlObject {
         //查找子节点
         NodeList nodeList = node.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
-            if (node.getNodeName().equals("#Text")) {
-                continue;
+            if (nodeList.item(i).getNodeName().equals("#Text")) {
+                htmlObject.innerText  = nodeList.item(i).getTextContent();
             }
-            htmlObject.appendChild(parseNode(nodeList.item(i)));
+            HtmlObject childNode = parseNode(nodeList.item(i));
+
+            htmlObject.appendChild(childNode);
         }
 
         return htmlObject;
@@ -199,6 +177,40 @@ public class Document extends HtmlObject {
             textureManager.putImage(value, value);
             htmlObject.setBackgroundImage(new Image(new TextureInfo(value)));
 
+        }else if (key.equals("background-color")) {
+
+            if(value.equals("red")){
+                htmlObject.setBackgroundColor(Constants.RGBA_RED);
+            }/*else if(value.equals("blue")){
+                htmlObject.setBorderColor(Constants.RGBA_BLUE);
+            }*/else if(value.startsWith("rgba")){
+                int start = value.indexOf("(");
+                int end =value.indexOf(")");
+                String rgabValue = value.substring(start+1,end);
+                String rgbaAry[]= rgabValue.split(",");
+                htmlObject.setBackgroundColor(new Vector4f(Float.valueOf(rgbaAry[0]) / 256, Float.valueOf(rgbaAry[1]) / 256, Float.valueOf(rgbaAry[2]) / 256, Float.valueOf(rgbaAry[3])));
+
+            }
+
+
+
+        }else if (key.equals("color")) {
+
+            if(value.equals("red")){
+                htmlObject.setColor(Constants.RGBA_RED);
+            }/*else if(value.equals("blue")){
+                htmlObject.setBorderColor(Constants.RGBA_BLUE);
+            }*/else if(value.startsWith("rgba")){
+                int start = value.indexOf("(");
+                int end =value.indexOf(")");
+                String rgabValue = value.substring(start+1,end);
+                String rgbaAry[]= rgabValue.split(",");
+                htmlObject.setColor(new Vector4f(Float.valueOf(rgbaAry[0]) / 256, Float.valueOf(rgbaAry[1]) / 256, Float.valueOf(rgbaAry[2]) / 256, Float.valueOf(rgbaAry[3])));
+
+            }
+
+
+
         }else if (key.equals("border-color")) {
             if(value.equals("red")){
                 htmlObject.setBorderColor(Constants.RGBA_RED);
@@ -223,7 +235,56 @@ public class Document extends HtmlObject {
 
     public static Document getInstance() {
 
+        if(document == null){
+            document = new Document();
+            document.init();
+        }
         return document;
+    }
+
+    public void init(){
+        this.setId("document");
+
+        this.body =new HtmlObject();
+        body.setId("body");
+        body.canAcceptKeyboardFocus = true;
+
+
+        Div div =new Div();
+        div.setId("root");
+        div.setWidth(500);
+        div.setHeight(500);
+        body.appendChild(div);
+
+        this.appendChild(body);
+
+        Button button =new Button();
+        button .setColor(new Vector4f(0,0,0,1));
+        button.innerText="刷新";
+        button.setFontSize(34);
+        button.textAlign="center";
+        //button.setTextAlign("center");
+        button.setWidth(100);
+        button.setPaddingTop((short)15);
+        button.setHeight(50);
+        //  button.setBackgroundImage(new Image(TextureManager.getTextureInfo("gridimage")));
+        button.setTop(25);
+        button.setBorderWidth(2);
+        //button.setBorderColor(new Vector4f(1,0,0,1));
+        button.setBackgroundImage(new Image(TextureManager.getTextureInfo("button")));
+        button.addCallback(new Runnable() {
+            @Override
+            public void run() {
+
+                document.parseIndexHtml();
+                // LogUtil.println("nihao");
+            }
+        });
+        body.appendChild(button);
+
+
+        this.canAcceptKeyboardFocus = true;
+
     }
 
     public static HashMap variables = new HashMap();
@@ -308,8 +369,8 @@ public class Document extends HtmlObject {
 
 
         // only the previously pressed mouse button
-        int prevButtonState = event.getModifiers() & Event.MODIFIER_BUTTON;
-
+        int prevButtonState = event.getModifiers() & Event.MODIFIER_BUTTON;//l m r 哪个键按下了
+        //根据鼠标的按键构造事件
         int buttonMask = 0;
         switch (button) {
             case Event.MOUSE_LBUTTON:
@@ -322,8 +383,10 @@ public class Document extends HtmlObject {
                 buttonMask = Event.MODIFIER_MBUTTON;
                 break;
         }
+
+        //event 有一个modifer 标识了这个事件是否有按键 pressed代表了是按下还是抬起
         event.setModifier(buttonMask, pressed);
-        boolean wasPressed = (prevButtonState & buttonMask) != 0;
+        boolean wasPressed = (prevButtonState & buttonMask) != 0;  //如果一直按着的话 是大于0的
 
         if (buttonMask != 0) {
             //  renderer.setMouseButton(button, pressed);
@@ -356,6 +419,7 @@ public class Document extends HtmlObject {
         }*/
 
         if (!dragActive) {//没有拖动 响应自身的
+            //LogUtil.println("" + mouseX +":"+ mouseY);
             if (!isInside(mouseX, mouseY)) {//如果不在范围内
                 pressed = false;
                 mouseClickCount = 0;
