@@ -23,6 +23,12 @@ public enum CmdType {
     BOXITEM(BoxItemsReqCmd.class,BoxChangeHandler.class),//8
     BOXOPEN(BoxOpenCmd.class,BoxChangeHandler.class),//8
     GET(GetCmd.class,GetHandler.class),//9
+
+
+    FileStart(FileStartCmd.class,FileHandler.class),//9
+    FileData(FileDataCmd.class,FileHandler.class),//9
+    FileEnd(FileEndCmd.class,FileHandler.class),//9
+
     PICK(PickCmd.class,PickHandler.class),//10
     ATTACK(AttackCmd.class,AttackHandler.class),//1
     BEATTACK(BeAttackCmd.class,AttackHandler.class),//1

@@ -1,7 +1,12 @@
 package com.dozenx.game.engine.command;
 
+import com.dozenx.game.network.server.bean.ServerContext;
+import com.dozenx.game.network.server.handler.GameServerHandler;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by luying on 17/2/18.
@@ -64,6 +69,29 @@ public class CmdUtil {
         }else  if (cmdTypeVal ==  CmdType.BOXITEM.ordinal()){
             return new BoxItemsReqCmd(bytes);
         }else{
+
+
+            for(CmdType cmd :CmdType.values()){
+                if(cmdTypeVal == cmd.getType())
+                {
+                    try {
+                        Constructor c = cmd.cmdClass.getConstructor(byte[].class);
+                        try {
+                            return (GameCmd)c.newInstance(bytes);
+                        } catch (InstantiationException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
             LogUtil.err("can't recgnize the cmd");
             return null;
         }
