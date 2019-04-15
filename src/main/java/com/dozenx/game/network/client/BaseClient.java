@@ -125,14 +125,17 @@ public class BaseClient extends Thread{
         BaseClient client =new BaseClient();
         //new Thread();
         client.start();
-        Path path = Paths.get("/Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/network/server/handler")
+
+        Path path = Paths.get("G:/test/from")
+
+        //Path path = Paths.get("/Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/network/server/handler")
 ;      //  List<File>  files = FileUtil.listFile(path.toFile());
         int i=0;
 
 
 
         client.iteratorDir(path,path.toFile());
-
+        System.out.println("发送完成了");
         //System.out.println(message);
         /*Client client =new Client();
        client.start();
@@ -177,6 +180,8 @@ public class BaseClient extends Thread{
     }
 
     public void sendThisFile(Path rootPath,File file ){
+
+        //将文件的crc filesize 发送的进度 等信息缓存起来 以备后面要检查
         int i=0;
         byte[] bts = new byte[1024];
         FileStartCmd fileStartCmd =new FileStartCmd();
@@ -192,7 +197,7 @@ public class BaseClient extends Thread{
         fileDataCmd.setTaskId(i);
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
-
+            int readed = 0;
             int readCount = 0;
             while((readCount = fileInputStream.read(bts))>0){
                 left-=readCount;
@@ -200,6 +205,8 @@ public class BaseClient extends Thread{
 
                     byte[] data = ByteUtil.slice(bts,0,readCount);
                     fileDataCmd.setData(data);
+                    fileDataCmd.startPos=readed;
+
                     this.send(fileDataCmd);
                 }else{
                     fileDataCmd.setData(bts);
