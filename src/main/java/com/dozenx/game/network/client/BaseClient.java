@@ -22,25 +22,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by luying on 16/10/7.
  */
-public class Client extends Thread{
-    public static Stack<SayCmd> messages=new Stack<>();
-    public static Stack<EquipCmd> equips=new Stack<>();
-    public static Stack<PosCmd> movements=new Stack<>();
-    public static Stack<AttackCmd> attacks=new Stack<>();
-    public static Stack<BagCmd> bags=new Stack<>();
-    public static Stack<DropCmd> drops=new Stack<>();
-    public static Queue<ChunkRequestCmd> chunks=new LinkedList<>();
-    public static Queue<ChunkResponseCmd> chunkResponses=new LinkedList<>();
-    public static Queue<ChunkssCmd> chunkAlls=new LinkedList<>();
-    public static Stack<PickCmd> picks=new Stack<>();
-    public static Stack<GameCmd> humanStates=new Stack<>();
+public class BaseClient extends Thread{
+
    // public static Stack<GameCmd> newborns=new Stack<>();
     public static Map<Integer, GameCallBackTask> SyncTaskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
-    public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();
 
-    ChatFrame chatFrame;
-    public Client(){
-         chatFrame =  CoreRegistry.get(ChatFrame.class );
+    public BaseClient(){
     }
     Socket socket = null;
 
@@ -108,7 +95,7 @@ public class Client extends Thread{
                     }
                 };
                 int threadId = (int)(Math.random()*100000);
-                Client.SyncTaskMap.put(threadId, task);
+                BaseClient.SyncTaskMap.put(threadId, task);
 
                 //CoreRegistry.get(Client.class).send(new LoginCmd(userName.getText(),pwd.getText(),threadId));
                 GetCmd sendCmd = new GetCmd(cmd,threadId);
@@ -135,49 +122,16 @@ public class Client extends Thread{
     }
     boolean end =false;
     public static void main(String args[]){
-        Client client =new Client();
+        BaseClient client =new BaseClient();
         //new Thread();
         client.start();
         Path path = Paths.get("/Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/network/server/handler")
-;        List<File>  files = FileUtil.listFile(path.toFile());
+;      //  List<File>  files = FileUtil.listFile(path.toFile());
         int i=0;
-        byte[] bts = new byte[1024];
-        for(File file : files){
-            FileStartCmd fileStartCmd =new FileStartCmd();
-           Path relative =  path.relativize(Paths.get(file.getPath()));
-            fileStartCmd.setFileName(relative.toString());
-            fileStartCmd.setTaskId(i); i++;
-            fileStartCmd.setFileSize((int) file.getFreeSpace());
-            client.send(fileStartCmd);
-            FileEndCmd fileEndCmd =new FileEndCmd();
-            Long left=fileStartCmd.getFileSize();
-            fileEndCmd.setTaskId(i);
-            FileDataCmd fileDataCmd = new FileDataCmd();
-            fileDataCmd.setTaskId(i);
-            try {
-                FileInputStream fileInputStream = new FileInputStream(file);
 
-                int readCount = fileInputStream.read(bts);
-                if(readCount<=0){
-                    client.send(new FileEndCmd());
-                }
-                left-=readCount;
-                if(readCount<1024){
-                    byte[] data = ByteUtil.slice(bts,0,readCount);
-                    fileDataCmd.setData(data);
-                    client.send(fileDataCmd);
-                }else{
-                    fileDataCmd.setData(bts);
-                    client.send(fileDataCmd);
-                }
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-        }
+        client.iteratorDir(path,path.toFile());
 
         //System.out.println(message);
         /*Client client =new Client();
@@ -207,7 +161,63 @@ public class Client extends Thread{
     }
     InputStream inputSteram;
     OutputStream outputStream;
+    public  void iteratorDir(Path rootPath,File file ){
 
+        File[] fileAry = file.listFiles();
+        for(File childFile : fileAry){
+            if(childFile.isDirectory()){
+                iteratorDir(rootPath,childFile);
+            }else{
+                //触发事件
+                sendThisFile(rootPath,childFile);
+                // fileList.add(childFile);
+            }
+        }
+        // return fileList;
+    }
+
+    public void sendThisFile(Path rootPath,File file ){
+        int i=0;
+        byte[] bts = new byte[1024];
+        FileStartCmd fileStartCmd =new FileStartCmd();
+        Path relative =  rootPath.relativize(Paths.get(file.getPath()));
+        fileStartCmd.setFileName(relative.toString());
+        fileStartCmd.setTaskId(i); //i++;
+        fileStartCmd.setFileSize((int) file.getFreeSpace());
+        this.send(fileStartCmd);
+        FileEndCmd fileEndCmd =new FileEndCmd();
+        Long left=fileStartCmd.getFileSize();
+        fileEndCmd.setTaskId(i);
+        FileDataCmd fileDataCmd = new FileDataCmd();
+        fileDataCmd.setTaskId(i);
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+
+            int readCount = 0;
+            while((readCount = fileInputStream.read(bts))>0){
+                left-=readCount;
+                if(readCount<1024){
+
+                    byte[] data = ByteUtil.slice(bts,0,readCount);
+                    fileDataCmd.setData(data);
+                    this.send(fileDataCmd);
+                }else{
+                    fileDataCmd.setData(bts);
+                    this.send(fileDataCmd);
+                }
+            }
+            if(readCount<=0){
+                this.send(new FileEndCmd());
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     public void beginRepair(InputStream inputStream) throws IOException {
         while( inputStream.read() != Constants.end){
 
@@ -244,10 +254,7 @@ public class Client extends Thread{
             int n1=0;
             while(true){//不断读取数据 然后压入到messages里 由界面端显示出stack
                 //String str = br.readLine();
-                if(BlockEngine.engine.getState() instanceof LoginState){
-                    Thread.sleep( 1000);
-                    continue;
-                }
+
               /*  inputSteram.read(bytes,0,4);
                 int length = ByteUtil.getInt(bytes);ByteUtil.clear(bytes);
               //  LogUtil.println("client received data length: "+length);
@@ -317,33 +324,7 @@ public class Client extends Thread{
                    // }
                     GameCmd cmd = CmdUtil.getCmd(newBytes);
                    // LogUtil.println("the received cmd was : "+cmd.getCmdType());
-                    if (cmd.getCmdType()== CmdType.EQUIP) {//equip
-                        equips.push((EquipCmd) cmd);
-
-                    } else if (cmd.getCmdType()== CmdType.POS) {
-                        movements.push((PosCmd)cmd);
-                    } else if (cmd.getCmdType()== CmdType.SAY) {
-                        messages.push((SayCmd)cmd);
-                    }
-                    else if (cmd.getCmdType()== CmdType.PLAYERSTATUS) {
-                        playerSync.offer((PlayerSynCmd)cmd);
-                    }else if (cmd.getCmdType()== CmdType.ATTACK) {
-                        attacks.push((AttackCmd)cmd);
-                    }else if (cmd.getCmdType()== CmdType.BAG) {
-                        bags.push((BagCmd)cmd);
-                    }else if (cmd.getCmdType()== CmdType.DROP) {
-                       drops.push((DropCmd)cmd);
-                    }else if (cmd.getCmdType()== CmdType.CHUNKREQUEST) {
-                        chunks.offer((ChunkRequestCmd)cmd);
-                    }else if (cmd.getCmdType()== CmdType.CHUNKRESPONSE) {
-                        chunkResponses.offer((ChunkResponseCmd)cmd);
-                    }else if (cmd.getCmdType()== CmdType.CHUNKSS) {
-                        chunkAlls.offer((ChunkssCmd)cmd);
-                    }else if (cmd instanceof  UserBaseCmd ||cmd.getCmdType()== CmdType.PICK || cmd.getCmdType()== CmdType.WALK ||cmd.getCmdType()== CmdType.WALK2 || cmd.getCmdType()== CmdType.DIED|| cmd.getCmdType()== CmdType.REBORN
-                            || cmd.getCmdType()== CmdType.JUMP|| cmd.getCmdType()== CmdType.CHASE) {
-                        humanStates.push(cmd);
-                    }
-                    else if (cmd.getCmdType()== CmdType.RESULT) {
+                    if (cmd.getCmdType()== CmdType.RESULT) {
                          ResultCmd result = (ResultCmd) cmd;
 
                         if(result.getThreadId()>0){

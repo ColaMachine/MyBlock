@@ -27,7 +27,7 @@ public class MsgCmd extends   BaseGameCmd{
 
     //|result|length|msg|threadId|
     public byte[] toBytes(){
-        LogUtil.println(JSON.toJSONString(this));
+        //LogUtil.println(JSON.toJSONString(this));
         return ByteUtil.createBuffer().put(cmdType.getType()).putLenStr(msg).array();
     }
 
