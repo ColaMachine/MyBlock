@@ -35,7 +35,7 @@ public class ByteBufferWrap
     }
 
     public byte get(){
-        
+       // buffer.position()>buffer.limit()
         return buffer.get();
     }
     public boolean  getBoolean(){
@@ -291,8 +291,24 @@ public class ByteBufferWrap
     }
 
     public static void main(String[] args){
-        ByteBuffer buffer =ByteBuffer.allocate(256);
+        ByteBuffer buffer =ByteBuffer.allocate(2);
+        System.out.println("position:"+buffer.position()+" limit:"+buffer.limit()+" capcity:"+buffer.capacity());
+
         buffer.put((byte)1);
-        System.out.println(buffer.array().length);
+        System.out.println("position:"+buffer.position()+" limit:"+buffer.limit()+" capcity:"+buffer.capacity());
+
+        buffer.flip();
+        System.out.println("position:"+buffer.position()+" limit:"+buffer.limit()+" capcity:"+buffer.capacity());
+
+        System.out.println( buffer.get());;
+
+        System.out.println("position:"+buffer.position()+" limit:"+buffer.limit()+" capcity:"+buffer.capacity());
+
+        System.out.println("尝试读取超过写入的界限 会报错的");
+        System.out.println( buffer.get());;
+        System.out.println("position:"+buffer.position()+" limit:"+buffer.limit()+" capcity:"+buffer.capacity());
+        System.out.println("尝试读取越界");
+        System.out.println( buffer.get());;
+        System.out.println("position:"+buffer.position()+" limit:"+buffer.limit()+" capcity:"+buffer.capacity());
     }
 }

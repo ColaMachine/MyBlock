@@ -13,7 +13,7 @@ public class GameServerHandler {
     public GameServerHandler(ServerContext serverContext){
         this.serverContext =serverContext;
     }
-    public ResultCmd handler(GameServerRequest request, GameServerResponse response){
+    public ResultCmd handler(GameServerRequest request, GameServerResponse response) throws Exception {
         return null;
     }
 }

@@ -18,7 +18,7 @@ public class GetHandler extends GameServerHandler {
         super(serverContext);
 
     }
-    public ResultCmd  handler(GameServerRequest request, GameServerResponse response){
+    public ResultCmd  handler(GameServerRequest request, GameServerResponse response) throws Exception {
 
         GetCmd cmd = (GetCmd)request.getCmd();
 
