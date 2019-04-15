@@ -465,12 +465,14 @@ public class ShaderManager {
         // if(!Constants.SHADOW_ENABLE) {
         //影响所有的地形里的灯光位置
         glUseProgram(terrainShaderConfig.getProgramId());
+        OpenglUtils.checkGLError();
         glUniform3f(terrainShaderConfig.getLightPosLoc(), GamingState.instance.lightPos.x, GamingState.instance.lightPos.y, GamingState.instance.lightPos.z);
+        OpenglUtils.checkGLError();
         if(Constants.SHADOW_ENABLE) {
             glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
 
         }
-
+        OpenglUtils.checkGLError();
         if(Constants.SHADOW_ENABLE && Constants.DELAY_ENABLE) {
             glUseProgram(shaderGeometryPass.getProgramId());
             glUniformMatrix4(shaderGeometryPass.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
@@ -488,7 +490,7 @@ public class ShaderManager {
         //影响阴影渲染里的灯光位置
         glUseProgram(shadowShaderConfig.getProgramId());
 
-
+        OpenglUtils.checkGLError();
         if(Constants.SHADOW_ENABLE){
             shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(-0.5f, -0.5f,0.5f).normalize())));
             shadowShaderConfig.use();;
@@ -533,7 +535,7 @@ public class ShaderManager {
 
 
     public void initUniform(ShaderConfig config) {
-        LogUtil.println("begin initUniform" + config.getName());
+        LogUtil.println("begin initUniform:" + config.getName());
         /*
         uniform mat4 projection;
         uniform mat4 view;
@@ -549,7 +551,10 @@ public class ShaderManager {
 
         //glUseProgram(ProgramId);
         int programId = config.getProgramId();  OpenglUtils.checkGLError();
-
+        if(programId<=0){
+            LogUtil.println("get error programid:"+config.getProgramId());
+            System.exit(1);
+        }
         glUseProgram(config.getProgramId());  OpenglUtils.checkGLError();
         //unifrom赋值===========================================================
         //投影矩阵
@@ -853,6 +858,11 @@ public class ShaderManager {
         LogUtil.println("begin create program" + config.getName());
         try {
             int programId = ShaderUtils.CreateProgram(config.getVertPath(), config.getFragPath());
+
+            if(programId<0){
+                LogUtil.println("programId:"+programId);
+                System.exit(0);
+            }
             config.setProgramId(programId);
             OpenglUtils.checkGLError();
             //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
@@ -1410,4 +1420,6 @@ public class ShaderManager {
     public void render() {
 LogUtil.println("hello");
     }
+
+
 }

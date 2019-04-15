@@ -180,15 +180,15 @@ public class MyBlockEngine extends GLApp {
         GL11. glEnable( GL11. GL_LINE_SMOOTH);
         GL11. glHint( GL11. GL_POINT_SMOOTH_HINT,  GL11. GL_NICEST); // Make round points, not square points
         GL11. glHint( GL11. GL_LINE_SMOOTH_HINT,  GL11. GL_NICEST);  // Antialias the lines
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
+       // GL11.glEnable(GL11.GL_DEPTH_TEST);
+       // GL11.glDepthFunc(GL11.GL_LEQUAL);
 
 
 
 
         // Depth test setup
-        GL11.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
-        GL11.glDepthFunc(GL11.GL_LEQUAL);  // The Type Of Depth Testing To Do
+       // GL11.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
+       // GL11.glDepthFunc(GL11.GL_LEQUAL);  // The Type Of Depth Testing To Do
 
 
 
@@ -230,19 +230,19 @@ public class MyBlockEngine extends GLApp {
                 new float[]{1.0f, 1.0f, 1.0f, 1.0f},//ambient GL_DIFFUSE表示光线照射到该材质上，经过漫反射后形成的光线强度（颜色）。
                 humanLightPosition,new float[]{0,0,-1,0},30);*/
         //GL_EMISSION属性。该属性由四个值组成，表示一种颜色。OpenGL认为该材质本身就微微的向外发射光线，以至于眼睛感觉到它有这样的颜色，但这光线又比较微弱，以至于不会影响到其它物体的颜色。
-
-        FloatBuffer mat_ambient = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        mat_ambient.put(1.0f).put(1.0f).put(0f).put(1.0f);
-        mat_ambient.flip();
-        GL11.glMaterial(GL11.GL_FRONT,GL11.GL_AMBIENT,mat_ambient);
-        FloatBuffer mat_diffuse = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        mat_diffuse.put(new float[]{0.5f,0.5f,0f,1.0f});mat_diffuse.flip();
-        FloatBuffer mat_specular = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        mat_diffuse.put(new float[]{1.0f,1.0f,0f,1.0f});mat_diffuse.flip();
-
-        FloatBuffer mat_emission = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        mat_emission.put(1.0f).put(1.0f).put(0f).put(1.0f);
-        mat_emission.flip();
+//
+//        FloatBuffer mat_ambient = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//        mat_ambient.put(1.0f).put(1.0f).put(0f).put(1.0f);
+//        mat_ambient.flip();
+//        GL11.glMaterial(GL11.GL_FRONT,GL11.GL_AMBIENT,mat_ambient);
+//        FloatBuffer mat_diffuse = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//        mat_diffuse.put(new float[]{0.5f,0.5f,0f,1.0f});mat_diffuse.flip();
+//        FloatBuffer mat_specular = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//        mat_diffuse.put(new float[]{1.0f,1.0f,0f,1.0f});mat_diffuse.flip();
+//
+//        FloatBuffer mat_emission = ByteBuffer.allocateDirect(4 * GLApp.SIZE_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//        mat_emission.put(1.0f).put(1.0f).put(0f).put(1.0f);
+//        mat_emission.flip();
 
 
         float mat_shininess =128.0f;

@@ -159,9 +159,11 @@ public class EditField extends TextField {
             return true;
         }
 
-        if(super.handleEvent(evt)) {
+/*
+        if(super.handleEvent(evt)) {//为什么有这句呢  明明 就直接处理就可以了 啊
             return true;
         }
+*/
 
        /* if(autoCompletionWindow != null) {
             if(autoCompletionWindow.handleEvent(evt)) {

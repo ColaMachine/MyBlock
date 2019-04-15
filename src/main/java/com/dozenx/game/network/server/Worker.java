@@ -189,6 +189,10 @@ public class Worker extends Thread {
                     CmdType.printReceive(newBytes);
                     //LogUtil.println("server 接收到数据类型:"+CmdType.values()[(ByteUtil.getInt(newBytes))] +"长度:"+length);
                     GameCmd cmd = CmdUtil.getCmd(newBytes);
+                    CmdType cmdType =cmd.getCmdType();
+                    if(cmdType == null){
+                        beginRepair(inputSteram);
+                    }
                     GameServerHandler handler = serverContext.getHandler(cmd.getCmdType());
                     if (handler != null) {
 

@@ -270,8 +270,11 @@ public class GLCamera {
 		//viewPosLoc= glGetUniformLocation(ProgramId,"viewPos");
         OpenglUtils.checkGLError();
 		//赋值查看的位置
-		glUniform3f(GamingState.instance.shaderManager.terrainShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
-		org.lwjgl.opengl.Util.checkGLError();
+		if(GamingState.instance.shaderManager.terrainShaderConfig.getViewPosLoc()>-1){
+			glUniform3f(GamingState.instance.shaderManager.terrainShaderConfig.getViewPosLoc(),  Position.x,Position.y,Position.z);
+			org.lwjgl.opengl.Util.checkGLError();
+		}
+
 
         OpenglUtils.checkGLError();
 		glUseProgram(GamingState.instance.shaderManager.livingThingShaderConfig.getProgramId());

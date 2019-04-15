@@ -18,27 +18,47 @@ import static org.lwjgl.opengl.GL20.glUniform1i;
  */
 public class ShaderConfig {
 
-    public int textureIndex;
+    public int textureIndex=0;
 
-    public int getDepthMapLoc() {
-        return depthMapLoc;
-    }
+    private int lightPosLoc=-1;
+    //ShadowLightViewLoc
+    private int shadowLightViewLoc=-1;
 
-    public void setDepthMapLoc(int depthMapLoc) {
-        this.depthMapLoc = depthMapLoc;
-    }
+    private int projLoc=-1;
+    private int modelLoc=-1;
 
-    private int texture0Loc;
-    private int texture1Loc;
-    private int texture2Loc;
-    private int texture3Loc;
-    private int texture4Loc;
+    private int viewLoc=-1;
+    private int programId=-1;
+    private int viewPosLoc=-1;
 
-    private int texture5Loc;
-    private int texture6Loc;
-    private int texture7Loc;
-    private int texture8Loc;
+    //private int textureHanle;
+    private GL_Matrix model;
+    private GL_Matrix model2;
+
+
+
+    private int texture0Loc=-1;
+    private int texture1Loc=-1;
+    private int texture2Loc=-1;
+    private int texture3Loc=-1;
+    private int texture4Loc=-1;
+
+    private int texture5Loc=-1;
+    private int texture6Loc=-1;
+    private int texture7Loc=-1;
+    private int texture8Loc=-1;
     private int depthMapLoc;
+
+    int paramTotalLen=-1;
+
+
+
+    private Vao vao;
+
+    private String vertPath;
+
+
+    String name;
 
     public int[] getParamLenAry() {
         return paramLenAry;
@@ -155,13 +175,7 @@ public class ShaderConfig {
         vao=new Vao(this);
 
     }
-    int paramTotalLen;
 
-
-
-
-
-    String name;
 
     public String getName() {
         return name;
@@ -186,10 +200,11 @@ public class ShaderConfig {
         this.vao = vao;
     }
 
-    private Vao vao;
-private int viewPosLoc;
 
     public int getViewPosLoc() {
+        if(viewPosLoc<=0){
+            LogUtil.println("viewPosLoc"+viewPosLoc);
+        }
         return viewPosLoc;
     }
 
@@ -201,8 +216,7 @@ private int viewPosLoc;
 //    private float maxX;
 //    private float maxY;
 
-    private String vertPath;
-    private int programId;
+
 
     public int getShadowLightViewLoc() {
         return shadowLightViewLoc;
@@ -212,9 +226,6 @@ private int viewPosLoc;
         this.shadowLightViewLoc = shadowLightViewLoc;
     }
 
-    private int lightPosLoc;
-    //ShadowLightViewLoc
-     private int shadowLightViewLoc;
     public int getLightPosLoc() {
         return lightPosLoc;
     }
@@ -227,15 +238,7 @@ private int viewPosLoc;
 //    private int vaoId;
 //private int eboId ;
     //private FloatBuffer Vertices;
-    private int projLoc;
-    private int modelLoc;
 
-    private int viewLoc;
-
-
-    private int textureHanle;
-    private GL_Matrix model;
-    private GL_Matrix model2;
 
 //
 //    public float getMinX() {
@@ -270,9 +273,9 @@ private int viewPosLoc;
 //        this.maxY = maxY;
 //    }
 
-    public int getTextureHanle() {
-        return textureHanle;
-    }
+//    public int getTextureHanle() {
+//        return textureHanle;
+//    }
 
    /* public void setTextureHanle(int textureHanle) {
         this.textureHanle = textureHanle;
@@ -498,5 +501,14 @@ private int viewPosLoc;
         }else{
             LogUtil.err("gPosition hasnot find ");
         }
+    }
+
+
+    public int getDepthMapLoc() {
+        return depthMapLoc;
+    }
+
+    public void setDepthMapLoc(int depthMapLoc) {
+        this.depthMapLoc = depthMapLoc;
     }
 }
