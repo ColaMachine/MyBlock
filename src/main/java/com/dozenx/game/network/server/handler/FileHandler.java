@@ -38,8 +38,12 @@ public class FileHandler extends GameServerHandler {
 
             FileStartCmd fileStartCmd = (FileStartCmd) cmd;
             //拿到要保存的位置 根部 文件夹目录 这里假设是 ~/Document
-            Path path = Paths.get("/Users/luying/Documents/test");
-            //Path path = Paths.get("G:/test/to");
+
+          //  Path path = Paths.get("/Users/luying/Documents/test");
+           // Path path = Paths.get("G:/test/to");
+
+            Path path = Paths.get("/media/colamachine/924A7E084A7DE97D/mac");
+
             LogUtil.println("开始接收文件 : " + fileStartCmd.getFileName() + " taskId:" + fileStartCmd.getTaskId());
 
             File file = path.resolve(fileStartCmd.getFileName()).toFile();
@@ -72,6 +76,7 @@ public class FileHandler extends GameServerHandler {
 
             //开始创建文件 start create file
         } else if (cmd.getCmdType() == CmdType.FileData) {
+            System.out.print(".");
             FileDataCmd fileDataCmd = (FileDataCmd) cmd;
             try {
                 // FileOutputStream out =outStreamMap.get(fileDataCmd.getTaskId());
@@ -102,11 +107,12 @@ public class FileHandler extends GameServerHandler {
                 recvResult.fileOutputStream.close();
                 //检查文件的大小和原来定义的是否一致
                 LogUtil.println("close this file out put stream");
+                return new ResultCmd(0, "success"+recvResult.fileName, 0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return new ResultCmd(0, "success", 0);
+        return null;
         //更新其他附近人的此人的装备属性
     }
 

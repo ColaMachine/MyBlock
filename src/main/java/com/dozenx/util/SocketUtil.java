@@ -20,8 +20,8 @@ public class SocketUtil {
         }
         int length = ByteUtil.getInt(bytes);
         //ByteUtil.clear(bytes);
-        if (length == 0) {
-           LogUtil.err("读取的数据为0");
+        if (length <= 0) {
+           LogUtil.err("读取的数据为:"+length);
         //Thread.sleep(1000);
        // continue;
         }

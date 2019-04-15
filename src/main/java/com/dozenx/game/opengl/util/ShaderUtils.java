@@ -293,6 +293,7 @@ public class ShaderUtils {
     public static int CreateVertShaders(String path) throws IOException {
         OpenglUtils.checkGLError();
         String VertexShader = readShaderSourceCode(PathManager.getInstance().getInstallPath().resolve("src/main/java/gldemo/learnOpengl/" + path).toString());
+//        LogUtil.println(VertexShader);
         //创建着色器
         OpenglUtils.checkGLError();
         int newShaderId = glCreateShader(GL_VERTEX_SHADER);
