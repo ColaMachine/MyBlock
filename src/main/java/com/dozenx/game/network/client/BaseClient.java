@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BaseClient extends Thread{
 
-   // public static Stack<GameCmd> newborns=new Stack<>();
+    public static Stack<GameCmd> sendOver=new Stack<>();
     public static Map<Integer, GameCallBackTask> SyncTaskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
 
     public BaseClient(){
@@ -126,10 +126,12 @@ public class BaseClient extends Thread{
         //new Thread();
         client.start();
 
-        Path path = Paths.get("G:/test/from")
+       // Path path = Paths.get("G:/test/from")
 
-        //Path path = Paths.get("/Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/network/server/handler")
-;      //  List<File>  files = FileUtil.listFile(path.toFile());
+       // Path path = Paths.get("/Users/luying/Documents/workspace/MyBlock/src/main/java/com/dozenx/game/network/server/handler")
+;
+Path path =Paths.get("/Users/luying/Pictures");
+//  List<File>  files = FileUtil.listFile(path.toFile());
         int i=0;
 
 
@@ -178,11 +180,12 @@ public class BaseClient extends Thread{
         }
         // return fileList;
     }
+    public static int i=0;
 
     public void sendThisFile(Path rootPath,File file ){
 
         //将文件的crc filesize 发送的进度 等信息缓存起来 以备后面要检查
-        int i=0;
+        //int i=0;
         byte[] bts = new byte[1024];
         FileStartCmd fileStartCmd =new FileStartCmd();
         Path relative =  rootPath.relativize(Paths.get(file.getPath()));
@@ -224,6 +227,20 @@ public class BaseClient extends Thread{
             e.printStackTrace();
         }
 
+
+        //等待收到确认消息
+
+        System.out.println("发送完成一个文件"+file.getName());
+
+
+        while(sendOver.size()>0  ){
+            ResultCmd resultCmd = (ResultCmd)sendOver.pop();
+            LogUtil.println("接受到了结果"+new String(resultCmd.getMsg()));
+
+        }
+
+        i++;
+
     }
     public void beginRepair(InputStream inputStream) throws IOException {
         while( inputStream.read() != Constants.end){
@@ -234,7 +251,8 @@ public class BaseClient extends Thread{
         int curColor=0;
         try {
             //客户端socket指定服务器的地址和端口号
-            socket = new Socket("127.0.0.1", Constants.serverPort);
+            //socket = new Socket("127.0.0.1", Constants.serverPort);
+            socket = new Socket("192.168.1.105", Constants.serverPort);
             //socket.setTcpNoDelay(true);
             System.out.println("Socket=" + socket);
             //同服务器原理一样
@@ -345,6 +363,10 @@ public class BaseClient extends Thread{
                                 LogUtil.err(result.getThreadId()+"task 不能为null");
                             }
 
+                        }else{
+
+                            sendOver.push(result);
+                            //LogUtil.println(new String(result.getMsg()));
                         }
 
                     }
