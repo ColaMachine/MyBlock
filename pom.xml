@@ -16,6 +16,19 @@
 		<!-- maven私库 -->
 
 
+		<!-- maven私库 -->
+
+		<repository>
+			<id>aWiFi-rep</id>
+			<name>aWiFi Private Repository</name>
+			<url>http://192.168.41.25:8081/nexus/content/groups/public/</url>
+		</repository>
+
+		<repository>
+			<id>dozenx</id>
+			<name>aWiFi Private Repository</name>
+			<url>http://192.168.41.25:8081/nexus/content/repositories/thirdparty/</url>
+		</repository>
 
 		<!-- 阿里巴巴发布版本仓库 -->
 		<repository>
@@ -48,6 +61,30 @@
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-jsr223</artifactId>
 			<version>2.1.6</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.0.24.Final</version>
+		</dependency>
+
+		<!-- Protostuff -->
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-core</artifactId>
+			<version>1.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-runtime</artifactId>
+			<version>1.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>cz.advel.jbullet</groupId>
+			<artifactId>jbullet</artifactId>
+			<version>20101010-1</version>
 		</dependency>
 
 	</dependencies>

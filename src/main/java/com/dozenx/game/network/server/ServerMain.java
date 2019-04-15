@@ -25,7 +25,7 @@ import java.util.Timer;
  */
 public class ServerMain {
 
-    Timer timer;
+    Timer adminTaskTimer;
     ServerContext serverContext =new ServerContext();
     public static void main(String args[]){
         ServerMain server =new ServerMain();
@@ -108,10 +108,10 @@ public class ServerMain {
         //ServerSynTask serverSynTask =new ServerSynTask();
         //timer.schedule(serverSynTask,0,200);
 
-        timer = new Timer();
+        adminTaskTimer = new Timer();
 
-        timer.schedule(new ServerGrowTask(serverContext),0, 10*1000);
-        timer.schedule(new ServerSaveTask(serverContext),0, 60*1000);
+        adminTaskTimer.schedule(new ServerGrowTask(serverContext),0, 10*1000);
+        adminTaskTimer.schedule(new ServerSaveTask(serverContext),0, 60*1000);
         System.out.println("Task scheduled.");
         //Thread workerCheck =new WorkerCheck(messages,workerMap);allSender.start();
         try {

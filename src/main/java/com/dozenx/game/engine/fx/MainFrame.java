@@ -31,6 +31,8 @@ public class MainFrame extends Application {
     public static final String defaultURL = "http://www.baidu.com";
     Stage primaryStage;
 
+
+
     public static void main(String[] args) {
         launch(args);
     }

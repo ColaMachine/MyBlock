@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Document extends HtmlObject {
-    public HtmlObject body = null;
+    public HtmlObject body = new HtmlObject();
 
     public void setHeight(int height) {
         this.height = height;
