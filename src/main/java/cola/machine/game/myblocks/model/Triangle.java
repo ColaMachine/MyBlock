@@ -1,12 +1,13 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.model.base.BaseBlock;
+import cola.machine.game.myblocks.model.base.ColorBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import glmodel.GL_Vector;
 
 /**
  * Created by dozen.zhang on 2017/9/23.
@@ -34,7 +35,7 @@ public class Triangle {
         ShaderUtils.drawLine( block1.x, block1.y, block1.z,  block3.x, block3.y, block3.z);
     }
 
-    public boolean hashBlock(BaseBlock tb1,BaseBlock tb2,BaseBlock tb3){
+    public boolean hashBlock(BaseBlock tb1, BaseBlock tb2, BaseBlock tb3){
         if(block1 ==tb1 || block1==tb2 || block1==tb3){
             if(block2 ==tb1 || block2==tb2 || block2==tb3){
                 if(block3 ==tb1 || block3==tb2 || block3==tb3){

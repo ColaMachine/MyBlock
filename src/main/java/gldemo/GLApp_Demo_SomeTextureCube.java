@@ -3,7 +3,7 @@ package gldemo;
 import cola.machine.game.myblocks.control.DropControlCenter;
 import cola.machine.game.myblocks.control.MouseControlCenter;
 import cola.machine.game.myblocks.model.IBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
+import cola.machine.game.myblocks.model.base.ImageBlock;
 import cola.machine.game.myblocks.repository.BlockRepository;
 import com.dozenx.game.engine.Role.bean.Player;
 import glapp.GLApp;

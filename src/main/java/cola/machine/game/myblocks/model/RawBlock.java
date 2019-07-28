@@ -1,21 +1,16 @@
 package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.manager.TextureManager;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.MapUtil;
-import core.log.LogUtil;
-import glmodel.GLModel;
 import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
-import glmodel.GL_Vertex;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +22,7 @@ import java.util.List;
  * but some
  *
  */
-public class RawBlock extends BaseBlock{
+public class RawBlock extends BaseBlock {
 
    public TextureInfo front;
     List<Float[]> metas = new ArrayList<Float[]>();

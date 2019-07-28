@@ -5,7 +5,7 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ItemType;

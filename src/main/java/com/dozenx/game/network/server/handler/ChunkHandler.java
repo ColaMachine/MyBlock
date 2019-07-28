@@ -1,6 +1,5 @@
 package com.dozenx.game.network.server.handler;
 
-import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.ServerChunkProvider;

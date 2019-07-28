@@ -1,7 +1,6 @@
 package com.dozenx.game.engine.item.bean;
 
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.DoorBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 
 /**
  * Created by luying on 17/12/12.

@@ -1,7 +1,6 @@
 package cola.machine.game.myblocks.physic;
 
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.IBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import com.dozenx.util.MathUtil;
 import glmodel.GL_Vector;
 

@@ -100,6 +100,9 @@ public class ChatPanel extends HtmlObject {
                             }
                         }
                     }
+                    if(editField.getText().equals("/reload obj_test")){
+
+                    }
                     client.send(new SayCmd(0,Constants.userName,editField.getText()));
                     //appendRow("color"+curColor, editField.getText());
                     editField.setText("");
@@ -147,6 +150,7 @@ public class ChatPanel extends HtmlObject {
     }
     protected void keyboardFocusGained() {
         Switcher.isChat=true;
+       // guiInstance.setFocusKeyWidget(this);
     }
     protected void keyboardFocusLost() {
        Switcher.isChat=false;

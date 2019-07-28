@@ -1,6 +1,7 @@
 package cola.machine.game.myblocks.model;
 
 import cola.machine.game.myblocks.math.Vector3i;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
@@ -13,7 +14,7 @@ import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-public class CopyDownBlock extends BaseBlock{
+public class CopyDownBlock extends BaseBlock {
     int dir=0;
     int open=0;
     ItemDefinition itemDefinition;

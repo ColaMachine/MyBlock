@@ -5,15 +5,21 @@ import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.util.BufferTools;
+import com.dozenx.game.util.MatrixHandler;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 
 /**
@@ -24,22 +30,34 @@ public class Shadow {
     private  int depthMap;
     //阴影缓冲帧
     private int depthMapFBO;
+
+    public int lightSpaceMatrixId;
     //阴影生成的时候用到的光线视角矩阵
 
     private GL_Matrix lightViewMatrix;
+
+    private static MatrixHandler depthMatrix;
+
     public Shadow(){
         init();//初始化
     }
+
+    private static FloatBuffer matrix44Buffer;
+
     /**
      * 阴影缓冲帧的初始化
      */
 
+
     int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;// Constants.WINDOW_WIDTH, SHADOW_HEIGHT =  Constants.WINDOW_HEIGHT
+    GL_Matrix ortho =null;
     public void init() {
+        depthMatrix= new MatrixHandler();
+        matrix44Buffer = BufferTools.reserveFloatData(16);
         //初始化正交矩阵 阴影灯的视角用
         float near_plane = 1.0f, far_plane = 107.5f;
-        GL_Matrix ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-        lightViewMatrix = GL_Matrix.multiply(ortho, GL_Matrix.LookAt(new GL_Vector(0, 15, 5), new GL_Vector(0, -0.3f, -1f)));
+        ortho = GL_Matrix.ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+        lightViewMatrix = GL_Matrix.multiply(ortho, GL_Matrix.LookAt(new GL_Vector(0, 15, 5), new GL_Vector(0, 0f, -1f)));
 
         //首先，我们要为渲染的深度贴图创建一个帧缓冲对象：
         depthMapFBO = glGenFramebuffers(); OpenglUtils.checkGLError();
@@ -76,8 +94,7 @@ public class Shadow {
         ShaderUtils.checkGLError();
         //阴影矩阵unfiorm 已经移入initUniform里了 shadowLightVeiwMatrix model矩阵其实可以弃用了
     }
-
-    public void render(ShaderManager shaderManager,WorldRenderer worldRenderer){
+    public void render(ShaderManager shaderManager,WorldRenderer worldRenderer,GL_Vector lightPos){
 
         GL20.glUseProgram(shaderManager.shadowShaderConfig.getProgramId());
         // glEnable(GL_DEPTH_TEST);
@@ -86,6 +103,50 @@ public class Shadow {
         //绑定使用帧缓冲 fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.shadow.depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        //GL30.RenderScene(simpleDepthShader);
+        //  glCullFace(GL_FRONT);
+        if(!Switcher.hideTerrain) {
+            worldRenderer.render(shaderManager.shadowShaderConfig);
+        }
+        ShaderUtils.finalDraw(shaderManager.shadowShaderConfig,ShaderManager.anotherShaderConfig.getVao());
+        ShaderUtils.finalDraw(shaderManager.shadowShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
+
+        //  glCullFace(GL_BACK);
+        //去掉fbo
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        //glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        // glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+    }
+    public void render2(ShaderManager shaderManager,WorldRenderer worldRenderer,GL_Vector lightPos){
+        GL20.glUseProgram(shaderManager.shadowShaderConfig.getProgramId());
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, shaderManager.shadow.depthMapFBO);
+        // glEnable(GL_DEPTH_TEST);
+        //glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+        //绑定使用帧缓冲 fbo
+
+        glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+        GL_Vector normLightPosition =
+        GL_Vector.normalize(lightPos);
+
+        MatrixHandler depthProjectionMatrix = new MatrixHandler();
+        MatrixHandler depthViewMatrix = new MatrixHandler();
+
+
+        depthProjectionMatrix.initOrthographicMatrix(-20, 20, -20, 20, -20, 40);
+        depthViewMatrix.lookAt(new Vector3f(normLightPosition.x,normLightPosition.y,normLightPosition.z), new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
+        Matrix4f.mul(depthProjectionMatrix, depthViewMatrix, depthMatrix);
+
+        GL20.glUseProgram(shaderManager.shadowShaderConfig.getProgramId());
+        depthMatrix.store(matrix44Buffer);
+
+        matrix44Buffer.flip();
+
+        glUniformMatrix4(lightSpaceMatrixId, false, matrix44Buffer);
+
         //GL30.RenderScene(simpleDepthShader);
       //  glCullFace(GL_FRONT);
         if(!Switcher.hideTerrain) {
@@ -97,10 +158,18 @@ public class Shadow {
       //  glCullFace(GL_BACK);
         //去掉fbo
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        //glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         // glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
     }
     public GL_Matrix getLightViewMatrix() {
+        return lightViewMatrix;
+    }
+
+    public GL_Matrix adjustLightViewMatrix(GL_Vector lightPos,GL_Vector humanPos){
+      //  lightViewMatrix =GL_Matrix.multiply(ortho, GL_Matrix.LookAt(lightPos, lightPos.copyClone().sub(humanPos)));
+
+        lightViewMatrix = GL_Matrix.multiply(ortho, GL_Matrix.LookAt(new GL_Vector(0, 15, 5), new GL_Vector(0, -0.3f, -1f)));
+
         return lightViewMatrix;
     }
 

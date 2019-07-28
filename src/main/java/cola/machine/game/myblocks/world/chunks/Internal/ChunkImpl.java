@@ -1,6 +1,5 @@
 package cola.machine.game.myblocks.world.chunks.Internal;
 
-import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.block.BlockDefManager;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
@@ -8,8 +7,8 @@ import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Region3i;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
+import cola.machine.game.myblocks.model.base.ColorBlock;
 import cola.machine.game.myblocks.model.CopyBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -23,10 +22,8 @@ import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraArray;
 import cola.machine.game.myblocks.world.chunks.blockdata.TeraDenseArray16Bit;
 import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.engine.item.BlockUtil;
 import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;

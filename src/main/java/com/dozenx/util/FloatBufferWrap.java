@@ -84,7 +84,7 @@ try {
     }
 
     public void glBufferData(int type1,int type2){
-
+        OpenglUtils.checkGLError();
         GL15.glBufferData(type1, position*4, type2);//put data
         int offset = 0;
         OpenglUtils.checkGLError();

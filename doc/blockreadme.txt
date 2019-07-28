@@ -1,0 +1,4 @@
+baseBlock:
+ width
+ height
+ thick

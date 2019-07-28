@@ -1,9 +1,8 @@
 package com.dozenx.game.engine.item.bean;
 
-import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.*;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 
 import com.alibaba.fastjson.JSON;
@@ -12,8 +11,6 @@ import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.game.engine.edit.EditEngine;
 import com.dozenx.game.engine.edit.view.AnimationBlock;
-import com.dozenx.game.engine.edit.view.GroupBlock;
-import com.dozenx.game.engine.item.action.ItemFactory;
 import com.dozenx.util.BinaryUtil;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
@@ -31,29 +28,32 @@ public class ItemDefinition implements Cloneable{
    /* Block[] blocks;
     public static HashMap<String,Block[]> map =new HashMap<>();
     TextureInfo icon;*/
+
+    /** 物品id **/
     public int itemTypeId;
+    /** 一般没有有用处 **/
     public ItemType itemType;
 
-    public int getItemTypeId() {
-        return itemTypeId;
-    }
-
-    public void setItemTypeId(int itemTypeId) {
-        this.itemTypeId = itemTypeId;
-    }
-
+    /** 是否是怪物**/
     public boolean live=false;
    // private Integer itemType;//物品的具体类型 详见ItemType
     //public ItemType itemTypeOri;
+    /** 模型**/
     public  ItemModel itemModel = new ItemModel();//模型描述
+    /** 解析类型 **/
     public String engine;
     public int stackNum=20;//可堆叠数量
-    public String script ;
+    public String script ;//脚本
 
-    public boolean isFar;
-    public int shootBallId;
+    public boolean isFar;//是否远程武器
+    /** 射出的东西的id **/
+    public int shootBallId;//是否远程武器
+    /** 射出的物体的id **/
     public ItemDefinition shootBallItem;
+
+    /** 是否是生物 **/
     public boolean isLive;
+    /** 如果是方块 食物其他东西的属性**/
     public ItemTypeProperties itemTypeProperties ;//block food wear
     String name;//英文名称
 
@@ -602,7 +602,7 @@ public class ItemDefinition implements Cloneable{
         this.itemTypeId =id;
         this.itemType = ItemType.getItemTypeById(id);
         if(this.itemType==null){
-            LogUtil.err("it 's null");
+            LogUtil.err("this.itemType  's itemType  null");
         }
         if(StringUtil.isNotEmpty(name)){
             this.name =name;
@@ -620,9 +620,12 @@ public class ItemDefinition implements Cloneable{
 
             Object shapeObj = map.get("shape");
             if(shapeObj instanceof  String){
+
                 String shapeStr = MapUtil.getStringValue(map,"shape");
 
-
+                if(shapeStr.equals("humanblock-bone2-walk.obj")){
+                    LogUtil.err("humanblock-bone2-walk.obj");
+                }
                 if (StringUtil.isNotEmpty(shapeStr)) {
                     this.setShape(TextureManager.getShape(shapeStr));
                 } else {
@@ -641,6 +644,10 @@ public class ItemDefinition implements Cloneable{
             }else if(shapeObj instanceof JSONObject){
                 String blockType = (String)((JSONObject) shapeObj).get("blocktype");
                 BaseBlock  block = EditEngine.parse((JSONObject) shapeObj);
+//                String dir = ((JSONObject) shapeObj).getString("dir");
+//                if(dir!=null){
+//
+//                }
 //                if("imageblock".equals(blockType)){
 //                      block = ImageBlock.parse((JSONObject) shapeObj);
 //
@@ -670,5 +677,15 @@ public class ItemDefinition implements Cloneable{
 
         }
 
+    }
+
+
+
+    public int getItemTypeId() {
+        return itemTypeId;
+    }
+
+    public void setItemTypeId(int itemTypeId) {
+        this.itemTypeId = itemTypeId;
     }
 }

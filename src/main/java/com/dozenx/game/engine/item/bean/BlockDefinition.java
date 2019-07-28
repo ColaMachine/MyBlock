@@ -32,6 +32,7 @@ public class BlockDefinition extends  ItemDefinition {
         //   TreeBlock treeBlock =new TreeBlock(hitPoint);
         //treeBlock.startPosition=hitPoint;
 
+
         //  treeBlock.generator();
         int blockX = MathUtil.floor(placePoint.x) - chunkX * 16;
         int blockY = MathUtil.floor(placePoint.y);

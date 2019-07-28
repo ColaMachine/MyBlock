@@ -2,6 +2,7 @@ package glmodel;
 
 import cola.machine.game.myblocks.engine.Constants;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.util.vector.Vector3f;
 
 import javax.vecmath.Point4f;
 import java.nio.FloatBuffer;
@@ -458,7 +459,7 @@ public class GL_Matrix
 		float q49 = q45*m22-q48*q1-q6*m22+q7*q8;
 		float q50 = q13*q1-q14*q8;
 		float q51 = 1/(q49+q50);
-		
+
 		m.m00 = (m11*m22*m33-m11*m23*m32-m21*m12*m33+m21*m13*m32+m31*m12*m23-m31*m13*m22)*q51;
 		m.m01 = -(m01*m22*m33-m01*m23*m32-q21*m33+q22*m32)*q51;
 		m.m02 = (q25*m33-q26*m32-q27*m33+q28*m32)*q51;
@@ -471,7 +472,7 @@ public class GL_Matrix
 		m.m21 = -(q48*m33-q36*m31-q13*m33+q38*m31)*q51;
 		m.m22 = (q45*m33-q42*m31-q6*m33+q44*m31)*q51;
 		m.m23 = -(q45*m23-q42*m21-q6*m23+q44*m21+q13*m13-q38*m11)*q51;
-		
+
 		return m;
 	}
 	public static GL_Matrix RotationMatrix(double angle, GL_Vector axis)
@@ -556,17 +557,17 @@ public class GL_Matrix
 		matrix.put(1,  right.y);
 		matrix.put(2,  right.z);
 		matrix.put(3,  0);
-		
+
 		matrix.put(4,  up.x);
 		matrix.put(5,  up.y);
 		matrix.put(6,  up.z);
 		matrix.put(7,  0);
-		
+
 		matrix.put(8,  look.x);
 		matrix.put(9,  look.y);
 		matrix.put(10, look.z);
 		matrix.put(11, 0);
-		
+
 		// Add the translation in as well.
 		matrix.put(12, pos.x);
 		matrix.put(13, pos.y);
@@ -580,20 +581,27 @@ public class GL_Matrix
     public static GL_Matrix ortho(float left, float right,float bottom,float top ,float near ,float far)
     {
         GL_Matrix m = new GL_Matrix();
-        m.m00=2/(right-left);
+        m.m00=2/(right-left);// 2/width
         m.m01=0;
         m.m02=0;
         m.m03=0;
 
         m.m10=0;
-        m.m11=2/(top-bottom);
+        m.m11=2/(top-bottom);// 2/height
         m.m12=0;
         m.m13=0;
 
         m.m20=0;
         m.m21=0;
-        m.m22=2/(near-far);
-        m.m23=(far+near)/(near-far);
+        m.m22=2/(near-far);//-2/depth
+
+
+		m.m03 = -(right + left) / (right - left);
+		m.m13 = -(top + bottom) / (top - bottom);
+		m.m23 = -(far + near) / (far - near);
+
+
+        //m.m23=(far+near)/(near-far);
 
         m.m30=0;
         m.m31=0;
@@ -646,7 +654,38 @@ public class GL_Matrix
         right.m23 = -camera.z;
 
         return GL_Matrix.multiply(left,right);
+//		GL_Matrix gl_matrix =new GL_Matrix();
+//		gl_matrix.lookAt(new Vector3f(camera.x,camera.y,camera.z),new Vector3f(direction1.x,direction1.y,direction1.z),new Vector3f(0,1,0));
+//		return gl_matrix;
     }
+
+	public void lookAt(Vector3f position, Vector3f direction, Vector3f up) {
+
+		Vector3f f = new Vector3f();
+		Vector3f u = new Vector3f();
+		Vector3f s = new Vector3f();
+		Vector3f.sub(direction, position, f);
+		f.normalise(f);
+		up.normalise(u);
+		Vector3f.cross(f, u, s);
+		s.normalise(s);
+		Vector3f.cross(s, f, u);
+
+		//this.setIdentity();
+		this.m00 = s.x;
+		this.m01 = s.y;
+		this.m02 = s.z;
+		this.m10 = u.x;
+		this.m11 = u.y;
+		this.m12 = u.z;
+		this.m20 = -f.x;
+		this.m21 = -f.y;
+		this.m22 = -f.z;
+		this.m03 = -Vector3f.dot(s, position);
+		this.m13 = -Vector3f.dot(u, position);
+		this.m23 = Vector3f.dot(f, position);
+	}
+
 	public static GL_Matrix perspective3(float fov, float aspect,float zn,float zf )
 	{
 
@@ -791,11 +830,12 @@ public class GL_Matrix
     }
 	public FloatBuffer toFloatBuffer(){
 		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+	//	this.fillFloatBuffer(matrixBuffer);
 		float[][] arr= this.exportToArray();
-       /* matrixBuffer.put(1).put(0).put(0).put(0)
-                .put(0).put(1).put(0).put(0).
-                put(0).put(0).put(1).put(0).
-                put(0).put(0).put(0).put(1);*/
+//       /* matrixBuffer.put(1).put(0).put(0).put(0)
+//                .put(0).put(1).put(0).put(0).
+//                put(0).put(0).put(1).put(0).
+//                put(0).put(0).put(0).put(1);*/
 		for(int i = 0;i<4;i++) {//数据居然要从上往下算第一列 再第二列传数据
 			for (int j = 0; j < 4; j++) {
 				matrixBuffer.put(arr[j][i]);

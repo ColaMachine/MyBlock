@@ -1,10 +1,9 @@
 package cola.machine.game.myblocks.model.textture;
 
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.IBlock;
-import cola.machine.game.myblocks.model.RotateImageBlock;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;

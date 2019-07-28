@@ -2,7 +2,7 @@ package com.dozenx.game.engine.item.parser;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.CakeModel;
 import com.dozenx.game.engine.element.model.IconModel;

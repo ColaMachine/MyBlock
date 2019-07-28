@@ -2,20 +2,11 @@ package com.dozenx.game.engine.fx;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 
 import cola.machine.game.myblocks.engine.Constants;
-import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
-import com.dozenx.util.FileUtil;
 import com.dozenx.util.StringUtil;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock2;
-import cola.machine.game.myblocks.switcher.Switcher;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 

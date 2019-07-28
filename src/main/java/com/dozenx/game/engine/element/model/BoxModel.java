@@ -1,6 +1,6 @@
 package com.dozenx.game.engine.element.model;
 
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.Role.model.Model;

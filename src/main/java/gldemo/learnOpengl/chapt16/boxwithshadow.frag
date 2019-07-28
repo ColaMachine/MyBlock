@@ -97,8 +97,9 @@ void main()
    // color.w=1;
     vec3 textureColor = oricolor.rgb;
 vec3 norm = normalize(Normal);//faxian guiyi
+//这里难道不应该是 vs 的position 吗 哦对了 fragpos 是 position的 模型自身转换后的位置 模型自身有上下左右 旋转的变换
 vec3 lightDir = normalize(light.position - FragPos);//guang de xian lu
-
+//光照的方向
 float diff = max(dot(norm, lightDir), 0.0);// jisuan jiaodu dai lai de guangzhao
 
 float shadow = ShadowCalculation(FragPosLightSpace);

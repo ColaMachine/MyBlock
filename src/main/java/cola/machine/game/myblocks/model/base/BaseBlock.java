@@ -1,9 +1,10 @@
-package cola.machine.game.myblocks.model;
+package cola.machine.game.myblocks.model.base;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.AABB.SimpleAABB;
+import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
@@ -22,7 +23,6 @@ import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public abstract class BaseBlock extends SimpleAABB implements IBlock {
     public boolean xh = true;
 
     public GL_Vector[] points = BoxModel.getPoint(0, 0, 0);//容易发生堆溢出
-    ItemDefinition itemDefinition;
+    public ItemDefinition itemDefinition;
 
     public BaseBlock() {
 

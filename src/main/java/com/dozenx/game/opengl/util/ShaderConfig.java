@@ -203,6 +203,7 @@ public class ShaderConfig {
 
     public int getViewPosLoc() {
         if(viewPosLoc<=0){
+            //如果地形里面不需要计算光照的话  那么 是不许呀哦呦posLoc的
             LogUtil.println("viewPosLoc"+viewPosLoc);
         }
         return viewPosLoc;

@@ -13,8 +13,14 @@ public class SocketUtil {
 
     public static byte[] read(InputStream inputSteram){
         byte[] bytes=new byte[4];
+        int headLen=0;
         try {
-            inputSteram.read(bytes,0,4);
+//            int index = inputSteram.read(bytes,0,4);
+//            LogUtil.println("第"+index+"个包");
+            headLen = inputSteram.read(bytes,0,4);//决定了长度
+            if(headLen<4){
+                LogUtil.err("头部数据少于4:"+headLen);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -22,6 +28,7 @@ public class SocketUtil {
         //ByteUtil.clear(bytes);
         if (length <= 0) {
            LogUtil.err("读取的数据为:"+length);
+            return null;
         //Thread.sleep(1000);
        // continue;
         }
@@ -39,8 +46,16 @@ public class SocketUtil {
             int end = inputSteram.read();
             if ( end != Constants.end) {
                 LogUtil.err(" read error ");
+
+                //要求对面重发  返回错误 要求重发
+
+
+                System.exit(0);
               //  beginRepair(inputSteram);
+            }else{
+                //对的告诉对方可以继续了
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

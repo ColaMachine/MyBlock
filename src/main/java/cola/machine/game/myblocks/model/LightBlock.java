@@ -1,13 +1,10 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.model.base.ColorBlock;
 import com.alibaba.fastjson.JSONObject;
-import com.dozenx.game.opengl.util.ShaderConfig;
-import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.MapUtil;
-import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
 
-public class LightBlock extends ColorBlock{
+public class LightBlock extends ColorBlock {
     public String toString(){
         StringBuffer buffer =new StringBuffer();
         buffer.append("{")

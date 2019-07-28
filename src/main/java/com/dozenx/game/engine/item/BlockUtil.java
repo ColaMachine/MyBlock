@@ -3,7 +3,7 @@ package com.dozenx.game.engine.item;
 import cola.machine.game.myblocks.block.BlockParseUtil;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import com.dozenx.game.engine.command.ItemType;
 import com.dozenx.util.ByteUtil;
 import core.log.LogUtil;

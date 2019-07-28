@@ -2,7 +2,6 @@ package cola.machine.game.myblocks.animation;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
-import cola.machine.game.myblocks.model.RotateImageBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.element.bean.Component;
 import com.dozenx.util.FileUtil;

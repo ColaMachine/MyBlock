@@ -5,20 +5,11 @@ import java.util.List;
 
 import com.dozenx.util.FileUtil;
 
-import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock2;
-import cola.machine.game.myblocks.switcher.Switcher;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;

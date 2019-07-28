@@ -1,13 +1,13 @@
 package cola.machine.game.myblocks.model;
 
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.ByteUtil;
 import glmodel.GL_Matrix;
-import glmodel.GL_Vector;
 
 
-public class StateBlock extends BaseBlock{
+public class StateBlock extends BaseBlock {
   int state;
     int value16_12 ;
     int value12_8;

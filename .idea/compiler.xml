@@ -26,7 +26,7 @@
         <module name="MyBlock" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.7">
       <module name="MyBlock" target="1.7" />
     </bytecodeTargetLevel>
   </component>

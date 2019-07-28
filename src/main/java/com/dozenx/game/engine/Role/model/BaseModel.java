@@ -2,7 +2,7 @@ package com.dozenx.game.engine.Role.model;
 
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.WearComponent;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
@@ -18,16 +18,10 @@ import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
-import glapp.GLCam;
-import glapp.GLCamera;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
-import glmodel.GL_Vertex;
-import sun.rmi.runtime.Log;
 
-import javax.vecmath.Point3f;
 import javax.vecmath.Vector2f;
-import javax.vecmath.Vector4f;
 
 /**
  * Created by luying on 17/3/5.

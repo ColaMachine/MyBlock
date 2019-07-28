@@ -1,7 +1,7 @@
 package com.dozenx.game.engine.item.bean;
 
 import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.base.ColorBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.dozenx.game.engine.element.model.ModelTemplate;

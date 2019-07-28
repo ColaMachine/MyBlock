@@ -166,6 +166,10 @@ public class Worker extends Thread {
                     ByteUtil.clear(bytes);*/
 
                 byte[] newBytes= SocketUtil.read(inputSteram);
+                if(newBytes==null || newBytes.length==0)
+                {
+                    beginRepair(inputSteram);
+                }
                /* if(bytes[n-1]!='\n'){
                     LogUtil.err("socket read end is not \n:"+n);
                 }*/

@@ -204,7 +204,7 @@ public class ShaderTest2 {
 
         IndexBufferId = glGenBuffers();
         Util.checkGLError();
-
+        System.out.println("glBindBuffer GL_ELEMENT_ARRAY_BUFFER  ibo");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBufferId);
         Util.checkGLError();
 
@@ -299,7 +299,7 @@ public class ShaderTest2 {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode(  PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.vert"/*"shaders/chap2.vert"*/).toString());
+        String VertexShader = readShaderSourceCode(  PathManager.getInstance().getInstallPath().resolve("src/main/java/gldemo/learnOpengl/chapt5.vert"/*"shaders/chap2.vert"*/).toString());
 
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -318,7 +318,7 @@ public class ShaderTest2 {
         //==========================================================
         // Load and compile fragment shader
 
-        String FragmentShader = readShaderSourceCode(  PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt5.frag"/*"shaders/chap2.frag"*/).toString());
+        String FragmentShader = readShaderSourceCode(  PathManager.getInstance().getInstallPath().resolve("src/main/java/gldemo/learnOpengl/chapt5.frag"/*"shaders/chap2.frag"*/).toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();

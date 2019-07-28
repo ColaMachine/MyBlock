@@ -573,6 +573,7 @@ public class GL_Mesh
 	    	// stretch out the array lists (for performance)
 	    	clone.vertexData.ensureCapacity(vertices.length);
 	    	clone.triangleData.ensureCapacity(triangles.length);
+			clone.materials=this.materials;
 	    	// clone vertices array
 	    	for (int i=0; i < vertices.length; i++) {
 	    		clone.addVertex( vertices[i].makeClone() );

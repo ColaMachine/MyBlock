@@ -41,7 +41,7 @@ public class GL_Triangle
 		public float Zdepth = 0f;               // screen Z depth
 		public int ID = 0;
         public int groupID = 0;
-        int materialID;  // index into materials array
+       public  int materialID;  // index into materials array
 
 
 		public GL_Triangle(GL_Vertex a, GL_Vertex b, GL_Vertex c)

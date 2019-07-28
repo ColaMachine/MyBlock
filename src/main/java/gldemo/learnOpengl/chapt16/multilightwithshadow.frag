@@ -153,7 +153,26 @@ void main()
          oricolor = vec4(TexCoord,ourTextureIndex*(-1));
 
    }else{ vec2 TexCoordReal=vec2(TexCoord.x,TexCoord.y);
-               oricolor = texture(ourTextures[int(ourTextureIndex)], TexCoordReal);
+
+
+           if(ourTextureIndex==0){
+              oricolor = texture(ourTextures[0], TexCoordReal);
+             }else if(ourTextureIndex==1){
+          oricolor = texture(ourTextures[1], TexCoordReal);
+             }else if(ourTextureIndex==2){
+          oricolor = texture(ourTextures[2], TexCoordReal);
+          }else if(ourTextureIndex==3){
+          oricolor = texture(ourTextures[3], TexCoordReal);
+          }else if(ourTextureIndex==4){
+          oricolor = texture(ourTextures[4], TexCoordReal);
+          }else if(ourTextureIndex==5){
+          oricolor = texture(ourTextures[5], TexCoordReal);
+          }else if(ourTextureIndex==6){
+          oricolor = texture(ourTextures[6], TexCoordReal);
+          }else if(ourTextureIndex==7){
+          oricolor = texture(ourTextures[7], TexCoordReal);
+          }
+           //oricolor = texture(ourTextures[int(ourTextureIndex)], TexCoordReal);
 
    }
     

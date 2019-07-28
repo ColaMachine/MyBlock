@@ -41,6 +41,7 @@ import core.log.LogUtil;
 import glmodel.GLModel;
 import glmodel.GLModelContainer;
 import glmodel.GL_Vector;
+import org.lwjgl.opengl.GL20;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class LivingThingManager {
      */
     public LivingThingManager() {
 
-        gl_model = new GLModel("config/obj/humanblock-bone2-walk.obj");
+        //gl_model = new GLModel("config/obj/triangle.obj");
     //    GLModelContainer = new GLModelContainer("humanblock-bone2-walk", 60, 5);
        /*  wolf =new Wolf(999);
         wolf.position=new GL_Vector(-1,3,-1);
@@ -154,7 +155,7 @@ public class LivingThingManager {
     GLModel gl_model;
 
     public void render() {
-        //glUseProgram(ShaderManager.livingThingShaderConfig.getProgramId());
+      // GL20.glUseProgram(ShaderManager.livingThingShaderConfig.getProgramId());
         //if(/*ShaderManager.livingThingShaderConfig.getVao().getVaoId()==0*/GamingState.livingThingChanged){
 
         //}

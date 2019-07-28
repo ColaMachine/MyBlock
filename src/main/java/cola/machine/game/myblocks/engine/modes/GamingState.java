@@ -7,7 +7,6 @@ import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.logic.players.LocalPlayerSystem;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.BaseBlock;
 import cola.machine.game.myblocks.model.BoneRotateImageBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.html.Div;
@@ -62,7 +61,6 @@ import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
 import de.matthiasmann.twl.theme.ThemeManager;
 import glapp.GLApp;
 import glapp.GLCamera;
-import glmodel.GLModel;
 import glmodel.GL_Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -510,7 +508,9 @@ public ShaderManager shaderManager;
 
             lightPos.x += 1;
 
+
             shaderManager.lightPosChangeListener();
+
 
         }
 
@@ -656,7 +656,7 @@ public ShaderManager shaderManager;
         if(Constants.SHADOW_ENABLE ) {
             //以灯光的角度进行观察 保存一个深度缓冲帧
 
-           shaderManager.shadow.render(shaderManager,worldRenderer);
+           shaderManager.shadow.render(shaderManager,worldRenderer,lightPos);
 
 
         }

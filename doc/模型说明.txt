@@ -1,0 +1,33 @@
+ObjBlock
+    是所有有特殊3d模型的抽象类,所有的obj模型都内含gl_mesh
+gl_mesh 含有
+public GL_Vertex[] vertices;
+ public GLMaterial[] materials ;
+
+
+每个triangle都含有 定点 颜色 normal信息 纹理坐标信息
+public GL_Triangle[] triangles;
+
+
+
+    uvw1 uvw2 uvw3
+    norm1 norm2 norm3
+    p1 p2 p3信息
+
+
+    public float Zdepth = 0f;               // screen Z depth
+    public int ID = 0;
+    public int groupID = 0;
+    int materialID;  // index into materials array 这个id对应gl_mesh下的materail数组的下标
+
+
+如果是纯色的模型的话 他的颜色信息保存在
+mtl.diffuse.get(0),mtl.diffuse.get(1),mtl.diffuse.get(2)
+
+
+所有的对象,都可以只包含下列属性
+所以我们可以抽出一个类似shadowmapping-example里的cylinder类 只包含有以下属性
+ModelObjects
+	private Vector3f color;
+	private Vertex[] vertices;
+	private int[] indices;

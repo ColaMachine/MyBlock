@@ -1,8 +1,7 @@
-package cola.machine.game.myblocks.model;
+package cola.machine.game.myblocks.model.base;
 
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.opengl.util.ShaderConfig;
@@ -14,7 +13,7 @@ import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 
-public class ColorBlock extends BaseBlock{
+public class ColorBlock extends BaseBlock {
     public ColorBlock(){
 
     }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 /**
  * Created by luying on 17/2/13.
+ * 存储物品的定义和名称之间的关系 由于后面都走.item文件 所以不方便维护
+ * 所有在itemType里定义的都是内置的物品,
  */
 public enum ItemType {
     NULL,/*fur_shoulder,*/

@@ -1,10 +1,7 @@
 package cola.machine.game.myblocks.manager;
 
 import cola.machine.game.myblocks.engine.paths.PathManager;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock2;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.ImageInfo;
 import cola.machine.game.myblocks.model.textture.TextureCfgBean;
@@ -14,11 +11,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.edit.EditEngine;
-import com.dozenx.game.engine.edit.view.AnimationBlock;
-import com.dozenx.game.engine.edit.view.GroupBlock;
 import com.dozenx.game.engine.element.bean.Component;
-import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.MapUtil;
 import com.dozenx.util.StringUtil;
@@ -29,7 +22,6 @@ import glapp.GLApp;
 import glapp.GLImage;
 import glmodel.GLModel;
 import glmodel.GLModelContainer;
-import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.Util;
 import org.slf4j.Logger;
@@ -37,7 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -498,7 +489,7 @@ public class TextureManager {
                         this.shapeMap.put(block.getName(), block);
                         logger.debug(MapUtil.getStringValue(map, "name"));
                         if (MapUtil.getStringValue(map, "name").equals("wood_door_down") || MapUtil.getStringValue(map, "name").equals("wood_door_up") || "wood_door_up".equals(block.getName()) || "wood_door_down".equals(block.getName())) {
-                            LogUtil.err("wood_door_up");
+                            LogUtil.println("wood_door_up");
                         }
 
                    /* String blockType =(String) map.get("blocktype");

@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
  * Created by luying on 14-8-28.
  */
 public class RegionArea {
-   public float minX = 0;
+   public float minX = 0;//像素坐标
     public float minY = 0;
     public float maxX = 0;
     public float maxY = 0;

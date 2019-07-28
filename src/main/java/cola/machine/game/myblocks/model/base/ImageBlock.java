@@ -1,11 +1,9 @@
-package cola.machine.game.myblocks.model;
+package cola.machine.game.myblocks.model.base;
 
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
-import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
@@ -14,7 +12,7 @@ import com.dozenx.util.StringUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
-public class ImageBlock extends BaseBlock{
+public class ImageBlock extends BaseBlock {
 
    public TextureInfo front;
     public   TextureInfo back;

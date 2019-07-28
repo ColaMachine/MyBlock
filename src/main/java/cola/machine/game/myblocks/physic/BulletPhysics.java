@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.physic;
 
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Chunk;

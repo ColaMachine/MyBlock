@@ -1,4 +1,4 @@
-package cola.machine.game.myblocks.model;
+package cola.machine.game.myblocks.model.base;
 
 /**
  * Created by dozen.zhang on 2017/9/25.

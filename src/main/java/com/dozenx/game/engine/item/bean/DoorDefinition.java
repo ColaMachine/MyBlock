@@ -1,42 +1,29 @@
 package com.dozenx.game.engine.item.bean;
 
-import cola.machine.game.myblocks.block.Block;
 import cola.machine.game.myblocks.block.BlockParseUtil;
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.item.Item;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.Vector3i;
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.DoorBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.ChunkProvider;
 import cola.machine.game.myblocks.world.chunks.RemoteChunkProvider;
-import com.alibaba.fastjson.JSON;
 import com.dozenx.game.engine.command.ChunkRequestCmd;
 import com.dozenx.game.engine.command.ItemType;
-import com.dozenx.game.engine.edit.view.AnimationBlock;
 import com.dozenx.game.engine.item.BlockUtil;
-import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.parser.ItemDoorParser;
 import com.dozenx.game.network.client.Client;
-import com.dozenx.util.ByteUtil;
-import com.dozenx.util.MapUtil;
 import com.dozenx.util.MathUtil;
-import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
-import sun.rmi.runtime.Log;
 
 /**
  * item 模板存放在 只要block的engine 是door 类型的 就用这个definition去定义
@@ -87,28 +74,28 @@ public class DoorDefinition extends BlockDefinition {
      * @param value
      * @return
      */
-    public DoorBlockBean int2Bean(int value) {
-        int face = BlockParseUtil.getDirection(value); //朝向 0~7位是id 8~9 两位是朝向 00东 南 西 北10位是open 状态位 0 是关 1是开 11 是上下(门用不到)
-        int open = BlockParseUtil.isOpen(value);//是否是打开
-        int isTop = BlockParseUtil.isTop(value); //是否是上面部分
-        DoorBlockBean doorBlockBean = new DoorBlockBean(face, open, isTop);
-        return doorBlockBean;
-    }
-
-    /**
-     * bean 2 id value
-     *
-     * @param bean
-     * @return
-     */
-    public DoorBlockBean bean2Int(DoorBlockBean bean) {
-        int face = bean.face;
-        int open = bean.open;
-        int isTop = bean.top;
-
-        int id = ItemType.wood_door.id;
-        return new DoorBlockBean(face, open, isTop);
-    }
+//    public DoorBlockBean int2Bean(int value) {
+//        int face = BlockParseUtil.getDirection(value); //朝向 0~7位是id 8~9 两位是朝向 00东 南 西 北10位是open 状态位 0 是关 1是开 11 是上下(门用不到)
+//        int open = BlockParseUtil.isOpen(value);//是否是打开
+//        int isTop = BlockParseUtil.isTop(value); //是否是上面部分
+//        DoorBlockBean doorBlockBean = new DoorBlockBean(face, open, isTop);
+//        return doorBlockBean;
+//    }
+//
+//    /**
+//     * bean 2 id value
+//     *
+//     * @param bean
+//     * @return
+//     */
+//    public DoorBlockBean bean2Int(DoorBlockBean bean) {
+//        int face = bean.face;
+//        int open = bean.open;
+//        int isTop = bean.top;
+//
+//        int id = ItemType.wood_door.id;
+//        return new DoorBlockBean(face, open, isTop);
+//    }
 
     public void init() {
 

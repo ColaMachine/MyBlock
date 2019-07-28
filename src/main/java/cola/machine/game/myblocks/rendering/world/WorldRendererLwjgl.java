@@ -138,7 +138,7 @@ public class WorldRendererLwjgl implements WorldRenderer {
                 continue;
             }
             // 如果这是一个大于1*1*1体积的block
-            LogUtil.println("worldRenderLwjgl"+cmd.cx+":"+cmd.cy+":"+cmd.cz);
+            //LogUtil.println("worldRenderLwjgl"+cmd.cx+":"+cmd.cy+":"+cmd.cz);
             chunk.setBlock(cmd.cx, cmd.cy, cmd.cz, cmd.blockType);
 //            try {
 //                Thread.sleep(1000);

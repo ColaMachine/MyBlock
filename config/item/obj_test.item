@@ -1,0 +1,1 @@
+{"id":124,"name":"obj_test","engine":"objblock","remark":"皮盔甲","shape":{"blocktype":"objblock","front":"human","obj":"config/obj/triangle.obj","width":1,"height":1,"thick":1,"name":"huanmanblock"},"type":"block","blocktype":"objblock"}

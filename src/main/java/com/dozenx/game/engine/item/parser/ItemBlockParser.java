@@ -1,14 +1,13 @@
 package com.dozenx.game.engine.item.parser;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.base.ColorBlock;
 
 import com.dozenx.game.engine.command.ItemMainType;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.engine.item.bean.ItemBlockProperties;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.MapUtil;
-import com.dozenx.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;

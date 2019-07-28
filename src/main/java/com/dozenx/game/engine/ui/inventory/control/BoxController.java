@@ -1,7 +1,6 @@
 package com.dozenx.game.engine.ui.inventory.control;
 
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.BoxBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.item.action.ItemManager;

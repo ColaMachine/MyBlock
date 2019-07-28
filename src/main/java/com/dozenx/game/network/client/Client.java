@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by luying on 16/10/7.
  */
 public class Client extends Thread{
+    public static int index;
+    public static Queue<byte[]> cache100 =new LinkedList<>();
     public static Stack<SayCmd> messages=new Stack<>();
     public static Stack<EquipCmd> equips=new Stack<>();
     public static Stack<PosCmd> movements=new Stack<>();
@@ -72,9 +74,14 @@ public class Client extends Thread{
            // CmdType.printSend(cmd);
             //LogUtil.println("client 准备发送数据类型:"+ cmd.getCmdType()+"长度:"+(oldByteAry.length-4));
             synchronized (this) {
+//                outputStream.write(ByteUtil.getBytes(index));
+//                index++;
+
                 outputStream.write(ByteUtil.getBytes(oldByteAry.length));
                 outputStream.write(oldByteAry);//需要加锁
                 outputStream.write(Constants.end);
+                //cache100.add(oldByteAry);
+
             }
             //LogUtil.println("send over");
             //outputStream.write('\n');

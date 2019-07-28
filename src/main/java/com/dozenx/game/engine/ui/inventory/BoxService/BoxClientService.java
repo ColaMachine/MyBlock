@@ -1,7 +1,6 @@
 package com.dozenx.game.engine.ui.inventory.BoxService;
 
-import cola.machine.game.myblocks.model.BaseBlock;
-import cola.machine.game.myblocks.model.BoxBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import com.dozenx.game.engine.command.BoxItemsReqCmd;
 import com.dozenx.game.engine.command.BoxOpenCmd;

@@ -2,7 +2,8 @@ package cola.machine.game.myblocks.model;
 
 
 import cola.machine.game.myblocks.engine.Constants;
-import com.alibaba.fastjson.JSON;
+import cola.machine.game.myblocks.model.base.ColorBlock;
+import cola.machine.game.myblocks.model.base.RotateBlock;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -10,12 +11,11 @@ import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
 import com.dozenx.util.MapUtil;
-import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
 
 
-public class RotateColorBlock2 extends ColorBlock implements RotateBlock{
+public class RotateColorBlock2 extends ColorBlock implements RotateBlock {
     public RotateColorBlock2(){
 
     }

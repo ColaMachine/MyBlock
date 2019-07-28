@@ -1,9 +1,6 @@
 package com.dozenx.game.engine.fx;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
-import cola.machine.game.myblocks.model.ColorBlock;
-import cola.machine.game.myblocks.model.ImageBlock;
-import cola.machine.game.myblocks.model.RotateColorBlock2;
 import cola.machine.game.myblocks.switcher.Switcher;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

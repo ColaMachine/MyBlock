@@ -80,11 +80,18 @@ public class ItemFactory {
             }else
             if(engine .equals("seed")){
                 itemDef = new SeedDefinition();
+            }else
+            if(engine .equals("dirblock")){
+                itemDef = new DirBlockDefinition();
+            }else
+            if(engine .equals("objblock")){
+                itemDef = new ObjDefinition();
             }else{
                 LogUtil.err("not here");
             }
             itemDef.receive(map);
-        }
+        }/**/
+
 
         if(itemDef == null ){
             itemDef =new ItemDefinition();

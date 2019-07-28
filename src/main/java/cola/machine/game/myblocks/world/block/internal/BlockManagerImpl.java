@@ -1,6 +1,6 @@
 package cola.machine.game.myblocks.world.block.internal;
 
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.DoorBlock;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.IBlock;

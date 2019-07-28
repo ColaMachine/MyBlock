@@ -1,0 +1,13 @@
+可在EditField.java的
+    case Event.KEY_TAB:
+                        return false;
+                    default:
+                        if(evt.hasKeyCharNoModifiers()) {
+                           // LogUtil.println(""+evt.getKeyChar());
+                            insertChar(evt.getKeyChar());
+                            return true;
+
+                        }
+
+ if(evt.hasKeyCharNoModifiers()) { 处打断点
+ 如果 此时modifier 是0 应该是正常的 如果不不为零 就会导致 进不了if判断内部逻辑

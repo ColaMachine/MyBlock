@@ -26,7 +26,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 /**
  * Created by dozen.zhang on 2016/10/11.
  */
-public class LearnOpengl8 {
+public class img2dTransform {
 
     int VboId;
     int VertexShaderId;
@@ -180,7 +180,7 @@ public class LearnOpengl8 {
         //==========================================================
         // Load and compile vertex shader
 
-        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt8.vert").toString());
+        String VertexShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/main/java/gldemo/learnOpengl/chapt8/img2dTransoform.vert").toString());
         //创建着色器
         VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         Util.checkGLError();
@@ -200,7 +200,7 @@ public class LearnOpengl8 {
 
     }
     void CreateFragShaders() throws IOException {
-        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/gldemo/learnOpengl/chapt8.frag").toString());
+        String FragmentShader = readShaderSourceCode( PathManager.getInstance().getInstallPath().resolve("src/main/java/gldemo/learnOpengl/chapt8/img2dTransoform.frag").toString());
 
         FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         Util.checkGLError();
@@ -425,9 +425,9 @@ public class LearnOpengl8 {
 
     public static void main(String[] args) {
         LWJGLHelper.initNativeLibs();//加载lib包
-        LearnOpengl8 main = null;
+        img2dTransform main = null;
         try {
-            main = new LearnOpengl8();
+            main = new img2dTransform();
             main.create();
             main.run();
         } catch (Exception ex) {

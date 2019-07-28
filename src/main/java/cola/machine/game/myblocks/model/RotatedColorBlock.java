@@ -1,4 +1,5 @@
 package cola.machine.game.myblocks.model;
+import cola.machine.game.myblocks.model.base.ColorBlock;
 import com.dozenx.game.engine.element.model.BoxModel;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderUtils;

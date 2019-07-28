@@ -109,7 +109,7 @@ public class ServerMain {
         //timer.schedule(serverSynTask,0,200);
 
         timer = new Timer();
-
+        //每一个包都返回ack确认码
         timer.schedule(new ServerGrowTask(serverContext),0, 10*1000);
         timer.schedule(new ServerSaveTask(serverContext),0, 60*1000);
         System.out.println("Task scheduled.");

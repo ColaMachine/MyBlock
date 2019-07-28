@@ -13,3 +13,24 @@ ItemManager 负责加载物品定义 loadItemDefinition
 
 ItemManager在图片
 
+ItemDefinition 因为需要被实例化
+Itemfactory 通过itemdefinition 生产出实例化对象xxxblock
+这时候有一个ItemManager的角色感觉重复了
+所以在工厂里 应该有 xxxblock的初始化模型 和itemdefinition的定义
+
+## ItemManager
+负责物品的加载 解析 储存 相当于 ItemFactory
+## ItemDefinition类说明
+只有少量的物品定义类
+每个物品都有自身的ItemDefinition
+特殊的物品一般都有自身的ItemDefinition
+描述了物品的外观和属性
+
+itemTypeId 物品id
+
+
+## itemType 多余的东西 准备删除 对应ItemType,由于不方便二次开发 是写死的 由于是多余的东西 不适合后面自定义物品使用
+
+
+
+

@@ -434,6 +434,8 @@ public class OpenglUtils {
         try {
             Util.checkGLError();
         } catch (Exception e) {
+
+
             e.printStackTrace();
             //LogUtil.println(e.getMessage());
             //throw e;

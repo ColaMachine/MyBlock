@@ -1,6 +1,6 @@
 package com.dozenx.game.engine.command;
 
-import cola.machine.game.myblocks.model.BaseBlock;
+import cola.machine.game.myblocks.model.base.BaseBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import cola.machine.game.myblocks.world.chunks.Chunk;
 import cola.machine.game.myblocks.world.chunks.Internal.ChunkImpl;

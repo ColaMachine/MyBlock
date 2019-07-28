@@ -2,6 +2,8 @@ package cola.machine.game.myblocks.model;
 
 
 import cola.machine.game.myblocks.animation.Transform;
+import cola.machine.game.myblocks.model.base.BaseBlock;
+import cola.machine.game.myblocks.model.base.RotateImageBlock;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.edit.EditEngine;
@@ -19,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BoneRotateImageBlock extends RotateImageBlock{
+public class BoneRotateImageBlock extends RotateImageBlock {
     public Transform transform =new Transform();
 public GL_Vector parentPosition = new GL_Vector();
     public GL_Vector childPosition=new GL_Vector();
-   public  BaseBlock block =null;
+   public BaseBlock block =null;
     public List<BoneRotateImageBlock > children =new ArrayList<>();
     public BoneRotateImageBlock(){
 

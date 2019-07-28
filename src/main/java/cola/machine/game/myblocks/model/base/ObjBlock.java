@@ -1,23 +1,21 @@
-package cola.machine.game.myblocks.model;
+package cola.machine.game.myblocks.model.base;
 
-import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.dozenx.game.engine.element.model.BoxModel;
+import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
-import com.dozenx.util.FloatBufferWrap;
 import com.dozenx.util.MapUtil;
-import com.dozenx.util.StringUtil;
 import core.log.LogUtil;
 import glmodel.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjBlock extends BaseBlock{
+public class ObjBlock extends BaseBlock {
 
    public TextureInfo front;
     String fileName;
@@ -52,7 +50,47 @@ public class ObjBlock extends BaseBlock{
     @Override
     public void renderShader(ShaderConfig config, Vao vao, GL_Matrix matrix) {
         GL_Vector[] dirAry = BoxModel.dirAry;
+        //拿出他所有的定点 颜色 还有normal
+        GL_Mesh m = glModel.mesh;
+        GLMaterial[] materials =m .materials;   // loaded from the .mtl file
+        GLMaterial mtl;
+        GL_Triangle t;
+        int currMtl = -1;
+        int i = 0;
 
+        // draw all triangles in object
+       ShaderUtils.glUse(config,config.getVao());
+        // ShaderUtils.glColor(1,1,1);//先暂时设定她的颜色值是黑色的
+        for (i=0; i < m.triangles.length; ) {
+
+            t = m.triangles[i];
+            // activate new material and texture
+            currMtl = t.materialID;
+            mtl = (materials != null && materials.length>0 && currMtl >= 0)? materials[currMtl] : glModel.defaultMtl;
+//            mtl.apply();
+            if(mtl!=null&& mtl.textureFile!=null){
+                // ShaderUtils. glColor(mtl.diffuse.get(0),mtl.diffuse.get(1),mtl.diffuse.get(2));
+                ShaderUtils.bindTexture(TextureManager.getTextureInfo("human_body_front"));
+            }
+
+            for ( ; i < m.triangles.length && (t=m.triangles[i])!=null && currMtl == t.materialID; i++) {
+                //   GL11.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+
+
+                ShaderUtils.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+                ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
+                ShaderUtils.glVertex3f( (float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z);
+
+                ShaderUtils.glTexCoord2f(t.uvw2.x, t.uvw2.y);
+                ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
+                ShaderUtils.glVertex3f( (float)t.p2.pos.x, (float)t.p2.pos.y, (float)t.p2.pos.z);
+
+                ShaderUtils.glTexCoord2f(t.uvw3.x, t.uvw3.y);
+                ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
+                ShaderUtils.glVertex3f( (float)t.p3.pos.x, (float)t.p3.pos.y, (float)t.p3.pos.z);
+            }
+
+        }
         glModel.renderShader();
     }
 
@@ -166,6 +204,7 @@ public class ObjBlock extends BaseBlock{
 
         if(objBlock.glModel ==null){
             LogUtil.err("can't find "+objName);
+            objBlock. glModel =new GLModel(objName);
         }
 
 //        GL_Mesh m = objBlock. glModel.mesh;
@@ -204,7 +243,10 @@ public class ObjBlock extends BaseBlock{
 
 
     }
+    public void rotateWithY(int degree){// angle 1~360
 
+    }
+    @Override
     public void reComputePoints(GL_Matrix glMatrix) {
 //        for(int i=0;i<glModel.mesh.vertices.length;i++){
 //            glModel.mesh.vertices[i] =glMatrix.multiply();//glModel.mesh.vertices[i]
@@ -227,7 +269,7 @@ public class ObjBlock extends BaseBlock{
 
             GL_Vertex  gl_vertex = glModel.mesh.vertices[i];
 //new GL_Vector(0,0,0);//
-            gl_vertex.pos = glMatrix.multiply(glMatrix, gl_vertex.pos);//旋转
+            gl_vertex.pos = GL_Matrix.multiply(glMatrix, gl_vertex.pos);//旋转
 
         }
     }

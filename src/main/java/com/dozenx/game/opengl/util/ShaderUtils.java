@@ -1,6 +1,7 @@
 package com.dozenx.game.opengl.util;
 
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -10,11 +11,13 @@ import com.dozenx.game.engine.element.model.ShapeFace;
 import com.dozenx.game.font.FontUtil;
 import com.dozenx.game.font.Glyph;
 import com.dozenx.game.graphics.shader.ShaderManager;
+import com.dozenx.game.graphics.shader.Shadow;
 import com.dozenx.util.FileUtil;
 import com.dozenx.util.FloatBufferWrap;
 import core.log.LogUtil;
 import glmodel.GL_Matrix;
 import glmodel.GL_Vector;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.Util;
@@ -31,7 +34,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-
+import org.lwjgl.input.Keyboard;
 public class ShaderUtils {
     public static final GL_Vector BLUE = new GL_Vector(0, 0, 1);
     public static final GL_Vector RED = new GL_Vector(1, 0, 0);
@@ -306,8 +309,33 @@ public class ShaderUtils {
         OpenglUtils.checkGLError();
         //打印日志
         printShaderLog(newShaderId);
+
+//        int status = glGetShaderi(newShaderId, GL_COMPILE_STATUS);
+//        if (status == GL_FALSE) {
+//            glDeleteShader(newShaderId);
+//            throw new CompileLinkShaderException(newShaderId);
+//        }
+
         OpenglUtils.checkGLError();
         return newShaderId;
+    }private static class CompileLinkShaderException extends RuntimeException {
+        private static final long serialVersionUID = 5490603440382398244L;
+
+        CompileLinkShaderException(int shader) {
+            super(glGetShaderInfoLog(
+                    shader,
+                    glGetShaderi(shader, GL_INFO_LOG_LENGTH)));
+        }
+    }
+
+    private static class CompileLinkProgramException extends RuntimeException {
+        private static final long serialVersionUID = 7321217286524434327L;
+
+        CompileLinkProgramException(int program) {
+            super(glGetShaderInfoLog(
+                    program,
+                    glGetShaderi(program, GL_INFO_LOG_LENGTH)));
+        }
     }
 
     public static int CreateFragShaders(String path) throws IOException {
@@ -605,6 +633,7 @@ try {
         assert config.getProgramId() > 0;
         glUseProgram(config.getProgramId());
         OpenglUtils.checkGLError();
+//        ShaderUtils.printProgramLog(config.getProgramId());
         // glUniform3f(shaderConfig.getObejctColorLoc(), backgroundColor.x, backgroundColor.y, backgroundColor.z);
         // OpenglUtils.checkGLError();
         assert vao.getVaoId() > 0;
@@ -1416,6 +1445,30 @@ try {
         vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
         vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
     }
+
+
+    public static void draw2dImg(TextureInfo  ti, int posX, int posY, float z, int width, int height, Vector4f color, ShaderConfig config) {
+        Vao vao = config.getVao();
+
+
+        float left = ((float) posX) / Constants.WINDOW_WIDTH * 2 - 1f;
+        float top = (Constants.WINDOW_HEIGHT - ((float) posY)) / Constants.WINDOW_HEIGHT * 2 - 1f;
+        float _height = ((float) height) / Constants.WINDOW_HEIGHT * 2;
+        float _width = ((float) width) / Constants.WINDOW_WIDTH * 2;
+        GL_Vector p1 = new GL_Vector(left, top - _height, z);
+        GL_Vector p2 = new GL_Vector(left + _width, top - _height, z);
+        GL_Vector p3 = new GL_Vector(left + _width, top, z);
+        GL_Vector p4 = new GL_Vector(left, top, z);
+        int index = ShaderUtils.bindAndGetTextureIndex(config, ti.textureHandle);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(ti.maxX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(ti.minX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(ti.minX).put(ti.minY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(ti.maxX).put(ti.maxY).put(index).put(color.x).put(color.y).put(color.z).put(color.w);
+    }
+
+
 
     public static void draw2dImg(ShaderConfig config, Vao vao, int textureHandler) {
         int index = ShaderUtils.bindAndGetTextureIndex(config, textureHandler);
@@ -3289,6 +3342,355 @@ try {
         ShaderManager.lineShaderConfig.getVao().getVertices().put(x).put(y).put(z);
         ShaderManager.lineShaderConfig.getVao().getVertices().put(x1).put(y1).put(z1);
     }
+
+
+    public static void createProgram(ShaderConfig config) {
+        LogUtil.println("begin create program" + config.getName());
+        try {
+            int programId = ShaderUtils.CreateProgram(config.getVertPath(), config.getFragPath());
+
+            if(programId<0){
+                LogUtil.println("programId:"+programId);
+                System.exit(0);
+            }
+            config.setProgramId(programId);
+            OpenglUtils.checkGLError();
+            //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+
+    public static void initUniform(ShaderConfig config) {
+        LogUtil.println("begin initUniform:" + config.getName());
+        /*
+        uniform mat4 projection;
+        uniform mat4 view;
+        uniform mat4 model;
+        uniform vec3 objectColor;物体的颜色
+        uniform vec3 lightColor;灯光的颜色
+        uniform vec3 lightPos;灯光的位置
+        uniform vec3 viewPos;相机的位置*/
+
+
+        //GL_Matrix view= GL_Matrix.translateMatrix(0,0,-3);
+
+
+        //glUseProgram(ProgramId);
+        int programId = config.getProgramId();  OpenglUtils.checkGLError();
+        if(programId<=0){
+            LogUtil.println("get error programid:"+config.getProgramId());
+            System.exit(1);
+        }
+        glUseProgram(config.getProgramId());  OpenglUtils.checkGLError();
+        //unifrom赋值===========================================================
+        //投影矩阵
+        int projectionLoc = glGetUniformLocation(config.getProgramId(), "projection");
+        if (projectionLoc >= 0) {
+            config.setProjLoc(projectionLoc);
+            OpenglUtils.checkGLError();
+
+            glUniformMatrix4(projectionLoc, false, projection.toFloatBuffer());
+            OpenglUtils.checkGLError();
+        }
+        //阴影灯光投影矩阵
+        if(Constants.SHADOW_ENABLE) {
+            int lightSpaceMatrixLoc = glGetUniformLocation(config.getProgramId(), "lightSpaceMatrix");
+            //config.setProjLoc(projectionLoc);
+            OpenglUtils.checkGLError();
+            if (lightSpaceMatrixLoc >= 0) {
+                // GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+                // FloatBuffer lightViewBuffer = BufferUtils.createFloatBuffer(16);
+                // OpenglUtils.checkGLError();
+                // //光源的视角
+                config.setShadowLightViewLoc(lightSpaceMatrixLoc);
+                glUniformMatrix4(lightSpaceMatrixLoc, false, shadow.getLightViewMatrix().toFloatBuffer());
+                //config.setViewLoc(viewLoc);
+                OpenglUtils.checkGLError();
+            }
+        }
+
+
+        //相机位置
+        GL_Matrix view;
+        if (GamingState.instance != null)
+            view =
+                    GL_Matrix.LookAt(GamingState.instance.camera.Position, GamingState.instance.camera.ViewDir);
+        else {
+            view = GL_Matrix.LookAt(new GL_Vector(0, 0, 4), new GL_Vector(0, 0, -1));
+        }
+        view.fillFloatBuffer(cameraViewBuffer);
+        int viewLoc = glGetUniformLocation(programId, "view");
+        if (viewLoc >= 0) {
+            config.setViewLoc(viewLoc);
+            OpenglUtils.checkGLError();
+            glUniformMatrix4(viewLoc, false, view.toFloatBuffer());
+            OpenglUtils.checkGLError();
+        }
+
+
+        int modelLoc = glGetUniformLocation(programId, "model");
+        if (modelLoc >= 0) {
+            GL_Matrix model = GL_Matrix.rotateMatrix((float) (0 *  Constants.PI1), 0, 0);
+            config.setModelLoc(modelLoc);
+            OpenglUtils.checkGLError();
+            glUniformMatrix4(modelLoc, false, model.toFloatBuffer());
+            OpenglUtils.checkGLError();
+
+        }
+        /*viewLoc = glGetUniformLocation(terrainProgramId, "view");
+        OpenglUtils.checkGLError();
+        terrainShaderConfig.setViewLoc(viewLoc);*/
+
+        //物体颜色
+        int objectColorLoc = glGetUniformLocation(programId, "objectColor");
+        if (objectColorLoc >= 0) {
+            config.setObejctColorLoc(objectColorLoc);
+            glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
+            OpenglUtils.checkGLError();
+        }
+
+
+        //环境光颜色
+
+    /* int  lightColorLoc= glGetUniformLocation(programId, "light");
+        if(lightColorLoc>0){
+                config.setLightColorLoc(lightColorLoc);
+            glUniform3f(lightPosInTerrainLoc, lightPos.x, lightPos.y, lightPos.z);
+            OpenglUtils.checkGLError();
+        }
+        glUniform3f(lightColorLoc,1.0f,1f,1f);*/
+        OpenglUtils.checkGLError();
+        int lightPosInTerrainLoc = glGetUniformLocation(programId, "light.position");
+        GL_Vector lightPos = new GL_Vector();OpenglUtils.checkGLError();
+        if (GamingState.instance == null) {
+
+        } else {
+            lightPos = GamingState.instance.lightPos;
+        }OpenglUtils.checkGLError();
+        if (lightPosInTerrainLoc >= 0) {
+            config.setLightPosLoc(lightPosInTerrainLoc);
+            // LogUtil.println("light.position not found ");
+            //System.exit(1);
+            glUniform3f(lightPosInTerrainLoc, lightPos.x, lightPos.y, lightPos.z);
+            OpenglUtils.checkGLError();
+        }
+        OpenglUtils.checkGLError();
+
+        int viewPosLoc = glGetUniformLocation(programId, "viewPos");//camerapos
+
+        if (viewPosLoc >= 0) {
+            config.setViewPosLoc(viewPosLoc);
+            glUniform3f(viewPosLoc, lightPos.x, lightPos.y, lightPos.z);
+            OpenglUtils.checkGLError();
+        }OpenglUtils.checkGLError();
+
+
+        //int matAmbientLoc = glGetUniformLocation(ProgramId, "material.ambient");
+        //int matDiffuseLoc = glGetUniformLocation(ProgramId, "material.diffuse");
+        int matSpecularLoc = glGetUniformLocation(programId, "material.specular");
+        if (matSpecularLoc >= 0) {
+            glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+        }OpenglUtils.checkGLError();
+
+        int matShineLoc = glGetUniformLocation(programId, "material.shininess");
+        if (matShineLoc >= 0) {
+            glUniform1f(matShineLoc, 32.0f);//光斑大小
+        }OpenglUtils.checkGLError();
+        //glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
+        //glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+
+
+        int lightMatAmbientLoc = glGetUniformLocation(programId, "light.ambient");
+        if (lightMatAmbientLoc >= 0) {
+            glUniform3f(lightMatAmbientLoc, 1f, 1f, 1f);
+        }
+        int lightMatDiffuseLoc = glGetUniformLocation(programId, "light.diffuse");
+        if (lightMatDiffuseLoc >= 0) {
+            glUniform3f(lightMatDiffuseLoc, 1f, 1f, 0.3f);
+        }OpenglUtils.checkGLError();
+        int lightMatSpecularLoc = glGetUniformLocation(programId, "light.specular");
+        if (lightMatSpecularLoc >= 0) {
+            glUniform3f(lightMatSpecularLoc,1f, 1f, 1f);
+        }OpenglUtils.checkGLError();
+        int lightMatShineLoc = glGetUniformLocation(programId, "light.shininess");
+        if (lightMatSpecularLoc >= 0) {
+            glUniform1f(lightMatShineLoc, 32.0f);
+        }OpenglUtils.checkGLError();
+
+
+        int lightConstantLoc = glGetUniformLocation(programId, "light.constant");
+        if (lightConstantLoc >= 0) {
+            glUniform1f(lightConstantLoc, 1f);
+        }OpenglUtils.checkGLError();
+
+        int lightLinearLoc = glGetUniformLocation(programId, "light.linear");
+        if (lightLinearLoc >= 0) {
+            glUniform1f(lightLinearLoc, 0.01f);
+        }OpenglUtils.checkGLError();
+
+        int lightQuadraticLoc = glGetUniformLocation(programId, "light.quadratic");
+        if (lightQuadraticLoc >= 0) {
+            glUniform1f(lightQuadraticLoc, 0.007f);
+        }
+        OpenglUtils.checkGLError();
+     /*   for(int i=0;i<8;i++){
+            int ourTexture0Loc = glGetUniformLocation(config.getProgramId(), "ourTexture"+i);
+            if(ourTexture0Loc>0) {
+                config.setTexture0Loc(ourTexture0Loc);
+            }
+        }*/
+
+        OpenglUtils.checkGLError();
+        int ourTexture0Loc = glGetUniformLocation(config.getProgramId(), "ourTexture0");
+        if (ourTexture0Loc >= 0) {
+            config.setTexture0Loc(ourTexture0Loc);
+        }
+        OpenglUtils.checkGLError();
+        int ourTexture1Loc = glGetUniformLocation(config.getProgramId(), "ourTexture1");
+        if (ourTexture1Loc >= 0) {
+            config.setTexture1Loc(ourTexture1Loc);
+        }OpenglUtils.checkGLError();
+        int ourTexture2Loc = glGetUniformLocation(config.getProgramId(), "ourTexture2");
+        if (ourTexture2Loc >= 0) {
+            config.setTexture2Loc(ourTexture2Loc);
+        }OpenglUtils.checkGLError();
+        int ourTexture3Loc = glGetUniformLocation(config.getProgramId(), "ourTexture3");
+        if (ourTexture3Loc >= 0) {
+            config.setTexture3Loc(ourTexture3Loc);
+        }OpenglUtils.checkGLError();
+        int ourTexture4Loc = glGetUniformLocation(config.getProgramId(), "ourTexture4");
+        if (ourTexture4Loc >= 0) {
+            config.setTexture4Loc(ourTexture4Loc);
+        }OpenglUtils.checkGLError();
+        int ourTexture5Loc = glGetUniformLocation(config.getProgramId(), "ourTexture5");
+        if (ourTexture5Loc >= 0) {
+            config.setTexture5Loc(ourTexture5Loc);
+        }OpenglUtils.checkGLError();
+        int ourTexture6Loc = glGetUniformLocation(config.getProgramId(), "ourTexture6");
+        if (ourTexture6Loc >= 0) {
+            config.setTexture6Loc(ourTexture6Loc);
+        }OpenglUtils.checkGLError();
+        int ourTexture7Loc = glGetUniformLocation(config.getProgramId(), "ourTexture7");
+        if (ourTexture7Loc >= 0) {
+            config.setTexture7Loc(ourTexture7Loc);
+        }OpenglUtils.checkGLError();
+        int ourTexture8Loc = glGetUniformLocation(config.getProgramId(), "ourTexture8");
+        if (ourTexture8Loc >= 0) {
+            config.setTexture8Loc(ourTexture8Loc);
+        }
+        OpenglUtils.checkGLError();
+
+
+
+        int ourTextureAry0Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[0]");
+        if (ourTextureAry0Loc >= 0) {
+            config.setTexture0Loc(ourTextureAry0Loc);
+        }
+        OpenglUtils.checkGLError();
+        int ourTextureAry1Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[1]");
+        if (ourTextureAry1Loc >= 0) {
+            config.setTexture1Loc(ourTextureAry1Loc);
+        }OpenglUtils.checkGLError();
+        int ourTextureAry2Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[2]");
+        if (ourTextureAry2Loc >= 0) {
+            config.setTexture2Loc(ourTextureAry2Loc);
+        }OpenglUtils.checkGLError();
+        int ourTextureAry3Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[3]");
+        if (ourTextureAry3Loc >= 0) {
+            config.setTexture3Loc(ourTextureAry3Loc);
+        }OpenglUtils.checkGLError();
+        int ourTextureAry4Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[4]");
+        if (ourTextureAry4Loc >= 0) {
+            config.setTexture4Loc(ourTextureAry4Loc);
+        }OpenglUtils.checkGLError();
+        int ourTextureAry5Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[5]");
+        if (ourTextureAry5Loc >= 0) {
+            config.setTexture5Loc(ourTextureAry5Loc);
+        }OpenglUtils.checkGLError();
+        int ourTextureAry6Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[6]");
+        if (ourTextureAry6Loc >= 0) {
+            config.setTexture6Loc(ourTextureAry6Loc);
+        }OpenglUtils.checkGLError();
+        int ourTextureAry7Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[7]");
+        if (ourTextureAry7Loc >= 0) {
+            config.setTexture7Loc(ourTextureAry7Loc);
+        }OpenglUtils.checkGLError();
+        int ourTextureAry8Loc = glGetUniformLocation(config.getProgramId(), "ourTextures[8]");
+        if (ourTextureAry8Loc >= 0) {
+            config.setTexture8Loc(ourTextureAry8Loc);
+        }OpenglUtils.checkGLError();
+
+
+        for(int i=0;i<4;i++){
+            int lgintLoc = glGetUniformLocation(config.getProgramId(), "pointLights["+i+"].position");
+            if (lgintLoc >= 0) {
+                glUniform3f(glGetUniformLocation(config.getProgramId(), "pointLights["+i+"].position"),
+                        i*10, 2, 0);OpenglUtils.checkGLError();
+                glUniform3f(glGetUniformLocation(config.getProgramId(), "pointLights["+i+"].ambient"),
+                        0.05f, 0.05f, 0.05f);OpenglUtils.checkGLError();
+                glUniform3f(glGetUniformLocation(config.getProgramId(), "pointLights["+i+"].diffuse"),
+                        0.8f, 0.8f, 0.8f);OpenglUtils.checkGLError();
+                glUniform3f(glGetUniformLocation(config.getProgramId(),"pointLights["+i+"].specular"),
+                        1.0f, 1.0f, 1.0f);OpenglUtils.checkGLError();
+
+                glUniform1f(glGetUniformLocation(config.getProgramId(), "pointLights["+i+"].constant"),
+                        1.0f);OpenglUtils.checkGLError();
+                glUniform1f(glGetUniformLocation(config.getProgramId(), "pointLights["+i+"].linear"),
+                        0.09f);OpenglUtils.checkGLError();
+                glUniform1f(glGetUniformLocation(config.getProgramId(), "pointLights["+i+"].quadratic"),
+                        0.032f);OpenglUtils.checkGLError();
+            }
+        }
+
+        if (Constants.SHADOW_ENABLE) {
+
+            int depthMapLoc = glGetUniformLocation(config.getProgramId(), "shadowMap");
+            OpenglUtils.checkGLError();
+            if (depthMapLoc >= 0) {
+                config.setDepthMapLoc(depthMapLoc);OpenglUtils.checkGLError();
+                //但是不能用这个方法 这个方法的前半段是正确的 将纹理id映射到全局的texture顺序上
+                //但是后半段 她会根据config的
+                //这里要确保再shadow的depthMap初始化后
+
+                int loc = ShaderUtils.getActiveTextureLoc( shadow.getDepthMap());OpenglUtils.checkGLError();
+
+                config.setInt("shadowMap",loc);
+                OpenglUtils.checkGLError();
+               /* GL13.glActiveTexture(GL13.GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE9);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE8);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+                GL13.glActiveTexture(GL13.GL_TEXTURE7);
+                //shaderManager.terrainShaderConfig.depthMapLoc
+                glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);*/
+
+            }
+
+
+        }
+        // glUseProgram(0);
+        //glUniform1f(glGetUniformLocation(terrainProgramId, "light.constant"), 1.0f);
+        // glUniform1f(glGetUniformLocation(terrainProgramId, "light.linear"), 0.07f);
+        //glUniform1f(glGetUniformLocation(terrainProgramId, "light.quadratic"), 0.017f);
+
+    }
+
+    public static Shadow shadow;//阴影
+    static FloatBuffer cameraViewBuffer = BufferUtils.createFloatBuffer(16);
+
+    //透视矩阵
+    public static GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+
+
+
+
 }
 
 

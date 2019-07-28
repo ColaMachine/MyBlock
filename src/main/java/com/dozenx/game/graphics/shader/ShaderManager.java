@@ -19,6 +19,7 @@ import org.lwjgl.opengl.Util;
 import javax.vecmath.Point4f;
 import javax.vecmath.Vector2f;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
@@ -65,10 +66,12 @@ public class ShaderManager {
     //地形
     public static ShaderConfig terrainShaderConfig = null;
 
+
+
     static {
         if (Constants.SHADOW_ENABLE) {
-            //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert",new int[]{3,3,3,1});
-            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/multilightwithshadow.frag", "chapt16/multilightwithshadow.vert", new int[]{3, 3, 3, 1});
+            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert",new int[]{3,3,3,1});
+            //terrainShaderConfig = new ShaderConfig("multilightwithshadow", "chapt16/multilightwithshadow.frag", "chapt16/multilightwithshadow.vert", new int[]{3, 3, 3, 1});
         } else {
              terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert",new int[]{3,3,3,1});
 
@@ -175,6 +178,8 @@ public class ShaderManager {
 
     }
 
+
+
     public void init() {
 
       //  bloom.init();
@@ -185,6 +190,9 @@ public class ShaderManager {
             //shadowInit();
             this.createProgram(shadowShaderConfig);
             this.initUniform(shadowShaderConfig);
+
+
+            shadow.lightSpaceMatrixId= glGetUniformLocation(terrainShaderConfig.getProgramId(), "lightSpaceMatrix");
 
         }
         
@@ -470,8 +478,23 @@ public class ShaderManager {
         OpenglUtils.checkGLError();
         if(Constants.SHADOW_ENABLE) {
             glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
-
         }
+
+//        int lightSpaceMatrixLoc = glGetUniformLocation(terrainShaderConfig.getProgramId(), "lightSpaceMatrix");
+//        //config.setProjLoc(projectionLoc);
+//        OpenglUtils.checkGLError();
+//        if (lightSpaceMatrixLoc >= 0) {
+//            // GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
+//            // FloatBuffer lightViewBuffer = BufferUtils.createFloatBuffer(16);
+//            // OpenglUtils.checkGLError();
+//            // //光源的视角
+//            GL_Matrix lightSpaceMatrix =  shadow.adjustLightViewMatrix(GamingState.instance.lightPos,GamingState.instance.player.position);
+//
+//            terrainShaderConfig.setShadowLightViewLoc(lightSpaceMatrixLoc);
+//            glUniformMatrix4(terrainShaderConfig.getShadowLightViewLoc(), false, shadow.getLightViewMatrix().toFloatBuffer());
+//            //config.setViewLoc(viewLoc);
+//            OpenglUtils.checkGLError();
+//        }
         OpenglUtils.checkGLError();
         if(Constants.SHADOW_ENABLE && Constants.DELAY_ENABLE) {
             glUseProgram(shaderGeometryPass.getProgramId());
@@ -488,8 +511,12 @@ public class ShaderManager {
         OpenglUtils.checkGLError();
         //========================shadow 的shader 里===============================
         //影响阴影渲染里的灯光位置
-        glUseProgram(shadowShaderConfig.getProgramId());
 
+        if(shadowShaderConfig.getProgramId()>=0){
+            glUseProgram(shadowShaderConfig.getProgramId());
+
+
+        }
         OpenglUtils.checkGLError();
         if(Constants.SHADOW_ENABLE){
             shadow.setLightViewMatrix( GL_Matrix.multiply(ShaderUtils.ortho, GL_Matrix.LookAt(GamingState.instance.lightPos, new GL_Vector(-0.5f, -0.5f,0.5f).normalize())));
@@ -556,6 +583,7 @@ public class ShaderManager {
             System.exit(1);
         }
         glUseProgram(config.getProgramId());  OpenglUtils.checkGLError();
+        ShaderUtils.printProgramLog(config.getProgramId());
         //unifrom赋值===========================================================
         //投影矩阵
         int projectionLoc = glGetUniformLocation(config.getProgramId(), "projection");
@@ -570,6 +598,8 @@ public class ShaderManager {
         if(Constants.SHADOW_ENABLE) {
             int lightSpaceMatrixLoc = glGetUniformLocation(config.getProgramId(), "lightSpaceMatrix");
             //config.setProjLoc(projectionLoc);
+
+
             OpenglUtils.checkGLError();
             if (lightSpaceMatrixLoc >= 0) {
                 // GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);

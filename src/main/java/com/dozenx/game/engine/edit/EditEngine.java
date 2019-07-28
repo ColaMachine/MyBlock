@@ -1,7 +1,5 @@
 package com.dozenx.game.engine.edit;
 
-import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.animation.Animation;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.engine.paths.PathManager;
@@ -9,6 +7,7 @@ import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.math.AABB;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.model.*;
+import cola.machine.game.myblocks.model.base.*;
 import cola.machine.game.myblocks.model.textture.BoneBlock;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.registry.CoreRegistry;
@@ -1383,7 +1382,7 @@ public class EditEngine {
             block.width=block.width*xzoom;
             block.height=block.height*yzoom;
             block.thick=block.thick*zzoom;
-            if(block instanceof  RotateBlock){
+            if(block instanceof RotateBlock){
                 RotateBlock rotateBlock  = (RotateBlock)block;
                 rotateBlock.setCenterX(rotateBlock.getCenterX()*xzoom);
                 rotateBlock.setCenterY(rotateBlock.getCenterY()*yzoom);

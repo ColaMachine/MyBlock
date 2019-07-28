@@ -21,8 +21,6 @@ FragPos=vec3(model*vec4(position,1.0f));//真实的物体位置
 
 //转换成灯光视角中的位置
 //FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
-
-
 Normal=normal;
 ourTextureIndex=textureIndex;
 TexCoord = texCoord;

@@ -602,7 +602,7 @@ public class Document extends HtmlObject {
     private static final int FOCUS_KEY = Event.KEY_TAB;
 
     boolean isFocusKey() {
-        return event.keyCode == FOCUS_KEY &&
+        return/* (event.keyCode == Event.MOUSE_LBUTTON ||*/ event.keyCode == FOCUS_KEY &&
                 ((event.modifier & (Event.MODIFIER_CTRL | Event.MODIFIER_META | Event.MODIFIER_ALT)) == 0);
     }
 

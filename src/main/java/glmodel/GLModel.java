@@ -1,11 +1,15 @@
 package glmodel;
 
+import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.opengl.util.ShaderConfig;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.dozenx.game.opengl.util.Vao;
+import core.log.LogUtil;
 import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 /** 
  *  This class loads and renders a mesh from an OBJ file format.  The mesh can have
@@ -31,7 +35,12 @@ public class GLModel {
     }
 	public GLModel(String filename) {
 		// load OBJ file
-		mesh = loadMesh(filename);
+        if(!PathManager.getInstance().getHomePath().resolve(filename).toFile().exists()){
+            LogUtil.err("can't find the file"+PathManager.getInstance().getHomePath().resolve(filename).toString());
+            System.exit(0);
+
+        }
+        mesh = loadMesh(filename);
 	}
     public GLModel copyClone(){
         GLModel glModel =  new GLModel();
@@ -268,19 +277,38 @@ public class GLModel {
 
             for ( ; i < m.triangles.length && (t=m.triangles[i])!=null && currMtl == t.materialID; i++) {
                 //   GL11.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+                if(mtl.textureFile==null){
+                    // mtl.ambient.flip();
+
+                    ShaderUtils.glColor(mtl.diffuseAry[0],mtl.diffuseAry[1],mtl.diffuseAry[2]);
+
+                    ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
+                    ShaderUtils.glVertex3f( x+t.p1.pos.x,  y+t.p1.pos.y, z+t.p1.pos.z);
 
 
-                ShaderUtils.glTexCoord2f(t.uvw1.x, t.uvw1.y);
-                ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
-                ShaderUtils.glVertex3f( x+t.p1.pos.x,  y+t.p1.pos.y, z+t.p1.pos.z);
+                    ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
+                    ShaderUtils.glVertex3f( x+t.p2.pos.x, y+t.p2.pos.y, z+t.p2.pos.z);
 
-                ShaderUtils.glTexCoord2f(t.uvw2.x, t.uvw2.y);
-                ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
-                ShaderUtils.glVertex3f( x+t.p2.pos.x, y+t.p2.pos.y, z+t.p2.pos.z);
 
-                ShaderUtils.glTexCoord2f(t.uvw3.x, t.uvw3.y);
-                ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
-                ShaderUtils.glVertex3f( x+t.p3.pos.x, y+t.p3.pos.y, z+t.p3.pos.z);
+                    ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
+                    ShaderUtils.glVertex3f( x+t.p3.pos.x, y+t.p3.pos.y, z+t.p3.pos.z);
+
+                }else{
+                    ShaderUtils.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+                    ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
+                    ShaderUtils.glVertex3f( x+t.p1.pos.x,  y+t.p1.pos.y, z+t.p1.pos.z);
+
+                    ShaderUtils.glTexCoord2f(t.uvw2.x, t.uvw2.y);
+                    ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
+                    ShaderUtils.glVertex3f( x+t.p2.pos.x, y+t.p2.pos.y, z+t.p2.pos.z);
+
+                    ShaderUtils.glTexCoord2f(t.uvw3.x, t.uvw3.y);
+                    ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
+                    ShaderUtils.glVertex3f( x+t.p3.pos.x, y+t.p3.pos.y, z+t.p3.pos.z);
+                }
+
+
+
             }
 
         }
@@ -295,7 +323,7 @@ public class GLModel {
         int i = 0;
 
         // draw all triangles in object
-        ShaderUtils.glUse(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
+        //ShaderUtils.glUse(ShaderManager.livingThingShaderConfig,ShaderManager.livingThingShaderConfig.getVao());
        // ShaderUtils.glColor(1,1,1);//先暂时设定她的颜色值是黑色的
         for (i=0; i < m.triangles.length; ) {
 
@@ -312,19 +340,37 @@ public class GLModel {
 
             for ( ; i < m.triangles.length && (t=m.triangles[i])!=null && currMtl == t.materialID; i++) {
              //   GL11.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+                if(mtl.textureFile==null){
+                   // mtl.ambient.flip();
+
+                    ShaderUtils.glColor(1,1,1);
+
+                    ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
+                    ShaderUtils.glVertex3f( (float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z);
 
 
-				ShaderUtils.glTexCoord2f(t.uvw1.x, t.uvw1.y);
-                ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
-                ShaderUtils.glVertex3f( (float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z);
+                    ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
+                    ShaderUtils.glVertex3f( (float)t.p2.pos.x, (float)t.p2.pos.y, (float)t.p2.pos.z);
 
-                ShaderUtils.glTexCoord2f(t.uvw2.x, t.uvw2.y);
-                ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
-                ShaderUtils.glVertex3f( (float)t.p2.pos.x, (float)t.p2.pos.y, (float)t.p2.pos.z);
 
-               ShaderUtils.glTexCoord2f(t.uvw3.x, t.uvw3.y);
-                ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
-                ShaderUtils.glVertex3f( (float)t.p3.pos.x, (float)t.p3.pos.y, (float)t.p3.pos.z);
+                    ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
+                    ShaderUtils.glVertex3f( (float)t.p3.pos.x, (float)t.p3.pos.y, (float)t.p3.pos.z);
+
+                }else{
+                    ShaderUtils.glTexCoord2f(t.uvw1.x, t.uvw1.y);
+                    ShaderUtils.glNormal3f(t.norm1.x, t.norm1.y, t.norm1.z);
+                    ShaderUtils.glVertex3f( (float)t.p1.pos.x, (float)t.p1.pos.y, (float)t.p1.pos.z);
+
+                    ShaderUtils.glTexCoord2f(t.uvw2.x, t.uvw2.y);
+                    ShaderUtils.glNormal3f(t.norm2.x, t.norm2.y, t.norm2.z);
+                    ShaderUtils.glVertex3f( (float)t.p2.pos.x, (float)t.p2.pos.y, (float)t.p2.pos.z);
+
+                    ShaderUtils.glTexCoord2f(t.uvw3.x, t.uvw3.y);
+                    ShaderUtils.glNormal3f(t.norm3.x, t.norm3.y, t.norm3.z);
+                    ShaderUtils.glVertex3f( (float)t.p3.pos.x, (float)t.p3.pos.y, (float)t.p3.pos.z);
+                }
+
+
             }
 
         }

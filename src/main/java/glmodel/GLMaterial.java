@@ -49,6 +49,11 @@ public class GLMaterial {
     public FloatBuffer emission;     // glow color
     public FloatBuffer shininess;    // size of the reflection highlight
 
+
+    public float[] diffuseAry;
+    public float[] ambientAry;
+    public float[] specularAry;
+
     // hold name and texture values for this material
     public String mtlname = "noname";  // name of this material in the .mtl and .obj files
     public String textureFile = null;  // texture filename (null if no texture)

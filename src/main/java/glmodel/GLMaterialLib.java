@@ -86,18 +86,21 @@ public class GLMaterialLib {
     					// Kd 1.0 0.0 0.5
     					if ((rgb = read3Floats(line)) != null) {
     						material.setDiffuse(rgb);
+							material.diffuseAry =rgb;
     					}
     				}
     				else if (line.startsWith("Ka")) {
     					// Ka 1.0 0.0 0.5
     					if ((rgb = read3Floats(line)) != null) {
     						material.setAmbient(rgb);
+							material.ambientAry =rgb;
     					}
     				}
     				else if (line.startsWith("Ks")) {
     					// Ks 1.0 0.0 0.5
     					if ((rgb = read3Floats(line)) != null) {
     						material.setSpecular(rgb);
+							material.specularAry =rgb;
     					}
     				}
     				else if (line.startsWith("Ns")) {

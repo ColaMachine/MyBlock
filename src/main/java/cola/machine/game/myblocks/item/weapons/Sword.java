@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.item.weapons;
 
 import cola.machine.game.myblocks.Color;
-import cola.machine.game.myblocks.model.ColorBlock;
+import cola.machine.game.myblocks.model.base.ColorBlock;
 import cola.machine.game.myblocks.model.IBlock;
 import com.dozenx.util.ImageUtil;
 import org.lwjgl.opengl.GL11;

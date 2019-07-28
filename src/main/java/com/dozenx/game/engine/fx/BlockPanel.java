@@ -2,10 +2,11 @@ package com.dozenx.game.engine.fx;
 
 import cola.machine.game.myblocks.engine.modes.GamingState;
 import cola.machine.game.myblocks.model.*;
+import cola.machine.game.myblocks.model.base.BaseBlock;
+import cola.machine.game.myblocks.model.base.ColorBlock;
+import cola.machine.game.myblocks.model.base.ImageBlock;
+import cola.machine.game.myblocks.model.base.RotateImageBlock;
 import cola.machine.game.myblocks.switcher.Switcher;
-import com.dozenx.game.engine.edit.EditEngine;
-import com.dozenx.game.engine.item.action.ItemManager;
-import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.util.StringUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -970,7 +971,7 @@ public class BlockPanel extends Tab {
         selectGrid.add(list,0, 22,3,1);
 Button readBoneBlockBtn =new Button("读取骨节点");
         selectGrid.add(readBoneBlockBtn,4, 22);
-        final HashMap<String,BaseBlock > blockMap =new HashMap<>();
+        final HashMap<String,BaseBlock> blockMap =new HashMap<>();
         readBoneBlockBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
