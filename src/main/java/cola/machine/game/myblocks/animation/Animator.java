@@ -183,431 +183,431 @@ public class Animator {
      */
     boolean direction =true;
 
-
-    public void process(Long nowTime) throws Exception {
-        synchronized (this) {
-            //LogUtil.println("nowTime" + nowTime);
-            if (slot >= frames.length) {
-                complete = true;
-                LogUtil.println("动画结束x'd");
-                return;
-            }
-            int timeInterval =  (int)(nowTime - startTime);
-            int nowCount = timeInterval/animation.oneTime;
-
-             int jiange =timeInterval%animation.oneTime;//算出本轮的运行时间
-
-          //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
-            if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
-                //表示运行结束
-                if(animation.animation_fill_mode.equals("forwards"))
-                {
-                    //保留最后动画
-                    //LogUtil.println("forward");
-                    if(frames[0].transform.rotateX!=null){
-                        component.rotateX=frames[0].transform.rotateX;
-                    }
-                    if(frames[0].transform.rotateY!=null){
-                        component.rotateY=frames[0].transform.rotateY;
-                    }
-                    if(frames[0].transform.rotateZ!=null){
-                        component.rotateZ=frames[0].transform.rotateZ;
-                    }
-
-                }else if(animation.animation_fill_mode.equals("backwards")){
-                    if(frames[frames.length-1].transform.rotateX!=null){
-                        component.rotateX=frames[frames.length-1].transform.rotateX;
-                    }
-                    if(frames[frames.length-1].transform.rotateY!=null){
-                        component.rotateY=frames[frames.length-1].transform.rotateY;
-                    }
-                    if(frames[frames.length-1].transform.rotateZ!=null){
-                        component.rotateZ=frames[frames.length-1].transform.rotateZ;
-                    }
-                }else if(animation.animation_fill_mode.equals("normal")){
-
-                }
-
+//
+//    public void process(Long nowTime) throws Exception {
+//        synchronized (this) {
+//            //LogUtil.println("nowTime" + nowTime);
+//            if (slot >= frames.length) {
+//                complete = true;
+//                LogUtil.println("动画结束x'd");
+//                return;
+//            }
+//            int timeInterval =  (int)(nowTime - startTime);
+//            int nowCount = timeInterval/animation.oneTime;
+//
+//             int jiange =timeInterval%animation.oneTime;//算出本轮的运行时间
+//
+//          //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
+//            if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
+//                //表示运行结束
+//                if(animation.animation_fill_mode.equals("forwards"))
+//                {
+//                    //保留最后动画
+//                    //LogUtil.println("forward");
+//                    if(frames[0].transform.rotateX!=null){
+//                        component.rotateX=frames[0].transform.rotateX;
+//                    }
+//                    if(frames[0].transform.rotateY!=null){
+//                        component.rotateY=frames[0].transform.rotateY;
+//                    }
+//                    if(frames[0].transform.rotateZ!=null){
+//                        component.rotateZ=frames[0].transform.rotateZ;
+//                    }
+//
+//                }else if(animation.animation_fill_mode.equals("backwards")){
+//                    if(frames[frames.length-1].transform.rotateX!=null){
+//                        component.rotateX=frames[frames.length-1].transform.rotateX;
+//                    }
+//                    if(frames[frames.length-1].transform.rotateY!=null){
+//                        component.rotateY=frames[frames.length-1].transform.rotateY;
+//                    }
+//                    if(frames[frames.length-1].transform.rotateZ!=null){
+//                        component.rotateZ=frames[frames.length-1].transform.rotateZ;
+//                    }
+//                }else if(animation.animation_fill_mode.equals("normal")){
+//
+//                }
+//
+////                LogUtil.println("动画结束");
+//                //是不是在本次时间范围内
+//                complete=true;
+//                return;
+//            }/*else
+//            if(jiange>animation.animation_duration*1000*animation.animation_iteration_count){
 //                LogUtil.println("动画结束");
-                //是不是在本次时间范围内
-                complete=true;
-                return;
-            }/*else
-            if(jiange>animation.animation_duration*1000*animation.animation_iteration_count){
-                LogUtil.println("动画结束");
-                //是不是在本次时间范围内
-                complete=true;
-                return;
-            }*/else if(nowCount==count/*jiange<animation.oneTime*//**(count+1)*/){//判断本轮的运行是否完成
-                //LogUtil.println("--------------又进入了");
-                if(direction) {//判断方向 如果是正向
-                    if (slot >= timeSlice.length - 1) {
-                        throw new Exception("数组越界");
-                    }
-                    if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
-                        if (rotateX_speed != null) {
-                            component.rotateX += rotateX_speed * (nowTime - lastTime);
-                            //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
-                            //System.out.println("component.rotateX:" + component.rotateX);
-                        }
-                        if (rotateY_speed != null) {
-                            component.rotateY += rotateY_speed * (nowTime - lastTime);
-                        }
-                        if (rotateZ_speed != null) {
-                            component.rotateZ += rotateZ_speed * (nowTime - lastTime);
-                        }
-                        lastTime = nowTime;
-                    } else if(jiange<timeSlice[slot ]) {
-                        LogUtil.println("slot 不在本轮周期中");
-
-                    }else {//超过制定时间了
-                        //需要变更到下一个frame 区域里了
-                        //lastTime = nowTime;
-                        if (slot+2 >= frames.length) {
-                            LogUtil.println("进入这里就见鬼了++");
-                            return;
-
-                        }
-                        slot++;
-                       // LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
-                        //重新计算
-                        accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
-                    }
-                }else{
-                    jiange= animation.animation_duration*1000- jiange;
-
-                    if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
-                        if (rotateX_speed != null) {
-                            component.rotateX += rotateX_speed * (nowTime - lastTime);
-                            //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
-                           // System.out.println("component.rotateX:" + component.rotateX);
-                        }
-                        if (rotateY_speed != null) {
-                            component.rotateY += rotateY_speed * (nowTime - lastTime);
-                            //component.rotateY += rotateY_speed;
-                        }
-                        if (rotateZ_speed != null) {
-                            //component.rotateZ += rotateZ_speed;
-                            component.rotateZ += rotateZ_speed * (nowTime - lastTime);
-                            LogUtil.println("rotateZ"+component.rotateZ);
-                        }
-                        lastTime = nowTime;
-                    } else {//超过制定时间了
-                        //需要变更到下一个frame 区域里了
-                        //lastTime = nowTime;
-                        if (slot==0) {
-                            throw new Exception("进入这里就见鬼了");
-                        }
-                        slot--;
-                        //重新计算
-                        accSpeed(frames[slot+1],frames[slot],timeSlice[slot+1]-timeSlice[slot]);
-                    }
-                }
-
-            }else{
-
-
-                if(animation.animation_direction.equals("alternate")){
-                    direction=!direction;
-                   // LogUtil.println("反向运动"+direction);
-                }else{
-
-                }
-                count =nowCount;
-               if(direction){
-                   slot=0;
-                   accSpeed(frames[0],frames[1],timeSlice[1]-timeSlice[0]);
-               }else{
-                   accSpeed(frames[frames.length-1],frames[frames.length-2],timeSlice[frames.length-1]-timeSlice[frames.length-2]);
-                   //计算速度
-
-                   //slot不用变;
-               }
-                //count++;startTime=nowTime;
-
-                //LogUtil.println("count++:"+count);
-
-            }
-
-        }
-
-    }
-
-
-
-    public void process2(Long nowTime) throws Exception {
-        synchronized (this) {
-            //LogUtil.println("nowTime" + nowTime);
-            if (slot >= frames.length) {
-                complete = true;
-                LogUtil.println("动画结束x'd");
-                return;
-            }
-            int timeInterval =  (int)(nowTime - startTime);
-            int nowCount = timeInterval/animation.oneTime;
-
-            int jiange =timeInterval%animation.oneTime;//算出本轮的运行时间
-
-            //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
-            if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
-                //表示运行结束
-                if(animation.animation_fill_mode.equals("forwards"))
-                {
-                    //保留最后动画
-                    //LogUtil.println("forward");
-                    if(frames[0].transform.rotateX!=null){
-                        component.rotateX=frames[0].transform.rotateX;
-                    }
-                    if(frames[0].transform.rotateY!=null){
-                        component.rotateY=frames[0].transform.rotateY;
-                    }
-                    if(frames[0].transform.rotateZ!=null){
-                        component.rotateZ=frames[0].transform.rotateZ;
-                    }
-
-
-                }else if(animation.animation_fill_mode.equals("backwards")){
-                    if(frames[frames.length-1].transform.rotateX!=null){
-                        component.rotateX=frames[frames.length-1].transform.rotateX;
-                    }
-                    if(frames[frames.length-1].transform.rotateY!=null){
-                        component.rotateY=frames[frames.length-1].transform.rotateY;
-                    }
-                    if(frames[frames.length-1].transform.rotateZ!=null){
-                        component.rotateZ=frames[frames.length-1].transform.rotateZ;
-                    }
-                }else if(animation.animation_fill_mode.equals("normal")){
-
-                }
-
-//                LogUtil.println("动画结束");
-                //是不是在本次时间范围内
-                complete=true;
-                return;
-            }/*else
-            if(jiange>animation.animation_duration*1000*animation.animation_iteration_count){
-                LogUtil.println("动画结束");
-                //是不是在本次时间范围内
-                complete=true;
-                return;
-            }*/else if(nowCount==count/*jiange<animation.oneTime*//**(count+1)*/){//判断本轮的运行是否完成
-                //LogUtil.println("--------------又进入了");
-                if(direction) {//判断方向 如果是正向
-                    if (slot >= timeSlice.length - 1) {
-                        throw new Exception("数组越界");
-                    }
-                    if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
-                            if(frames[slot].transform.rotateX!=null) {
-                                component.rotateX = frames[slot].transform.rotateX*Constants.PIdiv180;
-                            }
-                            //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
-                            //System.out.println("component.rotateX:" + component.rotateX);
-                        if(frames[slot].transform.rotateY!=null) {
-                            component.rotateY = frames[slot].transform.rotateY*Constants.PIdiv180;
-                        }
-                        if(frames[slot].transform.rotateZ!=null) {
-                            component.rotateZ = frames[slot].transform.rotateZ*Constants.PIdiv180;
-                        }
-                        lastTime = nowTime;
-                    } else {//超过制定时间了
-                        //需要变更到下一个frame 区域里了
-                        //lastTime = nowTime;
-                        if (slot+2 >= frames.length) {
-                            LogUtil.println("进入这里就见鬼了++");
-                            return;
-
-                        }
-                        slot++;
-                        // LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
-                        //重新计算
-                      //  accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
-                    }
-                }else{
-                    jiange= animation.animation_duration*1000- jiange;
-
-                    if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
-
-                        if(frames[slot].transform.rotateX!=null) {
-                            component.rotateX = frames[slot].transform.rotateX*Constants.PIdiv180;
-                        }
-                        //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
-                        //System.out.println("component.rotateX:" + component.rotateX);
-                        if(frames[slot].transform.rotateY!=null) {
-                            component.rotateY = frames[slot].transform.rotateY*Constants.PIdiv180;
-                        }
-                        if(frames[slot].transform.rotateZ!=null) {
-                            component.rotateZ = frames[slot].transform.rotateZ*Constants.PIdiv180;
-                        }
+//                //是不是在本次时间范围内
+//                complete=true;
+//                return;
+//            }*/else if(nowCount==count/*jiange<animation.oneTime*//**(count+1)*/){//判断本轮的运行是否完成
+//                //LogUtil.println("--------------又进入了");
+//                if(direction) {//判断方向 如果是正向
+//                    if (slot >= timeSlice.length - 1) {
+//                        throw new Exception("数组越界");
+//                    }
+//                    if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
+//                        if (rotateX_speed != null) {
 //                            component.rotateX += rotateX_speed * (nowTime - lastTime);
-//
+//                            //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
+//                            //System.out.println("component.rotateX:" + component.rotateX);
+//                        }
+//                        if (rotateY_speed != null) {
 //                            component.rotateY += rotateY_speed * (nowTime - lastTime);
-//
+//                        }
+//                        if (rotateZ_speed != null) {
 //                            component.rotateZ += rotateZ_speed * (nowTime - lastTime);
-
-                        lastTime = nowTime;
-                    } else {//超过制定时间了
-                        //需要变更到下一个frame 区域里了
-                        //lastTime = nowTime;
-                        if (slot==0) {
-                            throw new Exception("进入这里就见鬼了");
-                        }
-                        slot--;
-                        //重新计算
-                     //   accSpeed(frames[slot+1],frames[slot],timeSlice[slot+1]-timeSlice[slot]);
-                    }
-                }
-
-            }else{
-
-
-                if(animation.animation_direction.equals("alternate")){
-                    direction=!direction;
-                    // LogUtil.println("反向运动"+direction);
-                }else{
-
-                }
-                count =nowCount;
-                if(direction){
-                    slot=0;
-                  //  accSpeed(frames[0],frames[1],timeSlice[1]-timeSlice[0]);
-                }else{
-                   // accSpeed(frames[frames.length-1],frames[frames.length-2],timeSlice[frames.length-1]-timeSlice[frames.length-2]);
-                    //计算速度
-
-                    //slot不用变;
-                }
-                //count++;startTime=nowTime;
-
-                //LogUtil.println("count++:"+count);
-
-            }
-
-        }
-
-    }
-
-
-    public void process3(Long nowTime) throws Exception {
-        synchronized (this) {
-            //LogUtil.println("nowTime" + nowTime);
-            if (slot >= frames.length) {
-                complete = true;
-                LogUtil.println("动画结束x'd");
-                return;
-            }
-            int timeInterval =  (int)(nowTime - startTime);
-            int nowCount = timeInterval/animation.oneTime;
-
-            int jiange =timeInterval%animation.oneTime;//算出本轮的运行时间
-
-            //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
-            KeyFrame keyFrame =null;
-            if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
-                //表示运行结束
-                if(animation.animation_fill_mode.equals("forwards")||animation.animation_fill_mode.equals("normal"))
-                {
-                    keyFrame = frames[0];
-                    //保留最后动画
-                    //LogUtil.println("forward");
-                }else if(animation.animation_fill_mode.equals("backwards")){
-                    keyFrame = frames[frames.length-1];
-                }
-                //是不是在本次时间范围内
-                complete=true;
-                component.transform.clear();
-                return;
-            }else if(nowCount==count/*jiange<animation.oneTime*//**(count+1)*/){//判断本轮的运行是否完成
-                //LogUtil.println("--------------又进入了");
-                if(direction) {//判断方向 如果是正向
-                    if (slot >= timeSlice.length - 1) {
-                        throw new Exception("数组越界");
-                    }
-                    if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
-                        keyFrame =frames[slot];
-
-                        lastTime = nowTime;
-                    } else {//超过制定时间了
-                        //需要变更到下一个frame 区域里了
-                        //lastTime = nowTime;
-                        if (slot+2 >= frames.length) {
-                            LogUtil.println("进入这里就见鬼了++");
-                            return;
-
-                        }
-                        slot++;
-                        // LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
-                        //重新计算
-                        //  accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
-                    }
-                }else{
-                    jiange= animation.animation_duration*1000- jiange;
-
-                    if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
-                        keyFrame = frames[slot];
-                        lastTime = nowTime;
-                    } else {//超过制定时间了
-                        //需要变更到下一个frame 区域里了
-                        //lastTime = nowTime;
-                        if (slot==0) {
-                            throw new Exception("进入这里就见鬼了");
-                        }
-                        slot--;
-                        keyFrame = frames[slot];
-                        //重新计算
-                    }
-                }
-                keyFrame =frames[slot];
-            }else{
-                if(animation.animation_direction.equals("alternate")){
-                    direction=!direction;
-                }else{
-                }
-                count =nowCount;
-                if(direction){
-                    slot=0;
-                }else{
-                }
-                keyFrame =frames[slot];
-            }
-
-            if(keyFrame.transform.rotateX!=null){
-                component.transform.rotateX=keyFrame.transform.rotateX;
-            }
-            if(keyFrame.transform.rotateY!=null){
-                component.transform.rotateY=keyFrame.transform.rotateY;
-            }
-            if(keyFrame.transform.rotateZ!=null){
-                component.transform.rotateZ=keyFrame.transform.rotateZ;
-            }
-
-            if(keyFrame.transform.translateX!=null){
-                component.transform.translateX=keyFrame.transform.translateX;
-            }
-            if(keyFrame.transform.translateY!=null){
-                component.transform.translateY=keyFrame.transform.translateY;
-            }
-            if(keyFrame.transform.translateZ!=null){
-                component.transform.translateZ=keyFrame.transform.translateZ;
-            }
-
-            if(keyFrame.transform.scaleX!=null){
-                component.transform.scaleX=keyFrame.transform.scaleX;
-            }
-            if(keyFrame.transform.scaleY!=null){
-                component.transform.scaleY=keyFrame.transform.scaleY;
-            }
-            if(keyFrame.transform.scaleZ!=null){
-                component.transform.scaleZ=keyFrame.transform.scaleZ;
-            }
-
-        }
-
-    }
-
-
-
-
-
+//                        }
+//                        lastTime = nowTime;
+//                    } else if(jiange<timeSlice[slot ]) {
+//                        LogUtil.println("slot 不在本轮周期中");
+//
+//                    }else {//超过制定时间了
+//                        //需要变更到下一个frame 区域里了
+//                        //lastTime = nowTime;
+//                        if (slot+2 >= frames.length) {
+//                            LogUtil.println("进入这里就见鬼了++");
+//                            return;
+//
+//                        }
+//                        slot++;
+//                       // LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
+//                        //重新计算
+//                        accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
+//                    }
+//                }else{
+//                    jiange= animation.animation_duration*1000- jiange;
+//
+//                    if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
+//                        if (rotateX_speed != null) {
+//                            component.rotateX += rotateX_speed * (nowTime - lastTime);
+//                            //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
+//                           // System.out.println("component.rotateX:" + component.rotateX);
+//                        }
+//                        if (rotateY_speed != null) {
+//                            component.rotateY += rotateY_speed * (nowTime - lastTime);
+//                            //component.rotateY += rotateY_speed;
+//                        }
+//                        if (rotateZ_speed != null) {
+//                            //component.rotateZ += rotateZ_speed;
+//                            component.rotateZ += rotateZ_speed * (nowTime - lastTime);
+//                            LogUtil.println("rotateZ"+component.rotateZ);
+//                        }
+//                        lastTime = nowTime;
+//                    } else {//超过制定时间了
+//                        //需要变更到下一个frame 区域里了
+//                        //lastTime = nowTime;
+//                        if (slot==0) {
+//                            throw new Exception("进入这里就见鬼了");
+//                        }
+//                        slot--;
+//                        //重新计算
+//                        accSpeed(frames[slot+1],frames[slot],timeSlice[slot+1]-timeSlice[slot]);
+//                    }
+//                }
+//
+//            }else{
+//
+//
+//                if(animation.animation_direction.equals("alternate")){
+//                    direction=!direction;
+//                   // LogUtil.println("反向运动"+direction);
+//                }else{
+//
+//                }
+//                count =nowCount;
+//               if(direction){
+//                   slot=0;
+//                   accSpeed(frames[0],frames[1],timeSlice[1]-timeSlice[0]);
+//               }else{
+//                   accSpeed(frames[frames.length-1],frames[frames.length-2],timeSlice[frames.length-1]-timeSlice[frames.length-2]);
+//                   //计算速度
+//
+//                   //slot不用变;
+//               }
+//                //count++;startTime=nowTime;
+//
+//                //LogUtil.println("count++:"+count);
+//
+//            }
+//
+//        }
+//
+//    }
+//
+//
+//
+//    public void process2(Long nowTime) throws Exception {
+//        synchronized (this) {
+//            //LogUtil.println("nowTime" + nowTime);
+//            if (slot >= frames.length) {
+//                complete = true;
+//                LogUtil.println("动画结束x'd");
+//                return;
+//            }
+//            int timeInterval =  (int)(nowTime - startTime);
+//            int nowCount = timeInterval/animation.oneTime;
+//
+//            int jiange =timeInterval%animation.oneTime;//算出本轮的运行时间
+//
+//            //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
+//            if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
+//                //表示运行结束
+//                if(animation.animation_fill_mode.equals("forwards"))
+//                {
+//                    //保留最后动画
+//                    //LogUtil.println("forward");
+//                    if(frames[0].transform.rotateX!=null){
+//                        component.rotateX=frames[0].transform.rotateX;
+//                    }
+//                    if(frames[0].transform.rotateY!=null){
+//                        component.rotateY=frames[0].transform.rotateY;
+//                    }
+//                    if(frames[0].transform.rotateZ!=null){
+//                        component.rotateZ=frames[0].transform.rotateZ;
+//                    }
+//
+//
+//                }else if(animation.animation_fill_mode.equals("backwards")){
+//                    if(frames[frames.length-1].transform.rotateX!=null){
+//                        component.rotateX=frames[frames.length-1].transform.rotateX;
+//                    }
+//                    if(frames[frames.length-1].transform.rotateY!=null){
+//                        component.rotateY=frames[frames.length-1].transform.rotateY;
+//                    }
+//                    if(frames[frames.length-1].transform.rotateZ!=null){
+//                        component.rotateZ=frames[frames.length-1].transform.rotateZ;
+//                    }
+//                }else if(animation.animation_fill_mode.equals("normal")){
+//
+//                }
+//
+////                LogUtil.println("动画结束");
+//                //是不是在本次时间范围内
+//                complete=true;
+//                return;
+//            }/*else
+//            if(jiange>animation.animation_duration*1000*animation.animation_iteration_count){
+//                LogUtil.println("动画结束");
+//                //是不是在本次时间范围内
+//                complete=true;
+//                return;
+//            }*/else if(nowCount==count/*jiange<animation.oneTime*//**(count+1)*/){//判断本轮的运行是否完成
+//                //LogUtil.println("--------------又进入了");
+//                if(direction) {//判断方向 如果是正向
+//                    if (slot >= timeSlice.length - 1) {
+//                        throw new Exception("数组越界");
+//                    }
+//                    if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
+//                            if(frames[slot].transform.rotateX!=null) {
+//                                component.rotateX = frames[slot].transform.rotateX*Constants.PIdiv180;
+//                            }
+//                            //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
+//                            //System.out.println("component.rotateX:" + component.rotateX);
+//                        if(frames[slot].transform.rotateY!=null) {
+//                            component.rotateY = frames[slot].transform.rotateY*Constants.PIdiv180;
+//                        }
+//                        if(frames[slot].transform.rotateZ!=null) {
+//                            component.rotateZ = frames[slot].transform.rotateZ*Constants.PIdiv180;
+//                        }
+//                        lastTime = nowTime;
+//                    } else {//超过制定时间了
+//                        //需要变更到下一个frame 区域里了
+//                        //lastTime = nowTime;
+//                        if (slot+2 >= frames.length) {
+//                            LogUtil.println("进入这里就见鬼了++");
+//                            return;
+//
+//                        }
+//                        slot++;
+//                        // LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
+//                        //重新计算
+//                      //  accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
+//                    }
+//                }else{
+//                    jiange= animation.animation_duration*1000- jiange;
+//
+//                    if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
+//
+//                        if(frames[slot].transform.rotateX!=null) {
+//                            component.rotateX = frames[slot].transform.rotateX*Constants.PIdiv180;
+//                        }
+//                        //component.rotateX=frames[slot].transform.rotateX+rotateX_speed*(nowTime-startTime-timeSlice[slot]);
+//                        //System.out.println("component.rotateX:" + component.rotateX);
+//                        if(frames[slot].transform.rotateY!=null) {
+//                            component.rotateY = frames[slot].transform.rotateY*Constants.PIdiv180;
+//                        }
+//                        if(frames[slot].transform.rotateZ!=null) {
+//                            component.rotateZ = frames[slot].transform.rotateZ*Constants.PIdiv180;
+//                        }
+////                            component.rotateX += rotateX_speed * (nowTime - lastTime);
+////
+////                            component.rotateY += rotateY_speed * (nowTime - lastTime);
+////
+////                            component.rotateZ += rotateZ_speed * (nowTime - lastTime);
+//
+//                        lastTime = nowTime;
+//                    } else {//超过制定时间了
+//                        //需要变更到下一个frame 区域里了
+//                        //lastTime = nowTime;
+//                        if (slot==0) {
+//                            throw new Exception("进入这里就见鬼了");
+//                        }
+//                        slot--;
+//                        //重新计算
+//                     //   accSpeed(frames[slot+1],frames[slot],timeSlice[slot+1]-timeSlice[slot]);
+//                    }
+//                }
+//
+//            }else{
+//
+//
+//                if(animation.animation_direction.equals("alternate")){
+//                    direction=!direction;
+//                    // LogUtil.println("反向运动"+direction);
+//                }else{
+//
+//                }
+//                count =nowCount;
+//                if(direction){
+//                    slot=0;
+//                  //  accSpeed(frames[0],frames[1],timeSlice[1]-timeSlice[0]);
+//                }else{
+//                   // accSpeed(frames[frames.length-1],frames[frames.length-2],timeSlice[frames.length-1]-timeSlice[frames.length-2]);
+//                    //计算速度
+//
+//                    //slot不用变;
+//                }
+//                //count++;startTime=nowTime;
+//
+//                //LogUtil.println("count++:"+count);
+//
+//            }
+//
+//        }
+//
+//    }
+//
+//
+//    public void process3(Long nowTime) throws Exception {
+//        synchronized (this) {
+//            //LogUtil.println("nowTime" + nowTime);
+//            if (slot >= frames.length) {
+//                complete = true;
+//                LogUtil.println("动画结束x'd");
+//                return;
+//            }
+//            int timeInterval =  (int)(nowTime - startTime);
+//            int nowCount = timeInterval/animation.oneTime;
+//
+//            int jiange =timeInterval%animation.oneTime;//算出本轮的运行时间
+//
+//            //  LogUtil.println(nowTime+":"+startTime+":"+jiange+":"+count);
+//            KeyFrame keyFrame =null;
+//            if(nowCount >= animation.animation_iteration_count){//如果超出了运行的轮次
+//                //表示运行结束
+//                if(animation.animation_fill_mode.equals("forwards")||animation.animation_fill_mode.equals("normal"))
+//                {
+//                    keyFrame = frames[0];
+//                    //保留最后动画
+//                    //LogUtil.println("forward");
+//                }else if(animation.animation_fill_mode.equals("backwards")){
+//                    keyFrame = frames[frames.length-1];
+//                }
+//                //是不是在本次时间范围内
+//                complete=true;
+//                component.transform.clear();
+//                return;
+//            }else if(nowCount==count/*jiange<animation.oneTime*//**(count+1)*/){//判断本轮的运行是否完成
+//                //LogUtil.println("--------------又进入了");
+//                if(direction) {//判断方向 如果是正向
+//                    if (slot >= timeSlice.length - 1) {
+//                        throw new Exception("数组越界");
+//                    }
+//                    if (jiange < timeSlice[slot + 1] && jiange >= timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
+//                        keyFrame =frames[slot];
+//
+//                        lastTime = nowTime;
+//                    } else {//超过制定时间了
+//                        //需要变更到下一个frame 区域里了
+//                        //lastTime = nowTime;
+//                        if (slot+2 >= frames.length) {
+//                            LogUtil.println("进入这里就见鬼了++");
+//                            return;
+//
+//                        }
+//                        slot++;
+//                        // LogUtil.println("slot++:"+(slot-1)+"==>"+slot);
+//                        //重新计算
+//                        //  accSpeed(frames[slot],frames[slot+1],timeSlice[slot+1]-timeSlice[slot]);
+//                    }
+//                }else{
+//                    jiange= animation.animation_duration*1000- jiange;
+//
+//                    if (jiange < timeSlice[slot + 1] && jiange > timeSlice[slot ] ) {//如果当前时间在当前frame 区域内
+//                        keyFrame = frames[slot];
+//                        lastTime = nowTime;
+//                    } else {//超过制定时间了
+//                        //需要变更到下一个frame 区域里了
+//                        //lastTime = nowTime;
+//                        if (slot==0) {
+//                            throw new Exception("进入这里就见鬼了");
+//                        }
+//                        slot--;
+//                        keyFrame = frames[slot];
+//                        //重新计算
+//                    }
+//                }
+//                keyFrame =frames[slot];
+//            }else{
+//                if(animation.animation_direction.equals("alternate")){
+//                    direction=!direction;
+//                }else{
+//                }
+//                count =nowCount;
+//                if(direction){
+//                    slot=0;
+//                }else{
+//                }
+//                keyFrame =frames[slot];
+//            }
+//
+//            if(keyFrame.transform.rotateX!=null){
+//                component.transform.rotateX=keyFrame.transform.rotateX;
+//            }
+//            if(keyFrame.transform.rotateY!=null){
+//                component.transform.rotateY=keyFrame.transform.rotateY;
+//            }
+//            if(keyFrame.transform.rotateZ!=null){
+//                component.transform.rotateZ=keyFrame.transform.rotateZ;
+//            }
+//
+//            if(keyFrame.transform.translateX!=null){
+//                component.transform.translateX=keyFrame.transform.translateX;
+//            }
+//            if(keyFrame.transform.translateY!=null){
+//                component.transform.translateY=keyFrame.transform.translateY;
+//            }
+//            if(keyFrame.transform.translateZ!=null){
+//                component.transform.translateZ=keyFrame.transform.translateZ;
+//            }
+//
+//            if(keyFrame.transform.scaleX!=null){
+//                component.transform.scaleX=keyFrame.transform.scaleX;
+//            }
+//            if(keyFrame.transform.scaleY!=null){
+//                component.transform.scaleY=keyFrame.transform.scaleY;
+//            }
+//            if(keyFrame.transform.scaleZ!=null){
+//                component.transform.scaleZ=keyFrame.transform.scaleZ;
+//            }
+//
+//        }
+//
+//    }
+//
+//
+//
+//
+//
 
     public void process5(Long nowTime) throws Exception {
         synchronized (this) {

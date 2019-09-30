@@ -16,6 +16,7 @@ import core.log.LogUtil;
 import de.matthiasmann.twl.*;
 import glapp.GLApp;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -667,7 +668,9 @@ public class HtmlObject implements Cloneable  {
 //
 //            }
             //GL11.glColor4f(1, 1, 1, 1);
-            ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.001f,this.getFontSize(),this.getColor());
+           // ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.001f,this.getFontSize(),this.getColor());
+
+            getDocument().font.drawStringShader(getInnerX(),getInnerY(),this.innerText,new org.newdawn.slick.Color(this.getColor().x,this.getColor().y,this.getColor().z),this.index+0.001f);
             //ShaderUtils.printText(this.innerText,getInnerX(),getInnerY(),this.index+0.0008f,this.getFontSize()+1,ShaderUtils.RGBA_BLUE);
             OpenglUtils.checkGLError();
 

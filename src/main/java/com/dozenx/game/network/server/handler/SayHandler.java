@@ -78,6 +78,12 @@ public class SayHandler extends GameServerHandler {
                     wolf = userService.getOnlinePlayerById(Integer.valueOf(name));
                     if (wolf != null) {
                         wolf.setPosition(x, y, z);
+                    }else{
+                        wolf = userService.getUserInfoByUserName(name);
+                        if (wolf != null) {
+                            wolf.setPosition(x, y, z);
+                            broadCast(new PosCmd(wolf.getInfo()));
+                        }
                     }
                 }
 

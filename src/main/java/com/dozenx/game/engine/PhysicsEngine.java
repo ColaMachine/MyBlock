@@ -26,7 +26,8 @@ public class PhysicsEngine {
     //when drop state happened
     public void gravitation(LivingThingBean livingThingBean){//每隔200ms 触发一次
         //对所有的生物进行
-        if(!livingThingBean .isStable() ){ // when drop happened to the livingthing
+        if(!livingThingBean .isStable()   ){ // when drop happened to the livingthing
+            livingThingBean.lastDropCheckTime = TimeUtil.getNowMills();
             long t = TimeUtil.getNowMills() - livingThingBean.jumpTime;//�˶���ʱ��
             float yDistance = livingThingBean.jumpSpeed * t / 1000 - 0.5f * (this.g) * t * t / 1000000;//�˶��ľ���
 
@@ -35,7 +36,7 @@ public class PhysicsEngine {
             if (livingThingBean.position.y <= livingThingBean.valleyBottom) {
                 //
                 //System.out.println("��ǰ��y" + mark);
-                livingThingBean.position.y = livingThingBean.valleyBottom;
+                livingThingBean.position.setY( livingThingBean.valleyBottom);
                 //livingThingBean.setStable( true);// return to the normal state
                 if(this.hasSomeThingUnderFoot(livingThingBean)){
                     standFirm(livingThingBean);
@@ -65,9 +66,10 @@ public class PhysicsEngine {
 
         //ȡ�����������������
 
-        if(livingThing.position.y<0){//触底了
-            livingThing.position.y=0f;
+        if(livingThing.position.y<=0.1){//触底了
+            livingThing.position.y=0.001f;
             livingThing.setStable(true);
+            return;
         }
         //========== when he is dropping we cauculate  where he will stand on======
         if(!livingThing.isStable()){//如果再掉落状态的话 更新valleyBottom
@@ -130,13 +132,13 @@ public class PhysicsEngine {
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
         float plr_world_pos_z=livingThing.position.z;
-
+        SimpleAABB simpleAABB = livingThing.getNowAABB();
         //
         float width = livingThing.getExecutor().getModel().getRootComponent().width;
         float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
         float height = livingThing.getExecutor().getModel().getRootComponent().height;
-        for(int offset_x= (int)Math.floor(livingThing.minX)-1 ; offset_x<=livingThing.maxX+1;offset_x++){
-            for(int offset_z= (int)Math.floor(livingThing.minZ) -1; offset_z<=livingThing.maxZ+1;offset_z++){
+        for(int offset_x= (int)Math.floor(simpleAABB.minX) ; offset_x<=simpleAABB.maxX;offset_x++){
+            for(int offset_z= (int)Math.floor(simpleAABB.minZ) ; offset_z<=simpleAABB.maxZ;offset_z++){
 
                 Chunk chunk_corner = null;
                 int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(offset_x );
@@ -178,7 +180,7 @@ public class PhysicsEngine {
                             }
                             if(block.isSpecial()){
                                 BaseBlock thisBlock =(BaseBlock) block;
-                                if(thisBlock.overlaps(livingThing)){
+                                if(thisBlock.overlaps(simpleAABB)){
                                     return true;
                                 }
                                 //return ;
@@ -208,7 +210,7 @@ public class PhysicsEngine {
      * @param livingThing
      * @return
      */
-    public GL_Vector collision(LivingThingBean livingThing){//位置发生改变之后 当要发生位移的时候可以事先调用此方法 用来判断是否可以移动
+    public GL_Vector collision(LivingThingBean livingThing){//位置发生改变之后 当要发生位移的时候可以事先调用此方法 用来判断是否可以移动  但是我觉的可以这里的窜入参数是一个aabb比较好
         int blockX,blockY,blockZ;
         float plr_world_pos_x=livingThing.position.x;
         float plr_world_pos_y=livingThing.position.y;
@@ -220,7 +222,7 @@ public class PhysicsEngine {
 
             return new GL_Vector(0,1,0);
         }
-        if(GamingState.player == null){
+        if(GamingState.player == null){//如果是服务端的话
             int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt( plr_world_pos_x);
             int temp_chunk_pos_z_16 = MathUtil.getBelongChunkInt(plr_world_pos_z);
             Chunk chunk_corner  = chunkProvider.getChunk(temp_chunk_pos_x_16,0,temp_chunk_pos_z_16);
@@ -245,8 +247,9 @@ public class PhysicsEngine {
         float width = livingThing.getExecutor().getModel().getRootComponent().width;
         float thick=livingThing.getExecutor().getModel().getRootComponent().thick;
         float height = livingThing.getExecutor().getModel().getRootComponent().height;
-        for(int x= (int)Math.floor(livingThing.minX)-1 ; x<=livingThing.maxX+1;x++){
-            for(int z= (int)Math.floor(livingThing.minZ) -1; z<=livingThing.maxZ+1;z++){
+        SimpleAABB simpleAABB = livingThing.getNowAABB();
+        for(int x= (int)Math.floor(simpleAABB.minX)-1 ; x<=simpleAABB.maxX+1;x++){
+            for(int z= (int)Math.floor(simpleAABB.minZ) -1; z<=simpleAABB.maxZ+1;z++){
 
                 Chunk chunk_corner = null;
                 int temp_chunk_pos_x_16 = MathUtil.getBelongChunkInt(x);
@@ -258,7 +261,7 @@ public class PhysicsEngine {
                     // LogUtil.err("may be the chunk_corner haven't been initialized the chunk_corner can't be null please debug it");
                     return null;
                 }
-                for(int y= (int)Math.floor(livingThing.minY) ; y<=livingThing.maxY;y++){
+                for(int y= (int)Math.floor(simpleAABB.minY) ; y<=simpleAABB.maxY;y++){
 
 
                         //get chunk from near
@@ -291,9 +294,9 @@ public class PhysicsEngine {
                                 if(blockAABB.overlaps(livingThing)){
 
 
-                                    return new GL_Vector(  ( livingThing.maxX+livingThing.minX) /2 - (blockAABB.maxX + blockAABB.minX)/2,
-                                            ( livingThing.maxY+livingThing.minY) /2 -        (blockAABB.maxY + blockAABB.minY)/2,
-                                            ( livingThing.maxZ+livingThing.minZ) /2 -     (blockAABB.maxZ + blockAABB.minZ)/2);
+                                    return new GL_Vector(  ( simpleAABB.maxX+simpleAABB.minX) /2 - (blockAABB.maxX + blockAABB.minX)/2,
+                                            ( simpleAABB.maxY+simpleAABB.minY) /2 -        (blockAABB.maxY + blockAABB.minY)/2,
+                                            ( simpleAABB.maxZ+simpleAABB.minZ) /2 -     (blockAABB.maxZ + blockAABB.minZ)/2);
 
                                 }
                           /*if(  MathUtil.testCubeXiangjiao(plr_world_pos_x-0.5f,plr_world_pos_y,plr_world_pos_z-0.5f,1,2,1,
@@ -311,12 +314,12 @@ public class PhysicsEngine {
                                 blockAABB.setAABB(x,y,z
                                         ,x+1,y+1,z+1
                                 );
-                                if(blockAABB.overlaps(livingThing)){
+                                if(blockAABB.overlaps(livingThing.getNowAABB())){
 
 
-                                    return new GL_Vector(  ( livingThing.maxX+livingThing.minX) /2 - (blockAABB.maxX + blockAABB.minX)/2,
-                                            ( livingThing.maxY+livingThing.minY) /2 -        (blockAABB.maxY + blockAABB.minY)/2,
-                                            ( livingThing.maxZ+livingThing.minZ) /2 -     (blockAABB.maxZ + blockAABB.minZ)/2);
+                                    return new GL_Vector(  ( simpleAABB.maxX+livingThing.minX) /2 - (blockAABB.maxX + blockAABB.minX)/2,
+                                            ( simpleAABB.maxY+livingThing.minY) /2 -        (blockAABB.maxY + blockAABB.minY)/2,
+                                            ( simpleAABB.maxZ+livingThing.minZ) /2 -     (blockAABB.maxZ + blockAABB.minZ)/2);
 
                                 }
                                // return new GL_Vector(x,y,z);

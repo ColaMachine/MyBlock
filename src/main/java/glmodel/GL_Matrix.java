@@ -613,50 +613,50 @@ public class GL_Matrix
     /**
      * 透视投影
      */
-    public static GL_Matrix perspective(float fov, float aspect,float zn,float zf )
-    {fov=(float)( Constants.PI1*fov);
-        GL_Matrix m = new GL_Matrix();
-       m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
-        m.m11=(float)(1/(Math.tan(fov*0.5f)));
-        m.m22=(float)(zf/(zf-zn));
-        m.m23=1.0f;
-		m.m33=0f;
-        m.m32=(float)(zn*zf/(zn-zf));
-        return m;
-    }
+//    public static GL_Matrix perspective(float fov, float aspect,float zn,float zf )
+//    {fov=(float)( Constants.PI1*fov);
+//        GL_Matrix m = new GL_Matrix();
+//       m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
+//        m.m11=(float)(1/(Math.tan(fov*0.5f)));
+//        m.m22=(float)(zf/(zf-zn));
+//        m.m23=1.0f;
+//		m.m33=0f;
+//        m.m32=(float)(zn*zf/(zn-zf));
+//        return m;
+//    }
 
     public static GL_Matrix
          LookAt (GL_Vector camera,GL_Vector direction1){
         //GL_Vector direction =  GL_Vector.sub(camera,target).normalize();
-
-        GL_Vector direction = new GL_Vector( -direction1.x,-direction1.y,-direction1.z);
-
-        GL_Vector up = new GL_Vector( 0,1,0);
-        GL_Vector cameraRight = GL_Vector.crossProduct(up,direction).normalize();
-        up = GL_Vector.crossProduct(direction,cameraRight).normalize();
-        GL_Matrix left = new GL_Matrix();
-        left.m00 = cameraRight.x;
-        left.m01=cameraRight.y;
-        left.m02=cameraRight.z;
-
-        left.m10 = up.x;
-        left.m11=up.y;
-        left.m12=up.z;
-
-        left.m20 = direction.x;
-        left.m21=direction.y;
-        left.m22=direction.z;
-
-        GL_Matrix right = new GL_Matrix();
-        right.m03 = -camera.x;
-
-        right.m13 = -camera.y;
-        right.m23 = -camera.z;
-
-        return GL_Matrix.multiply(left,right);
-//		GL_Matrix gl_matrix =new GL_Matrix();
-//		gl_matrix.lookAt(new Vector3f(camera.x,camera.y,camera.z),new Vector3f(direction1.x,direction1.y,direction1.z),new Vector3f(0,1,0));
-//		return gl_matrix;
+//
+//        GL_Vector direction = new GL_Vector( -direction1.x,-direction1.y,-direction1.z);
+//
+//        GL_Vector up = new GL_Vector( 0,1,0);
+//        GL_Vector cameraRight = GL_Vector.crossProduct(up,direction).normalize();
+//        up = GL_Vector.crossProduct(direction,cameraRight).normalize();
+//        GL_Matrix left = new GL_Matrix();
+//        left.m00 = cameraRight.x;
+//        left.m01=cameraRight.y;
+//        left.m02=cameraRight.z;
+//
+//        left.m10 = up.x;
+//        left.m11=up.y;
+//        left.m12=up.z;
+//
+//        left.m20 = direction.x;
+//        left.m21=direction.y;
+//        left.m22=direction.z;
+//
+//        GL_Matrix right = new GL_Matrix();
+//        right.m03 = -camera.x;
+//
+//        right.m13 = -camera.y;
+//        right.m23 = -camera.z;
+//
+//        return GL_Matrix.multiply(left,right);
+		GL_Matrix gl_matrix =new GL_Matrix();
+		gl_matrix.lookAt(new Vector3f(camera.x,camera.y,camera.z),new Vector3f(camera.x+direction1.x,camera.y+direction1.y,camera.z+direction1.z),new Vector3f(0,1,0));
+		return gl_matrix;
     }
 
 	public void lookAt(Vector3f position, Vector3f direction, Vector3f up) {
@@ -686,109 +686,134 @@ public class GL_Matrix
 		this.m23 = Vector3f.dot(f, position);
 	}
 
-	public static GL_Matrix perspective3(float fov, float aspect,float zn,float zf )
-	{
+//	public static GL_Matrix perspective3(float fov, float aspect,float zn,float zf )
+//	{
+//
+//        fov=(float)( Constants.PI1*fov);
+//		GL_Matrix m = new GL_Matrix();
+//		m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
+//		m.m11=(float)(1/(Math.tan(fov*0.5f)));
+//		m.m22=(float)(-zn-zf)/(zf-zn);
+//		m.m32=-1.0f;
+//
+//		m.m23=(float)(-2*zn*zf/(zf-zn));
+//		m.m33=0f;
+//		return m;
+//	}
 
-        fov=(float)( Constants.PI1*fov);
+//	public void initPerspectiveMatrix() {
+//		float fieldOfView = 60f;
+//		float aspectRatio = (float)Window.getWidth() / (float)Window.getHeight();
+//		float zNear = 0.1f;
+//		float zFar = 100f;
+//
+//		initPerspectiveMatrix(fieldOfView, aspectRatio, zNear, zFar);
+//	}
+	//60度   宽高比   近截面 远截面
+	public static GL_Matrix perspective3(float fieldOfView, float aspectRatio, float zNear, float zFar) {
+		float yScale = 1.0f / ((float) Math.tan(Math.toRadians(fieldOfView / 2.0f)));
+		float xScale = yScale / aspectRatio;
+		float depth = zFar - zNear;
+
+		//this.setIdentity();
 		GL_Matrix m = new GL_Matrix();
-		m.m00=(float)(1/(Math.tan(fov*0.5f)*aspect));
-		m.m11=(float)(1/(Math.tan(fov*0.5f)));
-		m.m22=(float)(-zn-zf)/(zf-zn);
-		m.m32=-1.0f;
-
-		m.m23=(float)(-2*zn*zf/(zf-zn));
-		m.m33=0f;
+		m.m00 = xScale;
+		m.m11 = yScale;
+		m.m22 = -((zFar + zNear) / depth);
+		m.m32 = -1;
+		m.m23 = -((2 * zNear * zFar) / depth);
+		m.m33 = 0;
 		return m;
 	}
-	public static GL_Matrix  perspective2(float fov, float aspect,float zn,float zf )
-	{GL_Matrix m = new GL_Matrix();
-		 float ar = aspect;
-		 float zNear = zn;
-		 float zFar = zf;
-		 float zRange = zn - zf;
-		double radi=  Constants.PI1*(fov / 2.0);
-		 float tanHalfFOV =(float)( Math.tan((float)radi));
-
-		m.m00 = 1.0f / (tanHalfFOV * ar);
-		m.m01 = 0.0f;
-		m.m02 = 0.0f;
-		m.m03 = 0.0f;
-
-		m.m10 = 0.0f;
-		m.m11 = 1.0f / tanHalfFOV;
-		m.m12 = 0.0f;
-		m.m13 = 0.0f;
-
-		m.m20 = 0.0f;
-		m.m21 = 0.0f;
-		m.m22 = (-zNear - zFar) / zRange;
-		m.m23= 2.0f * zFar * zNear / zRange;
-
-		m.m30= 0.0f;
-		m.m31 = 0.0f;
-		m.m32 = 1.0f;
-		m.m33 = 0.0f;
-		return m;
-	}
-    public static GL_Matrix  perspective4   (float fov, float aspect,float zn,float zf )
-    {GL_Matrix m = new GL_Matrix();
-        float ar = aspect;
-        float zNear = zn;
-        float zFar = zf;
-        float zRange = zn - zf;
-        double radi=  Constants.PI1*(fov / 2.0);
-        float tanHalfFOV =(float)( Math.tan((float)radi));
-
-        m.m00 = 1.0f / (tanHalfFOV * ar);
-        m.m01 = 0.0f;
-        m.m02 = 0.0f;
-        m.m03 = 0.0f;
-
-        m.m10 = 0.0f;
-        m.m11 = 1.0f / tanHalfFOV;
-        m.m12 = 0.0f;
-        m.m13 = 0.0f;
-
-        m.m20 = 0.0f;
-        m.m21 = 0.0f;
-        m.m22 = (-zNear - zFar) / zRange;
-        m.m23= 2.0f * zFar * zNear / zRange;
-
-        m.m30= 0.0f;
-        m.m31 = 0.0f;
-        m.m32 = 1.0f;
-        m.m33 = 0.0f;
-        return m;
-    }
+//	public static GL_Matrix  perspective2(float fov, float aspect,float zn,float zf )
+//	{GL_Matrix m = new GL_Matrix();
+//		 float ar = aspect;
+//		 float zNear = zn;
+//		 float zFar = zf;
+//		 float zRange = zn - zf;
+//		double radi=  Constants.PI1*(fov / 2.0);
+//		 float tanHalfFOV =(float)( Math.tan((float)radi));
+//
+//		m.m00 = 1.0f / (tanHalfFOV * ar);
+//		m.m01 = 0.0f;
+//		m.m02 = 0.0f;
+//		m.m03 = 0.0f;
+//
+//		m.m10 = 0.0f;
+//		m.m11 = 1.0f / tanHalfFOV;
+//		m.m12 = 0.0f;
+//		m.m13 = 0.0f;
+//
+//		m.m20 = 0.0f;
+//		m.m21 = 0.0f;
+//		m.m22 = (-zNear - zFar) / zRange;
+//		m.m23= 2.0f * zFar * zNear / zRange;
+//
+//		m.m30= 0.0f;
+//		m.m31 = 0.0f;
+//		m.m32 = 1.0f;
+//		m.m33 = 0.0f;
+//		return m;
+//	}
+//    public static GL_Matrix  perspective4   (float fov, float aspect,float zn,float zf )
+//    {GL_Matrix m = new GL_Matrix();
+//        float ar = aspect;
+//        float zNear = zn;
+//        float zFar = zf;
+//        float zRange = zn - zf;
+//        double radi=  Constants.PI1*(fov / 2.0);
+//        float tanHalfFOV =(float)( Math.tan((float)radi));
+//
+//        m.m00 = 1.0f / (tanHalfFOV * ar);
+//        m.m01 = 0.0f;
+//        m.m02 = 0.0f;
+//        m.m03 = 0.0f;
+//
+//        m.m10 = 0.0f;
+//        m.m11 = 1.0f / tanHalfFOV;
+//        m.m12 = 0.0f;
+//        m.m13 = 0.0f;
+//
+//        m.m20 = 0.0f;
+//        m.m21 = 0.0f;
+//        m.m22 = (-zNear - zFar) / zRange;
+//        m.m23= 2.0f * zFar * zNear / zRange;
+//
+//        m.m30= 0.0f;
+//        m.m31 = 0.0f;
+//        m.m32 = 1.0f;
+//        m.m33 = 0.0f;
+//        return m;
+//    }
 
     /**
      * 正交投影
      */
-    public static GL_Matrix perspective(float left, float right,float bottom,float top ,float near ,float far)
-    {
-        GL_Matrix m = new GL_Matrix();
-        m.m00=2/(right-left);
-        m.m01=0;
-        m.m02=0;
-        m.m03=-(right+left)/(right-left);
-
-        m.m10=0;
-        m.m11=2/(top-bottom);
-        m.m12=0;
-        m.m13=-(top+bottom)/(top-bottom);
-
-        m.m20=0;
-        m.m21=0;
-        m.m22=-2/(far-near);
-        m.m23=-(far+near)/(far-near);
-
-        m.m30=0;
-        m.m31=0;
-        m.m32=0;
-        m.m33=1;
-
-        return m;
-    }
+//    public static GL_Matrix perspective(float left, float right,float bottom,float top ,float near ,float far)
+//    {
+//        GL_Matrix m = new GL_Matrix();
+//        m.m00=2/(right-left);
+//        m.m01=0;
+//        m.m02=0;
+//        m.m03=-(right+left)/(right-left);
+//
+//        m.m10=0;
+//        m.m11=2/(top-bottom);
+//        m.m12=0;
+//        m.m13=-(top+bottom)/(top-bottom);
+//
+//        m.m20=0;
+//        m.m21=0;
+//        m.m22=-2/(far-near);
+//        m.m23=-(far+near)/(far-near);
+//
+//        m.m30=0;
+//        m.m31=0;
+//        m.m32=0;
+//        m.m33=1;
+//
+//        return m;
+//    }
 
     public FloatBuffer toReverseFloatBuffer(){
        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
@@ -825,23 +850,23 @@ public class GL_Matrix
         matrixBuffer.put(m23);
         matrixBuffer.put(m33);
 
-        matrixBuffer.rewind();
+        matrixBuffer.flip();
 
     }
 	public FloatBuffer toFloatBuffer(){
 		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-	//	this.fillFloatBuffer(matrixBuffer);
-		float[][] arr= this.exportToArray();
+		this.fillFloatBuffer(matrixBuffer);
+//		float[][] arr= this.exportToArray();
 //       /* matrixBuffer.put(1).put(0).put(0).put(0)
 //                .put(0).put(1).put(0).put(0).
 //                put(0).put(0).put(1).put(0).
 //                put(0).put(0).put(0).put(1);*/
-		for(int i = 0;i<4;i++) {//数据居然要从上往下算第一列 再第二列传数据
-			for (int j = 0; j < 4; j++) {
-				matrixBuffer.put(arr[j][i]);
-			}
-		}
-		matrixBuffer.flip();
+//		for(int i = 0;i<4;i++) {//数据居然要从上往下算第一列 再第二列传数据
+//			for (int j = 0; j < 4; j++) {
+//				matrixBuffer.put(arr[j][i]);
+//			}
+//		}
+//		matrixBuffer.flip();
         //System.out.println();
 		return matrixBuffer;
 

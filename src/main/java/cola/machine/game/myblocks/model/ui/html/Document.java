@@ -2,6 +2,7 @@ package cola.machine.game.myblocks.model.ui.html;
 
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
+import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -14,6 +15,7 @@ import com.dozenx.util.StringUtil;
 import com.dozenx.util.TimeUtil;
 import core.log.LogUtil;
 import de.matthiasmann.twl.Event;
+import org.newdawn.slick.TrueTypeFont;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -23,6 +25,7 @@ import javax.vecmath.Vector4f;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -38,7 +41,18 @@ public class Document extends HtmlObject {
 
     private  static Document document =null;
     public static boolean needUpdate = true;
+    public TrueTypeFont font;
+    public void initFont(){
+        boolean antiAlias = true;
+        Font awtFont = new Font("Times New Roman", Font.PLAIN, 12);
+        String a="刷新用户名登录密码体力血蓝魔法敏捷坐标防御";
+        font = new TrueTypeFont(awtFont, antiAlias,a.toCharArray());
 
+
+        //org.newdawn.slick.Color.white.bind();
+
+
+    }
     private Document() {
 
     }
@@ -284,7 +298,7 @@ public class Document extends HtmlObject {
 
 
         this.canAcceptKeyboardFocus = true;
-
+        initFont();
     }
 
     public static HashMap variables = new HashMap();
@@ -650,6 +664,8 @@ public class Document extends HtmlObject {
 
     @Override
     public void update() {
+
+
         super.check();
         if (Document.needUpdate) {
 
@@ -662,10 +678,21 @@ public class Document extends HtmlObject {
             OpenglUtils.checkGLError();
             super.resize();
             super.update();
+
+
+
+
             super.recursivelySetGUI(this);
             if (Switcher.SHADER_ENABLE) {
+                ShaderUtils.glUse(ShaderManager.uiShaderConfig,ShaderManager.uiShaderConfig.getVao());
                 ShaderManager.uiShaderConfig.getVao().getVertices().rewind();
+
                 super.buildVao();
+
+//                ShaderUtils.glColor(1,1,1);
+//                font.drawStringShader(100, 50, "我们是THE LIGHTWEIGHT JAVA GAMES LIBRARY", org.newdawn.slick.Color.yellow);
+//
+//                ShaderUtils. draw2dColor(Constants.RGBA_GRAY,100,100,0.25f,50,50);
                 // ShaderUtils.update2dImageVao(ShaderManager.uiShaderConfig);
                 ShaderUtils.freshVao(ShaderManager.uiShaderConfig, ShaderManager.uiShaderConfig.getVao());
                 OpenglUtils.checkGLError();

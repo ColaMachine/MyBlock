@@ -37,6 +37,7 @@ public class LivingThingBean extends Role {
 //   // public SimpleAABB getAABB(){
 //        return aabb;
 //    }
+    public long lastDropCheckTime =0; //上一次跌落检测时间
 
     public String[] idleAnimation = new String[0];
     public float jumpSpeed = 9.5f;
@@ -594,18 +595,21 @@ public class LivingThingBean extends Role {
        return CoreRegistry.get(CrashCheck.class).check(this.position) ;
     }*/
 
-     public void move(GL_Vector newPosition) {
+     public void move(GL_Vector newPosition) {//由player 调用 palyer 那一层做移动后的收尾工作
 
-        this.oldPosition.copy(this.position);
-        this.position.set(newPosition.x, newPosition.y, newPosition.z);
-        if(newPosition.y<0){
+        this.oldPosition.copy(this.position);//拷贝原来的位置
+        this.position.set(newPosition.x, newPosition.y, newPosition.z);//设置成新的位置
+        if(newPosition.y<0){//如果位置.y在地板下报警 并修正
             LogUtil.println("1");
-        }moveEnd();
+            newPosition.y=0;
+        }//computeAABB();
         GL_Vector vector=null;
-        if( ( vector= CoreRegistry.get(PhysicsEngine.class).collision(this))!=null){
-            this.position.copy(this.oldPosition);
+         //TODO 不要每次都从CoreRegistry里去取PhysicsEngine
+         //TODO 碰撞检测不能放到各个个体里自己去判断 代码重复
+        if( ( vector= CoreRegistry.get(PhysicsEngine.class).collision(this))!=null){// 总感觉这一步要放在其他总控制器里判断比较好 不然每个对象都要写自己的碰撞检测 每次都从
+            this.position.copy(this.oldPosition);//如果发生碰撞了就退回原来的位置
             //this.position.add(vector.normalize().mult(0.1f));
-            moveEnd();
+           // computeAABB();//重新计算aabbb
             if( (vector= CoreRegistry.get(PhysicsEngine.class).collision(this))!=null){
                 LogUtil.println("still  block ");
             }
@@ -616,7 +620,7 @@ public class LivingThingBean extends Role {
 
         }else{
             this.setBlock(false);
-            this.moveEnd();
+            //this.computeAABB();
             this.updateTime =  TimeUtil.getNowMills();
 
             this.lastMoveTime =TimeUtil.getNowMills();
@@ -629,14 +633,14 @@ public class LivingThingBean extends Role {
 
 
     }
-    final public void moveEnd(){
-        this.minX = this.position.x-0.35f;
+    final public void computeAABB(){
+        this.minX = this.getExecutor().getModel().getRootComponent().getWidth()/2;//this.position.x-0.35f;
         this.minY = this.position.y;
-        this.minZ = this.position.z-0.35f;
+        this.minZ = this.position.z-this.getExecutor().getModel().getRootComponent().getThick()/2;
 
-        this.maxX = this.position.x+0.35f;
-        this.maxY = this.position.y+1.7f;
-        this.maxZ = this.position.z+0.35f;
+        this.maxX = this.position.x+this.getExecutor().getModel().getRootComponent().getWidth()/2f;
+        this.maxY = this.position.y+this.getExecutor().getModel().getRootComponent().getHeight();
+        this.maxZ = this.position.z+this.getExecutor().getModel().getRootComponent().getThick()/2;
     }
     GL_Vector collisionReverse = new GL_Vector();
     public void move(float x, float y, float z) {
@@ -686,7 +690,7 @@ public class LivingThingBean extends Role {
                    *//* if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞
                         GL_Vector new_Vectory = new GL_Vector((float)Math.floor(oldPosition.x)+0.5f,(float)Math.floor(oldPosition.y)+0.2f,(float)Math.floor(oldPosition.z)+0.5f);
                         this.position.copy(new_Vectory);
-                        if(CoreRegistry.get(PhysicsEngine.class).collision(this)){//如果仍然碰撞 
+                        if(CoreRegistry.get(PhmoveEndysicsEngine.class).collision(this)){//如果仍然碰撞
                              new_Vectory = new GL_Vector((float)Math.floor(oldPosition.x)+1.5f,(float)Math.floor(oldPosition.y)+0.2f,(float)Math.floor(oldPosition.z)+0.5f);
                              this.position.copy(new_Vectory);
                             
@@ -732,15 +736,17 @@ public class LivingThingBean extends Role {
 
 
     public void adjust(float posx, float posy, float posz) {
-        this.minX=posx-0.5f;
-        this.minY=posy;
-        this.minZ=posz-0.5f;
-
-        this.maxX=posx+0.5f;
-        this.maxY=posy+4;
-        this.maxZ=posz+0.5f;
+        LogUtil.err("no need");
+       // this.computeAABB();
+//        this.minX=posx-0.5f;
+//        this.minY=posy;
+//        this.minZ=posz-0.5f;
+//
+//        this.maxX=posx+0.5f;
+//        this.maxY=posy+4;
+//        this.maxZ=posz+0.5f;
         if(posy<0){
-            LogUtil.println("1");
+            LogUtil.err("1");
         }
         position = new GL_Vector(posx, posy, posz);
     }
@@ -862,5 +868,11 @@ public class LivingThingBean extends Role {
         TimeUtil.getNowMills();//Sys.getTime();
         this.setStable( false);
     }
+    public SimpleAABB getNowAABB(){
+        SimpleAABB simpleAABB = new SimpleAABB();
+        simpleAABB.setAABB(this.position.x+minX ,this.position.y+minY,this.position.z+minZ ,
+                this.position.x+maxX ,this.position.y+maxY,this.position.z+maxZ);
 
+        return simpleAABB;
+    }
 }

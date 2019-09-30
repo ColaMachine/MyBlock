@@ -12,11 +12,21 @@ public class SimpleAABB {
         this.maxY = maxY;
         this.maxZ = maxZ;
     }
+    float posMinX,posMinY,posMinZ,posMaxX,posMaxY,posMaxZ;
+
+   public void  setAABBSPosition(float posX,float posY,float posZ){
+        this.posMinX = posX+minX;
+       this.posMinY = posY+minY;
+       this.posMinZ = posZ+minZ;
 
 
+       this.posMaxX = posX+maxX;
+       this.posMaxY = posY+maxY;
+       this.posMaxZ = posZ+maxZ;
+    }
 
     public float minX, minY, minZ, maxX, maxY, maxZ;
-
+    //碰撞检测
     public boolean overlaps(SimpleAABB aabb2) {
 //        return !(maxX < aabb2.minX || minX > aabb2.maxX)
 //                && !(maxY < aabb2.minY || minY > aabb2.maxY)
@@ -31,6 +41,9 @@ public class SimpleAABB {
     public void reCaculate() {
 
     }
+
+
+
 
 
 }

@@ -74,6 +74,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class GamingState implements GameState {
     public static GamingState instance;
     public static  Player player;//= new Human();
+
+    //TODO add playerCharacter
     public static String catchThing;
     public static EditEngine editEngine;
     public static boolean isCameraChanged() {
@@ -926,9 +928,9 @@ public ShaderManager shaderManager;
         try {
             itemManager.loadItemDefinition();
 
-            BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("newplayer").getShape();
+          //  BoneRotateImageBlock boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("newplayer").getShape();
 //
-            player.getModel().rootComponent= boneRotateImageBlock;
+            //player.getModel().rootComponent= boneRotateImageBlock;
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.err(e);

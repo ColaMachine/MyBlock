@@ -313,7 +313,7 @@ public class LoginState implements GameState {
     public void render() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        glClearColor(0,0,0,1);
        /* try {
             Thread.sleep(200);
         } catch (InterruptedException e) {

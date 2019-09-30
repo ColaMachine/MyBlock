@@ -194,8 +194,8 @@ public class ItemManager {
             List<File> fileList = FileUtil.readAllFileInFold(PathManager.getInstance().getHomePath().resolve("config/item").toString());
             for (File file : fileList) {//遍历配置文件
                 LogUtil.println("开始解析"+file.getName());
-                if(file.getName().startsWith("box")){
-                    LogUtil.println("steve");
+                if(file.getName().startsWith("bonesteve")){
+                    LogUtil.println("bonesteve");
                 }
                 if(!file.getName().endsWith("item")){
                     continue;

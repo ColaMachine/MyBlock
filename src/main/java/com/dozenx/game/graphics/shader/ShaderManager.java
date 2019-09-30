@@ -418,21 +418,21 @@ public class ShaderManager {
 //    }
 
 
-    public Vector2f wordPositionToXY(GL_Vector position, GL_Vector cameraPosition, GL_Vector viewDir) {
-
-        GL_Matrix view =
-                GL_Matrix.LookAt(cameraPosition, viewDir);
-
-        GL_Matrix modal = GL_Matrix.translateMatrix(position.x, position.y, position.z);
-        GL_Matrix step1 = GL_Matrix.multiply(projection, view);
-        GL_Matrix step2 = GL_Matrix.multiply(step1, modal);
-        Point4f final4f = GL_Matrix.multiply(step2,
-
-                new javax.vecmath.Point4f(position.x, position.y, position.z, 0f)
-        );
-
-        return new Vector2f(final4f.x, final4f.y);
-    }
+//    public Vector2f wordPositionToXY(GL_Vector position, GL_Vector cameraPosition, GL_Vector viewDir) {
+//
+//        GL_Matrix view =
+//                GL_Matrix.LookAt(cameraPosition, viewDir);
+//
+//        GL_Matrix modal = GL_Matrix.translateMatrix(position.x, position.y, position.z);
+//        GL_Matrix step1 = GL_Matrix.multiply(projection, view);
+//        GL_Matrix step2 = GL_Matrix.multiply(step1, modal);
+//        Point4f final4f = GL_Matrix.multiply(step2,
+//
+//                new javax.vecmath.Point4f(position.x, position.y, position.z, 0f)
+//        );
+//
+//        return new Vector2f(final4f.x, final4f.y);
+//    }
 
     public static void humanPosChangeListener() {
 

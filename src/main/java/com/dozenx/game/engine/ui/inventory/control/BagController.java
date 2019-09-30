@@ -196,7 +196,7 @@ public class BagController {
         if(destPosition>35){//it 's in a box
 
         }
-        ItemBean destBean = itemDestBeans[destIndex];
+        ItemBean destBean = itemDestBeans[destIndex]; //这里记忆引起数组越界
 
 
         //ItemBean oldBean = itemBeans[position];

@@ -75,7 +75,7 @@ public class HeadPanel extends HtmlObject {
         leftDiv.setDisplay(HtmlObject.INLINE);
         leftDiv.setWidth(100);
 
-        bloodBar.setHeight(20);
+        bloodBar.setHeight(5);
         bloodBar.setId("bloodBar");
         bloodBar.setWidth(100);
         //bloodBar.setBackgroundImage(new Image(TextureManager.getTextureInfo("human_head_front")));

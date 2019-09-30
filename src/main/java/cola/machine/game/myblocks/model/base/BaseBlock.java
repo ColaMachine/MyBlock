@@ -363,6 +363,11 @@ public abstract class BaseBlock extends SimpleAABB implements IBlock {
         this.y = y;
         this.z = z;
     }
+    public void set(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 
     //设置中心点
 	/*public void setCenter(int x,int y,int z){

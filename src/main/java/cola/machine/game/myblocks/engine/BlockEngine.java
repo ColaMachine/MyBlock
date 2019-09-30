@@ -9,6 +9,7 @@ import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglGraphics;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglInput;
 import cola.machine.game.myblocks.engine.subsystem.lwjgl.LwjglTimer;
 import cola.machine.game.myblocks.input.InputSystem;
+import cola.machine.game.myblocks.logic.behavior.tree.Node;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.utilities.concurrency.Task;
 import cola.machine.game.myblocks.utilities.concurrency.TaskMaster;
@@ -50,7 +51,7 @@ public class BlockEngine implements GameEngine{
    private boolean running;
    private boolean disposed;
    private GameState pendingState;
-   
+    Node RootNode;
    private Config config;
    private EngineTime time ;
    private final TaskMaster<Task> commonThreadPool=TaskMaster.createFIFOTaskMaster("common",16);

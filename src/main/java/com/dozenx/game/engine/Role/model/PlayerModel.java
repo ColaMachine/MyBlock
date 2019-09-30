@@ -12,6 +12,7 @@ import cola.machine.game.myblocks.switcher.Switcher;
 import com.dozenx.game.engine.Role.bean.Role;
 import com.dozenx.game.engine.command.EquipPartType;
 import com.dozenx.game.engine.element.bean.Component;
+import com.dozenx.game.engine.item.action.ItemManager;
 import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
@@ -32,7 +33,7 @@ import javax.vecmath.Vector4f;
 public class PlayerModel extends BaseModel   {
 
 
-    float bili =0.5f;
+    float bili =1f;
 
     protected  float HAND_HEIGHT=1.5f*bili;
     protected float HAND_WIDTH=0.5f*bili;
@@ -56,29 +57,30 @@ public class PlayerModel extends BaseModel   {
 
         BaseBlock block ;
         block = TextureManager.getShape("human_body");
-        BODY_WIDTH = block.width;
-        BODY_HEIGHT = block.height;
-        BODY_THICK = block.thick;
+//        BODY_WIDTH = block.width;
+//        BODY_HEIGHT = block.height;
+//        BODY_THICK = block.thick;
 
 //        rootComponent= (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
-//this.rootComponent = ItemManager.getItemDefinition("bonesteve")
-        rootComponent=new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
+        this.rootComponent = (BoneRotateImageBlock)ItemManager.getItemDefinition("bonesteve").getShape();
+        //rootComponent=new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 //        boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
 
-        int id =role.getId();
+       /* int id =role.getId();
         rootComponent.id=id*10+EquipPartType.BODY.ordinal();
         rootComponent.name = EquipPartType.BODY.getName();
         rootComponent.block = block;
-
+        rootComponent.set(block.getWidth(),block.getHeight(),block.getThick());
+        //rootComponent=block;
         //rarm
         Component rArm= new BodyComponent(HAND_WIDTH,HAND_HEIGHT,HAND_THICK);
         rArm.id=id*10+EquipPartType.LARM.ordinal();
 
 
         block = TextureManager.getShape("human_hand");
-        HAND_WIDTH = block.width;
-        HAND_HEIGHT = block.height;
-        HAND_THICK = block.thick;
+//        HAND_WIDTH = block.width;
+//        HAND_HEIGHT = block.height;
+//        HAND_THICK = block.thick;
 
         rArm.block = block;
         rArm.name=EquipPartType.LARM.getName();
@@ -101,9 +103,9 @@ public class PlayerModel extends BaseModel   {
 
 
         block = TextureManager.getShape("human_leg");
-        LEG_WIDTH = block.width;
-        LEG_HEIGHT = block.height;
-        LEG_THICK = block.thick;
+//        LEG_WIDTH = block.width;
+//        LEG_HEIGHT = block.height;
+//        LEG_THICK = block.thick;
 
 
         Component lleg= new BodyComponent(LEG_WIDTH,LEG_HEIGHT,LEG_THICK);
@@ -131,12 +133,12 @@ public class PlayerModel extends BaseModel   {
         //head
 
         block = TextureManager.getShape("human_head");
-        HEAD_WIDTH = block.width;
-        HEAD_HEIGHT = block.height;
-        HEAD_THICK = block.thick;
+//        HEAD_WIDTH = block.width;
+//        HEAD_HEIGHT = block.height;
+//        HEAD_THICK = block.thick;
 
 
-        block = block;
+//        block = block;
 
         Component head= new BodyComponent(HEAD_WIDTH,HEAD_HEIGHT,HEAD_THICK);
         //head.setEightFace("human_head");
@@ -145,8 +147,7 @@ public class PlayerModel extends BaseModel   {
         head.name=EquipPartType.HEAD.getName();
 
         head.setOffset(new GL_Vector(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new GL_Vector(HEAD_WIDTH/2,0,HEAD_THICK/2));
-        rootComponent.addChild(head);
-
+        rootComponent.addChild(head);*/
 
 
     }

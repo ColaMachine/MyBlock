@@ -64,7 +64,7 @@ public class TextureManager {
             loadTexture();
             loadObj();
             loadShape();
-            //loadItem();
+//            loadItemDfintion();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -474,7 +474,7 @@ public class TextureManager {
 
                         JSONObject map = (JSONObject) list.get(i);
                         if (MapUtil.getStringValue(map, "name").equals("box_open") || MapUtil.getStringValue(map, "name").equals("box_close")) {
-                            LogUtil.err("box_open");
+                            LogUtil.println("box_open");
                         }
                         BaseBlock block = EditEngine.parse(map);
                         if(StringUtil.isBlank(block.getName())){
@@ -533,7 +533,7 @@ public class TextureManager {
 
 
                     if(!fileName.equals(block.getName())){
-                        LogUtil.err(file.getName()+"block.getName"+block.getName());
+                        LogUtil.println(file.getName()+"block.getName"+block.getName());
                         block.setName(fileName);
                     }
                     this.shapeMap.put(block.getName(), block);

@@ -34,37 +34,58 @@ public class BaseModel implements Model   {
     public BoneRotateImageBlock rootComponent = new BoneRotateImageBlock();
     Role role ;
 
-
+    /**
+     * 添加或者移出子节点
+     * TODO 增加固有节点不能删除功能
+     * TODO bug fix 移出物品时候不会删除原有物品
+     * @param parent 父节点 human_head
+     * @param type  1
+     * @param name  helmet 帽子
+     * @param itemBean   itemBea id=0 代表是没有东西 id为>0的时候是有东西
+     */
     public void clearAddChild(BoneRotateImageBlock parent,int type ,String name,ItemBean itemBean) {
-        if(parent==null){
-            LogUtil.err("parent node is null");
-        }
+//        if(parent==null){
+//            LogUtil.err("parent node is null");
+//        }
        // parent.children.clear();
         //一个很明确的是问题是如果body添加了一个装备 name 是不能清除所有子节点的
+        //如果父节点是空的要报错
         if(parent == null){
             LogUtil.err("parent not found ");
         }
-        BoneRotateImageBlock shoe = parent.findChild(name);
+        BoneRotateImageBlock equipment = parent.findChild(name);// 最近的bug导致parent下的child 不会被移出
 
-        if (shoe == null) {
+        if (equipment == null) {//如果没有的话 直接添加物品
             if (itemBean == null||itemBean.itemDefinition == null) {
                 return;
             } else {
-               // parent.children.clear();//这里会把body的子元素都清理掉的
-                for(BoneRotateImageBlock block: parent.children){
+                if(parent.getName().indexOf("body")!=-1){
+
+                }else{
+                    parent.children.clear();//这里会把body的子元素都清理掉的
+                }
+               //
+                for(BoneRotateImageBlock block: parent.children){//遍历子元素删除指定节点
                     if(block.getName().equals(name)){
                         block.removeChild(block);
                         break;
                     }
                 }
                 //Connector connector = new Connector(component,new GL_Vector(shape.getP_posi_x(),shape.getP_posi_y(),shape.getP_posi_z()),new GL_Vector(shape.getC_posi_x(),shape.getC_posi_y(),shape.getC_posi_z()));
-                parent.addChild(addItemToComponent(name,type ,itemBean));
+                parent.addChild(addItemToComponent(name,type ,itemBean));//添加指定的物品装备
                 //changeProperty();
             }
         } else {
 
-            if (itemBean == null||itemBean.itemDefinition == null) {
+            if (itemBean == null||itemBean.itemDefinition == null) {//说明是删除物品
                 //删除shoe节点
+
+                if(parent.getName().indexOf("body")!=-1){
+
+                }else{
+                    parent.children.clear();//这里会把body的子元素都清理掉的
+                }
+
                 for(BoneRotateImageBlock block: parent.children){
                     if(block.getName().equals(name)){
                         block.removeChild(block);
@@ -72,7 +93,7 @@ public class BaseModel implements Model   {
                     }
                 }
 
-            } else {
+            } else {//说明是添加物品
                 for(BoneRotateImageBlock block: parent.children){
                     if(block.getName().equals(name)){
                         block.removeChild(block);
@@ -210,7 +231,7 @@ public class BaseModel implements Model   {
                 //渲染头部血条
                 if(distance<50){//111 : 11
                     float width = 50-distance;
-                    float height = 2*width/111*21;
+                    float height = 2*50/111*21;
                     Vector2f screenXY= OpenglUtils.wordPositionToXY(ShaderManager.projection,role.getPosition().copyClone().add(new GL_Vector(0,rootComponent.height,0)),GamingState.getInstance().camera.Position,GamingState.getInstance().camera.ViewDir);
                     screenXY.x *= Constants.WINDOW_WIDTH;
                     screenXY.y *= Constants.WINDOW_HEIGHT;

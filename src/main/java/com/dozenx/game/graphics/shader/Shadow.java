@@ -19,7 +19,11 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 
 /**
@@ -137,7 +141,7 @@ public class Shadow {
 
 
         depthProjectionMatrix.initOrthographicMatrix(-20, 20, -20, 20, -20, 40);
-        depthViewMatrix.lookAt(new Vector3f(normLightPosition.x,normLightPosition.y,normLightPosition.z), new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
+        depthViewMatrix.lookAt(new Vector3f(normLightPosition.x,normLightPosition.y,normLightPosition.z), new Vector3f(68, -43, -59), new Vector3f(0, 1, 0));
         Matrix4f.mul(depthProjectionMatrix, depthViewMatrix, depthMatrix);
 
         GL20.glUseProgram(shaderManager.shadowShaderConfig.getProgramId());
@@ -160,6 +164,26 @@ public class Shadow {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         //glViewport(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         // glBindTexture(GL_TEXTURE_2D, shaderManager.depthMap);
+    }
+
+
+    public static void updateShadowBias(int shaderProgram, int depthBiasMatrixID, int shadowMapID, int modelMatrixID) {
+        MatrixHandler biasMatrix = new MatrixHandler();
+        MatrixHandler depthBiasMatrix = new MatrixHandler();
+        biasMatrix.setBias();
+        Matrix4f.mul(biasMatrix, depthMatrix, depthBiasMatrix);
+
+        glUseProgram(shaderProgram);
+
+        depthBiasMatrix.store(matrix44Buffer);
+        matrix44Buffer.flip();
+        glUniformMatrix4(depthBiasMatrixID, false, matrix44Buffer);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 1);
+        glUniform1i(shadowMapID, 0);
+
+        glUseProgram(0);
     }
     public GL_Matrix getLightViewMatrix() {
         return lightViewMatrix;

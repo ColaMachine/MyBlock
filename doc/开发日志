@@ -563,3 +563,12 @@ TODO 输入框有时候按键无响
 GamingState
 handleInpput  Document.handleKey
                     sendKeyEvent
+
+
+开发日志
+最近在看unity 感觉他的好简单 (如果算上动画也不简单)
+首先继承了 monobehaviour
+
+内部可以自定义各种属性,关键是这些属性 可以用截面拖放的方法拖一些东西进来 比如所有的声音对象都是AudioSource 那么 我定义一个 Source shooAudioSource 然后从截面上拖放一个子弹的声音,就能在代码里控制播放了
+shootAudioSource.play
+

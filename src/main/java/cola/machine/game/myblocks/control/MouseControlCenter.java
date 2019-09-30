@@ -316,11 +316,11 @@ public class MouseControlCenter {
                 player.position.y -= 1;
                 GamingState.setCameraChanged(true);
             } else {
-                player.position.y = player.position.y - 3 * seconds;
+                player.position.setY( player.position.y - 3 * seconds);
                 player.move(player.position);
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
-            player.position.y = player.position.y + 3 * seconds;
+            player.position.setY( player.position.y + 3 * seconds);
             player.move(player.position);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {

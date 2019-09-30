@@ -26,19 +26,27 @@ public class Client extends Thread{
     public static int index;
     public static Queue<byte[]> cache100 =new LinkedList<>();
     public static Stack<SayCmd> messages=new Stack<>();
+
+
+    //userBaseCmd
     public static Stack<EquipCmd> equips=new Stack<>();
     public static Stack<PosCmd> movements=new Stack<>();
     public static Stack<AttackCmd> attacks=new Stack<>();
     public static Stack<BagCmd> bags=new Stack<>();
     public static Stack<DropCmd> drops=new Stack<>();
+    public static Stack<GameCmd> humanStates=new Stack<>();
+    public static Stack<PickCmd> picks=new Stack<>();
+    public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();
+
+    //world
     public static Queue<ChunkRequestCmd> chunks=new LinkedList<>();
     public static Queue<ChunkResponseCmd> chunkResponses=new LinkedList<>();
     public static Queue<ChunkssCmd> chunkAlls=new LinkedList<>();
-    public static Stack<PickCmd> picks=new Stack<>();
-    public static Stack<GameCmd> humanStates=new Stack<>();
+
+
    // public static Stack<GameCmd> newborns=new Stack<>();
     public static Map<Integer, GameCallBackTask> SyncTaskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
-    public static Queue<PlayerSynCmd> playerSync=new LinkedList<>();
+
 
     ChatFrame chatFrame;
     public Client(){
@@ -323,7 +331,7 @@ public class Client extends Thread{
                         //continue;
                    // }
                     GameCmd cmd = CmdUtil.getCmd(newBytes);
-                   // LogUtil.println("the received cmd was : "+cmd.getCmdType());
+                   LogUtil.println("the received cmd was : "+cmd.getCmdType());
                     if (cmd.getCmdType()== CmdType.EQUIP) {//equip
                         equips.push((EquipCmd) cmd);
 

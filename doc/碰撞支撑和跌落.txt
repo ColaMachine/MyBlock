@@ -1,0 +1,56 @@
+碰撞  所有的物体都有aabb框体
+所有的碰撞基于简单的盒子碰撞检测
+
+异常的检测 对于xyz的变更要使用set方法 不然就无法正常跟踪
+最好的方法就是对每个物体的位置变更都封装setX setY setZ方法
+
+这里就不得不谈到移动系统
+MouseControlCenter . handleNavKeys
+
+这里缺少一层moveEngine去管理任务的运动
+1 在初始化的时候明确物体的aabb
+
+2在移动的时候执行以下流程 检查碰撞
+
+MouseControlCenter {
+
+    Player.class{
+
+        move{
+            livingThingBean.move{
+                保存旧的位置
+                然后用新的位置去做碰撞检测 换算一个新的aabb框 去做检测 如果有碰撞了 发生反弹
+                是不是需要每个物体都有一个aabb框  然后是 minx miny minz  maxx maxy maxz 这样子的 然后用这个物体的
+
+
+                新的位置计算出来  新的aabb框计算出来
+                拿出来和世界里的物体进行碰撞测试
+
+                碰撞测试不通过 回到老的位置
+
+                如果还有碰撞 进行反弹
+
+                如果y小于0了 进行修正
+            }
+
+
+        }
+
+
+    player GamingState.setCameraChanged(true); 触发摄像头变化
+
+                                      //}
+    ShaderManager.humanPosChangeListener();
+    }
+}
+
+3 检查是否挑落
+//所有的aabb 都只记载自己的原始的对于0坐标的min max值 然后 计算碰撞的时候要加上自身的位置信息 需要把position移动到aabb里面
+跌落判断
+ public void checkPlayerDrop() {
+        if (player.isStable()) {
+            CoreRegistry.get(PhysicsEngine.class).checkIsDrop(player);
+        }
+        //remove the died one
+
+    }d

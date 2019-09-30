@@ -1424,6 +1424,61 @@ try {
     }
 
 
+    /**
+     * 不带颜色的绘制图片
+     *
+     * @param image
+     * @param posX
+     * @param posY
+     * @param z
+     * @param width
+     * @param height
+     */
+    public static void draw2dImg(int textureId, float posX, float posY, float z, float width, float height,float minX,float minY,float maxX,float maxY) {
+        Vao vao = ShaderManager.uiShaderConfig.getVao();
+
+
+
+
+        float left = ((float) posX) / Constants.WINDOW_WIDTH * 2 - 1f;
+        float top = (Constants.WINDOW_HEIGHT - ((float) posY)) / Constants.WINDOW_HEIGHT * 2 - 1f;
+        float _height = ((float) height) / Constants.WINDOW_HEIGHT * 2;
+        float _width = ((float) width) / Constants.WINDOW_WIDTH * 2;
+        GL_Vector p1 = new GL_Vector(left, top - _height, z);
+        GL_Vector p2 = new GL_Vector(left + _width, top - _height, z);
+        GL_Vector p3 = new GL_Vector(left + _width, top, z);
+        GL_Vector p4 = new GL_Vector(left, top, z);
+        int index = ShaderUtils.bindAndGetTextureIndex(ShaderManager.uiShaderConfig,textureId);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(minX).put(minY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(maxX).put(minY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(maxX).put(maxY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(minX).put(maxY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(minX).put(minY).put(index).put(0).put(0).put(0).put(0);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(maxX).put(maxY).put(index).put(0).put(0).put(0).put(0);
+    }
+
+    public static void draw2dImgReverse(int textureId, float posX, float posY, float z, float width, float height,float minX,float minY,float maxX,float maxY) {
+        Vao vao = ShaderManager.uiShaderConfig.getVao();
+
+
+
+
+        float left = ((float) posX) / Constants.WINDOW_WIDTH * 2 - 1f;
+        float top = (Constants.WINDOW_HEIGHT - ((float) posY)) / Constants.WINDOW_HEIGHT * 2 - 1f;
+        float _height = ((float) height) / Constants.WINDOW_HEIGHT * 2;
+        float _width = ((float) width) / Constants.WINDOW_WIDTH * 2;
+        GL_Vector p1 = new GL_Vector(left, top - _height, z);
+        GL_Vector p2 = new GL_Vector(left + _width, top - _height, z);
+        GL_Vector p3 = new GL_Vector(left + _width, top, z);
+        GL_Vector p4 = new GL_Vector(left, top, z);
+        int index = ShaderUtils.bindAndGetTextureIndex(ShaderManager.uiShaderConfig,textureId);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(minX).put(maxY).put(index).put(colorX).put(colorY).put(colorZ).put(1);
+        vao.getVertices().put(p2.x).put(p2.y).put(p2.z).put(maxX).put(maxY).put(index).put(colorX).put(colorY).put(colorZ).put(1);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(maxX).put(minY).put(index).put(colorX).put(colorY).put(colorZ).put(1);
+        vao.getVertices().put(p4.x).put(p4.y).put(p4.z).put(minX).put(minY).put(index).put(colorX).put(colorY).put(colorZ).put(1);
+        vao.getVertices().put(p1.x).put(p1.y).put(p1.z).put(minX).put(maxY).put(index).put(colorX).put(colorY).put(colorZ).put(1);
+        vao.getVertices().put(p3.x).put(p3.y).put(p3.z).put(maxX).put(minY).put(index).put(colorX).put(colorY).put(colorZ).put(1);
+    }
     public static void draw2dImg(Image image, int posX, int posY, float z, int width, int height, Vector4f color, ShaderConfig config) {
         Vao vao = config.getVao();
 
@@ -2630,6 +2685,11 @@ try {
         nowTextureId = index;
         isImageNotColor=true;
     }
+    public static void bindTexture(int textureHandle) {
+        int index = ShaderUtils.bindAndGetTextureIndex(shaderConfig, textureHandle);
+        nowTextureId = index;
+        isImageNotColor=true;
+    }
 
     public static void glNormal3f(float x, float y, float z) {
         normalX = x;
@@ -3688,6 +3748,17 @@ try {
     //透视矩阵
     public static GL_Matrix projection = GL_Matrix.perspective3(45, (Constants.WINDOW_WIDTH) / (Constants.WINDOW_HEIGHT), 1f, 1000.0f);
 
+
+
+    public static float getRealX(float posX){
+        float left = ((float) posX) / Constants.WINDOW_WIDTH * 2 - 1f;
+         return left;
+    }
+    public static float getRealY(float posY){
+
+        float top = (Constants.WINDOW_HEIGHT - ((float) posY)) / Constants.WINDOW_HEIGHT * 2 - 1f;
+        return top;
+    }
 
 
 

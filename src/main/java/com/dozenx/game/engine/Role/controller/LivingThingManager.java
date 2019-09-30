@@ -69,6 +69,11 @@ public class LivingThingManager {
     public void checkPlayerDrop() {
         if (player.isStable()) {
             CoreRegistry.get(PhysicsEngine.class).checkIsDrop(player);
+        }else{ //防止一直网下面落
+            if(player.position.y<0){ //如果跌倒了地板地下的话 进行修正
+                player.position.y=0.002f;
+                player.setStable(true);
+            }
         }
         //remove the died one
 
@@ -409,7 +414,7 @@ public class LivingThingManager {
         while (client.movements.size() > 0 && client.movements.peek() != null) {
             PosCmd cmd = (PosCmd) client.movements.pop();
             int id = cmd.userId;
-            if (player.getId() == id) { //不要同步本大爷的数据给本大爷
+            if (player.getId() == id) { //不要同步本大爷的数据给本大爷  //那服务器怎么传送一批人到指定的位置呢?
                /* player.setPosition(x,y,z);
                 player.WalkDir.x= x1;
                 player.WalkDir.y= y1;
@@ -448,159 +453,32 @@ public class LivingThingManager {
         }
 
         while (client.equips.size() > 0 && client.equips.peek() != null) {
-
-            EquipCmd cmd = (EquipCmd) client.equips.pop();
-            int id = cmd.getUserId();
-            /*if(player.getId() == id){
-                continue;
-            }*/
-            //appendRow("color"+curColor, msg);
-            LivingThing livingThing = this.getLivingThingById(id);
-            //y原来是直接绑定到itemDefinition 现在要对应到有id的items里的物品
-            //ItemBean itemBean = livingThing.getItemById(cmd.getItemId());
-            // ItemType itemType =
-            if (livingThing.getModel() instanceof WolfModel) {
-                //说明是错误的了
-                livingThing.getExecutor().setModel(new PlayerModel(livingThing));
-            }
-            if (livingThing != null && livingThing.getModel() instanceof PlayerModel /*&& itemBean!=null*/) {
-                if (cmd.getPart() == EquipPartType.BODY) {
-                    livingThing.setBodyEquip(cmd.getItemType());
-                    ((PlayerModel) livingThing.getModel()).addBodyEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
-                } else if (cmd.getPart() == EquipPartType.HEAD) {
-                    livingThing.setHeadEquip(cmd.getItemType());
-                    ((PlayerModel) livingThing.getModel()).addHeadEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
-                } else if (cmd.getPart() == EquipPartType.HAND) {
-                    livingThing.setHandEquip(cmd.getItemType());
-                    ((PlayerModel) livingThing.getModel()).addHandEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
-                } else if (cmd.getPart() == EquipPartType.LEG) {
-                    livingThing.setLegEquip(cmd.getItemType());
-                    ((PlayerModel) livingThing.getModel()).addLegEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
-                } else if (cmd.getPart() == EquipPartType.FOOT) {
-                    livingThing.setFootEquip(cmd.getItemType());
-                    ((PlayerModel) livingThing.getModel()).addShoeEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
-                }
-                //change trigger
-                livingThing.changeProperty();
-
-            }
-
-
+            EquipCmd cmd =  client.equips.pop();
+            this.addEquipsToSomeOne(cmd);
         }
 
 
         //偶尔发生 或者当该用户登录 或者被创建的时候
         while (client.playerSync.size() > 0 && client.playerSync.peek() != null /*&& BlockEngine.engine.getState() instanceof  GamingState*/) {
             PlayerSynCmd cmd = (PlayerSynCmd) client.playerSync.poll();
-            PlayerStatus info = cmd.getPlayerStatus();
-            int id = info.getId();
-            /*if(player.id == id){
-                continue;
-            }*/
-            //appendRow("color"+curColor, msg);
-            LivingThing livingThing = this.getLivingThingById(id);
-            boolean exsits = true;
-            if (livingThing == null) {
-                ItemManager.getItemDefinition(info.getName());
-                LogUtil.println("添加新物种" + info.species);
-                if (info.species == 1) {
-                    ;
-                    livingThing = new Wolf(info.getId());
-
-                } else if (info.species > 1) {
-
-                    livingThing = new Wolf(info.getId(), ItemManager.getItemDefinition(Integer.valueOf(info.species)));
-                } else {
-                    livingThing = new Wolf(info.getId(), ItemManager.getItemDefinition(Integer.valueOf(info.species)));
-                    //  livingThing = new Player(info.getId());
-                }
-                //
-                exsits = false;
-
-            }
-
-
-       /*         if(info.getBodyEquip()>0){
-                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
-                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }if(info.getHeadEquip()>0){
-                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
-                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }if(info.getHandEquip()>0){
-                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
-                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }if(info.getLegEquip()>0){
-                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
-                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }if(info.getShoeEquip()>0){
-                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
-                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
-                }*/
-            if (livingThing.isDied() && info.nowHP > 0) {//原来是死的 现在是活的 复活了
-                // livingThing.exist=true;
-                livingThing.getExecutor().getModel().getRootComponent().rotateX = 0;
-            } else {
-
-            }
-            livingThing.setInfo(info);
-
-            //livingThing.setTarget()
-           /* try {
-                livingThing.setPosition(info.getX(), info.getY(), info.getZ());
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-           // livingThing.setPosition(x,y,z);
-            livingThing.setBodyAngle(info.getBodyAngle());
-            livingThing.setHeadAngle( info.getHeadAngle());
-            livingThing.setHeadAngle2( info.getHeadAngle2());*/
-            if (!exsits) {
-                this.add(livingThing);
-            }
+            this.addSomeThing(cmd);
         }
 
         while (client.attacks.size() > 0 && client.attacks.peek() != null) {
             AttackCmd cmd = (AttackCmd) client.attacks.pop();
-            int id = cmd.getUserId();
-
-            LivingThing livingThing = this.getLivingThingById(id);
-            if (livingThing == null) {
-                continue;
-            }
-            livingThing.setTarget(this.getLivingThingById(cmd.getTargetId()));
-
-            livingThing.receive(cmd);
+            this.attack(cmd);
         }
 
         while (client.bags.size() > 0 && client.bags.peek() != null) {
             BagCmd cmd = (BagCmd) client.bags.pop();
-            int userId = cmd.getUserId();
-            List<ItemServerBean> items = cmd.getItemBeanList();
-
-            LivingThing livingThing = this.getLivingThingById(userId);
-            if (livingThing == null) {
-                continue;
-            }
-            livingThing.setItems(items);
-
-            CoreRegistry.get(BagController.class).refreshBag();
+            this.bagChange(cmd);
             //livingThing.receive(cmd);
         }
 
         while (client.drops.size() > 0 && client.drops.peek() != null) {
             DropCmd cmd = client.drops.pop();
-            int userId = cmd.getUserId();
+            this.itemDrop(cmd);
 
-            if (userId == 0) {//说明是世界掉落物品更新
-                player.getExecutor().receive(cmd);
-            } else {
-                LivingThing from = this.getLivingThingById(userId);
-                if (from != null) {
-                    from.getExecutor().receive(cmd);
-                } else {
-                    player.getExecutor().receive(cmd);
-                }
-            }
 
          /*   if(userId == player.getId()){
                 player.getItemBeans()[24]=null;
@@ -613,31 +491,11 @@ public class LivingThingManager {
         }
         while (client.humanStates.size() > 0 && client.humanStates.peek() != null) {
             UserBaseCmd cmd = (UserBaseCmd) client.humanStates.pop();
-            int userId = cmd.getUserId();
-
-            LivingThing from = this.getLivingThingById(userId);
-            if (cmd.getCmdType() == CmdType.CHASE) {
-                from.setTarget(this.getLivingThingById(((ChaseCmd) cmd).getTargetId()));
-            }
-            if (from != null) {
-                from.getExecutor().receive(cmd);
-            } else {
-                player.getExecutor().receive(cmd);
-            }
+            this.changePlayerAction(cmd);
         }
         while (client.picks.size() > 0 && client.picks.peek() != null) {
             PickCmd cmd = client.picks.pop();
-            int userId = cmd.getUserId();
-
-            LivingThing from = this.getLivingThingById(userId);
-            /*if(from != null){
-                from.getExecutor().receive(cmd);
-            }else{*/
-            player.getExecutor().receive(cmd);
-            //}
-
-
-            ItemManager.removeWorldItem(cmd.getItemId());
+            happensPickItem(cmd);
 
          /*   if(userId == player.getId()){
                 player.getItemBeans()[24]=null;
@@ -1166,5 +1024,184 @@ public class LivingThingManager {
 
         }
 
+    }
+
+    public void addEquipsToSomeOne(EquipCmd cmd){
+        int id = cmd.getUserId();
+            /*if(player.getId() == id){
+                continue;
+            }*/
+        //appendRow("color"+curColor, msg);
+        LivingThing livingThing = this.getLivingThingById(id);
+        //y原来是直接绑定到itemDefinition 现在要对应到有id的items里的物品
+        //ItemBean itemBean = livingThing.getItemById(cmd.getItemId());
+        // ItemType itemType =
+        if (livingThing.getModel() instanceof WolfModel) {
+            //说明是错误的了
+            livingThing.getExecutor().setModel(new PlayerModel(livingThing));
+        }
+        if (livingThing != null && livingThing.getModel() instanceof PlayerModel /*&& itemBean!=null*/) {
+            if (cmd.getPart() == EquipPartType.BODY) {
+                livingThing.setBodyEquip(cmd.getItemType());
+                ((PlayerModel) livingThing.getModel()).addBodyEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
+            } else if (cmd.getPart() == EquipPartType.HEAD) {
+                livingThing.setHeadEquip(cmd.getItemType());
+                ((PlayerModel) livingThing.getModel()).addHeadEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
+            } else if (cmd.getPart() == EquipPartType.HAND) {
+                livingThing.setHandEquip(cmd.getItemType());
+                ((PlayerModel) livingThing.getModel()).addHandEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
+            } else if (cmd.getPart() == EquipPartType.LEG) {
+                livingThing.setLegEquip(cmd.getItemType());
+                ((PlayerModel) livingThing.getModel()).addLegEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
+            } else if (cmd.getPart() == EquipPartType.FOOT) {
+                livingThing.setFootEquip(cmd.getItemType());
+                ((PlayerModel) livingThing.getModel()).addShoeEquip(new ItemBean(ItemManager.getItemDefinition(cmd.getItemType()), 1));
+            }
+            //change trigger
+            livingThing.changeProperty();
+
+        }
+    }
+
+    public void addSomeThing(PlayerSynCmd cmd ){
+        PlayerStatus info = cmd.getPlayerStatus();
+        int id = info.getId();
+            /*if(player.id == id){
+                continue;
+            }*/
+        //appendRow("color"+curColor, msg);
+        LivingThing livingThing = this.getLivingThingById(id);
+        boolean exsits = true;
+        if (livingThing == null) {
+            ItemManager.getItemDefinition(info.getName());
+            LogUtil.println("添加新物种" + info.species);
+            if (info.species == 1) {
+                ;
+                livingThing = new Wolf(info.getId());
+
+            } else if (info.species > 1) {
+
+                livingThing = new Wolf(info.getId(), ItemManager.getItemDefinition(Integer.valueOf(info.species)));
+            } else {
+                livingThing = new Wolf(info.getId(), ItemManager.getItemDefinition(Integer.valueOf(info.species)));
+                //  livingThing = new Player(info.getId());
+            }
+            //
+            exsits = false;
+
+        }
+
+
+       /*         if(info.getBodyEquip()>0){
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getBodyEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getHeadEquip()>0){
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHeadEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getHandEquip()>0){
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getHandEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getLegEquip()>0){
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getLegEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }if(info.getShoeEquip()>0){
+                    livingThing.getModel().addBodyEquip(TextureManager.getItemDefinition(ItemType.values()[info.getShoeEquip()]));
+                    //livingThing.addBodyEquip(TextureManager.getItemDefinition(cmd.getItemType()));
+                }*/
+        if (livingThing.isDied() && info.nowHP > 0) {//原来是死的 现在是活的 复活了
+            // livingThing.exist=true;
+            livingThing.getExecutor().getModel().getRootComponent().rotateX = 0;
+        } else {
+
+        }
+        livingThing.setInfo(info);
+
+        //livingThing.setTarget()
+           /* try {
+                livingThing.setPosition(info.getX(), info.getY(), info.getZ());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+           // livingThing.setPosition(x,y,z);
+            livingThing.setBodyAngle(info.getBodyAngle());
+            livingThing.setHeadAngle( info.getHeadAngle());
+            livingThing.setHeadAngle2( info.getHeadAngle2());*/
+        if (!exsits) {
+            this.add(livingThing);
+        }
+    }
+
+    public void attack(AttackCmd cmd ){
+
+
+        int id = cmd.getUserId();
+
+        LivingThing livingThing = this.getLivingThingById(id);
+        if (livingThing == null) {
+            return;
+        }
+        livingThing.setTarget(this.getLivingThingById(cmd.getTargetId()));
+
+        livingThing.receive(cmd);
+    }
+
+    public void bagChange(BagCmd cmd ){
+
+        int userId = cmd.getUserId();
+        List<ItemServerBean> items = cmd.getItemBeanList();
+
+        LivingThing livingThing = this.getLivingThingById(userId);
+        if (livingThing == null) {
+            return ;
+        }
+        livingThing.setItems(items);
+
+        CoreRegistry.get(BagController.class).refreshBag();
+    }
+
+    public void itemDrop(DropCmd cmd ){
+//        int userId = cmd.getUserId();
+//
+//        if (userId == 0) {//说明是世界掉落物品更新
+//            player.getExecutor().receive(cmd);
+//        } else {
+//            LivingThing from = this.getLivingThingById(userId);
+//            if (from != null) {
+//                from.getExecutor().receive(cmd);
+//            } else {
+//                player.getExecutor().receive(cmd);
+//            }
+//        }
+
+        this.changePlayerAction(cmd);
+    }
+
+    public void changePlayerAction(UserBaseCmd cmd){
+
+        int userId = cmd.getUserId();
+
+        LivingThing from = this.getLivingThingById(userId);
+        if (cmd.getCmdType() == CmdType.CHASE) {
+            from.setTarget(this.getLivingThingById(((ChaseCmd) cmd).getTargetId()));
+        }
+        if (from != null) {
+            from.getExecutor().receive(cmd);
+        } else {
+            player.getExecutor().receive(cmd);
+        }
+    }
+    public void happensPickItem(PickCmd cmd ){
+
+//        int userId = cmd.getUserId();
+//
+//        LivingThing from = this.getLivingThingById(userId);
+//            /*if(from != null){
+//                from.getExecutor().receive(cmd);
+//            }else{*/
+//        player.getExecutor().receive(cmd);
+//        //}
+        changePlayerAction(cmd);
+
+        ItemManager.removeWorldItem(cmd.getItemId());
     }
 }

@@ -63,7 +63,7 @@ public class JumpState extends State {
         if (nowTime - lastMoveTime >200) {
             //this.position.y+=1;
             // ��¼��ǰ��ʱ��
-            this.livingThing.position=GL_Vector.add(livingThing.position,GL_Vector.multiply(dir,speed*(nowTime - lastMoveTime )/1000));
+            this.livingThing.setPosition(GL_Vector.add(livingThing.position,GL_Vector.multiply(dir,speed*(nowTime - lastMoveTime )/1000)));
             //this.livingThing.position.add(dir,)
             lastMoveTime = TimeUtil.getNowMills();
             // System.out.printf("position: %f %f %f viewdir: %f %f %f

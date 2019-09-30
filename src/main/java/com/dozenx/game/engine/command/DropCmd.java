@@ -6,8 +6,8 @@ import com.dozenx.util.ByteUtil;
 /**
  * Created by luying on 17/2/7.
  */
-public class DropCmd extends BaseGameCmd{
-    private int userId;
+public class DropCmd extends UserBaseCmd{
+    //private int userId;
 
 
     private int itemId;

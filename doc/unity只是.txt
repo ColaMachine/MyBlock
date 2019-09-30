@@ -1,0 +1,11 @@
+
+unity 类图
+https://www.cnblogs.com/neverdie/p/3758829.html?_t=t#_nav_1
+
+
+
+Object ==>component collider ==> CharacterCOntroller
+    GameObject
+
+    rigibody
+

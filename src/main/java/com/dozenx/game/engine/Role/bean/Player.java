@@ -27,11 +27,17 @@ import org.lwjgl.Sys;
 
 public class Player extends LivingThing {
     public  GL_Vector viewPosition =new GL_Vector();
+
+    //public Rigibody rigibody;rigibody
+    public BoxCollider collider;
     public Player(int id) {
         super(id);
         this.idleAnimation=new String[]{"wag_tail","sniffer"};
        // this.speed=50;
         this.getExecutor().setModel( new PlayerModel(this));
+
+        //计算aabb
+        this.setAABB(-0.2f,0f,-0.2f,0.2f,1.5f,0.2f);
     }
 
     //判断人的当前状态 是在固体block上还是在液体block上 还是在液体中 还是在空气中
@@ -77,7 +83,7 @@ public class Player extends LivingThing {
 
 
     public void preRender() {
-        adjust(this.position.x, this.position.y, this.position.z);
+      //  adjust(this.position.x, this.position.y, this.position.z);
 
         //this.walk();
 

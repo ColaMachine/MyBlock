@@ -40,10 +40,13 @@ import gldemo.learnOpengl.LearnOpengl5;
 import glmodel.GL_Vector;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Util;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import time.Time;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -60,6 +63,7 @@ import java.nio.FloatBuffer;
  * <p/>
  * napier at potatoland dot org
  */
+@Deprecated
 public class MyBlockEngine extends GLApp {
     private Logger logger = LoggerFactory.getLogger(MyBlockEngine.class);
 
@@ -345,6 +349,7 @@ public class MyBlockEngine extends GLApp {
 		/* read config.cfg */
         try {
             initConfig();
+//            initFont();
 
             // initManagers();
 

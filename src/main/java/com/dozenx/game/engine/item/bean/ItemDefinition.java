@@ -583,7 +583,7 @@ public class ItemDefinition implements Cloneable{
         String type = MapUtil.getStringValue(map, "type");
         String name = MapUtil.getStringValue(map,"name");
         if(name.equals("stone")){
-            LogUtil.err("123");
+            LogUtil.println("123");
         }
         String category = MapUtil.getStringValue(map,"category");
         String baseOn = MapUtil.getStringValue(map,"baseon");
@@ -602,7 +602,7 @@ public class ItemDefinition implements Cloneable{
         this.itemTypeId =id;
         this.itemType = ItemType.getItemTypeById(id);
         if(this.itemType==null){
-            LogUtil.err("this.itemType  's itemType  null");
+            LogUtil.println("this.itemType  's itemType  null");
         }
         if(StringUtil.isNotEmpty(name)){
             this.name =name;

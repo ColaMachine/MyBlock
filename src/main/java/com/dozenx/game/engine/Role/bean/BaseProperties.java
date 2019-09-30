@@ -177,20 +177,22 @@ public class BaseProperties extends SimpleAABB {
         this.position.z = z;
     }
 
-    private void setPosition(GL_Vector position) {
+    public void setPosition(GL_Vector position) {
 
         setPosition(position.x,position.y,position.z);
         //
     }
 
     public void setPosition(float posx, float posy, float posz) {
-        this.minX=posx-0.5f;
-        this.minY=posy;
-        this.minZ=posz-0.5f;
+//        this.minX=posx-0.5f;
+//        this.minY=posy;
+//        this.minZ=posz-0.5f;
 
-        this.maxX=posx+0.5f;
-        this.maxY=posy+4;
-        this.maxZ=posz+0.5f;
+        this.setAABBSPosition(posx,posy,posz);
+
+//        this.maxX=posx+0.5f;
+//        this.maxY=posy+4;
+//        this.maxZ=posz+0.5f;
         //
        /* position.x= posx;
         position.y = posy;

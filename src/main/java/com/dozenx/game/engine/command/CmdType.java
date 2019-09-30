@@ -11,12 +11,12 @@ import java.util.Map;
  * Created by dozen.zhang on 2017/2/13.
  */
 public enum CmdType {
-    SAY(SayCmd.class,SayHandler.class),//0
-    RESULT(ResultCmd.class),//1
+    SAY(SayCmd.class,SayHandler.class),//0 讲话
+    RESULT(ResultCmd.class),//1 结果 服务端返回给客户端
     MSG(MsgCmd.class),//2
-    LOGIN(LoginCmd.class,LoginHandler.class),//3
-    EQUIP(EquipCmd.class, EquipHandler.class),//4
-    POS(PosCmd.class, PosHandler.class),//5
+    LOGIN(LoginCmd.class,LoginHandler.class),//3  登录
+    EQUIP(EquipCmd.class, EquipHandler.class),//4   装备
+    POS(PosCmd.class, PosHandler.class),//5  pos 位置变化
     PLAYERSTATUS(PlayerSynCmd.class),//6
     BAG(BagCmd.class,BagHandler.class),//7
     BAGCHANGE(BagChangeCmd.class,BagChangeHandler.class),//8
