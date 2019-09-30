@@ -38,6 +38,7 @@ public class FileHandler extends GameServerHandler {
 
             FileStartCmd fileStartCmd = (FileStartCmd) cmd;
             //拿到要保存的位置 根部 文件夹目录 这里假设是 ~/Document
+
           //  Path path = Paths.get("/Users/luying/Documents/test");
            // Path path = Paths.get("G:/test/to");
 
@@ -90,6 +91,7 @@ public class FileHandler extends GameServerHandler {
 
                 fileSec.length = fileDataCmd.getData().length;
 
+                recvResult.nowWriteOffset+=fileSec.length;//重新计算位置
 
                 recvResult.fileSecList.add(fileSec);
                 recvResult.fileOutputStream.write(fileDataCmd.getData());
@@ -97,6 +99,8 @@ public class FileHandler extends GameServerHandler {
                 e.printStackTrace();
             }
         } else if (cmd.getCmdType() == CmdType.FileEnd) {
+            //检查所有的filesec是否已经over掉了
+
             FileEndCmd fileEndCmd = (FileEndCmd) cmd;
             try {
                 FileRecvResult recvResult = fileRecvResultMap.get(fileEndCmd.getTaskId());
