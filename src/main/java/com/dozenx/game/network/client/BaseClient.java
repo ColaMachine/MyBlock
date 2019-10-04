@@ -4,7 +4,7 @@ import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.LoginState;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.ui.chat.ChatFrame;
+//import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.util.ByteUtil;

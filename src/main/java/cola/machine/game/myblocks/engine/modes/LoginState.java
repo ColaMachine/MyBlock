@@ -4,32 +4,21 @@ import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.GameEngine;
 import cola.machine.game.myblocks.manager.TextureManager;
-import cola.machine.game.myblocks.model.ui.NuiManager;
 import cola.machine.game.myblocks.model.ui.html.*;
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.switcher.Switcher;
-import cola.machine.game.myblocks.ui.login.LoginDemo;
+//import cola.machine.game.myblocks.ui.login.LoginDemo;
 import com.dozenx.game.engine.Role.bean.Player;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.LoginCmd;
 import com.dozenx.game.engine.command.PlayerSynCmd;
-import com.dozenx.game.font.Glyph;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.client.Client;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.game.opengl.util.OpenglUtils;
-import de.matthiasmann.twl.GUI;
-import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
-import de.matthiasmann.twl.theme.ThemeManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import javax.print.Doc;
 import javax.vecmath.Vector4f;
-
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -53,13 +42,14 @@ public class LoginState implements GameState {
 //        int charWidth = charImage.getWidth();
 //        int charHeight = charImage.getHeight();
 
-
         Client client = new Client();
         client.start();
         CoreRegistry.put(Client.class, client);
-
+        OpenglUtils.checkGLError();
         TextureManager textureManager =new TextureManager();
+        OpenglUtils.checkGLError();
         document = Document.getInstance();
+        OpenglUtils.checkGLError();
         ShaderManager manager =  ShaderManager.getInstance();
         manager.init();
        // manager.createProgram(manager.uiShaderConfig);
@@ -420,8 +410,8 @@ public class LoginState implements GameState {
            task.run();*/
        }
        else {
-           NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
-           nuiManager.startGame();
+//           NuiManager nuiManager = CoreRegistry.get(NuiManager.class);
+//           nuiManager.startGame();
        }
       /* GUI gui = getGUI();
        if(gui != null) {

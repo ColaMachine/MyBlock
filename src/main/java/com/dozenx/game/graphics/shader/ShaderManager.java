@@ -70,55 +70,56 @@ public class ShaderManager {
 
     static {
         if (Constants.SHADOW_ENABLE) {
-            terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert",new int[]{3,3,3,1});
-            //terrainShaderConfig = new ShaderConfig("multilightwithshadow", "chapt16/multilightwithshadow.frag", "chapt16/multilightwithshadow.vert", new int[]{3, 3, 3, 1});
+            OpenglUtils.checkGLError();
+            terrainShaderConfig = new ShaderConfig("terrain", "boxwithshadow.frag", "boxwithshadow.vert",new int[]{3,3,3,1});
+            //terrainShaderConfig = new ShaderConfig("multilightwithshadow", "multilightwithshadow.frag", "multilightwithshadow.vert", new int[]{3, 3, 3, 1});
         } else {
-             terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert",new int[]{3,3,3,1});
+             terrainShaderConfig = new ShaderConfig("terrain", "box.frag", "box.vert",new int[]{3,3,3,1});
 
-            //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/multilight.frag", "chapt16/multilight.vert", new int[]{3, 3, 3, 1});
-            //terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxangle.frag", "chapt16/boxangle.vert");
+            //terrainShaderConfig = new ShaderConfig("terrain", "multilight.frag", "multilight.vert", new int[]{3, 3, 3, 1});
+            //terrainShaderConfig = new ShaderConfig("terrain", "boxangle.frag", "boxangle.vert");
         }
     }
-    //public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "chapt16/box.frag", "chapt16/box.vert");
+    //public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "box.frag", "box.vert");
 
-    // public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "chapt16/boxwithshadow.frag", "chapt16/boxwithshadow.vert");
+    // public static ShaderConfig terrainShaderConfig = new ShaderConfig("terrain", "boxwithshadow.frag", "boxwithshadow.vert");
     //灯光方块
-    public static ShaderConfig lightShaderConfig = new ShaderConfig("light", "chapt13/light.frag", "chapt13/light.vert", new int[]{3, 3});
+    public static ShaderConfig lightShaderConfig = new ShaderConfig("light", "light.frag", "light.vert", new int[]{3, 3});
     //天空盒子
-    public static ShaderConfig skyShaderConfig = new ShaderConfig("sky", "chapt13/light.frag", "chapt13/light.vert", new int[]{3, 3});
+    public static ShaderConfig skyShaderConfig = new ShaderConfig("sky", "light.frag", "light.vert", new int[]{3, 3});
     //ui
-    public static ShaderConfig uiShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert", new int[]{3, 2, 1, 4});
+    public static ShaderConfig uiShaderConfig = new ShaderConfig("ui", "2dimg.frag", "2dimg.vert", new int[]{3, 2, 1, 4});
     //攻击物体
-    public static ShaderConfig attackShaderConfig = new ShaderConfig("attack", "chapt7/2dimg.frag", "chapt7/2dimg.vert", new int[]{3, 3, 1, 4});
+    public static ShaderConfig attackShaderConfig = new ShaderConfig("attack", "2dimg.frag", "2dimg.vert", new int[]{3, 3, 1, 4});
     //生物
-    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "chapt16/box.frag", "chapt16/box.vert", new int[]{3, 3, 3, 1});
+    public static ShaderConfig livingThingShaderConfig = new ShaderConfig("living", "box.frag", "box.vert", new int[]{3, 3, 3, 1});
     //扔在地上的东关系
-    public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "chapt7/3dimg.frag", "chapt7/3dimg.vert", new int[]{3, 3, 3, 1});
+    public static ShaderConfig anotherShaderConfig = new ShaderConfig("another", "3dimg.frag", "3dimg.vert", new int[]{3, 3, 3, 1});
 
 //现在的流程shadow==> shaderGeometryPass==>   shaderLightPass  ==>ssao ==> ssao blur
     //扔在地上的东西
-    public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop", "chapt7/3dimg.frag", "chapt7/3dimg.vert", new int[]{3, 3, 3, 1});
+    public static ShaderConfig dropItemShaderConfig = new ShaderConfig("drop", "3dimg.frag", "3dimg.vert", new int[]{3, 3, 3, 1});
     //伤害字符
-    public static ShaderConfig uifloatShaderConfig = new ShaderConfig("ui", "chapt7/2dimg.frag", "chapt7/2dimg.vert", new int[]{3, 2, 1, 4});
+    public static ShaderConfig uifloatShaderConfig = new ShaderConfig("ui", "2dimg.frag", "2dimg.vert", new int[]{3, 2, 1, 4});
     //阴影
-    public static ShaderConfig shadowShaderConfig = new ShaderConfig("shadow", "chapt16/shadow.frag", "chapt16/shadow.vert", new int[]{3, 3, 3, 1});
+    public static ShaderConfig shadowShaderConfig = new ShaderConfig("shadow", "shadow.frag", "shadow.vert", new int[]{3, 3, 3, 1});
     //hdr
-    public static ShaderConfig hdrShaderConfig = new ShaderConfig("hdr", "chapt16/hdr.frag", "chapt16/hdr.vert", new int[]{2, 2});
+    public static ShaderConfig hdrShaderConfig = new ShaderConfig("hdr", "hdr.frag", "hdr.vert", new int[]{2, 2});
     //bloom
-    public static ShaderConfig bloomShaderConfig = new ShaderConfig("bloom", "chapt16/bloom.frag", "chapt16/bloom.vert", new int[]{2, 2});
+    public static ShaderConfig bloomShaderConfig = new ShaderConfig("bloom", "bloom.frag", "bloom.vert", new int[]{2, 2});
     //gaosi
-    public static ShaderConfig gaosiShaderConfig = new ShaderConfig("gaosi", "chapt16/gaosi.frag", "chapt16/gaosi.vert", new int[]{2, 2});
+    public static ShaderConfig gaosiShaderConfig = new ShaderConfig("gaosi", "gaosi.frag", "gaosi.vert", new int[]{2, 2});
 
     //gaosihebing
-    public static ShaderConfig gaosihebingShaderConfig = new ShaderConfig("gaosihebing", "chapt16/gaosihebing.frag", "chapt16/gaosihebing.vert", new int[]{2, 2});
+    public static ShaderConfig gaosihebingShaderConfig = new ShaderConfig("gaosihebing", "gaosihebing.frag", "gaosihebing.vert", new int[]{2, 2});
 
     //灯光方块
-    public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "chapt13/line.frag", "chapt13/line.vert", new int[]{3});
+    public static ShaderConfig lineShaderConfig = new ShaderConfig("line", "line.frag", "line.vert", new int[]{3});
     public HashMap<String, ShaderConfig> configMap = new HashMap<>();
 
 
     //ssao 进行屏幕渲染的时候 把纹理的坐标位置 法线 颜色 深度 进行缓存 如果要进行环境光遮蔽 那么输出的坐标是法线都是 视线空间的
-    public static ShaderConfig shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/gbuffer.frag", "chapt16/gbuffer.vert", new int[]{3, 3, 3, 1});
+    public static ShaderConfig shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "gbuffer.frag", "gbuffer.vert", new int[]{3, 3, 3, 1});
 
     static {
 
@@ -130,10 +131,10 @@ public class ShaderManager {
             if (Constants.SHADOW_ENABLE)
 
             {
-                shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/ssao_gbuffer_shadow.frag", "chapt16/ssao_gbuffer_shadow.vert", new int[]{3, 3, 3, 1});
+                shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "ssao_gbuffer_shadow.frag", "ssao_gbuffer_shadow.vert", new int[]{3, 3, 3, 1});
 
             }else{
-                shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "chapt16/ssao_gbuffer.frag", "chapt16/ssao_gbuffer.vert", new int[]{3, 3, 3, 1});
+                shaderGeometryPass = new ShaderConfig("shaderGeometryPass", "ssao_gbuffer.frag", "ssao_gbuffer.vert", new int[]{3, 3, 3, 1});
 
             }
         }
@@ -147,15 +148,15 @@ public class ShaderManager {
     if(Constants.SSAO_ENABLE)
 
     {
-         shaderLightingPass = new ShaderConfig("shaderLightingPass", "chapt16/ssao_lighting.frag", "chapt16/ssao.vert", new int[]{3, 2});
+         shaderLightingPass = new ShaderConfig("shaderLightingPass", "ssao_lighting.frag", "ssao.vert", new int[]{3, 2});
     }else{
-        shaderLightingPass = new ShaderConfig("shaderLightingPass", "chapt16/deferred_shading.frag", "chapt16/deferred_shading.vert", new int[]{3, 2});
+        shaderLightingPass = new ShaderConfig("shaderLightingPass", "deferred_shading.frag", "deferred_shading.vert", new int[]{3, 2});
     }
 
 }
-    public static ShaderConfig shaderSSAO = new ShaderConfig("ssao",  "chapt16/ssao.frag","chapt16/ssao.vert",new int[]{3,2});
+    public static ShaderConfig shaderSSAO = new ShaderConfig("ssao",  "ssao.frag","ssao.vert",new int[]{3,2});
 
-    public static ShaderConfig shaderSSAOBlur = new ShaderConfig("ssaoblur", "chapt16/ssao_blur.frag","chapt16/ssao.vert", new int[]{3,2});
+    public static ShaderConfig shaderSSAOBlur = new ShaderConfig("ssaoblur", "ssao_blur.frag","ssao.vert", new int[]{3,2});
 
 
     //public static Vao blockVao = new Vao(ShaderManager.anotherShaderConfig);
@@ -895,7 +896,7 @@ public class ShaderManager {
             }
             config.setProgramId(programId);
             OpenglUtils.checkGLError();
-            //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+            //terrainProgramId = ShaderUtils.CreateProgram("box.vert", "box.frag");
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -1135,7 +1136,7 @@ public class ShaderManager {
 //        try {
 //            int terrainProgramId = ShaderUtils.CreateProgram(config.getVertPath(), config.getFragPath());
 //            config.setProgramId(terrainProgramId);
-//            //terrainProgramId = ShaderUtils.CreateProgram("chapt16/box.vert", "chapt16/box.frag");
+//            //terrainProgramId = ShaderUtils.CreateProgram("box.vert", "box.frag");
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            System.exit(0);

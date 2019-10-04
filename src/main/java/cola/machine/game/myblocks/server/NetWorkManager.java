@@ -1,7 +1,7 @@
 package cola.machine.game.myblocks.server;
 
 import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.ui.chat.ChatFrame;
+//import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.Role.controller.LivingThingManager;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.client.Client;
@@ -17,7 +17,7 @@ import java.util.Queue;
 public class NetWorkManager {
 
     Client client;
-    ChatFrame chatFrame;
+//    ChatFrame chatFrame;
     LivingThingManager livingThingManager;
     public static Queue<GameCmd> queue = new LinkedList<GameCmd>();
 
@@ -27,11 +27,11 @@ public class NetWorkManager {
     public NetWorkManager(){
         this.client= CoreRegistry.get(Client.class);
         livingThingManager= CoreRegistry.get(LivingThingManager.class);
-        this.chatFrame= CoreRegistry.get(ChatFrame.class);
+//        this.chatFrame= CoreRegistry.get(ChatFrame.class);
 
-        if(client==null || livingThingManager==null || chatFrame==null){
-
-        }
+//        if(client==null || livingThingManager==null || chatFrame==null){
+//
+//        }
     }
 
     public void update(){

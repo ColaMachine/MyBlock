@@ -21,8 +21,6 @@ import cola.machine.game.myblocks.rendering.world.WorldRenderer;
 import cola.machine.game.myblocks.rendering.world.WorldRendererLwjgl;
 import cola.machine.game.myblocks.skill.AttackManager;
 import cola.machine.game.myblocks.switcher.Switcher;
-import cola.machine.game.myblocks.ui.test.GuiRootPane;
-import cola.machine.game.myblocks.ui.test.SimpleTest;
 import cola.machine.game.myblocks.world.WorldProvider;
 import cola.machine.game.myblocks.world.block.BlockManager;
 import cola.machine.game.myblocks.world.block.internal.BlockManagerImpl;
@@ -881,7 +879,7 @@ public ShaderManager shaderManager;
 
         try {
 
-            LWJGLRenderer renderer = new LWJGLRenderer();
+            /*LWJGLRenderer renderer = new LWJGLRenderer();
             ThemeManager newTheme = null;
             try {
                 if(!Switcher.SHADER_ENABLE)
@@ -890,20 +888,20 @@ public ShaderManager shaderManager;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+*/
             Long startTime = System.nanoTime();
             long duration = System.nanoTime() - startTime;
             System.out.println("Loaded theme in " + (duration / 1000) + " us");
             if(!Switcher.SHADER_ENABLE) {
-                GuiRootPane root = new GuiRootPane();//创建root pane
-                gameGui = new GUI(root, renderer);//创建gui
-                //this.root.addGamingComponent();
-                gameGui.setSize();
-                gameGui.applyTheme(newTheme);
-                gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
-                gameGui.validateLayout();
-                gameGui.adjustSize();
-                CoreRegistry.put(GUI.class, gameGui);
+//                GuiRootPane root = new GuiRootPane();//创建root pane
+//                gameGui = new GUI(root, renderer);//创建gui
+//                //this.root.addGamingComponent();
+//                gameGui.setSize();
+//                gameGui.applyTheme(newTheme);
+//                gameGui.setBackground(newTheme.getImageNoWarning("gui.background"));
+//                gameGui.validateLayout();
+//                gameGui.adjustSize();
+//                CoreRegistry.put(GUI.class, gameGui);
             }
 
         } catch (Exception e) {

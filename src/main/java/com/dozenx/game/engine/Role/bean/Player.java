@@ -21,6 +21,8 @@ import com.dozenx.game.engine.item.bean.ItemBean;
 import com.dozenx.game.engine.item.bean.ItemDefinition;
 import com.dozenx.game.graphics.shader.ShaderManager;
 import com.dozenx.game.network.server.bean.PlayerStatus;
+import com.dozenx.game.scene.Node;
+//import com.jme3.asset.DesktopAssetManager;
 import core.log.LogUtil;
 import glmodel.GL_Vector;
 import org.lwjgl.Sys;
@@ -34,9 +36,14 @@ public class Player extends LivingThing {
         super(id);
         this.idleAnimation=new String[]{"wag_tail","sniffer"};
        // this.speed=50;
-        this.getExecutor().setModel( new PlayerModel(this));
+//        Node node = AssertManager.load("/asdfasdf/xxxx.model.xml");
+//        rootNode.addChild
+//        DesktopAssetManager desktopAssetManager =new DesktopAssetManager();
+//        desktopAssetManager.loadAsset("Models/Sinbad/Sinbad.mesh.xml");
+      this.getExecutor().setModel( new PlayerModel(this));
 
         //计算aabb
+       // this.collider
         this.setAABB(-0.2f,0f,-0.2f,0.2f,1.5f,0.2f);
     }
 

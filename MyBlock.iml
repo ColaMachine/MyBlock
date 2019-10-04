@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="FacetManager">
-    <facet type="web" name="Web">
-      <configuration>
-        <webroots>
-          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
-        </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/resources" />
-          <root url="file://$MODULE_DIR$/src/main/java" />
-        </sourceRoots>
-      </configuration>
-    </facet>
-  </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -24,16 +11,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library" exported="">
-      <library name="groovy-2.1.7.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/groovy-2.1.7.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="gson-2.2.4.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/gson-2.2.4.jar!/" />
@@ -42,7 +20,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="guava-15.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/guava-15.0.jar!/" />
@@ -51,7 +29,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="platform-3.5.2.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/platform-3.5.2.jar!/" />
@@ -60,7 +38,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="protobuf-java-2.5.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/protobuf-java-2.5.0.jar!/" />
@@ -69,7 +47,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="slf4j-api-1.7.7.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/slf4j-api-1.7.7.jar!/" />
@@ -78,7 +56,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="tera-ovr.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/tera-ovr.jar!/" />
@@ -87,7 +65,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="test_out.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/test_out.jar!/" />
@@ -96,7 +74,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="trove4j-3.0.3.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/trove4j-3.0.3.jar!/" />
@@ -105,7 +83,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="vecmath-1.3.1.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/vecmath-1.3.1.jar!/" />
@@ -114,7 +92,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.6.2/slf4j-api-1.6.2.jar!/" />
@@ -123,7 +101,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.7.9/slf4j-log4j12-1.7.9.jar!/" />
@@ -132,7 +110,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar!/" />
@@ -141,7 +119,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/xpp3-1.1.4c.jar!/" />
@@ -150,7 +128,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/TWL.jar!/" />
@@ -159,7 +137,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/TWLEffects.jar!/" />
@@ -168,7 +146,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/P200Ant.jar!/" />
@@ -177,7 +155,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/fastjson-1.1.39.jar!/" />
@@ -186,7 +164,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -205,13 +182,9 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.24.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-core:1.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-api:1.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-runtime:1.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-collectionschema:1.0.8" level="project" />
-    <orderEntry type="library" exported="" name="Maven: cz.advel.jbullet:jbullet:20101010-1" level="project" />
-    <orderEntry type="library" name="Maven: java3d:vecmath:1.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.22" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.1.6" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.1.6" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy:2.1.6" level="project" />
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.asm:asm-tree:4.0" level="project" />
@@ -225,5 +198,117 @@
     <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-api:1.0.8" level="project" />
     <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-runtime:1.0.8" level="project" />
     <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-collectionschema:1.0.8" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-core:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-effects:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-terrain:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-desktop:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-niftygui:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: com.github.nifty-gui:nifty:1.4.3" level="project" />
+    <orderEntry type="library" name="Maven: xpp3:xpp3:1.1.4c" level="project" />
+    <orderEntry type="library" name="Maven: com.github.nifty-gui:nifty-default-controls:1.4.3" level="project" />
+    <orderEntry type="library" name="Maven: com.github.nifty-gui:nifty-style-black:1.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-lwjgl3:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-jemalloc:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opencl:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl:natives-windows:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl:natives-macos:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-glfw:natives-windows:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-glfw:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-glfw:natives-macos:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-jemalloc:natives-windows:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-jemalloc:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-jemalloc:natives-macos:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-opengl:natives-windows:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-opengl:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-opengl:natives-macos:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-openal:natives-windows:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-openal:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.lwjgl:lwjgl-openal:natives-macos:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-plugins:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-jogg:3.2.0-stable" level="project" />
+    <orderEntry type="library" name="Maven: de.jarnbjo:j-ogg-all:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-bullet:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-bullet-native:3.2.4-stable" level="project" />
+    <orderEntry type="library" name="Maven: org.jmonkeyengine:jme3-networking:3.2.4-stable" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: org.jmonkeyengine:jme3-test-data:3.2.4-stable">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jme3-testdata.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: org.lwjgl.lwjgl:lwjgl_util:3.2.4-stable">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/lwjgl_util-2.9.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl:2.9.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.1" level="project" />
+    <orderEntry type="library" name="Maven: net.java.jinput:jinput:2.0.5" level="project" />
+    <orderEntry type="library" name="Maven: net.java.jutils:jutils:1.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-linux:2.0.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-windows:2.0.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-osx:2.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:3.2.3" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.jcraft:jogg:0.0.7">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jogg-0.0.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: com.jorbis:jorbis:0.0.7">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jorbis-0.0.15.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: com.ibxm:ibxm:0.0.7">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/ibxm.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: org.xmlpull:xmlpull:0.0.7">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/xpp3-1.1.4c.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.61" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:28.1-jre" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:2.8.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.j2objc:j2objc-annotations:1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.mojo:animal-sniffer-annotations:1.18" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.10.0" level="project" />
   </component>
 </module>

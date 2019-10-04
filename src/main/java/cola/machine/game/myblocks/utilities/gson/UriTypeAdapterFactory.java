@@ -69,7 +69,7 @@ public class UriTypeAdapterFactory implements TypeAdapterFactory {
                     try {
                         return constructor.newInstance(nextString);
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        logger.error("Failed to instantiate uri of type {} from value {}", rawType, nextString, e);
+                        logger.error("Failed to instantiate uri of type {} from value {}");
                         return null;
                     }
                 }

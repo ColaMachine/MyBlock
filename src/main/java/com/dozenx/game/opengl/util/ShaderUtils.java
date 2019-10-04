@@ -295,7 +295,7 @@ public class ShaderUtils {
 
     public static int CreateVertShaders(String path) throws IOException {
         OpenglUtils.checkGLError();
-        String VertexShader = readShaderSourceCode(PathManager.getInstance().getInstallPath().resolve("src/main/java/gldemo/learnOpengl/" + path).toString());
+        String VertexShader = readShaderSourceCode(PathManager.getInstance().getInstallPath().resolve("shaders/" + path).toString());
 //        LogUtil.println(VertexShader);
         //创建着色器
         OpenglUtils.checkGLError();
@@ -339,7 +339,7 @@ public class ShaderUtils {
     }
 
     public static int CreateFragShaders(String path) throws IOException {
-        String FragmentShader = readShaderSourceCode(PathManager.getInstance().getInstallPath().resolve("src/main/java/gldemo/learnOpengl/" + path).toString());
+        String FragmentShader = readShaderSourceCode(PathManager.getInstance().getInstallPath().resolve("shaders/" + path).toString());
 
         int newFragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
         OpenglUtils.checkGLError();
@@ -3326,6 +3326,7 @@ try {
     }
 
     public static void initVao(ShaderConfig config, Vao vao) {
+        OpenglUtils.checkGLError();
         if (vao.getVaoId() > 0) {
 
             LogUtil.err("dangerous");
@@ -3337,7 +3338,7 @@ try {
                 length += config.getParamLenAry()[i];
             }
             //设置参数总长度
-
+            OpenglUtils.checkGLError();
             //设置参数长度数组
             try {
 

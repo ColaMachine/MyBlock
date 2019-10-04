@@ -2,7 +2,7 @@ package cola.machine.game.myblocks.model.ui.html;
 
 import cola.machine.game.myblocks.Color;
 import cola.machine.game.myblocks.engine.Constants;
-import cola.machine.game.myblocks.engine.MyBlockEngine;
+//import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.engine.paths.PathManager;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
@@ -44,11 +44,13 @@ public class Document extends HtmlObject {
     public TrueTypeFont font;
     public void initFont(){
         boolean antiAlias = true;
+        OpenglUtils.checkGLError();
         Font awtFont = new Font("Times New Roman", Font.PLAIN, 12);
         String a="刷新用户名登录密码体力血蓝魔法敏捷坐标防御";
+        OpenglUtils.checkGLError();
         font = new TrueTypeFont(awtFont, antiAlias,a.toCharArray());
 
-
+        OpenglUtils.checkGLError();
         //org.newdawn.slick.Color.white.bind();
 
 

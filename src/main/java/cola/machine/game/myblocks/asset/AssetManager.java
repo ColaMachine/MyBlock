@@ -152,7 +152,7 @@ public class AssetManager {
                         return possibilities.get(0);
                     }
                 }*/
-                logger.warn("Failed to resolve {}:{} - too many valid matches {}", type, name, possibilities);
+                logger.warn("Failed to resolve {}:{} - too many valid matches {}");
                 return null;
         }
     }

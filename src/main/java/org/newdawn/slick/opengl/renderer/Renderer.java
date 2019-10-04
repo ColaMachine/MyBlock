@@ -1,6 +1,8 @@
 package org.newdawn.slick.opengl.renderer;
 
 
+import com.dozenx.game.opengl.util.OpenglUtils;
+
 /**
  * The static holder for the current GL implementation. Note that this 
  * renderer can only be set before the game has been started.
@@ -83,7 +85,7 @@ public class Renderer {
 	 * 
 	 * @return The renderer to be used when accessing GL
 	 */
-	public static SGL get() {
+	public static SGL get() { OpenglUtils.checkGLError();
 		return renderer;
 	}
 	

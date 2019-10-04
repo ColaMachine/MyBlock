@@ -572,3 +572,7 @@ handleInpput  Document.handleKey
 内部可以自定义各种属性,关键是这些属性 可以用截面拖放的方法拖一些东西进来 比如所有的声音对象都是AudioSource 那么 我定义一个 Source shooAudioSource 然后从截面上拖放一个子弹的声音,就能在代码里控制播放了
 shootAudioSource.play
 
+引入jme3
+
+mvn install:install-file -Dfile=jme3-testdata.jar -DgroupId=org.jmonkeyenginer -DartifactId=jme3-test-data -Dversion=3.2.1-stable -Dpackaging=jar
+

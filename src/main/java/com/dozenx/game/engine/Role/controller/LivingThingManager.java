@@ -41,7 +41,7 @@ import core.log.LogUtil;
 import glmodel.GLModel;
 import glmodel.GLModelContainer;
 import glmodel.GL_Vector;
-import org.lwjgl.opengl.GL20;
+//import org.lwjgl.opengl.GL20;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;

@@ -8,7 +8,7 @@ import cola.machine.game.myblocks.math.Vector2i;
 import cola.machine.game.myblocks.math.Vector3i;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.rendering.cameras.Camera;
-import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
+//import cola.machine.game.myblocks.rendering.cameras.OrthographicCamera;
 import cola.machine.game.myblocks.switcher.Switcher;
 import cola.machine.game.myblocks.world.Skysphere;
 import cola.machine.game.myblocks.world.WorldProvider;
@@ -55,8 +55,8 @@ public class WorldRendererLwjgl implements WorldRenderer {
     private final PriorityQueue<ChunkImpl> renderQueueChunksOpaque = new PriorityQueue<>(256,
             new ChunkFrontToBackComparator());
     /* SHADOW MAPPING */
-    private Camera lightCamera = new OrthographicCamera(-SHADOW_FRUSTUM_BOUNDS, SHADOW_FRUSTUM_BOUNDS,
-            SHADOW_FRUSTUM_BOUNDS, -SHADOW_FRUSTUM_BOUNDS);
+//    private Camera lightCamera = new OrthographicCamera(-SHADOW_FRUSTUM_BOUNDS, SHADOW_FRUSTUM_BOUNDS,
+//            SHADOW_FRUSTUM_BOUNDS, -SHADOW_FRUSTUM_BOUNDS);
 
     public WorldRendererLwjgl(WorldProvider worldProvider, ChunkProvider chunkProvider,
             LocalPlayerSystem localPlayerSystem, GLBufferPool bufferPool) {
