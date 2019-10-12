@@ -13,8 +13,8 @@ import java.awt.image.ColorConvertOp;
 
 public class test {
 	public static void main(String args[]){
-
-
+//        AssetManager assetManager;
+//        assetManager.loadAsset("");
         System.out.println(new java.util.Date().getTime());
 		System.out.println((int)0.999);;
 	}

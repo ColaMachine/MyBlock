@@ -1,5 +1,6 @@
 package cola.machine.game.myblocks.engine;
 
+import cola.machine.game.myblocks.asset.AssetManager;
 import cola.machine.game.myblocks.config.Config;
 import cola.machine.game.myblocks.engine.modes.GameState;
 import cola.machine.game.myblocks.engine.modes.LoginState;
@@ -51,7 +52,8 @@ public class BlockEngine implements GameEngine{
    private boolean running;
    private boolean disposed;
    private GameState pendingState;
-    Node RootNode;
+//    protected Node rootNode = new Node("Root Node");;
+    AssetManager assetManager;
    private Config config;
    private EngineTime time ;
    private final TaskMaster<Task> commonThreadPool=TaskMaster.createFIFOTaskMaster("common",16);
@@ -69,6 +71,7 @@ public class BlockEngine implements GameEngine{
 	}
 
     public static void main(String args[]) {
+
     	boolean crashReportEnabled =true;
         try {
             PathManager.getInstance().useDefaultHomePath();
