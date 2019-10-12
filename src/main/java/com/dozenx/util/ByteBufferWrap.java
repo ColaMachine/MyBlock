@@ -75,12 +75,11 @@ public class ByteBufferWrap
         return this;
     }
 
-    public void glBufferData(int type1,int type2){
+  /*  public void glBufferData(int type1,int type2){
         for(int i=0;i<listLimit;i++){
             GL15.glBufferData(type1, buffers.get(i), type2);//put data
         }
-
-    }
+    }*/
     public int limit(){
         return this.limit;
     }

@@ -1,13 +1,14 @@
 package cola.machine.game.myblocks.model.ui.tool;
 
 import cola.machine.game.myblocks.container.Slot;
-import cola.machine.game.myblocks.engine.MyBlockEngine;
+//import cola.machine.game.myblocks.engine.MyBlockEngine;
 import cola.machine.game.myblocks.manager.TextureManager;
 import cola.machine.game.myblocks.model.region.RegionArea;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.model.ui.bag.Bag;
 import cola.machine.game.myblocks.model.ui.html.*;
 import cola.machine.game.myblocks.registry.CoreRegistry;
+import core.log.LogUtil;
 import glapp.GLApp;
 import org.lwjgl.opengl.GL11;
 
@@ -237,7 +238,8 @@ public class ToolBar extends RegionArea {
 		
 		this.selectedIndex = key-1;
 		if ( key <= slots.length && slots[selectedIndex].item != null) {
-			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[selectedIndex].item.name;
+			LogUtil.err("err MyBlockEngine");
+//			CoreRegistry.get(MyBlockEngine.class).currentObject = slots[selectedIndex].item.name;
            // CoreRegistry.get(Human.class).item=slots[selectedIndex].item;
         }
 		select_div.setLeft(div.getWidth()*selectedIndex/9);

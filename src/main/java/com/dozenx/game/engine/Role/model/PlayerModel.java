@@ -62,11 +62,11 @@ public class PlayerModel extends BaseModel   {
 //        BODY_THICK = block.thick;
 
 //        rootComponent= (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
-        this.rootComponent = (BoneRotateImageBlock)ItemManager.getItemDefinition("bonesteve").getShape();
+       // this.rootComponent = (BoneRotateImageBlock)ItemManager.getItemDefinition("bonesteve").getShape();
         //rootComponent=new BodyComponent(BODY_WIDTH,BODY_HEIGHT,BODY_THICK);
 //        boneRotateImageBlock = (BoneRotateImageBlock)ItemManager.getItemDefinition("player").getShape();
 
-       /* int id =role.getId();
+        int id =role.getId();
         rootComponent.id=id*10+EquipPartType.BODY.ordinal();
         rootComponent.name = EquipPartType.BODY.getName();
         rootComponent.block = block;
@@ -147,7 +147,7 @@ public class PlayerModel extends BaseModel   {
         head.name=EquipPartType.HEAD.getName();
 
         head.setOffset(new GL_Vector(BODY_WIDTH/2,BODY_HEIGHT,BODY_THICK/2),new GL_Vector(HEAD_WIDTH/2,0,HEAD_THICK/2));
-        rootComponent.addChild(head);*/
+        rootComponent.addChild(head);
 
 
     }

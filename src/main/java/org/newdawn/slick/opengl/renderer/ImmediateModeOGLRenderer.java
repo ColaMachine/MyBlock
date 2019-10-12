@@ -5,6 +5,7 @@ import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import com.dozenx.game.opengl.util.OpenglUtils;
 import org.lwjgl.opengl.EXTSecondaryColor;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
@@ -156,7 +157,9 @@ public class ImmediateModeOGLRenderer implements SGL {
 	 * @see SGL#glEnable(int)
 	 */
 	public void glEnable(int item) {
+		OpenglUtils.checkGLError();
 		GL11.glEnable(item);
+		OpenglUtils.checkGLError();
 	}
 
 	/**

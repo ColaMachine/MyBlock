@@ -3,8 +3,6 @@ package com.dozenx.game.network.client;
 import cola.machine.game.myblocks.engine.BlockEngine;
 import cola.machine.game.myblocks.engine.Constants;
 import cola.machine.game.myblocks.engine.modes.LoginState;
-import cola.machine.game.myblocks.registry.CoreRegistry;
-import cola.machine.game.myblocks.ui.chat.ChatFrame;
 import com.dozenx.game.engine.command.*;
 import com.dozenx.game.network.client.bean.GameCallBackTask;
 import com.dozenx.util.ByteUtil;
@@ -48,9 +46,9 @@ public class Client extends Thread{
     public static Map<Integer, GameCallBackTask> SyncTaskMap= new ConcurrentHashMap<Integer, GameCallBackTask>();
 
 
-    ChatFrame chatFrame;
+   // ChatFrame chatFrame;
     public Client(){
-         chatFrame =  CoreRegistry.get(ChatFrame.class );
+        // chatFrame =  CoreRegistry.get(ChatFrame.class );
     }
     Socket socket = null;
 

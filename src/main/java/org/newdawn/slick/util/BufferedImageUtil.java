@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import com.dozenx.game.opengl.util.OpenglUtils;
 import org.newdawn.slick.opengl.ImageIOImageData;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
@@ -90,33 +91,33 @@ public class BufferedImageUtil {
 			BufferedImage resourceimage, int target, int dstPixelFormat,
 			int minFilter, int magFilter) throws IOException {
 		ImageIOImageData data = new ImageIOImageData();int srcPixelFormat = 0;
-
+		OpenglUtils.checkGLError();
 		// create the texture ID for this texture
 		int textureID = InternalTextureLoader.createTextureID();
 		TextureImpl texture = new TextureImpl(resourceName, target, textureID);
-
+		OpenglUtils.checkGLError();
 		// Enable texturing
 		Renderer.get().glEnable(SGL.GL_TEXTURE_2D);
-
+		OpenglUtils.checkGLError();
 		// bind this texture
 		Renderer.get().glBindTexture(target, textureID);
-
+		OpenglUtils.checkGLError();
 		BufferedImage bufferedImage = resourceimage;
 		texture.setWidth(bufferedImage.getWidth());
 		texture.setHeight(bufferedImage.getHeight());
-
+		OpenglUtils.checkGLError();
 		if (bufferedImage.getColorModel().hasAlpha()) {
 			srcPixelFormat = SGL.GL_RGBA;
 		} else {
 			srcPixelFormat = SGL.GL_RGB;
 		}
-
+		OpenglUtils.checkGLError();
 		// convert that image into a byte buffer of texture data
 		ByteBuffer textureBuffer = data.imageToByteBuffer(bufferedImage, false, false, null);
-		texture.setTextureHeight(data.getTexHeight());
-		texture.setTextureWidth(data.getTexWidth());
+		texture.setTextureHeight(data.getTexHeight()); OpenglUtils.checkGLError();
+		texture.setTextureWidth(data.getTexWidth()); OpenglUtils.checkGLError();
 		texture.setAlpha(data.getDepth() == 32);
-		
+		OpenglUtils.checkGLError();
 		if (target == SGL.GL_TEXTURE_2D) {
 			Renderer.get().glTexParameteri(target, SGL.GL_TEXTURE_MIN_FILTER, minFilter);
 			Renderer.get().glTexParameteri(target, SGL.GL_TEXTURE_MAG_FILTER, magFilter);
@@ -129,7 +130,7 @@ public class BufferedImageUtil {
 	        	Renderer.get().glTexParameteri(SGL.GL_TEXTURE_2D, SGL.GL_TEXTURE_WRAP_T, SGL.GL_CLAMP);
 	        }
 		}
-
+		OpenglUtils.checkGLError();
 		Renderer.get().glTexImage2D(target, 
                       0, 
                       dstPixelFormat, 
@@ -138,8 +139,8 @@ public class BufferedImageUtil {
                       0, 
                       srcPixelFormat, 
                       SGL.GL_UNSIGNED_BYTE, 
-                      textureBuffer); 
-
+                      textureBuffer);
+		OpenglUtils.checkGLError();
 		return texture;
 	}
 	

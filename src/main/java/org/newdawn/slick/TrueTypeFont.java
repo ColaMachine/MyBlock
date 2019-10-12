@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //import com.dozenx.game.opengl.util.ShaderUtils;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.game.opengl.util.ShaderUtils;
 import com.sun.prism.ps.Shader;
 import org.newdawn.slick.opengl.GLUtils;
@@ -93,11 +94,11 @@ public class TrueTypeFont implements Font {
 	 */
 	public TrueTypeFont(java.awt.Font font, boolean antiAlias, char[] additionalChars) {
 		GLUtils.checkGLContext();
-		
+		OpenglUtils.checkGLError();
 		this.font = font;
 		this.fontSize = font.getSize();
 		this.antiAlias = antiAlias;
-
+		OpenglUtils.checkGLError();
 		createSet( additionalChars );
 	}
 	
@@ -236,10 +237,10 @@ public class TrueTypeFont implements Font {
 
 				fontImage = null;
 			}
-
+			OpenglUtils.checkGLError();
 			fontTexture = BufferedImageUtil
 					.getTexture(font.toString(), imgTemp);
-
+			OpenglUtils.checkGLError();
 		} catch (IOException e) {
 			System.err.println("Failed to create font.");
 			e.printStackTrace();

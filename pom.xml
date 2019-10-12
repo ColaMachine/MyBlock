@@ -18,10 +18,19 @@
 
 		<!-- maven私库 -->
 
+		<repository>
+			<id>aWiFi-rep</id>
+			<name>aWiFi Private Repository</name>
+			<url>http://192.168.41.25:8081/nexus/content/groups/public/</url>
+		</repository>
+
+		<repository>
+			<id>dozenx</id>
+			<name>aWiFi Private Repository</name>
+			<url>http://192.168.41.25:8081/nexus/content/repositories/thirdparty/</url>
+		</repository>
 
 		<!-- 阿里巴巴发布版本仓库 -->
-
-
 		<repository>
 			<id>alibaba-opensource</id>
 
@@ -36,26 +45,22 @@
 			<url>http://code.alibabatech.com/mvn/snapshots/</url>
 			<layout>default</layout>
 		</repository>
-		<repository>
-			<id>beatunes</id>
-			<name>beatunes</name>
-			<url>https://www.beatunes.com/repo/maven2/</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>clojars</id>
-			<name>clojars</name>
-			<url>https://clojars.org/repo/</url>
-			<layout>default</layout>
-		</repository>
-
 	</repositories>
 
 
 
 	<dependencies>
 
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.22</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.6</version>
+        </dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy</artifactId>
@@ -86,26 +91,6 @@
 			<artifactId>protostuff-runtime</artifactId>
 			<version>1.0.8</version>
 		</dependency>
-        <!-- https://mvnrepository.com/artifact/com.jcraft/jogg -->
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jogg</artifactId>
-            <version>0.0.7</version>
-        </dependency>
-
-        <dependency>
-			<groupId>org.clojars.aseipp</groupId>
-			<artifactId>ibxm</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.jcraft/jorbis -->
-		<dependency>
-			<groupId>org.jcraft</groupId>
-			<artifactId>jorbis</artifactId>
-			<version>0.0.17</version>
-		</dependency>
-
 		<!--<dependency>
 			<groupId>cz.advel.jbullet</groupId>
 			<artifactId>jbullet</artifactId>
@@ -114,23 +99,166 @@
 			</dependencies>
 -->
 
+        <dependency>
+            <groupId>com.ibxm</groupId>
+            <artifactId>ibxm</artifactId>
+            <version>0.0.7</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/ibxm.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.xmlpull</groupId>
+            <artifactId>xmlpull</artifactId>
+            <version>0.0.7</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/xpp3-1.1.4c.jar</systemPath>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.61</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.1-jre</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.10.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-    <!--    <dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.1.34.Final</version>
         </dependency>
-		<dependency>
-			<groupId>org.jmonkeyengine</groupId>
-			<artifactId>jme3-core</artifactId>
-			<version>3.2.2-stable</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jmonkeyengine</groupId>
-			<artifactId>jme3-bullet</artifactId>
-			<version>3.2.2-stable</version>
-		</dependency>-->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jogg</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.clojars.aseipp</groupId>
+            <artifactId>ibxm</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jcraft/jorbis -->
+        <dependency>
+            <groupId>org.jcraft</groupId>
+            <artifactId>jorbis</artifactId>
+            <version>0.0.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.34.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-core</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-effects</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-terrain</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-desktop</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-niftygui</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-lwjgl3</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-plugins</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-jogg</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-bullet</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-bullet-native</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-niftygui</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sf.sociaal/jME3-jogg -->
+        <!-- https://mvnrepository.com/artifact/org.jmonkeyengine/jme3-jogg -->
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-jogg</artifactId>
+            <version>3.2.0-stable</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.jcraft/jogg -->
+
+
+
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-networking</artifactId>
+            <version>3.2.4-stable</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-test-data</artifactId>
+            <version>3.2.4-stable</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/jme3-testdata.jar</systemPath>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.lwjgl.lwjgl/lwjgl_util -->
+        <dependency>
+            <groupId>org.lwjgl.lwjgl</groupId>
+            <artifactId>lwjgl_util</artifactId>
+            <version>2.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.10.0</version>
+        </dependency>
     </dependencies>
 
 

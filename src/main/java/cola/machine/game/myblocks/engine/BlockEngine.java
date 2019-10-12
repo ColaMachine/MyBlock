@@ -14,10 +14,12 @@ import cola.machine.game.myblocks.logic.behavior.tree.Node;
 import cola.machine.game.myblocks.registry.CoreRegistry;
 import cola.machine.game.myblocks.utilities.concurrency.Task;
 import cola.machine.game.myblocks.utilities.concurrency.TaskMaster;
+import com.dozenx.game.opengl.util.OpenglUtils;
 import com.dozenx.util.TimeUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
+import glapp.GLApp;
 import org.lwjgl.Sys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,9 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.Set;
 
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glEnable;
+
 //import org.terasology.crashreporter.CrashReporter;
 
 /**
@@ -42,7 +47,7 @@ import java.util.Set;
  * <p/>
  * napier at potatoland dot org
  */
-public class BlockEngine implements GameEngine{
+public class BlockEngine  implements GameEngine{
     public static GameEngine engine;
    private static final Logger logger =LoggerFactory.getLogger(BlockEngine.class);
 	long nowTime;
@@ -74,6 +79,7 @@ public class BlockEngine implements GameEngine{
 
     	boolean crashReportEnabled =true;
         try {
+
             PathManager.getInstance().useDefaultHomePath();
 
             Collection<EngineSubsystem> subsystemList;

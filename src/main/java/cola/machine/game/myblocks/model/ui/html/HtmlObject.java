@@ -4,7 +4,6 @@ import cola.machine.game.myblocks.input.KeyEventReceiver;
 import cola.machine.game.myblocks.input.MouseEventReceiver;
 import cola.machine.game.myblocks.model.textture.TextureInfo;
 import cola.machine.game.myblocks.switcher.Switcher;
-import cola.machine.game.myblocks.ui.inventory.ItemSlot;
 import com.dozenx.game.engine.edit.view.MouseClickHandler;
 import com.dozenx.game.engine.ui.inventory.view.IconView;
 import com.dozenx.game.engine.ui.inventory.view.InventoryPanel;
