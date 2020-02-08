@@ -38,6 +38,7 @@ package com.dozenx.game;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.dozenx.game.math.ColorRGBA;
 import com.dozenx.game.scene.Mesh;
 import com.dozenx.game.scene.VertexBuffer;
 
@@ -80,7 +81,7 @@ public interface Renderer {
      * to call {@link Statistics#clearFrame() } at the appropriate time
      * to get accurate info per frame.
      */
-    public Statistics getStatistics();
+  //  public Statistics getStatistics();
 
     /**
      * Invalidates the current rendering state. Should be called after
@@ -109,7 +110,7 @@ public interface Renderer {
      * Applies the given {@link RenderState}, making the necessary
      * GL calls so that the state is applied.
      */
-    public void applyRenderState(RenderState state);
+   // public void applyRenderState(RenderState state);
 
     /**
      * Set the range of the depth values for objects. All rendered
@@ -164,7 +165,7 @@ public interface Renderer {
      *
      * @param shader The shader to use for rendering.
      */
-    public void setShader(Shader shader);
+    //public void setShader(Shader shader);
 
     /**
      * Deletes a shader. This method also deletes
@@ -173,20 +174,20 @@ public interface Renderer {
      * @param shader Shader to delete.
      * @see #deleteShaderSource(com.jme3.shader.Shader.ShaderSource)
      */
-    public void deleteShader(Shader shader);
+    //public void deleteShader(Shader shader);
 
     /**
      * Deletes the provided shader source.
      *
      * @param source The ShaderSource to delete.
      */
-    public void deleteShaderSource(ShaderSource source);
+//    public void deleteShaderSource(ShaderSource source);
 
     /**
      * Copies contents from src to dst, scaling if necessary.
      * set copyDepth to false to only copy the color buffers.
      */
-    public void copyFrameBuffer(FrameBuffer src, FrameBuffer dst, boolean copyDepth);
+ //   public void copyFrameBuffer(FrameBuffer src, FrameBuffer dst, boolean copyDepth);
 
     /**
      * Sets the framebuffer that will be drawn to.
@@ -196,7 +197,7 @@ public interface Renderer {
      *
      * @param fb The framebuffer to set
      */
-    public void setFrameBuffer(FrameBuffer fb);
+   // public void setFrameBuffer(FrameBuffer fb);
 
     /**
      * Set the framebuffer that will be set instead of the main framebuffer
@@ -204,7 +205,7 @@ public interface Renderer {
      *
      * @param fb The framebuffer to override the main framebuffer.
      */
-    public void setMainFrameBufferOverride(FrameBuffer fb);
+  //  public void setMainFrameBufferOverride(FrameBuffer fb);
 
     /**
      * Reads the pixels currently stored in the specified framebuffer
@@ -216,7 +217,7 @@ public interface Renderer {
      * @param fb The framebuffer to read from
      * @param byteBuf The bytebuffer to transfer color data to
      */
-    public void readFrameBuffer(FrameBuffer fb, ByteBuffer byteBuf);
+  //  public void readFrameBuffer(FrameBuffer fb, ByteBuffer byteBuf);
 
     /**
      * Reads the pixels currently stored in the specified framebuffer
@@ -229,17 +230,17 @@ public interface Renderer {
      * @param byteBuf The bytebuffer to transfer color data to
      * @param format the image format to use when reading the frameBuffer.
      */
-    public void readFrameBufferWithFormat(FrameBuffer fb, ByteBuffer byteBuf, Image.Format format);
+  //  public void readFrameBufferWithFormat(FrameBuffer fb, ByteBuffer byteBuf, Image.Format format);
 
     /**
      * Deletes a framebuffer and all attached renderbuffers
      */
-    public void deleteFrameBuffer(FrameBuffer fb);
+   // public void deleteFrameBuffer(FrameBuffer fb);
 
     /**
      * Sets the texture to use for the given texture unit.
      */
-    public void setTexture(int unit, Texture tex);
+  //  public void setTexture(int unit, Texture tex);
 
     /**
      * Modify the given Texture with the given Image.
@@ -252,12 +253,12 @@ public interface Renderer {
      * @param x the x position to put the image into the texture
      * @param y the y position to put the image into the texture
      */
-    public void modifyTexture(Texture tex, Image pixels, int x, int y);
+   // public void modifyTexture(Texture tex, Image pixels, int x, int y);
 
     /**
      * Deletes a texture from the GPU.
      */
-    public void deleteImage(Image image);
+    //public void deleteImage(Image image);
 
     /**
      * Uploads a vertex buffer to the GPU.
